@@ -1094,6 +1094,16 @@ html, body, #root { height: 100%; }
 .cost-item-detail { font-size: 11px; color: var(--text-muted); }
 .cost-item-price { font-size: 13px; font-weight: 700; color: var(--accent2); white-space: nowrap; flex-shrink: 0; }
 
+/* ─── Topbar filter button (mobile only) ─── */
+.topbar-filter-btn {
+  display: none;
+}
+
+/* ─── Filter backdrop (mobile only) ─── */
+.filter-backdrop {
+  display: none;
+}
+
 /* ─── SearchBar ─── */
 .search-bar {
   position: absolute;
@@ -1483,9 +1493,49 @@ html, body, #root { height: 100%; }
   .city-tabs { flex-wrap: wrap; gap: 5px; }
   .city-tab { padding: 6px 10px; font-size: 12px; }
 
-  /* Filtres */
-  .search-panel { width: calc(100vw - 48px); }
-  .search-bar { bottom: 16px; left: 16px; }
+  /* Filtre dans la topbar sur mobile */
+  .topbar-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 6px 12px;
+    color: var(--text-dim);
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .topbar-filter-btn.active,
+  .topbar-filter-btn:active {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+  }
+  .topbar-filter-btn .filter-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+  }
+
+  /* Panneau filtre positionné sous la topbar */
+  .search-bar {
+    top: 52px;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    align-items: stretch;
+  }
+  .search-toggle { display: none; }
+  .search-panel {
+    width: 100%;
+    border-radius: 0 0 20px 20px;
+    margin-top: 0;
+    max-height: calc(100dvh - 52px);
+    overflow-y: auto;
+  }
 
   /* Zoom controls — cachés sur mobile (pinch suffit) */
   .map-zoom-controls { display: none; }
@@ -1525,4 +1575,43 @@ html, body, #root { height: 100%; }
   /* Pratique */
   .practical-item { padding: 10px 12px; gap: 12px; }
   .practical-icon { font-size: 18px; }
+
+  /* Backdrop filtre — intercepte les touches sur la carte */
+  .filter-backdrop {
+    display: block;
+    position: fixed;
+    top: 52px;
+    left: 0; right: 0; bottom: 0;
+    z-index: 49;
+  }
+
+  /* Destination card — empêche chevauchement nom/région */
+  .dest-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .dest-card-name {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* Prix courants — description longue ne chevauche plus le prix */
+  .cost-item {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .cost-item-left { flex: 1; min-width: 0; }
+  .cost-item-detail {
+    white-space: normal;
+    word-break: break-word;
+  }
+  .cost-item-price {
+    flex-shrink: 0;
+    align-self: center;
+    padding-left: 6px;
+  }
 }

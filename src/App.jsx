@@ -16,6 +16,7 @@ export default function App() {
   const [filters, setFilters] = useState({ tripBudget: null, month: null });
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
   const searchContainerRef = useRef(null);
 
   const handleCountryClick = useCallback((code) => setSelectedCountry(code), []);
@@ -98,6 +99,15 @@ export default function App() {
             />
           )}
         </div>
+        <button
+          className={`topbar-filter-btn${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
+          onClick={() => setFilterOpen((o) => !o)}
+          aria-label="Filtres"
+        >
+          <span>⚙️</span>
+          {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
+        </button>
+
         <div className="topbar-badge">
           <span className="badge-dot" />
           {countryCount} destination{countryCount > 1 ? "s" : ""} disponible{countryCount > 1 ? "s" : ""}
@@ -112,7 +122,7 @@ export default function App() {
           searchActive={searchActive}
         />
 
-        <SearchBar onFilterChange={setFilters} />
+        <SearchBar onFilterChange={setFilters} open={filterOpen} onOpenChange={setFilterOpen} />
 
 
       </main>

@@ -12,8 +12,10 @@ const BUDGET_PRESETS = [
   { label: "400€", value: 400 },
 ];
 
-export default function SearchBar({ onFilterChange }) {
-  const [open, setOpen] = useState(false);
+export default function SearchBar({ onFilterChange, open: openProp, onOpenChange }) {
+  const [openInternal, setOpenInternal] = useState(false);
+  const open = openProp !== undefined ? openProp : openInternal;
+  const setOpen = (v) => { setOpenInternal(v); onOpenChange?.(v); };
   const [budgetEnabled, setBudgetEnabled] = useState(false);
   const [tripBudget, setTripBudget] = useState(120);
   const [month, setMonth] = useState(null);
@@ -60,7 +62,9 @@ export default function SearchBar({ onFilterChange }) {
   };
 
   return (
-    <div className={`search-bar${open ? " open" : ""}`}>
+    <>
+      {open && <div className="filter-backdrop" onClick={() => setOpen(false)} />}
+      <div className={`search-bar${open ? " open" : ""}`}>
       <button className="search-toggle" onClick={() => setOpen(!open)}>
         <span className="search-icon">⚙️</span>
         <span>Filtres</span>
@@ -160,5 +164,6 @@ export default function SearchBar({ onFilterChange }) {
         </div>
       )}
     </div>
+    </>
   );
 }
