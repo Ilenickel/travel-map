@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { COUNTRIES } from "../data/index";
 import { weatherRating } from "../utils/weather";
 
@@ -170,10 +170,28 @@ function ColEmpty({ exclude, onAdd }) {
 }
 
 /* ── Panel principal ── */
-export default function ComparePanel({ baseCode, onClose, onCountryClick }) {
-  const [codes, setCodes] = useState([baseCode]);
+export default function ComparePanel({ baseCode, initialCodes, onClose, onCountryClick }) {
+  const [codes, setCodes] = useState(() =>
+    initialCodes && initialCodes.length >= 1 ? initialCodes : [baseCode]
+  );
   const [activeTab, setActiveTab] = useState("resume");
   const [addingThird, setAddingThird] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  // Sync URL quand les codes changent
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("compare", codes.join(","));
+    url.searchParams.delete("country");
+    history.replaceState(null, "", url);
+  }, [codes]);
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   const removeCode = (code) => {
     if (codes.length === 1) { onClose(); return; }
@@ -195,6 +213,9 @@ export default function ComparePanel({ baseCode, onClose, onCountryClick }) {
         {/* Topbar */}
         <div className="compare-topbar">
           <span className="compare-title">⚖ Comparaison</span>
+          <button className="compare-share-btn" onClick={handleCopyLink}>
+            {copied ? "✓ Lien copié !" : "🔗 Partager"}
+          </button>
           <button className="compare-close" onClick={onClose}>✕</button>
         </div>
 

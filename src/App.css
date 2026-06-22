@@ -1828,7 +1828,24 @@ html, body, #root { height: 100%; }
   background: var(--surface2);
   flex-shrink: 0;
 }
-.compare-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.compare-title { font-size: 15px; font-weight: 700; color: var(--text); margin-right: auto; }
+
+.compare-share-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-size: 12px; font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  margin-right: 8px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.compare-share-btn:hover { border-color: var(--accent); color: var(--accent2); }
+.compare-share-btn:has(span) { color: var(--accent2); border-color: var(--accent); }
 .compare-close {
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--border-light);

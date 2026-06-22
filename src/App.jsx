@@ -38,11 +38,16 @@ export default function App() {
   const [compareBase, setCompareBase] = useState(null);
   const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites();
 
-  // Sync URL ↔ pays sélectionné
+  // Sync URL ↔ pays sélectionné + comparaison
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("country");
     if (code && COUNTRIES[code]) setSelectedCountry(code);
+    const compare = params.get("compare");
+    if (compare) {
+      const codes = compare.split(",").filter((c) => COUNTRIES[c]);
+      if (codes.length >= 1) setCompareBase(codes[0]);
+    }
   }, []);
 
   useEffect(() => {
@@ -231,7 +236,17 @@ export default function App() {
       {compareBase && (
         <ComparePanel
           baseCode={compareBase}
-          onClose={() => setCompareBase(null)}
+          initialCodes={(() => {
+            const p = new URLSearchParams(window.location.search).get("compare");
+            if (p) return p.split(",").filter((c) => COUNTRIES[c]);
+            return null;
+          })()}
+          onClose={() => {
+            setCompareBase(null);
+            const url = new URL(window.location.href);
+            url.searchParams.delete("compare");
+            history.replaceState(null, "", url);
+          }}
           onCountryClick={(code) => { setCompareBase(null); setSelectedCountry(code); }}
         />
       )}
