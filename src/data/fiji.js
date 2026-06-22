@@ -1,0 +1,233 @@
+export const FIJI = {
+  code: "FJI",
+  numericId: 242,
+  name: "Fidji",
+  emoji: "🇫🇯",
+  capital: "Suva",
+  language: "Fidjien, Hindi fidjien, Anglais",
+  currency: "Dollar fidjien (FJD)",
+  timezone: "UTC+12",
+  filter: { budgetMin: 70, budgetMid: 150, tripMin: 1800, tripMid: 3500 },
+  description:
+    "Les Fidji forment un archipel de 333 îles au cœur du Pacifique Sud, réputé pour ses plages de sable blanc, ses eaux cristallines et sa chaleur humaine légendaire — le fameux 'Bula !' accueille chaque visiteur avec un sourire sincère. Au-delà des resorts luxueux, les Fidji offrent une culture mélanésienne vivante, des villages traditionnels et des récifs coralliens parmi les plus beaux du monde. L'archipel est une destination idéale pour les plongeurs, les amateurs de voile et ceux en quête de tranquillité insulaire.",
+  bestPeriods: [
+    {
+      months: "Mai – Oct",
+      label: "Saison fraîche et sèche",
+      color: "#22c55e",
+      description: "Temps idéal avec chaleur modérée, peu de pluies et mer calme — haute saison touristique",
+      icon: "☀️",
+    },
+    {
+      months: "Nov – Avr",
+      label: "Saison chaude et humide",
+      color: "#f59e0b",
+      description: "Pluies fréquentes, risque de cyclones (jan–mars). Tarifs réduits hors saison",
+      icon: "🌧️",
+    },
+  ],
+  weatherCities: [
+    {
+      id: "suva",
+      name: "Suva",
+      region: "Viti Levu Est",
+      data: [
+        { month: "Jan", temp: 26, rain: 350, icon: "🌧️" },
+        { month: "Fév", temp: 26, rain: 330, icon: "⛅" },
+        { month: "Mar", temp: 26, rain: 340, icon: "⛅" },
+        { month: "Avr", temp: 25, rain: 260, icon: "⛅" },
+        { month: "Mai", temp: 24, rain: 190, icon: "☀️" },
+        { month: "Jun", temp: 23, rain: 130, icon: "☀️" },
+        { month: "Jul", temp: 22, rain: 120, icon: "☀️" },
+        { month: "Aoû", temp: 22, rain: 140, icon: "☀️" },
+        { month: "Sep", temp: 23, rain: 150, icon: "☀️" },
+        { month: "Oct", temp: 24, rain: 170, icon: "☀️" },
+        { month: "Nov", temp: 25, rain: 230, icon: "⛅" },
+        { month: "Déc", temp: 26, rain: 300, icon: "⛅" },
+      ],
+    },
+    {
+      id: "nadi",
+      name: "Nadi",
+      region: "Viti Levu Ouest",
+      data: [
+        { month: "Jan", temp: 27, rain: 280, icon: "🌧️" },
+        { month: "Fév", temp: 27, rain: 260, icon: "🌧️" },
+        { month: "Mar", temp: 27, rain: 230, icon: "🌧️" },
+        { month: "Avr", temp: 26, rain: 120, icon: "☀️" },
+        { month: "Mai", temp: 25, rain: 70, icon: "☀️" },
+        { month: "Jun", temp: 23, rain: 50, icon: "☀️" },
+        { month: "Jul", temp: 23, rain: 50, icon: "☀️" },
+        { month: "Aoû", temp: 23, rain: 55, icon: "☀️" },
+        { month: "Sep", temp: 24, rain: 60, icon: "☀️" },
+        { month: "Oct", temp: 25, rain: 80, icon: "☀️" },
+        { month: "Nov", temp: 26, rain: 130, icon: "☀️" },
+        { month: "Déc", temp: 27, rain: 200, icon: "🌧️" },
+      ],
+    },
+  ],
+  destinations: [
+    {
+      id: 1,
+      name: "Îles Yasawa",
+      region: "Archipel des Yasawa",
+      description:
+        "Les îles Yasawa s'étendent sur 80 km au nord-ouest de Viti Levu, formant un chapelet de volcans endormis aux plages sauvages et aux eaux d'un bleu irréel. Cet archipel a longtemps été interdit aux touristes et conserve aujourd'hui encore une authenticité rare, avec des villages fidjiens traditionnels accueillant les voyageurs. Le Lagon Bleu rendu célèbre par le film éponyme se trouve sur l'île de Nanuya Levu.",
+      wikipedia: "File:Yasawa Islands2.jpg",
+      tags: ["Plages", "Snorkeling", "Village", "Isolé"],
+      mustSee: [
+        { name: "Blue Lagoon de Nanuya Levu — eaux turquoise d'une beauté légendaire", wikipedia: "File:Waya Lailai 1.jpg" },
+        { name: "Grottes de Sawa-i-Lau — grottes calcaires aux eaux claires accessibles en plongée", wikipedia: "File:Limestone ceiling inside the Sawa-i-Lau Caves, Fiji.jpg" },
+        { name: "Village de Nabukeru — cérémonie du kava et danse meke traditionnelle", wikipedia: "File:Yasawa3.jpeg" },
+        { name: "Plage de Naviti — snorkeling avec tortues marines", wikipedia: "File:Beach on Naviti island, Yasawa Islands, Fiji (1) - August 2016.jpg" },
+      ],
+    },
+    {
+      id: 2,
+      name: "Îles Mamanuca",
+      region: "Archipel des Mamanuca",
+      description:
+        "À seulement 30 minutes de bateau de Nadi, les îles Mamanuca sont le terrain de jeu idéal pour les vacanciers cherchant plages de rêve et activités nautiques. Tournage du film 'Cast Away' avec Tom Hanks, l'île de Monuriki est un symbole de l'isolement insulaire fidjien. Cet archipel offre un large éventail d'hébergements, des bungalows économiques aux resorts cinq étoiles.",
+      wikipedia: "Mamanuca_Islands",
+      tags: ["Resort", "Nautisme", "Famille", "Plongée"],
+      mustSee: [
+        { name: "Île de Monuriki — décor du film Cast Away et snorkeling exceptionnel", wikipedia: "Monuriki" },
+        { name: "Plongée aux Manta Rays — raies manta entre mai et octobre", wikipedia: "Mamanuca_Islands" },
+        { name: "Plage de Castaway Island — eau transparente et récif frangeant coloré", wikipedia: "File:Castaway Bay Battle Boats at Sea World.jpg" },
+      ],
+    },
+    {
+      id: 3,
+      name: "Grande Barrière d'Astrolabe",
+      region: "Kadavu",
+      description:
+        "Le Grand Récif Astrolabe, au large de l'île de Kadavu, est l'un des récifs barrières les plus importants du Pacifique Sud et un paradis pour les plongeurs confirmés. Ses eaux profondes et peu fréquentées abritent une biodiversité marine exceptionnelle : requins dormeurs, napoléons, tortues et une multitude de coraux en parfait état. L'île de Kadavu elle-même est restée préservée du tourisme de masse.",
+      wikipedia: "Great_Astrolabe_Reef",
+      tags: ["Plongée", "Récif", "Nature", "Préservé"],
+      mustSee: [
+        { name: "Great Astrolabe Reef — plongée avec requins, raies et poissons tropicaux", wikipedia: "Great_Astrolabe_Reef" },
+        { name: "Nabukelevu (Mt. Washington) — randonnée au sommet de Kadavu (838 m)", wikipedia: "File:Uluinabukelevu.jpg" },
+        { name: "Village de Vunisea — life fidjienne authentique loin du tourisme", wikipedia: "File:Vunisea.jpg" },
+      ],
+    },
+    {
+      id: 4,
+      name: "Suva & Dunes de Sigatoka",
+      region: "Viti Levu",
+      description:
+        "Suva, la capitale cosmopolite, mêle architecture coloniale britannique, marchés animés et musées révélant la richesse culturelle fidjienne. Non loin, les Dunes de Sigatoka sont un site préhistorique et naturel remarquable : ces dunes de sable côtières révèlent des vestiges archéologiques lapita vieux de 2 600 ans. La Côte des Coraux entre Nadi et Suva offre des plages plus accessibles et des expériences culturelles authentiques.",
+      wikipedia: "Suva",
+      tags: ["Capitale", "Culture", "Histoire", "Archéologie"],
+      mustSee: [
+        { name: "Musée de Fidji — histoire mélanésienne et artefacts des guerriers cannibales", wikipedia: "Fiji_Museum" },
+        { name: "Dunes de Sigatoka — parc national et site archéologique lapita", wikipedia: "File:SigatokaDunesFiji.jpg" },
+        { name: "Marché de Suva — marché couvert animé avec épices, kava et artisanat", wikipedia: "File:Suva,_Fiji_52.jpg" },
+        { name: "Cérémonie du kava — tradition sociale fidjienne incontournable", wikipedia: "Kava" },
+      ],
+    },
+  ],
+  costOfLiving: {
+    intro:
+      "Les Fidji proposent un large spectre de budgets, des complexes hôteliers parmi les plus luxueux du Pacifique aux guesthouses économiques dans les villages. Les îles Yasawa et Mamanuca sont plus chères que Viti Levu. La nourriture locale (dalo, poisson grillé, lovo) est abordable, mais les restaurants touristiques peuvent être onéreux. Les transferts en bateau entre îles constituent un poste de dépense notable.",
+    currency: "FJD",
+    exchangeRate: "1€ ≈ 2,4 FJD",
+    categories: [
+      {
+        id: "accommodation",
+        icon: "🏨",
+        label: "Hébergement / nuit",
+        items: [
+          { label: "Dortoir ou bure basique (Yasawa)", price: "25–50 €" },
+          { label: "Hôtel ou guesthouse confortable", price: "70–130 €" },
+          { label: "Resort 4–5 étoiles tout inclus", price: "200–500 €" },
+        ],
+      },
+      {
+        id: "food",
+        icon: "🍽️",
+        label: "Nourriture",
+        items: [
+          { label: "Marché local et plat fidjien (curry, poisson)", price: "3–7 €" },
+          { label: "Restaurant simple à Nadi ou Suva", price: "8–15 €" },
+          { label: "Restaurant de resort ou gastronomique", price: "25–50 €" },
+        ],
+      },
+      {
+        id: "transport",
+        icon: "🚌",
+        label: "Transport",
+        items: [
+          { label: "Bus local entre villes (Nadi–Suva)", price: "4–6 €" },
+          { label: "Ferry Yasawa Flyer (Nadi–Yasawa aller)", price: "40–60 €" },
+          { label: "Location de voiture / jour à Viti Levu", price: "40–70 €" },
+        ],
+      },
+      {
+        id: "activities",
+        icon: "🎭",
+        label: "Activités",
+        items: [
+          { label: "Plongée sous-marine (2 bouteilles)", price: "60–90 €" },
+          { label: "Excursion village fidjien avec cérémonie kava", price: "30–50 €" },
+          { label: "Surf à Cloudbreak (bateau + guide)", price: "80–120 €" },
+        ],
+      },
+    ],
+    budgetSummary: [
+      {
+        type: "Routard",
+        daily: "70–100 €/j",
+        desc: "Dortoirs ou bures basiques, marchés locaux, bus et ferries",
+        color: "#22c55e",
+      },
+      {
+        type: "Confort",
+        daily: "150–250 €/j",
+        desc: "Hôtels confortables, restaurants variés, excursions organisées",
+        color: "#3b82f6",
+      },
+    ],
+    tripEstimate: {
+      duration: "14 jours",
+      route: "Nadi → Mamanuca → Yasawa → Côte des Coraux → Suva",
+      budgets: [
+        {
+          type: "Routard",
+          color: "#22c55e",
+          total: "2 000 – 2 800 €",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Nadi", amount: "900–1 200 €" },
+            { label: "Hébergement (14 nuits)", amount: "350–550 €" },
+            { label: "Transports inter-îles (ferries, bus)", amount: "150–250 €" },
+            { label: "Nourriture + boissons", amount: "250–400 €" },
+            { label: "Activités (plongée, excursions)", amount: "200–350 €" },
+          ],
+        },
+        {
+          type: "Confort",
+          color: "#3b82f6",
+          total: "3 800 – 5 500 €",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Nadi", amount: "1 100–1 500 €" },
+            { label: "Hébergement (14 nuits)", amount: "1 050–1 800 €" },
+            { label: "Transports inter-îles + transfers privés", amount: "300–500 €" },
+            { label: "Nourriture + boissons", amount: "500–800 €" },
+            { label: "Activités (plongée, spa, excursions)", amount: "400–700 €" },
+          ],
+        },
+      ],
+    },
+  },
+  practicalities: [
+    { icon: "✈️", label: "Vol depuis Paris", value: "22–26h avec 1–2 escales (via Sydney, Auckland ou Singapour)" },
+    { icon: "🪪", label: "Visa", value: "Sans visa pour les Français jusqu'à 4 mois (tampon à l'arrivée)" },
+    { icon: "💰", label: "Monnaie", value: "Dollar fidjien (FJD). Cartes bancaires acceptées dans les resorts, espèces recommandées dans les villages" },
+    { icon: "🗣️", label: "Langue", value: "Anglais officiel et très répandu ; fidjien et hindi fidjien parlés localement" },
+    { icon: "🔌", label: "Prise électrique", value: "Type I (comme en Australie), 240V — adaptateur nécessaire" },
+    { icon: "💊", label: "Santé", value: "Vaccins recommandés : hépatites A et B, typhoïde. Pas de paludisme aux Fidji. Attention aux eaux de boisson" },
+    { icon: "🌀", label: "Cyclones", value: "Saison cyclonique de novembre à avril. Saison sèche (mai–oct) très recommandée" },
+    { icon: "🤿", label: "Plongée", value: "Certification PADI conseillée pour profiter pleinement des récifs. Nombreux centres de plongée à Nadi et Mamanuca" },
+  ],
+};

@@ -1,0 +1,297 @@
+export const VIETNAM = {
+  code: "VNM",
+  numericId: 704,
+  name: "Vietnam",
+  emoji: "🇻🇳",
+  capital: "Hanoi",
+  language: "Vietnamien",
+  currency: "Dong (₫)",
+  timezone: "UTC+7",
+  filter: {
+    budgetMin: 20, budgetMid: 55,
+    tripMin: 1000, tripMid: 2000,
+  },
+  description:
+    "Le Vietnam fascine par sa diversité : jungle du nord, rizières en terrasses de Sapa, baie d'Halong classée UNESCO, vieille ville d'Hoi An, plages de Da Nang et frénésie de Hô Chi Minh-Ville. Une cuisine extraordinaire et une hospitalité légendaire en font l'une des destinations favorites des routards.",
+
+  bestPeriods: [
+    {
+      months: "Décembre – Février",
+      label: "Nord & Centre",
+      color: "#22c55e",
+      description:
+        "Meilleure période pour Hanoi et la Baie d'Halong (frais mais sec). Hoi An et Da Nang sont parfaits.",
+      icon: "🌤",
+    },
+    {
+      months: "Mars – Avril",
+      label: "Transition idéale",
+      color: "#f9a8d4",
+      description:
+        "La meilleure saison pour tout le pays : avant les pluies, après la fraîcheur. Idéal pour le voyage de nord en sud.",
+      icon: "☀️",
+    },
+    {
+      months: "Novembre – Décembre",
+      label: "Sud & Mékong",
+      color: "#fb923c",
+      description:
+        "Saison sèche au sud. Parfait pour Ho Chi Minh-Ville, le delta du Mékong et les îles de Phu Quoc.",
+      icon: "🌅",
+    },
+  ],
+
+  weatherCities: [
+    {
+      id: "hanoi",
+      name: "Hanoi",
+      region: "Nord",
+      data: [
+        { month: "Jan", temp: 17, rain: 20,  icon: "☀️" },
+        { month: "Fév", temp: 17, rain: 25,  icon: "☀️" },
+        { month: "Mar", temp: 20, rain: 40,  icon: "☀️" },
+        { month: "Avr", temp: 24, rain: 80,  icon: "☀️" },
+        { month: "Mai", temp: 28, rain: 195, icon: "🌧️" },
+        { month: "Jun", temp: 29, rain: 240, icon: "🌧️" },
+        { month: "Jul", temp: 29, rain: 285, icon: "🌧️" },
+        { month: "Aoû", temp: 29, rain: 330, icon: "🌧️" },
+        { month: "Sep", temp: 27, rain: 270, icon: "🌧️" },
+        { month: "Oct", temp: 25, rain: 135, icon: "☀️" },
+        { month: "Nov", temp: 21, rain: 50,  icon: "☀️" },
+        { month: "Déc", temp: 17, rain: 20,  icon: "☀️" },
+      ],
+    },
+    {
+      id: "ho-chi-minh",
+      name: "Hô Chi Minh-Ville",
+      region: "Sud",
+      data: [
+        { month: "Jan", temp: 27, rain: 15,  icon: "⛅" },
+        { month: "Fév", temp: 28, rain: 5,   icon: "⛅" },
+        { month: "Mar", temp: 30, rain: 15,  icon: "⛅" },
+        { month: "Avr", temp: 31, rain: 45,  icon: "⛅" },
+        { month: "Mai", temp: 30, rain: 220, icon: "🌧️" },
+        { month: "Jun", temp: 29, rain: 325, icon: "🌧️" },
+        { month: "Jul", temp: 28, rain: 310, icon: "🌧️" },
+        { month: "Aoû", temp: 28, rain: 270, icon: "🌧️" },
+        { month: "Sep", temp: 28, rain: 340, icon: "🌧️" },
+        { month: "Oct", temp: 28, rain: 270, icon: "🌧️" },
+        { month: "Nov", temp: 28, rain: 110, icon: "🌧️" },
+        { month: "Déc", temp: 27, rain: 45,  icon: "⛅" },
+      ],
+    },
+    {
+      id: "da-nang",
+      name: "Da Nang",
+      region: "Centre",
+      data: [
+        { month: "Jan", temp: 21, rain: 130, icon: "☀️" },
+        { month: "Fév", temp: 22, rain: 35,  icon: "☀️" },
+        { month: "Mar", temp: 24, rain: 20,  icon: "☀️" },
+        { month: "Avr", temp: 27, rain: 25,  icon: "⛅" },
+        { month: "Mai", temp: 30, rain: 55,  icon: "⛅" },
+        { month: "Jun", temp: 31, rain: 60,  icon: "⛅" },
+        { month: "Jul", temp: 31, rain: 70,  icon: "⛅" },
+        { month: "Aoû", temp: 31, rain: 90,  icon: "⛅" },
+        { month: "Sep", temp: 29, rain: 350, icon: "🌧️" },
+        { month: "Oct", temp: 26, rain: 620, icon: "🌧️" },
+        { month: "Nov", temp: 24, rain: 350, icon: "🌧️" },
+        { month: "Déc", temp: 21, rain: 225, icon: "⛅" },
+      ],
+    },
+  ],
+
+  destinations: [
+    {
+      id: 1,
+      name: "Hanoi",
+      region: "Nord",
+      description:
+        "Capitale millénaire avec son lac Hoan Kiem enchanté, ses 36 rues de l'ancien quartier marchand, les temples et pagodes, et le café à l'œuf incontournable.",
+      wikipedia: "Hanoi",
+      tags: ["Ville", "Histoire", "Culture", "Gastronomie"],
+      mustSee: [
+        { name: "Lac Hoan Kiem & Temple Ngoc Son", wikipedia: "File:Ngoc_Son_Temple,_Hanoi_(15)_(37780892234).jpg" },
+        { name: "Vieux quartier des 36 rues", wikipedia: "Old_Quarter,_Hanoi" },
+        { name: "Temple de la Littérature", wikipedia: "Temple_of_Literature,_Hanoi" },
+        { name: "Mausolée de Ho Chi Minh", wikipedia: "Ho_Chi_Minh_Mausoleum" },
+      ],
+    },
+    {
+      id: 2,
+      name: "Baie d'Halong",
+      region: "Nord-Est",
+      description:
+        "Plus de 1 600 îles karstiques surgissant d'une mer d'émeraude. Croisière sur jonque traditionnelle, kayak dans les grottes et couchers de soleil magiques.",
+      wikipedia: "File:Ha_Long_Bay_in_2019.jpg",
+      tags: ["Nature", "UNESCO", "Croisière", "Paysage"],
+      mustSee: [
+        { name: "Croisière jonque 2 jours", wikipedia: "File:Ha_Long_Bay_in_2019.jpg" },
+        { name: "Grotte de Hang Sung Sot", wikipedia: "File:Son_Doong_Cave_5.jpg" },
+        { name: "Baie de Lan Ha (moins touristique)", wikipedia: "File:Lan_Ha_Bay.JPG" },
+      ],
+    },
+    {
+      id: 3,
+      name: "Hoi An",
+      region: "Centre",
+      description:
+        "Vieille ville commerçante classée UNESCO, aux ruelles illuminées de lanternes de soie colorées. Tailleurs sur mesure, cuisine locale délicieuse et plages à 4 km.",
+      wikipedia: "File:10549-Hoi-An_(37621348460).jpg",
+      tags: ["Histoire", "UNESCO", "Artisanat", "Gastronomie"],
+      mustSee: [
+        { name: "Vieille ville aux lanternes", wikipedia: "File:10549-Hoi-An_(37621348460).jpg" },
+        { name: "Pont japonais couvert", wikipedia: "File:2024_Hội_An_-_Japanese_Covered_Bridge_(Chùa_Cầu)_after_renovation_-_img_11.jpg" },
+        { name: "Plage de An Bang", wikipedia: "File:Beache,_Hoi_An_2009.jpg" },
+        { name: "Atelier de lanterne", wikipedia: "File:Thu_Bồn_River_at_night_-_Hội_An_2022.jpg" },
+      ],
+    },
+    {
+      id: 4,
+      name: "Hô Chi Minh-Ville",
+      region: "Sud",
+      description:
+        "L'ancienne Saïgon, mégapole trépidante avec les tunnels de Cu Chi, le musée de la guerre, une gastronomie de rue exceptionnelle et une vie nocturne bouillonnante.",
+      wikipedia: "Ho_Chi_Minh_City",
+      tags: ["Ville", "Histoire", "Gastronomie", "Nuit"],
+      mustSee: [
+        { name: "Tunnels de Cu Chi", wikipedia: "File:VietnamCuChiTunnels.jpg" },
+        { name: "Musée des vestiges de guerre", wikipedia: "War_Remnants_Museum" },
+        { name: "Palais de la Réunification", wikipedia: "File:20190923_Independence_Palace-10.jpg" },
+        { name: "Marché Ben Thanh", wikipedia: "File:Cho_Ben_Thanh,_phuong_ben_thanh_quan_1,_ho_chi_minhViệt_Nam_-_panoramio.jpg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Sapa & Rizières en Terrasses",
+      region: "Nord-Ouest",
+      description:
+        "Montagnes brumeuses à la frontière chinoise, rizières en terrasses spectaculaires et villages des minorités ethniques (Hmong, Dao).",
+      wikipedia: "Sa_Pa",
+      tags: ["Nature", "Randonnée", "Culture", "Montagne"],
+      mustSee: [
+        { name: "Rizières de Muong Hoa", wikipedia: "Sa_Pa" },
+        { name: "Village de Cat Cat", wikipedia: "Sa_Pa" },
+        { name: "Sommet du Fansipan", wikipedia: "Fansipan" },
+        { name: "Marché de Bac Ha", wikipedia: "Hmong_people" },
+      ],
+    },
+  ],
+
+  costOfLiving: {
+    intro: "Le Vietnam est l'une des destinations les moins chères au monde pour un niveau de qualité excellent. Idéal pour les petits budgets sans sacrifier l'expérience.",
+    currency: "VND (₫)",
+    exchangeRate: "~26 000 ₫ = 1 €",
+    categories: [
+      {
+        id: "accommodation",
+        icon: "🏨",
+        label: "Hébergement / nuit",
+        items: [
+          { label: "Dortoir hostel", price: "4–8 €", detail: "Très propres, ambiance internationale" },
+          { label: "Guesthouse / mini-hôtel", price: "10–20 €", detail: "Chambre privée avec clim" },
+          { label: "Hôtel confort", price: "25–60 €", detail: "Chambre double avec piscine parfois incluse" },
+          { label: "Boutique hôtel (Hoi An)", price: "50–120 €", detail: "Charme colonial ou jardin tropical" },
+          { label: "Resort 5 étoiles", price: "150–400 €", detail: "Plage privée, spa, gastronomie" },
+        ],
+      },
+      {
+        id: "food",
+        icon: "🍜",
+        label: "Nourriture",
+        items: [
+          { label: "Pho / bun bo / banh mi (rue)", price: "1–2 €", detail: "La meilleure nourriture de rue du monde" },
+          { label: "Restaurant local", price: "2–5 €", detail: "Repas complet avec boisson incluse" },
+          { label: "Restaurant touristique", price: "6–12 €", detail: "Cao lau, white rose, mi quang" },
+          { label: "Café vietnamien (ca phe)", price: "0,50–1,50 €", detail: "Café glacé au lait condensé — divine" },
+          { label: "Restaurant gastronomique", price: "20–50 €", detail: "Dans les grandes villes et resorts" },
+        ],
+      },
+      {
+        id: "transport",
+        icon: "🚌",
+        label: "Transport",
+        items: [
+          { label: "Grab (moto ou voiture)", price: "0,50–5 €", detail: "Indispensable pour les courts trajets" },
+          { label: "Bus local", price: "0,20–0,50 €", detail: "Ultra économique dans les villes" },
+          { label: "Bus de nuit (sleeper bus)", price: "5–15 €", detail: "Entre les grandes villes — économique" },
+          { label: "Vol intérieur", price: "15–50 €", detail: "Vietnam Airlines, Vietjet — très bien desservi" },
+          { label: "Scooter en location", price: "5–10 €/j", detail: "Liberté totale pour explorer" },
+        ],
+      },
+      {
+        id: "activities",
+        icon: "🎭",
+        label: "Activités & Culture",
+        items: [
+          { label: "Croisière Baie d'Halong (2j)", price: "80–200 €", detail: "Nuit à bord, repas inclus" },
+          { label: "Cours de cuisine à Hoi An", price: "20–40 €", detail: "Marché + cuisine + déjeuner" },
+          { label: "Tunnels de Cu Chi", price: "5–8 €", detail: "Visite guidée disponible" },
+          { label: "Trek à Sapa (2j guidé)", price: "30–60 €", detail: "Villages et rizières, guide inclus" },
+          { label: "Water puppet show (Hanoi)", price: "4–8 €", detail: "Art traditionnel vietnamien unique" },
+        ],
+      },
+    ],
+    budgetSummary: [
+      { type: "Routard", daily: "20–35 €/j", desc: "Hostel + street food + transport local", color: "#22c55e" },
+      { type: "Confort", daily: "55–90 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
+      { type: "Luxe", daily: "180 €+/j", desc: "Resort 5★ + gastronomie + excursions privées", color: "#f59e0b" },
+    ],
+    tripEstimate: {
+      duration: "2 semaines",
+      route: "Hanoi (3j) → Halong (2j) → Hoi An (3j) → Da Nang (2j) → Ho Chi Minh (3j) → Mékong (1j)",
+      budgets: [
+        {
+          type: "Routard",
+          color: "#22c55e",
+          total: "1 000 – 1 400 €",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Hanoi", amount: "400–650 €" },
+            { label: "Vols intérieurs", amount: "50–100 €" },
+            { label: "Hébergement (14 nuits)", amount: "120–200 €" },
+            { label: "Nourriture", amount: "130–200 €" },
+            { label: "Activités (dont Halong)", amount: "150–250 €" },
+          ],
+        },
+        {
+          type: "Confort",
+          color: "#3b82f6",
+          total: "2 000 – 2 800 €",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Hanoi", amount: "600–900 €" },
+            { label: "Vols intérieurs", amount: "100–150 €" },
+            { label: "Hébergement (14 nuits)", amount: "500–800 €" },
+            { label: "Nourriture", amount: "400–600 €" },
+            { label: "Activités & imprévus", amount: "350–550 €" },
+          ],
+        },
+        {
+          type: "Luxe",
+          color: "#f59e0b",
+          total: "4 500 € +",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Hanoi (business)", amount: "1 500–2 500 €" },
+            { label: "Transferts privés & vols", amount: "300–500 €" },
+            { label: "Hébergement resorts (14 nuits)", amount: "1 200–2 500 €" },
+            { label: "Gastronomie", amount: "500–900 €" },
+            { label: "Expériences premium & imprévus", amount: "400–700 €" },
+          ],
+        },
+      ],
+    },
+  },
+
+  practicalities: [
+    { icon: "✈️", label: "Vol depuis Paris", value: "~11h avec escale (Vietnam Airlines, Qatar, Emirates)" },
+    { icon: "🪪", label: "Visa", value: "Sans visa 45 jours pour les Français (depuis août 2023). Ou e-Visa en ligne 90 jours (~25 $)." },
+    { icon: "💰", label: "Monnaie", value: "Dong vietnamien (₫) — retrait DAB conseillé, peu de cartes acceptées" },
+    { icon: "🗣️", label: "Langue", value: "Vietnamien — anglais dans les zones touristiques" },
+    { icon: "🔌", label: "Prise électrique", value: "Type A/C — 220V (adaptateur recommandé)" },
+    { icon: "📱", label: "Réseau", value: "SIM locale très bon marché (~2 €/15 jours illimité)" },
+    { icon: "🚰", label: "Eau du robinet", value: "Non potable — eau en bouteille indispensable" },
+    { icon: "💊", label: "Santé", value: "Vaccins hépatite A/B et typhoïde recommandés, anti-moustiques" },
+  ],
+};

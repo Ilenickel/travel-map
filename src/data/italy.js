@@ -1,0 +1,298 @@
+export const ITALY = {
+  code: "ITA",
+  numericId: 380,
+  name: "Italie",
+  emoji: "🇮🇹",
+  capital: "Rome",
+  language: "Italien",
+  currency: "Euro (€)",
+  timezone: "UTC+1",
+  filter: {
+    budgetMin: 60, budgetMid: 130,
+    tripMin: 1800, tripMid: 3500,
+  },
+  description:
+    "L'Italie est le pays du dolce vita : Rome la Ville Éternelle, Florence et la Renaissance, Venise et ses canaux, la côte amalfitaine, la Sicile et sa cuisine aux influences méditerranéennes. Le plus grand concentré de patrimoine UNESCO au monde.",
+
+  bestPeriods: [
+    {
+      months: "Avril – Juin",
+      label: "Printemps",
+      color: "#22c55e",
+      description:
+        "La meilleure saison : températures idéales (18–25 °C), fleurs de printemps, avant la foule estivale. Idéal pour Rome, Florence et les régions rurales.",
+      icon: "🌸",
+    },
+    {
+      months: "Septembre – Octobre",
+      label: "Arrière-saison",
+      color: "#fb923c",
+      description:
+        "Moins de touristes, températures parfaites, mer encore chaude en Sicile et sur la côte amalfitaine, vendanges en Toscane.",
+      icon: "🍇",
+    },
+    {
+      months: "Juillet – Août",
+      label: "Été & Mer",
+      color: "#3b82f6",
+      description:
+        "Parfait pour les côtes et les îles (Sardaigne, Sicile, Capri). Très fréquenté dans les villes — privilégier la mer.",
+      icon: "☀️",
+    },
+  ],
+
+  weatherCities: [
+    {
+      id: "rome",
+      name: "Rome",
+      region: "Lazio",
+      data: [
+        { month: "Jan", temp: 8,  rain: 65,  icon: "⛅" },
+        { month: "Fév", temp: 9,  rain: 58,  icon: "⛅" },
+        { month: "Mar", temp: 12, rain: 55,  icon: "⛅" },
+        { month: "Avr", temp: 15, rain: 65,  icon: "⛅" },
+        { month: "Mai", temp: 20, rain: 50,  icon: "☀️" },
+        { month: "Jun", temp: 24, rain: 30,  icon: "☀️" },
+        { month: "Jul", temp: 27, rain: 18,  icon: "⛅" },
+        { month: "Aoû", temp: 27, rain: 24,  icon: "⛅" },
+        { month: "Sep", temp: 23, rain: 70,  icon: "☀️" },
+        { month: "Oct", temp: 18, rain: 115, icon: "☀️" },
+        { month: "Nov", temp: 13, rain: 105, icon: "⛅" },
+        { month: "Déc", temp: 9,  rain: 80,  icon: "⛅" },
+      ],
+    },
+    {
+      id: "florence",
+      name: "Florence",
+      region: "Toscane",
+      data: [
+        { month: "Jan", temp: 7,  rain: 45,  icon: "❄️" },
+        { month: "Fév", temp: 8,  rain: 48,  icon: "⛅" },
+        { month: "Mar", temp: 11, rain: 42,  icon: "⛅" },
+        { month: "Avr", temp: 14, rain: 95,  icon: "⛅" },
+        { month: "Mai", temp: 19, rain: 77,  icon: "☀️" },
+        { month: "Jun", temp: 23, rain: 50,  icon: "☀️" },
+        { month: "Jul", temp: 26, rain: 31,  icon: "☀️" },
+        { month: "Aoû", temp: 26, rain: 42,  icon: "☀️" },
+        { month: "Sep", temp: 21, rain: 76,  icon: "☀️" },
+        { month: "Oct", temp: 16, rain: 106, icon: "☀️" },
+        { month: "Nov", temp: 11, rain: 133, icon: "⛅" },
+        { month: "Déc", temp: 7,  rain: 86,  icon: "❄️" },
+      ],
+    },
+    {
+      id: "sicile",
+      name: "Palerme (Sicile)",
+      region: "Sicile",
+      data: [
+        { month: "Jan", temp: 12, rain: 80,  icon: "⛅" },
+        { month: "Fév", temp: 12, rain: 60,  icon: "⛅" },
+        { month: "Mar", temp: 14, rain: 55,  icon: "⛅" },
+        { month: "Avr", temp: 17, rain: 40,  icon: "☀️" },
+        { month: "Mai", temp: 21, rain: 25,  icon: "☀️" },
+        { month: "Jun", temp: 26, rain: 10,  icon: "☀️" },
+        { month: "Jul", temp: 29, rain: 5,   icon: "⛅" },
+        { month: "Aoû", temp: 29, rain: 8,   icon: "⛅" },
+        { month: "Sep", temp: 25, rain: 45,  icon: "☀️" },
+        { month: "Oct", temp: 21, rain: 75,  icon: "☀️" },
+        { month: "Nov", temp: 17, rain: 85,  icon: "☀️" },
+        { month: "Déc", temp: 13, rain: 90,  icon: "⛅" },
+      ],
+    },
+  ],
+
+  destinations: [
+    {
+      id: 1,
+      name: "Rome",
+      region: "Lazio",
+      description:
+        "La Ville Éternelle concentre 2 500 ans d'histoire sur quelques kilomètres carrés : Colisée, Forum romain, Panthéon, fontaine de Trevi et les Musées du Vatican.",
+      wikipedia: "Rome",
+      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie"],
+      mustSee: [
+        { name: "Colisée", wikipedia: "Colosseum" },
+        { name: "Musées du Vatican & Chapelle Sixtine", wikipedia: "File:VaticanMuseumStaircase.jpg" },
+        { name: "Panthéon", wikipedia: "Pantheon,_Rome" },
+        { name: "Fontaine de Trevi", wikipedia: "Trevi_Fountain" },
+      ],
+    },
+    {
+      id: 2,
+      name: "Florence & Toscane",
+      region: "Toscane",
+      description:
+        "Berceau de la Renaissance, Florence abrite la plus grande concentration de chefs-d'œuvre au monde. La Toscane environnante offre collines dorées, vignobles et villages médiévaux.",
+      wikipedia: "Florence",
+      tags: ["Art", "Culture", "UNESCO", "Gastronomie"],
+      mustSee: [
+        { name: "Galerie des Offices", wikipedia: "Uffizi" },
+        { name: "Cathédrale (Duomo) & Coupole Brunelleschi", wikipedia: "Florence_Cathedral" },
+        { name: "David de Michel-Ange — Galerie dell'Accademia", wikipedia: "Galleria_dell'Accademia" },
+        { name: "Vignobles du Chianti", wikipedia: "Chianti" },
+      ],
+    },
+    {
+      id: 3,
+      name: "Venise",
+      region: "Vénétie",
+      description:
+        "La Sérénissime, construite sur 118 îlots. Gondoles sur les canaux, place Saint-Marc, palais gothiques reflétés dans l'eau — une ville unique au monde, à visiter hors saison.",
+      wikipedia: "Venice",
+      tags: ["UNESCO", "Architecture", "Romantisme", "Culture"],
+      mustSee: [
+        { name: "Place Saint-Marc", wikipedia: "File:Piazza San Marco (Venice) at night-msu-2021-6449-.jpg" },
+        { name: "Basilique Saint-Marc", wikipedia: "St_Mark's_Basilica" },
+        { name: "Canal Grande en vaporetto", wikipedia: "File:Panorama_of_Canal_Grande_and_Ponte_di_Rialto,_Venice_-_September_2017.jpg" },
+        { name: "Palais des Doges", wikipedia: "Doge's_Palace" },
+      ],
+    },
+    {
+      id: 4,
+      name: "Côte Amalfitaine",
+      region: "Campanie",
+      description:
+        "Falaises spectaculaires plongeant dans la Méditerranée, villages colorés accrochés à la roche, citrons géants et limoncello. Capri, Positano et Ravello au programme.",
+      wikipedia: "Amalfi_Coast",
+      tags: ["Paysage", "Mer", "UNESCO", "Gastronomie"],
+      mustSee: [
+        { name: "Positano", wikipedia: "Positano" },
+        { name: "Île de Capri", wikipedia: "Capri" },
+        { name: "Ravello et sa Villa Cimbrone", wikipedia: "Ravello" },
+        { name: "Grotte Bleue de Capri", wikipedia: "Blue_Grotto_(Capri)" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Sicile",
+      region: "Sicile",
+      description:
+        "La plus grande île de Méditerranée, carrefour de civilisations. Temples grecs de la Vallée des Temples, Etna, cuisine aux influences arabes, baroques et grecques.",
+      wikipedia: "File:Sicily in 2025 12.jpg",
+      tags: ["Histoire", "Gastronomie", "Nature", "Mer"],
+      mustSee: [
+        { name: "Vallée des Temples d'Agrigente", wikipedia: "File:Valle dei Templi, Agrigento, Sicilia 4.jpg" },
+        { name: "Mont Etna", wikipedia: "Mount_Etna" },
+        { name: "Taormine", wikipedia: "Taormina" },
+        { name: "Palais des Normands — Palerme", wikipedia: "File:Palazzo Normanni, vista, Palermo.jpg" },
+      ],
+    },
+  ],
+
+  costOfLiving: {
+    intro: "L'Italie est accessible si l'on évite les pièges à touristes. Les trattorie locales et les marchés proposent une cuisine excellente à prix raisonnables. Les grandes villes comme Venise restent chères.",
+    currency: "EUR (€)",
+    exchangeRate: "Monnaie locale",
+    categories: [
+      {
+        id: "accommodation",
+        icon: "🏨",
+        label: "Hébergement / nuit",
+        items: [
+          { label: "Dortoir hostel", price: "20–35 €", detail: "Dans les grandes villes, bien situés" },
+          { label: "Chambre d'hôte (B&B)", price: "50–90 €", detail: "Souvent avec un excellent petit-déj" },
+          { label: "Hôtel confort", price: "80–150 €", detail: "Chambre double en centre-ville" },
+          { label: "Agriturismo (Toscane)", price: "100–200 €", detail: "Ferme ou villa avec piscine, repas locaux" },
+          { label: "Hôtel de luxe", price: "250–600 €", detail: "Palazzo, villa ou hôtel historique" },
+        ],
+      },
+      {
+        id: "food",
+        icon: "🍜",
+        label: "Nourriture",
+        items: [
+          { label: "Pizza / trancio (à la coupe)", price: "2–4 €", detail: "Street food local et délicieux" },
+          { label: "Menu du jour (trattoria)", price: "10–15 €", detail: "Primo + secondo + dessert + vin" },
+          { label: "Café espresso", price: "1–1,50 €", detail: "Debout au comptoir comme les Italiens" },
+          { label: "Gelato artisanal", price: "2–3 €", detail: "Chercher la mention « artigianale »" },
+          { label: "Restaurant gastronomique", price: "40–100 €", detail: "Pasta fraîche, truffe, vin de terroir" },
+        ],
+      },
+      {
+        id: "transport",
+        icon: "🚌",
+        label: "Transport",
+        items: [
+          { label: "Bus / tramway urbain", price: "1,50–2 €", detail: "Valable 90 min" },
+          { label: "Train régional (Trenitalia)", price: "5–20 €", detail: "Rome–Florence ~2h, Florence–Venise ~2h" },
+          { label: "Train Frecciarossa (TGV)", price: "20–60 €", detail: "Rome–Milan en 3h" },
+          { label: "Vaporetto Venise", price: "7,50 €", detail: "Pass 24h recommandé (~20 €)" },
+          { label: "Location de vélo", price: "10–20 €/j", detail: "Idéal en Toscane ou à la côte" },
+        ],
+      },
+      {
+        id: "activities",
+        icon: "🎭",
+        label: "Activités & Culture",
+        items: [
+          { label: "Colisée + Forum romain", price: "16–22 €", detail: "Réservation en ligne fortement conseillée" },
+          { label: "Musées du Vatican", price: "17–21 €", detail: "File d'attente à éviter — réserver !" },
+          { label: "Galerie des Offices (Florence)", price: "20–25 €", detail: "Réservation obligatoire en haute saison" },
+          { label: "Tour en gondole (Venise)", price: "80 € (gondole entière)", detail: "30 min, tarif officiel, partager à 6" },
+          { label: "Excursion Etna (Sicile)", price: "30–60 €", detail: "Avec guide, accès au sommet" },
+        ],
+      },
+    ],
+    budgetSummary: [
+      { type: "Routard", daily: "60–90 €/j", desc: "Hostel + trattoria + transports en commun", color: "#22c55e" },
+      { type: "Confort", daily: "130–200 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
+      { type: "Luxe", daily: "350 €+/j", desc: "Palazzo + gastronomie étoilée + expériences privées", color: "#f59e0b" },
+    ],
+    tripEstimate: {
+      duration: "2 semaines",
+      route: "Rome (4j) → Naples/Côte Amalfitaine (3j) → Florence (3j) → Venise (2j) → Sicile (2j)",
+      budgets: [
+        {
+          type: "Routard",
+          color: "#22c55e",
+          total: "1 800 – 2 400 €",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Rome", amount: "80–200 €" },
+            { label: "Trains intérieurs", amount: "150–250 €" },
+            { label: "Hébergement (14 nuits)", amount: "500–700 €" },
+            { label: "Nourriture", amount: "500–700 €" },
+            { label: "Activités & imprévus", amount: "400–600 €" },
+          ],
+        },
+        {
+          type: "Confort",
+          color: "#3b82f6",
+          total: "3 500 – 5 000 €",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Rome", amount: "100–300 €" },
+            { label: "Trains intérieurs", amount: "200–350 €" },
+            { label: "Hébergement (14 nuits)", amount: "1 200–2 000 €" },
+            { label: "Nourriture & restaurants", amount: "900–1 400 €" },
+            { label: "Activités & imprévus", amount: "600–900 €" },
+          ],
+        },
+        {
+          type: "Luxe",
+          color: "#f59e0b",
+          total: "8 000 € +",
+          includesFlights: true,
+          breakdown: [
+            { label: "Vol A/R Paris–Rome (business)", amount: "500–1 500 €" },
+            { label: "Transferts privés", amount: "400–700 €" },
+            { label: "Hébergement palazzo & villa (14 nuits)", amount: "3 000–6 000 €" },
+            { label: "Gastronomie étoilée", amount: "1 500–3 000 €" },
+            { label: "Expériences exclusives & imprévus", amount: "1 000–2 000 €" },
+          ],
+        },
+      ],
+    },
+  },
+
+  practicalities: [
+    { icon: "✈️", label: "Vol depuis Paris", value: "~2h (nombreuses compagnies, Paris–Rome/Milan/Venise)" },
+    { icon: "🪪", label: "Visa", value: "Pas de visa (espace Schengen)" },
+    { icon: "💰", label: "Monnaie", value: "Euro (€) — cartes acceptées partout" },
+    { icon: "🗣️", label: "Langue", value: "Italien — anglais dans les zones touristiques" },
+    { icon: "🔌", label: "Prise électrique", value: "Type C/F/L — 230V (adaptateur recommandé pour Type L)" },
+    { icon: "📱", label: "Réseau", value: "Roaming européen inclus, excellent réseau 4G/5G" },
+    { icon: "🚰", label: "Eau du robinet", value: "Potable partout (nasoni à Rome — fontaines gratuites)" },
+    { icon: "💊", label: "Santé", value: "Carte européenne d'assurance maladie valide" },
+  ],
+};
