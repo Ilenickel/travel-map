@@ -49,8 +49,8 @@ function getBaseStrokeWidth(numericId, filterActive, highlightMap) {
 function isInteractive(numericId, filterActive, highlightMap, searchActive) {
   const code = NUMERIC_TO_CODE[numericId];
   if (!code || !COUNTRIES[code]) return false;
-  if (filterActive && !searchActive && !highlightMap?.[code]) return false;
-  return true;
+  if (searchActive && !highlightMap?.[code]) return false; // recherche : seuls les résultats sont cliquables
+  return true; // filtre : tous les pays avec données restent cliquables
 }
 
 export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive }) {
