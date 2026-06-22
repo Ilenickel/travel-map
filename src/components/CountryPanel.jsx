@@ -9,7 +9,7 @@ const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
-export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite }) {
+export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, onCompare }) {
   const data = COUNTRIES[countryCode];
   const [activeTab, setActiveTab] = useState("overview");
   const [visitedTabs, setVisitedTabs] = useState(() => new Set(["overview"]));
@@ -80,6 +80,13 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
             <WikiImage src={img(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
             <div className="panel-header-overlay" />
             <button
+              className="panel-compare-btn"
+              onClick={(e) => { e.stopPropagation(); onCompare?.(); }}
+              aria-label="Comparer"
+            >
+              ⚖ Comparer
+            </button>
+            <button
               className={`panel-fav-btn${isFavorite ? " active" : ""}`}
               onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
               aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
@@ -121,7 +128,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               <div className="tab-content">
                 <p className="country-description">{data.description}</p>
 
-                <h3 className="section-title">Meilleures périodes</h3>
+                <h3 className="section-title">Quand y aller ?</h3>
                 <div className="period-cards">
                   {data.bestPeriods.map((p) => (
                     <div key={p.months} className="period-card" style={{ borderColor: p.color }}>

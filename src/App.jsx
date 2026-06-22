@@ -4,6 +4,8 @@ import CountryPanel from "./components/CountryPanel";
 import SearchBar from "./components/SearchBar";
 import SearchDropdown from "./components/SearchDropdown";
 import FavoritesPanel from "./components/FavoritesPanel";
+import ListView from "./components/ListView";
+import ComparePanel from "./components/ComparePanel";
 import { COUNTRIES } from "./data/index";
 import { computeHighlights } from "./utils/filter";
 import { useFavorites } from "./hooks/useFavorites";
@@ -20,6 +22,20 @@ export default function App() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [favPanelOpen, setFavPanelOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
+  const [hoveredCountry, setHoveredCountry] = useState(null);
+
+  const isMobile = () => window.innerWidth <= 768;
+
+  const handleFilterOpen = (v) => {
+    setFilterOpen(v);
+    if (v && isMobile()) setListOpen(false);
+  };
+  const handleListOpen = (v) => {
+    setListOpen(v);
+    if (v && isMobile()) setFilterOpen(false);
+  };
+  const [compareBase, setCompareBase] = useState(null);
   const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites();
 
   // Sync URL ↔ pays sélectionné
@@ -117,16 +133,7 @@ export default function App() {
             />
           )}
         </div>
-        <button
-          className={`topbar-filter-btn${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
-          onClick={() => setFilterOpen((o) => !o)}
-          aria-label="Filtres"
-        >
-          <span>⚙️</span>
-          {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
-        </button>
-
-        <div className="topbar-right">
+        <div className="topbar-controls">
           <div className="topbar-favorites-wrapper">
             <button
               className={`topbar-fav-btn${favPanelOpen ? " active" : ""}`}
@@ -148,6 +155,26 @@ export default function App() {
               />
             )}
           </div>
+          {/* Bouton filtre — visible sur desktop, caché sur mobile (remplacé par FAB) */}
+          <button
+            className={`topbar-filter-btn${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
+            onClick={() => handleFilterOpen(!filterOpen)}
+            aria-label="Filtres"
+          >
+            <span>⚙️</span>
+            {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
+          </button>
+        </div>
+
+        <div className="topbar-right">
+          <button
+            className={`topbar-view-btn${listOpen ? " active" : ""}`}
+            onClick={() => handleListOpen(!listOpen)}
+            aria-label="Vue liste"
+          >
+            <span>📋</span>
+            <span className="topbar-view-label">Liste</span>
+          </button>
 
           <div className="topbar-badge">
             <span className="badge-dot" />
@@ -156,25 +183,56 @@ export default function App() {
         </div>
       </header>
 
-      <main className="main">
-        <WorldMap
-          onCountryClick={handleCountryClick}
-          highlightMap={effectiveHighlightMap}
-          filterActive={effectiveFilterActive}
-          searchActive={searchActive}
-        />
+      {/* FAB filtre — visible uniquement sur mobile via CSS */}
+      <button
+        className={`mobile-filter-fab${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
+        onClick={() => handleFilterOpen(!filterOpen)}
+        aria-label="Filtres"
+      >
+        <span>⚙️</span>
+        {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
+      </button>
 
-        <SearchBar onFilterChange={setFilters} open={filterOpen} onOpenChange={setFilterOpen} />
-
-
+      <main className={`main${listOpen ? " main--list-open" : ""}`}>
+        <div className="map-area">
+          <WorldMap
+            key={listOpen ? "list" : "map"}
+            onCountryClick={handleCountryClick}
+            highlightMap={effectiveHighlightMap}
+            filterActive={effectiveFilterActive}
+            searchActive={searchActive}
+            hoveredCode={hoveredCountry}
+          />
+          <SearchBar onFilterChange={setFilters} open={filterOpen} onOpenChange={handleFilterOpen} />
+        </div>
+        {listOpen && (
+          <div className="list-panel">
+            <ListView
+              onCountryClick={handleCountryClick}
+              highlightMap={effectiveHighlightMap}
+              filterActive={effectiveFilterActive}
+              favorites={favorites}
+              onCountryHover={setHoveredCountry}
+            />
+          </div>
+        )}
       </main>
 
-      {selectedCountry && (
+      {selectedCountry && !compareBase && (
         <CountryPanel
           countryCode={selectedCountry}
           onClose={handleClose}
           isFavorite={favorites.includes(selectedCountry)}
           onToggleFavorite={() => toggleFav(selectedCountry)}
+          onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
+        />
+      )}
+
+      {compareBase && (
+        <ComparePanel
+          baseCode={compareBase}
+          onClose={() => setCompareBase(null)}
+          onCountryClick={(code) => { setCompareBase(null); setSelectedCountry(code); }}
         />
       )}
     </div>

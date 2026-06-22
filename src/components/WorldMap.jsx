@@ -53,7 +53,7 @@ function isInteractive(numericId, filterActive, highlightMap, searchActive) {
   return true; // filtre : tous les pays avec données restent cliquables
 }
 
-export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive }) {
+export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive, hoveredCode }) {
   const svgRef     = useRef(null);
   const tooltipRef = useRef(null);
   const zoomRef    = useRef(null);  // d3 zoom behaviour
@@ -75,6 +75,54 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   useEffect(() => { filterActiveRef.current = filterActive; }, [filterActive]);
   useEffect(() => { searchActiveRef.current = searchActive; }, [searchActive]);
   useEffect(() => { onCountryClickRef.current = onCountryClick; }, [onCountryClick]);
+
+  // Hover depuis la liste externe (ListView)
+  useEffect(() => {
+    if (!mapReadyRef.current) return;
+    const hoverG = hoverGRef.current;
+    const labelG = labelGRef.current;
+    if (!hoverG || !labelG) return;
+
+    // Effacer le hover précédent
+    hoverG.selectAll("*").remove();
+    const prev = hoveredAlpha3Ref.current;
+    if (prev) {
+      labelG.select(`.label-${prev}`).interrupt().transition().duration(150).attr("opacity", 0);
+      labelG.select(`.dot-${prev}`).interrupt().transition().duration(150).attr("opacity", 0);
+    }
+    d3.select(tooltipRef.current).style("opacity", 0);
+
+    if (!hoveredCode) { hoveredAlpha3Ref.current = null; return; }
+
+    // Trouver la feature D3 correspondante
+    const svg = d3.select(svgRef.current);
+    const targetFeature = svg.selectAll(".country").data()
+      .find((d) => NUMERIC_TO_CODE[+d.id] === hoveredCode);
+    if (!targetFeature) return;
+
+    const filterColor = highlightMapRef.current?.[hoveredCode];
+    const hoverColor = filterColor ?? "#a78bfa";
+
+    const geom = targetFeature.geometry;
+    const polys = geom.type === "MultiPolygon"
+      ? geom.coordinates.map(coords => ({ ...targetFeature, geometry: { type: "Polygon", coordinates: coords } }))
+      : [targetFeature];
+    for (const poly of polys) {
+      hoverG.append("path")
+        .attr("d", pathFnRef.current(poly))
+        .attr("fill", hoverColor)
+        .attr("stroke", hoverColor)
+        .attr("stroke-width", 1.5)
+        .attr("pointer-events", "none")
+        .attr("opacity", 0)
+        .transition().duration(200)
+        .attr("opacity", 1);
+    }
+
+    hoveredAlpha3Ref.current = hoveredCode;
+    labelG.select(`.label-${hoveredCode}`).interrupt().transition().duration(150).attr("opacity", 1);
+    labelG.select(`.dot-${hoveredCode}`).interrupt().transition().duration(150).attr("opacity", 1);
+  }, [hoveredCode]);
 
   useEffect(() => {
     if (!mapReadyRef.current || !pathsSelRef.current) return;
