@@ -231,7 +231,7 @@ html, body, #root { height: 100%; }
 
 .world-svg {
   width: 100%; height: 100%; display: block;
-  background: radial-gradient(ellipse at 50% 60%, #0d1929 0%, #080c14 100%);
+  background: #04070e;
   cursor: grab;
 }
 .world-svg:active { cursor: grabbing; }
@@ -253,7 +253,7 @@ html, body, #root { height: 100%; }
   opacity: 0;
   transition: opacity 0.15s ease;
   white-space: nowrap;
-  z-index: 100;
+  z-index: 110;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99,102,241,0.12);
   backdrop-filter: blur(12px);
 }
@@ -1371,7 +1371,7 @@ html, body, #root { height: 100%; }
   display: flex;
   flex-direction: column;
   gap: 6px;
-  z-index: 50;
+  z-index: 10;
 }
 
 .map-zoom-btn {

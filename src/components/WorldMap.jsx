@@ -23,25 +23,25 @@ function largestPolygonFeature(feature) {
 function getBaseFill(numericId, filterActive, highlightMap) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
-  if (!hasData) return filterActive ? "#090f1a" : "#0d1b2a";
-  if (!filterActive) return "#152232";
+  if (!hasData) return filterActive ? "#07101c" : "#09131f";
+  if (!filterActive) return "#1c3a55";
   const color = highlightMap?.[code];
-  if (!color) return "#090f1a";
-  return color + "22";
+  if (!color) return "#07101c";
+  return color + "28";
 }
 
 function getBaseStroke(numericId, filterActive, highlightMap) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
-  if (!hasData) return filterActive ? "#0e1d2e" : "#1e3a5f";
-  if (!filterActive) return "#2a4a7f";
+  if (!hasData) return "#0b1828";
+  if (!filterActive) return "#0d1e30";
   const color = highlightMap?.[code];
-  return color ?? "#1e3a5f";
+  return color ?? "#0d1e30";
 }
 
 function getBaseStrokeWidth(numericId, filterActive, highlightMap) {
   const code = NUMERIC_TO_CODE[numericId];
-  if (!code || !COUNTRIES[code]) return 0.5;
+  if (!code || !COUNTRIES[code]) return 0.4;
   if (!filterActive) return 0.8;
   return highlightMap?.[code] ? 1.2 : 0.4;
 }
@@ -102,7 +102,6 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     // ── All map content goes in a group so zoom transforms the whole map ──
     const mapG = svg.append("g");
     mapGRef.current = mapG;
-
 
     fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
       .then((r) => r.json())
@@ -219,6 +218,13 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
             onCountryClickRef.current(alpha3);
           });
 
+        borderG.append("path")
+          .datum(borders)
+          .attr("d", path)
+          .attr("fill", "none")
+          .attr("stroke", "#0d1e30")
+          .attr("stroke-width", 0.5)
+          .attr("opacity", 0.8);
 
         for (const [code, data] of Object.entries(COUNTRIES)) {
           const feature = countries.features.find((f) => NUMERIC_TO_CODE[+f.id] === code);
