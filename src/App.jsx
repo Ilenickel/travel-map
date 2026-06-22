@@ -1,10 +1,12 @@
-import { useState, useCallback, useMemo, useRef } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import WorldMap from "./components/WorldMap";
 import CountryPanel from "./components/CountryPanel";
 import SearchBar from "./components/SearchBar";
 import SearchDropdown from "./components/SearchDropdown";
+import FavoritesPanel from "./components/FavoritesPanel";
 import { COUNTRIES } from "./data/index";
 import { computeHighlights } from "./utils/filter";
+import { useFavorites } from "./hooks/useFavorites";
 import "./App.css";
 
 function normalize(str) {
@@ -17,6 +19,22 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [favPanelOpen, setFavPanelOpen] = useState(false);
+  const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites();
+
+  // Sync URL ↔ pays sélectionné
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("country");
+    if (code && COUNTRIES[code]) setSelectedCountry(code);
+  }, []);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (selectedCountry) url.searchParams.set("country", selectedCountry);
+    else url.searchParams.delete("country");
+    history.replaceState(null, "", url);
+  }, [selectedCountry]);
   const searchContainerRef = useRef(null);
 
   const handleCountryClick = useCallback((code) => setSelectedCountry(code), []);
@@ -108,9 +126,33 @@ export default function App() {
           {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
         </button>
 
-        <div className="topbar-badge">
-          <span className="badge-dot" />
-          {countryCount} destination{countryCount > 1 ? "s" : ""} disponible{countryCount > 1 ? "s" : ""}
+        <div className="topbar-right">
+          <div className="topbar-favorites-wrapper">
+            <button
+              className={`topbar-fav-btn${favPanelOpen ? " active" : ""}`}
+              onClick={() => setFavPanelOpen((o) => !o)}
+              aria-label="Favoris"
+            >
+              <span>{favPanelOpen ? "⭐" : "☆"}</span>
+              <span className="topbar-fav-label">Favoris</span>
+              {favorites.length > 0 && (
+                <span className="fav-count-badge">{favorites.length}</span>
+              )}
+            </button>
+            {favPanelOpen && (
+              <FavoritesPanel
+                favorites={favorites}
+                onSelect={setSelectedCountry}
+                onRemove={removeFav}
+                onClose={() => setFavPanelOpen(false)}
+              />
+            )}
+          </div>
+
+          <div className="topbar-badge">
+            <span className="badge-dot" />
+            {countryCount} destination{countryCount > 1 ? "s" : ""} disponible{countryCount > 1 ? "s" : ""}
+          </div>
         </div>
       </header>
 
@@ -128,7 +170,12 @@ export default function App() {
       </main>
 
       {selectedCountry && (
-        <CountryPanel countryCode={selectedCountry} onClose={handleClose} />
+        <CountryPanel
+          countryCode={selectedCountry}
+          onClose={handleClose}
+          isFavorite={favorites.includes(selectedCountry)}
+          onToggleFavorite={() => toggleFav(selectedCountry)}
+        />
       )}
     </div>
   );

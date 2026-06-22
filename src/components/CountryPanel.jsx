@@ -9,7 +9,7 @@ const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
-export default function CountryPanel({ countryCode, onClose }) {
+export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite }) {
   const data = COUNTRIES[countryCode];
   const [activeTab, setActiveTab] = useState("overview");
   const [visitedTabs, setVisitedTabs] = useState(() => new Set(["overview"]));
@@ -79,6 +79,13 @@ export default function CountryPanel({ countryCode, onClose }) {
           <div className="panel-header">
             <WikiImage src={img(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
             <div className="panel-header-overlay" />
+            <button
+              className={`panel-fav-btn${isFavorite ? " active" : ""}`}
+              onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
+              aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+            >
+              {isFavorite ? "⭐" : "☆"}
+            </button>
             <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label="Fermer">✕</button>
             <div className="panel-header-content">
               <span className="panel-emoji">{data.emoji}</span>

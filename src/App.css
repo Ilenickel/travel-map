@@ -39,7 +39,6 @@ html, body, #root { height: 100%; }
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 28px;
   height: 62px;
   background: rgba(8, 12, 20, 0.92);
@@ -52,6 +51,20 @@ html, body, #root { height: 100%; }
 }
 
 .topbar-brand { display: flex; align-items: center; gap: 10px; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  position: relative;
+  z-index: 201; /* au-dessus de la recherche centrée */
+}
+
+/* ─── Petits écrans desktop (réduit la recherche pour éviter le chevauchement) ─── */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .topbar-search-container { width: 260px; }
+}
 
 .brand-icon {
   font-size: 24px;
@@ -1094,6 +1107,184 @@ html, body, #root { height: 100%; }
 .cost-item-detail { font-size: 11px; color: var(--text-muted); }
 .cost-item-price { font-size: 13px; font-weight: 700; color: var(--accent2); white-space: nowrap; flex-shrink: 0; }
 
+/* ─── Topbar favorites button ─── */
+.topbar-favorites-wrapper {
+  position: relative;
+}
+
+.topbar-fav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.topbar-fav-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-subtle);
+}
+.topbar-fav-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent2);
+}
+
+.fav-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--accent);
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ─── Favorites panel dropdown ─── */
+.favorites-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.1);
+  overflow: hidden;
+  z-index: 500;
+  animation: panelIn 0.18s ease;
+}
+
+.favorites-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.favorites-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.favorites-panel-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 8px;
+}
+
+.favorites-empty {
+  padding: 28px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.favorites-empty-icon { font-size: 32px; margin-bottom: 4px; }
+
+.favorites-list {
+  list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.favorites-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.favorites-item:last-child { border-bottom: none; }
+.favorites-item:hover { background: var(--surface2); }
+
+.favorites-item-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text);
+  transition: color 0.12s;
+  min-width: 0;
+}
+.favorites-item-main:hover { color: var(--accent2); }
+
+.favorites-item-emoji { font-size: 18px; flex-shrink: 0; }
+.favorites-item-name { font-size: 14px; font-weight: 600; }
+
+.favorites-item-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px 14px;
+  font-size: 11px;
+  transition: color 0.12s;
+  flex-shrink: 0;
+}
+.favorites-item-remove:hover { color: var(--red); }
+
+/* ─── Star button in panel header ─── */
+.panel-fav-btn {
+  position: absolute;
+  top: 16px;
+  right: 60px;
+  background: rgba(8, 12, 20, 0.6);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-dim);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.panel-fav-btn:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.panel-fav-btn.active {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
 /* ─── Topbar filter button (mobile only) ─── */
 .topbar-filter-btn {
   display: none;
@@ -1426,11 +1617,60 @@ html, body, #root { height: 100%; }
   .topbar { padding: 0 12px; height: 52px; }
   .topbar-badge { display: none; }
   .topbar-brand { display: none; }
+  /* topbar-right reste visible sur mobile pour le bouton favoris */
+
+  /* Bouton favoris mobile — icône seule, sans label texte */
+  .topbar-fav-label { display: none; }
+  .topbar-fav-btn {
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+  .fav-count-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+  /* Recherche : flex:1 pour prendre l'espace disponible, texte adapté */
   .topbar-search-container {
     position: relative;
     left: auto;
     transform: none;
-    width: 100%;
+    flex: 1;
+    width: auto;
+    margin: 0;
+    min-width: 0;
+  }
+  .topbar-search-wrapper { padding: 0 10px; height: 36px; }
+  .topbar-search-input { font-size: 12px; }
+  .topbar-search-icon { font-size: 12px; }
+
+  /* Icônes filtre + favoris : même taille, côte à côte à droite */
+  .topbar-filter-btn {
+    flex-shrink: 0;
+    margin-left: 8px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+  .topbar-right {
+    display: flex;
+    flex-shrink: 0;
+    gap: 6px;
+    margin-left: 6px;
+  }
+  .topbar-fav-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 16px;
   }
 
   /* Modal — bottom sheet avec marges */
@@ -1552,6 +1792,13 @@ html, body, #root { height: 100%; }
     right: 12px;
     z-index: 10;
   }
+  .panel-fav-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+    top: 12px;
+    right: 64px;
+  }
 
   /* Indicateur scroll onglets */
   .panel-tabs-wrapper::after {
@@ -1581,6 +1828,27 @@ html, body, #root { height: 100%; }
   /* Pratique */
   .practical-item { padding: 10px 12px; gap: 12px; }
   .practical-icon { font-size: 18px; }
+
+  /* Panel favoris — pleine largeur sous la topbar sur mobile */
+  .favorites-panel {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0 0 20px 20px;
+    max-height: calc(100dvh - 52px);
+    overflow-y: auto;
+  }
+
+  /* Backdrop favoris mobile */
+  .favorites-backdrop {
+    display: block;
+    position: fixed;
+    top: 52px;
+    left: 0; right: 0; bottom: 0;
+    z-index: 49;
+  }
 
   /* Backdrop filtre — intercepte les touches sur la carte */
   .filter-backdrop {
