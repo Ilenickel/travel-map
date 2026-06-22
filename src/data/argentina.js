@@ -173,9 +173,9 @@ export const ARGENTINA = {
       tags: ["glaciers", "randonnée", "nature", "UNESCO"],
       mustSee: [
         { name: "Glacier Perito Moreno", wikipedia: "Perito_Moreno_Glacier" },
-        { name: "Mont Fitz Roy", wikipedia: "Fitz_Roy" },
+        { name: "Mont Fitz Roy", wikipedia: "File:Fitz_Roy_2.jpg" },
         { name: "El Chaltén", wikipedia: "File:El_Chaltén.jpg" },
-        { name: "Torres del Paine (Chili, proche)", wikipedia: "Torres_del_Paine_National_Park" },
+        { name: "Torres del Paine (Chili, proche)", wikipedia: "File:Monte_Almirante_Nieto.jpg" },
       ],
     },
   ],

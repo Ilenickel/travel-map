@@ -62,7 +62,7 @@ export default function CountryPanel({ countryCode, onClose }) {
           <div className="panel-header">
             <WikiImage src={img(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
             <div className="panel-header-overlay" />
-            <button className="panel-close" onClick={onClose} aria-label="Fermer">✕</button>
+            <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label="Fermer">✕</button>
             <div className="panel-header-content">
               <span className="panel-emoji">{data.emoji}</span>
               <h1 className="panel-title">{data.name}</h1>
@@ -75,17 +75,19 @@ export default function CountryPanel({ countryCode, onClose }) {
           </div>
 
           {/* Tabs */}
-          <nav className="panel-tabs">
-            {tabs.map((t) => (
-              <button
-                key={t.id}
-                className={`tab-btn${activeTab === t.id ? " active" : ""}`}
-                onClick={() => { setActiveTab(t.id); setSelectedDest(null); }}
-              >
-                {t.label}
-              </button>
-            ))}
-          </nav>
+          <div className="panel-tabs-wrapper">
+            <nav className="panel-tabs">
+              {tabs.map((t) => (
+                <button
+                  key={t.id}
+                  className={`tab-btn${activeTab === t.id ? " active" : ""}`}
+                  onClick={() => { setActiveTab(t.id); setSelectedDest(null); }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+          </div>
 
           {/* Body */}
           <div className="panel-body">

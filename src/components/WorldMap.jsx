@@ -30,13 +30,12 @@ function getBaseFill(numericId, filterActive, highlightMap) {
   return color + "28";
 }
 
-function getBaseStroke(numericId, filterActive, highlightMap) {
+function getBaseStroke(numericId, filterActive, highlightMap, isMobile) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
   if (!hasData) return "#0b1828";
-  if (!filterActive) return "#0d1e30";
-  const color = highlightMap?.[code];
-  return color ?? "#0d1e30";
+  if (isMobile || !filterActive) return "#0d1e30";
+  return highlightMap?.[code] ?? "#0d1e30";
 }
 
 function getBaseStrokeWidth(numericId, filterActive, highlightMap) {
@@ -62,6 +61,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   const highlightMapRef    = useRef(highlightMap);
   const filterActiveRef    = useRef(filterActive);
   const searchActiveRef    = useRef(searchActive);
+  const isMobileRef        = useRef(window.innerWidth <= 768);
   const onCountryClickRef  = useRef(onCountryClick);
   const pathsSelRef        = useRef(null);
   const mapReadyRef        = useRef(false);
@@ -79,15 +79,17 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     if (!mapReadyRef.current || !pathsSelRef.current) return;
     pathsSelRef.current
       .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap))
-      .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap))
+      .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap, isMobileRef.current))
       .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActive, highlightMap))
       .style("cursor",      (d) => isInteractive(+d.id, filterActive, highlightMap) ? "pointer" : "default");
   }, [highlightMap, filterActive]);
 
   useEffect(() => {
+    const init = () => {
     const svg    = d3.select(svgRef.current);
-    const width  = svgRef.current.clientWidth;
-    const height = svgRef.current.clientHeight;
+    const rect   = svgRef.current.getBoundingClientRect();
+    const width  = rect.width  || svgRef.current.clientWidth  || window.innerWidth;
+    const height = rect.height || svgRef.current.clientHeight || (window.innerHeight - 54);
 
     svg.selectAll("*").remove();
     svg.attr("viewBox", `0 0 ${width} ${height}`);
@@ -135,7 +137,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           .attr("class", "country")
           .attr("d", path)
           .attr("fill",         (d) => getBaseFill(+d.id, filterActiveRef.current, highlightMapRef.current))
-          .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current))
+          .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
           .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActiveRef.current, highlightMapRef.current))
           .style("cursor",      (d) => isInteractive(+d.id, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current) ? "pointer" : "default")
           .on("mouseenter", function (event, d) {
@@ -256,29 +258,52 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
         mapReadyRef.current = true;
       });
 
-    // ── Zoom & pan ──
+    // ── Zoom & pan (desktop + touch pinch) ──
     const zoom = d3.zoom()
       .scaleExtent([1, 8])
       .translateExtent([[0, 0], [width, height]])
       .on("zoom", (event) => {
         mapG.attr("transform", event.transform);
-        // Hide tooltip while panning
         d3.select(tooltipRef.current).style("opacity", 0);
       });
 
     zoomRef.current = zoom;
     svg.call(zoom);
-
-    // Prevent double-click from zooming in (we use click for country selection)
     svg.on("dblclick.zoom", null);
 
+    // ── Touch tap → open country ──
+    let touchStartX = 0, touchStartY = 0;
+    svg.on("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    }, { passive: true });
+
+    svg.on("touchend", (event) => {
+      const dx = Math.abs(event.changedTouches[0].clientX - touchStartX);
+      const dy = Math.abs(event.changedTouches[0].clientY - touchStartY);
+      if (dx > 8 || dy > 8) return; // was a pan, not a tap
+      const touch = event.changedTouches[0];
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!el) return;
+      const pathEl = el.closest(".country");
+      if (!pathEl) return;
+      const datum = d3.select(pathEl).datum();
+      if (!datum) return;
+      const numId = +datum.id;
+      if (!isInteractive(numId, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current)) return;
+      const alpha3 = NUMERIC_TO_CODE[numId];
+      if (alpha3) onCountryClickRef.current(alpha3);
+    }, { passive: true });
+
     const onResize = () => {
-      const w = svgRef.current?.clientWidth;
-      const h = svgRef.current?.clientHeight;
-      if (w && h) svg.attr("viewBox", `0 0 ${w} ${h}`);
+      const r = svgRef.current?.getBoundingClientRect();
+      if (r?.width && r?.height) svg.attr("viewBox", `0 0 ${r.width} ${r.height}`);
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
+    }; // end init
+
+    requestAnimationFrame(init);
   }, []);
 
   const handleZoomIn = () => {

@@ -443,6 +443,12 @@ html, body, #root { height: 100%; }
   border: 1px solid rgba(99,102,241,0.25);
 }
 
+/* ─── Tabs scroll indicator ─── */
+.panel-tabs-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
 /* ─── Panel Body ─── */
 .panel-body {
   flex: 1;
@@ -1403,13 +1409,120 @@ html, body, #root { height: 100%; }
   letter-spacing: 0;
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 640px) {
-  .country-modal { height: 95vh; border-radius: 20px; }
-  .topbar-subtitle { display: none; }
-  .budget-summary { grid-template-columns: 1fr; }
-  .dest-grid-preview { grid-template-columns: repeat(2, 1fr); }
-  .must-grid { grid-template-columns: 1fr; }
-  .city-tabs { flex-wrap: wrap; }
+/* ─── Responsive mobile ─── */
+@media (max-width: 768px) {
+
+  /* Topbar — seulement la recherche, brand caché */
+  .topbar { padding: 0 12px; height: 52px; }
+  .topbar-badge { display: none; }
+  .topbar-brand { display: none; }
+  .topbar-search-container {
+    position: relative;
+    left: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  /* Modal — bottom sheet avec marges */
+  .modal-wrapper { align-items: flex-end; padding: 0 14px 16px; }
+  .country-modal {
+    width: 100%;
+    height: 89dvh;
+    border-radius: 20px;
+    border-bottom: 1px solid var(--border-light);
+    animation: modalInMobile 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes modalInMobile {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* Handle bar */
+  .panel-header { height: 150px; padding: 16px; border-radius: 20px 20px 0 0; }
+  .panel-header::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px; height: 4px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 2px;
+    z-index: 2;
+  }
+
+  .panel-title { font-size: 22px; }
+  .panel-emoji { font-size: 22px; }
+
+  /* Onglets */
+  .tab-btn { padding: 7px 10px; font-size: 12px; }
+
+  /* Images must-see */
+  .must-item-img,
+  .wiki-img-placeholder.must-item-img { width: 120px; height: 90px; }
+  .must-item-name { font-size: 13px; padding: 0 12px 0 16px; }
+
+  /* Images destinations */
+  .dest-card-img,
+  .wiki-img-placeholder.dest-card-img { width: 100px; height: 80px; }
+  .dest-detail-img,
+  .wiki-img-placeholder.dest-detail-img { height: 170px; }
+
+  /* Grid aperçu */
+  .dest-grid-preview { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+
+  /* Budget */
+  .budget-summary { grid-template-columns: 1fr; gap: 8px; }
+
+  /* Bilan météo — scroll horizontal */
+  .bilan-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bilan-header-row,
+  .bilan-row { min-width: 520px; }
+
+  /* Villes météo */
+  .city-tabs { flex-wrap: wrap; gap: 5px; }
+  .city-tab { padding: 6px 10px; font-size: 12px; }
+
+  /* Filtres */
   .search-panel { width: calc(100vw - 48px); }
+  .search-bar { bottom: 16px; left: 16px; }
+
+  /* Zoom controls — cachés sur mobile (pinch suffit) */
+  .map-zoom-controls { display: none; }
+
+  /* Map hint caché sur mobile */
+  .map-hint { display: none; }
+
+  /* Bouton fermer — plus grand sur mobile pour le touch */
+  .panel-close {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+  }
+
+  /* Indicateur scroll onglets */
+  .panel-tabs-wrapper::after {
+    content: '›';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, transparent, var(--surface) 70%);
+    color: var(--text-muted);
+    font-size: 18px;
+    pointer-events: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Sous-onglets coût */
+  .cost-subtab-btn { font-size: 11px; padding: 7px 6px; }
+
+  /* Pratique */
+  .practical-item { padding: 10px 12px; gap: 12px; }
+  .practical-icon { font-size: 18px; }
 }
