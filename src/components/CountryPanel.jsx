@@ -134,7 +134,7 @@ export default function CountryPanel({ countryCode, onClose }) {
                     <div
                       key={dest.id}
                       className="dest-card-mini"
-                      onClick={() => { setSelectedDest(dest); setActiveTab("destinations"); }}
+                      onClick={() => { setSelectedDest(dest); handleTabChange("destinations"); }}
                     >
                       <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-mini-img" />
                       <div className="dest-card-mini-info">

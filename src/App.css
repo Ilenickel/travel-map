@@ -866,9 +866,9 @@ html, body, #root { height: 100%; }
   line-height: 1;
 }
 
-.bilan-good { background: rgba(16, 185, 129, 0.12); }
-.bilan-ok   { background: rgba(245, 158, 11, 0.12); }
-.bilan-bad  { background: rgba(239, 68, 68, 0.10); }
+.bilan-good { background: rgba(16, 185, 129, 0.28); }
+.bilan-ok   { background: rgba(245, 158, 11, 0.28); }
+.bilan-bad  { background: rgba(239, 68, 68, 0.26); }
 
 /* ─── Practical ─── */
 .visa-disclaimer {
