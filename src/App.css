@@ -600,7 +600,7 @@ html, body, #root { height: 100%; }
 }
 
 .bar-rain { background: linear-gradient(to top, #3b82f6, #7dd3fc); }
-.bar-temp { background: linear-gradient(to top, var(--accent), #a78bfa); }
+.bar-temp { background: linear-gradient(to top, #f97316, #fb923c); }
 
 .weather-temp { font-size: 9px; font-weight: 700; color: var(--text); }
 .weather-icon { font-size: 11px; line-height: 1; }
@@ -617,7 +617,7 @@ html, body, #root { height: 100%; }
 }
 
 .legend-dot.rain { background: #7dd3fc; }
-.legend-dot.temp { background: var(--accent2); }
+.legend-dot.temp { background: #fb923c; }
 
 /* ─── Destinations Grid ─── */
 .dest-grid { display: flex; flex-direction: column; gap: 10px; }
