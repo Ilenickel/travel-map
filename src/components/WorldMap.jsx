@@ -20,21 +20,22 @@ function largestPolygonFeature(feature) {
   return best ? { ...feature, geometry: { type: "Polygon", coordinates: best } } : feature;
 }
 
-function getBaseFill(numericId, filterActive, highlightMap) {
+function getBaseFill(numericId, filterActive, highlightMap, isMobile) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
   if (!hasData) return filterActive ? "#07101c" : "#09131f";
   if (!filterActive) return "#1c3a55";
   const color = highlightMap?.[code];
   if (!color) return "#07101c";
-  return color + "28";
+  return color + (isMobile ? "55" : "28"); // plus opaque sur mobile
 }
 
 function getBaseStroke(numericId, filterActive, highlightMap, isMobile) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
   if (!hasData) return "#0b1828";
-  if (isMobile || !filterActive) return "#0d1e30";
+  if (!filterActive) return "#0d1e30";
+  // Bordures colorées sur desktop ET mobile quand filtre actif
   return highlightMap?.[code] ?? "#0d1e30";
 }
 
@@ -78,7 +79,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   useEffect(() => {
     if (!mapReadyRef.current || !pathsSelRef.current) return;
     pathsSelRef.current
-      .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap))
+      .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap, isMobileRef.current))
       .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap, isMobileRef.current))
       .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActive, highlightMap))
       .style("cursor",      (d) => isInteractive(+d.id, filterActive, highlightMap) ? "pointer" : "default");
@@ -94,9 +95,16 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     svg.selectAll("*").remove();
     svg.attr("viewBox", `0 0 ${width} ${height}`);
 
+    const isMobile = width <= 768;
+    // Sur mobile : projection ajustée à la hauteur (carte plus large que l'écran)
+    // Sur desktop : projection ajustée au conteneur complet
+    const NE_ASPECT = 1.97; // rapport largeur/hauteur de NaturalEarth
+    const projW = isMobile ? height * NE_ASPECT : width;
+    const projH = isMobile ? height : height;
+
     const projection = d3
       .geoNaturalEarth1()
-      .fitExtent([[8, 8], [width - 8, height - 8]], { type: "Sphere" });
+      .fitExtent([[4, 4], [projW - 4, projH - 4]], { type: "Sphere" });
 
     const path = d3.geoPath().projection(projection);
     pathFnRef.current = path;
@@ -136,7 +144,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           .join("path")
           .attr("class", "country")
           .attr("d", path)
-          .attr("fill",         (d) => getBaseFill(+d.id, filterActiveRef.current, highlightMapRef.current))
+          .attr("fill",         (d) => getBaseFill(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
           .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
           .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActiveRef.current, highlightMapRef.current))
           .style("cursor",      (d) => isInteractive(+d.id, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current) ? "pointer" : "default")
@@ -261,7 +269,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     // ── Zoom & pan (desktop + touch pinch) ──
     const zoom = d3.zoom()
       .scaleExtent([1, 8])
-      .translateExtent([[0, 0], [width, height]])
+      .translateExtent([[0, 0], [projW, projH]])
       .on("zoom", (event) => {
         mapG.attr("transform", event.transform);
         d3.select(tooltipRef.current).style("opacity", 0);
@@ -270,6 +278,12 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     zoomRef.current = zoom;
     svg.call(zoom);
     svg.on("dblclick.zoom", null);
+
+    // Sur mobile : centrer la vue (milieu du monde = milieu de la projection)
+    if (isMobile) {
+      const startX = (projW - width) / 2;
+      svg.call(zoom.transform, d3.zoomIdentity.translate(-startX, 0));
+    }
 
     // ── Touch tap → open country ──
     let touchStartX = 0, touchStartY = 0;
