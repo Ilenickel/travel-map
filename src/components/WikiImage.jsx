@@ -6,5 +6,5 @@ export default function WikiImage({ src, alt, className }) {
       </div>
     );
   }
-  return <img src={src} alt={alt} className={className} loading="lazy" />;
+  return <img src={src} alt={alt} className={className} loading="lazy" decoding="async" />;
 }

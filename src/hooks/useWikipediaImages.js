@@ -35,7 +35,7 @@ async function batchFetch(slugs) {
         const url =
           `https://en.wikipedia.org/w/api.php?action=query` +
           `&titles=${encodeURIComponent(titles)}` +
-          `&prop=pageimages&pithumbsize=800` +
+          `&prop=pageimages&pithumbsize=500` +
           `&format=json&origin=*`;
 
         const data = await fetch(url).then((r) => r.json());
@@ -61,25 +61,12 @@ async function batchFetch(slugs) {
           );
 
           if (slug) {
-            const src = page.thumbnail?.source ?? null;
-
-            if (!src) {
-              console.warn(
-                `[Wikipedia] no thumbnail for slug: "${slug}" (article: "${page.title}")`
-              );
-            }
-
-            globalCache[slug] = src;
+            globalCache[slug] = page.thumbnail?.source ?? null;
           }
         }
 
         for (const slug of chunk) {
-          if (!(slug in globalCache)) {
-            console.warn(
-              `[Wikipedia] article not found for slug: "${slug}"`
-            );
-            globalCache[slug] = null;
-          }
+          if (!(slug in globalCache)) globalCache[slug] = null;
         }
       })
     );
@@ -102,43 +89,27 @@ async function batchFetch(slugs) {
         const url =
           `https://commons.wikimedia.org/w/api.php?action=query` +
           `&titles=${encodeURIComponent(titles)}` +
-          `&prop=imageinfo&iiprop=url` +
+          `&prop=imageinfo&iiprop=url&iiurlwidth=500` +
           `&format=json&origin=*`;
 
         const data = await fetch(url).then((r) => r.json());
-
-        console.log("WIKI FILE URL =", url);
-console.log("WIKI FILE RESPONSE =", data);
 
         const pages = data?.query?.pages ?? {};
 
         const norm = {};
 
-for (const n of data?.query?.normalized ?? []) {
-  norm[n.to] = n.from;
-}
+        for (const n of data?.query?.normalized ?? []) {
+          norm[n.to] = n.from;
+        }
 
-for (const page of Object.values(pages)) {
-  const originalTitle = norm[page.title] ?? page.title;
-
-  const src = page.imageinfo?.[0]?.url ?? null;
-
-  if (!src) {
-    console.warn(
-      `[Wikipedia] no image found for file "${originalTitle}"`
-    );
-  }
-
-  globalCache[originalTitle] = src;
-}
+        for (const page of Object.values(pages)) {
+          const originalTitle = norm[page.title] ?? page.title;
+          const src = page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url ?? null;
+          globalCache[originalTitle] = src;
+        }
 
         for (const slug of chunk) {
-          if (!(slug in globalCache)) {
-            console.warn(
-              `[Wikipedia] file not found: "${slug}"`
-            );
-            globalCache[slug] = null;
-          }
+          if (!(slug in globalCache)) globalCache[slug] = null;
         }
       })
     );

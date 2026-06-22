@@ -12,13 +12,21 @@ const MAX_RAIN = 250;
 export default function CountryPanel({ countryCode, onClose }) {
   const data = COUNTRIES[countryCode];
   const [activeTab, setActiveTab] = useState("overview");
+  const [visitedTabs, setVisitedTabs] = useState(() => new Set(["overview"]));
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeCity, setActiveCity] = useState(0);
   const [activeBudget, setActiveBudget] = useState(0);
   const [costSubTab, setCostSubTab] = useState("summary");
 
+  const handleTabChange = (id) => {
+    setActiveTab(id);
+    setVisitedTabs((prev) => { const s = new Set(prev); s.add(id); return s; });
+    setSelectedDest(null);
+  };
+
   useEffect(() => {
     setActiveTab("overview");
+    setVisitedTabs(new Set(["overview"]));
     setSelectedDest(null);
     setActiveCity(0);
     setActiveBudget(0);
@@ -43,11 +51,20 @@ export default function CountryPanel({ countryCode, onClose }) {
   const cityData = data.weatherCities[activeCity];
   const tripBudget = data.costOfLiving.tripEstimate.budgets[activeBudget];
 
-  // Collect all slugs and batch-fetch in one Wikipedia request
-  const allSlugs = useMemo(() => [
-    ...data.destinations.map((d) => d.wikipedia),
-    ...data.destinations.flatMap((d) => d.mustSee.map((s) => s.wikipedia)),
-  ].filter(Boolean), [data]);
+  // Charge les images uniquement pour les onglets visités (lazy per tab)
+  const allSlugs = useMemo(() => {
+    const slugs = new Set();
+    // Header + aperçu : toujours chargés
+    data.destinations.slice(0, 3).forEach((d) => d.wikipedia && slugs.add(d.wikipedia));
+    // Destinations + mustSee : seulement si l'onglet a été ouvert
+    if (visitedTabs.has("destinations")) {
+      data.destinations.forEach((d) => {
+        d.wikipedia && slugs.add(d.wikipedia);
+        d.mustSee.forEach((s) => s.wikipedia && slugs.add(s.wikipedia));
+      });
+    }
+    return [...slugs];
+  }, [data, visitedTabs]);
 
   const wikiImages = useWikipediaImages(allSlugs);
   const img = (slug) => wikiImages[slug] ?? null;
@@ -81,7 +98,7 @@ export default function CountryPanel({ countryCode, onClose }) {
                 <button
                   key={t.id}
                   className={`tab-btn${activeTab === t.id ? " active" : ""}`}
-                  onClick={() => { setActiveTab(t.id); setSelectedDest(null); }}
+                  onClick={() => handleTabChange(t.id)}
                 >
                   {t.label}
                 </button>
