@@ -902,6 +902,36 @@ html, body, #root { height: 100%; }
 .practical-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
 .practical-value { font-size: 14px; font-weight: 600; }
 
+/* ─── Cost sub-tabs ─── */
+.cost-subtabs {
+  display: flex;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 5px;
+}
+
+.cost-subtab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.cost-subtab-btn:hover { color: var(--text-dim); background: var(--surface3); }
+.cost-subtab-btn.active {
+  background: var(--surface);
+  color: var(--accent2);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
 /* ─── Cost of Living ─── */
 .cost-exchange {
   display: flex;

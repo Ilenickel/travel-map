@@ -15,6 +15,7 @@ export default function CountryPanel({ countryCode, onClose }) {
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeCity, setActiveCity] = useState(0);
   const [activeBudget, setActiveBudget] = useState(0);
+  const [costSubTab, setCostSubTab] = useState("summary");
 
   useEffect(() => {
     setActiveTab("overview");
@@ -216,78 +217,107 @@ export default function CountryPanel({ countryCode, onClose }) {
             {/* ── COST OF LIVING ── */}
             {activeTab === "cost" && (
               <div className="tab-content">
-                <p className="section-intro">{data.costOfLiving.intro}</p>
-
-                <div className="cost-exchange">
-                  <span className="cost-exchange-icon">💱</span>
-                  <span className="cost-exchange-label">Taux de change</span>
-                  <span className="cost-exchange-value">{data.costOfLiving.exchangeRate}</span>
-                </div>
-
-                <div className="budget-summary">
-                  {data.costOfLiving.budgetSummary.map((b) => (
-                    <div key={b.type} className="budget-card" style={{ "--budget-color": b.color }}>
-                      <div className="budget-type">{b.type}</div>
-                      <div className="budget-daily">{b.daily}</div>
-                      <div className="budget-desc">{b.desc}</div>
-                    </div>
+                {/* Sub-tabs */}
+                <div className="cost-subtabs">
+                  {[
+                    { id: "summary",    label: "💰 Résumé" },
+                    { id: "estimate",   label: "🧾 Estimation" },
+                    { id: "prices",     label: "🛒 Prix courants" },
+                  ].map((s) => (
+                    <button
+                      key={s.id}
+                      className={`cost-subtab-btn${costSubTab === s.id ? " active" : ""}`}
+                      onClick={() => setCostSubTab(s.id)}
+                    >
+                      {s.label}
+                    </button>
                   ))}
                 </div>
 
-                {/* Trip estimate */}
-                <div className="trip-estimate">
-                  <h3 className="section-title">
-                    Estimation — {data.costOfLiving.tripEstimate.duration}
-                  </h3>
-                  <p className="trip-route">{data.costOfLiving.tripEstimate.route}</p>
+                {/* ── Résumé ── */}
+                {costSubTab === "summary" && (
+                  <>
+                    <p className="section-intro">{data.costOfLiving.intro}</p>
 
-                  <div className="trip-budget-tabs">
-                    {data.costOfLiving.tripEstimate.budgets.map((b, i) => (
-                      <button
-                        key={b.type}
-                        className={`trip-budget-tab${activeBudget === i ? " active" : ""}`}
-                        style={{ "--tab-color": b.color }}
-                        onClick={() => setActiveBudget(i)}
-                      >
-                        {b.type}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="trip-budget-card" style={{ "--budget-color": tripBudget.color }}>
-                    <div className="trip-total">
-                      <span className="trip-total-label">Total estimé</span>
-                      <span className="trip-total-value">{tripBudget.total}</span>
+                    <div className="cost-exchange">
+                      <span className="cost-exchange-icon">💱</span>
+                      <span className="cost-exchange-label">Taux de change</span>
+                      <span className="cost-exchange-value">{data.costOfLiving.exchangeRate}</span>
                     </div>
-                    <div className="trip-breakdown">
-                      {tripBudget.breakdown.map((item) => (
-                        <div key={item.label} className="trip-line">
-                          <span className="trip-line-label">{item.label}</span>
-                          <span className="trip-line-amount">{item.amount}</span>
+
+                    <div className="budget-summary">
+                      {data.costOfLiving.budgetSummary.map((b) => (
+                        <div key={b.type} className="budget-card" style={{ "--budget-color": b.color }}>
+                          <div className="budget-type">{b.type}</div>
+                          <div className="budget-daily">{b.daily}</div>
+                          <div className="budget-desc">{b.desc}</div>
                         </div>
                       ))}
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
 
-                {data.costOfLiving.categories.map((cat) => (
-                  <div key={cat.id} className="cost-category">
-                    <h3 className="cost-category-title">
-                      <span>{cat.icon}</span> {cat.label}
+                {/* ── Estimation ── */}
+                {costSubTab === "estimate" && (
+                  <div className="trip-estimate">
+                    <h3 className="section-title">
+                      Estimation — {data.costOfLiving.tripEstimate.duration}
                     </h3>
-                    <div className="cost-items">
-                      {cat.items.map((item) => (
-                        <div key={item.label} className="cost-item">
-                          <div className="cost-item-left">
-                            <span className="cost-item-label">{item.label}</span>
-                            <span className="cost-item-detail">{item.detail}</span>
-                          </div>
-                          <span className="cost-item-price">{item.price}</span>
-                        </div>
+                    <p className="trip-route">{data.costOfLiving.tripEstimate.route}</p>
+
+                    <div className="trip-budget-tabs">
+                      {data.costOfLiving.tripEstimate.budgets.map((b, i) => (
+                        <button
+                          key={b.type}
+                          className={`trip-budget-tab${activeBudget === i ? " active" : ""}`}
+                          style={{ "--tab-color": b.color }}
+                          onClick={() => setActiveBudget(i)}
+                        >
+                          {b.type}
+                        </button>
                       ))}
                     </div>
+
+                    <div className="trip-budget-card" style={{ "--budget-color": tripBudget.color }}>
+                      <div className="trip-total">
+                        <span className="trip-total-label">Total estimé</span>
+                        <span className="trip-total-value">{tripBudget.total}</span>
+                      </div>
+                      <div className="trip-breakdown">
+                        {tripBudget.breakdown.map((item) => (
+                          <div key={item.label} className="trip-line">
+                            <span className="trip-line-label">{item.label}</span>
+                            <span className="trip-line-amount">{item.amount}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                ))}
+                )}
+
+                {/* ── Prix courants ── */}
+                {costSubTab === "prices" && (
+                  <>
+                    {data.costOfLiving.categories.map((cat) => (
+                      <div key={cat.id} className="cost-category">
+                        <h3 className="cost-category-title">
+                          <span>{cat.icon}</span> {cat.label}
+                        </h3>
+                        <div className="cost-items">
+                          {cat.items.map((item) => (
+                            <div key={item.label} className="cost-item">
+                              <div className="cost-item-left">
+                                <span className="cost-item-label">{item.label}</span>
+                                <span className="cost-item-detail">{item.detail}</span>
+                              </div>
+                              <span className="cost-item-price">{item.price}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
             )}
 
