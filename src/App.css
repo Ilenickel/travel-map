@@ -1751,7 +1751,7 @@ html, body, #root { height: 100%; }
   gap: 10px;
 }
 
-.list-card-emoji { font-size: 26px; flex-shrink: 0; }
+.list-card-emoji { font-size: 26px; flex-shrink: 0; width: 36px; text-align: center; }
 
 .list-card-meta { flex: 1; min-width: 0; }
 .list-card-name { display: block; font-size: 14px; font-weight: 700; color: var(--text); }
