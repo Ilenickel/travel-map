@@ -1251,7 +1251,7 @@ html, body, #root { height: 100%; }
 }
 .favorites-item-main:hover { color: var(--accent2); }
 
-.favorites-item-emoji { font-size: 18px; flex-shrink: 0; }
+.favorites-item-emoji { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
 .favorites-item-name { font-size: 14px; font-weight: 600; }
 
 .favorites-item-remove {
