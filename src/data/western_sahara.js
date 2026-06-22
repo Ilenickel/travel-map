@@ -2,7 +2,7 @@ export const WESTERN_SAHARA = {
   code: "ESH",
   numericId: 732,
   name: "Sahara Occidental",
-  emoji: "🏜️",
+  emoji: "🇪🇭",
   capital: "Laâyoune",
   language: "Arabe, Français, Espagnol, Hassaniya",
   currency: "Dirham marocain (MAD)",

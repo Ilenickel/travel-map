@@ -1743,7 +1743,10 @@ html, body, #root { height: 100%; }
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 .list-card-dim { opacity: 0.35; }
-.list-card-fav { border-color: rgba(245,158,11,0.4); }
+.list-card-fav {
+  border-color: rgba(245,158,11,0.75);
+  box-shadow: 0 0 0 1px rgba(245,158,11,0.25), inset 0 0 20px rgba(245,158,11,0.04);
+}
 
 .list-card-top {
   display: flex;
@@ -1757,7 +1760,7 @@ html, body, #root { height: 100%; }
 .list-card-name { display: block; font-size: 14px; font-weight: 700; color: var(--text); }
 .list-card-capital { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-.list-card-star { font-size: 14px; flex-shrink: 0; }
+.list-card-star { font-size: 16px; flex-shrink: 0; filter: drop-shadow(0 0 4px rgba(245,158,11,0.8)); }
 
 .list-card-budget { display: block; font-weight: 600; color: var(--accent2); white-space: nowrap; margin-top: 4px; font-size: 11px; }
 
