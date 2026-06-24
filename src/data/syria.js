@@ -81,7 +81,7 @@ export const SYRIA = {
       description:
         "La vieille ville de Damas, l'une des plus anciennes cités continuellement habitées du monde, est inscrite au patrimoine mondial de l'UNESCO depuis 1979. Ses ruelles enchevêtrées abritent la majestueuse mosquée des Omeyyades, l'un des plus anciens et des plus grands monuments de l'islam, ainsi que des khan, des hammams et des maisons à cour intérieure d'une beauté saisissante. Le souk al-Hamidiyya, couvert de tôles perforées par les balles de la Première Guerre mondiale, conduit directement au cœur historique.",
       wikipedia: "Old_city_of_Damascus",
-      tags: ["UNESCO", "Islam", "Architecture", "Histoire"],
+      tags: ["UNESCO", "Islam", "Architecture", "Histoire", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Mosquée des Omeyyades — l'une des quatre grandes mosquées de l'islam", wikipedia: "Umayyad_Mosque" },
         { name: "Souk al-Hamidiyya — marché couvert historique menant à la mosquée", wikipedia: "File:Al-Hamidiyah Souq 02.jpg" },
@@ -96,7 +96,7 @@ export const SYRIA = {
       description:
         "Alep, l'une des plus grandes et des plus anciennes villes du monde arabe, possédait avant la guerre l'un des plus remarquables centres historiques du Moyen-Orient, inscrit à l'UNESCO. Sa citadelle médiévale, ses souks couverts sur plusieurs kilomètres et ses caravansérails témoignaient d'une richesse commerciale millénaire. La vieille ville a subi de graves destructions lors des combats de 2012–2016, et des efforts de reconstruction sont en cours.",
       wikipedia: "Aleppo",
-      tags: ["UNESCO", "Histoire", "Reconstruction", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Reconstruction", "Architecture", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Citadelle d'Alep — forteresse médiévale dominant la ville, en cours de restauration", wikipedia: "Citadel_of_Aleppo" },
         { name: "Grands Souks couverts — le plus long réseau de souks couverts du monde arabe", wikipedia: "File:Suq al-Dira in Aleppo al-Madina Souq.jpg" },
@@ -111,7 +111,7 @@ export const SYRIA = {
       description:
         "Palmyre fut l'une des cités antiques les plus remarquables du monde romain, une oasis au cœur du désert syrien qui prospéra grâce au commerce caravanier entre Rome et la Perse. Son site archéologique, inscrit à l'UNESCO, était un vaste ensemble de temples, colonnades et nécropoles d'une beauté saisissante. En 2015, l'État islamique a détruit une partie des monuments les plus précieux, dont le Temple de Bel, infligeant une perte irréparable au patrimoine mondial.",
       wikipedia: "Palmyra",
-      tags: ["UNESCO", "Antiquité", "Archéologie", "Désert"],
+      tags: ["UNESCO", "Antiquité", "Archéologie", "Désert", "Architecture"],
       mustSee: [
         { name: "Grande Colonnade — avenue à portiques de 1 100 mètres de long", wikipedia: "File:Palmyra, Syria, The Great Colonnade, Columns.jpg" },
         { name: "Temple de Baal-Shamin — partiellement détruit par Daesh en 2015", wikipedia: "Temple_of_Baalshamin" },
@@ -126,7 +126,7 @@ export const SYRIA = {
       description:
         "Le Krak des Chevaliers est considéré comme l'un des châteaux forts médiévaux les mieux conservés au monde, inscrit à l'UNESCO en 2006. Cette forteresse des Croisés, construite par les Hospitaliers au XIIe siècle, domine d'une hauteur spectaculaire la plaine côtière syrienne depuis son éperon rocheux à 650 mètres d'altitude. Le château a subi quelques dommages pendant la guerre civile mais reste dans un état de conservation remarquable.",
       wikipedia: "Krak_des_Chevaliers",
-      tags: ["UNESCO", "Croisades", "Château", "Médiéval"],
+      tags: ["UNESCO", "Croisades", "Château", "Médiéval", "Architecture", "Histoire"],
       mustSee: [
         { name: "Tour maîtresse — donjon central massif aux murs épais de plusieurs mètres", wikipedia: "File:Krak des Chevaliers 31-South Tower.jpg" },
         { name: "Chapelle romane — église transformée en mosquée puis reconvertie", wikipedia: "File:Krak des Chevaliers chapel 1155.jpg" },

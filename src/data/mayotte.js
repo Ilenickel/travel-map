@@ -90,7 +90,7 @@ export const MAYOTTE = {
       description:
         "Petite-Terre est la petite île où se trouvent les institutions (préfecture), le quartier de Dzaoudzi et le marché de Mamoudzou. La promenade du bord de mer, les toits colorés de Dzaoudzi, et la plage du Sables-Blancs sont les points d'attraction de cette mini-île reliée par bac à la Grande-Terre.",
       wikipedia: "File:Phare de Petite Terre.jpg",
-      tags: ["Capitale", "Marché", "Bac", "Plage"],
+      tags: ["Ville", "Marché", "Bac", "Plage"],
       mustSee: [
         { name: "Marché de Mamoudzou — épices et artisanat mahorais", wikipedia: "Mamoudzou" },
         { name: "Traversée en bac Grande-Terre / Petite-Terre", wikipedia: "File:Mayotte, Petite Terre (2850837100).jpg" },

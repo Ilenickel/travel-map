@@ -90,7 +90,7 @@ export const MOROCCO = {
       description:
         "La Ville Rose envoûte avec la place Jemaa el-Fna, ses souks labyrinthiques, ses riads aux jardins secrets, le jardin Majorelle et les restaurants en terrasse.",
       wikipedia: "Marrakesh",
-      tags: ["Culture", "Shopping", "Gastronomie", "Artisanat"],
+      tags: ["Culture", "Shopping", "Gastronomie", "Artisanat", "Ville", "Histoire", "UNESCO"],
       mustSee: [
         { name: "Place Jemaa el-Fna", wikipedia: "Jemaa_el-Fnaa" },
         { name: "Jardins Majorelle", wikipedia: "Majorelle_Garden" },
@@ -105,7 +105,7 @@ export const MOROCCO = {
       description:
         "La plus ancienne ville impériale, dont la médina classée UNESCO est la plus grande zone piétonne au monde. Tanneries de cuir, médersa Bou Inania et souks médiévaux.",
       wikipedia: "File:Minaret_of_the_Zawiya_of_Moulay_Idris_II_shrine,_Fès_El_Bali,_Morocco_2005.jpg",
-      tags: ["Histoire", "UNESCO", "Culture", "Artisanat"],
+      tags: ["Histoire", "UNESCO", "Culture", "Artisanat", "Ville", "Architecture"],
       mustSee: [
         { name: "Médina de Fès el-Bali", wikipedia: "File:Fes Bab Bou Jeloud 2011.jpg" },
         { name: "Tanneries Chouara", wikipedia: "Chouara_Tannery" },
@@ -120,7 +120,7 @@ export const MOROCCO = {
       description:
         "Les erg Chebbi, dunes dorées pouvant atteindre 150 m de hauteur, offrent une nuit sous les étoiles dans un camp berbère et un lever de soleil inoubliable.",
       wikipedia: "Erg_Chebbi",
-      tags: ["Nature", "Aventure", "Paysage", "Culture berbère"],
+      tags: ["Nature", "Aventure", "Paysage", "Culture berbère", "Désert"],
       mustSee: [
         { name: "Dunes de l'Erg Chebbi", wikipedia: "Erg_Chebbi" },
         { name: "Nuit dans un camp sous les étoiles", wikipedia: "File:Merzouga.20200114.1.jpg" },
@@ -150,7 +150,7 @@ export const MOROCCO = {
       description:
         "La Ville Bleue, nichée dans le massif du Rif, est l'une des plus photogéniques du Maroc avec ses ruelles peintes en bleu et blanc, ses fontaines et son ambiance hors du temps.",
       wikipedia: "Chefchaouen",
-      tags: ["Paysage", "Culture", "Photographie", "Randonnée"],
+      tags: ["Paysage", "Culture", "Photographie", "Randonnée", "Architecture"],
       mustSee: [
         { name: "Médina — ruelles bleues", wikipedia: "File:2018 01 (Blue) - Chaouen.jpg" },
         { name: "Plaza Uta el-Hammam", wikipedia: "File:Plaza Uta Hamam 04.jpg" },

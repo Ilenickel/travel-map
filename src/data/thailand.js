@@ -90,7 +90,7 @@ export const THAILAND = {
       description:
         "La capitale trépidante mêle temples bouddhistes majestueux, marchés flottants colorés, street food délicieuse et vie nocturne effervescente.",
       wikipedia: "Bangkok",
-      tags: ["Ville", "Temples", "Gastronomie", "Shopping"],
+      tags: ["Ville", "Temples", "Gastronomie", "Shopping", "Architecture"],
       mustSee: [
         { name: "Grand Palais & Wat Phra Kaew", wikipedia: "Grand_Palace" },
         { name: "Wat Arun — Temple de l'Aurore", wikipedia: "Wat_Arun" },
@@ -105,7 +105,7 @@ export const THAILAND = {
       description:
         "Capitale culturelle du nord, entourée de montagnes et de forêts. Réputée pour ses temples, ses sanctuaires d'éléphants éthiques et ses marchés artisanaux.",
       wikipedia: "Chiang_Mai",
-      tags: ["Culture", "Nature", "Temples", "Artisanat"],
+      tags: ["Culture", "Nature", "Temples", "Artisanat", "Randonnée"],
       mustSee: [
         { name: "Wat Doi Suthep", wikipedia: "Wat_Phra_That_Doi_Suthep" },
         { name: "Vieille ville — les 300 temples", wikipedia: "File:Wat_Chiang_Man_(I).jpg" },
@@ -149,7 +149,7 @@ export const THAILAND = {
       description:
         "Ancienne capitale du royaume de Siam, classée au patrimoine UNESCO. Ses temples en ruines et ses Bouddhas décapités témoignent d'une civilisation glorieuse.",
       wikipedia: "Ayutthaya_Historical_Park",
-      tags: ["Histoire", "UNESCO", "Temples", "Culture"],
+      tags: ["Histoire", "UNESCO", "Temples", "Culture", "Architecture"],
       mustSee: [
         { name: "Wat Mahathat — tête de Bouddha dans les racines", wikipedia: "File:Templo_Mahathat,_Ayutthaya,_Tailandia,_2013-08-23,_DD_06.jpg" },
         { name: "Wat Phra Si Sanphet", wikipedia: "Wat_Phra_Si_Sanphet" },

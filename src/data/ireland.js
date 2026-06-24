@@ -61,7 +61,7 @@ export const IRELAND = {
       description:
         "Capitale animée et conviviale, Dublin est le cœur littéraire et musical de l'Irlande. Le quartier du Temple Bar avec ses pubs traditionnels, Trinity College abritant le Livre de Kells, et le Chester Beatty Library en font une ville d'une richesse culturelle insoupçonnée. La scène des pubs irlandais avec leur musique live est une expérience unique en Europe.",
       wikipedia: "Dublin",
-      tags: ["Capitale", "Culture", "Pubs", "Littérature"],
+      tags: ["Ville", "Culture", "Pubs", "Littérature", "Histoire", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Trinity College et Livre de Kells — manuscrit enluminé du VIIIe siècle", wikipedia: "Book_of_Kells" },
         { name: "Temple Bar — quartier des pubs et de la vie nocturne", wikipedia: "File:Temple Bar at Dusk 4.jpg" },
@@ -76,7 +76,7 @@ export const IRELAND = {
       description:
         "Le Ring of Kerry est l'un des circuits panoramiques les plus célèbres d'Europe, serpentant sur 179 km autour de la péninsule d'Iveragh. Lacs de Killarney, îles Skellig (lieu de tournage de Star Wars), villages côtiers et montagnes forment un paysage d'une beauté grandiose. Killarney est la base idéale pour explorer cette région.",
       wikipedia: "Ring_of_Kerry",
-      tags: ["Panoramique", "Nature", "Côte", "Péninsule"],
+      tags: ["Panoramique", "Nature", "Côte", "Péninsule", "Randonnée"],
       mustSee: [
         { name: "Skellig Michael — monastère médiéval sur un rocher en pleine mer", wikipedia: "Skellig_Michael" },
         { name: "Lacs de Killarney — parc national aux paysages enchanteurs", wikipedia: "Killarney_National_Park" },
@@ -91,7 +91,7 @@ export const IRELAND = {
       description:
         "Les falaises de Moher s'élèvent à 214 mètres au-dessus de l'Atlantique sur 8 km de côte sauvage dans le comté de Clare. Elles constituent le site naturel le plus visité d'Irlande et offrent des vues spectaculaires sur les îles d'Aran et le Connemara. La région du Burren, plateau calcaire unique en Europe, se trouve à proximité.",
       wikipedia: "Cliffs_of_Moher",
-      tags: ["Nature", "Falaises", "UNESCO", "Atlantique"],
+      tags: ["Nature", "Falaises", "UNESCO", "Atlantique", "Randonnée"],
       mustSee: [
         { name: "Tour O'Brien — tour de guet victorienne au sommet des falaises", wikipedia: "O'Brien's_Tower" },
         { name: "Le Burren — paysage karstique unique avec flore méditerranéenne", wikipedia: "The_Burren" },

@@ -44,7 +44,7 @@ export const KOSOVO = {
       region: "Centre",
       description: "Pristina est une capitale jeune et dynamique où l'indépendance proclamée en 2008 se lit partout : dans le monument Newborn repeint chaque année, sur le boulevard Bill Clinton ou devant la statue de George W. Bush. La ville mêle architecture ottomane, immeubles yougoslaves et constructions modernes dans une atmosphère vibrante et chaleureuse. Les cafés bondés, les marchés et la scène artistique émergente en font une étape attachante.",
       wikipedia: "Pristina",
-      tags: ["Capitale", "Modernité", "Culture", "Balkans"],
+      tags: ["Ville", "Modernité", "Culture", "Balkans", "Gastronomie"],
       mustSee: [
         { name: "Monument Newborn — sculpture emblématique de l'indépendance de 2008", wikipedia: "Newborn_monument" },
         { name: "Boulevard Bill Clinton — avenue principale avec statue du 42e président américain", wikipedia: "Bill_Clinton_Boulevard" },
@@ -58,7 +58,7 @@ export const KOSOVO = {
       region: "Sud",
       description: "Prizren est la perle ottomane du Kosovo, ville historique dont les ruelles pavées, les ponts de pierre et les mosquées du XVIe siècle évoquent directement Istanbul ou Sarajevo. Nichée au pied des montagnes de Sharr et traversée par la rivière Bistrica, la ville est un joyau architectural préservé. Le festival international du film (DokuFest) en fait chaque été une destination culturelle animée.",
       wikipedia: "Prizren",
-      tags: ["Ottoman", "Patrimoine", "Architecture", "Culture"],
+      tags: ["Ottoman", "Patrimoine", "Architecture", "Culture", "Histoire"],
       mustSee: [
         { name: "Forteresse de Prizren — citadelle médiévale dominant la ville", wikipedia: "Prizren_Fortress" },
         { name: "Pont de pierre ottoman — pont du XVIe siècle sur la Bistrica", wikipedia: "File:PrizrenStoneBridge.jpg" },
@@ -72,7 +72,7 @@ export const KOSOVO = {
       region: "Peja/Peć",
       description: "Le canyon de Rugova, près de Peja, est l'un des sites naturels les plus spectaculaires des Balkans, avec ses parois calcaires vertigineuses atteignant 1 000 mètres de hauteur. La gorge traverse les Alpes dinariques et offre des itinéraires de randonnée et d'escalade exceptionnels. À l'entrée du canyon se trouve le monastère des Patriarches de Peć, l'un des sites religieux orthodoxes les plus sacrés de la région.",
       wikipedia: "Rugova_Canyon",
-      tags: ["Nature", "Randonnée", "Montagne", "Canyon"],
+      tags: ["Nature", "Randonnée", "Montagne", "Canyon", "Ski"],
       mustSee: [
         { name: "Canyon de Rugova — gorge calcaire de 25 km dans les Alpes dinariques", wikipedia: "Rugova_Canyon" },
         { name: "Monastère des Patriarches de Peć — ensemble monastique médiéval", wikipedia: "File:Patriarchate_of_Peć_2010.JPG" },

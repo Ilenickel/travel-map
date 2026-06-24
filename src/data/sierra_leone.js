@@ -63,7 +63,7 @@ export const SIERRA_LEONE = {
       description:
         "Freetown, capitale fondée en 1787 pour accueillir des esclaves libérés, possède une histoire unique liée à l'abolition. Le coton-tree centenaire au cœur de la ville, le Musée national, le quartier de Krio Cotton Tree et l'île de Banana racontent cette mémoire singulière sur fond d'animation africaine.",
       wikipedia: "Freetown",
-      tags: ["Histoire", "Abolition", "Culture", "Capitale"],
+      tags: ["Histoire", "Abolition", "Culture", "Ville"],
       mustSee: [
         { name: "Cotton Tree — kapokier tricentenaire symbole de la ville", wikipedia: "Cotton_Tree_(Sierra_Leone)" },
         { name: "Sierra Leone National Museum", wikipedia: "Sierra_Leone_National_Museum" },

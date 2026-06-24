@@ -63,7 +63,7 @@ export const EQUATORIAL_GUINEA = {
       region: "Île de Bioko",
       description: "Malabo est la capitale de la Guinée Équatoriale, perchée sur les flancs du volcan Pico Basilé au nord de l'île de Bioko. Son centre historique colonial espagnol, avec sa cathédrale néo-gothique et ses bâtiments colorés, est l'un des mieux conservés du golfe de Guinée. Entourée de paysages volcaniques et de forêts denses, la ville est une base parfaite pour explorer l'île.",
       wikipedia: "Malabo",
-      tags: ["Capitale", "Architecture", "Histoire", "Volcan"],
+      tags: ["Ville", "Architecture", "Histoire", "Volcan"],
       mustSee: [
         { name: "Cathédrale de la Conception Immaculée — néo-gothique coloniale espagnole", wikipedia: "File:Catedral_Católica_de_la_Inmaculada_Concepción,_Fort_Wayne,_Indiana,_Estados_Unidos,_2012-11-12,_DD_01.jpg" },
         { name: "Palacio de los Capitanes Generales — architecture coloniale", wikipedia: "File:Habana - Salon del Palacio de los Capitanes Generales.jpg" },

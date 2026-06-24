@@ -82,7 +82,7 @@ export const SLOVENIA = {
       description:
         "Le lac de Bled est l'une des vues les plus photographiées d'Europe : une église baroque sur une petite île au milieu d'un lac vert émeraude encerclé d'Alpes, avec un château médiéval perché sur une falaise. La pletna (barque traditionnelle) emmène les visiteurs à l'île. La crème à la vanille (kremšnita) inventée ici est un rituel.",
       wikipedia: "Lake_Bled",
-      tags: ["Lac", "Alpes", "Château", "Île"],
+      tags: ["Lac", "Alpes", "Château", "Île", "Nature", "Randonnée", "Ski"],
       mustSee: [
         { name: "Île de Bled en pletna — église baroque du XVIIe siècle", wikipedia: "File:Bled Overview.JPG" },
         { name: "Château de Bled (XIe s.) — vue plongeante sur le lac", wikipedia: "Bled_Castle" },
@@ -97,7 +97,7 @@ export const SLOVENIA = {
       description:
         "Les grottes de Postojna sont les plus visitées d'Europe (24 millions de visiteurs depuis leur découverte) : 24km de galeries avec stalactites géantes, le protée (olm, le 'poisson humain' — salamandre aveugle endémique aux grottes balkaniques) et un train souterrain qui parcourt 5km dans les entrailles. À 10km : le château de Predjama, dans la falaise au-dessus d'une grotte.",
       wikipedia: "Postojna_Cave",
-      tags: ["Grottes", "Stalactites", "Olm", "Château-grotte"],
+      tags: ["Grottes", "Stalactites", "Olm", "Château-grotte", "UNESCO"],
       mustSee: [
         { name: "Train souterrain dans les grottes de Postojna (5km)", wikipedia: "File:Postojna Cave train (3).jpg" },
         { name: "Protée (olm) — salamandre aveugle endémique des grottes balkaniques", wikipedia: "Olm" },
@@ -112,7 +112,7 @@ export const SLOVENIA = {
       description:
         "Le Triglav (2 864m) est le symbole national slovène — son ascension est un rite de passage pour tout Slovène. Le parc national du Triglav (838 km²) est le seul parc national du pays : lacs d'altitude de couleur opale (les Lacs des Sept Lagons), gorges de Soča (eau d'un turquoise hallucinant, paradis du kayak), et prairies alpines fleuries.",
       wikipedia: "File:Triglav National Park (28749976304).jpg",
-      tags: ["Alpinisme", "Kayak", "Lacs", "Nature"],
+      tags: ["Alpinisme", "Kayak", "Lacs", "Nature", "Randonnée", "Ski", "UNESCO"],
       mustSee: [
         { name: "Rivière Soča — turquoise intense, kayak et rafting", wikipedia: "Soča" },
         { name: "Sept lacs de Triglav — randonnée de 2 jours", wikipedia: "File:Triglav_Lakes_Valley_Mountain_Lodge_in_Slovenia%27s_Julian_Alps.jpg" },
@@ -127,7 +127,7 @@ export const SLOVENIA = {
       description:
         "Ljubljana est la capitale européenne de l'environnement 2016 : centre-ville intégralement piéton depuis 2007, 30km de pistes cyclables, la Ljubljanica traversant le centre avec ses terrasses animées, le château médiéval sur la colline, et les marchés biologiques du vendredi. Une ville à taille humaine, dynamique et bilingue (anglais parfait).",
       wikipedia: "Ljubljana",
-      tags: ["Capitale verte", "Vélo", "Rivière", "Marché"],
+      tags: ["Capitale verte", "Vélo", "Rivière", "Marché", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Triple-pont de Plečnik — entrée monumentale en vieille ville", wikipedia: "Triple_Bridge" },
         { name: "Château de Ljubljana — vue panoramique sur les Alpes", wikipedia: "Ljubljana_Castle" },

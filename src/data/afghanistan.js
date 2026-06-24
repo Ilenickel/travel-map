@@ -126,7 +126,7 @@ export const AFGHANISTAN = {
       description:
         "Kaboul, nichée dans une cuvette à 1 800 mètres d'altitude entre des montagnes arides, fut longtemps une ville cosmopolite à la croisée des cultures persane, turque et indo-bouddhiste. Son musée national, pillé mais partiellement restauré, conserve des trésors inestimables de l'art bactrien et gréco-bouddhiste. La vieille ville, le bazar Mandawi et les jardins de Babur — dernier refuge du tombeau du fondateur de l'empire moghol — témoignent d'une histoire millénaire.",
       wikipedia: "Kabul",
-      tags: ["Capitale", "Musée", "Histoire", "Art bactrien"],
+      tags: ["Ville", "Musée", "Histoire", "Art bactrien"],
       mustSee: [
         { name: "Musée national d'Afghanistan — art bactrien et gréco-bouddhiste", wikipedia: "National_Museum_of_Afghanistan" },
         { name: "Jardins de Babur — mausolée du fondateur de l'empire moghol", wikipedia: "File:Babur Gardens.jpg" },

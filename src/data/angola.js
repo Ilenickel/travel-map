@@ -82,7 +82,7 @@ export const ANGOLA = {
       description:
         "La capitale angolaise est une ville de contrastes saisissants, mêlant gratte-ciels modernes et quartiers coloniaux portugais restaurés comme la Ilha do Cabo. Le Museu Nacional de Antropologia et la Fortaleza de São Miguel témoignent du riche passé lusophone du pays. Luanda est l'une des villes les plus chères d'Afrique en raison de son économie pétrolière.",
       wikipedia: "Luanda",
-      tags: ["Capitale", "Culture", "Architecture", "Histoire"],
+      tags: ["Ville", "Culture", "Architecture", "Histoire"],
       mustSee: [
         { name: "Fortaleza de São Miguel — forteresse portugaise du XVIe siècle", wikipedia: "File:Luanda-SMiguelFort2.jpg" },
         { name: "Ilha do Cabo — presqu'île aux restaurants de fruits de mer", wikipedia: "File:Luanda Bay and Ilha de Luanda.jpg" },

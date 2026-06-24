@@ -90,7 +90,7 @@ export const JORDAN = {
       description:
         "L'une des sept merveilles du monde moderne : une cité nabatéenne entière sculptée dans la roche rose, avec le Trésor (Al-Khazneh) comme symbole absolu.",
       wikipedia: "Petra",
-      tags: ["Histoire", "Archéologie", "UNESCO"],
+      tags: ["Histoire", "Archéologie", "UNESCO", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Le Trésor (Al-Khazneh)", wikipedia: "Al-Khazneh" },
         { name: "Le Monastère (Ad Deir)", wikipedia: "File:The Monastery, Petra, Jordan8.jpg" },
@@ -118,7 +118,7 @@ export const JORDAN = {
       description:
         "Capitale moderne et ancienne à la fois, avec la Citadelle sur une colline, l'amphithéâtre romain du IIe siècle et les ruelles animées du quartier Rainbow Street.",
       wikipedia: "Amman",
-      tags: ["Ville", "Histoire", "Culture"],
+      tags: ["Ville", "Histoire", "Culture", "Architecture"],
       mustSee: [
         { name: "Citadelle d'Amman", wikipedia: "Amman_Citadel" },
         { name: "Théâtre romain d'Amman", wikipedia: "File:Roman theater of Amman 01.jpg" },

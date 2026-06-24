@@ -69,7 +69,7 @@ export const TURKMENISTAN = {
       description:
         "Achgabat est une capitale-musée à ciel ouvert, entièrement revêtue de marbre blanc — détentrice du record mondial du plus grand nombre de bâtiments en marbre blanc selon le Livre Guinness. Reconstruite après un séisme dévastateur en 1948 qui tua les deux tiers de sa population, la ville a été transformée par les présidents successifs en une vitrine de la grandeur nationale avec ses palais dorés, ses fontaines monumentales et ses monuments à la gloire du Turkménistan. Une expérience surréaliste et unique au monde.",
       wikipedia: "Ashgabat",
-      tags: ["Capitale", "Architecture", "Surréaliste", "Marbres"],
+      tags: ["Ville", "Architecture", "Surréaliste", "Marbres"],
       mustSee: [
         { name: "Monument de la Neutralité — tripode de 95 m couronné d'une étoile rotative", wikipedia: "Neutrality_Monument" },
         { name: "Palais Présidentiel Oguzhan — complexe de palais en marbre blanc", wikipedia: "Ashgabat" },

@@ -84,7 +84,7 @@ export const LAOS = {
       description:
         "Ancienne capitale royale inscrite au patrimoine UNESCO, Luang Prabang est l'une des villes les plus belles d'Asie du Sud-Est. Chaque matin, la procession des moines en robe orange (tak bat) dans les ruelles coloniales est une expérience spirituelle inoubliable.",
       wikipedia: "Luang_Prabang",
-      tags: ["UNESCO", "temples", "culture", "monastères"],
+      tags: ["UNESCO", "Temples", "Culture", "Monastères", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Tak Bat (procession des moines)", wikipedia: "File:Praying_bhikkhus_inside_Wat_Sensoukharam_in_Luang_Prabang_Laos.jpg" },
         { name: "Chutes de Kuang Si", wikipedia: "File:Kuang_Si_Falls_and_a_turquoise_water_pool_in_Luang_Prabang_province_Laos.jpg" },
@@ -99,7 +99,7 @@ export const LAOS = {
       description:
         "Entourée de formations karstiques spectaculaires et du fleuve Nam Song, Vang Vieng propose des balades en kayak, des ballades dans les grottes et des vues panoramiques depuis des montgolfières. La ville a considérablement amélioré son image ces dernières années.",
       wikipedia: "Vang_Vieng",
-      tags: ["karst", "kayak", "montgolfière", "randonnée"],
+      tags: ["Karst", "Kayak", "Montgolfière", "Randonnée"],
       mustSee: [
         { name: "Blue Lagoon (Vang Vieng)", wikipedia: "File:Blue Lagoon at Vang Vieng - panoramio.jpg" },
         { name: "Grotte de Tham Chang", wikipedia: "File:Wat_Tham_Khao_Rup_Chang_-_180_Stalagtites_(14478487438).jpg" },
@@ -114,7 +114,7 @@ export const LAOS = {
       description:
         "La plus petite et paisible capitale d'Asie du Sud-Est conserve un charme colonial franco-laotien. Le Pha That Luang (stupa national), le Patuxai (arc de triomphe laotien) et le Bouddha Park sont ses emblèmes.",
       wikipedia: "Vientiane",
-      tags: ["capitale", "temples", "histoire", "détendu"],
+      tags: ["Ville", "Temples", "Histoire", "Détendu", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Pha That Luang", wikipedia: "Pha_That_Luang" },
         { name: "Patuxai", wikipedia: "Patuxai" },
@@ -129,7 +129,7 @@ export const LAOS = {
       description:
         "Le plateau des Bolavens est une région de hautes terres verdoyantes avec des plantations de café, des cascades spectaculaires et des villages ethniques minorities. La chute de Tad Fane est l'une des plus belles du pays.",
       wikipedia: "Bolaven_Plateau",
-      tags: ["café", "cascades", "culture", "nature"],
+      tags: ["Café", "Cascades", "Culture", "Nature"],
       mustSee: [
         { name: "Tad Fane (double cascade)", wikipedia: "Bolaven_Plateau" },
         { name: "Tad Lo", wikipedia: "File:Tad_Hang_waterfalls_at_sunset,_Tad_Lo_village,_Bolaven_Plateau,_Laos.jpg" },

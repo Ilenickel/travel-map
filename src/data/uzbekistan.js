@@ -82,7 +82,7 @@ export const UZBEKISTAN = {
       description:
         "Joyau de la Route de la Soie, avec le Registan (trois médersas monumentales), le mausolée de Tamerlan (Gour-é-Amir) et les observatoires de l'astronome Oulough Beg.",
       wikipedia: "Samarkand",
-      tags: ["Histoire", "Architecture", "UNESCO", "Route de la Soie"],
+      tags: ["Histoire", "Architecture", "UNESCO", "Route de la Soie", "Désert"],
       mustSee: [
         { name: "Registan — 3 médersas monumentales", wikipedia: "Registan" },
         { name: "Gour-é-Amir — tombeau de Tamerlan", wikipedia: "Gur-e-Amir" },
@@ -126,7 +126,7 @@ export const UZBEKISTAN = {
       description:
         "Capitale cosmopolite rebâtie après le tremblement de terre de 1966, avec ses monuments soviétiques imposants, ses bazars colorés et sa montée en puissance gastronomique.",
       wikipedia: "Tashkent",
-      tags: ["Ville", "Culture", "Gastronomie"],
+      tags: ["Ville", "Culture", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Bazar Tchorsu", wikipedia: "Chorsu_Bazaar" },
         { name: "Musée d'histoire de l'Ouzbékistan", wikipedia: "State_Museum_of_History_of_Uzbekistan" },

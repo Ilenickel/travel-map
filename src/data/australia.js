@@ -109,7 +109,7 @@ export const AUSTRALIA = {
       description:
         "La ville la plus photographiée d'Australie avec l'Opéra de Sydney sur le port, le Harbour Bridge, les plages de Bondi et Manly, et une scène gastronomique multiculturelle.",
       wikipedia: "Sydney",
-      tags: ["Ville", "Plage", "Architecture", "Gastronomie"],
+      tags: ["Ville", "Plage", "Architecture", "Gastronomie", "Histoire", "UNESCO"],
       mustSee: [
         { name: "Opéra de Sydney", wikipedia: "Sydney_Opera_House" },
         { name: "Sydney Harbour Bridge — BridgeClimb", wikipedia: "Sydney_Harbour_Bridge" },
@@ -139,7 +139,7 @@ export const AUSTRALIA = {
       description:
         "Uluru, le rocher sacré des Anangu, change de couleur au lever et coucher du soleil. Le cœur spirituel rouge de l'Australie, entouré de l'Outback immense.",
       wikipedia: "Uluru",
-      tags: ["Nature", "Culture aborigène", "UNESCO", "Paysage"],
+      tags: ["Nature", "Culture aborigène", "UNESCO", "Paysage", "Désert"],
       mustSee: [
         { name: "Uluru (Ayers Rock) au lever du soleil", wikipedia: "Uluru" },
         { name: "Kata Tjuta (Les Olgas)", wikipedia: "Kata_Tjuta" },
@@ -153,7 +153,7 @@ export const AUSTRALIA = {
       description:
         "Capitale culturelle de l'Australie, Melbourne est réputée pour ses arcades victoriennes, sa scène café de renommée mondiale, ses restaurants et sa vie nocturne bouillonnante.",
       wikipedia: "Melbourne",
-      tags: ["Culture", "Gastronomie", "Art", "Ville"],
+      tags: ["Culture", "Gastronomie", "Art", "Ville", "Architecture"],
       mustSee: [
         { name: "Hosier Lane — street art", wikipedia: "Hosier_Lane" },
         { name: "Marché Queen Victoria", wikipedia: "Queen_Victoria_Market" },

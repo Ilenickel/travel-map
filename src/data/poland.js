@@ -82,7 +82,7 @@ export const POLAND = {
       description:
         "Cracovie est l'une des plus belles villes médiévales d'Europe : la place du marché (Rynek Główny, la plus grande place médiévale d'Europe), le château du Wawel dominant la Vistule, la vieille ville et Kazimierz (quartier juif historique) sont classés UNESCO depuis 1978. La ville a survécu à la WWII quasi intacte — un trésor rare en Europe centrale.",
       wikipedia: "Kraków",
-      tags: ["Médiéval", "UNESCO", "Château", "Juif"],
+      tags: ["Médiéval", "UNESCO", "Château", "Juif", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Rynek Główny — plus grande place médiévale d'Europe", wikipedia: "File:Empty_Old_Town_Market_Square_in_Kraków_during_the_COVID-19_pandemic_in_Poland,_April_2020.jpg" },
         { name: "Château royal du Wawel avec la crypte des rois de Pologne", wikipedia: "Wawel_Castle" },
@@ -112,7 +112,7 @@ export const POLAND = {
       description:
         "Varsovie est l'une des grandes surprises d'Europe : détruite à 85% pendant la WWII, elle a été reconstruite à l'identique par ses habitants à partir de tableaux du peintre Canaletto. Sa Vieille Ville (UNESCO) ressemble à celle du XVIIe siècle. Le musée de l'Insurrection de Varsovie est l'un des plus émouvants d'Europe. La ville est aussi un hub de techno-culture et de gastronomie.",
       wikipedia: "Warsaw",
-      tags: ["Reconstruction", "UNESCO", "Musée", "Modernité"],
+      tags: ["Reconstruction", "UNESCO", "Musée", "Modernité", "Ville", "Histoire", "Gastronomie"],
       mustSee: [
         { name: "Vieille Ville de Varsovie (UNESCO) — reconstruite à l'identique", wikipedia: "File:Warsaw Old Town, Warsaw, Poland - panoramio (69).jpg" },
         { name: "Musée de l'Insurrection de Varsovie (1944)", wikipedia: "File:Muzeum Powstania Warszawskiego 2014 018.JPG" },
@@ -132,6 +132,22 @@ export const POLAND = {
         { name: "Randonnée guidée dans la réserve stricte — bisons sauvages", wikipedia: "File:European bison (Bison bonasus) male Białowieza.jpg" },
         { name: "Parc national — arbres millénaires et silence absolu", wikipedia: "File:Smolany Sadek Aleja Lipowa 2024 01.jpg" },
         { name: "Village de Białowieża — maisons en bois podlachies", wikipedia: "File:Bialowieza beentree.jpg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Zakopane & Tatras",
+      region: "Petite-Pologne",
+      description:
+        "Surnommée la capitale d'hiver de la Pologne, Zakopane niche au pied des Tatras, plus haut massif du pays. Architecture montagnarde en bois, pistes de ski et sentiers vers lacs glaciaires en font une destination prisée. Le téléphérique du Kasprowy Wierch ouvre des panoramas saisissants.",
+      wikipedia: "Zakopane",
+      tags: ["Ski", "Randonnée", "Nature", "UNESCO"],
+      mustSee: [
+        { name: "Kasprowy Wierch — pistes et télécabine", wikipedia: "Kasprowy_Wierch" },
+        { name: "Vallée de Morskie Oko", wikipedia: "Morskie_Oko" },
+        { name: "Zakopane — ville de montagne", wikipedia: "Zakopane" },
+        { name: "Parc national des Tatras", wikipedia: "Tatra_National_Park,_Poland" },
+        { name: "Gubalówka — vue panoramique", wikipedia: "File:2020 Zakopane Gubałówka z Drogi pod Reglami, 1.jpg" },
       ],
     },
   ],

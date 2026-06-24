@@ -78,7 +78,7 @@ export const LIBERIA = {
       description:
         "Monrovia, fondée en 1822 et nommée en hommage au président américain Monroe, est la seule capitale africaine portant le nom d'un président américain. Son histoire liée aux esclaves affranchis est visible dans les vieux quartiers, et les environs offrent des plages sauvages et des lagunes.",
       wikipedia: "Monrovia",
-      tags: ["Capitale", "Histoire", "Afro-américain", "Culture"],
+      tags: ["Ville", "Histoire", "Afro-américain", "Culture"],
       mustSee: [
         { name: "Capitol Building du Libéria", wikipedia: "File:Liberian_Capitol_Building.jpg" },
         { name: "Providence Island — île fondatrice de Monrovia", wikipedia: "Providence_Island,_Liberia" },

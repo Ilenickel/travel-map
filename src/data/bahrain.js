@@ -62,7 +62,7 @@ export const BAHRAIN = {
       description:
         "Le Fort de Bahreïn, inscrit au patrimoine mondial de l'UNESCO, est un tell artificiel de 12 hectares constitué des couches successives de civilisations ayant occupé le site pendant 5 000 ans. On y discerne les vestiges de la cité de Qal'at al-Bahrain, ancienne capitale de la civilisation Dilmun, superposée sur des niveaux phéniciens, grecs, sassanides et islamiques. Le musée du site offre une synthèse remarquable de cette stratigraphie exceptionnelle.",
       wikipedia: "Qal'at_al-Bahrain",
-      tags: ["UNESCO", "Archéologie", "Dilmun", "Histoire"],
+      tags: ["UNESCO", "Archéologie", "Dilmun", "Histoire", "Architecture"],
       mustSee: [
         { name: "Tell de Qal'at — site archéologique multicouche de 5 000 ans d'histoire", wikipedia: "Qal'at_al-Bahrain" },
         { name: "Musée du Fort — artefacts Dilmun, grecs et islamiques", wikipedia: "Qal'at_al-Bahrain" },
@@ -105,7 +105,7 @@ export const BAHRAIN = {
       description:
         "Bahreïn est le premier pays du Moyen-Orient à avoir accueilli un Grand Prix de Formule 1, en 2004, et son circuit de Sakhir reste l'une des étapes les plus populaires du calendrier mondial. Manama, capitale modernisée, offre un mélange fascinant de quartier financier aux tours de verre et de souk authentique où se négocient encore or, épices et textiles. Le quartier de Muharraq, classé à l'UNESCO comme itinéraire de pêche aux perles, mérite une longue flânerie.",
       wikipedia: "File:Bahrain_International_Circuit,_November_2,_2017_SkySat_(cropped).jpg",
-      tags: ["Sport", "Modernité", "Culture", "Shopping"],
+      tags: ["Sport", "Modernité", "Culture", "Shopping", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Circuit de Sakhir — visite guidée de l'un des circuits les plus techniques du monde", wikipedia: "File:Bahrain_International_Circuit,_November_2,_2017_SkySat_(cropped).jpg" },
         { name: "Souq de Manama — marché couvert traditionnel aux tissus et or", wikipedia: "Manama" },

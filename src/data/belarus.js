@@ -44,7 +44,7 @@ export const BELARUS = {
       region: "Centre",
       description: "Minsk est une capitale unique au monde, reconstruite de zéro après sa quasi-destruction durant la Seconde Guerre mondiale, offrant ainsi l'un des ensembles architecturaux staliniens les plus purs et les plus impressionnants d'Europe. L'avenue de l'Indépendance, longue de 15 km, déroule ses palais néoclassiques et ses places immenses. Malgré le régime autoritaire, la ville possède une jeunesse culturellement vivante et une gastronomie étonnante.",
       wikipedia: "Minsk",
-      tags: ["Architecture soviétique", "Capitale", "Histoire", "Culture"],
+      tags: ["Architecture soviétique", "Ville", "Histoire", "Culture", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Avenue de l'Indépendance — boulevard stalinien monumental de 15 km", wikipedia: "File:Minsk Unabhängigkeitsprospekt 1.JPG" },
         { name: "Île des Larmes — mémorial aux soldats soviétiques morts en Afghanistan", wikipedia: "File:Island of Tears.jpg" },
@@ -72,7 +72,7 @@ export const BELARUS = {
       region: "Oblast de Minsk",
       description: "Le château de Nesvizh, également inscrit à l'UNESCO, est la résidence historique des princes Radziwill, l'une des familles nobles les plus puissantes de l'ancien Grand-Duché de Lituanie. Entouré d'un parc paysager de 90 hectares, ce château baroque du XVIe siècle est l'un des mieux préservés d'Europe de l'Est. Il forme avec Mir un circuit idéal pour les amateurs de patrimoine.",
       wikipedia: "Nesvizh_Castle",
-      tags: ["UNESCO", "Baroque", "Parc", "Noblesse"],
+      tags: ["UNESCO", "Baroque", "Parc", "Noblesse", "Architecture"],
       mustSee: [
         { name: "Château de Nesvizh — résidence baroque des Radziwill inscrite à l'UNESCO", wikipedia: "Nesvizh_Castle" },
         { name: "Église du Corpus Christi — première église baroque d'Europe orientale", wikipedia: "File:Corpus_Christi_Church,_Wroclaw_(P1180304).jpg" },
@@ -85,7 +85,7 @@ export const BELARUS = {
       region: "Oblast de Brest",
       description: "La forteresse de Brest est un mémorial poignant de la résistance soviétique lors de l'invasion nazie de juin 1941 ; sa visite est une expérience émotionnellement forte. Non loin de là, la forêt de Białowieża, partagée avec la Pologne et classée à l'UNESCO, abrite la dernière grande forêt primaire d'Europe et le plus grand troupeau de bisons européens sauvages. Ces deux sites forment l'excursion incontournable depuis Brest.",
       wikipedia: "Brest_Fortress",
-      tags: ["WWII", "Mémorial", "UNESCO", "Nature"],
+      tags: ["WWII", "Mémorial", "UNESCO", "Nature", "Randonnée"],
       mustSee: [
         { name: "Forteresse de Brest — mémorial héroïque de la résistance soviétique en 1941", wikipedia: "Brest_Fortress" },
         { name: "Forêt de Białowieża — dernière forêt primaire d'Europe, classée UNESCO", wikipedia: "Białowieża_Forest" },

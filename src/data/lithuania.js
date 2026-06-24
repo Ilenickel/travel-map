@@ -82,7 +82,7 @@ export const LITHUANIA = {
       description:
         "La vieille ville de Vilnius est la plus grande vieille ville baroque du nord de l'Europe (classée UNESCO) : 1 500 bâtiments des XVIe–XVIIIe siècles, 65 églises, la cathédrale néoclassique sur sa grande place et le quartier bohème d'Užupis (qui a déclaré son indépendance comme 'République' artistique en 1997). Le panorama depuis la colline de Gediminas est inoubliable.",
       wikipedia: "Vilnius",
-      tags: ["Baroque", "UNESCO", "Bohème", "Clochers"],
+      tags: ["Baroque", "UNESCO", "Bohème", "Clochers", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Vieille Ville baroque de Vilnius (UNESCO) — 65 églises", wikipedia: "Vilnius_Old_Town" },
         { name: "Tour de Gediminas — panorama sur la ville et ses clochers", wikipedia: "File:Gedimino pilis by Augustas Didzgalvis.jpg" },
@@ -97,7 +97,7 @@ export const LITHUANIA = {
       description:
         "La flèche de Courlande (UNESCO) est une langue de sable de 98km séparant le lagon de Courlande de la mer Baltique — la plus grande dune migratrice d'Europe (60m de haut). Les villages de pêcheurs colorés, les forêts de pins et les plages de sable blanc sont accessibles depuis Klaipėda. La partie lituanienne fait partie du parc national de Neringa.",
       wikipedia: "Curonian_Spit",
-      tags: ["Dunes", "UNESCO", "Baltique", "Pêcheurs"],
+      tags: ["Dunes", "UNESCO", "Baltique", "Pêcheurs", "Plage", "Nature", "Randonnée"],
       mustSee: [
         { name: "Dunes du Désert mort (Parnidis) — panorama depuis 52m", wikipedia: "File:Kurische Nehrung Parnidden-Düne 01.JPG" },
         { name: "Nida — village de pêcheurs avec maisons en bois colorées", wikipedia: "Nida,_Lithuania" },
@@ -111,7 +111,7 @@ export const LITHUANIA = {
       description:
         "Le château de l'île de Trakai (XIVe s.) est le château le plus photographié de Lituanie : brique rouge reflétée dans le lac Galvė, accessible par un pont de bois. La ville est aussi le berceau des Karaïtes — une communauté turcique de 300 personnes installée depuis 600 ans, qui perpétue la cuisine traditionnelle kibinas (chausson karaïte).",
       wikipedia: "Trakai_Island_Castle",
-      tags: ["Château sur l'eau", "Médiéval", "Lac", "Karaïtes"],
+      tags: ["Château sur l'eau", "Médiéval", "Lac", "Karaïtes", "Histoire", "Architecture"],
       mustSee: [
         { name: "Château de l'île de Trakai — brique rouge sur le lac Galvė", wikipedia: "Trakai_Island_Castle" },
         { name: "Kayak ou paddle sur le lac autour du château", wikipedia: "Trakai" },
@@ -126,7 +126,7 @@ export const LITHUANIA = {
       description:
         "Kaunas fut la capitale provisoire de la Lituanie entre les deux guerres (1920–1939) et concentre le plus bel ensemble Art Déco d'Europe du Nord pour cette période. La Laisvės Alėja (Boulevard de la Liberté, piétonne, 1,7km) est bordée de bâtiments interwar exceptionnels. Le musée Čiurlionis expose le peintre symboliste le plus important de Lituanie.",
       wikipedia: "Kaunas",
-      tags: ["Art Déco", "Interwar", "Musées", "Boulevard"],
+      tags: ["Art Déco", "Interwar", "Musées", "Boulevard", "Ville"],
       mustSee: [
         { name: "Laisvės Alėja — boulevard Art Déco de 1,7km (piéton)", wikipedia: "File:Laisvės alėja, Kaunas.jpg" },
         { name: "Musée Čiurlionis — peintre symboliste et compositeur lituanien", wikipedia: "File:M. K. Ciurlionis National Art Museum (2018).jpg" },

@@ -176,6 +176,38 @@ export const CHINA = {
         { name: "Téléphérique de Tianmen", wikipedia: "Tianmen_Mountain" },
       ],
     },
+    {
+      id: 6,
+      name: "Route de la Soie — Dunhuang & Gobi",
+      region: "Gansu / Xinjiang",
+      description:
+        "Aux confins du désert de Gobi, Dunhuang fut un carrefour majeur de la Route de la Soie. Ses grottes de Mogao abritent un trésor d'art bouddhique vieux de mille ans, tandis que les dunes chantantes encerclent l'oasis. Forteresses et passes antiques jalonnent cette frontière occidentale de la Chine.",
+      wikipedia: "Dunhuang",
+      tags: ["Désert", "Histoire", "UNESCO", "Architecture"],
+      mustSee: [
+        { name: "Grottes de Mogao", wikipedia: "Mogao_Caves" },
+        { name: "Dunes chantantes de Mingsha", wikipedia: "File:Mingsha_Mountain_and_Crescent_Moon_Spring_(54532735143).jpg" },
+        { name: "Yumen Pass", wikipedia: "File:Dunhuang.yumenguan.jpg" },
+        { name: "Jiayuguan — extrémité ouest de la Grande Muraille", wikipedia: "File:JiayuguanFort.jpg" },
+        { name: "Flaming Mountains", wikipedia: "File:Flaming Mountains (23367434013).jpg" },
+      ],
+    },
+    {
+      id: 7,
+      name: "Chengdu & Sichuan",
+      region: "Sichuan",
+      description:
+        "Chengdu est la capitale détendue du Sichuan, célèbre pour ses pandas géants et sa gastronomie épicée parmi les plus renommées de Chine. La ville sert de porte d'entrée vers les sommets enneigés du Sichuan et les vallées sauvages du plateau tibétain. Entre temples bouddhistes, thés en terrasse et hotpots fumants, Chengdu incarne le mode de vie décontracté de la Chine du Sud-Ouest.",
+      wikipedia: "Chengdu",
+      tags: ["Gastronomie", "Nature", "Culture", "UNESCO", "Randonnée"],
+      mustSee: [
+        { name: "Base de recherche sur les pandas géants", wikipedia: "File:Chengdu-pandas-d10.jpg" },
+        { name: "Mont Emei — pèlerinage bouddhiste UNESCO", wikipedia: "Mount_Emei" },
+        { name: "Dujiangyan", wikipedia: "File:都江堰南桥_5.jpg" },
+        { name: "Leshan — Grand Bouddha UNESCO", wikipedia: "Leshan_Giant_Buddha" },
+        { name: "Quartier de Kuanzhai Xiangzi — ruelles historiques", wikipedia: "File:Street_scene_-_Kuanzhai_Alleys_-_Chengdu,_China_-_DSC05311.jpg" },
+      ],
+    },
   ],
 
   costOfLiving: {

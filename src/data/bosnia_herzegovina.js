@@ -82,7 +82,7 @@ export const BOSNIA_HERZEGOVINA = {
       description:
         "Sarajevo est la seule ville d'Europe où l'on peut entendre l'appel à la prière depuis une mosquée ottomane et les cloches d'une cathédrale catholique au même moment : le quartier ottoman de Baščaršija (bazars, fontaines, artisans de cuivre), le coin de l'assassinat de l'Archiduc François-Ferdinand (1914 — déclencheur de la WWI), et la Bibliothèque Nationale incendiée en 1992 — Sarajevo porte l'histoire d'Europe entière.",
       wikipedia: "Sarajevo",
-      tags: ["Histoire", "Ottoman", "WWI", "Carrefour"],
+      tags: ["Histoire", "Ottoman", "WWI", "Carrefour", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Baščaršija — grand bazar ottoman du XVe siècle", wikipedia: "Baščaršija" },
         { name: "Pont Latin — lieu de l'assassinat de François-Ferdinand (28 juin 1914)", wikipedia: "Latin_Bridge" },
@@ -96,7 +96,7 @@ export const BOSNIA_HERZEGOVINA = {
       description:
         "Mostar est la perle de l'Herzégovine : le Stari Most ('Vieux Pont', UNESCO) est un arc de pierre ottoman de 1566 — détruit en 1993 et reconstruit pierre par pierre en 2004 — symbole de la réconciliation bosniaque. Les plongeons depuis le pont (24m de hauteur) par les Mostari (plongeurs locaux) sont un rituel. Le vieux quartier ottoman (Kujundžiluk) est parfaitement préservé.",
       wikipedia: "Mostar",
-      tags: ["UNESCO", "Pont ottoman", "Réconciliation", "Neretva"],
+      tags: ["UNESCO", "Pont ottoman", "Réconciliation", "Neretva", "Architecture"],
       mustSee: [
         { name: "Stari Most (Vieux Pont, UNESCO) — arc ottoman de 1566 reconstruit en 2004", wikipedia: "Stari_Most" },
         { name: "Plongeons des Mostari depuis le pont (24m, spectacle régulier)", wikipedia: "Mostar" },
@@ -111,7 +111,7 @@ export const BOSNIA_HERZEGOVINA = {
       description:
         "Les cascades de Kravice sont les chutes les plus impressionnantes des Balkans occidentaux : une demi-lune de 25m de haut sur 120m de large, avec une piscine naturelle turquoise au pied idéale pour la baignade. À proximité : le lac de Jablanica, les canyons de la Neretva, et Počitelj — village fortifié ottoman sur une colline au-dessus du fleuve.",
       wikipedia: "File:Waterfalls Kravica 5, Bosnia and Herzegovina.jpg",
-      tags: ["Cascades", "Baignade", "Canyon", "Ottoman"],
+      tags: ["Cascades", "Baignade", "Canyon", "Ottoman", "Nature", "Randonnée"],
       mustSee: [
         { name: "Cascades de Kravice — demi-cercle turquoise de 25m de haut", wikipedia: "File:Kravice-kosk9.jpg" },
         { name: "Počitelj — village fortifié ottoman du XVe siècle", wikipedia: "Počitelj" },
@@ -126,7 +126,7 @@ export const BOSNIA_HERZEGOVINA = {
       description:
         "Jahorina et Bjelašnica sont les deux stations de ski des Jeux Olympiques d'hiver de 1984 — les seuls JO jamais organisés dans un pays qui n'existe plus (Yougoslavie). Certaines infrastructures des JO sont encore visibles (bobsleigh de Trebević, maintenant accessible en télécabine). En été, les montagnes autour de Sarajevo offrent des randonnées dans des prairies alpines.",
       wikipedia: "Jahorina",
-      tags: ["JO 1984", "Ski", "Histoire", "Yougoslavie"],
+      tags: ["JO 1984", "Ski", "Histoire", "Yougoslavie", "Randonnée", "Nature"],
       mustSee: [
         { name: "Piste de bobsleigh des JO 1984 sur Trebević (maintenant sentier graffiti)", wikipedia: "Trebević" },
         { name: "Ski à Jahorina (1 900m) — ancienne piste olympique encore fonctionnelle", wikipedia: "Jahorina" },

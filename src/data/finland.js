@@ -82,7 +82,7 @@ export const FINLAND = {
       description:
         "Helsinki est une capitale compacte et élégante sur la mer Baltique : le quartier de Kallio avec ses bars et galeries branchées, le Design District, la cathédrale luthérienne blanche (place du Sénat), le marché couvert de Vanha Kauppahalli, et les îles accessibles en ferry (Suomenlinna, forteresse UNESCO). Une ville qui respire.",
       wikipedia: "Helsinki",
-      tags: ["Design", "Îles", "Architecture", "Café"],
+      tags: ["Design", "Îles", "Architecture", "Café", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Suomenlinna — forteresse maritime UNESCO sur une île", wikipedia: "Suomenlinna" },
         { name: "Sauna Löyly — sauna public avec plongée dans la mer Baltique", wikipedia: "Helsinki" },
@@ -97,7 +97,7 @@ export const FINLAND = {
       description:
         "Rovaniemi est officiellement le domicile du Père Noël selon les Nations Unies — Santa Claus Village se trouve exactement sur le cercle polaire arctique. Mais au-delà du mythe, c'est la capitale de la Laponie : base pour les aurores boréales, safaris en motoneige, raquettes à neige dans la forêt de pins, et expéditions dans les parcs nationaux voisins.",
       wikipedia: "File:Santa Land Rovaniemi Arctic Circle2.jpg",
-      tags: ["Père Noël", "Aurores", "Laponie", "Motoneige"],
+      tags: ["Père Noël", "Aurores", "Laponie", "Motoneige", "Ski"],
       mustSee: [
         { name: "Santa Claus Village — sur le cercle polaire exactement", wikipedia: "Santa_Claus_Village" },
         { name: "Safari en motoneige dans la forêt de Laponie", wikipedia: "File:Santa Land Rovaniemi Arctic Circle2.jpg" },
@@ -112,7 +112,7 @@ export const FINLAND = {
       description:
         "Le lac Saimaa est le plus grand lac de Finlande et le quatrième d'Europe : son labyrinthe de 14 000 îles est le paradis du canoë et du kayak. La ville de Savonlinna abrite le château médiéval d'Olavinlinna, théâtre du Festival d'Opéra de Savonlinna (juillet) — unique au monde. Le ringed seal de Saimaa (phoque lacustre) est une espèce endémique gravement menacée.",
       wikipedia: "Saimaa",
-      tags: ["Lacs", "Canoë", "Opéra", "Phoques"],
+      tags: ["Lacs", "Canoë", "Opéra", "Phoques", "Nature", "Randonnée"],
       mustSee: [
         { name: "Canoë sur le Saimaa (itinéraire 3–7 jours, île à île)", wikipedia: "Saimaa" },
         { name: "Château médiéval d'Olavinlinna à Savonlinna", wikipedia: "Olavinlinna" },

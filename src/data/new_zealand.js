@@ -100,7 +100,7 @@ export const NEW_ZEALAND = {
       description:
         "Le Fiordland est l'une des régions les plus sauvages et les plus spectaculaires du monde, un parc national classé au patrimoine mondial de l'UNESCO dominé par des fjords vertigineux taillés par les glaciers de l'ère glaciaire. Milford Sound, considéré comme la huitième merveille du monde par Rudyard Kipling, impressionne par ses falaises plongeant directement dans les eaux sombres et par ses cascades permanentes qui dévalent de 200 mètres. La Great Walk du Milford Track (54 km, 4 jours) est l'une des randonnées les plus légendaires de la planète.",
       wikipedia: "Fiordland_National_Park",
-      tags: ["UNESCO", "Fjord", "Randonnée", "Nature"],
+      tags: ["UNESCO", "Fjord", "Randonnée", "Nature", "Plage"],
       mustSee: [
         { name: "Milford Sound — croisière dans le fjord entre falaises et cascades", wikipedia: "Milford_Sound" },
         { name: "Milford Track — 4 jours de randonnée entre lacs et montagnes", wikipedia: "Milford_Track" },
@@ -115,7 +115,7 @@ export const NEW_ZEALAND = {
       description:
         "Rotorua est le cœur de la culture maorie en Nouvelle-Zélande et le principal site géothermique du pays, où l'odeur de soufre omniprésente rappelle que la ville est perchée sur une caldeira volcanique active. Les geysers du parc de Wai-O-Tapu, les bourbiers bouillonnants de Waiotapu et les piscines thermales de Polynesian Spa offrent un spectacle géologique unique. Les spectacles de haka, les hāngī (festins cuits dans la terre) et les marae (villages fortifiés maoris) font de Rotorua l'endroit idéal pour découvrir la culture des premiers habitants de la Nouvelle-Zélande.",
       wikipedia: "Rotorua",
-      tags: ["Géothermie", "Culture maorie", "Geysers", "Volcans"],
+      tags: ["Géothermie", "Culture maorie", "Geysers", "Volcans", "Gastronomie"],
       mustSee: [
         { name: "Wai-O-Tapu — parc géothermique aux couleurs fluo spectaculaires", wikipedia: "File:ChampagnePool-Wai-O-Tapu rotated MC.jpg" },
         { name: "Te Puia — géysers, sculpture sur bois et spectacle maori", wikipedia: "File:Te Puia, Rotorua - panoramio (11).jpg" },
@@ -130,7 +130,7 @@ export const NEW_ZEALAND = {
       description:
         "Queenstown est la capitale mondiale des sports d'aventure, perchée au bord du lac Wakatipu dans un écrin de montagnes spectaculaires qui font penser aux paysages du Seigneur des Anneaux. Saut à l'élastique, saut en parachute, rafting en eaux vives, jet-boat dans les gorges — Queenstown a inventé ou popularisé la plupart des activités d'aventure extrêmes modernes. En hiver, les stations de ski de Coronet Peak et The Remarkables font de la ville l'une des destinations ski les plus prisées de l'hémisphère sud.",
       wikipedia: "Queenstown,_New_Zealand",
-      tags: ["Aventure", "Montagne", "Ski", "Lac"],
+      tags: ["Aventure", "Montagne", "Ski", "Lac", "Ville"],
       mustSee: [
         { name: "Saut à l'élastique du Kawarau Bridge — premier au monde, 43 m", wikipedia: "Kawarau_Gorge_Suspension_Bridge" },
         { name: "Skyline Gondola — téléphérique et luge panoramique sur la ville", wikipedia: "File:Skyline Queenstown New Zealand - panoramio.jpg" },

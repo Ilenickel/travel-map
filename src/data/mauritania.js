@@ -105,7 +105,7 @@ export const MAURITANIA = {
       description:
         "Nouakchott, capitale née du désert en 1960, est une ville fascinante par ses contrastes : dunes qui avancent vers la mer, marché de poissons de Port de Pêche Artisanale où des pirogues déchargent des tonnes de poissons chaque matin, et quartiers de caravanes.",
       wikipedia: "Nouakchott",
-      tags: ["Capitale", "Marché", "Pêche", "Culture"],
+      tags: ["Ville", "Marché", "Pêche", "Culture"],
       mustSee: [
         { name: "Port de Pêche Artisanale — marché au poisson", wikipedia: "File:Nouakchott beach - fishing boat.jpg" },
         { name: "Musée national de Mauritanie", wikipedia: "File:NouakchottNationalMuseum1.jpg" },

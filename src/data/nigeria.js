@@ -82,7 +82,7 @@ export const NIGERIA = {
       description:
         "Lagos est la plus grande ville d'Afrique, une mégalopole de plus de 20 millions d'habitants débordant d'énergie, de culture et de contrastes. Le marché de Lekki, la plage de Bar Beach, le National Museum et la scène musicale afrobeats en font une destination unique au monde.",
       wikipedia: "Lagos",
-      tags: ["Ville", "Culture", "Marché", "Musique"],
+      tags: ["Ville", "Culture", "Marché", "Musique", "Plage", "Gastronomie"],
       mustSee: [
         { name: "Marché de Lekki — artisanat et tissus", wikipedia: "File:Shopping District - Lagos Nigeria.jpg" },
         { name: "Nike Art Gallery — art contemporain nigérian", wikipedia: "Nike_Art_Gallery" },
@@ -97,7 +97,7 @@ export const NIGERIA = {
       description:
         "Abuja, capitale fédérale planifiée depuis les années 1980, impressionne par son architecture moderne et ses monuments grandioses. La mosquée nationale, la cathédrale nationale et le rocher d'Aso Rock offrent un visage très différent du Nigéria.",
       wikipedia: "Abuja",
-      tags: ["Capitale", "Architecture", "Monuments", "Politique"],
+      tags: ["Ville", "Architecture", "Monuments", "Politique"],
       mustSee: [
         { name: "Aso Rock — rocher monolithique emblématique", wikipedia: "Aso_Rock" },
         { name: "Mosquée nationale du Nigéria", wikipedia: "File:AbujaNationalMosque.jpg" },
@@ -126,7 +126,7 @@ export const NIGERIA = {
       description:
         "Bénin City est le berceau de l'un des royaumes les plus sophistiqués d'Afrique précoloniale, célèbre pour ses bronzes et ivoires arrachés par les Britanniques en 1897. Le musée national de Bénin expose ce patrimoine exceptionnel, et certaines pièces commencent à être restituées.",
       wikipedia: "File:Areal view of the ancient city of Benin.jpg",
-      tags: ["Histoire", "Art", "Royaume", "Bronzes"],
+      tags: ["Histoire", "Art", "Royaume", "Bronzes", "UNESCO", "Architecture"],
       mustSee: [
         { name: "Musée national de Bénin — bronzes et ivoires", wikipedia: "File:Nat Museum, Benin.jpg" },
         { name: "Palais royal d'Oba — siège de la monarchie", wikipedia: "File:Royal_Palace_of_the_Oba_of_Benin_cropped.jpg" },

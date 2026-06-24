@@ -62,7 +62,7 @@ export const KUWAIT = {
       description:
         "Koweït City est une métropole moderne dont la silhouette est dominée par les emblématiques Tours du Koweït, symboles de la renaissance du pays après la guerre du Golfe de 1990–1991. Le front de mer (Corniche) offre une promenade agréable face au Golfe, jalonnée de sculptures et de jardins soignés. La ville combine centres commerciaux ultra-modernes et quartiers historiques où les traditions marchandes du Golfe demeurent vivaces.",
       wikipedia: "Kuwait_City",
-      tags: ["Architecture", "Modernité", "Culture", "Promenade"],
+      tags: ["Architecture", "Modernité", "Culture", "Promenade", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Tours du Koweït — symbole national aux sphères bleues caractéristiques", wikipedia: "Kuwait_Towers" },
         { name: "Grande Mosquée du Koweït — l'une des plus grandes de la péninsule arabique", wikipedia: "Grand_Mosque_of_Kuwait" },
@@ -92,7 +92,7 @@ export const KUWAIT = {
       description:
         "L'île Failaka, accessible en ferry depuis la capitale, est un site archéologique exceptionnel qui révèle les couches successives de civilisations ayant occupé le Golfe. Les fouilles y ont mis au jour des temples et fortifications grecs de l'époque d'Alexandre le Grand, superposés sur des vestiges Dilmun encore plus anciens. L'île, évacuée lors de l'invasion irakienne de 1990 et partiellement réhabilitée depuis, offre aussi de belles plages désertes.",
       wikipedia: "Failaka_Island",
-      tags: ["Archéologie", "Île", "Grèce antique", "Dilmun"],
+      tags: ["Archéologie", "Île", "Grèce antique", "Dilmun", "Histoire", "Architecture"],
       mustSee: [
         { name: "Temple d'Ikaros — sanctuaire grec de l'époque hellénistique", wikipedia: "File:Antiquities_of_Failaka_island_02.JPG" },
         { name: "Fort al-Qusur — fortification portugaise réutilisée par les Koweïtiens", wikipedia: "Failaka_Island" },

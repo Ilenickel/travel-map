@@ -99,7 +99,7 @@ export const TIMOR_LESTE = {
       description:
         "Dili est une capitale en pleine reconstruction, où l'histoire douloureuse de l'occupation indonésienne et la lutte pour l'indépendance sont omniprésentes dans ses monuments et musées. Le Musée de la Résistance retrace avec émotion et précision les 24 années d'occupation et le génocide qui a décimé un tiers de la population timoraise. Le front de mer animé, les marchés colorés et la chaleur légendaire des habitants font de Dili une étape émouvante et profondément humaine.",
       wikipedia: "Dili",
-      tags: ["Histoire", "Mémoire", "Culture", "Capitale"],
+      tags: ["Histoire", "Mémoire", "Culture", "Ville"],
       mustSee: [
         { name: "Musée de la Résistance — histoire de l'indépendance timoraise", wikipedia: "File:Painel pateo AMRT1.jpg" },
         { name: "Cimetière de Santa Cruz — massacre de 1991 et mémorial", wikipedia: "File:Santa Cruz Cemetery, 2023 (02).jpg" },

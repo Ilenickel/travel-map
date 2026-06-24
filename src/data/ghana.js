@@ -82,7 +82,7 @@ export const GHANA = {
       description:
         "Cape Coast Castle et Elmina Castle (tous deux UNESCO) sont les témoins les plus bouleversants de la traite atlantique : les \"Door of No Return\" par lesquelles 12 millions d'Africains ont embarqué pour l'esclavage. Une visite profondément émouvante et essentielle pour comprendre l'histoire de l'Afrique.",
       wikipedia: "Cape_Coast_Castle",
-      tags: ["Histoire", "UNESCO", "Émouvant", "Côte"],
+      tags: ["Histoire", "UNESCO", "Émouvant", "Côte", "Architecture"],
       mustSee: [
         { name: "Cape Coast Castle (UNESCO) — Door of No Return", wikipedia: "Cape_Coast_Castle" },
         { name: "Elmina Castle (UNESCO) — le plus ancien fort européen d'Afrique subsaharienne", wikipedia: "Elmina_Castle" },
@@ -97,7 +97,7 @@ export const GHANA = {
       description:
         "Kumasi est le cœur culturel du Ghana : le palais du roi Ashanti (Manhyia Palace), le grand marché Kejetia (le plus grand d'Afrique de l'Ouest), les ateliers de tissage du kente (tissu royal aux couleurs vives), et le musée national Ashanti. Une immersion dans la civilisation Ashanti, l'une des plus puissantes d'Afrique.",
       wikipedia: "Kumasi",
-      tags: ["Culture", "Artisanat", "Marché", "Royauté"],
+      tags: ["Culture", "Artisanat", "Marché", "Royauté", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Grand marché Kejetia — le plus grand d'Afrique de l'Ouest", wikipedia: "Kejetia_Market" },
         { name: "Tissage du kente à Bonwire", wikipedia: "Kente_cloth" },
@@ -127,7 +127,7 @@ export const GHANA = {
       description:
         "Accra est l'une des capitales les plus dynamiques d'Afrique : le quartier de Jamestown avec son phare colonial et ses boxeurs en plein air, le marché Makola, Labadi Beach la nuit, et une scène artistique contemporaine (galleries, street art) qui rayonne sur tout le continent. Berceau de l'afrobeats.",
       wikipedia: "Accra",
-      tags: ["Capitale", "Art", "Musique", "Plage"],
+      tags: ["Ville", "Art", "Musique", "Plage", "Gastronomie"],
       mustSee: [
         { name: "Kwame Nkrumah Memorial Park", wikipedia: "File:Kwame Nkrumah artworks at Kwame Nkrumah Mausoleum.jpg" },
         { name: "Labadi Beach — nuits afrobeats", wikipedia: "Labadi_Beach" },

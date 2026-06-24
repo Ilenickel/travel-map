@@ -84,7 +84,7 @@ export const VENEZUELA = {
       description:
         "La plus haute chute d'eau du monde (979 m, soit 15 fois Niagara) plonge depuis le sommet du Tepuy Auyán depuis des millénaires. Accessible en avion ou en pirogue depuis Ciudad Bolívar ou Canaima, c'est l'une des merveilles naturelles absolues de la planète.",
       wikipedia: "File:Salto del Angel-Canaima-Venezuela03.JPG",
-      tags: ["cascade", "unique", "nature", "tepuy"],
+      tags: ["Cascade", "Unique", "Nature", "Tepuy", "UNESCO"],
       mustSee: [
         { name: "Tepuy Auyán-tepui", wikipedia: "File:Auyan Tepui 01.JPG" },
         { name: "Lagune de Canaima", wikipedia: "File:Canaima 34.JPG" },
@@ -99,7 +99,7 @@ export const VENEZUELA = {
       description:
         "La Gran Sabana est un plateau mystique de savanes et tepuys (montagnes tabulaires) à la frontière brésilienne. Le Tepuy Roraima, dont le sommet perdu dans les nuages a inspiré Conan Doyle pour Le Monde Perdu, se trek en 6 jours depuis San Francisco de Yuruaní.",
       wikipedia: "Gran_Sabana",
-      tags: ["tepuys", "randonnée", "nature", "mystique"],
+      tags: ["Tepuys", "Randonnée", "Nature", "Mystique"],
       mustSee: [
         { name: "Tepuy Roraima", wikipedia: "Mount_Roraima" },
         { name: "Salto Kama", wikipedia: "File:Kamá Falls - Salto Kama (23495860840).jpg" },
@@ -114,7 +114,7 @@ export const VENEZUELA = {
       description:
         "Les Llanos vénézuéliens sont l'un des meilleurs endroits au monde pour observer la faune sauvage : anacondas, caïmans, capybaras, jaguars et plus de 400 espèces d'oiseaux. Les hatos (ranchs) proposent des safaris à cheval ou en 4x4.",
       wikipedia: "File:Los_Llanos_Colombia_by_David.png",
-      tags: ["safari", "faune", "jaguar", "nature"],
+      tags: ["Safari", "Faune", "Jaguar", "Nature"],
       mustSee: [
         { name: "Hato El Cedral", wikipedia: "Capybara" },
         { name: "Hato Piñero", wikipedia: "File:Hato Piñero 2002 001.jpg" },
@@ -129,7 +129,7 @@ export const VENEZUELA = {
       description:
         "L'archipel Los Roques est un parc national marin d'eaux turquoise et de plages de sable blanc à 160 km au nord de Caracas. Pêche à la mouche, plongée et voile dans un cadre préservé des Caraïbes.",
       wikipedia: "File:CayoCareneroLosRoquesVenezuelapic1.jpg",
-      tags: ["plages", "plongée", "île", "Caraïbes"],
+      tags: ["Plage", "Plongée", "Île", "Caraïbes", "Nature"],
       mustSee: [
         { name: "Cayo de Agua", wikipedia: "File:Cayo de Agua in Los Roques.jpg" },
         { name: "Francisquí", wikipedia: "File:Cayo Francisqui apacible.JPG" },

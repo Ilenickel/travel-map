@@ -65,7 +65,7 @@ export const SINGAPORE = {
       description:
         "Le chef-d'œuvre botanique de Singapour avec ses Supertrees luminescents, ses serres climatisées (Cloud Forest et Flower Dome) et ses passerelles aériennes. Un must absolu, surtout au crépuscule lors du Garden Rhapsody.",
       wikipedia: "Gardens_by_the_Bay",
-      tags: ["jardins", "architecture", "nature", "lumière"],
+      tags: ["jardins", "architecture", "Nature", "lumière"],
       mustSee: [
         { name: "Supertree Grove", wikipedia: "File:Supertree_Grove,_Gardens_by_the_Bay,_Singapore_-_20120712-02.jpg" },
         { name: "Cloud Forest (serre)", wikipedia: "File:Sri Lanka cloud forest, tall trees in fog.jpg" },
@@ -80,7 +80,7 @@ export const SINGAPORE = {
       description:
         "Chinatown, Little India (Tekka), Kampong Glam (quartier malais) et Clarke Quay coexistent à quelques stations de métro. Temples hindous, mosquées, pagodes et marchés de rue forment le cœur multiculturel de Singapour.",
       wikipedia: "Chinatown,_Singapore",
-      tags: ["culture", "gastronomie", "histoire", "religion"],
+      tags: ["Culture", "Gastronomie", "Histoire", "religion"],
       mustSee: [
         { name: "Little India (Tekka)", wikipedia: "Little_India,_Singapore" },
         { name: "Chinatown Heritage Centre", wikipedia: "File:Chinatown_Heritage_Centre.JPG" },
@@ -95,7 +95,7 @@ export const SINGAPORE = {
       description:
         "Les hawker centres sont des marchés de rue couverts et climatisés où des dizaines de cuisiniers proposent des spécialités à bas prix. Le Chicken Rice, le Laksa, le Char Kway Teow et le Chilli Crab y sont légendaires. Singapour compte plusieurs hawker centres au patrimoine UNESCO.",
       wikipedia: "Hawker_centre",
-      tags: ["gastronomie", "culture", "street food", "UNESCO"],
+      tags: ["Gastronomie", "Culture", "street food", "UNESCO"],
       mustSee: [
         { name: "Maxwell Food Centre", wikipedia: "Maxwell_Food_Centre" },
         { name: "Lau Pa Sat", wikipedia: "Lau_Pa_Sat" },
@@ -110,7 +110,7 @@ export const SINGAPORE = {
       description:
         "L'île-resort de Sentosa concentre plages, casino, Universal Studios et attractions familiales. Accessible à pied depuis Harbourfront, elle offre une parenthèse balnéaire en pleine métropole.",
       wikipedia: "Sentosa",
-      tags: ["plages", "divertissement", "famille", "resort"],
+      tags: ["Plage", "divertissement", "famille", "resort"],
       mustSee: [
         { name: "Universal Studios Singapore", wikipedia: "Universal_Studios_Singapore" },
         { name: "S.E.A. Aquarium", wikipedia: "File:S.E.A. Aquarium, Singapore, 20240206 1354 6519.jpg" },

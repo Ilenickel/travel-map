@@ -82,7 +82,7 @@ export const HUNGARY = {
       description:
         "Budapest est divisée en deux par le Danube : Buda avec son château royal (UNESCO), la pêcherie Halászbástya et les collines boisées ; Pest avec ses grands boulevards Art Nouveau, le Parlement néogothique (un des plus grands du monde) et les rues animées du VIIe arrondissement. Le panorama depuis la citadelle au coucher du soleil est inoubliable.",
       wikipedia: "Budapest",
-      tags: ["Danube", "UNESCO", "Parlement", "Art Nouveau"],
+      tags: ["Danube", "UNESCO", "Parlement", "Art Nouveau", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Parlement de Budapest — le plus grand d'Europe (UNESCO)", wikipedia: "Hungarian_Parliament_Building" },
         { name: "Château de Buda et quartier du château (UNESCO)", wikipedia: "Buda_Castle" },
@@ -112,7 +112,7 @@ export const HUNGARY = {
       description:
         "Le lac Balaton (594 km²) est le plus grand lac d'Europe centrale — surnommé 'la mer des Hongrois'. Sa rive nord (Badacsony) est couverte de vignobles volcaniques produisant les meilleurs vins blancs du pays ; la rive sud offre des plages de sable et des villages animés. L'abbaye de Tihany (XIe s.) sur sa presqu'île est l'une des plus anciennes de Hongrie.",
       wikipedia: "Lake_Balaton",
-      tags: ["Lac", "Vin", "Plage", "Abbaye"],
+      tags: ["Lac", "Vin", "Plage", "Abbaye", "Nature"],
       mustSee: [
         { name: "Abbaye bénédictine de Tihany (XIe s.) sur sa presqu'île", wikipedia: "Tihany_Abbey" },
         { name: "Vignobles de Badacsony — vins blancs sur sol volcanique", wikipedia: "Badacsony" },
@@ -127,7 +127,7 @@ export const HUNGARY = {
       description:
         "Tokaj (UNESCO) produit le 'vin des rois, roi des vins' selon Louis XIV : l'Aszú, un blanc liquoreux de noble pourriture parmi les plus grands vins du monde. La région viticole de Tokaj est classée patrimoine mondial. Eger, ville baroque sur fond de collines, est célèbre pour son 'Sang de Taureau' rouge et son château résistant aux Ottomans.",
       wikipedia: "Tokaj_wine_region",
-      tags: ["Vin", "UNESCO", "Château", "Baroque"],
+      tags: ["Vin", "UNESCO", "Château", "Baroque", "Gastronomie"],
       mustSee: [
         { name: "Caves de Tokaj — dégustation d'Aszú dans les caves à moisissures nobles", wikipedia: "File:Wine Cellar in Slovakian Tokaj.jpg" },
         { name: "Château d'Eger — résistance héroïque contre les Ottomans (1552)", wikipedia: "Eger_Castle" },

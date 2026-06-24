@@ -63,7 +63,7 @@ export const RUSSIA = {
       region: "Russie centrale",
       description: "Moscou est la mégalopole russe par excellence, capitale politique et économique du pays, où le Kremlin médiéval côtoie les gratte-ciels de la Cité internationale. La place Rouge, l'une des plus célèbres du monde, concentre cathédrale Saint-Basile-le-Bienheureux, mausolée de Lénine et GUM, l'immense galerie marchande impériale. Les stations du métro de Moscou, véritables palais souterrains ornés de marbres et de fresques, méritent à elles seules le déplacement.",
       wikipedia: "Moscow",
-      tags: ["Kremlin", "UNESCO", "Métropole", "Art"],
+      tags: ["Kremlin", "UNESCO", "Métropole", "Art", "Histoire", "Ville", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Kremlin de Moscou — forteresse médiévale inscrite à l'UNESCO", wikipedia: "File:Moscow 05-2012 Kremlin 22.jpg" },
         { name: "Cathédrale Saint-Basile-le-Bienheureux — chef-d'œuvre de l'architecture russe", wikipedia: "File:2019-07-25-3046-Moscow-Saint-Basil's-Cathedral.jpg" },
@@ -77,7 +77,7 @@ export const RUSSIA = {
       region: "Russie du Nord-Ouest",
       description: "Saint-Pétersbourg est la vitrine artistique et architecturale de la Russie, fondée par Pierre le Grand en 1703 sur les berges de la Neva comme « fenêtre sur l'Europe ». Le musée de l'Ermitage, logé dans le Palais d'Hiver, abrite l'une des plus grandes collections d'art au monde avec plus de trois millions d'œuvres. Les nuits blanches de juin, où le soleil ne se couche presque pas, confèrent à la ville une atmosphère féerique incomparable.",
       wikipedia: "Saint_Petersburg",
-      tags: ["Ermitage", "Baroque", "Nuits blanches", "Tsars"],
+      tags: ["Ermitage", "Baroque", "Nuits blanches", "Tsars", "Histoire", "Ville", "Architecture"],
       mustSee: [
         { name: "Musée de l'Ermitage — l'un des plus grands musées du monde au Palais d'Hiver", wikipedia: "Hermitage_Museum" },
         { name: "Peterhof — palais et jardins impériaux avec fontaines monumentales", wikipedia: "Peterhof_Palace" },
@@ -111,6 +111,22 @@ export const RUSSIA = {
         { name: "Transmongolien — variante via Oulan-Bator et Pékin", wikipedia: "Trans-Mongolian_Railway" },
         { name: "Irkoutsk — porte d'entrée pour le lac Baïkal", wikipedia: "Irkutsk" },
         { name: "Iekaterinbourg — ville de l'Oural, frontière Europe-Asie", wikipedia: "Yekaterinburg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Sochi & Caucase",
+      region: "Krasnodar / Caucase du Nord",
+      description:
+        "Station balnéaire sur la mer Noire, Sochi est aussi la porte du Caucase occidental et de ses sommets enneigés. Hôte des Jeux olympiques d'hiver 2014, elle conjugue plages, palmiers et domaines skiables modernes. Les parcs nationaux alentour, classés à l'UNESCO, offrent gorges, cascades et forêts.",
+      wikipedia: "Sochi",
+      tags: ["Ski", "Plage", "Nature", "UNESCO"],
+      mustSee: [
+        { name: "Rosa Khutor — station olympique", wikipedia: "File:RosaSki3.jpg" },
+        { name: "Parc national de Sotchi", wikipedia: "File:Перевал Аишхо 1.jpg" },
+        { name: "Front de mer de Sochi", wikipedia: "Sochi" },
+        { name: "Monts Fisht & Oshten", wikipedia: "Mount_Fisht" },
+        { name: "Agur — gorges et cascades", wikipedia: "File:VerhniyAgurskyWaterfall.JPG" },
       ],
     },
   ],

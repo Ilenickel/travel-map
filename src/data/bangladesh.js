@@ -81,7 +81,7 @@ export const BANGLADESH = {
       description:
         "Les Sundarbans constituent la plus grande forêt de mangroves du monde, classée au patrimoine mondial de l'UNESCO, partagée entre le Bangladesh et l'Inde. Cette forêt marécageuse abritant le célèbre tigre du Bengale, des dauphins du Gange et des crocodiles des marais s'étend sur plus de 10 000 km². Les excursions en bateau dans les chenaux sinueux entre les palétuviers offrent une immersion totale dans cet écosystème unique et préservé.",
       wikipedia: "Sundarbans",
-      tags: ["UNESCO", "Faune", "Mangrove", "Tigre"],
+      tags: ["UNESCO", "Faune", "Mangrove", "Tigre", "Safari", "Nature"],
       mustSee: [
         { name: "Kotka — zone centrale avec observation de la faune", wikipedia: "Sundarbans" },
         { name: "Hiron Point — phare et vue panoramique sur la mangrove", wikipedia: "File:Deep inside the mangrove forest.jpg" },
@@ -111,7 +111,7 @@ export const BANGLADESH = {
       description:
         "Dhaka est l'une des mégapoles les plus denses du monde, une ville qui mêle architecture moghole, marchés colorés et modernité chaotique dans une atmosphère unique. Le vieux Dhaka concentre des joyaux architecturaux comme la mosquée de Lalbagh et le palais Ahsan Manzil, construits sous les Moghols et les nawabs du Bengale. Naviguer en rickshaw dans les ruelles encombrées du quartier de Sadarghat, au bord du fleuve Buriganga, reste une expérience humaine intense et mémorable.",
       wikipedia: "Dhaka",
-      tags: ["Culture", "Histoire", "Architecture", "Mégapole"],
+      tags: ["Culture", "Histoire", "Architecture", "Mégapole", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Fort de Lalbagh — citadelle moghole du XVIIe siècle inachevée", wikipedia: "Lalbagh_Fort" },
         { name: "Palais d'Ahsan Manzil — musée rose au bord du fleuve", wikipedia: "Ahsan_Manzil" },
@@ -126,7 +126,7 @@ export const BANGLADESH = {
       description:
         "La région de Sylhet, dans le nord-est du Bangladesh, est couverte de collines verdoyantes tapissées de plantations de thé qui s'étendent à perte de vue dans une brume matinale enchanteresse. Srimangal, surnommée la « capitale du thé » du Bangladesh, offre des visites de plantations et la dégustation du célèbre thé à sept couches, une spécialité locale servie dans des verres où différentes densités de thé forment des strates colorées distinctes. Les réserves naturelles voisines abritent des gibbons et des oiseaux rares.",
       wikipedia: "Sylhet",
-      tags: ["Thé", "Nature", "Collines", "Gastronomie"],
+      tags: ["Thé", "Nature", "Collines", "Gastronomie", "Randonnée"],
       mustSee: [
         { name: "Srimangal — visite de plantations de thé et musée du thé", wikipedia: "File:Sreemangal tea garden 2017-08-20.jpg" },
         { name: "Réserve de Lawachara — forêt tropicale et gibbons agiles", wikipedia: "Lawachara_National_Park" },

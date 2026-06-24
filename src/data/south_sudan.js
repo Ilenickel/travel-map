@@ -71,7 +71,7 @@ export const SOUTH_SUDAN = {
       region: "Capitale",
       description: "Djouba est la capitale du pays le plus jeune du monde et une ville en construction permanente sur les rives du Nil Blanc. Malgré son infrastructure encore très limitée, elle offre un aperçu fascinant d'une nation en gestation, avec des marchés animés, un brassage culturel de dizaines d'ethnies et une énergie humaine palpable. Le Nil Blanc qui la traverse est navigable en bateau jusqu'en Ouganda.",
       wikipedia: "File:Juba City.jpg",
-      tags: ["Capitale", "Nil", "Culture", "Histoire"],
+      tags: ["Ville", "Nil", "Culture", "Histoire"],
       mustSee: [
         { name: "Rives du Nil Blanc — pirogues et vie au bord du fleuve", wikipedia: "White_Nile" },
         { name: "Mausolée de John Garang — fondateur de l'indépendance", wikipedia: "John_Garang" },

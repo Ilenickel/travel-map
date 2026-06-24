@@ -82,7 +82,7 @@ export const LATVIA = {
       description:
         "Riga possède le plus grand ensemble Art Nouveau d'Europe : 800 bâtiments ornés de masques, atlantes et ornements floraux, concentrés dans le quartier Alberta iela. La Vieille Ville médiévale (UNESCO) avec la cathédrale du Dôme (plus grand orgue des pays baltes), la Maison des Têtes Noires et les ruelles pavées est l'une des plus belles du nord de l'Europe.",
       wikipedia: "Riga",
-      tags: ["Art Nouveau", "UNESCO", "Hanséatique", "Orgue"],
+      tags: ["Art Nouveau", "UNESCO", "Hanséatique", "Orgue", "Ville", "Histoire", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Alberta iela — rue Art Nouveau, chef-d'œuvre de Mikhail Eisenstein", wikipedia: "File:Edificio_modernista_en_Alberta_iela_2a,_Riga,_Letonia,_2012-08-07,_DD_02.JPG" },
         { name: "Maison des Têtes Noires (XVe s.) reconstruite — façade dorée", wikipedia: "File:House of the Blackheads, Riga, Latvia-24June2009.jpg" },
@@ -111,7 +111,7 @@ export const LATVIA = {
       description:
         "Le parc national de Gauja est le plus grand de Lettonie : la rivière Gauja a taillé des falaises de grès rouge et des grottes dans la forêt. Sigulda, surnommée la 'Suisse lettone', est entourée de trois châteaux médiévaux (Sigulda, Turaida, Krimulda) en ruines dans la forêt. Un circuit de deux jours depuis Riga.",
       wikipedia: "Gauja_National_Park",
-      tags: ["Forêt", "Châteaux", "Grottes", "Randonnée"],
+      tags: ["Forêt", "Châteaux", "Grottes", "Randonnée", "Nature"],
       mustSee: [
         { name: "Château de Turaida (XIIIe s.) et tour ronde dans la forêt", wikipedia: "File:Turaida_Castle.JPG" },
         { name: "Grottes de grès de Gutmanis — plus grande grotte des pays baltes", wikipedia: "File:Gutmana ala3 8sep07.jpg" },

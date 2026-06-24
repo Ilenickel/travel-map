@@ -82,7 +82,7 @@ export const ZIMBABWE = {
       description:
         "Les chutes Victoria, classées UNESCO et 7e merveille naturelle, sont la plus grande cascade du monde par volume d'eau : 1,7 km de large, 108 m de haut, un rugissement audible à 40 km et une brume permanente. Le Devil's Pool permet de nager à 10 cm du précipice entre septembre et décembre.",
       wikipedia: "Victoria_Falls",
-      tags: ["UNESCO", "7e Merveille", "Cascade", "Aventure"],
+      tags: ["UNESCO", "7e Merveille", "Cascade", "Aventure", "Nature", "Randonnée"],
       mustSee: [ 
         { name: "Chutes Victoria", wikipedia: "File:Victoria Falls, Zimbabwe 01.jpg" },
         { name: "Devil's Pool — nager au bord de la chute (sep–déc)", wikipedia: "File:Visitors at the Devil's Pool, Victoria Falls.jpg" },
@@ -97,7 +97,7 @@ export const ZIMBABWE = {
       description:
         "Hwange est le plus grand parc national du Zimbabwe : 14 651 km² abritant 40 000 éléphants (la plus grande population de Zimbabwe), des meutes de lycaons peints (espèce menacée), des lions et des rhinocéros noirs. Les points d'eau artificiels concentrent la faune en saison sèche.",
       wikipedia: "Hwange_National_Park",
-      tags: ["Éléphants", "Safari", "Lycaons", "Big Five"],
+      tags: ["Éléphants", "Safari", "Lycaons", "Big Five", "Nature"],
       mustSee: [
         { name: "Troupeaux d'éléphants (40 000 dans le parc)", wikipedia: "African_bush_elephant" },
         { name: "Meutes de lycaons peints (painted dogs)", wikipedia: "African_wild_dog" },
@@ -112,7 +112,7 @@ export const ZIMBABWE = {
       description:
         "Le Grand Zimbabwe, classé UNESCO, est l'ensemble de ruines en pierre sèche le plus grand d'Afrique subsaharienne : une cité médiévale (XI–XV s.) qui fut capitale d'un empire commercant sur l'or, la taille et la complexité de ses murs défiant toute explication longtemps. Mystérieux et grandiose.",
       wikipedia: "Great_Zimbabwe",
-      tags: ["UNESCO", "Histoire", "Archéologie", "Mystère"],
+      tags: ["UNESCO", "Histoire", "Archéologie", "Mystère", "Architecture"],
       mustSee: [
         { name: "La Grande Enceinte (mur de 250 m, 11 m de haut)", wikipedia: "File:Great-Zimbabwe.jpg" },
         { name: "Colline du Roi (acropole royale)", wikipedia: "Great_Zimbabwe" },
@@ -126,7 +126,7 @@ export const ZIMBABWE = {
       description:
         "Les collines Matobo (UNESCO) sont un paysage de rochers balancés géants (kopjes) parsemé de peintures rupestres San parmi les plus belles d'Afrique. C'est aussi le seul endroit au monde où l'on peut tracker des rhinocéros blancs à pied, sans grillage, avec des guides.",
       wikipedia: "File:Matobo Road and kopje.jpg",
-      tags: ["UNESCO", "Art rupestre", "Rhinos", "Randonnée"],
+      tags: ["UNESCO", "Art rupestre", "Rhinos", "Randonnée", "Nature"],
       mustSee: [
         { name: "Tracking rhinos blancs à pied (sans barrière)", wikipedia: "White_rhinoceros" },
         { name: "Peintures rupestres San (parmi les plus belles d'Afrique)", wikipedia: "San_rock_art" },

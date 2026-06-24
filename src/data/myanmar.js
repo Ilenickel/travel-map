@@ -84,7 +84,7 @@ export const MYANMAR = {
       description:
         "La plaine de Bagan abrite plus de 2 000 temples et pagodes bouddhistes construits entre le Xe et XIIIe siècle. Au lever et coucher du soleil, ce paysage mystique depuis une montgolfière est l'une des expériences visuelles les plus saisissantes d'Asie.",
       wikipedia: "Bagan",
-      tags: ["temples", "archéologie", "montgolfière", "spiritualité"],
+      tags: ["temples", "archéologie", "montgolfière", "spiritualité", "UNESCO", "Architecture", "Désert"],
       mustSee: [
         { name: "Ananda Temple", wikipedia: "File:20160801 Ananda Temple Bagan Myanmar 6682.jpg" },
         { name: "Dhammayangyi Temple", wikipedia: "Dhammayangyi_Temple" },
@@ -99,7 +99,7 @@ export const MYANMAR = {
       description:
         "Le lac Inle est célèbre pour ses pêcheurs manœuvrant leur pirogue avec une seule jambe enroulée autour de la rame. Jardins flottants, monastères sur pilotis et villages de tisserands s'y reflètent dans des eaux calmes et brumeuses.",
       wikipedia: "Inle_Lake",
-      tags: ["lac", "culture", "pêcheurs", "artisanat"],
+      tags: ["lac", "Culture", "pêcheurs", "artisanat"],
       mustSee: [
         { name: "Pêcheurs à la jambe-rame", wikipedia: "File:20160805 Inle Lake 7434.jpg" },
         { name: "Phaung Daw Oo Pagoda", wikipedia: "File:Phaung Daw Oo Paya Pagoda.jpg" },
@@ -113,7 +113,7 @@ export const MYANMAR = {
       description:
         "Ancienne capitale royale, Mandalay est le centre culturel et bouddhiste de la Birmanie. Ses monastères en teck, le Palais Royal reconstruit, le Pont U Bein (le plus long en teck du monde) et les ateliers d'artisans en font une étape incontournable.",
       wikipedia: "Mandalay",
-      tags: ["histoire", "bouddhisme", "artisanat", "culture"],
+      tags: ["Histoire", "bouddhisme", "artisanat", "Culture", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Pont U Bein", wikipedia: "U_Bein_Bridge" },
         { name: "Mandalay Hill", wikipedia: "Mandalay_Hill" },
@@ -128,7 +128,7 @@ export const MYANMAR = {
       description:
         "L'ancienne capitale est une ville fascinante aux influences coloniales britanniques et bouddhistes. La Shwedagon Pagoda, couverte d'or, est le monument le plus sacré du Myanmar. Le quartier colonial est parmi les mieux préservés d'Asie du Sud-Est.",
       wikipedia: "Yangon",
-      tags: ["pagode", "colonial", "histoire", "culture"],
+      tags: ["pagode", "colonial", "Histoire", "Culture", "Ville", "Architecture"],
       mustSee: [
         { name: "Shwedagon Pagoda", wikipedia: "Shwedagon_Pagoda" },
         { name: "Bogyoke Aung San Market", wikipedia: "File:Bogyoke Aung San Market inside.jpg" },

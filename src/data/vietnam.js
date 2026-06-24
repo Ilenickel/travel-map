@@ -109,7 +109,7 @@ export const VIETNAM = {
       description:
         "Capitale millénaire avec son lac Hoan Kiem enchanté, ses 36 rues de l'ancien quartier marchand, les temples et pagodes, et le café à l'œuf incontournable.",
       wikipedia: "Hanoi",
-      tags: ["Ville", "Histoire", "Culture", "Gastronomie"],
+      tags: ["Ville", "Histoire", "Culture", "Gastronomie", "Architecture", "UNESCO"],
       mustSee: [
         { name: "Lac Hoan Kiem & Temple Ngoc Son", wikipedia: "File:Ngoc_Son_Temple,_Hanoi_(15)_(37780892234).jpg" },
         { name: "Vieux quartier des 36 rues", wikipedia: "Old_Quarter,_Hanoi" },
@@ -124,7 +124,7 @@ export const VIETNAM = {
       description:
         "Plus de 1 600 îles karstiques surgissant d'une mer d'émeraude. Croisière sur jonque traditionnelle, kayak dans les grottes et couchers de soleil magiques.",
       wikipedia: "File:Ha_Long_Bay_in_2019.jpg",
-      tags: ["Nature", "UNESCO", "Croisière", "Paysage"],
+      tags: ["Nature", "UNESCO", "Croisière", "Paysage", "Plage"],
       mustSee: [
         { name: "Croisière jonque 2 jours", wikipedia: "File:Ha_Long_Bay_in_2019.jpg" },
         { name: "Grotte de Hang Sung Sot", wikipedia: "File:Son_Doong_Cave_5.jpg" },
@@ -138,7 +138,7 @@ export const VIETNAM = {
       description:
         "Vieille ville commerçante classée UNESCO, aux ruelles illuminées de lanternes de soie colorées. Tailleurs sur mesure, cuisine locale délicieuse et plages à 4 km.",
       wikipedia: "File:10549-Hoi-An_(37621348460).jpg",
-      tags: ["Histoire", "UNESCO", "Artisanat", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Artisanat", "Gastronomie", "Architecture", "Plage"],
       mustSee: [
         { name: "Vieille ville aux lanternes", wikipedia: "File:10549-Hoi-An_(37621348460).jpg" },
         { name: "Pont japonais couvert", wikipedia: "File:2024_Hội_An_-_Japanese_Covered_Bridge_(Chùa_Cầu)_after_renovation_-_img_11.jpg" },

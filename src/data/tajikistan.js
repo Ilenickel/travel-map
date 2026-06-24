@@ -125,7 +125,7 @@ export const TAJIKISTAN = {
       description:
         "Douchanbé, capitale et seule véritable métropole du Tadjikistan, est une ville agréable et à taille humaine, encore marquée par l'architecture soviétique mais animée par une jeunesse dynamique. Son musée national, récemment agrandi, abrite l'une des plus grandes statues de Bouddha couché en Asie centrale (13 mètres), découverte sur le site de Ajina-Tepa. La ville est la porte d'entrée indispensable pour organiser et préparer un voyage vers le Pamir.",
       wikipedia: "Dushanbe",
-      tags: ["Capitale", "Musée", "Base de départ", "Soviétique"],
+      tags: ["Ville", "Musée", "Base de départ", "Soviétique"],
       mustSee: [
         { name: "Musée national du Tadjikistan — Bouddha couché et art sogdien", wikipedia: "File:National_Museum_of_Tajikistan_Национальный_музей_Таджикистана(0)_Осорхонаи_милли.jpg" },
         { name: "Parc Rudaki — promenade centrale ombragée aux fontaines animées", wikipedia: "File:Rudaki Park, Dushanbe, Tajikistan.JPG" },

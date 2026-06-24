@@ -97,7 +97,7 @@ export const KENYA = {
       description:
         "Le parc national d'Amboseli offre l'image iconique de l'Afrique : des éléphants marchant sous la silhouette enneigée du Kilimandjaro. Un des meilleurs parcs pour photographier les éléphants en très grands troupeaux.",
       wikipedia: "File:Kilimanjaro_from_Amboseli.jpg",
-      tags: ["Éléphants", "Kilimandjaro", "Safari", "Photographie"],
+      tags: ["Éléphants", "Kilimandjaro", "Safari", "Photographie", "Randonnée"],
       mustSee: [
         { name: "Éléphants devant le Kilimandjaro", wikipedia: "African_bush_elephant" },
         { name: "Lac Amboseli (flamants)", wikipedia: "Flamingo" },
@@ -127,7 +127,7 @@ export const KENYA = {
       description:
         "La côte kényane offre des plages paradisiaques aux eaux turquoise, des villes swahilies historiques (Lamu UNESCO) et une culture métissée arabo-africaine unique.",
       wikipedia: "Mombasa",
-      tags: ["Plage", "Histoire", "Culture", "Plongée"],
+      tags: ["Plage", "Histoire", "Culture", "Plongée", "UNESCO", "Architecture"],
       mustSee: [
         { name: "Fort Jésus de Mombasa (UNESCO)", wikipedia: "Fort_Jesus" },
         { name: "Lamu — vieille ville (UNESCO)", wikipedia: "Lamu" },

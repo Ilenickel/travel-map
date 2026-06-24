@@ -74,7 +74,7 @@ export const FIJI = {
       description:
         "Les îles Yasawa s'étendent sur 80 km au nord-ouest de Viti Levu, formant un chapelet de volcans endormis aux plages sauvages et aux eaux d'un bleu irréel. Cet archipel a longtemps été interdit aux touristes et conserve aujourd'hui encore une authenticité rare, avec des villages fidjiens traditionnels accueillant les voyageurs. Le Lagon Bleu rendu célèbre par le film éponyme se trouve sur l'île de Nanuya Levu.",
       wikipedia: "File:Yasawa Islands2.jpg",
-      tags: ["Plages", "Snorkeling", "Village", "Isolé"],
+      tags: ["Plages", "Snorkeling", "Village", "Isolé", "Plage", "Nature"],
       mustSee: [
         { name: "Blue Lagoon de Nanuya Levu — eaux turquoise d'une beauté légendaire", wikipedia: "File:Waya Lailai 1.jpg" },
         { name: "Grottes de Sawa-i-Lau — grottes calcaires aux eaux claires accessibles en plongée", wikipedia: "File:Limestone ceiling inside the Sawa-i-Lau Caves, Fiji.jpg" },
@@ -117,7 +117,7 @@ export const FIJI = {
       description:
         "Suva, la capitale cosmopolite, mêle architecture coloniale britannique, marchés animés et musées révélant la richesse culturelle fidjienne. Non loin, les Dunes de Sigatoka sont un site préhistorique et naturel remarquable : ces dunes de sable côtières révèlent des vestiges archéologiques lapita vieux de 2 600 ans. La Côte des Coraux entre Nadi et Suva offre des plages plus accessibles et des expériences culturelles authentiques.",
       wikipedia: "Suva",
-      tags: ["Capitale", "Culture", "Histoire", "Archéologie"],
+      tags: ["Ville", "Culture", "Histoire", "Archéologie", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Musée de Fidji — histoire mélanésienne et artefacts des guerriers cannibales", wikipedia: "Fiji_Museum" },
         { name: "Dunes de Sigatoka — parc national et site archéologique lapita", wikipedia: "File:SigatokaDunesFiji.jpg" },

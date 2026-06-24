@@ -90,7 +90,7 @@ export const ALGERIA = {
       description:
         "La Casbah d'Alger (UNESCO) est un labyrinthe de ruelles ottomanes en pente douce sur la colline surplombant la mer : palais des Deys, mosquées du XVIe siècle, maisons à patios intérieurs avec fontaines, et les marches de rue emblématiques des films de la bataille d'Alger. Un monde à part, vivant et authentique.",
       wikipedia: "Casbah_of_Algiers",
-      tags: ["UNESCO", "Casbah", "Ottoman", "Méditerranée"],
+      tags: ["UNESCO", "Casbah", "Ottoman", "Méditerranée", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Casbah d'Alger (UNESCO) — ruelles ottomanes du XVIe s.", wikipedia: "Casbah_of_Algiers" },
         { name: "Palais des Raïs (Bastion 23) — musée des arts et traditions", wikipedia: "File:Palais des Rais (Es'hine) - Alger.JPG" },
@@ -105,7 +105,7 @@ export const ALGERIA = {
       description:
         "Le Tassili n'Ajjer (UNESCO) est le plus grand site d'art rupestre préhistorique du monde : 15 000 gravures et peintures réparties sur un plateau de grès éreinté par l'érosion, représentant les animaux et les hommes du Sahara vert d'il y a 10 000 ans. Une forêt de rochers en formes fantastiques dans un désert absolument pur.",
       wikipedia: "File:Tassili Desert Algeria.jpg",
-      tags: ["UNESCO", "Sahara", "Art rupestre", "Préhistoire"],
+      tags: ["UNESCO", "Sahara", "Art rupestre", "Préhistoire", "Désert", "Nature"],
       mustSee: [
         { name: "Peintures rupestres de Sefar — le 'musée' préhistorique", wikipedia: "File:Eheren1.jpg" },
         { name: "Forêt de rochers de Tamrit — cyprès du Sahara millénaires", wikipedia: "File:Tassili n'Ajjer-Tamghit 02.jpg" },
@@ -120,7 +120,7 @@ export const ALGERIA = {
       description:
         "Djémila (UNESCO) et Timgad (UNESCO) sont deux cités romaines exceptionnellement bien conservées dans les montagnes algériennes : Timgad, construite en 100 apr. J.-C. par Trajan pour ses légions, étale sa grille parfaite dans la steppe ; Djémila, 'la belle' en arabe, est perchée sur un éperon rocheux avec forums, temples et arc de triomphe intacts.",
       wikipedia: "Timgad",
-      tags: ["UNESCO", "Romain", "Antique", "Montagne"],
+      tags: ["UNESCO", "Romain", "Antique", "Montagne", "Architecture"],
       mustSee: [
         { name: "Timgad (UNESCO) — cité romaine de Trajan aux plans parfaits", wikipedia: "File:Timgad Ruins Panorama.jpg" },
         { name: "Djémila (UNESCO) — forum et arc de triomphe sur un éperon", wikipedia: "Djémila" },
@@ -135,7 +135,7 @@ export const ALGERIA = {
       description:
         "Le Hoggar (Ahaggar) est le cœur montagneux et spirituel du Sahara algérien : des volcans et des pics de granite rouge formant un paysage minéral et désertique à 3 000m d'altitude, l'ermitage du père de Foucauld sur l'Assekrem (lever de soleil légendaire), et les campements Touaregs aux tentes bleues. Une des plus grandes solitudes au monde.",
       wikipedia: "File:Le Hoggar, Massif de l'Attekor.png",
-      tags: ["Sahara", "Touaregs", "Montagne", "Désert"],
+      tags: ["Sahara", "Touaregs", "Montagne", "Désert", "Randonnée", "Nature"],
       mustSee: [
         { name: "Assekrem — lever de soleil sur le Hoggar (2 780m)", wikipedia: "Assekrem" },
         { name: "Ermitage du Père de Foucauld (1905)", wikipedia: "Charles_de_Foucauld" },

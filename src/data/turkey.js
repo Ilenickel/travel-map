@@ -90,7 +90,7 @@ export const TURKEY = {
       description:
         "Seule ville au monde à cheval sur deux continents. La Mosquée Bleue, Sainte-Sophie, le Grand Bazar et le Bosphore en font une des villes les plus fascinantes au monde.",
       wikipedia: "Istanbul",
-      tags: ["Histoire", "Culture", "Gastronomie", "Ville"],
+      tags: ["Histoire", "Culture", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         { name: "Sainte-Sophie", wikipedia: "Hagia_Sophia" },
         { name: "Mosquée Bleue (Sultan Ahmet)", wikipedia: "Blue_Mosque,_Istanbul" },
@@ -105,7 +105,7 @@ export const TURKEY = {
       description:
         "Paysage lunaire de cheminées de fée sculptées par l'érosion, souterraines et habitées depuis l'Antiquité. Les montgolfières au lever du soleil sont l'une des plus belles expériences de voyage.",
       wikipedia: "Cappadocia",
-      tags: ["Nature", "Paysage", "Histoire", "Montgolfière"],
+      tags: ["Nature", "Paysage", "Histoire", "Montgolfière", "Randonnée"],
       mustSee: [
         { name: "Vol en montgolfière au lever du soleil", wikipedia: "Cappadocia" },
         { name: "Vallée de Göreme", wikipedia: "Göreme" },
@@ -120,7 +120,7 @@ export const TURKEY = {
       description:
         "Les ruines les mieux conservées de l'Antiquité gréco-romaine, avec la bibliothèque de Celsus, aux côtés des plages de Bodrum et de Kuşadası.",
       wikipedia: "Ephesus",
-      tags: ["Archéologie", "Histoire", "Plage", "UNESCO"],
+      tags: ["Archéologie", "Histoire", "Plage", "UNESCO", "Architecture"],
       mustSee: [
         { name: "Bibliothèque de Celsus — Éphèse", wikipedia: "Library_of_Celsus" },
         { name: "Maison de la Vierge Marie", wikipedia: "House_of_the_Virgin_Mary" },

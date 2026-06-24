@@ -99,7 +99,7 @@ export const NEPAL = {
       description:
         "Le tour des Annapurna (12–21 jours) est considéré comme l'un des plus beaux treks du monde. Le col du Thorong La (5 416 m) offre des paysages inoubliables entre paysages sub-tropicaux et plateau tibétain. Pokhara est la ville de départ.",
       wikipedia: "Annapurna_Circuit",
-      tags: ["trekking", "Himalaya", "altitude", "nature"],
+      tags: ["trekking", "Himalaya", "altitude", "Nature"],
       mustSee: [
         { name: "Thorong La Pass (5 416 m)", wikipedia: "Thorong_La" },
         { name: "Muktinath Temple", wikipedia: "Muktinath" },

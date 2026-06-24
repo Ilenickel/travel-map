@@ -82,7 +82,7 @@ export const ALBANIA = {
       description:
         "Berat (UNESCO) est l'une des mieux préservées des villes ottomanes des Balkans : ses maisons blanches aux centaines de fenêtres identiques s'étagent sur la colline sous la citadelle médiévale du XIIIe siècle. Le quartier de Mangalem (côté musulman) et Gorica (côté chrétien) se font face de part et d'autre de la rivière Osum. Un musée vivant de l'architecture ottomane.",
       wikipedia: "Berat",
-      tags: ["UNESCO", "Ottoman", "Citadelle", "Fenêtres"],
+      tags: ["UNESCO", "Ottoman", "Citadelle", "Fenêtres", "Histoire", "Architecture"],
       mustSee: [
         { name: "Citadelle de Berat (Kalaja) — habitée depuis le IVe s. av. J.-C.", wikipedia: "Berat_Castle" },
         { name: "Quartier de Mangalem — maisons ottomanes aux cents fenêtres", wikipedia: "Berat" },
@@ -111,7 +111,7 @@ export const ALBANIA = {
       description:
         "La Riviera albanaise (de Vlorë à Sarandë) est la côte méditerranéenne la moins connue d'Europe : eaux ioniques turquoise, falaises calcaires, plages de galets et de sable, villages de pêcheurs accrochés à la falaise (Dhermi, Himara, Lukova). La route panoramique de la Riviera (SH8) est l'une des plus belles d'Europe et reste peu fréquentée.",
       wikipedia: "File:Bunec beach Albanian Riviera.jpg",
-      tags: ["Côte", "Turquoise", "Panorama", "Villages"],
+      tags: ["Côte", "Turquoise", "Panorama", "Villages", "Plage", "Nature"],
       mustSee: [
         { name: "Plage de Ksamil — 4 îlots dans l'eau turquoise face à Corfou", wikipedia: "File:Bunec beach Albanian Riviera.jpg" },
         { name: "Route panoramique SH8 Vlorë–Sarandë — vue sur les îles grecques", wikipedia: "File:Road construction at Albanian Riviera.jpg" },
@@ -126,12 +126,28 @@ export const ALBANIA = {
       description:
         "Les Alpes albanaises (aussi appelées 'Montagnes Maudites') au nord de l'Albanie sont l'une des zones les plus sauvages des Balkans : le parc national de Valbonë avec ses pics de 2 700m, la vallée de Theth (village isolé avec sa tour de guet du Bektachisme), et le trek Valbonë-Theth (6h) sont parmi les plus beaux de la région.",
       wikipedia: "File:Albanian Alps from Air.jpg",
-      tags: ["Randonnée", "Alpes", "Nature", "Isolé"],
+      tags: ["Randonnée", "Alpes", "Nature", "Isolé", "Ski"],
       mustSee: [
         { name: "Trek Valbonë–Theth (6h) — passage montagneux à 1 800m", wikipedia: "File:Albanian Alps from Air.jpg" },
         { name: "Cascade de Theth (Grunas) — 30m dans la forêt de pins", wikipedia: "File:2024-10-14 Theth National Park 18.jpg" },
         { name: "Kulla (tour de guet) de Theth — architecture du Kanun albanais", wikipedia: "File:Kisha e Thethit - 2018 (8).jpg" },
         { name: "Lac de Koman — traversée en ferry dans un paysage de fjord", wikipedia: "File:Ferry Berisha on Lake Komani, September 2022 05.jpg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Tirana",
+      region: "Centre de l'Albanie",
+      description:
+        "Capitale colorée et en pleine effervescence, Tirana surprend par ses façades multicolores et son énergie jeune. Entre vestiges communistes reconvertis en musées, château ottoman et marchés animés, la ville raconte l'histoire mouvementée de l'Albanie. Cafés branchés et gastronomie locale rythment ses journées.",
+      wikipedia: "Tirana",
+      tags: ["Ville", "Architecture", "Gastronomie", "Culture"],
+      mustSee: [
+        { name: "Place Skanderbeg", wikipedia: "Skanderbeg_Square" },
+        { name: "Bunk'Art — musée dans un bunker", wikipedia: "File:Bunk'Art 1 Entrance.jpg" },
+        { name: "Château de Tirana", wikipedia: "File:Kalaja e Tiranës.jpg" },
+        { name: "Bloc (Le Bloc) — architecture communiste", wikipedia: "File:Former_Enver_Hoxha_House.jpg" },
+        { name: "Marché de Pazari i Ri", wikipedia: "File:New Bazaar (Pazari i Ri), Tirana, Albania.jpg" },
       ],
     },
   ],

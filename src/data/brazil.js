@@ -111,7 +111,7 @@ export const BRAZIL = {
       description:
         "La Cidade Maravilhosa est la carte postale du Brésil avec le Christ Rédempteur, le Pain de Sucre et les plages de Copacabana et Ipanema. Son carnaval annuel est le plus grand spectacle du monde.",
       wikipedia: "Rio_de_Janeiro",
-      tags: ["plages", "culture", "carnaval", "panorama"],
+      tags: ["Plage", "Culture", "Carnaval", "Panorama"],
       mustSee: [
         { name: "Christ Rédempteur", wikipedia: "Christ_the_Redeemer_(statue)" },
         { name: "Pain de Sucre", wikipedia: "Sugarloaf_Mountain" },
@@ -126,7 +126,7 @@ export const BRAZIL = {
       description:
         "Salvador est le cœur de la culture afro-brésilienne : Pelourinho (quartier colonial UNESCO), candomblé, capoeira et musique omniprésente. La cuisine baiana est l'une des plus savoureuses du pays.",
       wikipedia: "Salvador,_Bahia",
-      tags: ["culture", "histoire", "musique", "afro-brésilien"],
+      tags: ["Culture", "Histoire", "Musique", "Afro-Brésilien"],
       mustSee: [
         { name: "Pelourinho", wikipedia: "File:Pelourinho.png" },
         { name: "Igreja do Bonfim", wikipedia: "File:Igreja do Senhor Jesus do Bonfim - Portalegre - Portugal (52894055751).jpg" },
@@ -141,7 +141,7 @@ export const BRAZIL = {
       description:
         "La plus grande forêt tropicale du monde s'explore depuis Manaus. Les lodges en pleine jungle, les pirogues sur le Rio Negro et la rencontre des eaux (Negro + Solimões) sont des expériences inoubliables.",
       wikipedia: "Amazon_rainforest",
-      tags: ["nature", "jungle", "faune", "écotourisme"],
+      tags: ["Nature", "Jungle", "Faune", "Écotourisme"],
       mustSee: [
         { name: "Rencontre des eaux", wikipedia: "Meeting_of_Waters" },
         { name: "Teatro Amazonas", wikipedia: "Amazon_Theatre" },
@@ -156,7 +156,7 @@ export const BRAZIL = {
       description:
         "Archipel volcanique à 350 km des côtes, Fernando de Noronha est l'un des plus beaux endroits pour la plongée au monde. Dauphins, tortues marines et eaux cristallines bleu-vert dans un cadre préservé.",
       wikipedia: "Fernando_de_Noronha",
-      tags: ["plongée", "île", "faune marine", "nature"],
+      tags: ["Plongée", "Île", "Faune Marine", "Nature"],
       mustSee: [
         { name: "Praia do Sancho", wikipedia: "File:Praia_do_Sancho_Noronha.JPG" },
         { name: "Baie des Dauphins", wikipedia: "File:Baia dos Golfinhos - Pipa.jpg" },
@@ -171,12 +171,28 @@ export const BRAZIL = {
       description:
         "Bonito est réputée pour ses rivières aux eaux translucides où l'on nage avec des poissons colorés. Le Pantanal voisin est la plus grande zone humide du monde et offre des observations de jaguars inégalées.",
       wikipedia: "Bonito,_Mato_Grosso_do_Sul",
-      tags: ["nature", "plongée snorkeling", "faune", "jaguar"],
+      tags: ["Nature", "Plongée Snorkeling", "Faune", "Jaguar"],
       mustSee: [
         { name: "Rio da Prata", wikipedia: "File:Rio_de_la_Plata_BA_2.JPG" },
         { name: "Pantanal", wikipedia: "Pantanal" },
         { name: "Gruta do Lago Azul", wikipedia: "File:Gruta_da_Lagoa_Azul.jpg" },
         { name: "Estrada Parque (Pantanal)", wikipedia: "Pantanal" },
+      ],
+    },
+    {
+      id: 6,
+      name: "São Paulo",
+      region: "São Paulo",
+      description:
+        "Plus grande métropole d'Amérique du Sud, São Paulo est le cœur économique et culturel du Brésil. Musées de classe mondiale, scène gastronomique bouillonnante et street art foisonnant en font une capitale urbaine vibrante. Sa vie nocturne et sa diversité cosmopolite ne dorment jamais.",
+      wikipedia: "São_Paulo",
+      tags: ["Ville", "Gastronomie", "Architecture", "Culture"],
+      mustSee: [
+        { name: "Museu de Arte de São Paulo — MASP", wikipedia: "File:MASP Brazil.jpg" },
+        { name: "Ibirapuera — Central Park brésilien", wikipedia: "Ibirapuera_Park" },
+        { name: "Vila Madalena & street art", wikipedia: "File:Street art at Vila Madalena, Sao Paulo 12.jpg" },
+        { name: "Mercado Municipal", wikipedia: "File:Mercado Municipal - ampla.jpg" },
+        { name: "Paulista Avenue & vie nocturne", wikipedia: "File:A_building_with_antenna_and_its_reflection_at_Paulista,_Sao_Paulo.jpg" },
       ],
     },
   ],

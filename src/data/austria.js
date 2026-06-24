@@ -97,7 +97,7 @@ export const AUSTRIA = {
       description:
         "Vienne est une ville impériale d'une élégance incomparable, dont les fastes baroques des Habsbourg sont préservés dans chaque rue du premier arrondissement. Le Kunsthistorisches Museum, l'Opéra d'État, le Palais de Schönbrunn et la Sécession viennoise illustrent la densité culturelle unique de la capitale. Les cafés viennois — Landtmann, Schwarzenberg, Central — sont à eux seuls une institution, inscrits au patrimoine culturel immatériel de l'UNESCO.",
       wikipedia: "Vienna",
-      tags: ["Culture", "Musique", "Art", "Histoire", "Gastronomie"],
+      tags: ["Culture", "Musique", "Art", "Histoire", "Gastronomie", "Ville"],
       mustSee: [
         {
           name: "Palais de Schönbrunn — résidence d'été des Habsbourg avec 1 441 pièces",
@@ -124,7 +124,7 @@ export const AUSTRIA = {
       description:
         "Ville natale de Mozart et décor des tournages de La Mélodie du Bonheur, Salzbourg est l'une des plus belles villes baroques d'Europe. Son centre historique, entièrement classé au patrimoine mondial de l'UNESCO, est dominé par la forteresse de Hohensalzburg surplombant l'Untersberg et la Salzach. Le Festival de Salzbourg, chaque été, est l'un des événements musicaux les plus prestigieux au monde.",
       wikipedia: "Salzburg",
-      tags: ["Patrimoine UNESCO", "Musique", "Baroque", "Nature", "Culture"],
+      tags: ["UNESCO", "Musique", "Baroque", "Nature", "Culture", "Ville"],
       mustSee: [
         {
           name: "Forteresse de Hohensalzburg — château médiéval le mieux conservé d'Europe centrale",
@@ -151,7 +151,7 @@ export const AUSTRIA = {
       description:
         "La région du Salzkammergut regroupe une soixantaine de lacs alpins d'un bleu vert spectaculaire, nichés entre des sommets calcaires. Hallstatt, village lacustre emblématique, est souvent qualifié de plus beau village du monde et a même inspiré un village entier en Chine. Randonnées, baignades, bateau à voile et mines de sel constituent les attraits de cette région classée au patrimoine mondial de l'UNESCO.",
       wikipedia: "Salzkammergut",
-      tags: ["Nature", "Patrimoine UNESCO", "Randonnée", "Lac", "Villages"],
+      tags: ["Nature", "UNESCO", "Randonnée", "Lac", "Villages"],
       mustSee: [
         {
           name: "Hallstatt — village lacustre inscrit au patrimoine mondial",

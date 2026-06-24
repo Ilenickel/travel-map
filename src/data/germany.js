@@ -89,7 +89,7 @@ export const GERMANY = {
       description:
         "Berlin est une ville en perpétuelle réinvention, marquée par les cicatrices de l'Histoire et animée d'une créativité artistique unique en Europe. Le vestige du Mur, le Reichstag, l'île aux Musées et le mémorial de l'Holocauste témoignent d'un passé dense et complexe. La capitale allemande est aussi réputée pour sa scène musicale underground, ses galeries d'art contemporain et sa vie nocturne légendaire.",
       wikipedia: "Berlin",
-      tags: ["Histoire", "Culture", "Art", "Musées", "Vie nocturne"],
+      tags: ["Histoire", "Culture", "Art", "Musées", "Vie nocturne", "Ville", "Architecture"],
       mustSee: [
         {
           name: "Mur de Berlin & Checkpoint Charlie — symboles de la Guerre froide",
@@ -116,7 +116,7 @@ export const GERMANY = {
       description:
         "La Bavière est la région la plus touristique d'Allemagne, avec Munich comme capitale festive et culturelle. La Marienplatz et la Residenz témoignent de la splendeur des Wittelsbach, tandis que les Alpes bavaroises toutes proches offrent randonnées et stations de ski. Le château de Neuschwanstein, perché sur son rocher, est l'un des sites les plus visités d'Europe.",
       wikipedia: "File:Bavaria Statue and Ruhmeshalle Munich, April 2019 -01.jpg",
-      tags: ["Culture", "Alpes", "Gastronomie", "Châteaux", "Oktoberfest"],
+      tags: ["Culture", "Alpes", "Gastronomie", "Châteaux", "Oktoberfest", "Ski", "Ville"],
       mustSee: [
         {
           name: "Château de Neuschwanstein — château de conte de fées de Louis II de Bavière",
@@ -143,7 +143,7 @@ export const GERMANY = {
       description:
         "Le Rhin romantique entre Bingen et Coblence offre l'un des paysages les plus pittoresques d'Europe, avec ses vignobles en terrasses, ses châteaux médiévaux perchés et ses villages aux maisons à colombages. La Loreley, rocher légendaire surplombant le fleuve, cristallise toute la poésie de cette région inscrite au patrimoine mondial de l'UNESCO. Une croisière fluviale permet d'apprécier ce panorama unique.",
       wikipedia: "Rhine_Gorge",
-      tags: ["Nature", "Vin", "Patrimoine UNESCO", "Randonnée", "Croisière"],
+      tags: ["Nature", "Vin", "UNESCO", "Randonnée", "Croisière", "Architecture"],
       mustSee: [
         {
           name: "Rocher de la Loreley — site légendaire aux 130 m de hauteur sur le Rhin",

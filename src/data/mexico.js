@@ -142,6 +142,22 @@ export const MEXICO = {
         { name: "Cenote Ik Kil", wikipedia: "Ik_Kil" },
       ],
     },
+    {
+      id: 5,
+      name: "Baja California & Cuivre",
+      region: "Baja California / Chihuahua",
+      description:
+        "La péninsule de Basse-Californie et le nord mexicain offrent des paysages désertiques spectaculaires, du Canyon du Cuivre, plus vaste que le Grand Canyon, aux lagunes où viennent mettre bas les baleines grises. Missions coloniales, déserts et mer de Cortés composent une nature brute et préservée.",
+      wikipedia: "Copper_Canyon",
+      tags: ["Désert", "Nature", "Randonnée", "UNESCO"],
+      mustSee: [
+        { name: "Canyon du Cuivre", wikipedia: "Copper_Canyon" },
+        { name: "Aire de refuge des baleines de Basse-Californie", wikipedia: "File:Islands_and_Protected_Areas_of_the_Gulf_of_California-113600.jpg" },
+        { name: "Cabo San Lucas", wikipedia: "File:Sunset in Cabo San Lucas, Mexico.jpg" },
+        { name: "Mission de San Francisco Javier", wikipedia: "File:San javier mission 3 (39760880685).jpg" },
+        { name: "La Paz & balades en kayak", wikipedia: "File:Vista aérea del Malecón de La Paz, Baja California 15.jpg" },
+      ],
+    },
   ],
 
   costOfLiving: {

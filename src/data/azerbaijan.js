@@ -63,7 +63,7 @@ export const AZERBAIJAN = {
       description:
         "Capitale fascinante où cohabitent la tour de la Vierge (XIIe s.) et les Flame Towers futuristes, la vieille ville médiévale UNESCO et les boutiques Chanel de l'avenue Neftçiler.",
       wikipedia: "File:Baku city at night.jpg",
-      tags: ["Ville", "Architecture", "Histoire", "Culture"],
+      tags: ["Ville", "Architecture", "Histoire", "Culture", "Gastronomie", "Plage"],
       mustSee: [
         { name: "Flame Towers — skyline de Bakou", wikipedia: "Flame_Towers" },
         { name: "Tour de la Vierge (Qız Qalası)", wikipedia: "File:Baku Maiden Tower.jpg" },
@@ -78,7 +78,7 @@ export const AZERBAIJAN = {
       description:
         "Ancienne capitale des khans, Sheki est l'une des plus belles villes historiques du Caucase, avec son caravansérail ottoman et le palais aux vitraux de mosaïque incomparables.",
       wikipedia: "File:Şəki,_Azerbaijan_-_overview_1987.jpg",
-      tags: ["Histoire", "Architecture", "Forêts"],
+      tags: ["Histoire", "Architecture", "Forêts", "Gastronomie"],
       mustSee: [
         { name: "Palais des Khans de Sheki", wikipedia: "File:Shaki KhanPalace 004 3718.jpg" },
         { name: "Caravansérail de Sheki", wikipedia: "File:Palace of Shaki Khans 1.jpg" },
@@ -92,11 +92,27 @@ export const AZERBAIJAN = {
       description:
         "Réserve nationale avec des milliers de pétroglyphes préhistoriques (jusqu'à 40 000 ans), des volcans de boue bouillonnants et un environnement lunaire spectaculaire.",
       wikipedia: "File:Gobustan State Reserve 7.jpg",
-      tags: ["Nature", "Archéologie", "UNESCO"],
+      tags: ["Nature", "Archéologie", "UNESCO", "Désert"],
       mustSee: [
         { name: "Pétroglyphes de Gobustan (UNESCO)", wikipedia: "File:Petroglyphs of Qobustan 2.jpg" },
         { name: "Volcans de boue de Gobustan", wikipedia: "File:Gobustan mud volcanoes 02.jpg" },
         { name: "Temple du Feu Ateshgah", wikipedia: "File:Ateshgah of Baku.jpg" },
+      ],
+    },
+    {
+      id: 4,
+      name: "Shahdag & Grand Caucase",
+      region: "Nord de l'Azerbaïdjan",
+      description:
+        "Au nord de l'Azerbaïdjan, le Grand Caucase dresse ses sommets enneigés autour de la station moderne de Shahdag. Des villages perchés comme Xinaliq, parmi les plus hauts du Caucase, conservent des traditions séculaires. Canyons, alpages et réserves naturelles offrent randonnée et ski.",
+      wikipedia: "File:Shahdag National Park 12.jpg",
+      tags: ["Ski", "Randonnée", "Nature"],
+      mustSee: [
+        { name: "Station de Shahdag", wikipedia: "File:Shahdag National Park 12.jpg" },
+        { name: "Xinaliq — village le plus haut du Caucase", wikipedia: "File:Xınalıq kəndinin ümumi görünüşü.jpg" },
+        { name: "Rizvan Canyon", wikipedia: "File:Nischay_River_26.jpg" },
+        { name: "Laza — village alpin", wikipedia: "File:View of Laza village in Gabala District of Azerbaijan.jpg" },
+        { name: "Parc national de Ilisu", wikipedia: "File:Nature of Ilisu 19.jpg" },
       ],
     },
   ],

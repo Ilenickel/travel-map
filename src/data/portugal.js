@@ -90,7 +90,7 @@ export const PORTUGAL = {
       description:
         "Capitale aux sept collines, Lisbonne charme avec ses tramways historiques, ses miradouros (belvédères), le quartier de l'Alfama et ses nuits de fado inoubliables.",
       wikipedia: "Lisbon",
-      tags: ["Ville", "Culture", "Gastronomie", "Nuit"],
+      tags: ["Ville", "Culture", "Gastronomie", "Nuit", "Histoire", "Architecture", "UNESCO"],
       mustSee: [
         { name: "Tramway 28 & Alfama", wikipedia: "Alfama" },
         { name: "Monastère des Hiéronymites", wikipedia: "Jerónimos_Monastery" },
@@ -105,7 +105,7 @@ export const PORTUGAL = {
       description:
         "Ville de caractère sur le Douro, avec ses caves de porto à Vila Nova de Gaia, son quartier de Ribeira classé UNESCO, les librairies mythiques et les pasteis de nata.",
       wikipedia: "Porto",
-      tags: ["Culture", "UNESCO", "Gastronomie", "Vin"],
+      tags: ["Culture", "UNESCO", "Gastronomie", "Vin", "Ville", "Histoire", "Architecture"],
       mustSee: [
         { name: "Ribeira — quartier du bord du Douro", wikipedia: "File:View_of_Ribeira_from_Cais_de_Gaia,_20250605_1628_9890.jpg" },
         { name: "Caves de Porto (Vila Nova de Gaia)", wikipedia: "Vila_Nova_de_Gaia" },
@@ -120,7 +120,7 @@ export const PORTUGAL = {
       description:
         "À 30 min de Lisbonne, un village féerique dans une forêt brumeuse, avec les palais extravagants de Pena et Quinta da Regaleira classés UNESCO.",
       wikipedia: "Sintra",
-      tags: ["Histoire", "UNESCO", "Architecture", "Paysage"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Paysage", "Nature", "Randonnée"],
       mustSee: [
         { name: "Palais national de Pena", wikipedia: "Pena_Palace" },
         { name: "Quinta da Regaleira", wikipedia: "Quinta_da_Regaleira" },
@@ -135,7 +135,7 @@ export const PORTUGAL = {
       description:
         "La plus belle région côtière du Portugal : falaises dorées, grottes marines, plages de sable fin et petits villages de pêcheurs. Lagos, Sagres et Albufeira en tête.",
       wikipedia: "Algarve",
-      tags: ["Plage", "Mer", "Paysage", "Surf"],
+      tags: ["Plage", "Mer", "Paysage", "Surf", "Nature", "Randonnée"],
       mustSee: [
         { name: "Plage de Praia da Marinha", wikipedia: "Praia_da_Marinha" },
         { name: "Grottes de Benagil", wikipedia: "File:Algar_de_Benagil,_O_Algarve_20210713_111259_(51615818880).jpg" },

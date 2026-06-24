@@ -76,7 +76,7 @@ export const CENTRAL_AFRICAN_REPUBLIC = {
       region: "Capitale",
       description: "Bangui est la capitale de la RCA, construite sur les rives de l'Oubangui qui marque la frontière avec la RDC. Malgré le contexte sécuritaire tendu, la ville possède des marchés animés, une architecture coloniale et une position géographique spectaculaire au bord du fleuve. La Place de la République et le marché central Mamadou M'Baiki témoignent de la vie quotidienne centrafricaine.",
       wikipedia: "File:Bangui City Centre.jpg",
-      tags: ["Capitale", "Fleuve", "Culture", "Marché"],
+      tags: ["Ville", "Fleuve", "Culture", "Marché"],
       mustSee: [
         { name: "Rives de l'Oubangui — vue sur la RDC et pirogues traditionnelles", wikipedia: "Ubangi_River" },
         { name: "Cathédrale Notre-Dame de Bangui — architecture coloniale", wikipedia: "File:Une foule devant la Cathédrale de Bangui, le 7 mai 2018.jpg" },

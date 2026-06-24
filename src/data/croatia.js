@@ -82,7 +82,7 @@ export const CROATIA = {
       description:
         "Dubrovnik (UNESCO) est une des villes les plus belles du monde : ses remparts médiévaux du XVe siècle (2km de tour complet au-dessus de la mer) dominent une vieille ville de marbre blanc parfaitement préservée. La Stradun (rue principale), les palais gothiques, les fontaines de la Renaissance et la vue sur les îles Élaphites depuis les murailles sont inoubliables. Cadre de Game of Thrones.",
       wikipedia: "Dubrovnik",
-      tags: ["Remparts", "UNESCO", "Adriatique", "Game of Thrones"],
+      tags: ["Remparts", "UNESCO", "Adriatique", "Game of Thrones", "Ville", "Histoire", "Architecture"],
       mustSee: [
         { name: "Tour des remparts médiévaux (2km) vue sur l'Adriatique", wikipedia: "Walls_of_Dubrovnik" },
         { name: "Stradun — rue de marbre principal de la Vieille Ville", wikipedia: "File:Stradun rano ujutro.jpg" },
@@ -97,7 +97,7 @@ export const CROATIA = {
       description:
         "Le parc national des lacs de Plitvice (UNESCO) est l'une des merveilles naturelles de Croatie : 16 lacs en cascade reliés par 90 cascades dans une forêt de hêtres et de sapins. L'eau est d'un turquoise surnaturel grâce aux dépôts de travertin. Les passerelles en bois au-dessus des cascades et la Grande Cascade (78m) créent un spectacle unique.",
       wikipedia: "Plitvice_Lakes_National_Park",
-      tags: ["Cascades", "UNESCO", "Turquoise", "Forêt"],
+      tags: ["Cascades", "UNESCO", "Turquoise", "Forêt", "Nature", "Randonnée"],
       mustSee: [
         { name: "Grande Cascade (Veliki Slap, 78m) — la plus haute de Croatie", wikipedia: "File:Plitvice Lakes1.jpg" },
         { name: "Passerelles en bois entre les lacs du niveau inférieur", wikipedia: "File:A bridge in Plitvice lakes national park, Croatia.jpg" },
@@ -112,7 +112,7 @@ export const CROATIA = {
       description:
         "Split est une ville unique au monde : son centre historique (UNESCO) EST le palais de l'empereur Dioclétien (305 apr. J.-C.) — 3 000 personnes vivent encore à l'intérieur des murs antiques. Les caves du palais, le mausolée transformé en cathédrale, et les ruelles animées de bars et restaurants font de Split une des villes les plus vivantes de l'Adriatique.",
       wikipedia: "Split,_Croatia",
-      tags: ["Palais romain", "UNESCO", "Vivant", "Dioclétien"],
+      tags: ["Palais romain", "UNESCO", "Vivant", "Dioclétien", "Ville", "Histoire", "Architecture"],
       mustSee: [
         { name: "Caves du palais de Dioclétien (IVe s.) — sous la ville", wikipedia: "Diocletian's_Palace" },
         { name: "Cathédrale Saint-Domnius — mausolée impérial transformé en église", wikipedia: "Cathedral_of_Saint_Domnius" },
@@ -127,7 +127,7 @@ export const CROATIA = {
       description:
         "Hvar est l'île la plus longue (68km) et la plus ensoleillée de Croatie (2 724h de soleil/an — parmi les plus élevées d'Europe). Sa forteresse espagnole domine la vieille ville blanche et son théâtre du XVIe siècle (l'un des plus anciens d'Europe). L'intérieur est couvert de lavande (juillet) et de vignobles produisant le Plavac Mali, l'un des meilleurs vins rouges de Croatie.",
       wikipedia: "Hvar",
-      tags: ["Île", "Lavande", "Forteresse", "Vin"],
+      tags: ["Île", "Lavande", "Forteresse", "Vin", "Plage", "Nature"],
       mustSee: [
         { name: "Forteresse espagnole Španjola — vue panoramique sur l'archipel", wikipedia: "File:Spanjola.JPG" },
         { name: "Champs de lavande de Brusje (juillet — floraison)", wikipedia: "File:Brusje_-_panoramio_(1).jpg" },

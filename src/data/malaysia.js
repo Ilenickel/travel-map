@@ -103,7 +103,7 @@ export const MALAYSIA = {
       description:
         "La capitale malaisienne est dominée par les tours Petronas (452 m), les plus hautes du monde de 1998 à 2004. Le quartier indien de Brickfields, Chinatown et le quartier colonial de Merdeka Square coexistent dans une métropole vibrante et multiculturelle.",
       wikipedia: "Kuala_Lumpur",
-      tags: ["capitale", "tours", "culture", "gastronomie"],
+      tags: ["Ville", "tours", "Culture", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Tours Petronas", wikipedia: "File:Petronas Panorama II.jpg" },
         { name: "Batu Caves", wikipedia: "Batu_Caves" },
@@ -118,7 +118,7 @@ export const MALAYSIA = {
       description:
         "L'île de Penang est la capitale gastronomique de la Malaisie. George Town, inscrite au patrimoine UNESCO, est célèbre pour ses street arts muraux, ses shophouses colorées et sa cuisine Nyonya (fusion malayo-chinoise). Les temples, mosquées et hawker centres s'y côtoient harmonieusement.",
       wikipedia: "File:Skyline_of_George_Town,_Penang_at_dusk_May_2025.jpg",
-      tags: ["gastronomie", "culture", "UNESCO", "art"],
+      tags: ["Gastronomie", "Culture", "UNESCO", "art", "Histoire", "Architecture"],
       mustSee: [
         { name: "George Town (vieille ville)", wikipedia: "File:Georgetown, Penang in 2023 01.jpg" },
         { name: "Penang Hill (Bukit Bendera)", wikipedia: "File:Penang Hill in 2023 02.jpg" },
@@ -133,7 +133,7 @@ export const MALAYSIA = {
       description:
         "Sabah et Sarawak abritent les forêts les plus riches d'Asie du Sud-Est. Orangs-outans de Sepilok, rhinocéros de Sabah, grottes de Niah et mont Kinabalu (4 095 m, point culminant d'Asie du Sud-Est) dans un cadre de jungle primaire extraordinaire.",
       wikipedia: "File:2014 Borneo Luyten-De-Hauwere-Child-01.jpg",
-      tags: ["jungle", "orangs-outans", "randonnée", "faune"],
+      tags: ["jungle", "orangs-outans", "Randonnée", "Faune"],
       mustSee: [
         { name: "Centre de réhabilitation de Sepilok", wikipedia: "File:Sandakan_Sabah_Sepilok-Orangutan-Rehabilitation-Centre-02.jpg" },
         { name: "Mont Kinabalu", wikipedia: "Mount_Kinabalu" },
@@ -148,7 +148,7 @@ export const MALAYSIA = {
       description:
         "L'archipel de Langkawi (99 îles) est le paradis balnéaire de la Malaisie avec ses plages de sable blanc, ses mangroves et ses forêts de geopark. Duty-free, téléphérique et eau translucide pour une île détente.",
       wikipedia: "File:Langkawi 004.jpg",
-      tags: ["plages", "île", "nature", "duty-free"],
+      tags: ["Plage", "île", "Nature", "duty-free"],
       mustSee: [
         { name: "Pantai Cenang", wikipedia: "File:Pantai Cenang, Langkawi 01.jpg" },
         { name: "Langkawi Sky Bridge", wikipedia: "Langkawi_Sky_Bridge" },

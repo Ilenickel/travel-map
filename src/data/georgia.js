@@ -90,7 +90,7 @@ export const GEORGIA = {
       description:
         "Capitale aux maisons anciennes à balcons en bois sculpté, sulfureux bains de soufre (abanotubani), forteresse Narikala et vie nocturne animée — une ville authentique et attachante.",
       wikipedia: "Tbilisi",
-      tags: ["Ville", "Histoire", "Culture", "Nuit"],
+      tags: ["Ville", "Histoire", "Culture", "Nuit", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Forteresse Narikala", wikipedia: "Narikala" },
         { name: "Cathédrale Sainte-Trinité", wikipedia: "Holy_Trinity_Cathedral_of_Tbilisi" },
@@ -105,7 +105,7 @@ export const GEORGIA = {
       description:
         "Le mont Kazbek (5 047 m) et l'église Guerguéti trônant à 2 170 m offrent des panoramas à couper le souffle. La route militaire géorgienne traverse des paysages épiques.",
       wikipedia: "File:Kazbegi, Stepantsminda, Gergeti, Georgia.jpg",
-      tags: ["Montagne", "Randonnée", "Nature", "Panorama"],
+      tags: ["Montagne", "Randonnée", "Nature", "Panorama", "Ski"],
       mustSee: [
         { name: "Église Guerguéti Trinity", wikipedia: "Gergeti_Trinity_Church" },
         { name: "Mont Kazbek", wikipedia: "Mount_Kazbek" },
@@ -119,7 +119,7 @@ export const GEORGIA = {
       description:
         "Région montagneuse sauvage avec ses tours médiévales millénaires, ses villages isolés et ses randonnées parmi les plus belles du Caucase.",
       wikipedia: "File:Svaneti, Georgia. 2018 79.jpg",
-      tags: ["Montagne", "UNESCO", "Randonnée", "Villages"],
+      tags: ["Montagne", "UNESCO", "Randonnée", "Villages", "Architecture"],
       mustSee: [
         { name: "Tours svanes de Mestia", wikipedia: "Mestia" },
         { name: "Glacier d'Ushguli", wikipedia: "Ushguli" },
@@ -138,6 +138,22 @@ export const GEORGIA = {
         { name: "Monastère de Bodbe", wikipedia: "Bodbe_Monastery" },
         { name: "Sighnaghi — ville de l'amour", wikipedia: "File:Sighnaghi IMG 9071 1920.jpg" },
         { name: "Cave coopérative Tsinandali", wikipedia: "Tsinandali" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Batumi & Côte de la Mer Noire",
+      region: "Adjarie",
+      description:
+        "Station balnéaire pétillante sur la mer Noire, Batumi marie front de mer moderne, vieux quartiers ottomans et architecture audacieuse. Son boulevard, son jardin botanique luxuriant et ses plages voisines en font une destination estivale prisée. La forteresse de Gonio rappelle son passé antique.",
+      wikipedia: "Batumi",
+      tags: ["Plage", "Ville", "Nature", "Architecture"],
+      mustSee: [
+        { name: "Boulevard de Batumi", wikipedia: "File:Batumi Cycleway.jpg" },
+        { name: "Vieux Batumi — quartier Ottoman", wikipedia: "Batumi" },
+        { name: "Jardin botanique de Batumi", wikipedia: "Batumi_Botanical_Garden" },
+        { name: "Plages de Kobuleti", wikipedia: "File:Kobuleti Beach.JPG" },
+        { name: "Château de Gonio", wikipedia: "File:Gonio-Apsaros Fortress-Museum.jpg" },
       ],
     },
   ],

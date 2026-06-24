@@ -97,7 +97,7 @@ export const UK = {
       description:
         "Londres est une métropole mondiale d'une richesse culturelle inépuisable, où les musées gratuits de classe mondiale côtoient les palais royaux et les marchés colorés. De Buckingham Palace à la Tate Modern, du Borough Market à Shoreditch, la ville multiplie les visages et les expériences. Le réseau de transports en commun, malgré son coût, est l'un des plus efficaces du monde et permet d'explorer chaque quartier à son rythme.",
       wikipedia: "London",
-      tags: ["Culture", "Musées", "Histoire", "Shopping", "Gastronomie"],
+      tags: ["Culture", "Musées", "Histoire", "Shopping", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         {
           name: "Big Ben",
@@ -124,7 +124,7 @@ export const UK = {
       description:
         "Édimbourg est l'une des plus belles capitales d'Europe, dominée par son château médiéval et divisée entre Old Town historique et New Town géorgienne. Les Highlands écossais voisins déroulent leurs paysages spectaculaires de landes violettes, de lochs mystérieux et de châteaux en ruines. La culture écossaise, des kilts aux whiskies de malt, est une découverte à part entière.",
       wikipedia: "Edinburgh",
-      tags: ["Histoire", "Nature", "Whisky", "Châteaux", "Randonnée"],
+      tags: ["Histoire", "Nature", "Whisky", "Châteaux", "Randonnée", "Ville", "Ski"],
       mustSee: [
         {
           name: "Château d'Édimbourg — forteresse volcanique surplombant le Royal Mile",
@@ -151,7 +151,7 @@ export const UK = {
       description:
         "Les Cotswolds incarnent l'Angleterre de carte postale avec leurs villages aux cottages en pierre miel, leurs jardins fleuris et leurs chemins de randonnée verdoyants. Toute proche, Bath est une ville d'exception avec ses thermes romains et son architecture géorgienne classée au patrimoine mondial de l'UNESCO. Jane Austen y vécut, et l'atmosphère élégante de la ville rappelle cette époque romanesque.",
       wikipedia: "Cotswolds",
-      tags: ["Nature", "Patrimoine UNESCO", "Architecture", "Randonnée", "Charme"],
+      tags: ["Nature", "UNESCO", "Architecture", "Randonnée", "Charme"],
       mustSee: [
         {
           name: "Bourton-on-the-Water — surnommée la Venise des Cotswolds",

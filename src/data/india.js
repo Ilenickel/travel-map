@@ -109,7 +109,7 @@ export const INDIA = {
       description:
         "Le Grand Triangle d'Or Delhi–Agra–Jaipur couvre les incontournables : Taj Mahal, forts moghols et palais roses du Rajasthan avec ses turbans et ses épices.",
       wikipedia: "File:Humayun's_Tomb,_Delhi_(16729263579).jpg",
-      tags: ["Histoire", "Culture", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "Culture", "Architecture", "Gastronomie", "UNESCO", "Ville"],
       mustSee: [
         { name: "Taj Mahal — Agra", wikipedia: "Taj_Mahal" },
         { name: "Fort d'Agra", wikipedia: "Agra_Fort" },
@@ -124,7 +124,7 @@ export const INDIA = {
       description:
         "La ville la plus sacrée de l'Hindouisme, sur les rives du Gange. Les cérémonies Ganga Aarti au crépuscule, les ghats animés et la philosophie du cycle vie-mort sont une expérience spirituelle unique.",
       wikipedia: "Varanasi",
-      tags: ["Spiritualité", "Culture", "Histoire", "Unique"],
+      tags: ["Spiritualité", "Culture", "Histoire", "Unique", "Ville"],
       mustSee: [
         { name: "Ghats du Gange — cérémonie Aarti", wikipedia: "Dashashwamedh_Ghat" },
         { name: "Temple Kashi Vishwanath", wikipedia: "Kashi_Vishwanath_Temple" },
@@ -139,7 +139,7 @@ export const INDIA = {
       description:
         "Ancienne colonie portugaise, Goa mêle plages tropicales, architecture baroque, cuisine de fruits de mer et ambiance décontractée. Le meilleur de l'Inde balnéaire.",
       wikipedia: "Goa",
-      tags: ["Plage", "Mer", "Culture", "Fête"],
+      tags: ["Plage", "Mer", "Culture", "Fête", "Architecture"],
       mustSee: [
         { name: "Vieux Goa — basilique Bom Jesus", wikipedia: "Basilica_of_Bom_Jesus" },
         { name: "Plage de Palolem", wikipedia: "Palolem_Beach" },
@@ -168,12 +168,28 @@ export const INDIA = {
       description:
         "La Ville Bleue de Jodhpur avec le fort imprenable de Mehrangarh, et Jaisalmer la Ville d'Or au cœur du désert du Thar avec ses dunes et ses nuits sous les étoiles.",
       wikipedia: "Jodhpur",
-      tags: ["Histoire", "Désert", "Culture", "Paysage"],
+      tags: ["Histoire", "Désert", "Culture", "Paysage", "UNESCO", "Architecture"],
       mustSee: [
         { name: "Fort de Mehrangarh — Jodhpur", wikipedia: "Mehrangarh" },
         { name: "Fort de Jaisalmer en grès doré", wikipedia: "Jaisalmer_Fort" },
         { name: "Nuit sous les étoiles dans le désert du Thar", wikipedia: "Thar_Desert" },
         { name: "Lac Gadsisar — Jaisalmer", wikipedia: "Gadisar_Lake" },
+      ],
+    },
+    {
+      id: 6,
+      name: "Himalaya & Ladakh",
+      region: "Ladakh / Himachal Pradesh",
+      description:
+        "Perché à plus de 3 000 mètres, le Ladakh est un désert d'altitude bouddhiste aux monastères accrochés à la roche et aux lacs turquoise. Les treks à travers vallées et cols himalayens y sont légendaires. Plus à l'ouest, le Cachemire offre des stations de ski et des panoramas grandioses.",
+      wikipedia: "Ladakh",
+      tags: ["Randonnée", "Nature", "Désert", "Ski", "UNESCO"],
+      mustSee: [
+        { name: "Leh & Monastère de Thiksey", wikipedia: "File:Thiksey Monastery, Ladakh 02.jpg" },
+        { name: "Trek Markha Valley", wikipedia: "File:Markha Valley1.JPG" },
+        { name: "Pangong Lake", wikipedia: "File:Pangong Tso 2.jpg" },
+        { name: "Nubra Valley", wikipedia: "File:Nubra Valley 2.jpg" },
+        { name: "Gulmarg — ski & téléphérique", wikipedia: "File:Gulmarg 3.jpg" },
       ],
     },
   ],

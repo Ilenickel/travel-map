@@ -90,7 +90,7 @@ export const PERU = {
       description:
         "La cité inca perchée à 2 430 m dans les Andes est le symbole du Pérou. Accessible en train depuis Cusco ou à pied via le mythique Chemin de l'Inca (4 jours).",
       wikipedia: "Machu_Picchu",
-      tags: ["UNESCO", "Histoire", "Nature", "Randonnée"],
+      tags: ["UNESCO", "Histoire", "Nature", "Randonnée", "Architecture"],
       mustSee: [
         { name: "Cité inca de Machu Picchu", wikipedia: "Machu_Picchu" },
         { name: "Montagne Huayna Picchu", wikipedia: "Huayna_Picchu" },
@@ -105,7 +105,7 @@ export const PERU = {
       description:
         "L'ancienne capitale de l'Empire Inca, aujourd'hui ville coloniale magnifique à 3 400 m d'altitude. Cathédrale baroque sur fondations incas, marché de Pisac et Vallée Sacrée.",
       wikipedia: "Cusco",
-      tags: ["Histoire", "Culture", "UNESCO", "Altitude"],
+      tags: ["Histoire", "Culture", "UNESCO", "Altitude", "Architecture", "Gastronomie", "Ville"],
       mustSee: [
         { name: "Qorikancha — temple inca du Soleil", wikipedia: "File:Entrada_del_Museo_Qorikancha_02.jpg" },
         { name: "Forteresse de Sacsayhuamán", wikipedia: "Sacsayhuamán" },
@@ -120,7 +120,7 @@ export const PERU = {
       description:
         "Capitale gastronomique de l'Amérique latine, avec des restaurants parmi les meilleurs au monde (Central, Maido). Le quartier de Miraflores et le Larcomaroffrent une vie urbaine cosmopolite.",
       wikipedia: "Lima",
-      tags: ["Gastronomie", "Culture", "Ville", "Art"],
+      tags: ["Gastronomie", "Culture", "Ville", "Art", "Architecture", "Plage"],
       mustSee: [
         { name: "Quartier Miraflores & Barranco", wikipedia: "Miraflores_District,_Lima" },
         { name: "Musée Larco — collections précolumbiennes", wikipedia: "Larco_Museum" },

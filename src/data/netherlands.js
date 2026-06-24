@@ -155,7 +155,7 @@ export const NETHERLANDS = {
       description:
         "Kinderdijk abrite le plus grand ensemble de moulins à vent préservés du monde, alignant 19 moulins le long des polders du XVIIIe siècle, classés au patrimoine de l'UNESCO. Zaanse Schans, à quelques kilomètres d'Amsterdam, est un village-musée vivant où moulins à vent en activité, fromageries et saboteries reconstituent la vie hollandaise d'antan. Ces deux sites condensent l'essence de l'identité néerlandaise dans des paysages iconiques.",
       wikipedia: "Kinderdijk",
-      tags: ["Patrimoine UNESCO", "Moulins", "Nature", "Traditions", "Paysage"],
+      tags: ["UNESCO", "Moulins", "Nature", "Traditions", "Paysage"],
       mustSee: [
         {
           name: "Kinderdijk — 19 moulins à vent alignés sur les polders, classés UNESCO",

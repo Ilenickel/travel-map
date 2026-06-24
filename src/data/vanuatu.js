@@ -85,7 +85,7 @@ export const VANUATU = {
       description:
         "Le Domaine de Roi Mata est le premier site mélanésien inscrit au Patrimoine mondial de l'UNESCO, en 2008. Il comprend trois sites liés au grand chef Roi Mata, qui unifia les peuples d'Éfaté au début du XVIIe siècle : sa demeure sur l'île principale, le site de sa mort à Fels Cave, et son lieu de sépulture sur l'île de Retoka. Cette sépulture collective de 50 personnes, enterrées vivantes pour accompagner leur chef, est un témoignage exceptionnel de la culture mélanésienne.",
       wikipedia: "File:A_stream_on_Efate,_Vanuatu.jpg",
-      tags: ["UNESCO", "Histoire", "Culturel", "Archéologie"],
+      tags: ["UNESCO", "Histoire", "Culturel", "Archéologie", "Architecture"],
       mustSee: [
         { name: "Île de Retoka — sépulture collective de Roi Mata (site UNESCO)", wikipedia: "File:Eretoka-2008-11-02.jpg" },
         { name: "Fels Cave — grotte où le chef Roi Mata rendit son dernier souffle", wikipedia: "File:Fele's Cave.jpg" },
@@ -98,7 +98,7 @@ export const VANUATU = {
       description:
         "Les blue holes du Vanuatu sont des bassins d'eau douce aux teintes bleues surnaturelles, formés dans des calcaires karstiques sous la jungle tropicale. Le blue hole de Riri et celui de Nanda sont accessibles depuis Port-Vila et offrent une plongée ou une baignade dans une eau d'une pureté et d'une fraîcheur remarquables. Au large, le SS Coolidge est l'une des plus grandes et des plus accessibles épaves de guerre du monde.",
       wikipedia: "SS_President_Coolidge",
-      tags: ["Plongée", "Snorkeling", "Épave WWII", "Nature"],
+      tags: ["Plongée", "Snorkeling", "Épave WWII", "Nature", "Ville"],
       mustSee: [
         { name: "Épave du SS President Coolidge — paquebot de luxe reconverti en transport de troupes, coulé en 1942", wikipedia: "SS_President_Coolidge" },
         { name: "Blue Hole de Nanda — bassin d'eau douce cristalline dans la forêt de Malekula", wikipedia: "File:Nanda Blue Hole Santo (29282050925).jpg" },

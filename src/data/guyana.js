@@ -84,7 +84,7 @@ export const GUYANA = {
       description:
         "Les chutes de Kaieteur sont l'une des plus puissantes au monde : 226 m de hauteur et 100 m de large, avec un débit impressionnant. Accessibles uniquement en avion depuis Georgetown, elles sont entourées d'une forêt primaire abritant la grenouille poison dorée unique au monde.",
       wikipedia: "Kaieteur_Falls",
-      tags: ["cascade", "nature", "unique", "jungle"],
+      tags: ["Cascade", "Nature", "Unique", "Jungle"],
       mustSee: [
         { name: "Kaieteur Falls (chute principale)", wikipedia: "Kaieteur_Falls" },
         { name: "Parc national Kaieteur", wikipedia: "File:Potato River (Kaieteur) 23 20 35 006000.jpeg" },
@@ -98,7 +98,7 @@ export const GUYANA = {
       description:
         "Les savanes de Rupununi sont une vaste plaine à la frontière brésilienne, mosaïque de prairies, forêts galeries et zones humides. Ici vivent les communautés indigènes Makushi et Wapishana, ainsi que jaguars, loutres géantes et arapaïmas géants.",
       wikipedia: "File:Rupununi River.jpg",
-      tags: ["safari", "cultures indigènes", "faune", "nature"],
+      tags: ["Safari", "Cultures Indigènes", "Faune", "Nature"],
       mustSee: [
         { name: "Parc national Iwokrama", wikipedia: "File:Iwokrama Rainforest, Guyana (12179378186).jpg" },
         { name: "Canopy Walkway Iwokrama", wikipedia: "File:Canopy walkway in Kakum National Park 7.jpg" },
@@ -112,7 +112,7 @@ export const GUYANA = {
       description:
         "La capitale est un mélange unique de cultures créole, indienne, amérindienne et hollandaise. Ses maisons victoriennes en bois peintes de couleurs vives, son marché de Stabroek et sa cathédrale Saint-George (plus haute cathédrale en bois du monde) sont remarquables.",
       wikipedia: "Georgetown,_Guyana",
-      tags: ["capitale", "colonial", "multiculturel", "architecture"],
+      tags: ["Ville", "Colonial", "Multiculturel", "Architecture"],
       mustSee: [
         { name: "Marché de Stabroek", wikipedia: "Stabroek_Market" },
         { name: "Cathédrale Saint-George", wikipedia: "File:20191121 Guyana 0048 Georgetown sRGB (49295795336).jpg" },

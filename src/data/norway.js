@@ -90,7 +90,7 @@ export const NORWAY = {
       description:
         "Les fjords de l'ouest norvégien sont classés UNESCO : le Geirangerfjord avec ses cascades des Sept Sœurs, et le Nærøyfjord (le plus étroit au monde, 250m) sont les plus photographiés de Scandinavie. Le ferry panoramique, les kayaks dans les eaux turquoise entre des parois à 1 400m, et les villages de montagne constituent l'expérience norvégienne par excellence.",
       wikipedia: "Geirangerfjord",
-      tags: ["Fjords", "UNESCO", "Kayak", "Panoramique"],
+      tags: ["Fjords", "UNESCO", "Kayak", "Panoramique", "Nature"],
       mustSee: [
         { name: "Croisière Geirangerfjord — Cascades des Sept Sœurs", wikipedia: "Geirangerfjord" },
         { name: "Kayak dans le Nærøyfjord (journée)", wikipedia: "Nærøyfjord" },
@@ -105,7 +105,7 @@ export const NORWAY = {
       description:
         "Les Lofoten sont un archipel de pics granitiques surgissant de l'Atlantique Nord : villages de pêcheurs rouges sur pilotis (rorbuer), plages de sable blanc dans un décor arctique, aurores boréales en hiver et soleil de minuit en été. C'est le lieu le plus photographié de Norvège — et l'un des plus beaux d'Europe.",
       wikipedia: "File:Vågakallen_from_Storvågan,_Austvågøya,_Lofoten,_Norway,_2015_April.jpg",
-      tags: ["Archipel", "Aurores", "Pêche", "Spectaculaire"],
+      tags: ["Archipel", "Aurores", "Pêche", "Spectaculaire", "Nature", "Plage"],
       mustSee: [
         { name: "Village de Reine — le plus photographié de Norvège", wikipedia: "File:Houses_of_Reine_by_Gravdalsbukta,_Moskenes,_Nordland,_Norway,_2022_June.jpg" },
         { name: "Aurores boréales sur les rorbuer (oct–mars)", wikipedia: "File:Lofoten, Norway (Unsplash).jpg" },
@@ -134,12 +134,28 @@ export const NORWAY = {
       description:
         "Oslo est une capitale dynamique dans un cadre naturel exceptionnel : le musée des Bateaux Vikings (trois drakkars originaux du IXe siècle), le quartier de Bygdøy avec ses musées, l'opéra moderne au bord du fjord (on monte sur le toit), et Vigeland Park avec ses 200 sculptures en granit. Une ville qui conjugue nature et culture à vélo.",
       wikipedia: "Oslo",
-      tags: ["Capitale", "Vikings", "Musées", "Opéra"],
+      tags: ["Ville", "Vikings", "Musées", "Opéra", "Histoire", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Musée des Bateaux Vikings (Vikingskipshuset) — drakkars originaux", wikipedia: "File:Vikingskipshuset november 2016.jpg" },
         { name: "Opéra d'Oslo — marcher sur le toit de marbre blanc", wikipedia: "File:Oslo Opera house (2015)(2).jpg" },
         { name: "Vigeland Park — 200 sculptures en granit en plein air", wikipedia: "File:NOR-2016-Frogner_Park-Vigeland_Installation-View_from_the_monolith.jpg" },
         { name: "Île de Bygdøy — musées + plage en été (ferry depuis Oslo)", wikipedia: "File:Bygdøy Oslo.jpg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Stations de ski — Geilo, Hemsedal & Voss",
+      region: "Viken / Vestland",
+      description:
+        "Entre Oslo et Bergen, les montagnes norvégiennes abritent des stations de ski conviviales surnommées la Suisse norvégienne. Hemsedal, Geilo et Voss offrent pistes alpines, ski de fond et sports extrêmes dans des décors de fjords. En toute saison, le train de Flåm relie ces sommets aux eaux du Hardangerfjord.",
+      wikipedia: "Hemsedal",
+      tags: ["Ski", "Nature", "Randonnée"],
+      mustSee: [
+        { name: "Hemsedal — la Suisse norvégienne", wikipedia: "File:Hemsedal nordre imre gaard IMG 1403.JPG" },
+        { name: "Voss — ski et sports extrêmes", wikipedia: "File:Voss_Gondol_Passenger_lift_cableway_(taubane)_to_Hanguren_View_from_gondola_cabin_towards_Vossavangen_Vangsvatnet_November_afternoon_sunset_Snow_etc_Voss_Norway_2019-11-20_0583.jpg" },
+        { name: "Geilo — station familiale", wikipedia: "File:Winter View over Geilo, Norway.jpg" },
+        { name: "Myrdal & Flåm Railway", wikipedia: "File:Flåmsbana MLR.jpg" },
+        { name: "Hardangerfjord en été", wikipedia: "File:190_Kilometer_lang_und_bis_zu_893_tief_ist_der_Hardangerfjord._02.jpg" },
       ],
     },
   ],

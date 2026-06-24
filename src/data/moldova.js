@@ -44,7 +44,7 @@ export const MOLDOVA = {
       region: "Centre",
       description: "Chișinău est une capitale dynamique dont le centre-ville révèle de larges boulevards hérités de l'urbanisme soviétique côtoyant parcs verdoyants et cafés animés. La ville abrite d'intéressants musées consacrés à l'histoire et aux traditions moldaves. La vie nocturne et la gastronomie locale en font une étape agréable malgré une architecture parfois austère.",
       wikipedia: "Chișinău",
-      tags: ["Capitale", "Architecture soviétique", "Gastronomie", "Culture"],
+      tags: ["Ville", "Architecture soviétique", "Gastronomie", "Culture", "Architecture"],
       mustSee: [
         { name: "Arc de Triomphe — monument néoclassique au cœur du centre-ville", wikipedia: "Triumphal_Arch,_Chișinău" },
         { name: "Cathédrale de la Nativité — cathédrale orthodoxe du XIXe siècle", wikipedia: "File:Catedral_de_la_Natividad,_Chisináu,_Moldavia,_2023-11-03,_DD_36-38_HDR.jpg" },
@@ -71,7 +71,7 @@ export const MOLDOVA = {
       region: "Orhei",
       description: "Orheiul Vechi est un complexe archéologique et naturel exceptionnel où un monastère rupestre du XIIIe siècle est creusé dans les falaises calcaires surplombant la rivière Răut. Le site mêle vestiges daces, gètes, mongols et moldaves dans un paysage sauvage et préservé. C'est l'un des sites les plus pittoresques et authentiques de Moldavie.",
       wikipedia: "File:Cetățuia „Orheiul Vechi”.jpg",
-      tags: ["Monastère", "Archéologie", "Nature", "Paysage"],
+      tags: ["Monastère", "Archéologie", "Nature", "Paysage", "UNESCO", "Histoire"],
       mustSee: [
         { name: "Monastère rupestre — église creusée dans la falaise calcaire", wikipedia: "File:Orhei Vechi 03.JPG" },
         { name: "Musée d'histoire et d'ethnographie d'Orhei", wikipedia: "File:Оргеев,_памятник_Василию_Лупу_Monumentul_lui_Vasile_Lupu_din_Orhei_Vasile_Lupu_monument_in_Orhei_(45922280011).jpg" },

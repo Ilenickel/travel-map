@@ -90,7 +90,7 @@ export const GUINEA_BISSAU = {
       description:
         "La capitale de la Guinée-Bissau est une ville à taille humaine, détendue et authentique. Le marché de Bandim, le Museu Nacional, les ruines du Fort de São José de Amura et les quartiers aux maisons coloniales délabrées forment un portrait attachant de cette capitale peu connue.",
       wikipedia: "Bissau",
-      tags: ["Capitale", "Marché", "Histoire", "Coloniale"],
+      tags: ["Ville", "Marché", "Histoire", "Coloniale"],
       mustSee: [
         { name: "Marché de Bandim — cœur animé de Bissau", wikipedia: "File:Avenida_dos_Combatentes_da_Liberdade_da_Pátria,_Bissau_(2).jpg" },
         { name: "Fort de São José de Amura (XVIII°)", wikipedia: "File:Interior_da_Fortaleza_de_São_José_de_Amura,_Bissau.jpg" },

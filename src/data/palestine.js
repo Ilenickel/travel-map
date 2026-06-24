@@ -118,7 +118,7 @@ export const PALESTINE = {
       description:
         "Ramallah est la capitale administrative de facto de l'Autorité palestinienne et la ville la plus moderne et la plus cosmopolite de Cisjordanie. Son centre animé, ses cafés, ses galeries d'art et ses restaurants branchés témoignent d'une vie culturelle palestinienne dynamique malgré le contexte politique difficile. La ville est aussi le siège de nombreuses organisations culturelles et ONG internationales, et son marché (souq) reste très vivant.",
       wikipedia: "Ramallah",
-      tags: ["Capitale", "Culture", "Modernité", "Arts"],
+      tags: ["Ville", "Culture", "Modernité", "Arts"],
       mustSee: [
         { name: "Manara Square — cœur animé de Ramallah avec sa fontaine aux lions", wikipedia: "Al-Manara_Square" },
         { name: "Musée Mahmoud Darwich — hommage au poète national palestinien", wikipedia: "File:Mahmoud Darwish Museum IMG 4086.jpg" },

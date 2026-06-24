@@ -84,7 +84,7 @@ export const CAMBODIA = {
       description:
         "Angkor est l'un des sites archéologiques les plus impressionnants du monde : 400 km² de temples khmers du IXe au XVe siècle. Angkor Wat, la plus grande structure religieuse jamais construite, est le symbole même du Cambodge.",
       wikipedia: "File:2016 Angkor, Angkor Wat, Brama Angkor Wat (48).jpg",
-      tags: ["temples", "archéologie", "UNESCO", "histoire"],
+      tags: ["Temples", "Archéologie", "UNESCO", "Histoire", "Gastronomie"],
       mustSee: [
         { name: "Angkor Wat", wikipedia: "Angkor_Wat" },
         { name: "Angkor Thom & Bayon", wikipedia: "Angkor_Thom" },
@@ -99,7 +99,7 @@ export const CAMBODIA = {
       description:
         "La capitale est une ville attachante au bord du Mékong. Le Palais Royal, les pagodes bouddhistes et le marché central contrastent avec les mémoriaux Tuol Sleng (S-21) et Choeung Ek, témoignages poignants du génocide khmer rouge.",
       wikipedia: "Phnom_Penh",
-      tags: ["capitale", "histoire", "culture", "mémorial"],
+      tags: ["Ville", "Histoire", "Culture", "Mémorial", "Gastronomie"],
       mustSee: [
         { name: "Palais Royal de Phnom Penh", wikipedia: "File:2016 Phnom Penh, Pałac Królewski, Srebrna Pagoda (02).jpg" },
         { name: "Musée Tuol Sleng (S-21)", wikipedia: "Tuol_Sleng_Genocide_Museum" },
@@ -114,7 +114,7 @@ export const CAMBODIA = {
       description:
         "Les îles de Koh Rong et Koh Rong Samloem offrent des plages de sable blanc et des eaux turquoise encore préservées. Sihanoukville est la porte d'entrée, bien que la ville principale ait beaucoup changé ces dernières années.",
       wikipedia: "Sihanoukville",
-      tags: ["plages", "îles", "plongée", "nature"],
+      tags: ["Plage", "Îles", "Plongée", "Nature"],
       mustSee: [
         { name: "Koh Rong Samloem", wikipedia: "File:Koh Rong Sanloem estuary.jpg" },
         { name: "Koh Rong", wikipedia: "Koh_Rong" },
@@ -129,7 +129,7 @@ export const CAMBODIA = {
       description:
         "Battambang est la deuxième ville du Cambodge, plus authentique et moins touristique que Siem Reap. Ses temples préangkoriens, son train de bambou (Norry), ses villages de potiers et son architecture coloniale en font une étape charmante.",
       wikipedia: "Battambang",
-      tags: ["authentique", "culture", "architecture", "vélo"],
+      tags: ["Authentique", "Culture", "Architecture", "Vélo"],
       mustSee: [
         { name: "Train de bambou (Norry)", wikipedia: "File:Bamboo train (Norry) station near Battambang in 2012.jpg" },
         { name: "Phnom Sampeau (temple-falaise)", wikipedia: "File:Wat Phnom Sampeau.Battambang.2006.jpg" },

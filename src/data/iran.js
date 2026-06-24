@@ -107,7 +107,7 @@ export const IRAN = {
       description:
         "Surnommée « Nesf-e Jahan » (la moitié du monde), Ispahan est la capitale culturelle de l'Iran et l'une des plus belles villes islamiques du monde. La place de l'Imam, vaste rectangle bordé de monuments safavides bleu turquoise, figure parmi les plus grandes places du monde. Le bazar royal, les mosquées et les ponts couverts sur la rivière Zayandeh composent un ensemble architectural d'une cohérence absolue.",
       wikipedia: "Isfahan",
-      tags: ["Architecture", "Culture", "Mosquées", "UNESCO"],
+      tags: ["Architecture", "Culture", "Mosquées", "UNESCO", "Gastronomie", "Ville", "Nature"],
       mustSee: [
         { name: "Place de l'Imam — chef-d'œuvre safavide du XVIIe siècle", wikipedia: "Naqsh-e_Jahan_Square" },
         { name: "Mosquée de l'Imam — dôme turquoise emblématique", wikipedia: "File:Mezquita Shah, Teherán, Irán, 2016-09-17, DD 48.jpg" },
@@ -122,7 +122,7 @@ export const IRAN = {
       description:
         "Fondée par Darius Ier vers 518 av. J.-C., Persépolis fut la capitale cérémonielle de l'Empire achéménide, l'une des civilisations les plus puissantes de l'Antiquité. Les immenses terrasses, escaliers sculptés et bas-reliefs représentant les délégations de tous les peuples de l'empire constituent un témoignage unique d'une organisation politique et artistique exceptionnelle. Classée au patrimoine mondial de l'UNESCO, elle reste l'un des sites archéologiques les plus impressionnants du monde.",
       wikipedia: "File:Persépolis, Irán, 2016-09-24, DD 56.jpg",
-      tags: ["Archéologie", "UNESCO", "Antiquité", "Achaménides"],
+      tags: ["Archéologie", "UNESCO", "Antiquité", "Achaménides", "Architecture", "Désert"],
       mustSee: [
         { name: "Porte de Xerxès — propylées monumentaux aux taureaux ailés", wikipedia: "Gate_of_All_Nations" },
         { name: "Apadana — grande salle d'audience aux 72 colonnes", wikipedia: "Apadana" },
@@ -152,12 +152,28 @@ export const IRAN = {
       description:
         "Mégapole de 15 millions d'habitants encaissée entre l'Alborz enneigé et le désert, Téhéran est une capitale étonnamment vivante et contradictoire. Ses musées renferment des trésors exceptionnels : le Musée national d'Iran, le musée des Joyaux de la Couronne avec les joyaux Qajars, et le Musée d'art contemporain avec une collection d'œuvres occidentales surprenante. La ville est aussi la porte d'entrée vers les stations de ski et les villages accrochés aux flancs de l'Alborz.",
       wikipedia: "Tehran",
-      tags: ["Musées", "Gastronomie", "Moderne", "Capitale"],
+      tags: ["Musées", "Gastronomie", "Moderne", "Ville", "Architecture", "Ski"],
       mustSee: [
         { name: "Musée des Joyaux de la Couronne — diamants et pierreries impériaux", wikipedia: "File:Musée des Oudayas interior courtyard.jpg" },
         { name: "Palais du Golestan — résidence royale Qajar classée UNESCO", wikipedia: "Golestan_Palace" },
         { name: "Grand bazar de Téhéran — labyrinthe commercial historique", wikipedia: "Grand_Bazaar,_Tehran" },
         { name: "Musée national d'Iran — 7 000 ans d'histoire persane", wikipedia: "National_Museum_of_Iran" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Désert de Lut & Dasht-e Kavir",
+      region: "Iran central / Kerman",
+      description:
+        "Le cœur de l'Iran abrite deux déserts grandioses, dont le Lut, l'un des endroits les plus chauds de la planète, sculpté en kaluts spectaculaires. Oasis isolées, caravansérails et villes de terre comme Yazd rappellent la vie ancestrale du désert. Un voyage hors du temps classé à l'UNESCO.",
+      wikipedia: "Lut_Desert",
+      tags: ["Désert", "Nature", "UNESCO"],
+      mustSee: [
+        { name: "Shahdad & Kaluts", wikipedia: "Lut_Desert" },
+        { name: "Désert de sel de Maranjab", wikipedia: "Maranjab_Desert" },
+        { name: "Caravansérail de Meybod", wikipedia: "Meybod" },
+        { name: "Oasis de Garmeh", wikipedia: "Garmeh" },
+        { name: "Yazd — ville du désert", wikipedia: "Yazd" },
       ],
     },
   ],

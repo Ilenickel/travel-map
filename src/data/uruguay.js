@@ -84,7 +84,7 @@ export const URUGUAY = {
       description:
         "La capitale uruguayenne est une ville à taille humaine avec un rambla (front de mer) de 22 km, un marché Tristán Narvaja animé et un centro histórico élégant. Sa scène culturelle, ses petits bars à mate et son ambiance détendue en font une destination attachante.",
       wikipedia: "Montevideo",
-      tags: ["capitale", "culture", "gastronomie", "bord de mer"],
+      tags: ["Ville", "Culture", "Gastronomie", "Bord De Mer", "Architecture"],
       mustSee: [
         { name: "Ciudad Vieja (vieille ville)", wikipedia: "Ciudad_Vieja,_Montevideo" },
         { name: "Marché du Port (Mercado del Puerto)", wikipedia: "Mercado_del_Puerto" },
@@ -99,7 +99,7 @@ export const URUGUAY = {
       description:
         "Cette ville coloniale portugaise du XVIIe siècle, inscrite au patrimoine UNESCO, est à 1h de ferry depuis Buenos Aires. Ses ruelles pavées, ses phares et ses maisons aux couleurs pastel en font un musée à ciel ouvert.",
       wikipedia: "Colonia_del_Sacramento",
-      tags: ["colonial", "UNESCO", "histoire", "romantique"],
+      tags: ["Colonial", "UNESCO", "Histoire", "Romantique", "Architecture"],
       mustSee: [
         { name: "Barrio Histórico", wikipedia: "File:Calle en Colonia del Sacramento 2013.jpg" },
         { name: "Phare de Colonia", wikipedia: "Colonia_del_Sacramento_Lighthouse" },
@@ -113,7 +113,7 @@ export const URUGUAY = {
       description:
         "La Saint-Tropez de l'Amérique du Sud attire en été les célébrités et jet-setters argentins et brésiliens. La main géante de l'artiste Ironside, les plages Brava et Mansa et la vie nocturne animée sont ses emblèmes.",
       wikipedia: "Punta_del_Este",
-      tags: ["plages", "luxe", "nightlife", "art"],
+      tags: ["Plage", "Luxe", "Nightlife", "Art"],
       mustSee: [
         { name: "La Mano (sculpture)", wikipedia: "File:Thehandofpuntadeleste.jpg" },
         { name: "Plage Brava", wikipedia: "File:PuntadelEste3.jpg" },
@@ -128,7 +128,7 @@ export const URUGUAY = {
       description:
         "L'intérieur uruguayen est un immense territoire rural de pampas et collines douces. Les estancias (ranchs gauchiers) ouvrent leurs portes aux touristes pour des séjours authentiques : équitation, asado, coucher de soleil sur les prairies.",
       wikipedia: "File:Parque_Anchorena_Estancia_Residencial_Presidencial_Colonia_Uruguay_-_panoramio_(2).jpg",
-      tags: ["gaucho", "nature", "équitation", "rural"],
+      tags: ["Gaucho", "Nature", "Équitation", "Rural"],
       mustSee: [
         { name: "Tacuarembó (festival gaucho)", wikipedia: "File:Tablado Velódromo Municipal Tacuarembó.jpg" },
         { name: "Quebrada de los Cuervos", wikipedia: "Quebrada_de_los_Cuervos" },

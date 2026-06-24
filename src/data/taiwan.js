@@ -90,7 +90,7 @@ export const TAIWAN = {
       description:
         "Capitale dynamique avec ses marchés nocturnes envoûtants, le gratte-ciel Taipei 101, les temples du vieux quartier et les meilleurs xiaolongbao du monde.",
       wikipedia: "Taipei",
-      tags: ["Ville", "Gastronomie", "Culture", "Shopping"],
+      tags: ["Ville", "Gastronomie", "Culture", "Shopping", "Architecture"],
       mustSee: [
         { name: "Taipei 101", wikipedia: "Taipei_101" },
         { name: "Marché nocturne de Shilin", wikipedia: "Shilin_Night_Market" },
@@ -133,7 +133,7 @@ export const TAIWAN = {
       description:
         "Ancienne capitale du pays, véritable musée vivant avec ses temples et sa cuisine de rue légendaire. Considérée comme la capitale gastronomique de Taïwan.",
       wikipedia: "Tainan",
-      tags: ["Histoire", "Gastronomie", "Temples", "Culture"],
+      tags: ["Histoire", "Gastronomie", "Temples", "Culture", "Architecture"],
       mustSee: [
         { name: "Fort Anping", wikipedia: "File:Tainan Taiwan Fort-Zeelandia-01.jpg" },
         { name: "Temple Chikanlou", wikipedia: "File:Chihkan Tower night.JPG" },

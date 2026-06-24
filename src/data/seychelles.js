@@ -101,7 +101,7 @@ export const SEYCHELLES = {
       description:
         "Mahé, la plus grande île, concentre les infrastructures : Victoria la capitale (la plus petite du monde), les marchés de Victoria aux épices et artisanat créole, les jardins botaniques avec tortues géantes géantes en liberté, et la plongée autour des îles voisines. Les plages de Beau Vallon (nord) sont les plus animées des Seychelles.",
       wikipedia: "File:Wind turbines - wind energy - Mahe - Seychelles.jpg",
-      tags: ["Capitale", "Plongée", "Marchés", "Tortues"],
+      tags: ["Ville", "Plongée", "Marchés", "Tortues"],
       mustSee: [
         { name: "Marché de Victoria — épices, artisanat créole", wikipedia: "File:Big Ben Clock Tower - Victoria - Mahe - Seychelles - 01.jpg" },
         { name: "Jardins botaniques — tortues géantes Aldabra en semi-liberté", wikipedia: "File:Green_turtle_Chelonia_mydas_is_basking_on_Punaluu_Beach_Big_Island_of_Hawaii.jpg" },

@@ -61,7 +61,7 @@ export const LIECHTENSTEIN = {
       description:
         "Vaduz est l'une des plus petites capitales du monde, avec seulement 5 500 habitants. Elle est dominée par le château du prince Hans-Adam II, résidence officielle de la famille régnante et non ouverte au public, mais offrant une silhouette iconique sur la ville. La rue principale concentre les musées, le Kunstmuseum et les boutiques de timbres (le Liechtenstein est réputé philatéliquement).",
       wikipedia: "Vaduz",
-      tags: ["Capitale", "Château", "Musées", "Principauté"],
+      tags: ["Ville", "Château", "Musées", "Principauté"],
       mustSee: [
         { name: "Château de Vaduz — résidence princière médiévale en hauteur dominant la ville", wikipedia: "Vaduz_Castle" },
         { name: "Kunstmuseum Liechtenstein — musée d'art moderne et contemporain de haute qualité", wikipedia: "Kunstmuseum_Liechtenstein" },

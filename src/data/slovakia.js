@@ -82,7 +82,7 @@ export const SLOVAKIA = {
       description:
         "Les Hautes Tatras sont le massif montagneux le plus au nord-est d'Europe : 29 sommets au-dessus de 2 500m, des lacs glaciaires (Štrbské Pleso), des cascades, et des randonnées balisées parmi les plus belles d'Europe centrale. L'ours brun, le chamois des Tatras et l'aigle royal sont encore présents. Ski alpin à Jasná en hiver.",
       wikipedia: "High_Tatras",
-      tags: ["Montagne", "Randonnée", "Lacs", "Ski"],
+      tags: ["Montagne", "Randonnée", "Lacs", "Ski", "UNESCO", "Nature"],
       mustSee: [
         { name: "Lac Štrbské Pleso — vue sur les crêtes des Tatras", wikipedia: "Štrbské_Pleso" },
         { name: "Randonnée Rysy (2 503m) — sommet accessible depuis la Pologne", wikipedia: "Rysy" },
@@ -97,7 +97,7 @@ export const SLOVAKIA = {
       description:
         "Bratislava est la seule capitale au monde à longer deux pays (Autriche et Hongrie). Sa Vieille Ville baroque est compacte et piétonne, dominée par le château blanc (vue sur le Danube), et animée par les rues Michael et Laurinska. À 1h de Vienne et 2h de Budapest par train, c'est aussi une base idéale pour un circuit des capitales danubiennes.",
       wikipedia: "Bratislava",
-      tags: ["Capitale", "Baroque", "Danube", "Compact"],
+      tags: ["Ville", "Baroque", "Danube", "Compact", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Château de Bratislava — vue sur le Danube, Autriche et Hongrie", wikipedia: "Bratislava_Castle" },
         { name: "Vieille Ville baroque — rues Michael et Hlavné námestie", wikipedia: "Old_Town,_Bratislava" },
@@ -112,7 +112,7 @@ export const SLOVAKIA = {
       description:
         "Le Paradis slovaque (Slovenský Raj) est un parc national unique : ses gorges encaissées sont équipées d'échelles, de passerelles et de chaînes métalliques fixées dans la roche — on se hisse littéralement dans les cascades. C'est l'aventure à portée de tous, sans équipement d'escalade. Les gorges de Sucha Bela et Piecky sont les plus spectaculaires.",
       wikipedia: "Slovak_Paradise",
-      tags: ["Gorges", "Cascade", "Aventure", "Escalade"],
+      tags: ["Gorges", "Cascade", "Aventure", "Escalade", "Nature", "Randonnée"],
       mustSee: [
         { name: "Gorge de Sucha Bela — échelles dans une cascade de 300m", wikipedia: "File:Slovenský_ráj,_Korytový_vodopád.JPG" },
         { name: "Cascade de Závojový — la plus haute de la région (65m)", wikipedia: "File:Zavojovy vodopad detail.JPG" },
@@ -126,7 +126,7 @@ export const SLOVAKIA = {
       description:
         "La Slovaquie compte plus de 180 châteaux et forteresses — le plus grand nombre par km² d'Europe. Bojnice (le plus romantique, style néo-gothique), Trenčín (sur un piton de basalte au-dessus de la ville), Oravský Podzámok (perché sur une falaise de 112m au-dessus de la rivière Orava) sont parmi les plus spectaculaires des Carpates.",
       wikipedia: "Bojnice_Castle",
-      tags: ["Châteaux", "Médiéval", "Romantique", "Carpates"],
+      tags: ["Châteaux", "Médiéval", "Romantique", "Carpates", "Architecture", "Histoire"],
       mustSee: [
         { name: "Château de Bojnice — le plus romantique de Slovaquie (XIVe s.)", wikipedia: "Bojnice_Castle" },
         { name: "Château d'Oravský — falaise de 112m au-dessus de l'Orava", wikipedia: "File:JBZamekOrawski v2.jpg" },

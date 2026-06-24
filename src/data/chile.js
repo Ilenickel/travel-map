@@ -111,7 +111,7 @@ export const CHILE = {
       description:
         "Le parc national Torres del Paine est l'un des plus beaux du monde, avec ses trois tours granitiques, ses glaciers et sa faune sauvage (guanacos, condors, pumas). Le trekking en W ou en O est une aventure de référence.",
       wikipedia: "File:Towers of Paine - Torres del Paine National Park 13.jpg",
-      tags: ["randonnée", "glaciers", "faune", "nature"],
+      tags: ["Randonnée", "Glaciers", "Faune", "Nature"],
       mustSee: [
         { name: "Mirador Las Torres", wikipedia: "File:Mirador las Torres.jpg" },
         { name: "Glacier Grey", wikipedia: "Grey_Glacier" },
@@ -126,7 +126,7 @@ export const CHILE = {
       description:
         "Le désert d'Atacama est le plus aride au monde et offre des paysages martiens époustouflants : geysers du Tatio à 4 500 m, Vallée de la Lune, lagunes colorées et ciel étoilé parmi les plus clairs du monde.",
       wikipedia: "File:Paisaje cerca de Calama, Chile, 2016-02-01, DD 83.JPG",
-      tags: ["désert", "astronomie", "geysers", "paysages"],
+      tags: ["Désert", "Astronomie", "Geysers", "Paysages", "Nature"],
       mustSee: [
         { name: "Geysers del Tatio", wikipedia: "El_Tatio" },
         { name: "Valle de la Luna", wikipedia: "Valle_de_la_Luna_(Chile)" },
@@ -141,7 +141,7 @@ export const CHILE = {
       description:
         "Santiago est une capitale moderne avec les Andes en toile de fond. À 1h30, Valparaíso est une ville-port bohème aux funiculaires et fresques murales colorées, inscrite au patrimoine UNESCO.",
       wikipedia: "File:Edificios en Santiago de Chile II.jpg",
-      tags: ["capitale", "art", "UNESCO", "vin"],
+      tags: ["Ville", "Art", "UNESCO", "Vin", "Architecture", "Gastronomie", "Ski"],
       mustSee: [
         { name: "Valparaíso (cerros)", wikipedia: "File:Templeman y Almirante Montt, Valparaíso.jpg" },
         { name: "Museo Chileno de Arte Precolombino", wikipedia: "File:Museo Chileno de Arte Precolombino - 2020 - 10.jpg" },
@@ -156,7 +156,7 @@ export const CHILE = {
       description:
         "Île mythique du Pacifique à 3 700 km des côtes chiliennes, Rapa Nui est célèbre pour ses moaïs, ces statues monumentales érigées par les anciens Polynésiens. Un mystère archéologique fascinant dans un cadre volcanique.",
       wikipedia: "Easter_Island",
-      tags: ["île", "archéologie", "mystère", "volcans"],
+      tags: ["Île", "Archéologie", "Mystère", "Volcans", "Plage", "UNESCO"],
       mustSee: [
         { name: "Ahu Tongariki (15 moaïs)", wikipedia: "Ahu_Tongariki" },
         { name: "Rano Raraku (carrière)", wikipedia: "Rano_Raraku" },

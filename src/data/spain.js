@@ -109,7 +109,7 @@ export const SPAIN = {
       description:
         "Capital du modernisme catalan, Barcelone fascine avec la Sagrada Família de Gaudí, le Parc Güell, les plages urbaines et la vie nocturne la plus animée d'Europe.",
       wikipedia: "Barcelona",
-      tags: ["Architecture", "Plage", "Culture", "Nuit"],
+      tags: ["Architecture", "Plage", "Culture", "Nuit", "Ville", "Gastronomie", "UNESCO"],
       mustSee: [
         { name: "Sagrada Família", wikipedia: "Sagrada_Família" },
         { name: "Parc Güell", wikipedia: "Park_Güell" },
@@ -124,7 +124,7 @@ export const SPAIN = {
       description:
         "Capitale de l'art avec le Prado (Vélasquez, Goya), le musée Reina Sofía (Guernica de Picasso) et le Thyssen-Bornemisza. Tapas, flamenco et vie nocturne intense.",
       wikipedia: "Madrid",
-      tags: ["Art", "Culture", "Gastronomie", "Ville"],
+      tags: ["Art", "Culture", "Gastronomie", "Ville", "Histoire", "Architecture"],
       mustSee: [
         { name: "Musée du Prado", wikipedia: "Museo_del_Prado" },
         { name: "Musée Reina Sofía — Guernica", wikipedia: "File:Madrid_-_Museo_Nacional_Centro_de_Arte_Reina_Sofía_(MNCARS)_03.JPG" },
@@ -139,7 +139,7 @@ export const SPAIN = {
       description:
         "Capitale du flamenco et de la corrida, avec l'Alcázar mauresque, la cathédrale gothique la plus grande du monde et le quartier de Triana animé.",
       wikipedia: "Seville",
-      tags: ["Histoire", "Culture", "Flamenco", "UNESCO"],
+      tags: ["Histoire", "Culture", "Flamenco", "UNESCO", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Alcázar de Séville", wikipedia: "Alcázar_of_Seville" },
         { name: "Cathédrale de Séville & La Giralda", wikipedia: "Seville_Cathedral" },
@@ -154,7 +154,7 @@ export const SPAIN = {
       description:
         "L'Alhambra, palais-forteresse nasride aux jardins paradisiaques, est l'un des monuments les plus visités d'Espagne. Le quartier Albaicín préserve l'architecture mauresque.",
       wikipedia: "File:View_of_Albaicín_from_Alhambra._Granada,_Spain.jpg",
-      tags: ["Histoire", "UNESCO", "Architecture", "Culture"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Culture", "Ski", "Randonnée"],
       mustSee: [
         { name: "Alhambra & Generalife", wikipedia: "Alhambra" },
         { name: "Quartier Albaicín", wikipedia: "Albaicín" },
@@ -169,12 +169,28 @@ export const SPAIN = {
       description:
         "Majorque, Minorque, Ibiza et Formentera — quatre îles méditerranéennes aux eaux turquoise, plages de rêve et culture très différente selon l'île choisie.",
       wikipedia: "File:Pollença, Balearic Islands, Spain - panoramio (307).jpg",
-      tags: ["Plage", "Mer", "Fête", "Paysage"],
+      tags: ["Plage", "Mer", "Fête", "Paysage", "Nature", "Randonnée"],
       mustSee: [
         { name: "Palma de Majorque", wikipedia: "File:Palma de Mallorca (Spain).jpg" },
         { name: "Formentera — plages paradisiaques", wikipedia: "File:Formentera es Mirador.jpg" },
         { name: "Ibiza — couchers de soleil à Café del Mar", wikipedia: "File:Eivissa - ses Figueretes from Airplane.jpg" },
         { name: "Minorque — Menorca Reserva de la Biosfera", wikipedia: "File:Menorca 2.jpg" },
+      ],
+    },
+    {
+      id: 6,
+      name: "Almería & Las Bardenas",
+      region: "Andalousie / Navarre",
+      description:
+        "Le sud-est de l'Espagne cache des paysages désertiques uniques en Europe, du désert de Tabernas, décor de westerns, aux formations érodées des Bardenas Reales. Entre cinéma, nature protégée et architecture mauresque, la région offre un dépaysement total. Les côtes sauvages de Cabo de Gata complètent ce tableau aride.",
+      wikipedia: "Tabernas_Desert",
+      tags: ["Désert", "Nature", "Architecture"],
+      mustSee: [
+        { name: "Désert de Tabernas", wikipedia: "Tabernas_Desert" },
+        { name: "Parc naturel de Cabo de Gata", wikipedia: "Cabo_de_Gata-Níjar_Natural_Park" },
+        { name: "Bardenas Reales", wikipedia: "Bardenas_Reales" },
+        { name: "Alcazaba d'Almería", wikipedia: "File:Alcazaba_1,_Almeria,_Spain.jpg" },
+        { name: "Mini Hollywood", wikipedia: "Mini_Hollywood" },
       ],
     },
   ],

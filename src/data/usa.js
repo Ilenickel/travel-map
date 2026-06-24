@@ -109,7 +109,7 @@ export const USA = {
       description:
         "La ville la plus iconique du monde : Central Park, Times Square, le pont de Brooklyn, les musées de classe mondiale (MoMA, Metropolitan), et une gastronomie internationale sans pareille.",
       wikipedia: "New_York_City",
-      tags: ["Ville", "Culture", "Gastronomie", "Shopping"],
+      tags: ["Ville", "Culture", "Gastronomie", "Shopping", "Architecture", "Histoire"],
       mustSee: [
         { name: "Empire State Building", wikipedia: "Empire_State_Building" },
         { name: "Central Park", wikipedia: "Central_Park" },
@@ -124,7 +124,7 @@ export const USA = {
       description:
         "Le Grand Canyon, l'un des plus grands spectacles naturels du monde. Le road trip Monument Valley–Zion–Bryce Canyon–Antelope Canyon est l'expérience de voyage américaine par excellence.",
       wikipedia: "Grand_Canyon",
-      tags: ["Nature", "UNESCO", "Paysage", "Road Trip"],
+      tags: ["Nature", "UNESCO", "Paysage", "Road Trip", "Randonnée", "Désert", "Ski"],
       mustSee: [
         { name: "Grand Canyon — South Rim", wikipedia: "Grand_Canyon" },
         { name: "Monument Valley", wikipedia: "Monument_Valley" },
@@ -169,7 +169,7 @@ export const USA = {
       description:
         "La ville du jazz, du Mardi Gras et de la gastronomie cajun. Le Vieux Carré français, Bourbon Street et les clubs de jazz font de la Nouvelle-Orléans une destination unique en Amérique.",
       wikipedia: "New_Orleans",
-      tags: ["Culture", "Musique", "Gastronomie", "Histoire"],
+      tags: ["Culture", "Musique", "Gastronomie", "Histoire", "Ville"],
       mustSee: [
         { name: "French Quarter — Bourbon Street", wikipedia: "French_Quarter" },
         { name: "Preservation Hall — Jazz live", wikipedia: "Preservation_Hall" },

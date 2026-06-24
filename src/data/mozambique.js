@@ -125,7 +125,7 @@ export const MOZAMBIQUE = {
       description:
         "Maputo est une capitale surprenante : architecture art déco et moderniste léguée par le Portugal, marché central avec artisanat et bois de rose, restaurants de fruits de mer exceptionnels (langoustes et camarão fraîche), et une scène culturelle animée. La Fortaleza de Maputo (XVIIIe s.) domine la baie.",
       wikipedia: "Maputo",
-      tags: ["Capitale", "Art déco", "Gastronomie", "Marché"],
+      tags: ["Ville", "Art déco", "Gastronomie", "Marché"],
       mustSee: [
         { name: "Marché central de Maputo — épices et sculptures", wikipedia: "File:Mozambique, Maputo, Zimpeto Market, fruit sellers.jpg" },
         { name: "Fortaleza de Nossa Senhora da Conceição (XVIII s.)", wikipedia: "File:Fortaleza_de_Nossa_Senhora_da_Conceição_(1946)_(4107930945).jpg" },

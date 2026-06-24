@@ -82,7 +82,7 @@ export const GUATEMALA = {
       description:
         "Antigua est l'une des villes coloniales espagnoles les mieux conservées d'Amérique centrale, classée UNESCO. Rues pavées, arcs baroques, ruines de couvents, et volcans en arrière-plan : Agua, Fuego et Acatenango. La Semana Santa (Pâques) y est la plus impressionnante du monde hispanique.",
       wikipedia: "Antigua_Guatemala",
-      tags: ["UNESCO", "Colonial", "Volcans", "Culture"],
+      tags: ["UNESCO", "Colonial", "Volcans", "Culture", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Arc de Santa Catalina & vue volcans", wikipedia: "Arco_de_Santa_Catalina" },
         { name: "Ruines Cathédrale Santiago", wikipedia: "File:Antigua Guatemala 1979 - Colonial ruins.jpg" },
@@ -97,7 +97,7 @@ export const GUATEMALA = {
       description:
         "Tikal est le plus grand site maya du monde : une cité précolombienne enfouie dans la forêt tropicale du Petén. Les temples I et IV dépassent la canopée, offrant une vue à couper le souffle sur la jungle infinie. Toucans, singes hurleurs et coatis peuplent les ruines.",
       wikipedia: "Tikal",
-      tags: ["UNESCO", "Mayas", "Jungle", "Archéologie"],
+      tags: ["UNESCO", "Mayas", "Jungle", "Archéologie", "Randonnée", "Nature", "Architecture"],
       mustSee: [
         { name: "Temple I — Gran Jaguar (70 m)", wikipedia: "File:Tikal Temple I 02.jpg" },
         { name: "Temple IV — vue au-dessus de la canopée", wikipedia: "File:Tikal Temple IV, 2022 02.jpg" },
@@ -112,7 +112,7 @@ export const GUATEMALA = {
       description:
         "Le lac Atitlán, à 1 562 m d'altitude, est entouré de trois volcans et de villages mayas encore vivants. Aldous Huxley le décrivait comme « le lac le plus beau du monde ». Chaque village riverain a sa propre identité culturelle et son marché traditionnel.",
       wikipedia: "Lake_Atitlán",
-      tags: ["Nature", "Culture Maya", "Lac", "Volcans"],
+      tags: ["Nature", "Culture Maya", "Lac", "Volcans", "Randonnée"],
       mustSee: [
         { name: "Village San Juan La Laguna (artisans mayas)", wikipedia: "San_Juan_La_Laguna" },
         { name: "Ascension Volcan San Pedro (3 020 m)", wikipedia: "File:Volcán San Pedro, Chile, 2016-02-09, DD 18.JPG" },

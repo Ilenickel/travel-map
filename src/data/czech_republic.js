@@ -82,7 +82,7 @@ export const CZECH_REPUBLIC = {
       description:
         "Prague est la plus belle capitale d'Europe centrale : le Pont Charles (XIVe s.) avec ses 30 statues baroques, le Château de Prague (le plus grand complexe castral du monde, UNESCO), la Vieille Ville avec son horloge astronomique (1410) et ses fontaines, et le quartier juif de Josefov — le quartier juif médiéval le mieux préservé au monde. La nuit, la ville brille de mille feux.",
       wikipedia: "Prague",
-      tags: ["Médiéval", "UNESCO", "Château", "Pont Charles"],
+      tags: ["Médiéval", "UNESCO", "Château", "Pont Charles", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Pont Charles — statues baroques sur la Vltava (XIVe s.)", wikipedia: "Charles_Bridge" },
         { name: "Château de Prague — complexe de cathédrale, palais, vignoble", wikipedia: "Prague_Castle" },
@@ -97,7 +97,7 @@ export const CZECH_REPUBLIC = {
       description:
         "Český Krumlov est un village médiéval et baroque intact classé UNESCO : son château du XIIIe siècle (deuxième plus grand de Bohême) domine un méandre de la Vltava. Le théâtre baroque du château est l'un des mieux préservés au monde, encore équipé de ses décors originaux. En été, le festival des Cinq-pétales fait revivre la ville en costumes du XVIe siècle.",
       wikipedia: "Český_Krumlov",
-      tags: ["Château", "UNESCO", "Baroque", "Village"],
+      tags: ["Château", "UNESCO", "Baroque", "Village", "Architecture"],
       mustSee: [
         { name: "Château de Český Krumlov — méandre de la Vltava, panorama", wikipedia: "Český_Krumlov_Castle" },
         { name: "Théâtre baroque du château — scène du XVIIe s. intacte", wikipedia: "File:Divadlo Krumlov.JPG" },
@@ -126,7 +126,7 @@ export const CZECH_REPUBLIC = {
       description:
         "Brno, deuxième ville de Tchéquie, est une ville universitaire et culturelle avec le château Špilberk (prison d'État des Habsbourg) et la villa Tugendhat (chef-d'œuvre de Mies van der Rohe, UNESCO). La Moravie produit 95% des vins tchèques : les villages de Velké Pavlovice, Mikulov et Znojmo offrent une route des vins similaire à l'Alsace.",
       wikipedia: "File:Brno, Škoda 13T č. 1902.jpg",
-      tags: ["Vin", "Modernisme", "UNESCO", "Université"],
+      tags: ["Vin", "Modernisme", "UNESCO", "Université", "Ville"],
       mustSee: [
         { name: "Villa Tugendhat Brno (UNESCO) — chef-d'œuvre de Mies van der Rohe", wikipedia: "Villa_Tugendhat" },
         { name: "Château Špilberk — prison habsbourgeoise et vue sur Brno", wikipedia: "Špilberk_Castle" },

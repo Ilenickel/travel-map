@@ -82,7 +82,7 @@ export const MONTENEGRO = {
       description:
         "La baie de Kotor (UNESCO) est le seul fjord de la Méditerranée : des parois de 1 800m plongeant dans une eau vert-bleu, avec la vieille ville vénitienne de Kotor (XIIe-XVIe s.) au pied des remparts. La montée aux remparts (1 350 marches) offre un panorama époustouflant. L'île Notre-Dame-des-Rochers (construite à la main par des pêcheurs depuis le XVe s.) est accessible en barque.",
       wikipedia: "Bay_of_Kotor",
-      tags: ["Fjord", "UNESCO", "Vénitien", "Remparts"],
+      tags: ["Fjord", "UNESCO", "Vénitien", "Remparts", "Ville", "Histoire", "Architecture"],
       mustSee: [
         { name: "Vieille ville de Kotor et ses remparts vénitiens (UNESCO)", wikipedia: "Kotor" },
         { name: "Montée aux remparts (1 350 marches) — panorama sur le fjord", wikipedia: "File:Castillo_de_San_Juan,_Kotor,_Bahía_de_Kotor,_Montenegro,_2014-04-19,_DD_16.JPG" },
@@ -97,7 +97,7 @@ export const MONTENEGRO = {
       description:
         "Budva est la capitale balnéaire du Monténégro : vieille ville vénitienne sur un promontoire rocheux et plages de galets et de sable autour. Sveti Stefan est une ancienne île-village de pêcheurs transformée en hôtel de luxe Aman — sa silhouette sur la mer est l'image la plus emblématique du pays. La plage publique face à l'île est gratuite et magnifique.",
       wikipedia: "Budva",
-      tags: ["Plage", "Vénitien", "Riviera", "Luxe"],
+      tags: ["Plage", "Vénitien", "Riviera", "Luxe", "Ville"],
       mustSee: [
         { name: "Vieille ville de Budva — remparts et ruelles vénitiennes", wikipedia: "File:Budva old town 1.jpg" },
         { name: "Vue sur Sveti Stefan depuis la route (l'image du Monténégro)", wikipedia: "Sveti_Stefan" },
@@ -112,7 +112,7 @@ export const MONTENEGRO = {
       description:
         "Le Durmitor (UNESCO) est le parc national le plus sauvage des Balkans occidentaux : le canyon de Tara (1 300m de profondeur — le plus profond d'Europe après le Grand Canyon) avec son rafting de classe mondiale, le lac Noir (Crno Jezero) au pied des sommets de 2 500m, et 18 glaciations ont sculpté 48 lacs de montagne.",
       wikipedia: "Durmitor",
-      tags: ["Canyon", "UNESCO", "Rafting", "Lacs"],
+      tags: ["Canyon", "UNESCO", "Rafting", "Lacs", "Randonnée", "Ski", "Nature"],
       mustSee: [
         { name: "Rafting dans le canyon de Tara (35km, niveau débutant possible)", wikipedia: "Tara_River_Canyon" },
         { name: "Canyon de Tara depuis le pont Đurđevića (150m au-dessus)", wikipedia: "Đurđevića_Tara_Bridge" },
@@ -127,7 +127,7 @@ export const MONTENEGRO = {
       description:
         "Le monastère d'Ostrog est incrusté dans une falaise verticale à 900m d'altitude — l'un des lieux de pèlerinage les plus visités des Balkans, toutes religions confondues (chrétiens et musulmans). Fondé au XVIIe siècle par saint Basile d'Ostrog, ses fresques du XVIIe siècle dans la roche calcaire et son atmosphère spirituelle intense en font un lieu unique.",
       wikipedia: "Ostrog_Monastery",
-      tags: ["Monastère", "Falaise", "Pèlerinage", "Spirituel"],
+      tags: ["Monastère", "Falaise", "Pèlerinage", "Spirituel", "Histoire", "Architecture"],
       mustSee: [
         { name: "Monastère supérieur d'Ostrog — dans la falaise à 900m", wikipedia: "File:Pogled na Ostrog izdaleka 2019.jpg" },
         { name: "Reliques de Saint Basile — vénérées par toutes religions", wikipedia: "File:Ostrog Monastery, Montenegro.jpg" },

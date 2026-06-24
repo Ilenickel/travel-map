@@ -82,7 +82,7 @@ export const BULGARIA = {
       description:
         "La côte bulgare de la mer Noire offre 350km de plages de sable doré et des eaux chaudes (27°C en juillet-août). Sozopol, cité grecque antique sur un cap rocheux, est l'une des plus belles villes côtières de Bulgarie. Nessebar (UNESCO) est une ville byzantine et médiévale préservée sur un isthme rocheux. Les stations de Sunny Beach et Golden Sands attirent les familles.",
       wikipedia: "File:Bulgaria black sea coast.jpg",
-      tags: ["Plage", "Mer Noire", "Grec antique", "UNESCO"],
+      tags: ["Plage", "Mer Noire", "Grec antique", "UNESCO", "Nature"],
       mustSee: [
         { name: "Sozopol — cité grecque antique sur cap rocheux", wikipedia: "File:Sozopol2.jpg" },
         { name: "Nessebar — ville byzantine et médiévale (UNESCO)", wikipedia: "File:Church of Christ Pantocrator Nesebar.jpg" },
@@ -97,7 +97,7 @@ export const BULGARIA = {
       description:
         "Le monastère de Rila (UNESCO) est le plus grand et le plus important de Bulgarie — fondé au Xe siècle dans les montagnes à 1 147m d'altitude. Ses fresques du XIXe siècle (plus de 1 200 scènes bibliques sur les galeries) et son architecture à arcs rayés noirs et blancs en font l'un des plus beaux ensembles religieux des Balkans. Pèlerinage national vivant.",
       wikipedia: "Rila_Monastery",
-      tags: ["Monastère", "UNESCO", "Fresques", "Montagnes"],
+      tags: ["Monastère", "UNESCO", "Fresques", "Montagnes", "Nature", "Randonnée", "Architecture"],
       mustSee: [
         { name: "Fresques des galeries du monastère (1 200 scènes)", wikipedia: "File:Religious fresco in Rila Monastery.jpg" },
         { name: "Musée du monastère — trésor religieux et icônes", wikipedia: "Rila_Monastery" },
@@ -112,7 +112,7 @@ export const BULGARIA = {
       description:
         "Plovdiv est la deuxième ville de Bulgarie et l'une des plus vieilles villes d'Europe continuellement habitée (6 000 ans). Son vieux quartier sur les collines (Kapana — le labyrinthe) mélange maisons renaissance bulgare du XIXe siècle, rues pavées, galeries d'art et cafés branchés. L'amphithéâtre romain du IIe siècle est encore utilisé pour les concerts.",
       wikipedia: "Plovdiv",
-      tags: ["Vieille ville", "Romain", "Capitale culture", "Art"],
+      tags: ["Vieille ville", "Romain", "Capitale culture", "Art", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Vieille ville de Plovdiv — maisons renaissance bulgare du XIXe s.", wikipedia: "File:Odeon plovdiv old.jpg" },
         { name: "Amphithéâtre romain (IIe s.) — concerts en plein air", wikipedia: "File:Plovdiv Ancient theatre.jpg" },
@@ -127,12 +127,28 @@ export const BULGARIA = {
       description:
         "Veliko Tarnovo était la capitale du Second Empire bulgare (1185–1393). Sa forteresse de Tsarevets, sur une colline entourée d'un méandre de la Yantra, est le symbole national bulgare. Le spectacle son-et-lumière nocturne sur les remparts est inoubliable. La vieille ville en terrasses descend vers la rivière dans un paysage de carte postale.",
       wikipedia: "File:Veliko Tarnovo (Велико Търново) - Tsarevets.JPG",
-      tags: ["Médiéval", "Forteresse", "Capitale", "Son-et-lumière"],
+      tags: ["Médiéval", "Forteresse", "Ville", "Son-et-lumière", "Architecture"],
       mustSee: [
         { name: "Forteresse de Tsarevets — spectacle son-et-lumière le soir", wikipedia: "File:Tsarevets - Veliko Tarnovo - 2.jpg" },
         { name: "Vieille ville de Veliko Tarnovo — maisons en terrasses", wikipedia: "File:Veliko Tarnovo - Varosha quarter.jpg" },
         { name: "Monastère de Preobrazhenski au pied des falaises", wikipedia: "File:MONASTERY OF PREOBRZENSKI, VELIKO TURNOVO.jpg" },
         { name: "Village artisanal d'Arbanasi — maisons forteresses ottomanes", wikipedia: "File:Arbanasi-imagesfrombulgaria.jpg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Bansko & Pirin",
+      region: "Blagoevgrad",
+      description:
+        "Au pied des sommets du Pirin classés à l'UNESCO, Bansko est la première station de ski des Balkans. Son centre historique aux maisons de pierre et bois charme autant que ses pistes modernes. Lacs glaciaires, forêts et monastères proches en font une base idéale toute l'année.",
+      wikipedia: "Bansko",
+      tags: ["Ski", "Randonnée", "Nature", "UNESCO"],
+      mustSee: [
+        { name: "Domaine skiable de Bansko", wikipedia: "File:Bansko ski 2025 19.jpg" },
+        { name: "Parc national de Pirin", wikipedia: "Pirin_National_Park" },
+        { name: "Vieille ville de Bansko — maisons bulgares", wikipedia: "Bansko" },
+        { name: "Lac de Vihren", wikipedia: "Vihren" },
+        { name: "Monastère de Rila depuis Bansko", wikipedia: "File:Klosterkirche des Rilaklosters.jpg" },
       ],
     },
   ],

@@ -97,7 +97,7 @@ export const FRANCE = {
       description:
         "Capitale incontournable, Paris concentre une densité de chefs-d'œuvre artistiques et architecturaux sans équivalent mondial. La Tour Eiffel, le Louvre, Notre-Dame et Montmartre forment un décor iconique que des millions de visiteurs viennent admirer chaque année. Au-delà des monuments, la ville séduit par ses cafés, ses marchés animés et sa vie culturelle bouillonnante.",
       wikipedia: "Paris",
-      tags: ["Culture", "Art", "Gastronomie", "Histoire", "Shopping"],
+      tags: ["Culture", "Art", "Gastronomie", "Histoire", "Shopping", "Ville", "UNESCO"],
       mustSee: [
         {
           name: "Tour Eiffel — symbole de Paris, vue panoramique depuis le sommet",
@@ -124,7 +124,7 @@ export const FRANCE = {
       description:
         "La French Riviera s'étire de Menton à Saint-Tropez avec ses eaux turquoise, ses villas belles époque et ses marchés colorés. Nice, Cannes et Monaco offrent chacune une identité distincte, entre promenade des Anglais, Festival du Film et palais princier. Le cadre méditerranéen, la cuisine provençale et l'art de vivre ensoleillé en font une destination de rêve.",
       wikipedia: "French_Riviera",
-      tags: ["Plage", "Luxe", "Gastronomie", "Nature", "Culture"],
+      tags: ["Plage", "Luxe", "Gastronomie", "Nature", "Culture", "Randonnée"],
       mustSee: [
         {
           name: "Promenade des Anglais à Nice — balade iconique en bord de mer",
@@ -151,7 +151,7 @@ export const FRANCE = {
       description:
         "Surnommée le « jardin de la France », la vallée de la Loire abrite plus de 300 châteaux Renaissance classés au patrimoine mondial de l'UNESCO. Chambord, Chenonceau et Amboise témoignent de la splendeur royale des XVe et XVIe siècles. Les vignobles environnants produisent des vins réputés comme le Vouvray, le Sancerre et le Muscadet.",
       wikipedia: "Loire_Valley",
-      tags: ["Histoire", "Châteaux", "Vin", "Vélo", "Patrimoine UNESCO"],
+      tags: ["Histoire", "Châteaux", "Vin", "Vélo", "UNESCO", "Architecture"],
       mustSee: [
         {
           name: "Château de Chambord — joyau Renaissance aux 440 pièces et double escalier",
@@ -178,7 +178,7 @@ export const FRANCE = {
       description:
         "Le Mont-Saint-Michel, abbaye médiévale surgissant de la mer à marée haute, est l'un des sites les plus photographiés de France. La côte bretonne voisine offre des paysages sauvages de landes et de falaises, des villages de pêcheurs pittoresques et une culture celtique vivace. Crêpes, galettes, cidre et fruits de mer complètent cette expérience authentiquement bretonne.",
       wikipedia: "Mont-Saint-Michel",
-      tags: ["Patrimoine UNESCO", "Nature", "Gastronomie", "Histoire", "Mer"],
+      tags: ["UNESCO", "Nature", "Gastronomie", "Histoire", "Mer", "Randonnée"],
       mustSee: [
         {
           name: "Abbaye du Mont-Saint-Michel — merveille médiévale sur son îlot rocheux",
@@ -196,6 +196,22 @@ export const FRANCE = {
           name: "Carnac — alignements mégalithiques parmi les plus importants du monde",
           wikipedia: "Carnac_stones",
         },
+      ],
+    },
+    {
+      id: 5,
+      name: "Alpes & Chamonix",
+      region: "Auvergne-Rhône-Alpes",
+      description:
+        "Au pied du toit de l'Europe, Chamonix est la capitale mondiale de l'alpinisme et du ski. La vallée offre des panoramas grandioses sur le massif du Mont-Blanc, des glaciers spectaculaires et des stations réputées. En été, la randonnée et les remontées mécaniques ouvrent l'accès à la haute montagne.",
+      wikipedia: "Chamonix",
+      tags: ["Ski", "Randonnée", "Nature", "UNESCO"],
+      mustSee: [
+        { name: "Mont-Blanc", wikipedia: "File:Absolute_MtBlanc_01.jpg" },
+        { name: "Chamonix — vallée et remontées mécaniques", wikipedia: "Chamonix" },
+        { name: "Vallée Blanche — ski hors-piste légendaire", wikipedia: "File:ValleeBlancheFromSE_(cropped).JPG" },
+        { name: "Mer de Glace", wikipedia: "Mer_de_Glace" },
+        { name: "Annecy & son lac", wikipedia: "Annecy" },
       ],
     },
   ],

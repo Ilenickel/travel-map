@@ -92,7 +92,7 @@ export const GUINEA = {
       description:
         "Conakry, capitale construite sur une presqu'île, est une ville animée et musicale. La Guinée est le berceau du djembé et du balafon, et les soirées de musique mandingue sont réputées dans tout le continent. Le marché Madina, le musée national et les îles de Los, accessibles en pirogue, complètent la visite.",
       wikipedia: "Conakry",
-      tags: ["Capitale", "Musique", "Marché", "Îles"],
+      tags: ["Ville", "Musique", "Marché", "Îles"],
       mustSee: [
         { name: "Musée national de Guinée", wikipedia: "File:Musée National de Guinée 27042022 005.jpg" },
         { name: "Marché Madina — le plus grand d'Afrique de l'Ouest", wikipedia: "File:Madina 2.jpg" },

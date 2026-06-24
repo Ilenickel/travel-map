@@ -88,7 +88,7 @@ export const LEBANON = {
       description:
         "Beyrouth est une ville de contrastes saisissants, où des quartiers de street art comme Gemmayzeh et Mar Mikhael côtoient les ruines encore visibles de l'explosion dévastatrice du port en août 2020. Malgré la crise économique profonde, la capitale libanaise conserve une énergie créative et une vie culturelle intense, avec ses galeries d'art, ses restaurants gastronomiques et sa scène musicale unique. Le centre historique en cours de reconstruction et le bord de mer (Corniche) invitent à flâner.",
       wikipedia: "Beirut",
-      tags: ["Capitale", "Culture", "Gastronomie", "Art"],
+      tags: ["Ville", "Culture", "Gastronomie", "Art", "Architecture", "Plage"],
       mustSee: [
         { name: "Quartier de Gemmayzeh — street art, bars et architecture ottomane", wikipedia: "File:Gemmayzeh (4694185351).jpg" },
         { name: "Place des Martyrs — cœur historique de Beyrouth", wikipedia: "File:City square in Beirut.jpg" },
@@ -103,7 +103,7 @@ export const LEBANON = {
       description:
         "Baalbek abrite les ruines les plus imposantes de l'Empire romain, inscrites au patrimoine mondial de l'UNESCO. Le Temple de Jupiter, avec ses colonnes de 20 mètres de haut et ses pierres de taille de plus de 1 000 tonnes, est l'une des constructions les plus grandioses de l'Antiquité. Le Festival de Baalbek, organisé chaque été depuis 1955 dans ces ruines extraordinaires, est l'un des événements culturels les plus prestigieux du monde arabe.",
       wikipedia: "Baalbek",
-      tags: ["UNESCO", "Antiquité", "Rome", "Festival"],
+      tags: ["UNESCO", "Antiquité", "Rome", "Festival", "Architecture", "Histoire"],
       mustSee: [
         { name: "Temple de Jupiter — colonnes de 20 m parmi les plus grandes de l'Antiquité", wikipedia: "File:Temple of Jupiter, Baalbek, Lebanon (5073942385).jpg" },
         { name: "Temple de Bacchus — le mieux conservé des temples romains au monde", wikipedia: "Temple_of_Bacchus" },
@@ -118,7 +118,7 @@ export const LEBANON = {
       description:
         "Byblos est l'une des villes continuellement habitées les plus anciennes du monde, fondée il y a plus de 7 000 ans par les Phéniciens qui y inventèrent l'alphabet. Inscrite au patrimoine mondial de l'UNESCO, sa vieille ville mêle vestiges phéniciens, temple egyptien, fortifications romaines, cathédrale croisée et port de pêche médiéval en un ensemble unique. Son petit port animé, ses restaurants de fruits de mer et sa rue piétonne comptent parmi les endroits les plus agréables du Liban.",
       wikipedia: "Byblos",
-      tags: ["UNESCO", "Phéniciens", "Histoire", "Port"],
+      tags: ["UNESCO", "Phéniciens", "Histoire", "Port", "Architecture", "Plage"],
       mustSee: [
         { name: "Ruines phéniciennes de Byblos — temples de 5 000 ans de fond de mer", wikipedia: "File:Byblos pine trees and ancient ruins, Byblos, Lebanon.jpg" },
         { name: "Château des Croisés — forteresse médiévale dominant la ville antique", wikipedia: "File:Byblos Castle 2009.jpg" },
@@ -133,7 +133,7 @@ export const LEBANON = {
       description:
         "La Grotte de Jeita est l'un des systèmes de galeries souterraines les plus beaux du monde, avec ses deux étages de stalactites et stalagmites aux reflets multicolores, accessibles à pied et en barque. Non loin, la forêt des Cèdres du Liban, emblème national du pays dont la feuille orne le drapeau, est un vestige sacré des forêts de cèdres qui couvraient autrefois tout le Liban. En hiver, les stations de ski de la montagne libanaise (Faraya, Mzaar) offrent une expérience insolite dans un pays du Moyen-Orient.",
       wikipedia: "Jeita_Grotto",
-      tags: ["Nature", "Grotte", "Forêt", "Ski"],
+      tags: ["Nature", "Grotte", "Forêt", "Ski", "Randonnée"],
       mustSee: [
         { name: "Grotte de Jeita — spectacle de stalactites et balade en barque souterraine", wikipedia: "Jeita_Grotto" },
         { name: "Forêt des Cèdres de Bsharré — cèdres millénaires classés à l'UNESCO", wikipedia: "Cedars_of_God" },

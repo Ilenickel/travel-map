@@ -90,7 +90,7 @@ export const INDONESIA = {
       description:
         "L'île des dieux, avec ses rizières en terrasses (Tegallalang), ses temples hindous (Tanah Lot, Uluwatu), ses plages de surf et ses villages artisanaux d'Ubud.",
       wikipedia: "File:Sunset,_Kuta,_Bali,_Indonesia,_20220825_1755_0879.jpg",
-      tags: ["Plage", "Culture", "Nature", "Spiritualité"],
+      tags: ["Plage", "Culture", "Nature", "Spiritualité", "Gastronomie", "Ville"],
       mustSee: [
         { name: "Rizières en terrasses de Tegallalang", wikipedia: "File:Rice_terraces,_Bali.jpg" },
         { name: "Temple Tanah Lot au coucher du soleil", wikipedia: "Tanah_Lot" },
@@ -105,7 +105,7 @@ export const INDONESIA = {
       description:
         "Borobudur est le plus grand temple bouddhiste du monde (9e siècle), classé UNESCO. À 70 km se trouve Prambanan, complexe de temples hindous tout aussi spectaculaire.",
       wikipedia: "Borobudur",
-      tags: ["Histoire", "UNESCO", "Culture", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Culture", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Borobudur — temple bouddhiste", wikipedia: "Borobudur" },
         { name: "Prambanan — temples hindous", wikipedia: "Prambanan" },

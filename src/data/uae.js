@@ -63,7 +63,7 @@ export const UAE = {
       description:
         "Métropole ultra-moderne avec la plus haute tour du monde, des centres commerciaux gigantesques, un ski en intérieur et le luxe accessible à tous les budgets.",
       wikipedia: "Dubai",
-      tags: ["Ville", "Luxe", "Shopping", "Architecture"],
+      tags: ["Ville", "Luxe", "Shopping", "Architecture", "Plage", "Gastronomie", "Histoire"],
       mustSee: [
         { name: "Burj Khalifa", wikipedia: "Burj_Khalifa" },
         { name: "Burj Al Arab", wikipedia: "Burj_Al_Arab" },
@@ -78,7 +78,7 @@ export const UAE = {
       description:
         "Capitale fédérale plus tranquille que Dubaï, avec la majestueuse Grande Mosquée Sheikh Zayed, le Louvre Abu Dhabi et les circuits de F1 de Yas Island.",
       wikipedia: "Abu_Dhabi",
-      tags: ["Culture", "Architecture", "Art", "Luxe"],
+      tags: ["Culture", "Architecture", "Art", "Luxe", "Gastronomie"],
       mustSee: [
         { name: "Grande Mosquée Sheikh Zayed", wikipedia: "Sheikh_Zayed_Grand_Mosque" },
         { name: "Louvre Abu Dhabi", wikipedia: "Louvre_Abu_Dhabi" },
@@ -92,7 +92,7 @@ export const UAE = {
       description:
         "Les dunes de Liwa et Al Awir offrent des safaris 4×4 inoubliables, du sandboarding et des nuits sous les étoiles dans des camps de luxe.",
       wikipedia: "Rub'_al_Khali",
-      tags: ["Nature", "Aventure", "Désert"],
+      tags: ["Nature", "Aventure", "Désert", "Safari"],
       mustSee: [
         { name: "Oasis de Liwa", wikipedia: "Liwa_Oasis" },
         { name: "Dunes de l'Empty Quarter", wikipedia: "Rub'_al_Khali" },

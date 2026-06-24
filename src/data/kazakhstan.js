@@ -88,7 +88,7 @@ export const KAZAKHSTAN = {
       description:
         "Almaty, l'ancienne capitale et première ville du Kazakhstan, est une métropole animée blottie au pied des montagnes Tian Shan, dont les sommets enneigés culminent à plus de 4 000 mètres au-dessus des parcs verdoyants de la ville. Ville la plus cosmopolite et la plus animée du pays, elle offre une vie culturelle riche, une gastronomie variée et un accès immédiat aux paysages montagneux grandioses de l'Ala-Archa. La station de ski de Shymbulak, accessible en 20 minutes du centre, est l'une des meilleures d'Asie centrale.",
       wikipedia: "Almaty",
-      tags: ["Montagne", "Culture", "Ski", "Gastronomie"],
+      tags: ["Montagne", "Culture", "Ski", "Gastronomie", "Ville", "Randonnée", "Nature"],
       mustSee: [
         { name: "Parc national d'Ile-Alatau — montagnes Tian Shan aux portes de la ville", wikipedia: "Ile-Alatau_National_Park" },
         { name: "Station de ski Shymbulak — ski à 2 200–3 200 m d'altitude", wikipedia: "Shymbulak" },
@@ -103,7 +103,7 @@ export const KAZAKHSTAN = {
       description:
         "Astana (anciennement Nur-Sultan puis Astana), capitale depuis 1997, est l'une des villes les plus futuristes et les plus étonnantes d'Asie : une métropole ultramoderne surgissant de la steppe kazakhe, construite ex nihilo par une volonté politique et architecturale sans précédent. Les architectes les plus célèbres du monde — Norman Foster, Kisho Kurokawa — y ont laissé leurs signatures dans un paysage urbain de verre, d'acier et de formes sphériques qui contraste absolument avec les traditions nomades environnantes.",
       wikipedia: "Astana",
-      tags: ["Architecture", "Moderne", "Capitale", "Futuriste"],
+      tags: ["Architecture", "Moderne", "Ville", "Futuriste"],
       mustSee: [
         { name: "Baiterek — tour emblématique de 97 m symbole de la nouvelle capitale", wikipedia: "File:Night at Esil District, Astana (P1190721).jpg" },
         { name: "Palais de la Paix et de la Réconciliation — pyramide de Norman Foster", wikipedia: "Palace_of_Peace_and_Reconciliation" },
@@ -118,7 +118,7 @@ export const KAZAKHSTAN = {
       description:
         "Turkestan est la cité la plus sacrée d'Asie centrale kazakhe, dont le mausolée de Khoja Ahmed Yasawi — chef-d'œuvre de l'architecture timouride commandé par Tamerlan à la fin du XIVe siècle — figure parmi les monuments islamiques les plus importants de la région. Classé au patrimoine mondial de l'UNESCO, le mausolée avec son immense dôme turquoise domine une ville qui fut pendant des siècles l'un des principaux pôles spirituels et commerciaux de la Route de la Soie.",
       wikipedia: "File:Түркістан._Жаңа_құрылыстар.jpg",
-      tags: ["UNESCO", "Route de la Soie", "Islam", "Timourides"],
+      tags: ["UNESCO", "Route de la Soie", "Islam", "Timourides", "Histoire", "Architecture"],
       mustSee: [
         { name: "Mausolée de Khoja Ahmed Yasawi — chef-d'œuvre timouride classé UNESCO", wikipedia: "Mausoleum_of_Khoja_Ahmed_Yasawi" },
         { name: "Bain souterrain de Hilvet — hammam médiéval des XIIe–XIVe siècles", wikipedia: "File:Hilvet Mosque 01.jpg" },
@@ -133,7 +133,7 @@ export const KAZAKHSTAN = {
       description:
         "Le canyon de Charyn, surnommé le 'Petit Grand Canyon', est l'un des paysages naturels les plus spectaculaires du Kazakhstan : des formations de grès rouge et ocre sculptées par la rivière Charyn sur 150 kilomètres, avec des parois s'élevant jusqu'à 300 mètres de hauteur. La Vallée des Châteaux, avec ses formations rocheuses aux silhouettes de tours et de créneaux, est particulièrement photogénique au coucher du soleil.",
       wikipedia: "Charyn_Canyon",
-      tags: ["Nature", "Canyon", "Géologie", "Randonnée"],
+      tags: ["Nature", "Canyon", "Géologie", "Randonnée", "Désert"],
       mustSee: [
         { name: "Vallée des Châteaux — formations rocheuses aux allures de forteresses médiévales", wikipedia: "Charyn_Canyon" },
         { name: "Gorges de la rivière Charyn — descente en rafting entre les parois ocre", wikipedia: "File:Charyn Canyon 01.jpg" },

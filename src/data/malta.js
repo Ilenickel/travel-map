@@ -61,7 +61,7 @@ export const MALTA = {
       description:
         "La Valette est la plus petite capitale de l'Union européenne et l'une des villes les plus fortifiées d'Europe, classée au patrimoine mondial de l'UNESCO. Construite par les Chevaliers de l'Ordre de Saint-Jean au XVIe siècle, elle abrite une concentration exceptionnelle de monuments historiques. La co-cathédrale Saint-Jean, avec ses intérieurs baroques dorés et ses deux toiles du Caravage, est un chef-d'œuvre absolu.",
       wikipedia: "Valletta",
-      tags: ["UNESCO", "Capitale", "Baroque", "Chevaliers de Malte"],
+      tags: ["UNESCO", "Ville", "Baroque", "Chevaliers de Malte", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Co-cathédrale Saint-Jean — baroque maltais et Caravage (La Décollation)", wikipedia: "File:Concatedral_de_San_Juan,_La_Valeta,_isla_de_Malta,_Malta,_2021-08-25,_DD_246-248_HDR.jpg" },
         { name: "Palais du Grand Maître — résidence officielle du Président de Malte", wikipedia: "Grandmaster's_Palace,_Valletta" },
@@ -76,7 +76,7 @@ export const MALTA = {
       description:
         "Surnommée la 'Cité du Silence', Mdina est une ancienne capitale fortifiée médiévale perchée sur une colline au centre de l'île de Malte. Avec moins de 300 habitants permanents, ses ruelles désertes à la tombée de la nuit créent une atmosphère presque magique. Elle a notamment servi de décor à King's Landing dans la première saison de Game of Thrones.",
       wikipedia: "Mdina",
-      tags: ["Médiéval", "Fortifié", "Histoire", "Game of Thrones"],
+      tags: ["Médiéval", "Fortifié", "Histoire", "Game of Thrones", "Architecture"],
       mustSee: [
         { name: "Remparts de Mdina — vues panoramiques sur toute l'île de Malte", wikipedia: "Mdina" },
         { name: "Cathédrale Saint-Paul — baroque du XVIIIe siècle sur un tremblement de terre", wikipedia: "File:Catedral_de_San_Pablo,_Mdina,_isla_de_Malta,_Malta,_2021-08-25,_DD_150-152_HDR.jpg" },
@@ -91,7 +91,7 @@ export const MALTA = {
       description:
         "La Lagune Bleue de l'île de Comino est l'une des eaux les plus cristallines de toute la Méditerranée, avec des teintes turquoise et azur d'une beauté irréelle. L'île de Comino, quasi inhabitée, abrite seulement un hôtel. La Lagune Bleue est idéale pour la baignade, le snorkeling et la plongée. En basse saison, elle prend un caractère paradisiaque.",
       wikipedia: "File:Blue_Lagoon_and_Cominotto.JPG",
-      tags: ["Plage", "Snorkeling", "Île", "Méditerranée"],
+      tags: ["Plage", "Snorkeling", "Île", "Méditerranée", "Nature"],
       mustSee: [
         { name: "Lagune Bleue — eaux turquoise spectaculaires, snorkeling exceptionnel", wikipedia: "File:Blue_Lagoon_and_Cominotto.JPG" },
         { name: "Tour Santa Marija — tour défensive du XVIIe siècle sur l'île", wikipedia: "File:Comino_St_Mary’s_Tower.JPG" },

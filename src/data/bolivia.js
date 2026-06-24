@@ -103,7 +103,7 @@ export const BOLIVIA = {
       description:
         "Le plus grand désert de sel du monde (10 573 km²) est le joyau de la Bolivie. À la saison sèche, ses hexagones de sel s'étendent à perte de vue ; à la saison des pluies, il devient un miroir géant réfléchissant les nuages. Les îles de cactus (Isla Incahuasi) y émergent comme par magie.",
       wikipedia: "Salar_de_Uyuni",
-      tags: ["paysages", "unique", "photos", "altiplano"],
+      tags: ["Paysages", "Unique", "Photos", "Altiplano", "Désert", "Nature"],
       mustSee: [
         { name: "Isla Incahuasi", wikipedia: "File:04-Isla_Incahuasi-nX-1.jpg" },
         { name: "Cimetière de trains (Uyuni)", wikipedia: "File:02-Train-Cemetery-Uyuni-nX-22.jpg" },
@@ -118,7 +118,7 @@ export const BOLIVIA = {
       description:
         "La plus haute capitale administrative du monde (3 650 m) est une ville fascinante suspendue dans un canyon andin. Le téléphérique Mi Teleférico offre des vues extraordinaires sur la cuvette et le majestueux Illimani (6 439 m). Le marché des sorcières (Mercado de las Brujas) est unique en son genre.",
       wikipedia: "La_Paz",
-      tags: ["capitale", "altitude", "culture", "marchés"],
+      tags: ["Ville", "Altitude", "Culture", "Marchés", "Gastronomie"],
       mustSee: [
         { name: "Mi Teleférico", wikipedia: "File:Mi Teleférico - Linea Naranja.jpg" },
         { name: "Mercado de las Brujas", wikipedia: "File:05-Mercado de las Brujas (La Paz)-8.jpg" },
@@ -133,7 +133,7 @@ export const BOLIVIA = {
       description:
         "Le plus haut lac navigable du monde (3 812 m) est sacré pour les peuples aymara. Les îles flottantes des Uros, l'île de la Lune et l'île du Soleil (Isla del Sol) abritent des ruines incas et des communautés traditionnelles.",
       wikipedia: "Lake_Titicaca",
-      tags: ["lac", "culture", "inca", "îles flottantes"],
+      tags: ["Lac", "Culture", "Inca", "Îles Flottantes"],
       mustSee: [
         { name: "Îles Uros (flottantes)", wikipedia: "File:Indigenas Uros en el Lago Titicaca Bolivia.jpg" },
         { name: "Isla del Sol", wikipedia: "Isla_del_Sol" },
@@ -148,7 +148,7 @@ export const BOLIVIA = {
       description:
         "La capitale constitutionnelle blanche est l'une des plus belles villes coloniales d'Amérique du Sud, inscrite au patrimoine UNESCO. Ses façades blanches immaculées, ses marchés colorés et son atmosphère paisible en font un havre de paix.",
       wikipedia: "File:Sucre capital de Bolivia.jpg",
-      tags: ["colonial", "UNESCO", "histoire", "architecture"],
+      tags: ["Colonial", "UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: "Cathédrale Métropolitaine", wikipedia: "File:Catedral - Sucre.jpg" },
         { name: "Casa de la Libertad", wikipedia: "File:Casa de la libertad.jpg" },

@@ -63,7 +63,7 @@ export const UKRAINE = {
       region: "Ukraine occidentale",
       description: "L'viv est la capitale culturelle de l'Ukraine occidentale, dont le centre historique inscrit à l'UNESCO mêle architecture polonaise, autrichienne et ukrainienne. La ville est réputée pour sa culture du café unique et ses nombreux musées. C'est l'une des destinations les plus accessibles de l'Ukraine en période de conflit, bien que tout voyage reste déconseillé.",
       wikipedia: "Lviv",
-      tags: ["UNESCO", "Culture", "Café", "Architecture"],
+      tags: ["UNESCO", "Culture", "Café", "Architecture", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Centre historique — vieille ville baroque classée UNESCO", wikipedia: "File:LvivOldTown1.jpg" },
         { name: "Opéra de L'viv — chef-d'œuvre néobaroque du XIXe siècle", wikipedia: "Lviv_Theatre_of_Opera_and_Ballet" },
@@ -77,7 +77,7 @@ export const UKRAINE = {
       region: "Ukraine occidentale",
       description: "Les Carpates ukrainiennes offrent des paysages montagneux sauvages avec des villages houtsouls aux traditions artisanales préservées. Le massif Hoverla culmine à 2 061 m, point le plus haut du pays. La région est propice à la randonnée en été et au ski en hiver.",
       wikipedia: "Ukrainian_Carpathians",
-      tags: ["Nature", "Randonnée", "Montagne", "Traditions"],
+      tags: ["Nature", "Randonnée", "Montagne", "Traditions", "Ski"],
       mustSee: [
         { name: "Mont Hoverla — sommet le plus élevé d'Ukraine", wikipedia: "Hoverla" },
         { name: "Village de Kryvorivnia — cœur de la culture houtsoule", wikipedia: "Kryvorivnia" },
@@ -91,7 +91,7 @@ export const UKRAINE = {
       region: "Ukraine méridionale",
       description: "Odessa est une ville portuaire cosmopolite sur la mer Noire, connue pour son célèbre escalier Potemkine et son architecture néoclassique. La ville possède une âme méditerranéenne unique avec ses plages, ses catacombes et sa vie nocturne légendaire. Elle reste très exposée au conflit et les voyages y sont formellement déconseillés.",
       wikipedia: "File:Mys-Fontan-aerial-2.jpg",
-      tags: ["Mer Noire", "Architecture", "Histoire", "Plage"],
+      tags: ["Mer Noire", "Architecture", "Histoire", "Plage", "Ville"],
       mustSee: [
         { name: "Escalier Potemkine — 192 marches monumentales immortalisées au cinéma", wikipedia: "Potemkin_Stairs" },
         { name: "Opéra d'Odessa — l'un des plus beaux opéras d'Europe orientale", wikipedia: "File:Театр оперы и балета. Зал.jpg" },

@@ -90,7 +90,7 @@ export const ISRAEL = {
       description:
         "Ville sainte pour les trois grandes religions monothéistes, avec la vieille ville classée à l'UNESCO : le Mur occidental, l'Esplanade des Mosquées (Dôme du Rocher, Al-Aqsa), le Saint-Sépulcre et le quartier juif.",
       wikipedia: "Jerusalem",
-      tags: ["Histoire", "Religion", "UNESCO", "Archéologie"],
+      tags: ["Histoire", "Religion", "UNESCO", "Archéologie", "Ville", "Architecture"],
       mustSee: [
         { name: "Mur occidental (Kotel)", wikipedia: "Western_Wall" },
         { name: "Dôme du Rocher & al-Aqsa", wikipedia: "Dome_of_the_Rock" },
@@ -105,7 +105,7 @@ export const ISRAEL = {
       description:
         "Ville ultramoderne, branchée et tolérante, avec la plus grande concentration d'architecture Bauhaus au monde (Ville Blanche UNESCO), des plages de sable fin et une scène culinaire mondialement reconnue.",
       wikipedia: "Tel_Aviv",
-      tags: ["Plage", "Culture", "Gastronomie", "Architecture"],
+      tags: ["Plage", "Culture", "Gastronomie", "Architecture", "Ville"],
       mustSee: [
         { name: "Ville Blanche — architecture Bauhaus (UNESCO)", wikipedia: "File:PikiWiki Israel 9168 White City of Tel Aviv.JPG" },
         { name: "Jaffa — vieille ville portuaire", wikipedia: "Jaffa" },
@@ -119,7 +119,7 @@ export const ISRAEL = {
       description:
         "Le point le plus bas de la Terre (−430 m), avec une eau à 34% de sel où l'on flotte sans effort. Les boues minérales noires ont des propriétés thérapeutiques reconnues.",
       wikipedia: "Dead_Sea",
-      tags: ["Nature", "Bien-être", "Unique"],
+      tags: ["Nature", "Bien-être", "Unique", "Désert", "Randonnée"],
       mustSee: [
         { name: "Masada — forteresse hérodienne", wikipedia: "Masada" },
         { name: "Bain flottant mer Morte", wikipedia: "Dead_Sea" },
@@ -133,7 +133,7 @@ export const ISRAEL = {
       description:
         "Station balnéaire à la pointe du Néguev, où la mer Rouge offre une plongée exceptionnelle (coraux, poissons tropicaux, dauphins) et un soleil garanti 360 jours par an.",
       wikipedia: "Eilat",
-      tags: ["Plongée", "Plage", "Nature"],
+      tags: ["Plongée", "Plage", "Nature", "Désert"],
       mustSee: [
         { name: "Coral Beach Reserve (snorkeling)", wikipedia: "File:Gulf of Aqaba - Gulf von Akaba.jpg" },
         { name: "Plongée avec dauphins", wikipedia: "File:Eilat Dolphin Reef (3).jpg" },

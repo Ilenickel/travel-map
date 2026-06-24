@@ -124,7 +124,7 @@ export const SWITZERLAND = {
       description:
         "Interlaken est le point de départ idéal pour explorer l'Oberland bernois, coincé entre le lac de Thoune et le lac de Brienz. La Jungfrau (4 158 m) est accessible depuis Grindelwald ou Wengen par le célèbre chemin de fer de la Jungfrau, qui grimpe jusqu'au « toit de l'Europe » à 3 454 m. Les cascades de Giessbach, les gorges de Rosenlaui et les villages de Grindelwald et Mürren complètent ce tableau alpin exceptionnel.",
       wikipedia: "Interlaken",
-      tags: ["Alpes", "Aventure", "Nature", "Randonnée", "Sports extrêmes"],
+      tags: ["Alpes", "Aventure", "Nature", "Randonnée", "Sports extrêmes", "Ski"],
       mustSee: [
         {
           name: "Jungfraujoch — « toit de l'Europe » à 3 454 m en train à crémaillère",
@@ -151,7 +151,7 @@ export const SWITZERLAND = {
       description:
         "Lucerne est l'une des villes les plus pittoresques de Suisse, avec son célèbre Pont de la Chapelle, sa vieille ville médiévale préservée et le majestueux Rigi en arrière-plan. Le lac des Quatre-Cantons offre des croisières panoramiques vers des sites chargés d'histoire comme le Rütli, prairie où fut fondée la Confédération suisse. Les monts Pilate et Rigi, accessibles en bateau et en crémaillère, offrent des vues à 360° sur les Alpes.",
       wikipedia: "Lucerne",
-      tags: ["Histoire", "Nature", "Lac", "Architecture", "Croisière"],
+      tags: ["Histoire", "Nature", "Lac", "Architecture", "Croisière", "Ville"],
       mustSee: [
         {
           name: "Pont de la Chapelle — pont en bois du XIVe siècle, symbole de Lucerne",
@@ -178,7 +178,7 @@ export const SWITZERLAND = {
       description:
         "Genève, capitale mondiale de la diplomatie, est une ville cosmopolite au bord du lac Léman avec en toile de fond les sommets du Mont-Blanc. Le Jet d'Eau, icône de la ville, propulse 500 litres d'eau à 140 mètres de hauteur. Le tour du lac Léman permet de découvrir Lausanne, Montreux (festival de jazz), le Château de Chillon et les vignobles en terrasses du Lavaux classés à l'UNESCO.",
       wikipedia: "Geneva",
-      tags: ["Diplomatie", "Lac", "Patrimoine UNESCO", "Vin", "Culture"],
+      tags: ["Diplomatie", "Lac", "UNESCO", "Vin", "Culture", "Ville", "Gastronomie"],
       mustSee: [
         {
           name: "Jet d'Eau — geyser lacustre de 140 m visible de toute la ville",

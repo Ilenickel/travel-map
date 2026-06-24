@@ -82,7 +82,7 @@ export const NAMIBIA = {
       description:
         "Sossusvlei est le site le plus photographié d'Afrique : des dunes de sable rouge de 300 m s'élèvent contre un ciel bleu azur. Deadvlei, avec ses arbres morts contre les dunes orangées, est l'image la plus icônique de la Namibie.",
       wikipedia: "Sossusvlei",
-      tags: ["Désert", "Photo", "Dunes", "Icône"],
+      tags: ["Désert", "Photo", "Dunes", "Icône", "UNESCO", "Nature"],
       mustSee: [
         { name: "Deadvlei — arbres morts & dunes rouges", wikipedia: "Deadvlei" },
         { name: "Dune Big Daddy (325 m)", wikipedia: "Sossusvlei" },
@@ -97,7 +97,7 @@ export const NAMIBIA = {
       description:
         "Etosha est l'un des meilleurs parcs d'Afrique pour le safari en autonomie : une immense étendue saline blanche (5 000 km²) attire des centaines d'animaux aux points d'eau permanents. Lions, éléphants, rhinocéros noirs, girafes et oryx.",
       wikipedia: "Etosha_National_Park",
-      tags: ["Safari", "Big Five", "Auto-safari", "Faune"],
+      tags: ["Safari", "Big Five", "Auto-safari", "Faune", "Nature"],
       mustSee: [
         { name: "Point d'eau Okaukuejo (nuit)", wikipedia: "Etosha_National_Park" },
         { name: "Rhinocéros noir (espèce menacée)", wikipedia: "Black_rhinoceros" },
@@ -112,7 +112,7 @@ export const NAMIBIA = {
       description:
         "Le canyon du Fish River est le deuxième plus grand du monde après le Grand Canyon : 160 km de long, 27 km de large et 550 m de profondeur. Le trek de 5 jours (85 km) est l'une des grandes randonnées d'Afrique.",
       wikipedia: "Fish_River_Canyon",
-      tags: ["Canyon", "Randonnée", "Nature", "Record"],
+      tags: ["Canyon", "Randonnée", "Nature", "Record", "Désert"],
       mustSee: [
         { name: "Belvédère — vue sur le canyon", wikipedia: "File:Fish River Canyon Namibia.jpg" },
         { name: "Trek Fish River Canyon (5 jours)", wikipedia: "Fish_River_Canyon" },
@@ -126,7 +126,7 @@ export const NAMIBIA = {
       description:
         "Swakopmund, station balnéaire coloniale allemande dans le désert, est la capitale de l'aventure namibienne : sandboard, skydive, excursion désert. La Côte des Squelettes au nord est l'une des côtes les plus hostiles et impressionnantes au monde.",
       wikipedia: "Swakopmund",
-      tags: ["Aventure", "Désert", "Colonial", "Côte"],
+      tags: ["Aventure", "Désert", "Colonial", "Côte", "Ville"],
       mustSee: [
         { name: "Swakopmund — architecture coloniale allemande", wikipedia: "Swakopmund" },
         { name: "Skeleton Coast (phoques & naufrages)", wikipedia: "File:Namibie Skeleton Coast 01.JPG" },

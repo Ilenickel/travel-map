@@ -82,7 +82,7 @@ export const SOUTH_AFRICA = {
       description:
         "L'un des plus grands parcs africains (20 000 km²), où vivent les Big Five en liberté : lion, léopard, éléphant, rhinocéros, buffle. Les safaris en 4x4 guidés ou en autonomie depuis les camps officiels sont une expérience inoubliable.",
       wikipedia: "Kruger_National_Park",
-      tags: ["Safari", "Big Five", "Faune", "Nature"],
+      tags: ["Safari", "Big Five", "Faune", "Nature", "Histoire"],
       mustSee: [
         { name: "Lion & Léopard — Big Five", wikipedia: "File:Big Five Game.jpg" },
         { name: "Rhinocéros blanc & noir", wikipedia: "White_rhinoceros" },
@@ -97,7 +97,7 @@ export const SOUTH_AFRICA = {
       description:
         "Cape Town, régulièrement élue plus belle ville du monde, est dominée par la Table Mountain. La péninsule du Cap offre des plages sauvages, des pingouins africains et le célèbre Cap de Bonne Espérance.",
       wikipedia: "Cape_Town",
-      tags: ["Ville", "Plage", "Nature", "Gastronomie"],
+      tags: ["Ville", "Plage", "Nature", "Gastronomie", "Histoire"],
       mustSee: [
         { name: "Table Mountain — téléphérique ou trek", wikipedia: "Table_Mountain" },
         { name: "Cap de Bonne Espérance", wikipedia: "Cape_of_Good_Hope" },

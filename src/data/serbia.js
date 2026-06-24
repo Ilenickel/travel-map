@@ -82,7 +82,7 @@ export const SERBIA = {
       description:
         "Belgrade est la capitale la plus animée des Balkans : la forteresse de Kalemegdan (IIe s., reconstruite par les Romains, Byzantins, Ottomans et Autrichiens) domine la confluence Sava-Danube, tandis que la rue Skadarlija (quartier bohème du XIXe s.) regorge de kafanas aux sons des orchestres tziganes. Les splavovi (bateaux-discothèques) sur la Sava ont fait la légende nocturne de la ville.",
       wikipedia: "Belgrade",
-      tags: ["Forteresse", "Vie nocturne", "Bohème", "Danube"],
+      tags: ["Forteresse", "Vie nocturne", "Bohème", "Danube", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Forteresse de Kalemegdan — 2 000 ans d'histoire au-dessus du Danube", wikipedia: "Belgrade_Fortress" },
         { name: "Skadarlija — rue bohème aux kafanas et orchestres tziganes", wikipedia: "Skadarlija" },
@@ -97,7 +97,7 @@ export const SERBIA = {
       description:
         "Novi Sad, capitale européenne de la culture 2022, est une ville universitaire et multiculturelle : la forteresse de Petrovaradin (XVIII s.) dominant le Danube accueille chaque juillet le festival EXIT (150 000 personnes, l'un des meilleurs festivals de musique d'Europe). Le centre-ville AustroHongrois et le quartier des artistes de Štrand sur le Danube en font une ville très agréable.",
       wikipedia: "Novi_Sad",
-      tags: ["Festival", "Culture", "Forteresse", "Danube"],
+      tags: ["Festival", "Culture", "Forteresse", "Danube", "Ville", "Architecture"],
       mustSee: [
         { name: "Forteresse de Petrovaradin — 'Gibraltar sur le Danube'", wikipedia: "Petrovaradin_Fortress" },
         { name: "Festival EXIT (juillet) — électro, rock, world music sous la forteresse", wikipedia: "File:Exit festival, 2021.jpg" },
@@ -127,12 +127,28 @@ export const SERBIA = {
       description:
         "La Serbie compte plus de 200 monastères médiévaux orthodoxes — dont plusieurs candidats à l'UNESCO. Žiča (XIIIe s., rouge sang, couronnement des rois serbes), Studenica (XIIe s., marbres blancs, école médiévale de peinture), et Mileševa (XIIIe s., fresque de l'Ange Blanc — transmise en 1969 dans le premier satellite de communication européen) sont les plus remarquables.",
       wikipedia: "File:Studenica monastery (Manastir Studenica) - by Pudelek.jpg",
-      tags: ["Monastères", "Orthodoxe", "Médiéval", "Fresque"],
+      tags: ["Monastères", "Orthodoxe", "Médiéval", "Fresque", "UNESCO", "Architecture", "Histoire"],
       mustSee: [
         { name: "Monastère de Studenica (UNESCO) — marbres blancs XIIe siècle", wikipedia: "File:Studenica monastery, 09.jpg" },
         { name: "Monastère de Žiča — rouge sang, couronnement des rois serbes", wikipedia: "File:Manastir Žiča (by Pudelek).JPG" },
         { name: "Fresque de l'Ange Blanc de Mileševa — première image transmise par satellite", wikipedia: "File:Beli_andjeo2.jpg" },
         { name: "Monastère de Sopoćani (UNESCO) — fresques byzantines du XIIIe s.", wikipedia: "Sopoćani" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Kopaonik & Zlatibor",
+      region: "Serbie centrale",
+      description:
+        "Les montagnes du centre de la Serbie réunissent la grande station de ski de Kopaonik et le plateau authentique de Zlatibor. Villages traditionnels, train historique du Sargan et réserves naturelles spectaculaires y attendent les visiteurs. Un concentré de nature et de traditions serbes.",
+      wikipedia: "Kopaonik",
+      tags: ["Ski", "Randonnée", "Nature"],
+      mustSee: [
+        { name: "Kopaonik — plus grande station serbe", wikipedia: "Kopaonik" },
+        { name: "Zlatibor — plateau et village authentique", wikipedia: "Zlatibor" },
+        { name: "Train de Sargan", wikipedia: "File:Sarganska osmica 2.jpg" },
+        { name: "Uvac — gorges et pélicans frisés", wikipedia: "Uvac_Special_Nature_Reserve" },
+        { name: "Drvengrad — village de Kusturica", wikipedia: "File:View from Drvengrad, Serbia.jpg" },
       ],
     },
   ],

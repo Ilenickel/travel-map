@@ -174,7 +174,7 @@ export const JAPAN = {
       description:
         "Capitale ultramoderne, mélange de gratte-ciels illuminés, de quartiers traditionnels (Asakusa), de pop-culture (Akihabara) et d'une gastronomie mondiale.",
       wikipedia: "Tokyo",
-      tags: ["Ville", "Shopping", "Gastronomie", "Nuit"],
+      tags: ["Ville", "Shopping", "Gastronomie", "Nuit", "Culture", "Histoire", "Architecture"],
       mustSee: [
         { name: "Shibuya Crossing", wikipedia: "Shibuya_Crossing" },
         { name: "Temple Senso-ji", wikipedia: "Asakusa" },
@@ -189,7 +189,7 @@ export const JAPAN = {
       description:
         "Ancienne capitale impériale avec plus de 1 600 temples bouddhistes, des geishas dans Gion et les bambous de la forêt d'Arashiyama.",
       wikipedia: "Kyoto",
-      tags: ["Histoire", "Temples", "Culture", "Nature"],
+      tags: ["Histoire", "Temples", "Culture", "Nature", "UNESCO", "Architecture", "Randonnée"],
       mustSee: [
         { name: "Kiyomizu-dera", wikipedia: "File:Kiyomizu-dera, Kyoto, November 2016 -01.jpg" },
         { name: "Fushimi Inari — 10 000 torii", wikipedia: "Fushimi_Inari-taisha" },
@@ -204,7 +204,7 @@ export const JAPAN = {
       description:
         "Capitale de la gastronomie japonaise, connue pour ses takoyaki, okonomiyaki, son château historique et sa vie nocturne animée à Dotonbori.",
       wikipedia: "Osaka",
-      tags: ["Gastronomie", "Nuit", "Histoire", "Shopping"],
+      tags: ["Gastronomie", "Nuit", "Histoire", "Shopping", "Ville", "Culture"],
       mustSee: [
         { name: "Dotonbori", wikipedia: "File:Osaka_Dotonbori_Ebisu_Bridge.jpg" },
         { name: "Château d'Osaka", wikipedia: "Osaka_Castle" },
@@ -219,7 +219,7 @@ export const JAPAN = {
       description:
         "Site chargé d'histoire avec le Mémorial de la paix, et l'île sacrée de Miyajima avec son torii flottant sur la mer.",
       wikipedia: "Itsukushima_Shrine",
-      tags: ["Histoire", "Nature", "Culture"],
+      tags: ["Histoire", "Nature", "Culture", "UNESCO"],
       mustSee: [
         { name: "Torii flottant de Miyajima", wikipedia: "Itsukushima_Shrine" },
         { name: "Mémorial de la Paix d'Hiroshima", wikipedia: "Hiroshima_Peace_Memorial" },
@@ -248,11 +248,27 @@ export const JAPAN = {
       description:
         "Première capitale permanente du Japon, célèbre pour ses daims en liberté et le Grand Bouddha du Tōdai-ji, le plus grand bâtiment en bois du monde.",
       wikipedia: "Nara_Park",
-      tags: ["Histoire", "Nature", "Culture"],
+      tags: ["Histoire", "Nature", "Culture", "UNESCO"],
       mustSee: [
         { name: "Tōdai-ji — Grand Bouddha", wikipedia: "File:Tōdai-ji_Kon-dō.jpg" },
         { name: "Daims en liberté dans le parc", wikipedia: "Nara_Park" },
         { name: "Kasuga Taisha", wikipedia: "File:Kasuga-taisha11bs3200.jpg" },
+      ],
+    },
+    {
+      id: 7,
+      name: "Okinawa & Îles Ryūkyū",
+      region: "Okinawa",
+      description:
+        "Archipel subtropical au sud du Japon, Okinawa séduit par ses plages de sable blanc, ses récifs coralliens et sa culture ryūkyū singulière. Ancien royaume indépendant, la région conserve châteaux, danses et traditions propres. Snorkeling, nature préservée et art de vivre insulaire y sont rois.",
+      wikipedia: "Okinawa_Prefecture",
+      tags: ["Plage", "Nature", "Histoire", "Culture", "UNESCO"],
+      mustSee: [
+        { name: "Château de Shuri", wikipedia: "Shuri_Castle" },
+        { name: "Plage d'Emeraude d'Ishigaki", wikipedia: "File:Kabira Bay Ishigaki Island21bs5s4410.jpg" },
+        { name: "Snorkeling dans les récifs de Kerama", wikipedia: "File:Kerama Island - 6081216280.jpg" },
+        { name: "Parc national de Yanbaru", wikipedia: "Yambaru_National_Park" },
+        { name: "Festival Eisa — danse traditionnelle", wikipedia: "File:Eisa parade of Osu Summer Festival.jpg" },
       ],
     },
   ],

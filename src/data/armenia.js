@@ -71,7 +71,7 @@ export const ARMENIA = {
       description:
         "La « ville rose » (construite en tuf volcanique rose) avec la cascade monumentale, le musée Matenadaran aux manuscrits enluminés, et la vue sur le mont Ararat en toile de fond.",
       wikipedia: "Yerevan",
-      tags: ["Ville", "Culture", "Art", "Gastronomie"],
+      tags: ["Ville", "Culture", "Art", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Cascade — escalier monumental", wikipedia: "Yerevan_Cascade" },
         { name: "Matenadaran — manuscrits anciens", wikipedia: "Matenadaran" },
@@ -86,7 +86,7 @@ export const ARMENIA = {
       description:
         "Le monastère de Geghard (XIIIe s.), partiellement taillé dans la roche d'une gorge, est l'un des plus impressionnants du Caucase. À 20 km, le temple grec de Garni (Ier s. ap. J.-C.) est unique.",
       wikipedia: "Geghard",
-      tags: ["Histoire", "UNESCO", "Archéologie"],
+      tags: ["Histoire", "UNESCO", "Archéologie", "Architecture"],
       mustSee: [
         { name: "Monastère de Geghard (UNESCO)", wikipedia: "Geghard" },
         { name: "Temple grec de Garni", wikipedia: "Garni_Temple" },
@@ -100,7 +100,7 @@ export const ARMENIA = {
       description:
         "Le monastère de Tatev (IXe s.) trône sur un promontoire vertigineux dans le Syunik. Pour y accéder : « Wings of Tatev », le plus long téléphérique réversible passager du monde (5,7 km).",
       wikipedia: "Tatev_Monastery",
-      tags: ["Histoire", "Panorama", "Aventure"],
+      tags: ["Histoire", "Panorama", "Aventure", "Randonnée", "Nature"],
       mustSee: [
         { name: "Téléphérique Wings of Tatev (5,7 km)", wikipedia: "Wings_of_Tatev" },
         { name: "Monastère de Tatev (IXe s.)", wikipedia: "Tatev_Monastery" },
@@ -114,7 +114,7 @@ export const ARMENIA = {
       description:
         "L'un des plus grands lacs d'eau douce du monde en altitude (1 900 m), entouré de montagnes. Les monastères de Sevanavank sur une presqu'île offrent une vue époustouflante.",
       wikipedia: "Lake_Sevan",
-      tags: ["Nature", "Histoire", "Randonnée"],
+      tags: ["Nature", "Histoire", "Randonnée", "Ski"],
       mustSee: [
         { name: "Monastères de Sevanavank", wikipedia: "Sevanavank" },
         { name: "Plages et baignade (juillet-août)", wikipedia: "Lake_Sevan" },

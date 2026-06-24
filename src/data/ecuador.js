@@ -103,7 +103,7 @@ export const ECUADOR = {
       description:
         "Les îles Galápagos sont un laboratoire naturel unique qui inspira Darwin. Iguanes marins, tortues géantes, otaries, manchots équatoriaux et fous à pieds bleus vivent ici sans craindre l'homme. La plongée et le snorkeling y sont parmi les meilleurs au monde.",
       wikipedia: "File:Lobo_marino_(Zalophus_californianus_wollebaeki),_Punta_Pitt,_isla_de_San_Cristóbal,_islas_Galápagos,_Ecuador,_2015-07-24,_DD_11.JPG",
-      tags: ["faune", "plongée", "Darwin", "UNESCO"],
+      tags: ["Faune", "Plongée", "Darwin", "UNESCO", "Safari", "Plage", "Nature"],
       mustSee: [
         { name: "Isla Santa Cruz", wikipedia: "File:Costa_de_isla_Santa_Cruz,_islas_Galápagos,_Ecuador,_2015-07-26,_DD_48.JPG" },
         { name: "Isla Española (fous à pieds bleus)", wikipedia: "File:Isla Espanola - Punta Suarez - panoramio.jpg" },
@@ -117,7 +117,7 @@ export const ECUADOR = {
       description:
         "Quito est la plus haute capitale du monde (2 850 m) avec un centre historique remarquablement préservé, premier site inscrit au patrimoine UNESCO en 1978. Les iglesias dorées et les places coloniales sont saisissantes.",
       wikipedia: "Quito",
-      tags: ["colonial", "UNESCO", "architecture", "altitude"],
+      tags: ["Colonial", "UNESCO", "Architecture", "Altitude", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Basilique du Vœu National", wikipedia: "File:Basilica of the National Vow, Quito, Ecuador.JPG" },
         { name: "La Compañía de Jesús", wikipedia: "File:Iglesia_de_La_Compañía,_Quito,_Ecuador,_2015-07-22,_DD_149-151_HDR.JPG" },
@@ -132,7 +132,7 @@ export const ECUADOR = {
       description:
         "La selva équatorienne est l'une des plus riches en biodiversité au monde. Depuis Tena ou Coca, des lodges écolodge permettent d'explorer la forêt primaire, de rencontrer des communautés kichwa et d'observer une faune extraordinaire.",
       wikipedia: "File:The Amazon Basin, Brazil.jpg",
-      tags: ["jungle", "faune", "culture", "nature"],
+      tags: ["Jungle", "Faune", "Culture", "Nature", "Randonnée"],
       mustSee: [
         { name: "Parc national Yasuní", wikipedia: "File:Estacion_Cientifica_Yasuni_(ECY)_Yasuni_Research_Station.jpg" },
         { name: "Tena (kayak)", wikipedia: "File:Capuchin monkeys in Tena, Ecuador.JPG" },
@@ -146,7 +146,7 @@ export const ECUADOR = {
       description:
         "L'Avenue des Volcans est une rangée de sommets andins dont le Cotopaxi (5 897 m) et le Chimborazo (6 268 m, point le plus proche du soleil). Randonnées, ascensions et paysages grandioses au programme.",
       wikipedia: "File:Cotopaxi (37399959476).jpg",
-      tags: ["volcans", "randonnée", "Andes", "aventure"],
+      tags: ["Volcans", "Randonnée", "Andes", "Aventure"],
       mustSee: [
         { name: "Cotopaxi", wikipedia: "Cotopaxi" },
         { name: "Chimborazo", wikipedia: "Chimborazo" },

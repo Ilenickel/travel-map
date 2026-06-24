@@ -82,7 +82,7 @@ export const DENMARK = {
       description:
         "Copenhague est régulièrement élue ville la plus cyclable du monde (400km de pistes cyclables). Nyhavn, ses maisons colorées du XVIIe siècle au bord de l'eau, est l'image de la ville. La Petite Sirène (sculpture d'Andersen), les ruelles de Christiania (commune libre), et la scène gastronomique (Noma, Geranium, Kadeau) font de Copenhague une capitale européenne de premier rang.",
       wikipedia: "Copenhagen",
-      tags: ["Vélo", "Design", "Gastronomie", "Canaux"],
+      tags: ["Vélo", "Design", "Gastronomie", "Canaux", "Ville", "Architecture"],
       mustSee: [
         { name: "Nyhavn — maisons colorées et bateaux historiques", wikipedia: "Nyhavn" },
         { name: "Tivoli Gardens — parc d'attractions depuis 1843", wikipedia: "File:Tivoli Lake Parterrehaven.jpg" },
@@ -112,7 +112,7 @@ export const DENMARK = {
       description:
         "Billund abrite le Legoland original (créé en 1968) — le plus grand parc Lego du monde. Mais le Jutland réserve bien d'autres trésors : les dunes de Råbjerg Mile (la dune migratrice), les plages sauvages de la mer du Nord, et les tumulus vikings de Jelling (runes royales du Xe siècle, UNESCO) — le berceau du christianisme danois.",
       wikipedia: "File:Jutland Street - geograph.org.uk - 7939998.jpg",
-      tags: ["Legoland", "Dunes", "UNESCO", "Plage"],
+      tags: ["Legoland", "Dunes", "UNESCO", "Plage", "Nature"],
       mustSee: [
         { name: "Legoland Billund — le parc Lego original (depuis 1968)", wikipedia: "File:LegoBillundTowerView.jpg" },
         { name: "Tumulus de Jelling — runes royales du Xe siècle (UNESCO)", wikipedia: "File:Jelling, cemetery July 2015.jpg" },
@@ -127,7 +127,7 @@ export const DENMARK = {
       description:
         "Bornholm est une île danoise en mer Baltique (plus proche de la Suède et de la Pologne que du Danemark) : ses roundkirker (églises-forteresses rondes du XIIe siècle, uniques en Europe), ses fumeries de harengs de Hasle et Nexø, ses plages de sable blanc, et ses rochers de granite font d'elle la perle cachée de Scandinavie.",
       wikipedia: "Bornholm",
-      tags: ["Île", "Fumoirs", "Médiéval", "Baltique"],
+      tags: ["Île", "Fumoirs", "Médiéval", "Baltique", "Nature", "Plage"],
       mustSee: [
         { name: "Roundkirker (églises rondes forteresses) — uniques en Europe", wikipedia: "File:Nylars Round Church on Bornholm.jpg" },
         { name: "Rocher de Hammershus — ruines de château le plus grand de Scandinavie", wikipedia: "File:Bornholm Hammershus 01.jpg" },

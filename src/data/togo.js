@@ -82,7 +82,7 @@ export const TOGO = {
       description:
         "Le Grand Marché des Fétiches de Lomé (Akodessewa) est le plus grand marché vaudou du monde : des milliers de crânes d'animaux, peaux, plantes médicinales et fétiches utilisés par les guérisseurs. Un spectacle saisissant qui n'existe nulle part ailleurs. Le front de mer de Lomé, la seule capitale africaine directement sur l'Atlantique, complète la visite.",
       wikipedia: "Lomé",
-      tags: ["Vaudou", "Marché", "Unique", "Capitale"],
+      tags: ["Vaudou", "Marché", "Unique", "Ville"],
       mustSee: [
         { name: "Marché des Fétiches d'Akodessewa — le plus grand marché vaudou du monde", wikipedia: "File:Akodessawa Fetish Market 2016.jpg" },
         { name: "Front de mer de Lomé — la seule capitale africaine sur l'Atlantique", wikipedia: "File:Lome Beach Togo 1.jpg" },

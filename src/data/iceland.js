@@ -71,7 +71,7 @@ export const ICELAND = {
       description:
         "Circuit incontournable depuis Reykjavik : le geyser Strokkur, le parc national de Þingvellir (naissance de la démocratie, faille tectonique) et les chutes de Gullfoss.",
       wikipedia: "Golden_Circle_(Iceland)",
-      tags: ["Nature", "Géologie", "Paysage", "Geyser"],
+      tags: ["Nature", "Géologie", "Paysage", "Geyser", "UNESCO"],
       mustSee: [
         { name: "Geyser Strokkur", wikipedia: "Strokkur" },
         { name: "Chutes de Gullfoss", wikipedia: "Gullfoss" },
@@ -86,7 +86,7 @@ export const ICELAND = {
       description:
         "La route côtière la plus spectaculaire d'Islande : cascades de Seljalandsfoss et Skógafoss, plage de sable noir de Reynisfjara et le lac glaciaire de Jökulsárlón avec ses icebergs.",
       wikipedia: "Jökulsárlón",
-      tags: ["Nature", "Glacier", "Plage", "Paysage"],
+      tags: ["Nature", "Glacier", "Plage", "Paysage", "Randonnée"],
       mustSee: [
         { name: "Jökulsárlón — lac des icebergs", wikipedia: "Jökulsárlón" },
         { name: "Plage de sable noir Reynisfjara", wikipedia: "Reynisfjara" },
@@ -101,7 +101,7 @@ export const ICELAND = {
       description:
         "Péninsule glaciaire inspirée par Jules Verne (Voyage au centre de la Terre). Glacier Snæfellsjökull, falaises de basalte, villages de pêcheurs et aurores boréales.",
       wikipedia: "File:View_from_Helgafell,_Snæfellsnes_peninsula,_Iceland,_20230505_1513_5245.jpg",
-      tags: ["Nature", "Glacier", "Paysage", "Aurores boréales"],
+      tags: ["Nature", "Glacier", "Paysage", "Aurores boréales", "Randonnée"],
       mustSee: [
         { name: "Glacier Snæfellsjökull", wikipedia: "Snæfellsjökull" },
         { name: "Falaises de Lóndrangar", wikipedia: "Lóndrangar" },
@@ -116,7 +116,7 @@ export const ICELAND = {
       description:
         "La plus petite capitale du monde est surprenante : architecture colorée, scène culturelle vibrante, restaurants de nouvelle cuisine nordique et le Blue Lagoon à 40 min.",
       wikipedia: "File:View of Reykjavík from Hallgrímskirkja, 20230507 1227 5715.jpg",
-      tags: ["Ville", "Culture", "Gastronomie", "Spa"],
+      tags: ["Ville", "Culture", "Gastronomie", "Spa", "Histoire", "Architecture"],
       mustSee: [
         { name: "Hallgrímskirkja — cathédrale emblématique", wikipedia: "Hallgrímskirkja" },
         { name: "Blue Lagoon", wikipedia: "Blue_Lagoon_(geothermal_spa)" },

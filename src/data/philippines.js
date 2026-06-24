@@ -103,7 +103,7 @@ export const PHILIPPINES = {
       description:
         "Palawan est régulièrement élue plus belle île du monde. El Nido et Coron offrent des lagons émeraude entourés de falaises karstiques, des plages secrètes et une vie sous-marine exceptionnelle. La rivière souterraine de Puerto Princesa est classée UNESCO.",
       wikipedia: "Palawan",
-      tags: ["lagons", "plongée", "île", "UNESCO"],
+      tags: ["lagons", "plongée", "île", "UNESCO", "Plage", "Nature", "Randonnée"],
       mustSee: [
         { name: "El Nido (Bacuit Archipelago)", wikipedia: "El_Nido,_Palawan" },
         { name: "Coron (épaves)", wikipedia: "Coron,_Palawan" },
@@ -118,7 +118,7 @@ export const PHILIPPINES = {
       description:
         "La plage White Beach de Boracay est l'une des plus belles d'Asie : sable poudreux blanc, eaux turquoise et ambiance festive. Après sa fermeture pour nettoyage en 2018, l'île est revenue plus belle et plus réglementée.",
       wikipedia: "Boracay",
-      tags: ["plages", "nightlife", "sports nautiques", "soleil"],
+      tags: ["Plage", "nightlife", "sports nautiques", "soleil"],
       mustSee: [
         { name: "White Beach", wikipedia: "Boracay" },
         { name: "Puka Shell Beach", wikipedia: "File:Puka Beach Boracay - panoramio.jpg" },
@@ -133,7 +133,7 @@ export const PHILIPPINES = {
       description:
         "Les rizières en terrasses des Cordillères de Luzon, sculptées il y a 2 000 ans par les ancêtres des peuples Ifugao, sont inscrites au patrimoine UNESCO. Un paysage agricole extraordinaire à 1 200 m d'altitude.",
       wikipedia: "File:Pana_Banaue_Rice_Terraces_(Cropped).jpg",
-      tags: ["UNESCO", "culture", "randonnée", "paysages"],
+      tags: ["UNESCO", "Culture", "Randonnée", "paysages", "Nature"],
       mustSee: [
         { name: "Batad (terrasses)", wikipedia: "File:Batad Rice Terraces 4.jpg" },
         { name: "Banaue viewpoint", wikipedia: "File:Pana_Banaue_Rice_Terraces_(Cropped).jpg" },
@@ -148,12 +148,28 @@ export const PHILIPPINES = {
       description:
         "Siargao est la capitale philippine du surf grâce à la vague Cloud 9, l'une des plus belles d'Asie. L'île conserve une atmosphère détendue avec ses mangroves, ses lagons secrets et sa faune marine exceptionnelle.",
       wikipedia: "File:Siargao Island.jpg",
-      tags: ["surf", "île", "plongée", "nature"],
+      tags: ["surf", "île", "plongée", "Nature"],
       mustSee: [
         { name: "Cloud 9 (vague surf)", wikipedia: "File:Catching the Wave.jpg" },
         { name: "Sugba Lagoon", wikipedia: "File:SUGBA LAGOON (MAY 2019).jpg" },
         { name: "Sohoton Cove", wikipedia: "File:Middle Bucas Grande in Dapa, Siargao.jpg" },
         { name: "Naked Island", wikipedia: "File:Naked Island.jpg" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Manille & Intramuros",
+      region: "Luzon",
+      description:
+        "Capitale trépidante des Philippines, Manille mêle héritage colonial espagnol et modernité chaotique. La cité fortifiée d'Intramuros et son fort Santiago témoignent de plus de trois siècles d'histoire. Binondo, plus ancien quartier chinois du monde, et la baie au coucher du soleil complètent la visite.",
+      wikipedia: "Manila",
+      tags: ["Ville", "Histoire", "Architecture", "Culture"],
+      mustSee: [
+        { name: "Intramuros — cité coloniale espagnole", wikipedia: "Intramuros" },
+        { name: "Fort Santiago", wikipedia: "Fort_Santiago" },
+        { name: "Rizal Park", wikipedia: "Rizal_Park" },
+        { name: "Binondo — plus vieux Chinatown du monde", wikipedia: "File:Chinatown, Manila (F. Achilli pic) - Flickr.jpg" },
+        { name: "Baie de Manille au coucher du soleil", wikipedia: "File:Manila Bay Sunset by Gerald Mondala.jpg" },
       ],
     },
   ],

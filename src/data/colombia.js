@@ -103,7 +103,7 @@ export const COLOMBIA = {
       description:
         "Ville coloniale inscrite au patrimoine UNESCO, Cartagena éblouit par ses rues colorées, ses fortifications imposantes et ses plages des îles du Rosario proches. L'ambiance caribéenne, la musique cumbia et la gastronomie côtière en font un incontournable.",
       wikipedia: "Cartagena,_Colombia",
-      tags: ["colonial", "plages", "UNESCO", "histoire"],
+      tags: ["Colonial", "Plage", "UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: "Ciudad Amurallada (vieille ville)", wikipedia: "File:City walls of Cartagena 01.jpg" },
         { name: "Castillo de San Felipe", wikipedia: "Castillo_San_Felipe_de_Barajas" },
@@ -118,7 +118,7 @@ export const COLOMBIA = {
       description:
         "Ancienne ville gangrenée par les cartels, Medellín est devenue un modèle d'innovation urbaine et de renaissance sociale. Le système de métrocâble, les escaliers mécaniques de la commune 13 et les parcs-bibliothèques en témoignent.",
       wikipedia: "File:Ball court - Comuna 13 - Medellín - Colombia 2024.jpg",
-      tags: ["ville", "culture", "transformation", "art"],
+      tags: ["Ville", "Culture", "Transformation", "Art", "Architecture"],
       mustSee: [
         { name: "Comuna 13", wikipedia: "File:Ball court - Comuna 13 - Medellín - Colombia 2024.jpg" },
         { name: "Plaza Botero", wikipedia: "File:Medellín, Plaza Botero, 2023-07 CN-01.jpg" },
@@ -133,7 +133,7 @@ export const COLOMBIA = {
       description:
         "La Vallée de Cocora abrite les palmiers de cire géants, arbres nationaux de Colombie, qui s'élèvent jusqu'à 60 m dans les nuages. La randonnée dans ce paysage unique est l'une des plus belles d'Amérique du Sud.",
       wikipedia: "Cocora_Valley",
-      tags: ["randonnée", "nature", "palmiers", "café"],
+      tags: ["Randonnée", "Nature", "Palmiers", "Café"],
       mustSee: [
         { name: "Palmiers de cire", wikipedia: "File:Ceroxylon quindiuense cocora.jpg" },
         { name: "Salento", wikipedia: "File:Campanile di Salento.jpg" },
@@ -148,7 +148,7 @@ export const COLOMBIA = {
       description:
         "La haute capitale (2 600 m) est le cœur culturel de la Colombie avec ses musées de classe mondiale, le quartier historique de La Candelaria et le célèbre Musée de l'Or. Le marché de Paloquemao et la Ciclovía du dimanche sont des expériences locales authentiques.",
       wikipedia: "File:Capitalio National de Colombia, Bogotá.jpg",
-      tags: ["capitale", "culture", "musées", "gastronomie"],
+      tags: ["Ville", "Culture", "Musées", "Gastronomie"],
       mustSee: [
         { name: "Musée de l'Or", wikipedia: "File:BOG Museo del Oro.JPG" },
         { name: "Candelaria", wikipedia: "File:La Candelaria, Bogota, Colombia (5818105341).jpg" },

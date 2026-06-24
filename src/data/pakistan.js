@@ -81,7 +81,7 @@ export const PAKISTAN = {
       description:
         "La vallée de Hunza est souvent décrite comme l'une des plus belles du monde : un ruban vert suspendu entre des pics dépassant 7 000 mètres, dominé par le majestueux Rakaposhi. Les villages d'Altit et Baltit, avec leurs forts perchés sur des éperons rocheux, témoignent d'une histoire millénaire liée à la Route de la Soie. Au printemps, les vergers d'abricotiers en fleurs offrent un spectacle de toute beauté sur fond de sommets enneigés.",
       wikipedia: "Hunza_Valley",
-      tags: ["Montagne", "Route de la Soie", "Randonnée", "K2"],
+      tags: ["Montagne", "Route de la Soie", "Randonnée", "K2", "Nature", "Ski"],
       mustSee: [
         { name: "Fort de Baltit — résidence des mirs de Hunza depuis 900 ans", wikipedia: "Baltit_Fort" },
         { name: "Fort d'Altit — plus ancien fort du Gilgit-Baltistan (XIe s.)", wikipedia: "Altit_Fort" },
@@ -96,7 +96,7 @@ export const PAKISTAN = {
       description:
         "Lahore est l'âme culturelle et historique du Pakistan, une métropole de 13 millions d'habitants qui fut la seconde capitale de l'empire moghol. La vieille ville, classée potentiellement au patrimoine mondial, regorge de mosquées, de mausolées et de jardins d'une splendeur incomparable. La Mosquée Badshahi, l'une des plus grandes du monde, et le Fort de Lahore, inscrit à l'UNESCO, forment un ensemble monumental parmi les plus impressionnants d'Asie du Sud.",
       wikipedia: "Lahore",
-      tags: ["Moghols", "UNESCO", "Histoire", "Gastronomie"],
+      tags: ["Moghols", "UNESCO", "Histoire", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         { name: "Mosquée Badshahi — l'une des plus grandes mosquées du monde (XVIIe s.)", wikipedia: "Badshahi_Mosque" },
         { name: "Fort de Lahore — palais moghol inscrit à l'UNESCO", wikipedia: "Lahore_Fort" },
@@ -111,7 +111,7 @@ export const PAKISTAN = {
       description:
         "Mohenjo-daro est l'un des sites archéologiques les plus importants du monde, vestige de la civilisation de la vallée de l'Indus qui s'épanouit il y a plus de 4 000 ans. Cette cité planifiée avec une précision étonnante — rues orthogonales, système d'égouts sophistiqué, bains publics — témoigne d'une organisation sociale et technique remarquable pour l'époque. Classée au patrimoine mondial de l'UNESCO, elle reste l'une des énigmes de l'archéologie mondiale, sa langue n'ayant pas encore été déchiffrée.",
       wikipedia: "Mohenjo-daro",
-      tags: ["UNESCO", "Archéologie", "Indus", "Antiquité"],
+      tags: ["UNESCO", "Archéologie", "Indus", "Antiquité", "Architecture", "Désert"],
       mustSee: [
         { name: "Grand bain de Mohenjo-daro — piscine publique vieille de 4 500 ans", wikipedia: "File:Mohenjo-daro.jpg" },
         { name: "Citadelle de Mohenjo-daro — acropole administrative de la cité", wikipedia: "File:Buddhist stupa, Mohenjo-daro.JPG" },
@@ -125,7 +125,7 @@ export const PAKISTAN = {
       description:
         "La Karakoram Highway (KKH), surnommée la 'huitième merveille du monde', relie Islamabad à Kashgar en Chine sur plus de 1 300 kilomètres à travers les paysages les plus grandioses d'Asie centrale. Construite entre 1959 et 1978 par les ingénieurs pakistanais et chinois au prix de plus de 900 vies, elle traverse le point de rencontre des trois plus grandes chaînes montagneuses du monde : le Karakoram, l'Himalaya et l'Hindu Kush.",
       wikipedia: "File:Rakaposhi_as_seen_from_the_Karakoram_Highway_near_Nagar,_Gilgit.jpg",
-      tags: ["Route", "Montagne", "K2", "Aventure"],
+      tags: ["Route", "Montagne", "K2", "Aventure", "Désert", "Nature"],
       mustSee: [
         { name: "Défilé de Khunjerab — col frontalier à 4 693 m, point le plus haut de la KKH", wikipedia: "Khunjerab_Pass" },
         { name: "Gorges de Nanga Parbat — vue sur la neuvième montagne du monde", wikipedia: "Nanga_Parbat" },

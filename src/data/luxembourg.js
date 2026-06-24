@@ -61,7 +61,7 @@ export const LUXEMBOURG = {
       description:
         "La capitale du Grand-Duché est une ville fascinante construite sur des falaises, dont les fortifications médiévales sont classées au patrimoine mondial de l'UNESCO. Le Chemin de la Corniche offre une vue panoramique sur les casemates et la vieille ville. Le Grund, quartier au fond des vallées de l'Alzette et de la Pétrusse, est idéal pour se promener en soirée.",
       wikipedia: "Luxembourg_City",
-      tags: ["UNESCO", "Capitale", "Fortifications", "Institutions européennes"],
+      tags: ["UNESCO", "Ville", "Fortifications", "Institutions européennes", "Architecture", "Histoire"],
       mustSee: [
         { name: "Casemates du Bock — galeries souterraines dans la roche sur 23 km", wikipedia: "File:The Bock Casemates 1.jpg" },
         { name: "Chemin de la Corniche — 'le plus beau balcon d'Europe'", wikipedia: "File:Corniche_and_rear_view_of_Breedewee_Luxembourg_City_2012-04.JPG" },

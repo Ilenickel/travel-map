@@ -63,7 +63,7 @@ export const OMAN = {
       description:
         "Capitale propre et ordonnée, avec la grandiose mosquée du Sultan Qaboos (l'une des plus grandes du monde), le souk Mutrah aux mille senteurs et la corniche longeant la mer d'Oman.",
       wikipedia: "Muscat",
-      tags: ["Ville", "Architecture", "Culture", "Souks"],
+      tags: ["Ville", "Architecture", "Culture", "Souks", "Histoire", "UNESCO", "Gastronomie"],
       mustSee: [
         { name: "Grande Mosquée Sultan Qaboos", wikipedia: "Sultan_Qaboos_Grand_Mosque" },
         { name: "Souk Mutrah", wikipedia: "File:Muttrah (4).jpg" },

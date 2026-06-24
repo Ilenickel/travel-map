@@ -101,7 +101,7 @@ export const ETHIOPIA = {
       description:
         "Lalibela est l'une des merveilles du monde médiéval : 11 églises monolithiques taillées directement dans la roche basaltique rouge au XIIe siècle, reliées par des tunnels et des tranchées. Le roi Lalibela voulait recréer la Jérusalem chrétienne. Les moines y officient encore chaque jour depuis 800 ans.",
       wikipedia: "Lalibela",
-      tags: ["UNESCO", "Chrétienté", "Moyen Âge", "Unique"],
+      tags: ["UNESCO", "Chrétienté", "Moyen Âge", "Unique", "Architecture", "Histoire"],
       mustSee: [
         { name: "Bete Giyorgis — église monolithique cruciforme", wikipedia: "File:Lalibela, san giorgio, esterno 24.jpg" },
         { name: "Groupe Nord des 7 églises (Bete Medhane Alem)", wikipedia: "File:Lalibela, chiesa di bete medhane alem, esterno 01.jpg" },
@@ -116,7 +116,7 @@ export const ETHIOPIA = {
       description:
         "La Dépression de Danakil (−116 m, jusqu'à +63°C en été) est l'endroit habité le plus chaud de la Terre. Le volcan Erta Ale abrite un lac de lave permanente — l'un des rares au monde. Les formations sulfuriques de Dallol, jaunes et vertes, ressemblent à une planète extraterrestre.",
       wikipedia: "File:A Sulphur Pond, Danakil Depression, Ethiopia.jpg",
-      tags: ["Volcan", "Extrême", "Lava lake", "Unique"],
+      tags: ["Volcan", "Extrême", "Lava lake", "Unique", "Désert", "Nature"],
       mustSee: [
         { name: "Erta Ale — lac de lave permanente (descente la nuit)", wikipedia: "File:Erta Ale.jpg" },
         { name: "Dallol — formations sulfuriques multicolores", wikipedia: "File:ET Afar asv2018-01 img48 Dallol.jpg" },
@@ -131,7 +131,7 @@ export const ETHIOPIA = {
       description:
         "Les Simien (UNESCO) sont les « Alpes d'Afrique » : un plateau escarpé culminant à 4 550 m (Ras Dashen, point culminant d'Éthiopie) où vivent les géladas — babouins endémiques aux poitrines rouges —, les walia ibex (bouquetins endémiques) et les loups d'Éthiopie.",
       wikipedia: "Simien_Mountains_National_Park",
-      tags: ["UNESCO", "Randonnée", "Géladas", "Altitude"],
+      tags: ["UNESCO", "Randonnée", "Géladas", "Altitude", "Nature"],
       mustSee: [
         { name: "Géladas (babouins aux poitrines rouges) à 2 m", wikipedia: "Gelada" },
         { name: "Trek Ras Dashen (4 550 m) — toit de l'Éthiopie", wikipedia: "Ras_Dashen" },
@@ -146,7 +146,7 @@ export const ETHIOPIA = {
       description:
         "Axoum, capitale de l'empire aksumite (classée UNESCO), abrite les stèles géantes obélisques, l'Arche d'Alliance (selon la tradition orthodoxe) et les tombeaux royaux. Gondar, la « Camelot africaine », possède un complexe de châteaux médiévaux du XVIIe siècle uniques en Afrique.",
       wikipedia: "Axum",
-      tags: ["UNESCO", "Stèles", "Châteaux", "Histoire"],
+      tags: ["UNESCO", "Stèles", "Châteaux", "Histoire", "Architecture"],
       mustSee: [
         { name: "Stèles d'Axoum (obélisques de 24 m)", wikipedia: "Obelisk_of_Axum" },
         { name: "Complexe de châteaux de Gondar (Fasil Ghebbi)", wikipedia: "Fasil_Ghebbi" },

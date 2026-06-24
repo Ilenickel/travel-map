@@ -82,7 +82,7 @@ export const COTE_DIVOIRE = {
       description:
         "Abidjan est la capitale économique de l'Afrique de l'Ouest francophone : le quartier du Plateau avec ses gratte-ciels sur la lagune Ébrié, Cocody et ses ambassades, Treichville et son marché nocturne animé, et la Cité d'Ivoire (luxe). Une ville de contrastes fascinante, avec une scène musicale (coupé-décalé) et gastronomique remarquable.",
       wikipedia: "Abidjan",
-      tags: ["Capitale", "Métropole", "Gastronomie", "Musique"],
+      tags: ["Ville", "Métropole", "Gastronomie", "Musique"],
       mustSee: [
         { name: "Cathédrale Saint-Paul du Plateau — architecture audacieuse de Aldo Spirito", wikipedia: "File:La cathédrale Saint-Paul Abidjan 03.jpg" },
         { name: "Marché de Treichville — artisanat et ambiance nocturne", wikipedia: "Treichville" },
@@ -97,7 +97,7 @@ export const COTE_DIVOIRE = {
       description:
         "Yamoussoukro, capitale officielle, abrite Notre-Dame de la Paix — la plus grande basilique chrétienne du monde (158m de haut, 7 000 places), financée par Félix Houphouët-Boigny et consacrée par Jean-Paul II en 1990. Le contraste avec les villages environnants est saisissant. Également : les caïmans sacrés du palais présidentiel.",
       wikipedia: "Basilica_of_Our_Lady_of_Peace",
-      tags: ["Architecture", "Religion", "Unique", "Capitale"],
+      tags: ["Architecture", "Religion", "Unique", "Ville"],
       mustSee: [
         { name: "Basilique Notre-Dame de la Paix — la plus grande du monde (UNESCO)", wikipedia: "Basilica_of_Our_Lady_of_Peace" },
         { name: "Caïmans sacrés du lac du palais présidentiel", wikipedia: "File:Crocodile de Yamoussoukro.jpg" },

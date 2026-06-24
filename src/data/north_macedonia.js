@@ -82,7 +82,7 @@ export const NORTH_MACEDONIA = {
       description:
         "Le lac d'Ohrid est l'un des plus vieux lacs du monde (2–3 millions d'années) et l'un des plus profonds des Balkans (293m). Classé double UNESCO (naturel ET culturel), il abrite 200 espèces endémiques dont la truite d'Ohrid. La ville d'Ohrid est une des plus anciennes d'Europe (antique Lychnidos) : 365 églises byzantines, monastères des Xe–XIVe siècles et une vieille ville parfaitement préservée.",
       wikipedia: "File:OhridskoEzeroKarpaSvNikola.jpg",
-      tags: ["UNESCO", "Lac", "Byzantin", "Endémique"],
+      tags: ["UNESCO", "Lac", "Byzantin", "Endémique", "Histoire", "Architecture", "Plage", "Randonnée"],
       mustSee: [
         { name: "Église Saint-Jean-de-Kaneo (XIIIe s.) — sur la falaise au-dessus du lac", wikipedia: "File:Iglesia_San_Juan_Kaneo,_Ohrid,_Macedonia_del_Norte,_2014-04-17,_DD_19.jpg" },
         { name: "Monastère de Saint-Naum (Xe s.) — au bord du lac, sources souterraines", wikipedia: "File:Svetinaum.jpg" },
@@ -97,7 +97,7 @@ export const NORTH_MACEDONIA = {
       description:
         "Skopje est une capitale hors du commun : après le tremblement de terre de 1963 qui détruisit 80% de la ville, le gouvernement yougoslave l'a reconstruite en style moderniste-brutaliste, puis depuis 2010 le projet 'Skopje 2014' a érigé des centaines de statues néoclassiques et de fontaines monumentales. Le vieux bazar ottoman (Čaršija) — le plus grand des Balkans après Istanbul — survit intact.",
       wikipedia: "Skopje",
-      tags: ["Bazar ottoman", "Baroque", "Statues", "Moderniste"],
+      tags: ["Bazar ottoman", "Baroque", "Statues", "Moderniste", "Ville", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Čaršija (vieux bazar ottoman) — le plus grand des Balkans après Istanbul", wikipedia: "Old_Bazaar,_Skopje" },
         { name: "Fontaine 'Guerrier sur cheval' (Alexandre le Grand, 22m de haut)", wikipedia: "File:Skopje_-_Warrior_on_a_Horse_(9451253725).jpg" },
@@ -112,7 +112,7 @@ export const NORTH_MACEDONIA = {
       description:
         "La Macédoine du Nord compte plus de 1 000 monastères et églises byzantines des Xe–XIVe siècles, avec des fresques d'une qualité comparable aux plus grandes œuvres de l'art chrétien. Sainte-Sophie d'Ohrid (VIIIe s.), le monastère de Treskavec dans une forêt de montagne, Lesnovo (XIVe s.) avec ses fresques renaissantes — un trésor byzantin inconnu du grand public.",
       wikipedia: "File:Bulgarians_defeat_Byzantines_under_Krenites_and_Kourtikios.jpg",
-      tags: ["Byzantin", "Fresques", "Monastères", "Xe-XIVe siècle"],
+      tags: ["Byzantin", "Fresques", "Monastères", "Xe-XIVe siècle", "Histoire", "Architecture"],
       mustSee: [
         { name: "Sainte-Sophie d'Ohrid (VIIIe s.) — mosaïques et fresques byzantines", wikipedia: "File:St Sophia (Ohrid).jpg" },
         { name: "Monastère de Treskavec — perché à 1 200m, chambres pour les visiteurs", wikipedia: "Treskavec_Monastery" },
@@ -127,7 +127,7 @@ export const NORTH_MACEDONIA = {
       description:
         "Mavrovo est le plus grand parc national de Macédoine du Nord (73 000 ha) : le lac de Mavrovo créé par un barrage dans un paysage alpin, le lynx des Balkans (l'un des plus rares au monde — moins de 50 individus), et la station de ski (la plus populaire du pays). Le village de Mavrovo avec son église partiellement submergée dans le lac est une image emblématique.",
       wikipedia: "Mavrovo_National_Park",
-      tags: ["Parc national", "Ski", "Lynx", "Lac alpin"],
+      tags: ["Parc national", "Ski", "Lynx", "Lac alpin", "Randonnée", "Nature"],
       mustSee: [
         { name: "Lac de Mavrovo — église Saint-Nicolas partiellement submergée", wikipedia: "Mavrovo_Lake" },
         { name: "Ski à Mavrovo (1 255–2 255m) — la station la plus populaire du pays", wikipedia: "File:Iglesia_sumergida_de_San_Nicolás,_lago_Mavrovo,_Macedonia_del_Norte,_2014-04-17,_DD_11.jpg" },

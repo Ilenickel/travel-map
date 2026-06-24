@@ -61,7 +61,7 @@ export const BELGIUM = {
       description:
         "Capitale de la Belgique et siège des institutions européennes, Bruxelles mêle grandeur Art nouveau et quartiers populaires animés. La Grand-Place, classée UNESCO, est l'une des plus belles places d'Europe. La ville est également connue pour ses musées, ses bandes dessinées et sa gastronomie.",
       wikipedia: "Brussels",
-      tags: ["Capitale", "UNESCO", "Gastronomie", "Architecture"],
+      tags: ["Ville", "UNESCO", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Grand-Place — place baroque classée UNESCO", wikipedia: "File:Brusel Grand-Place domy 3.jpg" },
         { name: "Atomium — sculpture géante de l'Expo 58", wikipedia: "Atomium" },

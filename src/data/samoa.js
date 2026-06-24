@@ -99,7 +99,7 @@ export const SAMOA = {
       description:
         "Apia, la capitale animée de Samoa, mêle marché couvert coloré, architecture coloniale allemande et ambiance polynésienne décontractée. La ville est connue dans le monde entier pour avoir été la demeure de Robert Louis Stevenson, auteur de L'Île au trésor, qui s'y installa en 1890 et y décéda en 1894. Sa villa Vailima, transformée en musée, est aujourd'hui l'une des principales attractions touristiques du pays. Les chutes de Papapapai-tai, accessibles en une courte randonnée, sont parmi les plus belles de l'île.",
       wikipedia: "File:Samoa - Apia Govt buildings.jpg",
-      tags: ["Capitale", "Histoire", "Culture", "Cascades"],
+      tags: ["Ville", "Histoire", "Culture", "Cascades"],
       mustSee: [
         { name: "Villa Vailima — ancienne demeure de Robert Louis Stevenson, aujourd'hui musée", wikipedia: "File:Villa Vailima (30086489993).jpg" },
         { name: "Chutes de Papapapai-tai — cascade de 100 m dans la forêt tropicale d'Upolu", wikipedia: "File:Papapapaitai.jpg" },

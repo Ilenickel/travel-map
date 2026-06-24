@@ -112,7 +112,7 @@ export const TANZANIA = {
       description:
         "Le Toit de l'Afrique (5 895 m) est l'ascension emblématique du continent, accessible sans équipement technique via les routes Marangu ou Lemosho (5–8 jours). Un défi accessible récompensé par une vue depuis les glaciers.",
       wikipedia: "Mount_Kilimanjaro",
-      tags: ["Ascension", "Nature", "UNESCO", "Défi"],
+      tags: ["Ascension", "Nature", "UNESCO", "Défi", "Randonnée"],
       mustSee: [
         { name: "Sommet Uhuru Peak (5 895 m)", wikipedia: "Mount_Kilimanjaro" },
         { name: "Zone de brume (forêt tropicale)", wikipedia: "File:Kilimanjaro forest.jpg" },
@@ -127,7 +127,7 @@ export const TANZANIA = {
       description:
         "L'archipel de Zanzibar, « l'île aux épices », est un paradis de sable blanc, lagons turquoise, récifs coralliens et Stone Town (UNESCO) — vieille ville swahilie-arabe aux ruelles envoûtantes et aux portes sculptées.",
       wikipedia: "File:Stone Town, Zanzibar (1).jpg",
-      tags: ["Plage", "UNESCO", "Culture", "Épices"],
+      tags: ["Plage", "UNESCO", "Culture", "Épices", "Histoire", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Stone Town (UNESCO)", wikipedia: "Stone_Town" },
         { name: "Plage de Nungwi", wikipedia: "Nungwi" },

@@ -90,7 +90,7 @@ export const SOUTH_KOREA = {
       description:
         "Métropole de 10 millions d'habitants où les palais Joseon côtoient les gratte-ciels. Gastronomie de rue, K-pop, hanoks de Bukchon et shopping à Myeongdong.",
       wikipedia: "Seoul",
-      tags: ["Ville", "Culture", "Shopping", "Gastronomie"],
+      tags: ["Ville", "Culture", "Shopping", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Gyeongbokgung — Palais royal Joseon", wikipedia: "Gyeongbokgung" },
         { name: "Village hanok de Bukchon", wikipedia: "Bukchon_Hanok_Village" },
@@ -105,7 +105,7 @@ export const SOUTH_KOREA = {
       description:
         "Ancienne capitale du royaume Silla pendant mille ans, surnommée le « musée à ciel ouvert ». Tumuli royaux, temples bouddhistes et Bulguksa classé UNESCO.",
       wikipedia: "File:Southern_side_of_Woljeonggyo_Bridge_illuminated_at_sunset_in_Gyeongju_South_Korea.jpg",
-      tags: ["Histoire", "UNESCO", "Culture", "Temples"],
+      tags: ["Histoire", "UNESCO", "Culture", "Temples", "Architecture"],
       mustSee: [
         { name: "Temple Bulguksa", wikipedia: "Bulguksa" },
         { name: "Grottes de Seokguram", wikipedia: "Seokguram" },

@@ -82,7 +82,7 @@ export const ROMANIA = {
       description:
         "La Transylvanie est une région magique : le château de Bran (associé à Dracula/Vlad l'Empaleur), la citadelle médiévale saxonne de Sighișoara (UNESCO, ville natale de Vlad Tepeș), les villages fortifiés de Viscri et Biertan (UNESCO), et les Carpates avec des populations sauvages d'ours bruns, loups et lynx — les plus importantes d'Europe hors Russie.",
       wikipedia: "File:Cheile_Turzii-(42).JPG",
-      tags: ["Dracula", "Médiéval", "Ours", "UNESCO"],
+      tags: ["Dracula", "Médiéval", "Ours", "UNESCO", "Histoire", "Architecture", "Randonnée", "Ski"],
       mustSee: [
         { name: "Château de Bran — 'château de Dracula' dans les Carpates", wikipedia: "Bran_Castle" },
         { name: "Sighișoara — ville médiévale saxonne fortifiée (UNESCO)", wikipedia: "Sighișoara" },
@@ -97,7 +97,7 @@ export const ROMANIA = {
       description:
         "Le delta du Danube est le troisième plus grand delta d'Europe et l'un des écosystèmes les plus riches : 300 espèces d'oiseaux (pélicans, aigrettes, cormorans pygmées), 45 espèces de poissons dont l'esturgeon beluga, des forêts flottantes et des lacs intérieurs sans route. On se déplace uniquement en bateau depuis Tulcea. Classé UNESCO et réserve de biosphère.",
       wikipedia: "File:Danube Delta, autumn.jpg",
-      tags: ["Delta", "Oiseaux", "UNESCO", "Nature"],
+      tags: ["Delta", "Oiseaux", "UNESCO", "Nature", "Randonnée"],
       mustSee: [
         { name: "Pélicans blancs et frisés (la plus grande colonie d'Europe)", wikipedia: "File:White pelicans (Pelecanus onocrotalus) Danube delta.jpg" },
         { name: "Excursion en bateau dans les bras secondaires du delta", wikipedia: "File:Comrades from the Danube Delta. (29724046008).jpg" },
@@ -112,7 +112,7 @@ export const ROMANIA = {
       description:
         "Les monastères peints de Bucovine (Voronet, Sucevita, Moldovita) sont classés UNESCO : leurs façades extérieures entièrement couvertes de fresques du XVe–XVIe siècle représentant des scènes bibliques en bleu de Voronet (un bleu unique jamais reproduit). Une des curiosités artistiques les plus étonnantes d'Europe, dans des collines vertes et boisées.",
       wikipedia: "File:Voronet murals 2010 15.jpg",
-      tags: ["Fresques", "UNESCO", "Monastères", "Art byzantin"],
+      tags: ["Fresques", "UNESCO", "Monastères", "Art byzantin", "Architecture"],
       mustSee: [
         { name: "Voronet — 'la chapelle Sixtine de l'Est', bleu unique", wikipedia: "Voroneț_Monastery" },
         { name: "Sucevița — forteresse monastique avec fresques intactes", wikipedia: "Sucevița_Monastery" },
@@ -127,7 +127,7 @@ export const ROMANIA = {
       description:
         "Bucarest est une capitale fascinante par ses contradictions : le Palais du Parlement (2e plus grand bâtiment du monde, commandé par Ceaușescu), les quartiers Art Nouveau de Floreasca et Dorobanți, le Village Museum (musées en plein air avec 300 bâtisses paysannes), et une scène nocturne et gastronomique en plein essor. La 'Petite Paris des Balkans' retrouve sa splendeur.",
       wikipedia: "Bucharest",
-      tags: ["Palais", "Art Nouveau", "Musée", "Nuit"],
+      tags: ["Palais", "Art Nouveau", "Musée", "Nuit", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Palais du Parlement (Ceaușescu) — visite guidée obligatoire", wikipedia: "Palace_of_the_Parliament" },
         { name: "Musée du Village — 300 maisons paysannes en plein air", wikipedia: "Dimitrie_Gusti_National_Village_Museum" },

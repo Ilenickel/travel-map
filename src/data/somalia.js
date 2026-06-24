@@ -112,7 +112,7 @@ export const SOMALIA = {
       description:
         "Hargeisa est la capitale du Somaliland, région autonome autoproclamée depuis 1991 qui fonctionne comme un état indépendant de facto avec ses propres institutions, monnaie et passeport. La ville est relativement sûre et animée, avec un marché central coloré, des mosquées historiques et le monument de l'avion de guerre transformé en symbole de résistance. C'est la porte d'entrée pour tous les voyageurs souhaitant explorer le Somaliland.",
       wikipedia: "Hargeisa",
-      tags: ["Capitale", "Culture", "Marché", "Politique"],
+      tags: ["Ville", "Culture", "Marché", "Politique"],
       mustSee: [
         { name: "Avion-monument de la guerre civile — symbole de la résistance du Somaliland", wikipedia: "File:New rebuilt of Hargeisa War Memorial.jpg" },
         { name: "Marché central — épices, tissus et vie locale", wikipedia: "File:Street Market Hargeisa, Somaliland (29322262370).jpg" },

@@ -90,7 +90,7 @@ export const GREECE = {
       description:
         "L'une des plus anciennes villes du monde : l'Acropole et le Parthénon dominent la ville, entourés de quartiers bohèmes (Monastiraki, Psirri) et de tavernes animées.",
       wikipedia: "Athens",
-      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         { name: "Acropole & Parthénon", wikipedia: "Acropolis_of_Athens" },
         { name: "Musée de l'Acropole", wikipedia: "File:Acropolis Museum Interior.jpg" },
@@ -105,7 +105,7 @@ export const GREECE = {
       description:
         "L'île la plus photographiée du monde, avec ses maisons blanches à dômes bleus accrochées à la caldeira d'un volcan. Couchers de soleil légendaires à Oia.",
       wikipedia: "File:Thira (Santorini) - Ia-01.jpg",
-      tags: ["Paysage", "Romantisme", "Mer", "Volcan"],
+      tags: ["Paysage", "Romantisme", "Mer", "Volcan", "Plage", "Randonnée"],
       mustSee: [
         { name: "Village d'Oia au coucher du soleil", wikipedia: "File:Οία 1121.jpg" },
         { name: "Fira — la capitale de l'île", wikipedia: "Fira" },
@@ -120,7 +120,7 @@ export const GREECE = {
       description:
         "Monastères byzantins perchés sur des piliers de roche géants surplombant la plaine thessalienne. Paysage à couper le souffle, site UNESCO.",
       wikipedia: "Meteora",
-      tags: ["UNESCO", "Nature", "Histoire", "Randonnée"],
+      tags: ["UNESCO", "Nature", "Histoire", "Randonnée", "Architecture"],
       mustSee: [
         { name: "Monastère de Varlaam", wikipedia: "File:Moni Varlaam BW 2017-10-07 09-09-52.jpg" },
         { name: "Grand Météore (Transfiguration)", wikipedia: "File:Meteora Monastery.jpg" },
@@ -135,7 +135,7 @@ export const GREECE = {
       description:
         "La plus grande île grecque, avec le palais minoen de Cnossos, les gorges de Samaria (les plus longues d'Europe) et des plages de rêve comme Elafonissi.",
       wikipedia: "Crete",
-      tags: ["Histoire", "Nature", "Plage", "Randonnée"],
+      tags: ["Histoire", "Nature", "Plage", "Randonnée", "UNESCO", "Gastronomie"],
       mustSee: [
         { name: "Palais minoen de Cnossos", wikipedia: "File:Δεξαμενή Καθαρμών Κνωσός 0562.jpg" },
         { name: "Gorges de Samaria", wikipedia: "File:Φαράγγι Σαμαριάς 3754.jpg" },

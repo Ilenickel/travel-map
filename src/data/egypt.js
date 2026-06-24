@@ -162,6 +162,22 @@ export const EGYPT = {
         { name: "Mer Rouge — plongée avec les requins", wikipedia: "File:Nuweiba, Mountains by Red Sea, Sinai, Egypt.jpg" },
       ],
     },
+    {
+      id: 5,
+      name: "Sinaï & Désert Occidental",
+      region: "Sinaï / Désert Occidental",
+      description:
+        "Loin du Nil, l'Égypte déploie des étendues désertiques saisissantes, du mont Sinaï chargé d'histoire biblique aux paysages lunaires du Désert Blanc. L'oasis isolée de Siwa et les récifs de la mer Rouge complètent ce dépaysement. Randonnée, plongée et spiritualité s'y rencontrent.",
+      wikipedia: "File:Sinai, Egypt, Canyon through the mountains.jpg",
+      tags: ["Désert", "Randonnée", "Nature", "Histoire", "UNESCO"],
+      mustSee: [
+        { name: "Mont Sinaï & Monastère Sainte-Catherine", wikipedia: "File:Katharinenkloster Sinai BW 2.jpg" },
+        { name: "Oasis de Siwa", wikipedia: "Siwa_Oasis" },
+        { name: "Parc national du Ras Mohammed", wikipedia: "File:Ras Mohammed national park entry - panoramio.jpg" },
+        { name: "Bahriyya & Farafra", wikipedia: "White_Desert_National_Park" },
+        { name: "Wadi Feiran", wikipedia: "File:Wadi_Feran_,_photo_by_Hatem_Moushir_07.jpg" },
+      ],
+    },
   ],
 
   costOfLiving: {

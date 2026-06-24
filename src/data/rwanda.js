@@ -82,7 +82,7 @@ export const RWANDA = {
       description:
         "Le Parc national des Volcans est l'un des rares endroits au monde où observer des gorilles de montagne en liberté. Ces primates, proches parents de l'homme, vivent en familles dans les forêts brumeuses des Virunga. Un permis (1 500$) donne accès à une heure inoubliable.",
       wikipedia: "Volcanoes_National_Park",
-      tags: ["Gorilles", "Nature", "Unique", "UNESCO"],
+      tags: ["Gorilles", "Nature", "Unique", "UNESCO", "Safari", "Randonnée"],
       mustSee: [
         { name: "Trekking gorilles de montagne", wikipedia: "Mountain_gorilla" },
         { name: "Volcan Karisimbi (4 507 m)", wikipedia: "Mount_Karisimbi" },
@@ -97,7 +97,7 @@ export const RWANDA = {
       description:
         "Kigali est la capitale la plus propre et la plus moderne d'Afrique sub-saharienne : interdiction des sacs plastiques depuis 2008, rues impeccables, gastronomie dynamique. Le Mémorial du Génocide est une visite essentielle pour comprendre l'histoire rwandaise.",
       wikipedia: "Kigali",
-      tags: ["Ville", "Moderne", "Mémoire", "Gastronomie"],
+      tags: ["Ville", "Moderne", "Mémoire", "Gastronomie", "Histoire", "Architecture"],
       mustSee: [
         { name: "Mémorial du Génocide de Kigali", wikipedia: "Kigali_Genocide_Memorial" },
         { name: "Quartier Kimironko — marché des artisans", wikipedia: "File:Paintings Images.jpg" },
@@ -111,7 +111,7 @@ export const RWANDA = {
       description:
         "Nyungwe est l'une des forêts tropicales les mieux conservées d'Afrique : 1 000 km² de forêt de montagne abritant des chimpanzés, des colobes angolais (500+), des centaines d'espèces d'oiseaux et une canopée accessible par une passerelle suspendue à 50 m.",
       wikipedia: "File:NYUNGWE.jpg",
-      tags: ["Forêt", "Chimpanzés", "Oiseaux", "Canopée"],
+      tags: ["Forêt", "Chimpanzés", "Oiseaux", "Canopée", "Randonnée", "Nature", "Safari"],
       mustSee: [
         { name: "Trek chimpanzés de Nyungwe", wikipedia: "Chimpanzee" },
         { name: "Canopy Walk — passerelle à 50 m", wikipedia: "File:Nyungwe canopy walk.jpg" },

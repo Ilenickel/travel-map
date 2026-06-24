@@ -82,7 +82,7 @@ export const SWEDEN = {
       description:
         "Stockholm s'étend sur 14 îles entre le lac Mälaren et la mer Baltique : Gamla Stan (vieille ville médiévale du XIIIe siècle), le musée Vasa (navire de guerre de 1628 intact), le musée Skansen (premier musée en plein air du monde), et les quartiers branchés de Södermalm et Östermalm. Une capitale qui conjugue histoire, design et nature à portée de ferry.",
       wikipedia: "Stockholm",
-      tags: ["Capitale", "Musées", "Architecture", "Îles"],
+      tags: ["Ville", "Musées", "Architecture", "Îles", "Gastronomie"],
       mustSee: [
         { name: "Musée Vasa — navire de guerre du XVIIe siècle intact", wikipedia: "Vasa_(ship)" },
         { name: "Gamla Stan — vieille ville médiévale et Palais Royal", wikipedia: "File:Västerlånggatan,_Gamla_stan,_Stockholm.jpg" },
@@ -97,7 +97,7 @@ export const SWEDEN = {
       description:
         "La Laponie suédoise abrite le parc national de Laponia (UNESCO), les éleveurs de rennes Sami, et Abisko — réputé avoir le ciel le plus clair d'Europe pour les aurores boréales. L'Ice Hotel de Jukkasjärvi est un hôtel entièrement reconstruit en glace chaque année depuis 1990. La randonnée de la Kungsleden (500km) est le trek le plus emblématique de Scandinavie.",
       wikipedia: "File:Oratunturi_central_summit_from_the_west_in_midnight,_Sodankylä,_Lapland,_Finland,_2019_June.jpg",
-      tags: ["Aurores", "Rennes", "Sami", "Arctique"],
+      tags: ["Aurores", "Rennes", "Sami", "Arctique", "Nature", "Randonnée"],
       mustSee: [
         { name: "Ice Hotel Jukkasjärvi — chambre sculptée dans la glace", wikipedia: "File:Icehotel-se-01.JPG" },
         { name: "Aurores boréales depuis la Aurora Sky Station d'Abisko", wikipedia: "File:Aurora in Abisko near Torneträsk.jpg" },
@@ -132,6 +132,21 @@ export const SWEDEN = {
         { name: "Gravures rupestres de Tanum — art de l'Âge du Bronze (UNESCO)", wikipedia: "Rock_Carvings_in_Tanum" },
         { name: "Archipel de Bohuslän — kayak entre les îlots granitiques", wikipedia: "File:Bohuslän 2017.jpg" },
         { name: "Universeum — grand aquarium de Scandinavie", wikipedia: "Universeum" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Åre & Sälen",
+      region: "Jämtland / Dalarna",
+      description:
+        "Åre est la plus grande station de ski de Scandinavie, prisée pour ses pistes alpines et son ambiance animée. Plus au sud, Sälen réunit quatre domaines parfaits pour les familles. Forêts, lacs gelés et parcs nationaux complètent ce terrain de jeu nordique en hiver comme en été.",
+      wikipedia: "Åre",
+      tags: ["Ski", "Nature", "Randonnée"],
+      mustSee: [
+        { name: "Åre — plus grande station scandinave", wikipedia: "Åre" },
+        { name: "Sälen — 4 domaines réunis", wikipedia: "Sälen" },
+        { name: "Parc national de Fulufjället", wikipedia: "File:Fulufjällets nationalpark, July 2022 30.jpg" },
+        { name: "Östersund & musée Jamtli", wikipedia: "Östersund" },
       ],
     },
   ],

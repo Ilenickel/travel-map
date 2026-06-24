@@ -109,7 +109,7 @@ export const ITALY = {
       description:
         "La Ville Éternelle concentre 2 500 ans d'histoire sur quelques kilomètres carrés : Colisée, Forum romain, Panthéon, fontaine de Trevi et les Musées du Vatican.",
       wikipedia: "Rome",
-      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         { name: "Colisée", wikipedia: "Colosseum" },
         { name: "Musées du Vatican & Chapelle Sixtine", wikipedia: "File:VaticanMuseumStaircase.jpg" },
@@ -124,7 +124,7 @@ export const ITALY = {
       description:
         "Berceau de la Renaissance, Florence abrite la plus grande concentration de chefs-d'œuvre au monde. La Toscane environnante offre collines dorées, vignobles et villages médiévaux.",
       wikipedia: "Florence",
-      tags: ["Art", "Culture", "UNESCO", "Gastronomie"],
+      tags: ["Art", "Culture", "UNESCO", "Gastronomie", "Histoire", "Architecture", "Randonnée"],
       mustSee: [
         { name: "Galerie des Offices", wikipedia: "Uffizi" },
         { name: "Cathédrale (Duomo) & Coupole Brunelleschi", wikipedia: "Florence_Cathedral" },
@@ -139,7 +139,7 @@ export const ITALY = {
       description:
         "La Sérénissime, construite sur 118 îlots. Gondoles sur les canaux, place Saint-Marc, palais gothiques reflétés dans l'eau — une ville unique au monde, à visiter hors saison.",
       wikipedia: "Venice",
-      tags: ["UNESCO", "Architecture", "Romantisme", "Culture"],
+      tags: ["UNESCO", "Architecture", "Romantisme", "Culture", "Histoire", "Ville"],
       mustSee: [
         { name: "Place Saint-Marc", wikipedia: "File:Piazza San Marco (Venice) at night-msu-2021-6449-.jpg" },
         { name: "Basilique Saint-Marc", wikipedia: "St_Mark's_Basilica" },
@@ -154,7 +154,7 @@ export const ITALY = {
       description:
         "Falaises spectaculaires plongeant dans la Méditerranée, villages colorés accrochés à la roche, citrons géants et limoncello. Capri, Positano et Ravello au programme.",
       wikipedia: "Amalfi_Coast",
-      tags: ["Paysage", "Mer", "UNESCO", "Gastronomie"],
+      tags: ["Paysage", "Mer", "UNESCO", "Gastronomie", "Plage", "Nature", "Randonnée"],
       mustSee: [
         { name: "Positano", wikipedia: "Positano" },
         { name: "Île de Capri", wikipedia: "Capri" },
@@ -169,12 +169,28 @@ export const ITALY = {
       description:
         "La plus grande île de Méditerranée, carrefour de civilisations. Temples grecs de la Vallée des Temples, Etna, cuisine aux influences arabes, baroques et grecques.",
       wikipedia: "File:Sicily in 2025 12.jpg",
-      tags: ["Histoire", "Gastronomie", "Nature", "Mer"],
+      tags: ["Histoire", "Gastronomie", "Nature", "Mer", "UNESCO", "Plage", "Randonnée"],
       mustSee: [
         { name: "Vallée des Temples d'Agrigente", wikipedia: "File:Valle dei Templi, Agrigento, Sicilia 4.jpg" },
         { name: "Mont Etna", wikipedia: "Mount_Etna" },
         { name: "Taormine", wikipedia: "Taormina" },
         { name: "Palais des Normands — Palerme", wikipedia: "File:Palazzo Normanni, vista, Palermo.jpg" },
+      ],
+    },
+    {
+      id: 6,
+      name: "Dolomites & Val d'Aoste",
+      region: "Trentin-Haut-Adige / Vallée d'Aoste",
+      description:
+        "Les Dolomites, classées à l'UNESCO, dressent leurs pics calcaires roses au-dessus de vallées verdoyantes et de stations de ski mythiques. Plus à l'ouest, le Val d'Aoste partage avec la France le massif du Mont-Blanc. Ski l'hiver, randonnée et via ferrata l'été : un paradis alpin.",
+      wikipedia: "Dolomites",
+      tags: ["Ski", "Randonnée", "Nature", "UNESCO"],
+      mustSee: [
+        { name: "Cortina d'Ampezzo", wikipedia: "Cortina_d'Ampezzo" },
+        { name: "Tre Cime di Lavaredo", wikipedia: "Tre_Cime_di_Lavaredo" },
+        { name: "Courmayeur & Mont-Blanc italien", wikipedia: "File:Massif_du_Mont-Blanc_depuis_Courmayeur_au_matin_(juin_2024).JPG" },
+        { name: "Alta Badia — ski world cup", wikipedia: "File:A_Path_In_The_Dolomites_Alta_Badia_Italy_Landscape_Photography_(187934539).jpeg" },
+        { name: "Lago di Braies", wikipedia: "File:Pragser Wildsee.jpg" },
       ],
     },
   ],

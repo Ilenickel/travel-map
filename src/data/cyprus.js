@@ -61,7 +61,7 @@ export const CYPRUS = {
       description:
         "Paphos, ville côtière du sud-ouest de Chypre, est classée au patrimoine mondial de l'UNESCO pour ses extraordinaires mosaïques romaines des IIe–IVe siècles. Légendairement liée à Aphrodite, elle abrite le Rocher de l'Aphrodite (lieu de naissance de la déesse) et les Tombeaux des Rois, nécropole taillée dans la roche. La vieille ville et son port pittoresque sont idéaux pour les soirées.",
       wikipedia: "Paphos",
-      tags: ["UNESCO", "Antique", "Mosaïques", "Aphrodite"],
+      tags: ["UNESCO", "Antique", "Mosaïques", "Aphrodite", "Architecture"],
       mustSee: [
         { name: "Parc archéologique de Paphos — mosaïques romaines exceptionnelles classées UNESCO", wikipedia: "Paphos_Archaeological_Park" },
         { name: "Tombeaux des Rois — nécropole hellénistique et romaine taillée dans la roche", wikipedia: "Tombs_of_the_Kings_(Paphos)" },
@@ -76,7 +76,7 @@ export const CYPRUS = {
       description:
         "Les montagnes du Troodos, avec leur point culminant le mont Olympe (1 952 m), offrent un contraste saisissant avec les plages côtières. La région abrite des monastères byzantins ornés de fresques dorées classés UNESCO, des sentiers de randonnée ombragés et des villages viticoles producteurs du célèbre Commandaria, plus vieux vin du monde encore produit.",
       wikipedia: "Troodos_Mountains",
-      tags: ["Montagne", "UNESCO", "Randonnée", "Vins"],
+      tags: ["Montagne", "UNESCO", "Randonnée", "Vins", "Ski", "Nature"],
       mustSee: [
         { name: "Monastère de Kykkos — plus grand monastère de Chypre, icônes byzantines", wikipedia: "Kykkos_Monastery" },
         { name: "Eglises byzantines du Troodos — 10 églises à fresques classées UNESCO", wikipedia: "Painted_Churches_in_the_Troodos_Region" },
@@ -91,7 +91,7 @@ export const CYPRUS = {
       description:
         "Nicosie est la dernière capitale divisée du monde, coupée en deux depuis 1974 par la 'ligne verte' de l'ONU séparant la République de Chypre et la partie nord turque. La vieille ville intra-muros vénitiens recèle des musées, des mosquées et des cafés dans les deux parties. Le passage du checkpoint Ledra Street permet de visiter les deux côtés de la ville.",
       wikipedia: "Nicosia",
-      tags: ["Capitale", "Divisée", "Histoire", "Médiéval"],
+      tags: ["Ville", "Divisée", "Histoire", "Médiéval", "Architecture", "Plage"],
       mustSee: [
         { name: "Remparts vénitiens de Nicosie — enceinte étoilée du XVIe siècle", wikipedia: "File:Venetian_walls_and_green_parks_Nicosia_Republic_of_Cyprus_Kypros.jpg" },
         { name: "Checkpoint Ledra Street — seul passage entre les deux parties de la ville", wikipedia: "Ledra_Street" },

@@ -76,7 +76,7 @@ export const ANDORRA = {
       description:
         "La capitale d'Andorre est la plus haute capitale d'Europe à 1 023 m d'altitude. Malgré sa petite taille, elle offre un contraste saisissant entre sa vieille ville médiévale autour de la Casa de la Vall et son centre commercial moderne réputé pour le shopping hors taxes. L'Avinguda Meritxell concentre les grandes marques à des prix défiant toute concurrence.",
       wikipedia: "Andorra_la_Vella",
-      tags: ["Capitale", "Shopping", "Médiéval", "Duty-free"],
+      tags: ["Ville", "Shopping", "Médiéval", "Duty-free"],
       mustSee: [
         { name: "Casa de la Vall — Parlement historique du XVIe siècle, monument symbolique", wikipedia: "Casa_de_la_Vall" },
         { name: "Église Sant Esteve — église romane au cœur de la vieille ville", wikipedia: "File:Església de Sant Esteve de Bixessarri - 2.jpg" },

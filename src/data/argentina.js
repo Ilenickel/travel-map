@@ -111,7 +111,7 @@ export const ARGENTINA = {
       description:
         "La « Paris de l'Amérique du Sud » est une métropole effervescente aux multiples quartiers : le coloré Caminito à La Boca, le chic Palermo, l'historique San Telmo. Le tango y est né et les steakhouses y sont légendaires.",
       wikipedia: "Buenos_Aires",
-      tags: ["culture", "gastronomie", "nightlife", "architecture"],
+      tags: ["Culture", "Gastronomie", "Nightlife", "Architecture"],
       mustSee: [
         { name: "La Boca / Caminito", wikipedia: "File:LaBoca_ST_98.jpg" },
         { name: "Teatro Colón", wikipedia: "Teatro_Colón" },
@@ -126,7 +126,7 @@ export const ARGENTINA = {
       description:
         "La Patagonie offre des paysages époustouflants : lacs glaciaires, forêts de hêtres, condors et sommets enneigés. Bariloche est la porte d'entrée du circuit des Andes avec ses stations de ski et de randonnée.",
       wikipedia: "File:View_from_the_Golf_course_at_Llao_Llao.jpg",
-      tags: ["nature", "randonnée", "ski", "lacs"],
+      tags: ["Nature", "Randonnée", "Ski", "Lacs"],
       mustSee: [
         { name: "Parc National Nahuel Huapi", wikipedia: "Nahuel_Huapi_National_Park" },
         { name: "Cerro Catedral", wikipedia: "File:Bariloche_cerra_catedral.jpg" },
@@ -141,7 +141,7 @@ export const ARGENTINA = {
       description:
         "L'une des merveilles naturelles du monde, les chutes d'Iguazú s'étendent sur 2,7 km avec 275 cascades dont la spectaculaire Garganta del Diablo. Accessibles des deux côtés de la frontière Argentine-Brésil.",
       wikipedia: "Iguazu_Falls",
-      tags: ["nature", "cascades", "faune", "UNESCO"],
+      tags: ["Nature", "Cascades", "Faune", "UNESCO"],
       mustSee: [
         { name: "Garganta del Diablo", wikipedia: "File:Iguacu-004.jpg" },
         { name: "Parc National Iguazú", wikipedia: "File:Cataratas027.jpg" },
@@ -156,7 +156,7 @@ export const ARGENTINA = {
       description:
         "Au pied des Andes, Mendoza est le paradis du vin argentin, notamment le Malbec. Les bodegas (domaines viticoles) proposent des dégustations dans un cadre montagnard exceptionnel.",
       wikipedia: "Mendoza,_Argentina",
-      tags: ["vin", "gastronomie", "montagne", "vélo"],
+      tags: ["Vin", "Gastronomie", "Montagne", "Vélo"],
       mustSee: [
         { name: "Luján de Cuyo", wikipedia: "File:Plaza_de_Luján_de_Cuyo,_Mendoza,_Argentina.jpg" },
         { name: "Aconcagua", wikipedia: "Aconcagua" },
@@ -170,7 +170,7 @@ export const ARGENTINA = {
       description:
         "Le parc national Los Glaciares abrite le majestueux glacier Perito Moreno, l'un des rares glaciers au monde en progression. El Chaltén, village de randonnée, donne accès aux sommets du Fitz Roy.",
       wikipedia: "File:Glacial_iceberg_in_Argentina.jpg",
-      tags: ["glaciers", "randonnée", "nature", "UNESCO"],
+      tags: ["Glaciers", "Randonnée", "Nature", "UNESCO"],
       mustSee: [
         { name: "Glacier Perito Moreno", wikipedia: "Perito_Moreno_Glacier" },
         { name: "Mont Fitz Roy", wikipedia: "File:Fitz_Roy_2.jpg" },

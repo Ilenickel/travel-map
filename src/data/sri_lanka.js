@@ -103,7 +103,7 @@ export const SRI_LANKA = {
       description:
         "Le rocher-forteresse de Sigiriya (5e siècle), inscrit au patrimoine UNESCO, est accessible par un escalier spectaculaire au milieu de fresques et jardins en eau. Nearby, Dambulla (cave temple), Polonnaruwa et Anuradhapura forment le triangle culturel du Sri Lanka.",
       wikipedia: "Sigiriya",
-      tags: ["UNESCO", "archéologie", "histoire", "fresques"],
+      tags: ["UNESCO", "archéologie", "Histoire", "fresques", "Architecture"],
       mustSee: [
         { name: "Sigiriya Rock Fortress", wikipedia: "Sigiriya" },
         { name: "Dambulla Cave Temple", wikipedia: "Dambulla_cave_temple" },
@@ -118,7 +118,7 @@ export const SRI_LANKA = {
       description:
         "Kandy, dernière capitale royale du Sri Lanka, abrite le Temple de la Dent Sacrée du Bouddha (Sri Dalada Maligawa), inscrit au patrimoine UNESCO. Le lac artificiel de Kandy, les danses kandyennes et les jardins botaniques de Peradeniya complètent cette ville sainte.",
       wikipedia: "Kandy",
-      tags: ["bouddhisme", "UNESCO", "culture", "danses"],
+      tags: ["bouddhisme", "UNESCO", "Culture", "danses", "Architecture", "Gastronomie", "Ville"],
       mustSee: [
         { name: "Temple de la Dent (Sri Dalada)", wikipedia: "Temple_of_the_Tooth" },
         { name: "Jardin botanique de Peradeniya", wikipedia: "Royal_Botanic_Gardens,_Peradeniya" },
@@ -133,7 +133,7 @@ export const SRI_LANKA = {
       description:
         "Yala est l'un des meilleurs endroits au monde pour observer les léopards sauvages, avec la plus haute densité de léopards au monde. Éléphants, crocodiles, ours lippu et oiseaux migrateurs peuplent ce parc de 979 km².",
       wikipedia: "Yala_National_Park",
-      tags: ["safari", "léopards", "éléphants", "faune"],
+      tags: ["safari", "léopards", "éléphants", "Faune", "Safari", "Nature"],
       mustSee: [
         { name: "Léopard du Sri Lanka", wikipedia: "File:Sri Lankan leopard (Panthera pardus kotiya) female 5.jpg" },
         { name: "Bloc 1 (zone principale)", wikipedia: "Yala_National_Park" },
@@ -148,7 +148,7 @@ export const SRI_LANKA = {
       description:
         "Galle Fort, forteresse hollandaise du XVIIe siècle inscrite au patrimoine UNESCO, est l'un des forts coloniaux les mieux préservés d'Asie. La côte sud offre de belles plages (Mirissa pour les baleines), des villages de pêcheurs et une atmosphère détendue.",
       wikipedia: "Galle_Fort",
-      tags: ["colonial", "UNESCO", "plages", "baleines"],
+      tags: ["colonial", "UNESCO", "Plage", "baleines", "Architecture", "Ville"],
       mustSee: [
         { name: "Galle Fort (ramparts)", wikipedia: "Galle_Fort" },
         { name: "Mirissa (whale watching)", wikipedia: "Mirissa" },

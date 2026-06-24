@@ -88,7 +88,7 @@ export const IRAQ = {
       description:
         "Erbil est la capitale de la région autonome du Kurdistan irakien et l'une des villes continuellement habitées les plus anciennes du monde. Sa citadelle, perchée sur un tell artificiel de 30 mètres de haut et inscrite au patrimoine mondial de l'UNESCO, surplombe une ville moderne et dynamique aux bazars animés et aux restaurants animés. Le Kurdistan irakien est la destination la plus accessible et la plus sûre d'Irak pour les voyageurs étrangers.",
       wikipedia: "Erbil",
-      tags: ["UNESCO", "Histoire", "Kurdistan", "Culture"],
+      tags: ["UNESCO", "Histoire", "Kurdistan", "Culture", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Citadelle d'Erbil — forteresse millénaire classée à l'UNESCO", wikipedia: "File:Citadel (old city) of Hewlêr (Erbil).jpg" },
         { name: "Grand Bazar d'Erbil — marché couvert traditionnel", wikipedia: "File:Kurdistan - Erbil - Qaysari Market.jpg" },
@@ -103,7 +103,7 @@ export const IRAQ = {
       description:
         "Bagdad, fondée en 762 par le calife abbasside al-Mansur, fut pendant des siècles la capitale intellectuelle et culturelle du monde islamique, hébergeant la célèbre Maison de la Sagesse. La ville moderne, marquée par des décennies de conflits, conserve des trésors remarquables comme le Musée national irakien et la rue al-Mutanabbi, symbole de la vie intellectuelle irakienne. La situation sécuritaire s'est améliorée depuis 2017 mais reste fragile.",
       wikipedia: "Baghdad",
-      tags: ["Histoire", "Musée", "Culture", "Capitale"],
+      tags: ["Histoire", "Musée", "Culture", "Ville", "Gastronomie"],
       mustSee: [
         { name: "Musée national d'Irak — l'une des plus grandes collections d'antiquités mésopotamiennes", wikipedia: "File:National Museum Iraq (cropped).jpg" },
         { name: "Rue al-Mutanabbi — artère des libraires et intellectuels", wikipedia: "File:Al-Mutanabbi Street Gate.png" },
@@ -118,7 +118,7 @@ export const IRAQ = {
       description:
         "Babylone, l'une des cités les plus légendaires de l'Antiquité, fut la capitale du premier empire babylonien et le foyer du célèbre Code d'Hammourabi. Bien que le site ait été partiellement reconstruit et endommagé, ses ruines imposantes — dont les restes de la porte d'Ishtar et des vestiges du palais de Nabuchodonosor — restent un pèlerinage incontournable pour les amateurs d'histoire. Le site est désormais inscrit au patrimoine mondial de l'UNESCO.",
       wikipedia: "Babylon",
-      tags: ["UNESCO", "Antiquité", "Archéologie", "Mésopotamie"],
+      tags: ["UNESCO", "Antiquité", "Archéologie", "Mésopotamie", "Architecture", "Désert"],
       mustSee: [
         { name: "Porte d'Ishtar — reconstruction de la célèbre porte ornée de céramiques bleues", wikipedia: "Ishtar_Gate" },
         { name: "Palais de Nabuchodonosor — ruines du palais royal babylonien", wikipedia: "Nebuchadnezzar_II" },
@@ -133,7 +133,7 @@ export const IRAQ = {
       description:
         "Ur est l'une des plus anciennes et des plus importantes cités sumériennes, mentionnée dans la Bible comme la patrie d'Abraham. Son gigantesque ziggurat, érigé vers 2100 av. J.-C. et remarquablement bien conservé, est l'une des structures les plus impressionnantes du Proche-Orient antique. Le site royal d'Ur, avec ses tombes royales et ses trésors exposés au British Museum, a révolutionné la compréhension de la civilisation sumérienne.",
       wikipedia: "File:Ur-Nassiriyah.jpg",
-      tags: ["Antiquité", "Archéologie", "Mésopotamie", "Religion"],
+      tags: ["Antiquité", "Archéologie", "Mésopotamie", "Religion", "Désert"],
       mustSee: [
         { name: "Ziggurat d'Ur — temple à degrés sumérien du IIIe millénaire av. J.-C.", wikipedia: "File:Ancient ziggurat at Ali Air Base Iraq 2005.jpg" },
         { name: "Tombes royales d'Ur — nécropole royale sumérienne", wikipedia: "File:Ziggurat of Ur.jpg" },

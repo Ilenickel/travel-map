@@ -139,7 +139,7 @@ export const CANADA = {
       description:
         "La vieille ville de Québec, seule ville fortifiée au nord du Mexique (UNESCO), et Montréal la métropole francophone — deux villes qui conjuguent histoire européenne, gastronomie et art de vivre.",
       wikipedia: "Quebec_City",
-      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Culture", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         { name: "Vieux-Québec — remparts (UNESCO)", wikipedia: "Old_Quebec" },
         { name: "Château Frontenac", wikipedia: "File:Château Frontenac after a freezing rain day in Quebec city.jpg" },
@@ -154,7 +154,7 @@ export const CANADA = {
       description:
         "Toronto, ville la plus cosmopolite au monde (180 nationalités), avec la CN Tower, le marché de Kensington et les chutes du Niagara à 1h30 — l'une des merveilles naturelles du continent.",
       wikipedia: "Toronto",
-      tags: ["Ville", "Culture", "Nature", "Gastronomie"],
+      tags: ["Ville", "Culture", "Nature", "Gastronomie", "Architecture"],
       mustSee: [
         { name: "Chutes du Niagara", wikipedia: "Niagara_Falls" },
         { name: "CN Tower — 553 m", wikipedia: "File:Toronto - ON - CN Tower bei Nacht2.jpg" },
@@ -169,7 +169,7 @@ export const CANADA = {
       description:
         "L'ultime frontière : aurores boréales sur Whitehorse, parcs nationaux où vivent ours polaires et caribous, la piste Dempster vers le cercle arctique. Pour les aventuriers.",
       wikipedia: "File:Cañón Miles, Yukón, Canadá, 2017-08-26, DD 130-132 PAN.jpg",
-      tags: ["Aventure", "Aurores boréales", "Nature", "Faune"],
+      tags: ["Aventure", "Aurores boréales", "Nature", "Faune", "Randonnée"],
       mustSee: [
         { name: "Aurores boréales à Whitehorse", wikipedia: "File:Frederic Edwin Church - Aurora Borealis - Google Art Project.jpg" },
         { name: "Parc national Kluane (UNESCO)", wikipedia: "Kluane_National_Park_and_Reserve" },

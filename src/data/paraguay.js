@@ -84,7 +84,7 @@ export const PARAGUAY = {
       description:
         "Les ruines des missions jésuites du XVIIe siècle sont parmi les plus impressionnantes d'Amérique du Sud. La Santísima Trinidad de Paraná et Jesús de Tavarangue, inscrites au patrimoine UNESCO, témoignent d'une utopie sociale unique.",
       wikipedia: "File:San_Ignacio_Miní_Jesuit-Guarani_mission_1.jpg",
-      tags: ["histoire", "UNESCO", "jésuites", "ruines"],
+      tags: ["Histoire", "UNESCO", "Jésuites", "Ruines", "Architecture"],
       mustSee: [
         { name: "Trinidad (mission)", wikipedia: "File:ParaguayTrinidadReduction.jpg" },
         { name: "Jesús de Tavarangüé", wikipedia: "File:Jesús de Tavarangue - Church ruins 02.jpg" },
@@ -99,7 +99,7 @@ export const PARAGUAY = {
       description:
         "La capitale est l'une des plus anciennes d'Amérique du Sud (fondée en 1537). Son Casco Histórico mêle architecture coloniale et édifices du XIXe siècle. Le Mercado 4 et les Bañados (zones humides urbaines) offrent un dépaysement total.",
       wikipedia: "File:Downtown Asuncion 091253.jpg",
-      tags: ["capitale", "histoire", "culture", "marchés"],
+      tags: ["Ville", "Histoire", "Culture", "Marchés", "Gastronomie"],
       mustSee: [
         { name: "Palacio de López", wikipedia: "File:00 3819 Asunción - Paraguay (Südamerika).jpg" },
         { name: "Catedral Metropolitana", wikipedia: "File:Catedral_Nuestra_Señora_de_la_Asunción_-_Baracoa_-_01.jpg" },
@@ -114,7 +114,7 @@ export const PARAGUAY = {
       description:
         "La partie paraguayenne du Pantanal (la plus grande zone humide du monde) est quasi-vierge et peu visitée. Caïmans, jaguars, capybaras et oiseaux extraordinaires dans un cadre immaculé.",
       wikipedia: "Pantanal",
-      tags: ["nature", "faune", "jaguar", "zones humides"],
+      tags: ["Nature", "Faune", "Jaguar", "Zones Humides"],
       mustSee: [
         { name: "Bahía Negra (Alto Paraguay)", wikipedia: "Pantanal" },
         { name: "Parque Nacional Médanos del Chaco", wikipedia: "File:Chaco_Boreal_Paraguay.jpg" },
@@ -128,7 +128,7 @@ export const PARAGUAY = {
       description:
         "Le Gran Chaco est une forêt sèche immense et peu connue, deuxième plus grande forêt d'Amérique du Sud après l'Amazonie. Peuples indigènes, colonies mennonites et faune unique (tatous géants, tapirs) dans des paysages désertiques envoûtants.",
       wikipedia: "Gran_Chaco",
-      tags: ["nature", "faune", "cultures", "aventure"],
+      tags: ["Nature", "Faune", "Cultures", "Aventure", "Désert", "Safari"],
       mustSee: [
         { name: "Parque Nacional Defensores del Chaco", wikipedia: "File:Chaco Boreal Paraguay.jpg" },
         { name: "Filadelfia (colonie mennonite)", wikipedia: "File:Filadelfia Paraguay.jpg" },

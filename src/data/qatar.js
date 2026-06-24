@@ -62,7 +62,7 @@ export const QATAR = {
       description:
         "Le Souq Waqif est le cœur authentique de Doha, un marché traditionnel soigneusement restauré qui recréé l'atmosphère d'un souq qatarien du début du XXe siècle. Ses ruelles pavées serpentent entre des boutiques vendant épices, faucons, tissus et parfums, tandis que de nombreux restaurants proposent la cuisine traditionnelle qatarienne et levantine dans une ambiance animée. Le souq abrite également des fauconniers professionnels, les faucons étant le symbole national du Qatar.",
       wikipedia: "Souq_Waqif",
-      tags: ["Culture", "Shopping", "Gastronomie", "Traditions"],
+      tags: ["Culture", "Shopping", "Gastronomie", "Traditions", "Ville"],
       mustSee: [
         { name: "Marché aux faucons — tradition de fauconnerie patrimoine immatériel de l'UNESCO", wikipedia: "File:1 raróg.jpg" },
         { name: "Marché aux épices — parfums, encens et épices du Golfe", wikipedia: "File:Souq Waqif, Doha, Catar, 2013-08-05, DD 82.JPG" },
@@ -90,7 +90,7 @@ export const QATAR = {
       description:
         "Al Zubarah est l'unique site du Qatar inscrit au patrimoine mondial de l'UNESCO. Cette cité marchande et perlière fortifiée, fondée au XVIIIe siècle, fut l'un des plus importants ports de commerce du Golfe avant d'être abandonnée au XIXe siècle. Les fouilles archéologiques révèlent un urbanisme sophistiqué — rues tracées au cordeau, maisons à cour, mosquées et souqs — témoignant de la prospérité des marchands de perles qatariens.",
       wikipedia: "File:Ruins in Zubarah on a cloudy day.jpg",
-      tags: ["UNESCO", "Archéologie", "Histoire", "Pêche aux perles"],
+      tags: ["UNESCO", "Archéologie", "Histoire", "Pêche aux perles", "Architecture"],
       mustSee: [
         { name: "Fort d'Al Zubarah — forteresse du XIXe siècle abritant le centre d'interprétation", wikipedia: "File:Zubara Fort.jpg" },
         { name: "Vestiges de la cité — ruines de la ville perlière du XVIIIe siècle", wikipedia: "File:Archaelogical site of Al Zubarah 09.jpg" },

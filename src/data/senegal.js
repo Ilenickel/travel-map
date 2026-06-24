@@ -63,7 +63,7 @@ export const SENEGAL = {
       description:
         "L'île de Gorée, inscrite à l'UNESCO, est le symbole de la traite négrière atlantique. La Maison des Esclaves avec sa « Porte du non-retour » est un lieu de mémoire essentiel, au milieu d'une île paisible aux maisons colorées.",
       wikipedia: "File:Côtes de l'île de Gorée au Sénégal 11.jpg",
-      tags: ["Histoire", "UNESCO", "Mémoire", "Culture"],
+      tags: ["Histoire", "UNESCO", "Mémoire", "Culture", "Architecture"],
       mustSee: [
         { name: "Maison des Esclaves — Porte du non-retour", wikipedia: "House_of_Slaves" },
         { name: "Fort d'Estrées & musée de Gorée", wikipedia: "File:GoréeMuséeHistorique2.JPG" },
@@ -92,7 +92,7 @@ export const SENEGAL = {
       description:
         "Saly est la station balnéaire numéro 1 du Sénégal. Saint-Louis, ancienne capitale coloniale française inscrite à l'UNESCO, est une île fluviale aux maisons colorées et balcons en fer forgé.",
       wikipedia: "Saint-Louis,_Senegal",
-      tags: ["Plage", "Histoire", "UNESCO", "Colonial"],
+      tags: ["Plage", "Histoire", "UNESCO", "Colonial", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Saint-Louis (UNESCO) — île coloniale", wikipedia: "Saint-Louis,_Senegal" },
         { name: "Pont Faidherbe", wikipedia: "Faidherbe_Bridge" },
@@ -107,7 +107,7 @@ export const SENEGAL = {
       description:
         "La Casamance est la région la plus verte et belle du Sénégal : forêts de fromagers, villages animistes en pays diola, rizières aquatiques et plages encore sauvages de Cap Skirring.",
       wikipedia: "File:Casamance landscape.jpg",
-      tags: ["Nature", "Forêts", "Plage", "Cultures"],
+      tags: ["Nature", "Forêts", "Plage", "Cultures", "Randonnée", "Safari"],
       mustSee: [
         { name: "Cap Skirring — plage sauvage", wikipedia: "Cap_Skirring" },
         { name: "Ziguinchor — vieille ville coloniale", wikipedia: "Ziguinchor" },

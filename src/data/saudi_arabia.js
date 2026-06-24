@@ -82,7 +82,7 @@ export const SAUDI_ARABIA = {
       description:
         "Site archéologique nabatéen de premier ordre, Hégra (Madain Saleh) est le Pétra saoudien : tombeaux monumentaux taillés dans la roche rouge, inscrits à l'UNESCO depuis 2008.",
       wikipedia: "File:Al Ula old town, Saudi Arabia 2011.jpg",
-      tags: ["Histoire", "Archéologie", "UNESCO", "Désert"],
+      tags: ["Histoire", "Archéologie", "UNESCO", "Désert", "Architecture", "Randonnée", "Nature"],
       mustSee: [
         { name: "Hégra — tombeaux nabatéens (UNESCO)", wikipedia: "File:Hegra, Al-Ula, Saudi Arabia.png" },
         { name: "Elephant Rock", wikipedia: "File:Elephant_rock_Al_Ula,_Saudi_Arabia_2011.jpg" },
@@ -96,7 +96,7 @@ export const SAUDI_ARABIA = {
       description:
         "Al-Balad, le vieux quartier de Djeddah, est inscrit à l'UNESCO : maisons coralliennes à moucharabiehs, ruelles parfumées d'encens et port historique sur la mer Rouge.",
       wikipedia: "Jeddah",
-      tags: ["Histoire", "UNESCO", "Mer Rouge"],
+      tags: ["Histoire", "UNESCO", "Mer Rouge", "Plage", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Al-Balad — vieille ville (UNESCO)", wikipedia: "Al-Balad,_Jeddah" },
         { name: "Fontaine du roi Fahd (305m)", wikipedia: "File:King Fahd's Fountain.jpg" },
@@ -110,7 +110,7 @@ export const SAUDI_ARABIA = {
       description:
         "Capitale ultramoderne en pleine transformation : Kingdom Tower, quartier Al-Ula à ciel ouvert (Diriyah), musées de classe mondiale et gastronomie internationale de plus en plus accessible.",
       wikipedia: "Riyadh",
-      tags: ["Ville", "Architecture", "Culture"],
+      tags: ["Ville", "Architecture", "Culture", "Gastronomie"],
       mustSee: [
         { name: "Diriyah — capitale ottomane (UNESCO)", wikipedia: "File:At-Turaif District in ad-Dir'iyah (12).jpg" },
         { name: "Kingdom Centre Tower", wikipedia: "Kingdom_Centre" },

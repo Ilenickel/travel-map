@@ -82,7 +82,7 @@ export const ZAMBIA = {
       description:
         "Les chutes Victoria sont les plus grandes chutes d'eau au monde (1 708m de large, 108m de hauteur) — classées UNESCO et merveille naturelle du monde. En saison sèche (sept-oct), on peut nager dans la 'Devil's Pool' au bord du précipice. En saison des pluies, le panache de brume se voit à 50km. L'accès côté zambien permet de longer la falaise face aux chutes.",
       wikipedia: "Victoria_Falls",
-      tags: ["Chutes", "UNESCO", "Incontournable", "Aventure"],
+      tags: ["Chutes", "UNESCO", "Incontournable", "Aventure", "Nature", "Randonnée"],
       mustSee: [
         { name: "Chutes Victoria", wikipedia: "File:Victoria Falls, Zimbabwe 01.jpg" },
         { name: "Promenade du bord du précipice côté zambien", wikipedia: "File:Mosi-oa-Tunya National Park, Zambia (48598581361).jpg" },
@@ -97,7 +97,7 @@ export const ZAMBIA = {
       description:
         "Le South Luangwa est le berceau du walking safari, inventé ici par Norman Carr en 1950. C'est le seul parc africain où l'on peut approcher les animaux à pied avec un guide armé — lions, léopards, éléphants à quelques mètres. La vallée de la rivière Luangwa concentre l'une des plus hautes densités de faune d'Afrique. Considéré par les puristes comme le meilleur parc d'Afrique.",
       wikipedia: "South_Luangwa_National_Park",
-      tags: ["Walking safari", "Léopards", "Éléphants", "Exclusif"],
+      tags: ["Walking safari", "Léopards", "Éléphants", "Exclusif", "Safari"],
       mustSee: [
         { name: "Safari nocturne — léopards et civettes en chasse", wikipedia: "File:South Luangwa National Park animals 2022 16.png" },
         { name: "Rive de la Luangwa — hippopotames et crocodiles", wikipedia: "File:South Luangwa National Park - 51865178097.jpg" },
@@ -125,7 +125,7 @@ export const ZAMBIA = {
       description:
         "Lusaka est une capitale animée avec ses marchés (Soweto Market, le plus grand marché d'Afrique centrale) et ses galeries d'art contemporain zambien. Le Lower Zambezi National Park, en face du Zimbabwe, permet des safaris en canoë sur le Zambèze — paddling entre les éléphants qui traversent le fleuve, unique en Afrique.",
       wikipedia: "File:Lusaka, capital city of Zambia.jpg",
-      tags: ["Capitale", "Canoë", "Zambèze", "Éléphants"],
+      tags: ["Ville", "Canoë", "Zambèze", "Éléphants", "Gastronomie", "Architecture", "Histoire"],
       mustSee: [
         { name: "Safari en canoë sur le Zambèze — éléphants traversant le fleuve", wikipedia: "Lower_Zambezi_National_Park" },
         { name: "Soweto Market Lusaka — artisanat et cuisine zambienne", wikipedia: "File:Fast Food in Lusaka 10.jpg" },

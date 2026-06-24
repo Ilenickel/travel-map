@@ -82,7 +82,7 @@ export const ESTONIA = {
       description:
         "Tallinn possède l'une des vieilles villes médiévales les mieux préservées d'Europe du Nord (UNESCO) : la place de l'Hôtel de Ville (XIVe s.), les tours de guet de la muraille, la colline de Toompea avec son château et sa cathédrale orthodoxe aux bulbes bleus, et les guildes hanséatiques. La ville est à la fois médiévale et hyper-numérique — une contradiction fascinante.",
       wikipedia: "Tallinn",
-      tags: ["Médiéval", "UNESCO", "Hanséatique", "Numérique"],
+      tags: ["Médiéval", "UNESCO", "Hanséatique", "Numérique", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Place de l'Hôtel de Ville de Tallinn (XIVe s.) et tour Raekoja", wikipedia: "Tallinn_Town_Hall" },
         { name: "Toompea — colline avec château, parlement, cathédrale orthodoxe", wikipedia: "Toompea" },
@@ -97,7 +97,7 @@ export const ESTONIA = {
       description:
         "Saaremaa est la plus grande île d'Estonie : ses moulins à vent de Angla, le château épiscopal de Kuressaare (le mieux préservé des États baltes), le cratère de météorite de Kaali (l'un des plus visibles en Europe), et les falaises de Panga au bord de la Baltique. Une île paisible, venteuse, avec un caractère nordique marqué.",
       wikipedia: "Saaremaa",
-      tags: ["Île", "Moulins", "Château", "Météorite"],
+      tags: ["Île", "Moulins", "Château", "Météorite", "Nature", "Plage"],
       mustSee: [
         { name: "Moulins à vent d'Angla — les plus beaux d'Estonie", wikipedia: "File:Angla tuulikud Saaremaal.jpg" },
         { name: "Château de Kuressaare — forteresse épiscopale gothique intacte", wikipedia: "Kuressaare_Castle" },
@@ -126,7 +126,7 @@ export const ESTONIA = {
       description:
         "Tartu est la deuxième ville d'Estonie et la capitale intellectuelle du pays : l'Université de Tartu (fondée en 1632 par Gustave Adolphe de Suède) est l'une des plus anciennes du monde. Le musée estonien national (architecture contemporaine spectaculaire), les cafés de la vieille ville et l'Élan Festival en juillet font de Tartu une ville vivante et créative.",
       wikipedia: "Tartu",
-      tags: ["Université", "Culture", "Musée", "Animée"],
+      tags: ["Université", "Culture", "Musée", "Animée", "Ville"],
       mustSee: [
         { name: "Musée national estonien (KUMU de Tartu) — architecture remarquable", wikipedia: "File:Wall from the Estonian National Museum.jpg" },
         { name: "Colline de Toome — ruines de cathédrale médiévale + observatoire", wikipedia: "File:Ruins_of_Tartu_Dome_Cathedral_-_Toomemagi_(Cathedral_Hill)_-_Tartu_-_Estonia_(35961979372).jpg" },

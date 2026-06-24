@@ -69,7 +69,7 @@ export const NORTH_KOREA = {
       description:
         "Pyongyang est une capitale conçue comme un décor de propagande, avec ses boulevards immenses, ses monuments colossaux et ses immeubles aux façades pastel dans une ville étonnamment peu encombrée. La place Kim Il-sung, les fontaines du parc Mansu et l'Arc de Triomphe (plus grand que celui de Paris) témoignent des ambitions monumentales du régime. Les Coréens du Nord que les touristes sont autorisés à rencontrer offrent un aperçu fascinant et partiel d'une société totalement différente.",
       wikipedia: "Pyongyang",
-      tags: ["Capitale", "Architecture", "Propagande", "Histoire"],
+      tags: ["Ville", "Architecture", "Propagande", "Histoire"],
       mustSee: [
         { name: "Place Kim Il-sung — cœur cérémonial de la capitale", wikipedia: "File:Practising a torch march on Kim il-sung square 11.JPG" },
         { name: "Grand Monument de Mansu — statues colossales des leaders", wikipedia: "Mansudae_Grand_Monument" },
