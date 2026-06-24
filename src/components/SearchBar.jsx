@@ -26,7 +26,7 @@ const BUDGET_PRESETS = [
   { label: "400€", value: 400 },
 ];
 
-export default function SearchBar({ onFilterChange, open: openProp, onOpenChange }) {
+export default function SearchBar({ onFilterChange, open: openProp, onOpenChange, hideVisited, onHideVisitedChange, hasVisited }) {
   const [openInternal, setOpenInternal] = useState(false);
   const open = openProp !== undefined ? openProp : openInternal;
   const setOpen = (v) => { setOpenInternal(v); onOpenChange?.(v); };
@@ -98,6 +98,25 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
 
       {open && (
         <div className="search-panel">
+
+          {/* ── Pays visités ── */}
+          {hasVisited && (
+            <>
+              <div className="filter-group filter-group-visited">
+                <div className="filter-group-header">
+                  <span className="filter-group-title">✈️ Masquer les pays déjà visités</span>
+                  <button
+                    className={`budget-toggle${hideVisited ? " on" : ""}`}
+                    onClick={() => onHideVisitedChange?.(!hideVisited)}
+                    aria-pressed={hideVisited}
+                  >
+                    <span className="budget-toggle-thumb" />
+                  </button>
+                </div>
+              </div>
+              <div className="filter-divider" />
+            </>
+          )}
 
           {/* ── Budget ── */}
           <div className="filter-group">
@@ -199,10 +218,10 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
               <div className="filter-divider" />
               <div className="filter-footer">
                 <div className="filter-legend">
-                  <span><span className="legend-chip good" />Accessible</span>
+                  <span><span className="legend-chip good" />Idéal</span>
                   <span><span className="legend-chip ok" />Correct</span>
-                  <span><span className="legend-chip tight" />Serré</span>
-                  <span><span className="legend-chip dim" />Hors budget</span>
+                  <span><span className="legend-chip tight" />Limite</span>
+                  <span><span className="legend-chip dim" />Hors critères</span>
                 </div>
                 <button className="reset-btn" onClick={handleReset}>
                   Réinitialiser

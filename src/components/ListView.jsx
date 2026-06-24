@@ -8,7 +8,7 @@ function parseDailyAvg(data) {
   return nums.reduce((a, b) => a + b, 0) / nums.length;
 }
 
-export default function ListView({ onCountryClick, highlightMap, filterActive, favorites, onCountryHover }) {
+export default function ListView({ onCountryClick, highlightMap, filterActive, favorites, visited = [], hideVisited = false, onCountryHover }) {
   const [sortBy, setSortBy] = useState("name");
   const [sortDir, setSortDir] = useState(1);
 
@@ -23,6 +23,7 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
       data,
       matched: !filterActive || !!highlightMap?.[code],
       color: highlightMap?.[code] ?? null,
+      isVisited: visited.includes(code),
     }));
 
     list.sort((a, b) => {
@@ -38,7 +39,7 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
     }
 
     return list;
-  }, [sortBy, sortDir, highlightMap, filterActive]);
+  }, [sortBy, sortDir, highlightMap, filterActive, visited]);
 
   const SortBtn = ({ field, label }) => (
     <button
@@ -65,36 +66,43 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
       </div>
 
       <div className="list-grid">
-        {entries.map(({ code, data, matched, color }) => (
-          <button
-            key={code}
-            className={`list-card${!matched ? " list-card-dim" : ""}${favorites.includes(code) ? " list-card-fav" : ""}`}
-            onClick={() => onCountryClick(code)}
-            onMouseEnter={() => onCountryHover?.(code)}
-            onMouseLeave={() => onCountryHover?.(null)}
-            style={color ? { "--card-color": color } : {}}
-          >
-            <div className="list-card-top">
-              <span className="list-card-emoji">{data.emoji}</span>
-              <div className="list-card-meta">
-                <span className="list-card-name">{data.name}</span>
-                <span className="list-card-capital">{data.capital}</span>
-                <span className="list-card-budget">
-                  {data.costOfLiving?.budgetSummary?.[0]?.daily ?? "—"}
-                </span>
-              </div>
-              <div className="list-card-periods">
-                {data.bestPeriods?.map((p) => (
-                  <span key={p.months} className="list-card-period-chip" style={{ color: p.color }}>
-                    {p.icon} <span className="list-card-period-months">{p.months}</span>
+        {entries.map(({ code, data, matched, color, isVisited }) => {
+          const dimmed = !matched || (hideVisited && isVisited);
+          return (
+            <button
+              key={code}
+              className={`list-card${dimmed ? " list-card-dim" : ""}${favorites.includes(code) ? " list-card-fav" : ""}${isVisited && !hideVisited && !color ? " list-card-visited" : ""}`}
+              onClick={() => onCountryClick(code)}
+              onMouseEnter={() => onCountryHover?.(code)}
+              onMouseLeave={() => onCountryHover?.(null)}
+              style={color ? { "--card-color": color } : {}}
+            >
+              <div className="list-card-top">
+                <span className="list-card-emoji">{data.emoji}</span>
+                <div className="list-card-meta">
+                  <span className="list-card-name">{data.name}</span>
+                  <span className="list-card-capital">{data.capital}</span>
+                  <span className="list-card-budget">
+                    {data.costOfLiving?.budgetSummary?.[0]?.daily ?? "—"}
                   </span>
-                ))}
+                </div>
+                <div className="list-card-periods">
+                  {data.bestPeriods?.map((p) => (
+                    <span key={p.months} className="list-card-period-chip" style={{ color: p.color }}>
+                      {p.icon} <span className="list-card-period-months">{p.months}</span>
+                    </span>
+                  ))}
+                </div>
+                <div className="list-card-badges">
+                  {favorites.includes(code) && <span className="list-card-star">⭐</span>}
+                  {isVisited && <span className="list-card-visited-badge">✈️</span>}
+                </div>
               </div>
-              {favorites.includes(code) && <span className="list-card-star">⭐</span>}
-            </div>
-            {color && <div className="list-card-bar" style={{ background: color }} />}
-          </button>
-        ))}
+              {color && <div className="list-card-bar" style={{ background: color }} />}
+              {isVisited && !color && !hideVisited && <div className="list-card-bar list-card-bar-visited" />}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
-export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, onCompare }) {
+export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare }) {
   const data = COUNTRIES[countryCode];
   const [activeTab, setActiveTab] = useState("overview");
   const [visitedTabs, setVisitedTabs] = useState(() => new Set(["overview"]));
@@ -85,6 +85,14 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               aria-label="Comparer"
             >
               ⚖ Comparer
+            </button>
+            <button
+              className={`panel-visited-btn${isVisited ? " active" : ""}`}
+              onClick={(e) => { e.stopPropagation(); onToggleVisited(); }}
+              aria-label={isVisited ? "Retirer des visités" : "Marquer comme visité"}
+              title={isVisited ? "Retirer des visités" : "Marquer comme visité"}
+            >
+              ✈️
             </button>
             <button
               className={`panel-fav-btn${isFavorite ? " active" : ""}`}

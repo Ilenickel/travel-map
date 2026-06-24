@@ -20,22 +20,28 @@ function largestPolygonFeature(feature) {
   return best ? { ...feature, geometry: { type: "Polygon", coordinates: best } } : feature;
 }
 
-function getBaseFill(numericId, filterActive, highlightMap, isMobile) {
+const VISITED_FILL   = "#215878";
+const VISITED_STROKE = "#2896c0";
+
+function getBaseFill(numericId, filterActive, highlightMap, visitedSet, hideVisited, isMobile) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
   if (!hasData) return filterActive ? "#07101c" : "#09131f";
-  if (!filterActive) return "#1c3a55";
+  const isVisited = visitedSet?.has(code);
+  if (hideVisited && isVisited) return "#07101c";
+  if (!filterActive) return isVisited ? VISITED_FILL : "#1c3a55";
   const color = highlightMap?.[code];
   if (!color) return "#07101c";
-  return color + (isMobile ? "55" : "28"); // plus opaque sur mobile
+  return color + (isMobile ? "55" : "28");
 }
 
-function getBaseStroke(numericId, filterActive, highlightMap, isMobile) {
+function getBaseStroke(numericId, filterActive, highlightMap, visitedSet, hideVisited, isMobile) {
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
   if (!hasData) return "#0b1828";
-  if (!filterActive) return "#0d1e30";
-  // Bordures colorées sur desktop ET mobile quand filtre actif
+  const isVisited = visitedSet?.has(code);
+  if (hideVisited && isVisited) return "#0b1828";
+  if (!filterActive) return isVisited ? VISITED_STROKE : "#0d1e30";
   return highlightMap?.[code] ?? "#0d1e30";
 }
 
@@ -51,15 +57,17 @@ function isInteractive(numericId) {
   return !!(code && COUNTRIES[code]);
 }
 
-export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive, hoveredCode }) {
+export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive, hoveredCode, visitedSet, hideVisited }) {
   const svgRef     = useRef(null);
   const tooltipRef = useRef(null);
-  const zoomRef    = useRef(null);  // d3 zoom behaviour
-  const mapGRef    = useRef(null);  // group that gets zoomed/panned
+  const zoomRef    = useRef(null);
+  const mapGRef    = useRef(null);
 
   const highlightMapRef    = useRef(highlightMap);
   const filterActiveRef    = useRef(filterActive);
   const searchActiveRef    = useRef(searchActive);
+  const visitedSetRef      = useRef(visitedSet);
+  const hideVisitedRef     = useRef(hideVisited);
   const isMobileRef        = useRef(window.innerWidth <= 768);
   const onCountryClickRef  = useRef(onCountryClick);
   const pathsSelRef        = useRef(null);
@@ -72,6 +80,8 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   useEffect(() => { highlightMapRef.current = highlightMap; }, [highlightMap]);
   useEffect(() => { filterActiveRef.current = filterActive; }, [filterActive]);
   useEffect(() => { searchActiveRef.current = searchActive; }, [searchActive]);
+  useEffect(() => { visitedSetRef.current = visitedSet; }, [visitedSet]);
+  useEffect(() => { hideVisitedRef.current = hideVisited; }, [hideVisited]);
   useEffect(() => { onCountryClickRef.current = onCountryClick; }, [onCountryClick]);
 
   // Hover depuis la liste externe (ListView)
@@ -125,11 +135,11 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   useEffect(() => {
     if (!mapReadyRef.current || !pathsSelRef.current) return;
     pathsSelRef.current
-      .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap, isMobileRef.current))
-      .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap, isMobileRef.current))
+      .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap, visitedSet, hideVisited, isMobileRef.current))
+      .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap, visitedSet, hideVisited, isMobileRef.current))
       .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActive, highlightMap))
       .style("cursor",      (d) => isInteractive(+d.id) ? "pointer" : "default");
-  }, [highlightMap, filterActive]);
+  }, [highlightMap, filterActive, visitedSet, hideVisited]);
 
   useEffect(() => {
     const init = () => {
@@ -190,8 +200,8 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           .join("path")
           .attr("class", "country")
           .attr("d", path)
-          .attr("fill",         (d) => getBaseFill(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
-          .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
+          .attr("fill",         (d) => getBaseFill(+d.id, filterActiveRef.current, highlightMapRef.current, visitedSetRef.current, hideVisitedRef.current, isMobileRef.current))
+          .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current, visitedSetRef.current, hideVisitedRef.current, isMobileRef.current))
           .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActiveRef.current, highlightMapRef.current))
           .style("cursor",      (d) => isInteractive(+d.id) ? "pointer" : "default")
           .on("mouseenter", function (event, d) {

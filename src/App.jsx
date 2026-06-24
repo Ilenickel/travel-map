@@ -9,6 +9,7 @@ import ComparePanel from "./components/ComparePanel";
 import { COUNTRIES } from "./data/index";
 import { computeHighlights } from "./utils/filter";
 import { useFavorites } from "./hooks/useFavorites";
+import { useVisited } from "./hooks/useVisited";
 import "./App.css";
 
 function normalize(str) {
@@ -37,6 +38,8 @@ export default function App() {
   };
   const [compareBase, setCompareBase] = useState(null);
   const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites();
+  const { visited, toggle: toggleVisited, remove: removeVisited } = useVisited();
+  const [hideVisited, setHideVisited] = useState(false);
 
   // Sync URL ↔ pays sélectionné + comparaison
   useEffect(() => {
@@ -88,6 +91,7 @@ export default function App() {
 
   const effectiveHighlightMap = searchActive ? searchHighlightMap : highlightMap;
   const effectiveFilterActive = searchActive || filterActive;
+  const visitedSet = useMemo(() => new Set(visited), [visited]);
 
   const handleSearchSelect = useCallback((code) => {
     setSelectedCountry(code);
@@ -143,19 +147,21 @@ export default function App() {
             <button
               className={`topbar-fav-btn${favPanelOpen ? " active" : ""}`}
               onClick={() => setFavPanelOpen((o) => !o)}
-              aria-label="Favoris"
+              aria-label="Carnet de voyage"
             >
-              <span>{favPanelOpen ? "⭐" : "☆"}</span>
-              <span className="topbar-fav-label">Favoris</span>
-              {favorites.length > 0 && (
-                <span className="fav-count-badge">{favorites.length}</span>
+              <span>📖</span>
+              <span className="topbar-fav-label">Carnet</span>
+              {(favorites.length > 0 || visited.length > 0) && (
+                <span className="fav-count-badge">{favorites.length + visited.length}</span>
               )}
             </button>
             {favPanelOpen && (
               <FavoritesPanel
                 favorites={favorites}
+                visited={visited}
                 onSelect={setSelectedCountry}
                 onRemove={removeFav}
+                onRemoveVisited={removeVisited}
                 onClose={() => setFavPanelOpen(false)}
               />
             )}
@@ -207,15 +213,26 @@ export default function App() {
             filterActive={effectiveFilterActive}
             searchActive={searchActive}
             hoveredCode={hoveredCountry}
+            visitedSet={visitedSet}
+            hideVisited={hideVisited}
           />
         </div>
-        <SearchBar onFilterChange={setFilters} open={filterOpen} onOpenChange={handleFilterOpen} />
+        <SearchBar
+          onFilterChange={setFilters}
+          open={filterOpen}
+          onOpenChange={handleFilterOpen}
+          hideVisited={hideVisited}
+          onHideVisitedChange={setHideVisited}
+          hasVisited={visited.length > 0}
+        />
         {listOpen && (<div className="list-panel">
             <ListView
               onCountryClick={handleCountryClick}
               highlightMap={effectiveHighlightMap}
               filterActive={effectiveFilterActive}
               favorites={favorites}
+              visited={visited}
+              hideVisited={hideVisited}
               onCountryHover={setHoveredCountry}
             />
           </div>
@@ -228,6 +245,8 @@ export default function App() {
           onClose={handleClose}
           isFavorite={favorites.includes(selectedCountry)}
           onToggleFavorite={() => toggleFav(selectedCountry)}
+          isVisited={visited.includes(selectedCountry)}
+          onToggleVisited={() => toggleVisited(selectedCountry)}
           onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
         />
       )}

@@ -46,7 +46,7 @@ html, body, #root { height: 100%; }
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   flex-shrink: 0;
-  z-index: 10;
+  z-index: 50;
   position: relative;
 }
 
@@ -1122,6 +1122,7 @@ html, body, #root { height: 100%; }
 /* ─── Topbar favorites button ─── */
 .topbar-favorites-wrapper {
   position: relative;
+  z-index: 600;
 }
 
 .topbar-fav-btn {
@@ -1649,7 +1650,7 @@ html, body, #root { height: 100%; }
 .panel-compare-btn {
   position: absolute;
   top: 16px;
-  right: 110px;
+  right: 148px;
   background: rgba(8, 12, 20, 0.6);
   border: 1px solid rgba(255,255,255,0.12);
   color: var(--text-dim);
@@ -1784,11 +1785,11 @@ html, body, #root { height: 100%; }
 
 .list-card-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
 }
 
-.list-card-emoji { font-size: 26px; flex-shrink: 0; width: 36px; text-align: center; }
+.list-card-emoji { font-size: 26px; flex-shrink: 0; width: 36px; text-align: center; font-family: "Noto Color Emoji", sans-serif; }
 
 .list-card-meta { flex: 1; min-width: 0; }
 .list-card-name { display: block; font-size: 14px; font-weight: 700; color: var(--text); }
@@ -2462,4 +2463,138 @@ html, body, #root { height: 100%; }
   .topbar-brand { display: none; }
   .topbar-fav-label { display: none; }
   .topbar-view-label { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PAYS VISITÉS
+   ═══════════════════════════════════════════════════════ */
+
+/* ── FavoritesPanel : onglets ── */
+.favorites-panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.favpanel-tab {
+  flex: 1;
+  padding: 12px 10px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.favpanel-tab.active {
+  color: var(--text);
+  border-bottom-color: #7a4aaa;
+}
+
+.favpanel-tab:hover:not(.active) {
+  color: var(--text-dim);
+}
+
+.favpanel-tab-count {
+  font-size: 10px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1px 6px;
+  color: var(--text-muted);
+}
+
+.favpanel-tab.active .favpanel-tab-count {
+  background: rgba(106, 74, 170, 0.2);
+  border-color: rgba(106, 74, 170, 0.4);
+  color: #a07adc;
+}
+
+/* ── Items visités dans le panel ── */
+.favorites-item.visited-item .favorites-item-emoji::after {
+  content: '';
+}
+
+/* ── Bouton visité dans le header du CountryPanel ── */
+.panel-visited-btn {
+  position: absolute;
+  top: 16px;
+  right: 104px;
+  background: rgba(8, 12, 20, 0.6);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-dim);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.panel-visited-btn:hover {
+  background: rgba(106, 74, 170, 0.2);
+  border-color: #7a4aaa;
+  color: #a07adc;
+}
+
+.panel-visited-btn.active {
+  background: rgba(106, 74, 170, 0.2);
+  border-color: #7a4aaa;
+  color: #a07adc;
+}
+
+/* ── Carte visité dans ListView ── */
+.list-card-visited {
+  border-color: rgba(30, 128, 168, 0.9);
+  box-shadow: 0 0 0 1px rgba(30, 128, 168, 0.4), inset 0 0 20px rgba(30, 128, 168, 0.1);
+}
+
+.list-card-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.list-card-visited-badge {
+  font-size: 16px;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(30, 128, 168, 0.9));
+}
+
+.list-card-bar-visited {
+  background: #1e80a8 !important;
+  opacity: 0.85;
+}
+
+/* ── Hint texte dans SearchBar ── */
+.filter-group-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 6px 0 0;
+  line-height: 1.4;
+}
+
+.filter-group-visited { padding-bottom: 4px; }
+
+/* ── Mobile overrides ── */
+@media (max-width: 768px) {
+  .panel-visited-btn { width: 44px; height: 44px; font-size: 16px; top: 12px; right: 114px; z-index: 10; }
+  .panel-fav-btn { right: 64px; }
 }
