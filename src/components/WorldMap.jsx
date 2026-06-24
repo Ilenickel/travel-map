@@ -46,11 +46,9 @@ function getBaseStrokeWidth(numericId, filterActive, highlightMap) {
   return highlightMap?.[code] ? 1.2 : 0.4;
 }
 
-function isInteractive(numericId, filterActive, highlightMap, searchActive) {
+function isInteractive(numericId) {
   const code = NUMERIC_TO_CODE[numericId];
-  if (!code || !COUNTRIES[code]) return false;
-  if (searchActive && !highlightMap?.[code]) return false; // recherche : seuls les résultats sont cliquables
-  return true; // filtre : tous les pays avec données restent cliquables
+  return !!(code && COUNTRIES[code]);
 }
 
 export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive, hoveredCode }) {
@@ -130,7 +128,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
       .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap, isMobileRef.current))
       .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap, isMobileRef.current))
       .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActive, highlightMap))
-      .style("cursor",      (d) => isInteractive(+d.id, filterActive, highlightMap) ? "pointer" : "default");
+      .style("cursor",      (d) => isInteractive(+d.id) ? "pointer" : "default");
   }, [highlightMap, filterActive]);
 
   useEffect(() => {
@@ -195,9 +193,9 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           .attr("fill",         (d) => getBaseFill(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
           .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current, isMobileRef.current))
           .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActiveRef.current, highlightMapRef.current))
-          .style("cursor",      (d) => isInteractive(+d.id, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current) ? "pointer" : "default")
+          .style("cursor",      (d) => isInteractive(+d.id) ? "pointer" : "default")
           .on("mouseenter", function (event, d) {
-            if (!isInteractive(+d.id, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current)) return;
+            if (!isInteractive(+d.id)) return;
 
             const alpha3      = NUMERIC_TO_CODE[+d.id];
             const filterColor = highlightMapRef.current?.[alpha3];
@@ -271,7 +269,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
             clearHover();
           })
           .on("click", function (event, d) {
-            if (!isInteractive(+d.id, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current)) return;
+            if (!isInteractive(+d.id)) return;
             const alpha3 = NUMERIC_TO_CODE[+d.id];
             onCountryClickRef.current(alpha3);
           });
@@ -352,17 +350,12 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
       const datum = d3.select(pathEl).datum();
       if (!datum) return;
       const numId = +datum.id;
-      if (!isInteractive(numId, filterActiveRef.current, highlightMapRef.current, searchActiveRef.current)) return;
+      if (!isInteractive(numId)) return;
       const alpha3 = NUMERIC_TO_CODE[numId];
       if (alpha3) onCountryClickRef.current(alpha3);
     }, { passive: true });
 
-    const onResize = () => {
-      const r = svgRef.current?.getBoundingClientRect();
-      if (r?.width && r?.height) svg.attr("viewBox", `0 0 ${r.width} ${r.height}`);
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    return () => {};
     }; // end init
 
     requestAnimationFrame(init);

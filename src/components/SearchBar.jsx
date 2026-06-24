@@ -1,5 +1,19 @@
 import { useState } from "react";
 
+const TAGS = [
+  { label: "UNESCO",        icon: "🏛️" },
+  { label: "Histoire",      icon: "📜" },
+  { label: "Nature",        icon: "🌿" },
+  { label: "Randonnée",     icon: "🥾" },
+  { label: "Plage",         icon: "🏖️" },
+  { label: "Gastronomie",   icon: "🍽️" },
+  { label: "Architecture",  icon: "🏰" },
+  { label: "Désert",        icon: "🏜️" },
+  { label: "Safari",        icon: "🦁" },
+  { label: "Ski",           icon: "⛷️" },
+  { label: "Ville",         icon: "🏙️" },
+];
+
 const MONTHS = [
   "Jan", "Fév", "Mar", "Avr", "Mai", "Jun",
   "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc",
@@ -19,46 +33,56 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
   const [budgetEnabled, setBudgetEnabled] = useState(false);
   const [tripBudget, setTripBudget] = useState(120);
   const [month, setMonth] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
 
-  const activeCount = (budgetEnabled ? 1 : 0) + (month !== null ? 1 : 0);
+  const activeCount = (budgetEnabled ? 1 : 0) + (month !== null ? 1 : 0) + selectedTags.length;
 
-  const emit = (bEnabled, budget, m) => {
-    onFilterChange({ tripBudget: bEnabled ? budget : null, month: m });
+  const emit = (bEnabled, budget, m, tags) => {
+    onFilterChange({ tripBudget: bEnabled ? budget : null, month: m, tags });
   };
 
   const handleBudgetToggle = () => {
     const next = !budgetEnabled;
     setBudgetEnabled(next);
-    emit(next, tripBudget, month);
+    emit(next, tripBudget, month, selectedTags);
   };
 
   const handleBudgetChange = (e) => {
     const v = +e.target.value;
     setTripBudget(v);
-    if (budgetEnabled) emit(true, v, month);
+    if (budgetEnabled) emit(true, v, month, selectedTags);
   };
 
   const handlePreset = (value) => {
     setTripBudget(value);
     if (!budgetEnabled) {
       setBudgetEnabled(true);
-      emit(true, value, month);
+      emit(true, value, month, selectedTags);
     } else {
-      emit(true, value, month);
+      emit(true, value, month, selectedTags);
     }
   };
 
   const handleMonthClick = (i) => {
     const next = month === i ? null : i;
     setMonth(next);
-    emit(budgetEnabled, tripBudget, next);
+    emit(budgetEnabled, tripBudget, next, selectedTags);
+  };
+
+  const handleTagClick = (tag) => {
+    const next = selectedTags.includes(tag)
+      ? selectedTags.filter((t) => t !== tag)
+      : [...selectedTags, tag];
+    setSelectedTags(next);
+    emit(budgetEnabled, tripBudget, month, next);
   };
 
   const handleReset = () => {
     setBudgetEnabled(false);
     setTripBudget(120);
     setMonth(null);
-    onFilterChange({ tripBudget: null, month: null });
+    setSelectedTags([]);
+    onFilterChange({ tripBudget: null, month: null, tags: [] });
   };
 
   return (
@@ -138,6 +162,32 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
                   onClick={() => handleMonthClick(i)}
                 >
                   {m}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-divider" />
+
+          {/* ── Tags ── */}
+          <div className="filter-group">
+            <div className="filter-group-header">
+              <span className="filter-group-title">🏷️ Type de destination</span>
+              {selectedTags.length > 0 && (
+                <button className="clear-month-btn" onClick={() => { setSelectedTags([]); emit(budgetEnabled, tripBudget, month, []); }}>
+                  ✕
+                </button>
+              )}
+            </div>
+            <div className="tag-grid">
+              {TAGS.map(({ label, icon }) => (
+                <button
+                  key={label}
+                  className={`tag-chip${selectedTags.includes(label) ? " active" : ""}`}
+                  onClick={() => handleTagClick(label)}
+                >
+                  <span>{icon}</span>
+                  <span>{label}</span>
                 </button>
               ))}
             </div>

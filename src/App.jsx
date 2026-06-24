@@ -17,7 +17,7 @@ function normalize(str) {
 
 export default function App() {
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [filters, setFilters] = useState({ tripBudget: null, month: null });
+  const [filters, setFilters] = useState({ tripBudget: null, month: null, tags: [] });
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -61,7 +61,7 @@ export default function App() {
   const handleCountryClick = useCallback((code) => setSelectedCountry(code), []);
   const handleClose = useCallback(() => setSelectedCountry(null), []);
 
-  const filterActive = filters.tripBudget !== null || filters.month !== null;
+  const filterActive = filters.tripBudget !== null || filters.month !== null || filters.tags.length > 0;
 
   const highlightMap = useMemo(
     () => computeHighlights(COUNTRIES, filters),
@@ -167,7 +167,7 @@ export default function App() {
             aria-label="Filtres"
           >
             <span>⚙️</span>
-            {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
+            {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>}
           </button>
         </div>
 
@@ -195,7 +195,7 @@ export default function App() {
         aria-label="Filtres"
       >
         <span>⚙️</span>
-        {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0)}</span>}
+        {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>}
       </button>
 
       <main className={`main${listOpen ? " main--list-open" : ""}`}>
@@ -208,10 +208,9 @@ export default function App() {
             searchActive={searchActive}
             hoveredCode={hoveredCountry}
           />
-          <SearchBar onFilterChange={setFilters} open={filterOpen} onOpenChange={handleFilterOpen} />
         </div>
-        {listOpen && (
-          <div className="list-panel">
+        <SearchBar onFilterChange={setFilters} open={filterOpen} onOpenChange={handleFilterOpen} />
+        {listOpen && (<div className="list-panel">
             <ListView
               onCountryClick={handleCountryClick}
               highlightMap={effectiveHighlightMap}

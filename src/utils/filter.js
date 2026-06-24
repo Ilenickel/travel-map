@@ -48,20 +48,29 @@ const RANK_COLOR = {
   0: null,      // grisé / inaccessible
 };
 
+// ─── Tags ─────────────────────────────────────────────────────────────────────
+
+function tagRank(countryData, selectedTags) {
+  if (!selectedTags.length) return 3;
+  const allTags = (countryData.destinations ?? []).flatMap((d) => d.tags ?? []);
+  return selectedTags.every((tag) => allTags.includes(tag)) ? 3 : 0;
+}
+
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 /**
  * Returns null when no filter is active (no highlights).
  * Returns { [alpha3]: color | null } — null means dimmed on the map.
  */
-export function computeHighlights(countries, { tripBudget, month }) {
-  if (tripBudget === null && month === null) return null;
+export function computeHighlights(countries, { tripBudget, month, tags = [] }) {
+  if (tripBudget === null && month === null && tags.length === 0) return null;
 
   const result = {};
   for (const [code, data] of Object.entries(countries)) {
     const ranks = [];
     if (month      !== null) ranks.push(weatherRank(countryWeatherScore(data, month)));
-    if (tripBudget !== null) ranks.push(budgetRank(data, tripBudget)); // tripBudget = budget journalier
+    if (tripBudget !== null) ranks.push(budgetRank(data, tripBudget));
+    if (tags.length > 0)     ranks.push(tagRank(data, tags));
 
     const minRank = Math.min(...ranks);
     result[code] = RANK_COLOR[minRank];
