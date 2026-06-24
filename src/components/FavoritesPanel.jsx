@@ -18,7 +18,7 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
 
   const emptyMsg = activeTab === "favorites"
     ? { icon: "🗺", lines: ["Aucun favori pour l'instant.", "Cliquez sur ★ dans une fiche pays pour en ajouter."] }
-    : { icon: "✈️", lines: ["Aucun pays visité pour l'instant.", "Cliquez sur ✓ dans une fiche pays pour en ajouter."] };
+    : { icon: "✈️", lines: ["Aucun pays visité pour l'instant.", "Cliquez sur ✈️ dans une fiche pays pour en ajouter."] };
 
   return (
     <>
