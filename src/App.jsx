@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import WorldMap from "./components/WorldMap";
 import CountryPanel from "./components/CountryPanel";
 import SearchBar from "./components/SearchBar";
@@ -268,6 +269,7 @@ export default function App() {
           onCountryClick={(code) => { setCompareBase(null); setSelectedCountry(code); }}
         />
       )}
+      <Analytics />
     </div>
   );
 }
