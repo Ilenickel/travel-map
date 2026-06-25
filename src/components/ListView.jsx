@@ -38,8 +38,8 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
       list.sort((a, b) => (b.matched ? 1 : 0) - (a.matched ? 1 : 0));
     }
 
-    return list;
-  }, [sortBy, sortDir, highlightMap, filterActive, visited]);
+    return hideVisited ? list.filter((e) => !e.isVisited) : list;
+  }, [sortBy, sortDir, highlightMap, filterActive, visited, hideVisited]);
 
   const SortBtn = ({ field, label }) => (
     <button
@@ -67,7 +67,7 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
 
       <div className="list-grid">
         {entries.map(({ code, data, matched, color, isVisited }) => {
-          const dimmed = !matched || (hideVisited && isVisited);
+          const dimmed = !matched;
           return (
             <button
               key={code}

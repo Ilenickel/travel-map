@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://travel-map-blush.vercel.app/sitemap.xml

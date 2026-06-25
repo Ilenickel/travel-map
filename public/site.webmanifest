@@ -1,0 +1,19 @@
+{
+  "name": "Travel Map — Où partir en vacances ?",
+  "short_name": "Travel Map",
+  "description": "Carte interactive du monde pour trouver où partir en vacances, consulter la météo et planifier vos voyages.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060d18",
+  "theme_color": "#060d18",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "maps", "lifestyle"]
+}

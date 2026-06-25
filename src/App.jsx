@@ -43,6 +43,11 @@ export default function App() {
 
   // Sync URL ↔ pays sélectionné + comparaison
   useEffect(() => {
+    // Ouverture depuis une page prerendue /pays/[slug] (window.__INITIAL_COUNTRY__ injecté au build)
+    if (window.__INITIAL_COUNTRY__ && COUNTRIES[window.__INITIAL_COUNTRY__]) {
+      setSelectedCountry(window.__INITIAL_COUNTRY__);
+      return;
+    }
     const params = new URLSearchParams(window.location.search);
     const code = params.get("country");
     if (code && COUNTRIES[code]) setSelectedCountry(code);

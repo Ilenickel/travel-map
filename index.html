@@ -1,17 +1,286 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WanderMap — Planifiez votre voyage</title>
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- SEO principal -->
+    <title>Travel Map — Où partir en vacances ? Idées de voyage & météo par pays</title>
+    <meta name="description" content="Découvrez où partir en vacances avec Travel Map : carte interactive du monde, météo en temps réel par destination, meilleures périodes pour voyager et idées de voyage pour 190+ pays. Gratuit." />
+    <meta name="keywords" content="où partir en vacances, quand partir en voyage, quelle météo pour voyager, idées de voyage, destinations monde, où aller en été, où aller en hiver, carte voyage interactive, pays à visiter, carnet de voyage, voyage pas cher, destination insolite, voyage solo, road trip monde, pays visités" />
+    <meta name="author" content="Travel Map" />
+    <link rel="canonical" href="https://travel-map-blush.vercel.app/" />
+    <meta name="theme-color" content="#060d18" />
+
+    <!-- PWA / Mobile -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Travel Map" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://travel-map-blush.vercel.app/" />
+    <meta property="og:title" content="Travel Map — Où partir en vacances ? Idées de voyage & météo par pays" />
+    <meta property="og:description" content="Carte interactive pour savoir où partir en vacances, quand voyager et quelle météo attendre dans 190+ pays. Planifiez votre prochain voyage gratuitement." />
+    <meta property="og:image" content="https://travel-map-blush.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Travel Map — carte interactive du monde pour planifier vos voyages" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Travel Map" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://travel-map-blush.vercel.app/" />
+    <meta name="twitter:title" content="Travel Map — Où partir en vacances ? Idées de voyage & météo par pays" />
+    <meta name="twitter:description" content="Carte interactive pour savoir où partir en vacances, quand voyager et quelle météo attendre dans 190+ pays." />
+    <meta name="twitter:image" content="https://travel-map-blush.vercel.app/og-image.png" />
+    <meta name="twitter:image:alt" content="Travel Map — carte interactive du monde" />
+
+    <!-- JSON-LD : WebApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Travel Map",
+      "url": "https://travel-map-blush.vercel.app/",
+      "description": "Carte interactive pour savoir où partir en vacances, quand voyager selon la météo et découvrir les meilleures destinations parmi 190+ pays.",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "fr",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "featureList": [
+        "Carte interactive du monde avec 190+ pays",
+        "Météo en temps réel par destination",
+        "Idées de voyage par saison",
+        "Comparaison de destinations",
+        "Carnet de voyage et pays visités",
+        "Favoris et listes de destinations",
+        "Filtres par type de voyage"
+      ],
+      "screenshot": "https://travel-map-blush.vercel.app/og-image.png"
+    }
+    </script>
+
+    <!-- JSON-LD : FAQPage — apparaît dans "People Also Ask" de Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Où partir en vacances ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le choix de destination dépend de vos envies, de votre budget et de la période. Travel Map propose plus de 190 destinations classées par type de voyage : plage, montagne, culture, aventure, city-break… Explorez la carte interactive pour trouver où partir en vacances selon vos critères."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quand partir en voyage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La meilleure période pour voyager varie selon la destination. Travel Map affiche la météo actuelle et les saisons idéales pour chaque pays afin de vous aider à choisir quand partir pour profiter du meilleur temps possible et éviter les mauvaises saisons."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle météo faire lors de mon prochain voyage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Travel Map intègre la météo en temps réel pour chaque destination du monde. Cliquez sur n'importe quel pays pour voir les conditions météo actuelles : température, précipitations et conseils sur la meilleure saison pour visiter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Où partir en été ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En été, les meilleures destinations sont l'Islande, la Scandinavie, le Canada, la Grèce, le Portugal, le Maroc, le Japon ou encore la Nouvelle-Zélande. Travel Map vous permet de filtrer les destinations selon la saison pour trouver où partir en été en évitant les pays trop chauds ou trop humides."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Où partir en hiver ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En hiver, privilégiez les destinations ensoleillées : Thaïlande, Maldives, Australie, Bali, Sri Lanka, Mexique, Maroc ou les Canaries. Travel Map vous aide à identifier les pays où le climat est agréable en décembre, janvier et février pour fuir le froid."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quels sont les pays à visiter au moins une fois dans sa vie ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Parmi les destinations incontournables : le Japon, l'Islande, la Nouvelle-Zélande, le Pérou (Machu Picchu), le Maroc, l'Italie, la Thaïlande, l'Australie, l'Inde et les États-Unis. Découvrez toutes ces destinations sur Travel Map et construisez votre bucket list de voyage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment planifier un voyage facilement ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Avec Travel Map, planifiez votre voyage en 3 étapes : 1) Explorez la carte interactive pour trouver votre destination idéale, 2) Consultez la météo et les informations du pays, 3) Ajoutez vos destinations en favoris pour construire votre carnet de voyage. C'est gratuit et sans inscription."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Où partir en voyage pas cher ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les destinations les moins chères incluent le Vietnam, la Thaïlande, l'Indonésie (Bali), le Maroc, la Géorgie, l'Albanie, le Portugal et l'Amérique centrale. Travel Map vous permet de découvrir des destinations abordables dans toutes les régions du monde pour voyager avec un petit budget."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle destination choisir pour un premier voyage solo ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour un premier voyage solo, les destinations les plus recommandées sont le Japon (très sûr et bien organisé), le Portugal, la Thaïlande, l'Irlande ou le Canada. Travel Map vous aide à comparer les pays selon leur accessibilité pour les voyageurs solitaires."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Où partir en automne ou au printemps ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'automne et le printemps sont idéaux pour visiter le Japon (cerisiers et érables), le Canada (feuillages), l'Italie, l'Espagne ou la Grèce avant ou après la haute saison. Travel Map vous aide à planifier vos voyages hors saison pour éviter les foules et profiter de prix réduits."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD : Organisation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Travel Map",
+      "url": "https://travel-map-blush.vercel.app/",
+      "logo": "https://travel-map-blush.vercel.app/favicon.svg",
+      "description": "Carte interactive du monde pour planifier vos voyages, consulter la météo par pays et découvrir les meilleures destinations de voyage."
+    }
+    </script>
+
+    <!-- JSON-LD : Destinations populaires (ItemList) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Meilleures destinations de voyage",
+      "description": "Les destinations les plus populaires à explorer sur Travel Map",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1,  "name": "Japon",            "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 2,  "name": "Italie",           "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 3,  "name": "Thaïlande",        "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 4,  "name": "France",           "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 5,  "name": "Islande",          "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 6,  "name": "Maroc",            "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 7,  "name": "États-Unis",       "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 8,  "name": "Australie",        "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 9,  "name": "Nouvelle-Zélande", "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 10, "name": "Pérou",            "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 11, "name": "Portugal",         "url": "https://travel-map-blush.vercel.app/" },
+        { "@type": "ListItem", "position": 12, "name": "Indonésie",        "url": "https://travel-map-blush.vercel.app/" }
+      ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet" />
-    <style>body { margin: 0; background: #060d18; }</style>
+    <style>
+      body { margin: 0; background: #060d18; }
+      /* Masqué visuellement mais lisible par Google et les lecteurs d'écran (standard W3C sr-only) */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
   </head>
   <body>
+
+    <!-- COUNTRY_SEO_PLACEHOLDER -->
+    <div class="sr-only">
+      <h1>Travel Map — Où partir en vacances ? Trouvez votre prochaine destination de voyage</h1>
+
+      <h2>Où partir en vacances ?</h2>
+      <p>Vous cherchez où partir en vacances mais vous manquez d'inspiration ? Travel Map est une carte interactive du monde qui vous aide à trouver votre prochaine destination. Parcourez plus de 190 pays, découvrez leurs informations clés et consultez la météo en temps réel pour décider où partir selon vos envies, votre budget et la saison.</p>
+
+      <h2>Quand partir en voyage ? Choisissez la bonne période</h2>
+      <p>Savoir quand partir est aussi important que de savoir où aller. Travel Map intègre la météo actuelle pour chaque pays du monde pour vous aider à planifier votre voyage au meilleur moment. Évitez la mousson en Asie du Sud-Est, les cyclones aux Caraïbes ou les canicules au Moyen-Orient en consultant les saisons idéales avant de réserver.</p>
+
+      <h2>Quelle météo pour mon prochain voyage ?</h2>
+      <p>La météo est le premier critère pour choisir une destination de voyage. Avec Travel Map, consultez en un clic la température, les précipitations et les conditions climatiques de chaque pays du monde. Savoir quelle météo faire pendant vos vacances vous permet d'optimiser vos activités et de profiter pleinement de votre séjour.</p>
+
+      <h2>Idées de voyage : destinations insolites et incontournables</h2>
+      <p>En manque d'idées de voyage ? Travel Map vous présente des destinations pour tous les goûts : plages paradisiaques aux Maldives, aventure au Patagonie, aurores boréales en Islande, temples d'Angkor au Cambodge, safari en Tanzanie, road trip sur la Route 66 aux États-Unis ou découverte des cerisiers en fleurs au Japon. La carte du monde est votre terrain de jeu.</p>
+
+      <h2>Où partir en été ?</h2>
+      <p>L'été est la saison idéale pour explorer l'Europe du Nord : Islande, Norvège, Suède, Finlande. C'est aussi la période parfaite pour le Canada, l'Alaska, le Japon en juin, New York ou les grandes capitales européennes comme Paris, Rome et Barcelone. Travel Map vous guide pour trouver où partir en été en évitant les destinations trop chaudes ou trop humides.</p>
+
+      <h2>Où partir en hiver ? Fuyez le froid</h2>
+      <p>En hiver, cap vers le soleil ! La Thaïlande, Bali, les Maldives, le Mexique, le Sri Lanka, l'Australie, l'Afrique du Sud ou les Canaries sont des destinations idéales pour profiter du beau temps en décembre, janvier et février. Travel Map vous aide à identifier rapidement les pays où il fait chaud en hiver pour partir au meilleur moment.</p>
+
+      <h2>Où partir au printemps ?</h2>
+      <p>Le printemps est la saison parfaite pour visiter le Japon et admirer les cerisiers en fleurs (hanami), explorer les tulipes aux Pays-Bas, randonner au Portugal ou en Espagne, ou découvrir la Méditerranée avant l'afflux touristique estival. La météo de printemps est douce dans de nombreux pays et les prix sont encore abordables.</p>
+
+      <h2>Où partir en automne ?</h2>
+      <p>L'automne est une saison magique pour voyager. Le Canada et la Nouvelle-Angleterre aux États-Unis se parent de feuillages rouge et or. Le Japon offre ses érables (momiji) en novembre. L'Italie, la Grèce et la Croatie sont encore ensoleillées et bien moins fréquentées qu'en été. Un très bon rapport qualité-prix pour les voyageurs malins.</p>
+
+      <h2>Voyage pas cher : les meilleures destinations économiques</h2>
+      <p>Partir en voyage pas cher est tout à fait possible en choisissant les bonnes destinations. Le Vietnam, la Géorgie, l'Albanie, le Cambodge, la Bolivie, le Maroc et l'Indonésie (Bali) offrent des expériences inoubliables à petit budget. Les transports, l'hébergement et la nourriture y sont bien moins chers qu'en Europe occidentale, idéal pour voyager longtemps sans se ruiner.</p>
+
+      <h2>Pays à visiter : votre bucket list de voyage</h2>
+      <p>Certains pays sont absolument incontournables dans une vie de voyageur : le Japon et ses cerisiers, la Nouvelle-Zélande et ses fjords, le Pérou et le Machu Picchu, l'Islande et ses geysers et aurores boréales, le Maroc et ses médinas, l'Inde et ses temples, la Tanzanie et ses safaris, ou encore la Patagonie argentine et chilienne. Créez votre bucket list et suivez vos pays visités directement sur Travel Map.</p>
+
+      <h2>Premier voyage solo : quelle destination choisir ?</h2>
+      <p>Le voyage solo est en plein essor. Pour un premier voyage seul, les destinations les plus recommandées sont le Japon (ultra-sûr, bien organisé, facile à naviguer), le Portugal (accueillant et abordable), la Thaïlande (infrastructure touristique excellente), l'Irlande ou le Canada. Travel Map vous aide à comparer la sécurité et l'accessibilité de chaque pays pour vous lancer sereinement.</p>
+
+      <h2>Carnet de voyage : gardez une trace de vos aventures</h2>
+      <p>Travel Map vous permet de cocher les pays que vous avez visités et de constituer votre carnet de voyage personnel et interactif. Visualisez sur la carte du monde tous les pays où vous êtes allé, planifiez vos prochaines destinations et suivez votre progression de voyageur. Un outil gratuit et intuitif pour tous les globe-trotteurs.</p>
+
+      <h2>Comparer des destinations de voyage</h2>
+      <p>Hésitez-vous entre deux destinations ? Travel Map permet de comparer côte à côte deux pays : météo, culture, type d'expérience, popularité. Une fonctionnalité unique pour prendre une décision éclairée avant de réserver vos billets d'avion et votre hébergement.</p>
+    </div>
+
+    <!-- Contenu de secours complet pour les robots sans JavaScript -->
+    <noscript>
+      <main>
+        <h1>Travel Map — Où partir en vacances ? Idées de voyage et météo par pays</h1>
+        <p>Travel Map est une carte interactive gratuite du monde pour trouver où partir en vacances, quand voyager selon la météo et découvrir les meilleures destinations parmi plus de 190 pays. Activez JavaScript pour accéder à l'application.</p>
+        <h2>Fonctionnalités</h2>
+        <ul>
+          <li>Carte interactive du monde avec 190+ pays</li>
+          <li>Météo en temps réel par destination</li>
+          <li>Idées de voyage par saison (été, hiver, printemps, automne)</li>
+          <li>Comparaison de destinations</li>
+          <li>Carnet de voyage et suivi des pays visités</li>
+          <li>Favoris et listes de destinations</li>
+          <li>Filtres par type de voyage (plage, montagne, culture, aventure)</li>
+        </ul>
+        <h2>Destinations populaires</h2>
+        <p>Japon, Italie, Thaïlande, France, Islande, Maroc, États-Unis, Australie, Nouvelle-Zélande, Pérou, Portugal, Indonésie, Cambodge, Grèce, Espagne, Canada, Vietnam, Inde, Tanzanie, Argentine.</p>
+      </main>
+    </noscript>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
