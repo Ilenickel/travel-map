@@ -16,6 +16,18 @@ function normalize(str) {
   return str.normalize("NFD").replace(/\p{Mn}/gu, "").toLowerCase();
 }
 
+function prep(name) {
+  const n = normalize(name);
+  const plurals = ["etats-unis", "pays-bas", "philippines", "maldives",
+    "seychelles", "bahamas", "comores", "emirats", "samoa", "fidji",
+    "vanuatu", "salomon", "marshall", "trinite"];
+  if (plurals.some(p => n.includes(p))) return "aux";
+  if (/^[aeiouéèêëàâîïôùûü]/.test(n)) return "en";
+  const exceptions = ["mexique","mozambique","cambodge","zimbabwe","belize","suriname","panama","kosovo"];
+  if (n.endsWith("e") && !exceptions.some(e => n === e)) return "en";
+  return "au";
+}
+
 export default function App() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [filters, setFilters] = useState({ tripBudget: null, month: null, tags: [] });
@@ -60,8 +72,17 @@ export default function App() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    if (selectedCountry) url.searchParams.set("country", selectedCountry);
-    else url.searchParams.delete("country");
+    if (selectedCountry) {
+      url.searchParams.set("country", selectedCountry);
+      // Remettre l'URL sur / si on vient d'une page /pays/[slug]
+      if (url.pathname.startsWith("/pays/")) url.pathname = "/";
+      const name = COUNTRIES[selectedCountry]?.name;
+      if (name) document.title = `Partir ${prep(name)} ${name} — météo, quand partir, que faire | Travel Map`;
+    } else {
+      url.searchParams.delete("country");
+      if (url.pathname.startsWith("/pays/")) url.pathname = "/";
+      document.title = "Travel Map — Où partir en vacances ? Idées de voyage & météo par pays";
+    }
     history.replaceState(null, "", url);
   }, [selectedCountry]);
   const searchContainerRef = useRef(null);
