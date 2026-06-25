@@ -99,6 +99,25 @@ export const VIETNAM = {
         { month: "Déc", temp: 21, rain: 225, icon: "⛅" },
       ],
     },
+    {
+      id: "phu-quoc",
+      name: "Phú Quốc",
+      region: "Sud",
+      data: [
+        { month: "Jan", temp: 27, rain: 30,  icon: "☀️" },
+        { month: "Fév", temp: 28, rain: 20,  icon: "☀️" },
+        { month: "Mar", temp: 29, rain: 30,  icon: "☀️" },
+        { month: "Avr", temp: 30, rain: 80,  icon: "⛅" },
+        { month: "Mai", temp: 29, rain: 215, icon: "🌧️" },
+        { month: "Jun", temp: 28, rain: 310, icon: "🌧️" },
+        { month: "Jul", temp: 28, rain: 360, icon: "🌧️" },
+        { month: "Aoû", temp: 28, rain: 355, icon: "🌧️" },
+        { month: "Sep", temp: 28, rain: 350, icon: "🌧️" },
+        { month: "Oct", temp: 27, rain: 270, icon: "🌧️" },
+        { month: "Nov", temp: 27, rain: 130, icon: "⛅" },
+        { month: "Déc", temp: 27, rain: 45,  icon: "☀️" },
+      ],
+    },
   ],
 
   destinations: [
@@ -174,6 +193,21 @@ export const VIETNAM = {
         { name: "Village de Cat Cat", wikipedia: "Sa_Pa" },
         { name: "Sommet du Fansipan", wikipedia: "Fansipan" },
         { name: "Marché de Bac Ha", wikipedia: "Hmong_people" },
+      ],
+    },
+    {
+      id: 6,
+      name: "Phú Quốc",
+      region: "Sud",
+      description:
+        "Surnommée l'île Perle, Phú Quốc est la plus grande île du Vietnam et l'une des plus belles destinations balnéaires d'Asie du Sud-Est. Plages de sable blanc bordées de palmiers, eaux turquoise et forêts tropicales protégées occupent 70 % de l'île. Les couchers de soleil sur la plage de Long Beach sont parmi les plus beaux du Vietnam. Poivre de Phú Quốc et sauce nuoc-mâm artisanale à découvrir.",
+      wikipedia: "Phú_Quốc",
+      tags: ["Plage", "Mer", "Nature", "Snorkeling", "Détente", "Safari"],
+      mustSee: [
+        { name: "Long Beach (Bãi Trường) — plage de 20 km au coucher de soleil", wikipedia: "File:Kiss Bridge at sunset Phu Quoc Island Vietnam.jpg" },
+        { name: "Vinpearl Safari — parc animalier sur l'île", wikipedia: "File:The Herd of Rhinos.jpg" },
+        { name: "Parc national de Phú Quốc — forêt tropicale préservée", wikipedia: "File:COD 8306.jpg" },
+        { name: "Archipel An Thoi — snorkeling et îles désertes", wikipedia: "File:An Thoi port.jpg" },
       ],
     },
   ],

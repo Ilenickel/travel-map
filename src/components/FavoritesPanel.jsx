@@ -1,6 +1,14 @@
 import { useRef, useEffect, useState } from "react";
 import { COUNTRIES } from "../data/index";
 
+function getFlagUrl(emoji) {
+  const code = [...emoji]
+    .map(c => String.fromCharCode(c.codePointAt(0) - 0x1F1E6 + 65))
+    .join('')
+    .toLowerCase();
+  return `https://flagcdn.com/w40/${code}.png`;
+}
+
 export default function FavoritesPanel({ favorites, visited, onSelect, onRemove, onRemoveVisited, onClose }) {
   const ref = useRef(null);
   const [activeTab, setActiveTab] = useState("favorites");
@@ -57,7 +65,13 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
                     className="favorites-item-main"
                     onClick={() => { onSelect(code); onClose(); }}
                   >
-                    <span className="favorites-item-emoji">{data.emoji}</span>
+                    <img
+                      src={getFlagUrl(data.emoji)}
+                      alt=""
+                      className="favorites-item-flag"
+                      width="28"
+                      height="20"
+                    />
                     <span className="favorites-item-name">{data.name}</span>
                   </button>
                   <button

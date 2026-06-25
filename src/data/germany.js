@@ -62,6 +62,25 @@ export const GERMANY = {
       ],
     },
     {
+      id: "hamburg",
+      name: "Hamburg",
+      region: "Nord — climat océanique tempéré",
+      data: [
+        { month: "Jan", temp:  2, rain: 65,  icon: "❄️" },
+        { month: "Fév", temp:  3, rain: 55,  icon: "❄️" },
+        { month: "Mar", temp:  6, rain: 65,  icon: "⛅" },
+        { month: "Avr", temp: 10, rain: 55,  icon: "⛅" },
+        { month: "Mai", temp: 15, rain: 60,  icon: "☀️" },
+        { month: "Jun", temp: 18, rain: 75,  icon: "☀️" },
+        { month: "Jul", temp: 20, rain: 80,  icon: "☀️" },
+        { month: "Aoû", temp: 20, rain: 80,  icon: "☀️" },
+        { month: "Sep", temp: 16, rain: 75,  icon: "☀️" },
+        { month: "Oct", temp: 11, rain: 70,  icon: "⛅" },
+        { month: "Nov", temp:  6, rain: 75,  icon: "⛅" },
+        { month: "Déc", temp:  3, rain: 70,  icon: "❄️" },
+      ],
+    },
+    {
       id: "munich",
       name: "Munich",
       region: "Bavière — climat continental, été plus chaud",
@@ -187,6 +206,33 @@ export const GERMANY = {
         {
           name: "Fribourg-en-Brisgau — ville universitaire avec sa magnifique cathédrale gothique",
           wikipedia: "Freiburg_im_Breisgau",
+        },
+      ],
+    },
+    {
+      id: 5,
+      name: "Hamburg",
+      region: "Nord",
+      description:
+        "Deuxième ville d'Allemagne, Hamburg est une métropole portuaire fière de son passé hanséatique et de son architecture de briques rouges. La Speicherstadt, entrepôts du XIXe siècle reconvertis en musées et galeries, est classée UNESCO. Le Reeperbahn est le quartier de divertissement le plus animé d'Europe du Nord, et le port — le 3e plus grand d'Europe — se visite en bateau. C'est aussi la ville des Beatles, qui y ont fait leurs débuts.",
+      wikipedia: "Hamburg",
+      tags: ["Ville", "Culture", "Architecture", "UNESCO", "Histoire", "Musique"],
+      mustSee: [
+        {
+          name: "Speicherstadt — entrepôts en briques rouges classés UNESCO",
+          wikipedia: "File:Hamburg,_Speicherstadt,_Wasserschloss_--_2016_--_3223-9.jpg",
+        },
+        {
+          name: "Elbphilharmonie — salle de concert au design spectaculaire sur l'Elbe",
+          wikipedia: "Elbphilharmonie",
+        },
+        {
+          name: "Port de Hamburg — croisière en bateau dans le 3e plus grand port d'Europe",
+          wikipedia: "Port_of_Hamburg",
+        },
+        {
+          name: "Reeperbahn & quartier de St. Pauli — où les Beatles ont débuté",
+          wikipedia: "Reeperbahn",
         },
       ],
     },

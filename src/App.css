@@ -1252,7 +1252,7 @@ html, body, #root { height: 100%; }
 }
 .favorites-item-main:hover { color: var(--accent2); }
 
-.favorites-item-emoji { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; }
+.favorites-item-flag { flex-shrink: 0; width: 28px; height: 20px; object-fit: cover; border-radius: 2px; }
 .favorites-item-name { font-size: 14px; font-weight: 600; }
 
 .favorites-item-remove {
@@ -2518,9 +2518,6 @@ html, body, #root { height: 100%; }
 }
 
 /* ── Items visités dans le panel ── */
-.favorites-item.visited-item .favorites-item-emoji::after {
-  content: '';
-}
 
 /* ── Bouton visité dans le header du CountryPanel ── */
 .panel-visited-btn {

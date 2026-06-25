@@ -80,6 +80,25 @@ export const THAILAND = {
         { month: "Déc", temp: 21, rain: 8,   icon: "☀️" },
       ],
     },
+    {
+      id: "phuket",
+      name: "Phuket",
+      region: "Sud (Andaman)",
+      data: [
+        { month: "Jan", temp: 27, rain: 30,  icon: "☀️" },
+        { month: "Fév", temp: 28, rain: 25,  icon: "☀️" },
+        { month: "Mar", temp: 29, rain: 35,  icon: "☀️" },
+        { month: "Avr", temp: 30, rain: 115, icon: "⛅" },
+        { month: "Mai", temp: 29, rain: 270, icon: "🌧️" },
+        { month: "Jun", temp: 28, rain: 230, icon: "🌧️" },
+        { month: "Jul", temp: 28, rain: 255, icon: "🌧️" },
+        { month: "Aoû", temp: 28, rain: 270, icon: "🌧️" },
+        { month: "Sep", temp: 27, rain: 310, icon: "🌧️" },
+        { month: "Oct", temp: 27, rain: 310, icon: "🌧️" },
+        { month: "Nov", temp: 27, rain: 175, icon: "⛅" },
+        { month: "Déc", temp: 27, rain: 65,  icon: "☀️" },
+      ],
+    },
   ],
 
   destinations: [
@@ -154,6 +173,21 @@ export const THAILAND = {
         { name: "Wat Mahathat — tête de Bouddha dans les racines", wikipedia: "File:Templo_Mahathat,_Ayutthaya,_Tailandia,_2013-08-23,_DD_06.jpg" },
         { name: "Wat Phra Si Sanphet", wikipedia: "Wat_Phra_Si_Sanphet" },
         { name: "Parc historique d'Ayutthaya", wikipedia: "Ayutthaya_Historical_Park" },
+      ],
+    },
+    {
+      id: 6,
+      name: "Phuket & Phi Phi",
+      region: "Sud (Andaman)",
+      description:
+        "Phuket est la plus grande île de Thaïlande et l'une des destinations balnéaires les plus visitées d'Asie. Patong et Kata offrent des plages animées, tandis que les îles Phi Phi voisines dévoilent des eaux turquoise irréelles. La baie de Phang Nga et ses karsts calcaires, immortalisée dans James Bond, complète ce tableau tropical époustouflant.",
+      wikipedia: "File:Phuket Aerial.jpg",
+      tags: ["Plage", "Mer", "Snorkeling", "Nature", "Paysage", "Nuit"],
+      mustSee: [
+        { name: "Îles Phi Phi — Maya Bay aux eaux turquoise", wikipedia: "Phi_Phi_Islands" },
+        { name: "Baie de Phang Nga — karsts calcaires de James Bond", wikipedia: "Phang_Nga_Bay" },
+        { name: "Patong Beach — plage animée avec vie nocturne", wikipedia: "File:Patong Beach (1).jpg" },
+        { name: "Big Buddha de Phuket — statue de 45 m surplombant l'île", wikipedia: "File:Big Buddha - Phuket.jpg" },
       ],
     },
   ],

@@ -80,6 +80,25 @@ export const GREECE = {
         { month: "Déc", temp: 13, rain: 70,  icon: "⛅" },
       ],
     },
+    {
+      id: "mykonos",
+      name: "Mykonos",
+      region: "Cyclades",
+      data: [
+        { month: "Jan", temp: 12, rain: 60,  icon: "⛅" },
+        { month: "Fév", temp: 12, rain: 55,  icon: "⛅" },
+        { month: "Mar", temp: 13, rain: 42,  icon: "⛅" },
+        { month: "Avr", temp: 16, rain: 18,  icon: "☀️" },
+        { month: "Mai", temp: 21, rain: 8,   icon: "☀️" },
+        { month: "Jun", temp: 25, rain: 3,   icon: "☀️" },
+        { month: "Jul", temp: 27, rain: 1,   icon: "☀️" },
+        { month: "Aoû", temp: 27, rain: 2,   icon: "☀️" },
+        { month: "Sep", temp: 25, rain: 8,   icon: "☀️" },
+        { month: "Oct", temp: 21, rain: 35,  icon: "☀️" },
+        { month: "Nov", temp: 17, rain: 65,  icon: "⛅" },
+        { month: "Déc", temp: 13, rain: 72,  icon: "⛅" },
+      ],
+    },
   ],
 
   destinations: [
@@ -141,6 +160,21 @@ export const GREECE = {
         { name: "Gorges de Samaria", wikipedia: "File:Φαράγγι Σαμαριάς 3754.jpg" },
         { name: "Plage d'Elafonissi (sable rose)", wikipedia: "Elafonisi" },
         { name: "Vieille Hania", wikipedia: "Chania" },
+      ],
+    },
+    {
+      id: 5,
+      name: "Mykonos & Cyclades",
+      region: "Cyclades",
+      description:
+        "Mykonos est la reine des Cyclades : ruelles blanches aux portes bleues, moulins à vent iconiques, plages animées (Paradise, Super Paradise) et vie nocturne parmi les plus intenses de la Méditerranée. À quelques heures de bateau, Paros, Naxos et Ios offrent une atmosphère plus authentique pour explorer l'archipel des Cyclades.",
+      wikipedia: "File:Mykonos 7.jpg",
+      tags: ["Plage", "Fête", "Nuit", "Paysage", "Mer", "Architecture", "UNESCO"],
+      mustSee: [
+        { name: "Moulins à vent de Kato Mili — symbole de Mykonos", wikipedia: "File:Mykonos Windmills.jpg" },
+        { name: "Little Venice — maisons sur l'eau dans la vieille ville", wikipedia: "File:Sunset of Mykonos.jpg" },
+        { name: "Plage de Paradise & Super Paradise — fêtes en bord de mer", wikipedia: "File:Cyclades_Mykonos_Paradise_Plage_23062013_-_panoramio.jpg" },
+        { name: "Delos — île sacrée d'Apollon, site archéologique UNESCO", wikipedia: "File:Ancient Greek theatre in Delos 01.jpg" },
       ],
     },
   ],
