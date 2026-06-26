@@ -139,7 +139,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 <h3 className="section-title">Quand y aller ?</h3>
                 <div className="period-cards">
                   {data.bestPeriods.map((p) => (
-                    <div key={p.months} className="period-card" style={{ borderColor: p.color }}>
+                    <div key={p.months} className="period-card" style={{ borderLeftColor: p.color }}>
                       <span className="period-icon">{p.icon}</span>
                       <div>
                         <div className="period-months" style={{ color: p.color }}>{p.months}</div>

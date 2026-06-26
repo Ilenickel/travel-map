@@ -510,10 +510,10 @@ html, body, #root { height: 100%; }
   gap: 14px;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-left: 3px solid;
+  border-left-width: 3px;
   border-radius: 14px;
   padding: 14px 16px;
-  transition: border-color 0.15s, background 0.15s;
+  transition: background 0.15s;
 }
 
 .period-card:hover { background: var(--surface3); }
@@ -1167,6 +1167,17 @@ html, body, #root { height: 100%; }
 }
 
 /* ─── Favorites panel dropdown ─── */
+.favorites-backdrop {
+  display: block;
+  position: fixed;
+  top: 62px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 49;
+  background: transparent;
+}
+
 .favorites-panel {
   position: absolute;
   top: calc(100% + 10px);
@@ -1548,7 +1559,7 @@ html, body, #root { height: 100%; }
 /* ── Tag chips ── */
 .tag-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
 }
 
@@ -1565,7 +1576,6 @@ html, body, #root { height: 100%; }
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
   white-space: nowrap;
-  overflow: hidden;
 }
 .tag-chip:hover { border-color: var(--accent); color: var(--text-dim); background: var(--accent-subtle); }
 .tag-chip.active {
