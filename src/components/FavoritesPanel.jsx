@@ -30,7 +30,6 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
 
   return (
     <>
-      <div className="favorites-backdrop" onClick={onClose} />
       <div className="favorites-panel" ref={ref}>
         <div className="favorites-panel-tabs">
           <button

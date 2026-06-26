@@ -1168,7 +1168,6 @@ html, body, #root { height: 100%; }
 
 /* ─── Favorites panel dropdown ─── */
 .favorites-backdrop {
-  display: block;
   position: fixed;
   top: 62px;
   left: 0;
@@ -1559,7 +1558,7 @@ html, body, #root { height: 100%; }
 /* ── Tag chips ── */
 .tag-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 
@@ -1571,8 +1570,8 @@ html, body, #root { height: 100%; }
   border: 1px solid var(--border);
   border-radius: 10px;
   color: var(--text-muted);
-  font-size: 11px;
-  padding: 7px 6px;
+  font-size: 10px;
+  padding: 6px 5px;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
   white-space: nowrap;
@@ -2443,7 +2442,7 @@ html, body, #root { height: 100%; }
     width: 100%; border-radius: 0 0 20px 20px;
     max-height: calc(100dvh - 52px); overflow-y: auto;
   }
-  .favorites-backdrop { display: block; position: fixed; top: 52px; left: 0; right: 0; bottom: 0; z-index: 49; }
+  .favorites-backdrop { top: 52px; }
 
   /* Zoom + hint cachés */
   .map-zoom-controls { display: none; }

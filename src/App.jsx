@@ -230,6 +230,10 @@ export default function App() {
         {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>}
       </button>
 
+      {favPanelOpen && (
+        <div className="favorites-backdrop" onClick={() => setFavPanelOpen(false)} />
+      )}
+
       <main className={`main${listOpen ? " main--list-open" : ""}`}>
         <div className="map-area">
           <WorldMap
