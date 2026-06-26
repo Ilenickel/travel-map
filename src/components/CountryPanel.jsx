@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { COUNTRIES } from "../data/index";
 import WikiImage from "./WikiImage";
 import { useWikipediaImages } from "../hooks/useWikipediaImages";
@@ -17,6 +17,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   const [activeCity, setActiveCity] = useState(0);
   const [activeBudget, setActiveBudget] = useState(0);
   const [costSubTab, setCostSubTab] = useState("summary");
+  const panelBodyRef = useRef(null);
 
   const handleTabChange = (id) => {
     setActiveTab(id);
@@ -37,6 +38,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
+
+  useEffect(() => {
+    panelBodyRef.current?.scrollTo({ top: 0 });
+  }, [activeTab, selectedDest]);
 
   if (!data) return null;
 
@@ -129,7 +134,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
           </div>
 
           {/* Body */}
-          <div className="panel-body">
+          <div className="panel-body" ref={panelBodyRef}>
 
             {/* ── OVERVIEW ── */}
             {activeTab === "overview" && (
@@ -156,7 +161,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     <div
                       key={dest.id}
                       className="dest-card-mini"
-                      onClick={() => { setSelectedDest(dest); handleTabChange("destinations"); }}
+                      onClick={() => {
+                        setActiveTab("destinations");
+                        setVisitedTabs((prev) => { const s = new Set(prev); s.add("destinations"); return s; });
+                        setSelectedDest(dest);
+                      }}
                     >
                       <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-mini-img" />
                       <div className="dest-card-mini-info">

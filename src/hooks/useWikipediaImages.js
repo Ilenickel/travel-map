@@ -35,7 +35,7 @@ async function batchFetch(slugs) {
         const url =
           `https://en.wikipedia.org/w/api.php?action=query` +
           `&titles=${encodeURIComponent(titles)}` +
-          `&prop=pageimages&pithumbsize=1200` +
+          `&prop=pageimages&pithumbsize=800` +
           `&format=json&origin=*`;
 
         const data = await fetch(url).then((r) => r.json());
@@ -89,7 +89,7 @@ async function batchFetch(slugs) {
         const url =
           `https://commons.wikimedia.org/w/api.php?action=query` +
           `&titles=${encodeURIComponent(titles)}` +
-          `&prop=imageinfo&iiprop=url&iiurlwidth=1200` +
+          `&prop=imageinfo&iiprop=url&iiurlwidth=800` +
           `&format=json&origin=*`;
 
         const data = await fetch(url).then((r) => r.json());
