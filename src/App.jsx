@@ -131,7 +131,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="topbar-brand">
-          <span className="brand-icon">🌍</span>
+          <img src="/icon.png" alt="" className="brand-icon" />
           <span className="brand-name">TravelMap</span>
         </div>
         <div className="topbar-search-container" ref={searchContainerRef}>
