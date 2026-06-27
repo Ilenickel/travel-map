@@ -6,6 +6,12 @@ import SearchDropdown from "./components/SearchDropdown";
 import FavoritesPanel from "./components/FavoritesPanel";
 import ListView from "./components/ListView";
 import ComparePanel from "./components/ComparePanel";
+import AuthModal from "./components/AuthModal";
+import ProfilePanel from "./components/ProfilePanel";
+import NotificationPanel from "./components/NotificationPanel";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { useNotifications } from "./hooks/useNotifications";
+import { supabase as supabaseClient } from "./lib/supabase";
 import { COUNTRIES } from "./data/index";
 import { computeHighlights } from "./utils/filter";
 import { useFavorites } from "./hooks/useFavorites";
@@ -28,7 +34,37 @@ function prep(name) {
   return "au";
 }
 
-export default function App() {
+function TopbarAvatar({ user, onClick, refreshKey }) {
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const name = user?.user_metadata?.display_name || user?.email || '?';
+  const initials = name[0].toUpperCase();
+  const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
+  const color = colors[name.charCodeAt(0) % colors.length];
+
+  useEffect(() => {
+    if (!user) return;
+    supabaseClient.from('profiles').select('avatar_url').eq('id', user.id).single().then(({ data }) => {
+      setAvatarUrl(data?.avatar_url ?? null);
+    });
+  }, [user, refreshKey]);
+
+  return (
+    <button className="topbar-profile-btn" onClick={onClick} title="Mon profil">
+      {avatarUrl
+        ? <img src={avatarUrl} alt={name} className="topbar-profile-avatar-img" />
+        : <div className="topbar-profile-avatar-initials" style={{ background: color }}>{initials}</div>
+      }
+    </button>
+  );
+}
+
+function AppInner() {
+  const { user, authModalOpen, setAuthModalOpen, signOut } = useAuth();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [avatarRefreshKey, setAvatarRefreshKey] = useState(0);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [countryInitialTab, setCountryInitialTab] = useState(null);
+  const { notifications, unreadCount, markRead, markAllRead, deleteOne, deleteAll } = useNotifications(user?.id);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [filters, setFilters] = useState({ tripBudget: null, month: null, tags: [] });
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,8 +85,8 @@ export default function App() {
     if (v && isMobile()) setFilterOpen(false);
   };
   const [compareBase, setCompareBase] = useState(null);
-  const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites();
-  const { visited, toggle: toggleVisited, remove: removeVisited } = useVisited();
+  const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites(user);
+  const { visited, toggle: toggleVisited, remove: removeVisited } = useVisited(user);
   const [hideVisited, setHideVisited] = useState(false);
 
   // Sync URL ↔ pays sélectionné + comparaison
@@ -77,17 +113,20 @@ export default function App() {
       // Remettre l'URL sur / si on vient d'une page /pays/[slug]
       if (url.pathname.startsWith("/pays/")) url.pathname = "/";
       const name = COUNTRIES[selectedCountry]?.name;
-      if (name) document.title = `Partir ${prep(name)} ${name} — météo, quand partir, que faire | Travel Map`;
+      if (name) document.title = `Partir ${prep(name)} ${name} — météo, quand partir, que faire | Triply`;
     } else {
       url.searchParams.delete("country");
       if (url.pathname.startsWith("/pays/")) url.pathname = "/";
-      document.title = "Travel Map — Où partir en vacances ? Idées de voyage & météo par pays";
+      document.title = "Triply — Où partir en vacances ? Idées de voyage & météo par pays";
     }
     history.replaceState(null, "", url);
   }, [selectedCountry]);
   const searchContainerRef = useRef(null);
 
-  const handleCountryClick = useCallback((code) => setSelectedCountry(code), []);
+  const handleCountryClick = useCallback((code) => {
+    setSelectedCountry(code);
+    setCountryInitialTab(null);
+  }, []);
   const handleClose = useCallback(() => setSelectedCountry(null), []);
 
   const filterActive = filters.tripBudget !== null || filters.month !== null || filters.tags.length > 0;
@@ -130,10 +169,15 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <div className="topbar-brand">
-          <img src="/icon.png" alt="" className="brand-icon" />
-          <span className="brand-name">TravelMap</span>
+        {/* Gauche : logo */}
+        <div className="topbar-left">
+          <div className="topbar-brand">
+            <img src="/icon.png" alt="" className="brand-icon" />
+            <span className="brand-name">Triply</span>
+          </div>
         </div>
+
+        {/* Centre : recherche */}
         <div className="topbar-search-container" ref={searchContainerRef}>
           <div className="topbar-search-wrapper">
             <span className="topbar-search-icon">🔍</span>
@@ -168,6 +212,8 @@ export default function App() {
             />
           )}
         </div>
+
+        {/* Droite : carnet + filtre + liste + badge + connexion */}
         <div className="topbar-controls">
           <div className="topbar-favorites-wrapper">
             <button
@@ -217,6 +263,42 @@ export default function App() {
             <span className="badge-dot" />
             {countryCount} destination{countryCount > 1 ? "s" : ""} disponible{countryCount > 1 ? "s" : ""}
           </div>
+
+          {user && (
+            <div className="notif-wrapper">
+              <button
+                className={`topbar-notif-btn${notifOpen ? ' active' : ''}`}
+                onClick={() => setNotifOpen((o) => !o)}
+                aria-label="Notifications"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6V11c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                </svg>
+                {unreadCount > 0 && (
+                  <span className="notif-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
+                )}
+              </button>
+              {notifOpen && (
+                <NotificationPanel
+                  notifications={notifications}
+                  onClose={() => setNotifOpen(false)}
+                  onOpenCountry={(code, tab) => {
+                    setCountryInitialTab(tab || null);
+                    setSelectedCountry(code);
+                    setNotifOpen(false);
+                  }}
+                  markRead={markRead}
+                  markAllRead={markAllRead}
+                  deleteOne={deleteOne}
+                  deleteAll={deleteAll}
+                />
+              )}
+            </div>
+          )}
+          {user
+            ? <TopbarAvatar user={user} onClick={() => setProfileOpen(true)} refreshKey={avatarRefreshKey} />
+            : <button className="topbar-login-btn" onClick={() => setAuthModalOpen(true)}>Connexion</button>
+          }
         </div>
       </header>
 
@@ -232,6 +314,9 @@ export default function App() {
 
       {favPanelOpen && (
         <div className="favorites-backdrop" onClick={() => setFavPanelOpen(false)} />
+      )}
+      {notifOpen && (
+        <div className="favorites-backdrop" onClick={() => setNotifOpen(false)} />
       )}
 
       <main className={`main${listOpen ? " main--list-open" : ""}`}>
@@ -272,12 +357,23 @@ export default function App() {
       {selectedCountry && !compareBase && (
         <CountryPanel
           countryCode={selectedCountry}
-          onClose={handleClose}
+          onClose={() => { handleClose(); setCountryInitialTab(null); }}
           isFavorite={favorites.includes(selectedCountry)}
           onToggleFavorite={() => toggleFav(selectedCountry)}
           isVisited={visited.includes(selectedCountry)}
           onToggleVisited={() => toggleVisited(selectedCountry)}
           onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
+          initialTab={countryInitialTab}
+          onNavigateCountry={(code) => { setSelectedCountry(code); setCountryInitialTab(null); }}
+        />
+      )}
+
+      {authModalOpen && !user && <AuthModal onClose={() => setAuthModalOpen(false)} />}
+      {profileOpen && user && (
+        <ProfilePanel
+          onClose={() => setProfileOpen(false)}
+          onSave={() => setAvatarRefreshKey((k) => k + 1)}
+          onOpenCountry={(code) => { setSelectedCountry(code); setProfileOpen(false); }}
         />
       )}
 
@@ -299,5 +395,13 @@ export default function App() {
         />
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppInner />
+    </AuthProvider>
   );
 }

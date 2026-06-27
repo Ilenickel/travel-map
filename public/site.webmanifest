@@ -1,6 +1,6 @@
 {
-  "name": "Travel Map — Où partir en vacances ?",
-  "short_name": "Travel Map",
+  "name": "Triply — Où partir en vacances ?",
+  "short_name": "Triply",
   "description": "Carte interactive du monde pour trouver où partir en vacances, consulter la météo et planifier vos voyages.",
   "start_url": "/",
   "display": "standalone",

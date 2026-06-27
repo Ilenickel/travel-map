@@ -3,15 +3,30 @@ import { COUNTRIES } from "../data/index";
 import WikiImage from "./WikiImage";
 import { useWikipediaImages } from "../hooks/useWikipediaImages";
 import { weatherRating } from "../utils/weather";
+import { useAuth } from "../context/AuthContext";
+import ReviewList from "./ReviewList";
+import ReviewForm from "./ReviewForm";
+import { HalfStars } from "./ReviewItem";
+import { supabase } from "../lib/supabase";
+import PublicProfileModal from "./PublicProfileModal";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 
 const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
-export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare }) {
+export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, onNavigateCountry }) {
   const data = COUNTRIES[countryCode];
-  const [activeTab, setActiveTab] = useState("overview");
+  const { user, setAuthModalOpen } = useAuth();
+  const [activeTab, setActiveTab] = useState(initialTab || "overview");
+  const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
+  const [avgRating, setAvgRating] = useState(null);
+  const [reviewCount, setReviewCount] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [editReview, setEditReview] = useState(null);
+  const [userReview, setUserReview] = useState(null);
+  const [sortBy, setSortBy] = useState('date');
+  const [publicProfileId, setPublicProfileId] = useState(null);
   const [visitedTabs, setVisitedTabs] = useState(() => new Set(["overview"]));
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeCity, setActiveCity] = useState(0);
@@ -26,12 +41,31 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   };
 
   useEffect(() => {
-    setActiveTab("overview");
-    setVisitedTabs(new Set(["overview"]));
+    const tab = initialTab || "overview";
+    setActiveTab(tab);
+    setVisitedTabs(new Set([tab]));
     setSelectedDest(null);
     setActiveCity(0);
     setActiveBudget(0);
-  }, [countryCode]);
+    setShowForm(false);
+    setEditReview(null);
+    setSortBy('date');
+  }, [countryCode, initialTab]);
+
+  useEffect(() => {
+    async function loadReviewStats() {
+      const { data: rows } = await supabase.from('reviews').select('*').eq('country_code', countryCode);
+      if (!rows || rows.length === 0) { setAvgRating(null); setReviewCount(0); setUserReview(null); return; }
+      const avg = rows.reduce((s, r) => s + r.rating, 0) / rows.length;
+      setAvgRating(Math.round(avg * 10) / 10);
+      setReviewCount(rows.length);
+      if (user) {
+        const mine = rows.find((r) => r.user_id === user.id) ?? null;
+        setUserReview(mine);
+      }
+    }
+    loadReviewStats();
+  }, [countryCode, user, reviewRefreshKey]);
 
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -51,6 +85,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     { id: "cost",          label: "💴 Coût de la vie" },
     { id: "destinations",  label: "📍 Destinations" },
     { id: "practical",     label: "🧳 Pratique" },
+    { id: "reviews",       label: reviewCount > 0 ? `⭐ Avis (${reviewCount})` : "⭐ Avis" },
   ];
 
   const cityData = data.weatherCities[activeCity];
@@ -76,6 +111,13 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
   return (
     <>
+      {publicProfileId && (
+        <PublicProfileModal
+          userId={publicProfileId}
+          onClose={() => setPublicProfileId(null)}
+          onOpenCountry={(code) => { setPublicProfileId(null); onNavigateCountry?.(code); }}
+        />
+      )}
       <div className="panel-overlay" onClick={onClose} />
       <div className="modal-wrapper">
         <aside className="country-modal">
@@ -436,6 +478,74 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     </div>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* ── REVIEWS ── */}
+            {activeTab === "reviews" && (
+              <div className="tab-content">
+                {avgRating !== null && (
+                  <div className="review-summary-widget">
+                    <div className="review-summary-left">
+                      <span className="review-summary-avg">{avgRating}</span>
+                      <div className="review-summary-detail">
+                        <HalfStars rating={avgRating} size={19} />
+                        <span className="review-summary-count">{reviewCount} {reviewCount === 1 ? 'avis' : 'avis'}</span>
+                      </div>
+                    </div>
+                    <div className="review-summary-right">
+                      <span className="review-summary-label">Note globale</span>
+                      <span className="review-summary-sublabel">des voyageurs Triply</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Contrôles : tri (masqués si aucun avis) + bouton écrire */}
+                {!showForm && (
+                  <div className="reviews-controls">
+                    {reviewCount > 0 && (
+                      <div className="reviews-sort-btns">
+                        <button className={`reviews-sort-btn${sortBy === 'date' ? ' active' : ''}`} onClick={() => setSortBy('date')}>Plus récents</button>
+                        <button className={`reviews-sort-btn${sortBy === 'votes' ? ' active' : ''}`} onClick={() => setSortBy('votes')}>Les plus utiles</button>
+                      </div>
+                    )}
+                    {user && !userReview && (
+                      <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowForm(true)}>✏️ Écrire un avis</button>
+                    )}
+                    {!user && (
+                      <button className="review-login-prompt-sm" onClick={() => setAuthModalOpen(true)}>
+                        Connexion pour noter
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {!showForm && !user && (
+                  <button className="review-login-prompt" onClick={() => setAuthModalOpen(true)}>
+                    ✍️ Connectez-vous pour laisser un avis
+                  </button>
+                )}
+
+                {/* Formulaire */}
+                {showForm && (
+                  <ReviewForm
+                    countryCode={countryCode}
+                    existingReview={editReview}
+                    onSuccess={() => { setShowForm(false); setEditReview(null); setReviewRefreshKey((k) => k + 1); }}
+                    onCancel={() => { setShowForm(false); setEditReview(null); }}
+                  />
+                )}
+
+                <ReviewList
+                  countryCode={countryCode}
+                  currentUserId={user?.id}
+                  refreshKey={reviewRefreshKey}
+                  sortBy={sortBy}
+                  excludeId={showForm && editReview ? editReview.id : null}
+                  onEdit={(review) => { setEditReview(review); setShowForm(true); }}
+                  onDelete={() => setReviewRefreshKey((k) => k + 1)}
+                  onOpenProfile={(uid) => setPublicProfileId(uid)}
+                />
               </div>
             )}
           </div>

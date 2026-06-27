@@ -473,6 +473,20 @@ export const COUNTRIES = {
   WSM: SAMOA,
 };
 
+// Lookup robuste : alpha-3 direct, ou alpha-2 décodé depuis l'emoji drapeau
+const _byAlpha2 = {};
+Object.values(COUNTRIES).forEach((d) => {
+  if (!d.emoji) return;
+  const chars = [...d.emoji];
+  if (chars.length < 2) return;
+  const alpha2 = chars.slice(0, 2).map((c) => String.fromCharCode(c.codePointAt(0) - 0x1F1E6 + 65)).join('');
+  _byAlpha2[alpha2] = d;
+});
+export function findCountry(code) {
+  if (!code) return null;
+  return COUNTRIES[code] || _byAlpha2[code.toUpperCase()] || null;
+}
+
 // Maps D3 numeric country IDs → alpha-3 code.
 // Derived automatically from each country's numericId field.
 export const NUMERIC_TO_CODE = Object.fromEntries(
