@@ -8,30 +8,35 @@ export default function ReviewList({ countryCode, currentUserId, refreshKey, sor
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
+    try {
+      const { data: rows, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('country_code', countryCode);
 
-    const { data: rows } = await supabase
-      .from('reviews')
-      .select('*')
-      .eq('country_code', countryCode);
+      if (error) throw error;
+      if (!rows?.length) { setRawReviews([]); setLoading(false); return; }
 
-    if (!rows?.length) { setRawReviews([]); setLoading(false); return; }
+      const ids = rows.map((r) => r.id);
+      const { data: votesData } = await supabase
+        .from('review_votes')
+        .select('review_id, vote, user_id')
+        .in('review_id', ids);
 
-    const ids = rows.map((r) => r.id);
-    const { data: votesData } = await supabase
-      .from('review_votes')
-      .select('review_id, vote, user_id')
-      .in('review_id', ids);
+      const voteMap = {};
+      (votesData || []).forEach((v) => {
+        if (!voteMap[v.review_id]) voteMap[v.review_id] = { up: 0, down: 0, myVote: null };
+        if (v.vote === 1) voteMap[v.review_id].up++;
+        else if (v.vote === -1) voteMap[v.review_id].down++;
+        if (currentUserId && v.user_id === currentUserId) voteMap[v.review_id].myVote = v.vote;
+      });
 
-    const voteMap = {};
-    (votesData || []).forEach((v) => {
-      if (!voteMap[v.review_id]) voteMap[v.review_id] = { up: 0, down: 0, myVote: null };
-      if (v.vote === 1) voteMap[v.review_id].up++;
-      else if (v.vote === -1) voteMap[v.review_id].down++;
-      if (currentUserId && v.user_id === currentUserId) voteMap[v.review_id].myVote = v.vote;
-    });
-
-    setRawReviews(rows.map((r) => ({ ...r, _votes: voteMap[r.id] || { up: 0, down: 0, myVote: null } })));
-    setLoading(false);
+      setRawReviews(rows.map((r) => ({ ...r, _votes: voteMap[r.id] || { up: 0, down: 0, myVote: null } })));
+    } catch {
+      setRawReviews([]);
+    } finally {
+      setLoading(false);
+    }
   }, [countryCode, currentUserId]);
 
   useEffect(() => { fetchAll(); }, [fetchAll, refreshKey]);

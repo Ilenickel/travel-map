@@ -6,7 +6,7 @@ export function useNotifications(userId) {
   const [loading, setLoading] = useState(true);
   const deletedIds = useRef(new Set());
 
-  const fetch = useCallback(async () => {
+  const fetchNotifs = useCallback(async () => {
     if (!userId) { setNotifications([]); setLoading(false); return; }
     const { data } = await supabase
       .from('notifications')
@@ -14,13 +14,12 @@ export function useNotifications(userId) {
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
       .limit(50);
-    // Filtrer les IDs supprimés localement (en cas de DELETE RLS non encore appliqué)
     setNotifications((data || []).filter((n) => !deletedIds.current.has(n.id)));
     setLoading(false);
   }, [userId]);
 
   useEffect(() => {
-    fetch();
+    fetchNotifs();
     if (!userId) return;
 
     const channel = supabase
@@ -28,17 +27,16 @@ export function useNotifications(userId) {
       .on('postgres_changes', {
         event: 'INSERT', schema: 'public', table: 'notifications',
         filter: `user_id=eq.${userId}`,
-      }, () => fetch())
+      }, () => fetchNotifs())
       .subscribe();
 
-    // Fallback polling toutes les 20s si Realtime non activé sur la table
-    const poll = setInterval(fetch, 20000);
+    const poll = setInterval(fetchNotifs, 20000);
 
     return () => {
       supabase.removeChannel(channel);
       clearInterval(poll);
     };
-  }, [userId, fetch]);
+  }, [userId, fetchNotifs]);
 
   const markRead = useCallback(async (id) => {
     await supabase.from('notifications').update({ read: true }).eq('id', id);

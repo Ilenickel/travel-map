@@ -75,11 +75,12 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       setReviews(data || []);
       setFollowerCount(count || 0);
       setReviewsLoading(false);
-    });
+    }).catch(() => setReviewsLoading(false));
   }, [user]);
 
   async function handleAvatarChange(e) {
     const file = e.target.files?.[0];
+    e.target.value = '';
     if (!file) return;
     const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 400, useWebWorker: true });
     setAvatarFile(compressed);

@@ -54,7 +54,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
   useEffect(() => {
     async function loadReviewStats() {
-      const { data: rows } = await supabase.from('reviews').select('*').eq('country_code', countryCode);
+      const { data: rows } = await supabase.from('reviews').select('id, rating, user_id').eq('country_code', countryCode);
       if (!rows || rows.length === 0) { setAvgRating(null); setReviewCount(0); setUserReview(null); return; }
       const avg = rows.reduce((s, r) => s + r.rating, 0) / rows.length;
       setAvgRating(Math.round(avg * 10) / 10);
@@ -68,10 +68,14 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   }, [countryCode, user, reviewRefreshKey]);
 
   useEffect(() => {
-    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    const handleKey = (e) => {
+      if (e.key !== "Escape") return;
+      if (publicProfileId) { setPublicProfileId(null); return; }
+      onClose();
+    };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [onClose]);
+  }, [onClose, publicProfileId]);
 
   useEffect(() => {
     panelBodyRef.current?.scrollTo({ top: 0 });
@@ -500,8 +504,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                   </div>
                 )}
 
-                {/* Contrôles : tri (masqués si aucun avis) + bouton écrire */}
-                {!showForm && (
+                {/* Contrôles : tri + bouton écrire (masqués si rien à afficher) */}
+                {!showForm && (reviewCount > 0 || (user && !userReview)) && (
                   <div className="reviews-controls">
                     {reviewCount > 0 && (
                       <div className="reviews-sort-btns">
@@ -511,11 +515,6 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     )}
                     {user && !userReview && (
                       <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowForm(true)}>✏️ Écrire un avis</button>
-                    )}
-                    {!user && (
-                      <button className="review-login-prompt-sm" onClick={() => setAuthModalOpen(true)}>
-                        Connexion pour noter
-                      </button>
                     )}
                   </div>
                 )}

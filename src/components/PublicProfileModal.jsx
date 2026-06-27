@@ -50,7 +50,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   useEffect(() => {
     if (!userId) return;
     Promise.all([
-      supabase.from('profiles').select('display_name, avatar_url').eq('id', userId).single(),
+      supabase.from('profiles').select('display_name, avatar_url').eq('id', userId).maybeSingle(),
       supabase.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
     ]).then(([{ data: prof }, { data: revs }, { count }]) => {
@@ -58,7 +58,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
       setReviews(revs || []);
       setFollowerCount(count || 0);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
     if (user && user.id !== userId) {
       supabase.from('follows').select('follower_id')
         .eq('follower_id', user.id).eq('following_id', userId)
