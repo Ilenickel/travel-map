@@ -279,20 +279,6 @@ function AppInner() {
                   <span className="notif-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
                 )}
               </button>
-              {notifOpen && (
-                <NotificationPanel
-                  notifications={notifications}
-                  onClose={() => setNotifOpen(false)}
-                  onOpenCountry={(code, tab) => {
-                    openCountry(code, tab || null);
-                    setNotifOpen(false);
-                  }}
-                  markRead={markRead}
-                  markAllRead={markAllRead}
-                  deleteOne={deleteOne}
-                  deleteAll={deleteAll}
-                />
-              )}
             </div>
           )}
           {user
@@ -317,6 +303,20 @@ function AppInner() {
       )}
       {notifOpen && (
         <div className="favorites-backdrop" onClick={() => setNotifOpen(false)} />
+      )}
+      {notifOpen && user && (
+        <NotificationPanel
+          notifications={notifications}
+          onClose={() => setNotifOpen(false)}
+          onOpenCountry={(code, tab) => {
+            openCountry(code, tab || null);
+            setNotifOpen(false);
+          }}
+          markRead={markRead}
+          markAllRead={markAllRead}
+          deleteOne={deleteOne}
+          deleteAll={deleteAll}
+        />
       )}
 
       <main className={`main${listOpen ? " main--list-open" : ""}`}>
