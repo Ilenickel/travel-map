@@ -2448,6 +2448,16 @@ html, body, #root { height: 100%; }
   }
   .favorites-backdrop { top: 52px; }
 
+  /* Panel notifications */
+  .notif-panel {
+    position: fixed;
+    top: 60px;
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: calc(100dvh - 68px);
+  }
+
   /* Zoom + hint cachés */
   .map-zoom-controls { display: none; }
   .map-hint { display: none; }
