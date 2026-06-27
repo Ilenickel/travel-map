@@ -123,10 +123,11 @@ function AppInner() {
   }, [selectedCountry]);
   const searchContainerRef = useRef(null);
 
-  const handleCountryClick = useCallback((code) => {
+  const openCountry = useCallback((code, tab = null) => {
     setSelectedCountry(code);
-    setCountryInitialTab(null);
+    setCountryInitialTab(tab);
   }, []);
+  const handleCountryClick = useCallback((code) => openCountry(code), [openCountry]);
   const handleClose = useCallback(() => setSelectedCountry(null), []);
 
   const filterActive = filters.tripBudget !== null || filters.month !== null || filters.tags.length > 0;
@@ -231,7 +232,7 @@ function AppInner() {
               <FavoritesPanel
                 favorites={favorites}
                 visited={visited}
-                onSelect={setSelectedCountry}
+                onSelect={(code) => openCountry(code)}
                 onRemove={removeFav}
                 onRemoveVisited={removeVisited}
                 onClose={() => setFavPanelOpen(false)}
@@ -283,8 +284,7 @@ function AppInner() {
                   notifications={notifications}
                   onClose={() => setNotifOpen(false)}
                   onOpenCountry={(code, tab) => {
-                    setCountryInitialTab(tab || null);
-                    setSelectedCountry(code);
+                    openCountry(code, tab || null);
                     setNotifOpen(false);
                   }}
                   markRead={markRead}
@@ -364,7 +364,7 @@ function AppInner() {
           onToggleVisited={() => toggleVisited(selectedCountry)}
           onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
           initialTab={countryInitialTab}
-          onNavigateCountry={(code) => { setSelectedCountry(code); setCountryInitialTab(null); }}
+          onNavigateCountry={(code) => openCountry(code)}
         />
       )}
 
@@ -373,7 +373,7 @@ function AppInner() {
         <ProfilePanel
           onClose={() => setProfileOpen(false)}
           onSave={() => setAvatarRefreshKey((k) => k + 1)}
-          onOpenCountry={(code) => { setSelectedCountry(code); setProfileOpen(false); }}
+          onOpenCountry={(code) => { openCountry(code); setProfileOpen(false); }}
         />
       )}
 
@@ -391,7 +391,7 @@ function AppInner() {
             url.searchParams.delete("compare");
             history.replaceState(null, "", url);
           }}
-          onCountryClick={(code) => { setCompareBase(null); setSelectedCountry(code); }}
+          onCountryClick={(code) => { setCompareBase(null); openCountry(code); }}
         />
       )}
     </div>
