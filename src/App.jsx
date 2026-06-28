@@ -85,8 +85,27 @@ function AppInner() {
     if (v && isMobile()) setFilterOpen(false);
   };
   const [compareBase, setCompareBase] = useState(null);
-  const { favorites, toggle: toggleFav, remove: removeFav } = useFavorites(user);
-  const { visited, toggle: toggleVisited, remove: removeVisited } = useVisited(user);
+  const { favorites, toggle: toggleFav, remove: removeFav, linkToAccount: linkFavs } = useFavorites(user);
+  const { visited, toggle: toggleVisited, remove: removeVisited, linkToAccount: linkVisited } = useVisited(user);
+  const [linkStatus, setLinkStatus] = useState(null); // null | 'syncing' | 'done' | 'error'
+
+  useEffect(() => {
+    if (!user) setLinkStatus(null);
+  }, [user]);
+
+  const handleLinkToAccount = useCallback(async () => {
+    if (!user || linkStatus === 'syncing') return;
+    setLinkStatus('syncing');
+    try {
+      await Promise.all([linkFavs(), linkVisited()]);
+      setLinkStatus('done');
+      setTimeout(() => setLinkStatus(null), 3000);
+    } catch (err) {
+      console.error('[handleLinkToAccount]', err);
+      setLinkStatus('error');
+      setTimeout(() => setLinkStatus(null), 4000);
+    }
+  }, [user, linkStatus, linkFavs, linkVisited]);
   const [hideVisited, setHideVisited] = useState(false);
 
   // Sync URL ↔ pays sélectionné + comparaison
@@ -236,6 +255,9 @@ function AppInner() {
                 onRemove={removeFav}
                 onRemoveVisited={removeVisited}
                 onClose={() => setFavPanelOpen(false)}
+                user={user}
+                onLinkToAccount={handleLinkToAccount}
+                linkStatus={linkStatus}
               />
             )}
           </div>

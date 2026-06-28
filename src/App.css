@@ -3545,3 +3545,66 @@ html, body, #root { height: 100%; }
   background: rgba(0,0,0,0.45); padding: 4px 14px; border-radius: 20px;
   white-space: nowrap;
 }
+
+/* ── Carnet footer — bouton "Lier au compte" ── */
+.favpanel-footer {
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.favpanel-link-btn {
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, opacity 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.favpanel-link-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+}
+
+.favpanel-link-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.favpanel-link-btn.done {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.favpanel-link-btn.done:hover {
+  background: #10b981;
+  color: #fff;
+}
+
+.favpanel-link-btn.error {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.favpanel-link-btn.error:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.favpanel-sync-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+}

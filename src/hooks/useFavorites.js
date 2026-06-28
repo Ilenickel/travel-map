@@ -10,14 +10,16 @@ function loadLocal() {
 
 export function useFavorites(user) {
   const [favorites, setFavorites] = useState(loadLocal);
-  const prevUser = useRef(null);
+  const prevUserId = useRef(null);
+  const latestFavorites = useRef(favorites);
+  latestFavorites.current = favorites;
 
   useEffect(() => {
-    const wasNull = prevUser.current === null;
-    const isNowSet = user !== null && user !== undefined;
+    const nowId = user?.id ?? null;
+    const wasNull = prevUserId.current === null;
+    const isNowSet = nowId !== null;
 
     if (wasNull && isNowSet) {
-      // Login : merger local + DB
       (async () => {
         const local = loadLocal();
         const { data } = await supabase.from('carnet_favorites').select('country_code').eq('user_id', user.id);
@@ -28,23 +30,16 @@ export function useFavorites(user) {
             local.map((code) => ({ user_id: user.id, country_code: code })),
             { onConflict: 'user_id,country_code' }
           );
+          localStorage.removeItem(KEY);
         }
         setFavorites(merged);
-        localStorage.removeItem(KEY);
       })();
-    } else if (!isNowSet && prevUser.current !== null) {
-      // Logout : remettre les données en local
-      const current = favorites;
-      localStorage.setItem(KEY, JSON.stringify(current));
-      setFavorites(current);
-    } else if (isNowSet) {
-      // Déjà connecté au montage
-      supabase.from('carnet_favorites').select('country_code').eq('user_id', user.id).then(({ data }) => {
-        if (data) setFavorites(data.map((r) => r.country_code));
-      });
+    } else if (!isNowSet && prevUserId.current !== null) {
+      localStorage.removeItem(KEY);
+      setFavorites([]);
     }
 
-    prevUser.current = user ?? null;
+    prevUserId.current = nowId;
   }, [user]);
 
   const toggle = useCallback(async (code) => {
@@ -56,14 +51,19 @@ export function useFavorites(user) {
       });
       return;
     }
-    setFavorites((prev) => {
-      if (prev.includes(code)) {
-        supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code);
-        return prev.filter((c) => c !== code);
-      }
-      supabase.from('carnet_favorites').upsert({ user_id: user.id, country_code: code }, { onConflict: 'user_id,country_code' });
-      return [...prev, code];
-    });
+    const isIn = latestFavorites.current.includes(code);
+    setFavorites(isIn
+      ? latestFavorites.current.filter((c) => c !== code)
+      : [...latestFavorites.current, code]
+    );
+    if (isIn) {
+      await supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code);
+    } else {
+      await supabase.from('carnet_favorites').upsert(
+        { user_id: user.id, country_code: code },
+        { onConflict: 'user_id,country_code' }
+      );
+    }
   }, [user]);
 
   const remove = useCallback(async (code) => {
@@ -75,9 +75,28 @@ export function useFavorites(user) {
       });
       return;
     }
+    setFavorites(latestFavorites.current.filter((c) => c !== code));
     await supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code);
-    setFavorites((prev) => prev.filter((c) => c !== code));
   }, [user]);
 
-  return { favorites, toggle, remove };
+  const linkToAccount = useCallback(async () => {
+    if (!user) return;
+    const local = loadLocal();
+    if (local.length > 0) {
+      const { error } = await supabase.from('carnet_favorites').upsert(
+        local.map((code) => ({ user_id: user.id, country_code: code })),
+        { onConflict: 'user_id,country_code' }
+      );
+      if (error) throw new Error(error.message);
+      localStorage.removeItem(KEY);
+    }
+    const { data, error: fetchError } = await supabase
+      .from('carnet_favorites')
+      .select('country_code')
+      .eq('user_id', user.id);
+    if (fetchError) throw new Error(fetchError.message);
+    if (data) setFavorites(data.map((r) => r.country_code));
+  }, [user]);
+
+  return { favorites, toggle, remove, linkToAccount };
 }

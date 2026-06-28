@@ -9,7 +9,7 @@ function getFlagUrl(emoji) {
   return `https://flagcdn.com/w40/${code}.png`;
 }
 
-export default function FavoritesPanel({ favorites, visited, onSelect, onRemove, onRemoveVisited, onClose }) {
+export default function FavoritesPanel({ favorites, visited, onSelect, onRemove, onRemoveVisited, onClose, user, onLinkToAccount, linkStatus }) {
   const ref = useRef(null);
   const [activeTab, setActiveTab] = useState("favorites");
 
@@ -23,6 +23,23 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
 
   const list = activeTab === "favorites" ? favorites : visited;
   const onRemoveItem = activeTab === "favorites" ? onRemove : onRemoveVisited;
+
+  const hasLocalData = (() => {
+    try {
+      const lf = JSON.parse(localStorage.getItem('triply-favorites') || '[]');
+      const lv = JSON.parse(localStorage.getItem('triply-visited') || '[]');
+      return lf.length > 0 || lv.length > 0;
+    } catch { return false; }
+  })();
+
+  const linkBtnLabel = (() => {
+    if (linkStatus === 'syncing') return '⟳ Synchronisation…';
+    if (linkStatus === 'done')    return '✓ Carnet lié au compte !';
+    if (linkStatus === 'error')   return '✗ Erreur — réessayez';
+    return '☁️ Lier au compte';
+  })();
+
+  const linkBtnClass = ['favpanel-link-btn', linkStatus === 'done' ? 'done' : '', linkStatus === 'error' ? 'error' : ''].filter(Boolean).join(' ');
 
   const emptyMsg = activeTab === "favorites"
     ? { icon: "🗺", lines: ["Aucun favori pour l'instant.", "Cliquez sur ★ dans une fiche pays pour en ajouter."] }
@@ -84,6 +101,26 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
               );
             })}
           </ul>
+        )}
+
+        {user && (
+          <div className="favpanel-footer">
+            {hasLocalData ? (
+              <button
+                className={linkBtnClass}
+                onClick={onLinkToAccount}
+                disabled={linkStatus === 'syncing' || linkStatus === 'done'}
+              >
+                {linkBtnLabel}
+              </button>
+            ) : (favorites.length > 0 || visited.length > 0) && !linkStatus ? (
+              <span className="favpanel-sync-hint">Données sauvegardées dans votre compte</span>
+            ) : linkStatus && (
+              <button className={linkBtnClass} disabled>
+                {linkBtnLabel}
+              </button>
+            )}
+          </div>
         )}
       </div>
     </>

@@ -10,11 +10,14 @@ function loadLocal() {
 
 export function useVisited(user) {
   const [visited, setVisited] = useState(loadLocal);
-  const prevUser = useRef(null);
+  const prevUserId = useRef(null);
+  const latestVisited = useRef(visited);
+  latestVisited.current = visited;
 
   useEffect(() => {
-    const wasNull = prevUser.current === null;
-    const isNowSet = user !== null && user !== undefined;
+    const nowId = user?.id ?? null;
+    const wasNull = prevUserId.current === null;
+    const isNowSet = nowId !== null;
 
     if (wasNull && isNowSet) {
       (async () => {
@@ -27,21 +30,16 @@ export function useVisited(user) {
             local.map((code) => ({ user_id: user.id, country_code: code })),
             { onConflict: 'user_id,country_code' }
           );
+          localStorage.removeItem(KEY);
         }
         setVisited(merged);
-        localStorage.removeItem(KEY);
       })();
-    } else if (!isNowSet && prevUser.current !== null) {
-      const current = visited;
-      localStorage.setItem(KEY, JSON.stringify(current));
-      setVisited(current);
-    } else if (isNowSet) {
-      supabase.from('carnet_visited').select('country_code').eq('user_id', user.id).then(({ data }) => {
-        if (data) setVisited(data.map((r) => r.country_code));
-      });
+    } else if (!isNowSet && prevUserId.current !== null) {
+      localStorage.removeItem(KEY);
+      setVisited([]);
     }
 
-    prevUser.current = user ?? null;
+    prevUserId.current = nowId;
   }, [user]);
 
   const toggle = useCallback(async (code) => {
@@ -53,14 +51,19 @@ export function useVisited(user) {
       });
       return;
     }
-    setVisited((prev) => {
-      if (prev.includes(code)) {
-        supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code);
-        return prev.filter((c) => c !== code);
-      }
-      supabase.from('carnet_visited').upsert({ user_id: user.id, country_code: code }, { onConflict: 'user_id,country_code' });
-      return [...prev, code];
-    });
+    const isIn = latestVisited.current.includes(code);
+    setVisited(isIn
+      ? latestVisited.current.filter((c) => c !== code)
+      : [...latestVisited.current, code]
+    );
+    if (isIn) {
+      await supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code);
+    } else {
+      await supabase.from('carnet_visited').upsert(
+        { user_id: user.id, country_code: code },
+        { onConflict: 'user_id,country_code' }
+      );
+    }
   }, [user]);
 
   const remove = useCallback(async (code) => {
@@ -72,9 +75,28 @@ export function useVisited(user) {
       });
       return;
     }
+    setVisited(latestVisited.current.filter((c) => c !== code));
     await supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code);
-    setVisited((prev) => prev.filter((c) => c !== code));
   }, [user]);
 
-  return { visited, toggle, remove };
+  const linkToAccount = useCallback(async () => {
+    if (!user) return;
+    const local = loadLocal();
+    if (local.length > 0) {
+      const { error } = await supabase.from('carnet_visited').upsert(
+        local.map((code) => ({ user_id: user.id, country_code: code })),
+        { onConflict: 'user_id,country_code' }
+      );
+      if (error) throw new Error(error.message);
+      localStorage.removeItem(KEY);
+    }
+    const { data, error: fetchError } = await supabase
+      .from('carnet_visited')
+      .select('country_code')
+      .eq('user_id', user.id);
+    if (fetchError) throw new Error(fetchError.message);
+    if (data) setVisited(data.map((r) => r.country_code));
+  }, [user]);
+
+  return { visited, toggle, remove, linkToAccount };
 }
