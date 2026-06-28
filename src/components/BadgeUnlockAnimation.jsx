@@ -1,45 +1,60 @@
 import { useEffect, useState } from 'react';
+import { BADGE_COLORS } from '../utils/badges';
 
 export default function BadgeUnlockAnimation({ upgrade, onDismiss }) {
-  const [phase, setPhase] = useState('entering');
+  const [step, setStep] = useState(0);
+  // step 0: card enters
+  // step 1: old→new transition plays
+  // step 2: name + button appear
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('old'),  500);
-    const t2 = setTimeout(() => setPhase('new'),  1100);
-    const t3 = setTimeout(() => setPhase('done'), 1700);
-    const t4 = setTimeout(onDismiss, 7000);
-    return () => [t1, t2, t3, t4].forEach(clearTimeout);
+    const t1 = setTimeout(() => setStep(1), 500);
+    const t2 = setTimeout(() => setStep(2), 1600);
+    const t3 = setTimeout(onDismiss, 8000);
+    return () => [t1, t2, t3].forEach(clearTimeout);
   }, [onDismiss]);
 
   const { oldDef, newDef, key } = upgrade;
-  const categoryLabel = { explorateur: 'Explorateur', decouverte: 'Découverte', communaute: 'Communauté' }[key];
+  const { color, bg, label } = BADGE_COLORS[key];
 
   return (
-    <div className="badge-overlay" onClick={onDismiss}>
-      <div className="badge-unlock-card" onClick={(e) => e.stopPropagation()}>
-        <div className="badge-unlock-title">✨ Nouveau badge débloqué !</div>
-        <div className="badge-unlock-category">{categoryLabel}</div>
+    <div className="bua-overlay" onClick={onDismiss}>
+      <div className="bua-card" onClick={(e) => e.stopPropagation()} style={{ '--badge-color': color, '--badge-bg': bg }}>
 
-        <div className="badge-unlock-emoji-area">
-          {phase === 'old' && (
-            <span className="badge-emoji-old">{oldDef.icon}</span>
-          )}
-          {phase === 'new' && (
-            <span className="badge-emoji-old badge-emoji-old--out">{oldDef.icon}</span>
-          )}
-          {(phase === 'new' || phase === 'done') && (
-            <span className="badge-emoji-new">{newDef.icon}</span>
-          )}
+        {/* Header pill */}
+        <div className="bua-pill">{label}</div>
+        <div className="bua-headline">Nouveau niveau débloqué !</div>
+
+        {/* Emoji stage */}
+        <div className="bua-stage">
+          {/* Old badge — visible until step 1 plays out */}
+          <div className={`bua-old ${step >= 1 ? 'bua-old--exit' : ''}`}>
+            <span className="bua-old-emoji">{oldDef.icon}</span>
+            <span className="bua-old-name">{oldDef.name}</span>
+          </div>
+
+          {/* Arrow */}
+          <div className={`bua-arrow ${step >= 1 ? 'bua-arrow--show' : ''}`}>→</div>
+
+          {/* New badge */}
+          <div className={`bua-new ${step >= 1 ? 'bua-new--enter' : ''}`}>
+            <div className="bua-new-ring" />
+            <span className="bua-new-emoji">{newDef.icon}</span>
+          </div>
         </div>
 
-        {phase === 'done' && (
-          <>
-            <div className="badge-unlock-name">{newDef.name}</div>
-            <button className="badge-unlock-dismiss" onClick={onDismiss}>
-              Continuer →
-            </button>
-          </>
-        )}
+        {/* Name */}
+        <div className={`bua-name ${step >= 2 ? 'bua-name--show' : ''}`}>
+          {newDef.name}
+        </div>
+
+        {/* Button */}
+        <button
+          className={`bua-btn ${step >= 2 ? 'bua-btn--show' : ''}`}
+          onClick={onDismiss}
+        >
+          Continuer →
+        </button>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import {
   BADGE_EXPLORATEUR, BADGE_DECOUVERTE, BADGE_COMMUNAUTE,
   computeExplorateurLevel, computeDecouverteLevel,
   computeCommunauteScore, computeCommunauteLevel,
+  ALL_BADGE_DEFS,
 } from './badges';
 
 export async function checkBadgeUpgrades(userId) {
@@ -85,26 +86,27 @@ export async function checkBadgeUpgrades(userId) {
 // Force un upgrade d'un niveau de badge (boutons de test temporaires)
 export async function debugForceBadgeUp(userId, key) {
   if (!userId) return [];
-  const DEFS = {
-    explorateur: BADGE_EXPLORATEUR,
-    decouverte:  BADGE_DECOUVERTE,
-    communaute:  BADGE_COMMUNAUTE,
-  };
   const col = `badge_${key}`;
   const { data: profile } = await supabase.from('profiles').select(col).eq('id', userId).single();
   if (!profile) return [];
   const current = profile[col] ?? 0;
-  const defs = DEFS[key];
+  const defs = ALL_BADGE_DEFS[key];
   const next = Math.min(current + 1, defs.length - 1);
   if (next === current) return [];
   await supabase.from('profiles').update({ [col]: next }).eq('id', userId);
-  return [{
-    key,
-    oldLevel: current,
-    newLevel: next,
-    oldDef: defs[current],
-    newDef: defs[next],
-  }];
+  return [{ key, oldLevel: current, newLevel: next, oldDef: defs[current], newDef: defs[next] }];
+}
+
+// Pourcentage d'utilisateurs ayant ce badge ou un niveau supérieur
+export async function loadBadgePercentile(key, level) {
+  if (level === 0) return null;
+  const col = `badge_${key}`;
+  const [{ count: total }, { count: withBadge }] = await Promise.all([
+    supabase.from('profiles').select('id', { count: 'exact', head: true }),
+    supabase.from('profiles').select('id', { count: 'exact', head: true }).gte(col, level),
+  ]);
+  if (!total) return null;
+  return Math.max(1, Math.round(((withBadge || 0) / total) * 100));
 }
 
 export async function loadBadgeData(userId) {
