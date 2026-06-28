@@ -61,6 +61,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setShowForm(false);
     setEditReview(null);
     setSortBy('date');
+    setDestStats({});
   }, [countryCode, initialTab]);
 
   // Auto-select destination + scroll to review from external navigation (profile/notif)
