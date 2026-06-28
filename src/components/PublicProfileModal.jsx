@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
-import { findCountry } from '../data/index';
+import { findCountry, COUNTRIES } from '../data/index';
+
+function parseDestId(destId) {
+  if (!destId) return { countryCode: null, localId: destId, countryMeta: null, dest: null };
+  for (const code of Object.keys(COUNTRIES)) {
+    if (destId.startsWith(code + '_')) {
+      const localId = destId.slice(code.length + 1);
+      const dest = COUNTRIES[code].destinations?.find((d) => String(d.id) === localId);
+      return { countryCode: code, localId, countryMeta: findCountry(code), dest };
+    }
+  }
+  return { countryCode: null, localId: destId, countryMeta: null, dest: null };
+}
 import { HalfStars } from './ReviewItem';
 import BadgeSection from './BadgeSection';
 
@@ -40,6 +52,8 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   const { user } = useAuth();
   const [profile, setProfile] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [destReviews, setDestReviews] = useState([]);
+  const [reviewsSubTab, setReviewsSubTab] = useState('country');
   const [loading, setLoading] = useState(true);
   const [lightbox, setLightbox] = useState(null);
   const touchStartX = useRef(null);
@@ -53,10 +67,12 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
     Promise.all([
       supabase.from('profiles').select('display_name, avatar_url').eq('id', userId).maybeSingle(),
       supabase.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
+      supabase.from('destination_reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
-    ]).then(([{ data: prof }, { data: revs }, { count }]) => {
+    ]).then(([{ data: prof }, { data: revs }, { data: dRevs }, { count }]) => {
       setProfile(prof || { display_name: 'Voyageur', avatar_url: null });
       setReviews(revs || []);
+      setDestReviews(dRevs || []);
       setFollowerCount(count || 0);
       setLoading(false);
     }).catch(() => setLoading(false));
@@ -99,7 +115,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
       <div className="profile-modal">
 
         {/* Header */}
-        <div className="profile-modal-header">
+        <div className="profile-modal-header profile-modal-header--public">
           <div className="profile-modal-avatar-wrap" style={{ cursor: 'default' }}>
             {profile?.avatar_url
               ? <img src={profile.avatar_url} alt={name} className="profile-modal-avatar-img" />
@@ -109,7 +125,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
           <div className="profile-modal-header-info">
             <span className="profile-modal-name">{name}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{reviews.length} avis</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{reviews.length + destReviews.length} avis</span>
               <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>·</span>
               <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{followerCount} abonné{followerCount !== 1 ? 's' : ''}</span>
             </div>
@@ -130,56 +146,127 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
               }
             </button>
           )}
-          <button className="auth-close" onClick={onClose}>✕</button>
         </div>
+        <button className="auth-close public-profile-close" onClick={onClose}>✕</button>
 
         {/* Badges */}
         {!loading && <BadgeSection userId={userId} ownProfile={false} />}
 
+        {/* Sous-onglets */}
+        <div className="profile-reviews-subtabs">
+          <button className={`profile-reviews-subtab${reviewsSubTab === 'country' ? ' active' : ''}`} onClick={() => setReviewsSubTab('country')}>
+            Pays {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
+          </button>
+          <button className={`profile-reviews-subtab${reviewsSubTab === 'dest' ? ' active' : ''}`} onClick={() => setReviewsSubTab('dest')}>
+            Destinations {destReviews.length > 0 && <span className="profile-tab-count">{destReviews.length}</span>}
+          </button>
+        </div>
+
         {/* Contenu */}
         <div className="profile-reviews-list">
           {loading && <div className="review-list-loading">Chargement…</div>}
-          {!loading && reviews.length === 0 && (
-            <div className="profile-reviews-empty">
-              <span style={{ fontSize: 32 }}>⭐</span>
-              <span>Cet utilisateur n'a pas encore laissé d'avis.</span>
-            </div>
-          )}
-          {reviews.map((r) => {
-            const country = findCountry(r.country_code);
-            const photos = reviewPhotos(r);
-            return (
-              <div key={r.id} className="profile-review-item">
-                <div className="profile-review-top">
-                  <button
-                    className="profile-review-country-btn"
-                    onClick={() => { onOpenCountry?.(r.country_code); onClose(); }}
-                    title={`Ouvrir la fiche ${country?.name}`}
-                  >
-                    <FlagImage country={country} code={r.country_code} />
-                    <span className="profile-review-country">{country?.name || r.country_code}</span>
-                  </button>
-                  <HalfStars rating={r.rating} size={15} />
-                  <span className="profile-review-date">{relativeTime(r.created_at)}</span>
+
+          {/* Avis pays */}
+          {!loading && reviewsSubTab === 'country' && (
+            <>
+              {reviews.length === 0 && (
+                <div className="profile-reviews-empty">
+                  <span style={{ fontSize: 32 }}>⭐</span>
+                  <span>Cet utilisateur n'a pas encore laissé d'avis sur un pays.</span>
                 </div>
-                {r.comment && <p className="profile-review-comment">{r.comment}</p>}
-                {photos.length > 0 && (
-                  <div className="profile-photo-strip">
-                    {photos.map((url, i) => (
-                      <img
-                        key={i}
-                        src={url}
-                        alt=""
-                        className="profile-photo-thumb"
-                        onClick={() => setLightbox({ photos, index: i })}
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                      />
-                    ))}
+              )}
+              {reviews.map((r) => {
+                const country = findCountry(r.country_code);
+                const photos = reviewPhotos(r);
+                return (
+                  <div
+                    key={r.id}
+                    className="profile-review-item profile-review-item--clickable"
+                    onClick={() => { onOpenCountry?.(r.country_code, 'reviews', { reviewId: r.id }); onClose(); }}
+                  >
+                    <div className="profile-review-top">
+                      <div className="profile-review-country-info">
+                        <FlagImage country={country} code={r.country_code} />
+                        <span className="profile-review-country">{country?.name || r.country_code}</span>
+                      </div>
+                      <HalfStars rating={r.rating} size={15} />
+                      <span className="profile-review-date">{relativeTime(r.created_at)}</span>
+                    </div>
+                    {r.comment && <p className="profile-review-comment">{r.comment}</p>}
+                    {photos.length > 0 && (
+                      <div className="profile-photo-strip">
+                        {photos.map((url, i) => (
+                          <img key={i} src={url} alt="" className="profile-photo-thumb"
+                            onClick={(e) => { e.stopPropagation(); setLightbox({ photos, index: i }); }}
+                            onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          })}
+                );
+              })}
+            </>
+          )}
+
+          {/* Avis destinations — groupés par pays */}
+          {!loading && reviewsSubTab === 'dest' && (
+            <>
+              {destReviews.length === 0 && (
+                <div className="profile-reviews-empty">
+                  <span style={{ fontSize: 32 }}>📍</span>
+                  <span>Cet utilisateur n'a pas encore laissé d'avis sur une destination.</span>
+                </div>
+              )}
+              {destReviews.length > 0 && (() => {
+                const groups = {};
+                destReviews.forEach((r) => {
+                  const { countryCode } = parseDestId(r.destination_id);
+                  const key = countryCode || '__unknown__';
+                  if (!groups[key]) groups[key] = [];
+                  groups[key].push(r);
+                });
+                return Object.entries(groups).map(([key, groupReviews]) => {
+                  const countryMeta = key !== '__unknown__' ? findCountry(key) : null;
+                  return (
+                    <div key={key} className="profile-dest-group">
+                      <div className="profile-dest-group-header">
+                        {countryMeta && <FlagImage country={countryMeta} code={key} />}
+                        <span className="profile-dest-group-name">{countryMeta?.name || key}</span>
+                        <span className="profile-dest-group-count">{groupReviews.length} avis</span>
+                      </div>
+                      {groupReviews.map((r) => {
+                        const { dest, countryCode } = parseDestId(r.destination_id);
+                        const photos = reviewPhotos(r);
+                        return (
+                          <div
+                            key={r.id}
+                            className="profile-review-item profile-review-item--clickable profile-review-item--dest"
+                            onClick={() => { if (countryCode) { onOpenCountry?.(countryCode, 'destinations', { destId: parseDestId(r.destination_id).localId, reviewId: r.id }); onClose(); } }}
+                          >
+                            <div className="profile-review-top">
+                              <span className="profile-review-dest-name">📍 {dest?.name || r.destination_id}</span>
+                              <HalfStars rating={r.rating} size={15} />
+                              <span className="profile-review-date">{relativeTime(r.created_at)}</span>
+                            </div>
+                            {r.comment && <p className="profile-review-comment">{r.comment}</p>}
+                            {photos.length > 0 && (
+                              <div className="profile-photo-strip">
+                                {photos.map((url, i) => (
+                                  <img key={i} src={url} alt="" className="profile-photo-thumb"
+                                    onClick={(e) => { e.stopPropagation(); setLightbox({ photos, index: i }); }}
+                                    onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                });
+              })()}
+            </>
+          )}
         </div>
       </div>
 

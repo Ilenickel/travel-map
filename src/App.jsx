@@ -67,6 +67,7 @@ function AppInner() {
   const [avatarRefreshKey, setAvatarRefreshKey] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
   const [countryInitialTab, setCountryInitialTab] = useState(null);
+  const [countryInitialExtra, setCountryInitialExtra] = useState(null);
   const { notifications, unreadCount, markRead, markAllRead, deleteOne, deleteAll } = useNotifications(user?.id);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [filters, setFilters] = useState({ tripBudget: null, month: null, tags: [] });
@@ -164,9 +165,10 @@ function AppInner() {
   }, [selectedCountry]);
   const searchContainerRef = useRef(null);
 
-  const openCountry = useCallback((code, tab = null) => {
+  const openCountry = useCallback((code, tab = null, extra = null) => {
     setSelectedCountry(code);
     setCountryInitialTab(tab);
+    setCountryInitialExtra(extra);
   }, []);
   const handleCountryClick = useCallback((code) => openCountry(code), [openCountry]);
   const handleClose = useCallback(() => setSelectedCountry(null), []);
@@ -353,8 +355,8 @@ function AppInner() {
         <NotificationPanel
           notifications={notifications}
           onClose={() => setNotifOpen(false)}
-          onOpenCountry={(code, tab) => {
-            openCountry(code, tab || null);
+          onOpenCountry={(code, tab, extra) => {
+            openCountry(code, tab || null, extra || null);
             setNotifOpen(false);
           }}
           markRead={markRead}
@@ -402,14 +404,15 @@ function AppInner() {
       {selectedCountry && !compareBase && (
         <CountryPanel
           countryCode={selectedCountry}
-          onClose={() => { handleClose(); setCountryInitialTab(null); }}
+          onClose={() => { handleClose(); setCountryInitialTab(null); setCountryInitialExtra(null); }}
           isFavorite={favorites.includes(selectedCountry)}
           onToggleFavorite={() => toggleFav(selectedCountry)}
           isVisited={visited.includes(selectedCountry)}
           onToggleVisited={() => handleToggleVisited(selectedCountry)}
           onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
           initialTab={countryInitialTab}
-          onNavigateCountry={(code) => openCountry(code)}
+          initialExtra={countryInitialExtra}
+          onNavigateCountry={(code, tab, extra) => openCountry(code, tab || null, extra || null)}
         />
       )}
 
@@ -419,7 +422,7 @@ function AppInner() {
         <ProfilePanel
           onClose={() => setProfileOpen(false)}
           onSave={() => setAvatarRefreshKey((k) => k + 1)}
-          onOpenCountry={(code) => { openCountry(code); setProfileOpen(false); }}
+          onOpenCountry={(code, tab, extra) => { openCountry(code, tab || null, extra || null); setProfileOpen(false); }}
         />
       )}
 

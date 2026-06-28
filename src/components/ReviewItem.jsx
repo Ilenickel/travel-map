@@ -37,7 +37,9 @@ export function HalfStars({ rating, size = 16 }) {
   );
 }
 
-export default function ReviewItem({ review, currentUserId, onDelete, onEdit, onVoteChange, onOpenProfile }) {
+export default function ReviewItem({ review, currentUserId, onDelete, onEdit, onVoteChange, onOpenProfile, isDestReview = false }) {
+  const voteTable = isDestReview ? 'destination_review_votes' : 'review_votes';
+  const reviewTable = isDestReview ? 'destination_reviews' : 'reviews';
   const { user } = useAuth();
   const [profile, setProfile] = useState(null);
   const [lightbox, setLightbox] = useState(null);
@@ -84,9 +86,9 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
       return { up: prev.up + upDelta, down: prev.down + downDelta, mine: newVal };
     });
     if (newVal === null) {
-      await supabase.from('review_votes').delete().eq('review_id', review.id).eq('user_id', user.id);
+      await supabase.from(voteTable).delete().eq('review_id', review.id).eq('user_id', user.id);
     } else {
-      await supabase.from('review_votes').upsert(
+      await supabase.from(voteTable).upsert(
         { review_id: review.id, user_id: user.id, vote: newVal },
         { onConflict: 'user_id,review_id' }
       );
@@ -96,12 +98,12 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
 
   async function handleDelete() {
     setDeleting(true);
-    await supabase.from('reviews').delete().eq('id', review.id);
+    await supabase.from(reviewTable).delete().eq('id', review.id);
     onDelete?.();
   }
 
   return (
-    <div className="review-item">
+    <div className="review-item" id={`review-${review.id}`}>
 
       {/* Ligne 1 : avatar + nom + date + boutons own */}
       <div className="review-item-header">

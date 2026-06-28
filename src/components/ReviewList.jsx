@@ -1,25 +1,32 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import ReviewItem from './ReviewItem';
 
-export default function ReviewList({ countryCode, currentUserId, refreshKey, sortBy = 'date', excludeId, onEdit, onDelete, onOpenProfile }) {
+export default function ReviewList({ countryCode, destinationId, currentUserId, refreshKey, sortBy = 'date', excludeId, onEdit, onDelete, onOpenProfile, emptyMessage, highlightId }) {
   const [rawReviews, setRawReviews] = useState([]);
+  const highlightedRef = useRef(null);
   const [loading, setLoading] = useState(true);
+
+  const isDestReview = !!destinationId;
+  const reviewTable = isDestReview ? 'destination_reviews' : 'reviews';
+  const voteTable = isDestReview ? 'destination_review_votes' : 'review_votes';
+  const filterField = isDestReview ? 'destination_id' : 'country_code';
+  const filterValue = isDestReview ? destinationId : countryCode;
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
       const { data: rows, error } = await supabase
-        .from('reviews')
+        .from(reviewTable)
         .select('*')
-        .eq('country_code', countryCode);
+        .eq(filterField, filterValue);
 
       if (error) throw error;
       if (!rows?.length) { setRawReviews([]); setLoading(false); return; }
 
       const ids = rows.map((r) => r.id);
       const { data: votesData } = await supabase
-        .from('review_votes')
+        .from(voteTable)
         .select('review_id, vote, user_id')
         .in('review_id', ids);
 
@@ -37,37 +44,75 @@ export default function ReviewList({ countryCode, currentUserId, refreshKey, sor
     } finally {
       setLoading(false);
     }
-  }, [countryCode, currentUserId]);
+  }, [reviewTable, voteTable, filterField, filterValue, currentUserId]);
 
   useEffect(() => { fetchAll(); }, [fetchAll, refreshKey]);
 
-  // Tri client-side — ne déclenche pas de rechargement
-  const sorted = useMemo(() => {
-    const copy = [...rawReviews];
+  useEffect(() => {
+    if (!highlightId || !rawReviews.length || highlightedRef.current === highlightId) return;
+    const timer = setTimeout(() => {
+      const el = document.getElementById(`review-${highlightId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        highlightedRef.current = highlightId;
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [rawReviews, highlightId]);
+
+  const myReview = useMemo(() => {
+    if (!currentUserId) return null;
+    return rawReviews.find((r) => r.user_id === currentUserId && r.id !== excludeId) ?? null;
+  }, [rawReviews, currentUserId, excludeId]);
+
+  const sortedOthers = useMemo(() => {
+    const others = rawReviews.filter((r) => {
+      if (r.id === excludeId) return false;
+      if (currentUserId && r.user_id === currentUserId) return false;
+      return true;
+    });
     if (sortBy === 'votes') {
-      copy.sort((a, b) => (b._votes.up - a._votes.up) || (new Date(b.created_at) - new Date(a.created_at)));
+      others.sort((a, b) => (b._votes.up - a._votes.up) || (new Date(b.created_at) - new Date(a.created_at)));
     } else {
-      copy.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      others.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     }
-    return excludeId ? copy.filter((r) => r.id !== excludeId) : copy;
-  }, [rawReviews, sortBy, excludeId]);
+    return others;
+  }, [rawReviews, sortBy, excludeId, currentUserId]);
 
   if (loading) return <div className="review-list-loading">Chargement des avis…</div>;
-  if (!rawReviews.length) return <div className="review-list-empty">Aucun avis pour ce pays. Soyez le premier !</div>;
+  if (!rawReviews.length) return <div className="review-list-empty">{emptyMessage || 'Aucun avis pour ce pays. Soyez le premier !'}</div>;
 
   return (
     <div className="review-list">
-      {sorted.map((r) => (
-        <ReviewItem
-          key={r.id}
-          review={r}
-          currentUserId={currentUserId}
-          onDelete={() => { fetchAll(); onDelete?.(); }}
-          onEdit={() => onEdit?.(r)}
-          onVoteChange={fetchAll}
-          onOpenProfile={onOpenProfile}
-        />
-      ))}
+      {myReview && (
+        <div className="review-mon-avis-block">
+          <span className="review-mon-avis-label">Mon avis</span>
+          <ReviewItem
+            key={myReview.id}
+            review={myReview}
+            currentUserId={currentUserId}
+            onDelete={() => { fetchAll(); onDelete?.(); }}
+            onEdit={() => onEdit?.(myReview)}
+            onVoteChange={fetchAll}
+            onOpenProfile={onOpenProfile}
+            isDestReview={isDestReview}
+          />
+        </div>
+      )}
+      {sortedOthers.length > 0 && (
+        sortedOthers.map((r) => (
+          <ReviewItem
+            key={r.id}
+            review={r}
+            currentUserId={currentUserId}
+            onDelete={() => { fetchAll(); onDelete?.(); }}
+            onEdit={() => onEdit?.(r)}
+            onVoteChange={fetchAll}
+            onOpenProfile={onOpenProfile}
+            isDestReview={isDestReview}
+          />
+        ))
+      )}
     </div>
   );
 }

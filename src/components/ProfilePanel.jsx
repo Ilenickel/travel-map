@@ -2,7 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
-import { findCountry } from '../data/index';
+import { findCountry, COUNTRIES } from '../data/index';
+
+function parseDestId(destId) {
+  if (!destId) return { countryCode: null, localId: destId, countryMeta: null, dest: null };
+  for (const code of Object.keys(COUNTRIES)) {
+    if (destId.startsWith(code + '_')) {
+      const localId = destId.slice(code.length + 1);
+      const dest = COUNTRIES[code].destinations?.find((d) => String(d.id) === localId);
+      return { countryCode: code, localId, countryMeta: findCountry(code), dest };
+    }
+  }
+  return { countryCode: null, localId: destId, countryMeta: null, dest: null };
+}
 import BadgeSection from './BadgeSection';
 import { useBadge } from '../context/BadgeContext';
 
@@ -54,8 +66,12 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [avatarFile, setAvatarFile] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+  const [notifCountryReviews, setNotifCountryReviews] = useState(true);
+  const [notifDestReviews, setNotifDestReviews] = useState(true);
   const [reviews, setReviews] = useState([]);
+  const [destReviews, setDestReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsSubTab, setReviewsSubTab] = useState('country');
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [lightbox, setLightbox] = useState(null); // { photos, index }
   const [followerCount, setFollowerCount] = useState(0);
@@ -69,19 +85,23 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from('profiles').select('display_name, avatar_url').eq('id', user.id).single().then(({ data }) => {
+    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews').eq('id', user.id).single().then(({ data }) => {
       if (data?.display_name) setDisplayName(data.display_name);
       if (data?.avatar_url) { setAvatarUrl(data.avatar_url); setAvatarPreview(data.avatar_url); }
       else setDisplayName(user?.user_metadata?.display_name || user?.user_metadata?.full_name || '');
+      if (data?.notif_country_reviews !== undefined) setNotifCountryReviews(data.notif_country_reviews !== false);
+      if (data?.notif_dest_reviews !== undefined) setNotifDestReviews(data.notif_dest_reviews !== false);
     });
   }, [user]);
 
   useEffect(() => {
     Promise.all([
       supabase.from('reviews').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+      supabase.from('destination_reviews').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', user.id),
-    ]).then(([{ data }, { count }]) => {
+    ]).then(([{ data }, { data: dData }, { count }]) => {
       setReviews(data || []);
+      setDestReviews(dData || []);
       setFollowerCount(count || 0);
       setReviewsLoading(false);
     }).catch(() => setReviewsLoading(false));
@@ -124,6 +144,8 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       id: user.id,
       display_name: displayName.trim(),
       avatar_url: newAvatarUrl,
+      notif_country_reviews: notifCountryReviews,
+      notif_dest_reviews: notifDestReviews,
     });
 
     if (upsertErr) {
@@ -179,7 +201,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
         <div className="profile-modal-tabs">
           <button className={`profile-modal-tab${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>Profil</button>
           <button className={`profile-modal-tab${tab === 'reviews' ? ' active' : ''}`} onClick={() => setTab('reviews')}>
-            Mes avis <span className="profile-tab-count">{reviews.length}</span>
+            Mes avis <span className="profile-tab-count">{reviews.length + destReviews.length}</span>
           </button>
           <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>🏅 Badges</button>
         </div>
@@ -190,6 +212,23 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
             <div className="auth-field">
               <label className="auth-label">Pseudo</label>
               <input className="auth-input" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Ton pseudo" />
+            </div>
+            <div className="profile-notif-prefs">
+              <span className="profile-notif-prefs-title">Notifications du compte</span>
+              <label className="profile-notif-pref-row">
+                <span className="profile-toggle">
+                  <input type="checkbox" checked={notifCountryReviews} onChange={(e) => setNotifCountryReviews(e.target.checked)} />
+                  <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+                </span>
+                <span>Recevoir une notification lorsqu'une personne suivie ajoute un avis sur un pays</span>
+              </label>
+              <label className="profile-notif-pref-row">
+                <span className="profile-toggle">
+                  <input type="checkbox" checked={notifDestReviews} onChange={(e) => setNotifDestReviews(e.target.checked)} />
+                  <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+                </span>
+                <span>Recevoir une notification lorsqu'une personne suivie ajoute un avis sur une destination spécifique</span>
+              </label>
             </div>
             {saveMsg && <div className="auth-success">{saveMsg}</div>}
             <div className="profile-tab-actions">
@@ -212,65 +251,133 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
         {/* Onglet Mes avis */}
         {tab === 'reviews' && (
-          <div className="profile-reviews-list">
-            {reviewsLoading && <div className="review-list-loading">Chargement…</div>}
-            {!reviewsLoading && reviews.length === 0 && (
-              <div className="profile-reviews-empty">
-                <span style={{ fontSize: 32 }}>⭐</span>
-                <span>Tu n'as pas encore laissé d'avis.</span>
-              </div>
-            )}
-            {reviews.map((r) => {
-              const country = findCountry(r.country_code);
-              const photos = reviewPhotos(r);
-              return (
-                <div key={r.id} className="profile-review-item">
-                  {confirmDeleteId === r.id && (
-                    <div className="profile-confirm-overlay">
-                      <div className="profile-confirm-box">
-                        <p className="profile-confirm-msg">Supprimer cet avis ?</p>
-                        <div className="profile-confirm-actions">
-                          <button className="profile-confirm-cancel" onClick={() => setConfirmDeleteId(null)}>Annuler</button>
-                          <button className="profile-confirm-delete" onClick={() => handleDeleteReview(r.id)}>Supprimer</button>
+          <>
+            <div className="profile-reviews-subtabs">
+              <button className={`profile-reviews-subtab${reviewsSubTab === 'country' ? ' active' : ''}`} onClick={() => setReviewsSubTab('country')}>
+                Pays {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
+              </button>
+              <button className={`profile-reviews-subtab${reviewsSubTab === 'dest' ? ' active' : ''}`} onClick={() => setReviewsSubTab('dest')}>
+                Destinations {destReviews.length > 0 && <span className="profile-tab-count">{destReviews.length}</span>}
+              </button>
+            </div>
+            <div className="profile-reviews-list">
+              {reviewsLoading && <div className="review-list-loading">Chargement…</div>}
+
+              {/* Avis pays */}
+              {!reviewsLoading && reviewsSubTab === 'country' && (
+                <>
+                  {reviews.length === 0 && (
+                    <div className="profile-reviews-empty">
+                      <span style={{ fontSize: 32 }}>⭐</span>
+                      <span>Tu n'as pas encore laissé d'avis sur un pays.</span>
+                    </div>
+                  )}
+                  {reviews.map((r) => {
+                    const country = findCountry(r.country_code);
+                    const photos = reviewPhotos(r);
+                    return (
+                      <div
+                        key={r.id}
+                        className="profile-review-item profile-review-item--clickable"
+                        onClick={() => { if (confirmDeleteId !== r.id) { onOpenCountry?.(r.country_code, 'reviews', { reviewId: r.id }); onClose(); } }}
+                      >
+                        {confirmDeleteId === r.id && (
+                          <div className="profile-confirm-overlay">
+                            <div className="profile-confirm-box">
+                              <p className="profile-confirm-msg">Supprimer cet avis ?</p>
+                              <div className="profile-confirm-actions">
+                                <button className="profile-confirm-cancel" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}>Annuler</button>
+                                <button className="profile-confirm-delete" onClick={(e) => { e.stopPropagation(); handleDeleteReview(r.id); }}>Supprimer</button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        <div className="profile-review-top">
+                          <div className="profile-review-country-info">
+                            <FlagImage country={country} code={r.country_code} />
+                            <span className="profile-review-country">{country?.name || r.country_code}</span>
+                          </div>
+                          <span className="profile-review-stars">
+                            {[1,2,3,4,5].map((s) => <span key={s} className={s <= r.rating ? 'star-filled' : 'star-empty'}>★</span>)}
+                          </span>
+                          <span className="profile-review-date">{relativeTime(r.created_at)}</span>
+                          <button className="profile-review-delete-btn" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(r.id); }} title="Supprimer">🗑</button>
                         </div>
+                        {r.comment && <p className="profile-review-comment">{r.comment}</p>}
+                        {photos.length > 0 && (
+                          <div className="profile-photo-strip">
+                            {photos.map((url, i) => (
+                              <img key={i} src={url} alt="" className="profile-photo-thumb" onClick={(e) => { e.stopPropagation(); setLightbox({ photos, index: i }); }} />
+                            ))}
+                          </div>
+                        )}
                       </div>
+                    );
+                  })}
+                </>
+              )}
+
+              {/* Avis destinations — groupés par pays */}
+              {!reviewsLoading && reviewsSubTab === 'dest' && (
+                <>
+                  {destReviews.length === 0 && (
+                    <div className="profile-reviews-empty">
+                      <span style={{ fontSize: 32 }}>📍</span>
+                      <span>Tu n'as pas encore laissé d'avis sur une destination.</span>
                     </div>
                   )}
-                  <div className="profile-review-top">
-                    <button
-                      className="profile-review-country-btn"
-                      onClick={() => { onOpenCountry?.(r.country_code); onClose(); }}
-                      title={`Ouvrir la fiche ${country?.name}`}
-                    >
-                      <FlagImage country={country} code={r.country_code} />
-                      <span className="profile-review-country">{country?.name || r.country_code}</span>
-                    </button>
-                    <span className="profile-review-stars">
-                      {[1,2,3,4,5].map((s) => <span key={s} className={s <= r.rating ? 'star-filled' : 'star-empty'}>★</span>)}
-                    </span>
-                    <span className="profile-review-date">{relativeTime(r.created_at)}</span>
-                    <button className="profile-review-delete-btn" onClick={() => setConfirmDeleteId(r.id)} title="Supprimer">
-                      🗑
-                    </button>
-                  </div>
-                  {r.comment && <p className="profile-review-comment">{r.comment}</p>}
-                  {photos.length > 0 && (
-                    <div className="profile-photo-strip">
-                      {photos.map((url, i) => (
-                        <img
-                          key={i}
-                          src={url}
-                          alt=""
-                          className="profile-photo-thumb"
-                          onClick={() => setLightbox({ photos, index: i })}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  {destReviews.length > 0 && (() => {
+                    const groups = {};
+                    destReviews.forEach((r) => {
+                      const { countryCode } = parseDestId(r.destination_id);
+                      const key = countryCode || '__unknown__';
+                      if (!groups[key]) groups[key] = [];
+                      groups[key].push(r);
+                    });
+                    return Object.entries(groups).map(([key, groupReviews]) => {
+                      const countryMeta = key !== '__unknown__' ? findCountry(key) : null;
+                      return (
+                        <div key={key} className="profile-dest-group">
+                          <div className="profile-dest-group-header">
+                            {countryMeta && <FlagImage country={countryMeta} code={key} />}
+                            <span className="profile-dest-group-name">{countryMeta?.name || key}</span>
+                            <span className="profile-dest-group-count">{groupReviews.length} avis</span>
+                          </div>
+                          {groupReviews.map((r) => {
+                            const { dest, countryCode } = parseDestId(r.destination_id);
+                            const photos = reviewPhotos(r);
+                            return (
+                              <div
+                                key={r.id}
+                                className="profile-review-item profile-review-item--clickable profile-review-item--dest"
+                                onClick={() => { if (countryCode) { onOpenCountry?.(countryCode, 'destinations', { destId: parseDestId(r.destination_id).localId, reviewId: r.id }); onClose(); } }}
+                              >
+                                <div className="profile-review-top">
+                                  <span className="profile-review-dest-name">📍 {dest?.name || r.destination_id}</span>
+                                  <span className="profile-review-stars">
+                                    {[1,2,3,4,5].map((s) => <span key={s} className={s <= r.rating ? 'star-filled' : 'star-empty'}>★</span>)}
+                                  </span>
+                                  <span className="profile-review-date">{relativeTime(r.created_at)}</span>
+                                </div>
+                                {r.comment && <p className="profile-review-comment">{r.comment}</p>}
+                                {photos.length > 0 && (
+                                  <div className="profile-photo-strip">
+                                    {photos.map((url, i) => (
+                                      <img key={i} src={url} alt="" className="profile-photo-thumb" onClick={(e) => { e.stopPropagation(); setLightbox({ photos, index: i }); }} />
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    });
+                  })()}
+                </>
+              )}
+            </div>
+          </>
         )}
       </div>
 

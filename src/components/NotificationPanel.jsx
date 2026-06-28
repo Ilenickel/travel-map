@@ -42,7 +42,20 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
 
   async function handleClick(notif) {
     await markRead(notif.id);
-    onOpenCountry(notif.country_code, 'reviews');
+    if (notif.type === 'new_dest_review') {
+      const underscore = notif.destination_id?.indexOf('_') ?? -1;
+      const destLocalId = underscore !== -1 ? notif.destination_id.slice(underscore + 1) : null;
+      // Cherche l'id de l'avis pour pouvoir scroller jusqu'à lui
+      const { data: rev } = await supabase
+        .from('destination_reviews')
+        .select('id')
+        .eq('destination_id', notif.destination_id)
+        .eq('user_id', notif.from_user_id)
+        .maybeSingle();
+      onOpenCountry(notif.country_code, 'destinations', { destId: destLocalId, reviewId: rev?.id ?? null });
+    } else {
+      onOpenCountry(notif.country_code, 'reviews', { reviewId: notif.review_id ?? null });
+    }
     onClose();
   }
 
@@ -86,11 +99,23 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                   </div>
                   <div className="notif-content">
                     <p className="notif-text">
-                      <strong>{name}</strong> a publié un avis sur{' '}
-                      <span className="notif-country">
-                        <FlagImage country={country} code={n.country_code} />
-                        {' '}{country?.name || n.country_code}
-                      </span>
+                      {n.type === 'new_dest_review' ? (
+                        <>
+                          <strong>{name}</strong> a publié un avis sur <strong>{n.destination_name}</strong>{' '}
+                          <span className="notif-country">
+                            <FlagImage country={country} code={n.country_code} />
+                            {' '}{country?.name || n.country_code}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <strong>{name}</strong> a publié un avis sur{' '}
+                          <span className="notif-country">
+                            <FlagImage country={country} code={n.country_code} />
+                            {' '}{country?.name || n.country_code}
+                          </span>
+                        </>
+                      )}
                     </p>
                     <span className="notif-time">{relativeTime(n.created_at)}</span>
                   </div>

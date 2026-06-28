@@ -755,6 +755,65 @@ html, body, #root { height: 100%; }
 
 .dest-detail-desc { font-size: 14px; line-height: 1.75; color: var(--text-dim); }
 
+/* ── Destination card rating ── */
+.dest-card-rating {
+  display: flex; align-items: center; gap: 5px; margin-top: 6px;
+}
+.dest-card-rating-score { font-size: 11px; font-weight: 700; color: var(--text-dim); }
+.dest-card-rating-count { font-size: 11px; color: var(--text-muted); }
+
+/* ── Destination detail title row ── */
+.dest-detail-title-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.dest-detail-title-group {
+  display: flex; flex-direction: column; gap: 4px; min-width: 0;
+}
+.dest-detail-inline-rating {
+  display: flex; align-items: center; gap: 4px;
+}
+.dest-detail-inline-score { font-size: 12px; font-weight: 700; color: var(--text-dim); }
+.dest-detail-inline-count { font-size: 11px; color: var(--text-muted); }
+
+.dest-see-reviews-btn {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  padding: 7px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+.dest-see-reviews-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--accent-subtle); }
+
+/* ── Destination reviews section ── */
+.dest-reviews-section {
+  display: flex; flex-direction: column; gap: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  margin-top: 24px;
+}
+.dest-reviews-title {
+  font-size: 15px; font-weight: 800; letter-spacing: -0.01em;
+}
+
+/* ── Mon avis ── */
+.review-mon-avis-block {
+  display: flex; flex-direction: column; gap: 8px;
+  padding-bottom: 22px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.review-mon-avis-label {
+  font-size: 11px; font-weight: 700; color: var(--accent2);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
 .must-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
 /* â”€â”€â”€ Must See List â”€â”€â”€ */
@@ -3049,6 +3108,7 @@ html, body, #root { height: 100%; }
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
+.profile-modal-header--public { padding-right: 52px; }
 
 .profile-modal-avatar-wrap {
   position: relative; cursor: pointer; flex-shrink: 0;
@@ -3107,6 +3167,57 @@ html, body, #root { height: 100%; }
   flex: 1; overflow-y: auto; min-height: 0;
   scrollbar-width: thin; scrollbar-color: var(--border) transparent;
 }
+.profile-notif-prefs {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.profile-notif-prefs-title {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+.profile-notif-pref-row {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+  font-size: 13px; color: var(--text-dim);
+  user-select: none;
+}
+.profile-notif-pref-row:hover { color: var(--text); }
+
+/* Toggle switch */
+.profile-toggle {
+  position: relative; display: inline-block;
+  width: 36px; height: 20px; flex-shrink: 0;
+}
+.profile-toggle input { opacity: 0; width: 0; height: 0; }
+.profile-toggle-track {
+  position: absolute; inset: 0;
+  background: var(--surface3);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.profile-toggle input:checked + .profile-toggle-track {
+  background: var(--accent); border-color: var(--accent);
+}
+.profile-toggle-thumb {
+  position: absolute;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform 0.2s;
+  pointer-events: none;
+}
+.profile-toggle input:checked + .profile-toggle-track .profile-toggle-thumb {
+  transform: translateX(16px);
+}
+
 .profile-tab-actions {
   margin-top: auto;
   padding-top: 14px;
@@ -3138,6 +3249,21 @@ html, body, #root { height: 100%; }
 .profile-signout-btn:hover { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.5); }
 
 /* Reviews list */
+/* Sous-onglets avis (pays / destinations) */
+.profile-reviews-subtabs {
+  display: flex; gap: 6px;
+  padding: 12px 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.profile-reviews-subtab {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text-muted); font-size: 13px; font-weight: 600;
+  padding: 6px 4px 10px; cursor: pointer; font-family: inherit;
+  transition: color 0.15s;
+}
+.profile-reviews-subtab.active { color: var(--text); border-bottom-color: var(--accent); }
+.profile-reviews-subtab:hover:not(.active) { color: var(--text-dim); }
+
 .profile-reviews-list {
   display: flex; flex-direction: column; gap: 10px;
   padding: 16px 20px 20px;
@@ -3156,9 +3282,31 @@ html, body, #root { height: 100%; }
   border-radius: 12px; padding: 12px;
   display: flex; flex-direction: column; gap: 8px;
 }
+.profile-review-item--clickable { cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.profile-review-item--clickable:hover { border-color: var(--border-light); background: var(--surface3); }
+.profile-review-item--dest { margin-left: 4px; }
+
 .profile-review-top {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
+.profile-review-country-info {
+  display: flex; align-items: center; gap: 6px; flex: 1;
+}
+.profile-review-dest-name {
+  font-size: 13px; font-weight: 700; color: var(--text); flex: 1;
+}
+
+/* Groupe pays pour avis destinations */
+.profile-dest-group { display: flex; flex-direction: column; gap: 8px; }
+.profile-dest-group-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 0 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.profile-dest-group-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.profile-dest-group-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+
 .profile-review-country-btn {
   display: flex; align-items: center; gap: 6px; flex: 1;
   background: none; border: none; padding: 0; cursor: pointer;
@@ -3368,7 +3516,7 @@ html, body, #root { height: 100%; }
 .review-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* List */
-.review-list { display: flex; flex-direction: column; gap: 14px; }
+.review-list { display: flex; flex-direction: column; gap: 14px; margin-top: 10px; }
 .review-list-loading { color: var(--text-muted); font-size: 14px; }
 .review-list-empty { color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px 0; }
 
