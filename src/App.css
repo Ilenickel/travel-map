@@ -3869,3 +3869,4 @@ html, body, #root { height: 100%; }
 }
 .debug-badge-btn:hover { opacity: 1; }
 
+.debug-badge-btn--reset { background: #dc2626; }

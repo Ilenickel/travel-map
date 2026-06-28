@@ -424,6 +424,13 @@ function AppInner() {
               +1 {key}
             </button>
           ))}
+          <button className="debug-badge-btn debug-badge-btn--reset" onClick={async () => {
+            await supabaseClient.from('profiles').update({
+              badge_explorateur: 0, badge_decouverte: 0, badge_communaute: 0,
+            }).eq('id', user.id);
+          }}>
+            Reset badges
+          </button>
         </div>
       )}
 
