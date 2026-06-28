@@ -2,11 +2,9 @@ import { useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
-import { useBadge } from '../context/BadgeContext';
 
 export default function ReviewForm({ countryCode, existingReview, onSuccess, onCancel }) {
   const { user } = useAuth();
-  const { triggerCheck } = useBadge();
   const [rating, setRating] = useState(existingReview?.rating ?? 0);
   const [hovered, setHovered] = useState(0);
   const [comment, setComment] = useState(existingReview?.comment ?? '');
@@ -108,7 +106,6 @@ export default function ReviewForm({ countryCode, existingReview, onSuccess, onC
       }
     }
 
-    setTimeout(() => triggerCheck(user.id), 300);
     onSuccess();
   }
 

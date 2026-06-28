@@ -3,8 +3,6 @@ import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { findCountry } from '../data/index';
-import BadgeSection from './BadgeSection';
-import { useBadge } from '../context/BadgeContext';
 
 function relativeTime(dateStr) {
   const diff = (Date.now() - new Date(dateStr)) / 1000;
@@ -45,9 +43,7 @@ function FlagImage({ country, code }) {
 
 export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const { user, signOut } = useAuth();
-  const { triggerCheck } = useBadge();
   const [tab, setTab] = useState('profile');
-  const [badgeRefreshKey, setBadgeRefreshKey] = useState(0);
   const [displayName, setDisplayName] = useState('');
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -61,11 +57,6 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [followerCount, setFollowerCount] = useState(0);
   const fileInputRef = useRef(null);
   const touchStartX = useRef(null);
-
-  useEffect(() => {
-    if (!user) return;
-    triggerCheck(user.id).then(() => setBadgeRefreshKey((k) => k + 1));
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!user) return;
@@ -181,7 +172,6 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <button className={`profile-modal-tab${tab === 'reviews' ? ' active' : ''}`} onClick={() => setTab('reviews')}>
             Mes avis <span className="profile-tab-count">{reviews.length}</span>
           </button>
-          <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>🏅 Badges</button>
         </div>
 
         {/* Onglet Profil */}
@@ -200,13 +190,6 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                 Se déconnecter
               </button>
             </div>
-          </div>
-        )}
-
-        {/* Onglet Badges */}
-        {tab === 'badges' && (
-          <div className="profile-tab-content">
-            <BadgeSection userId={user.id} ownProfile={true} refreshKey={badgeRefreshKey} />
           </div>
         )}
 

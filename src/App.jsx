@@ -10,10 +10,7 @@ import AuthModal from "./components/AuthModal";
 import ProfilePanel from "./components/ProfilePanel";
 import NotificationPanel from "./components/NotificationPanel";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { BadgeProvider } from "./context/BadgeContext";
-import BadgeUnlockAnimation from "./components/BadgeUnlockAnimation";
 import { useNotifications } from "./hooks/useNotifications";
-import { checkBadgeUpgrades, debugForceBadgeUp } from "./utils/checkBadgeUpgrades";
 import { supabase as supabaseClient } from "./lib/supabase";
 import { COUNTRIES } from "./data/index";
 import { computeHighlights } from "./utils/filter";
@@ -91,15 +88,6 @@ function AppInner() {
   const { favorites, toggle: toggleFav, remove: removeFav, linkToAccount: linkFavs } = useFavorites(user);
   const { visited, toggle: toggleVisited, remove: removeVisited, linkToAccount: linkVisited } = useVisited(user);
   const [linkStatus, setLinkStatus] = useState(null); // null | 'syncing' | 'done' | 'error'
-  const [pendingUpgrades, setPendingUpgrades] = useState([]);
-
-  const handleBadgeUpgrades = useCallback((upgrades) => {
-    setPendingUpgrades((prev) => [...prev, ...upgrades]);
-  }, []);
-
-  const dismissCurrentUpgrade = useCallback(() => {
-    setPendingUpgrades((prev) => prev.slice(1));
-  }, []);
 
   useEffect(() => {
     if (!user) setLinkStatus(null);
@@ -118,16 +106,6 @@ function AppInner() {
       setTimeout(() => setLinkStatus(null), 4000);
     }
   }, [user, linkStatus, linkFavs, linkVisited]);
-  const handleToggleVisited = useCallback(async (code) => {
-    await toggleVisited(code);
-    if (user) {
-      setTimeout(async () => {
-        const upgrades = await checkBadgeUpgrades(user.id);
-        if (upgrades.length) handleBadgeUpgrades(upgrades);
-      }, 300);
-    }
-  }, [toggleVisited, user, handleBadgeUpgrades]);
-
   const [hideVisited, setHideVisited] = useState(false);
 
   // Sync URL ↔ pays sélectionné + comparaison
@@ -209,7 +187,6 @@ function AppInner() {
   const countryCount = Object.keys(COUNTRIES).length;
 
   return (
-    <BadgeProvider onUpgrades={handleBadgeUpgrades}>
     <div className="app">
       <header className="topbar">
         {/* Gauche : logo */}
@@ -406,32 +383,11 @@ function AppInner() {
           isFavorite={favorites.includes(selectedCountry)}
           onToggleFavorite={() => toggleFav(selectedCountry)}
           isVisited={visited.includes(selectedCountry)}
-          onToggleVisited={() => handleToggleVisited(selectedCountry)}
+          onToggleVisited={() => toggleVisited(selectedCountry)}
           onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
           initialTab={countryInitialTab}
           onNavigateCountry={(code) => openCountry(code)}
         />
-      )}
-
-      {/* ── BOUTONS DEBUG BADGES (temporaires — à supprimer après tests) ── */}
-      {user && (
-        <div className="debug-badge-btns">
-          {['explorateur', 'decouverte', 'communaute'].map((key) => (
-            <button key={key} className="debug-badge-btn" onClick={async () => {
-              const ups = await debugForceBadgeUp(user.id, key);
-              if (ups.length) handleBadgeUpgrades(ups);
-            }}>
-              +1 {key}
-            </button>
-          ))}
-          <button className="debug-badge-btn debug-badge-btn--reset" onClick={async () => {
-            await supabaseClient.from('profiles').update({
-              badge_explorateur: 0, badge_decouverte: 0, badge_communaute: 0,
-            }).eq('id', user.id);
-          }}>
-            Reset badges
-          </button>
-        </div>
       )}
 
       {authModalOpen && !user && <AuthModal onClose={() => setAuthModalOpen(false)} />}
@@ -441,10 +397,6 @@ function AppInner() {
           onSave={() => setAvatarRefreshKey((k) => k + 1)}
           onOpenCountry={(code) => { openCountry(code); setProfileOpen(false); }}
         />
-      )}
-
-      {pendingUpgrades.length > 0 && (
-        <BadgeUnlockAnimation upgrade={pendingUpgrades[0]} onDismiss={dismissCurrentUpgrade} />
       )}
 
       {compareBase && (
@@ -465,7 +417,6 @@ function AppInner() {
         />
       )}
     </div>
-    </BadgeProvider>
   );
 }
 

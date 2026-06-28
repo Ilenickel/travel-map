@@ -3,7 +3,6 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { findCountry } from '../data/index';
 import { HalfStars } from './ReviewItem';
-import BadgeSection from './BadgeSection';
 
 function relativeTime(dateStr) {
   const diff = (Date.now() - new Date(dateStr)) / 1000;
@@ -132,9 +131,6 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
           )}
           <button className="auth-close" onClick={onClose}>✕</button>
         </div>
-
-        {/* Badges */}
-        {!loading && <BadgeSection userId={userId} ownProfile={false} />}
 
         {/* Contenu */}
         <div className="profile-reviews-list">
