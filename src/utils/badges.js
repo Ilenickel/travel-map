@@ -75,7 +75,7 @@ export function computeCommunauteLevel(score) {
 export function badgeProgress(defs, currentLevel, currentValue) {
   const cur = defs[currentLevel];
   const next = defs[currentLevel + 1];
-  if (!next) return { pct: 100, label: 'Niveau maximum atteint', nextName: null, remaining: 0 };
+  if (!cur || !next) return { pct: 100, label: 'Niveau maximum atteint', nextName: null, remaining: 0 };
   const pct = Math.max(0, Math.min(100, Math.round((currentValue / next.threshold) * 100)));
   return { pct, label: `${currentValue} / ${next.threshold}`, nextName: next.name, nextIcon: next.icon, remaining: next.threshold - currentValue };
 }

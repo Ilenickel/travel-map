@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { loadBadgeData, loadBadgePercentile } from '../utils/checkBadgeUpgrades';
 import {
   BADGE_EXPLORATEUR, BADGE_DECOUVERTE, BADGE_COMMUNAUTE,
@@ -45,10 +45,11 @@ function BadgeProgressPopover({ badgeKey, currentLevel, onClose }) {
 }
 
 // ── Badge chip (profil public) ────────────────────────────────
-function PublicBadgeChip({ badgeKey, level, howTo }) {
+function PublicBadgeChip({ badgeKey, level: rawLevel }) {
   const [open, setOpen] = useState(false);
   const [pct, setPct] = useState(null);
   const defs = BADGE_DEFS[badgeKey];
+  const level = Math.min(rawLevel, defs.length - 1);
   const def = defs[level];
   const { color, bg, label } = BADGE_COLORS[badgeKey];
 
@@ -77,10 +78,11 @@ function PublicBadgeChip({ badgeKey, level, howTo }) {
 }
 
 // ── Badge card (propre profil) ────────────────────────────────
-function OwnBadgeCard({ badgeKey, level, value, howTo }) {
+function OwnBadgeCard({ badgeKey, level: rawLevel, value, howTo }) {
   const [open, setOpen] = useState(false);
   const [pct, setPct] = useState(null);
   const defs = BADGE_DEFS[badgeKey];
+  const level = Math.min(rawLevel, defs.length - 1);
   const def = defs[level];
   const isMax = level === defs.length - 1;
   const progress = badgeProgress(defs, level, value);

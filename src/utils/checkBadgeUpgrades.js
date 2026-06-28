@@ -57,9 +57,9 @@ export async function checkBadgeUpgrades(userId) {
   };
 
   const stored = {
-    explorateur: profile.badge_explorateur ?? 0,
-    decouverte:  profile.badge_decouverte  ?? 0,
-    communaute:  profile.badge_communaute  ?? 0,
+    explorateur: Math.min(profile.badge_explorateur ?? 0, BADGE_EXPLORATEUR.length - 1),
+    decouverte:  Math.min(profile.badge_decouverte  ?? 0, BADGE_DECOUVERTE.length  - 1),
+    communaute:  Math.min(profile.badge_communaute  ?? 0, BADGE_COMMUNAUTE.length  - 1),
   };
 
   const upgrades = [];
@@ -166,9 +166,9 @@ export async function loadBadgeData(userId) {
 
   return {
     levels: {
-      explorateur: profile.badge_explorateur ?? 0,
-      decouverte:  profile.badge_decouverte  ?? 0,
-      communaute:  profile.badge_communaute  ?? 0,
+      explorateur: Math.min(profile.badge_explorateur ?? 0, BADGE_EXPLORATEUR.length - 1),
+      decouverte:  Math.min(profile.badge_decouverte  ?? 0, BADGE_DECOUVERTE.length  - 1),
+      communaute:  Math.min(profile.badge_communaute  ?? 0, BADGE_COMMUNAUTE.length  - 1),
     },
     visitedCount:    visitedCount    || 0,
     communauteScore: communauteScore || 0,
