@@ -535,7 +535,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                               <button className={`reviews-sort-btn${destSortBy === 'votes' ? ' active' : ''}`} onClick={() => setDestSortBy('votes')}>Les plus utiles</button>
                             </div>
                           )}
-                          {user && !destUserReview && (
+                                    {user && !destUserReview && (
                             <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setDestShowForm(true)}>✏️ Écrire un avis</button>
                           )}
                         </div>
@@ -568,7 +568,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         onDelete={() => setDestRefreshKey((k) => k + 1)}
                         onOpenProfile={(uid) => setPublicProfileId(uid)}
                         emptyMessage={`Aucun avis pour ${selectedDest.name}. Soyez le premier !`}
-                        highlightId={initialExtra?.reviewId}
+                        highlightId={
+                          initialExtra?.destId && String(selectedDest?.id) === initialExtra.destId
+                            ? initialExtra.reviewId
+                            : null
+                        }
                       />
                     </div>
                   </div>
@@ -687,7 +691,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                   onEdit={(review) => { setEditReview(review); setShowForm(true); }}
                   onDelete={() => setReviewRefreshKey((k) => k + 1)}
                   onOpenProfile={(uid) => setPublicProfileId(uid)}
-                  highlightId={initialExtra?.reviewId}
+                  highlightId={!initialExtra?.destId ? initialExtra?.reviewId : null}
                 />
               </div>
             )}

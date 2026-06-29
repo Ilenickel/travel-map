@@ -51,6 +51,8 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
         .select('id')
         .eq('destination_id', notif.destination_id)
         .eq('user_id', notif.from_user_id)
+        .order('created_at', { ascending: false })
+        .limit(1)
         .maybeSingle();
       onOpenCountry(notif.country_code, 'destinations', { destId: destLocalId, reviewId: rev?.id ?? null });
     } else {

@@ -93,7 +93,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
       // Notifier les abonnés qui ont activé les notifs de destination
       if (!existingReview && countryCode && destinationName) {
         const [{ data: newReview }, { data: followers }] = await Promise.all([
-          supabase.from('destination_reviews').select('id').eq('user_id', user.id).eq('destination_id', destinationId).single(),
+          supabase.from('destination_reviews').select('id').eq('user_id', user.id).eq('destination_id', destinationId).maybeSingle(),
           supabase.from('follows').select('follower_id').eq('following_id', user.id),
         ]);
         if (followers?.length && newReview) {
@@ -142,7 +142,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
       // Notifier les abonnés qui ont activé les notifs d'avis pays
       if (!existingReview) {
         const [{ data: newReview }, { data: followers }] = await Promise.all([
-          supabase.from('reviews').select('id').eq('user_id', user.id).eq('country_code', countryCode).single(),
+          supabase.from('reviews').select('id').eq('user_id', user.id).eq('country_code', countryCode).maybeSingle(),
           supabase.from('follows').select('follower_id').eq('following_id', user.id),
         ]);
         if (followers?.length && newReview) {

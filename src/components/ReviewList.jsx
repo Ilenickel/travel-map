@@ -45,6 +45,7 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
     setOffset(0);
     setHasMore(false);
     setTotalOtherCount(0);
+    highlightScrolledRef.current = null;
 
     try {
       // 1. Avis propre (toujours visible si connecté)
@@ -142,15 +143,23 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
 
   useEffect(() => { fetchInitial(); }, [fetchInitial, refreshKey]);
 
-  // Scroll vers l'avis mis en avant (notif/profil) dès qu'il est dans le DOM
+  // Scroll vers l'avis mis en avant (notif/profil) — déclenché quand le chargement se termine
   useEffect(() => {
-    if (!highlightId || highlightScrolledRef.current === highlightId) return;
-    const el = document.getElementById(`review-${highlightId}`);
-    if (el) {
-      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-      highlightScrolledRef.current = highlightId;
-    }
-  }, [highlightId, myReview, highlightedReview, otherReviews]);
+    if (loading || !highlightId || highlightScrolledRef.current === highlightId) return;
+    let attempts = 0;
+    const tryScroll = () => {
+      const el = document.getElementById(`review-${highlightId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        highlightScrolledRef.current = highlightId;
+      } else if (attempts < 5) {
+        attempts++;
+        timer = setTimeout(tryScroll, 100);
+      }
+    };
+    let timer = setTimeout(tryScroll, 200);
+    return () => clearTimeout(timer);
+  }, [loading, highlightId]);
 
   const sortedOthers = useMemo(() => {
     const list = otherReviews.filter((r) => r.id !== excludeId);
@@ -162,7 +171,10 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
     return list;
   }, [otherReviews, sortBy, excludeId]);
 
-  const isEmpty = !myReview && !highlightedReview && otherReviews.length === 0;
+  const isEmpty =
+    (!myReview || myReview.id === excludeId) &&
+    (!highlightedReview || highlightedReview.id === excludeId) &&
+    sortedOthers.length === 0;
 
   if (loading) return <div className="review-list-loading">Chargement des avis…</div>;
   if (isEmpty) return <div className="review-list-empty">{emptyMessage || 'Aucun avis pour ce pays. Soyez le premier !'}</div>;

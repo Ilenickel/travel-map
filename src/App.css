@@ -3266,7 +3266,7 @@ html, body, #root { height: 100%; }
 }
 .profile-notif-prefs {
   display: flex; flex-direction: column; gap: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 14px 16px;
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -3440,8 +3440,20 @@ html, body, #root { height: 100%; }
   border-bottom: 1px solid var(--border);
   margin-bottom: 6px;
 }
+.profile-dest-group-header--clickable {
+  cursor: pointer;
+  user-select: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 0 -10px 6px;
+  transition: background 0.15s;
+}
+.profile-dest-group-header--clickable:hover { background: var(--surface2); }
 .profile-dest-group-name { font-size: 13px; font-weight: 700; color: var(--text); }
 .profile-dest-group-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.profile-dest-group-chevron { font-size: 9px; color: var(--text-muted); flex-shrink: 0; }
+@keyframes delayed-show { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
+.profile-dest-group-loading { animation: delayed-show 400ms step-end forwards; }
 
 .profile-review-country-btn {
   display: flex; align-items: center; gap: 6px; flex: 1;
