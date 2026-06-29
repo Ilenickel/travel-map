@@ -53,6 +53,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   const [profile, setProfile] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [destReviews, setDestReviews] = useState([]);
+  const [mainTab, setMainTab] = useState('reviews');
   const [reviewsSubTab, setReviewsSubTab] = useState('country');
   const [loading, setLoading] = useState(true);
   const [lightbox, setLightbox] = useState(null);
@@ -61,11 +62,13 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
   const [followHovered, setFollowHovered] = useState(false);
+  const [visitedCountries, setVisitedCountries] = useState([]);
+  const [showVisited, setShowVisited] = useState(true);
 
   useEffect(() => {
     if (!userId) return;
     Promise.all([
-      supabase.from('profiles').select('display_name, avatar_url').eq('id', userId).maybeSingle(),
+      supabase.from('profiles').select('display_name, avatar_url, show_visited_countries').eq('id', userId).maybeSingle(),
       supabase.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('destination_reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
@@ -74,8 +77,13 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
       setReviews(revs || []);
       setDestReviews(dRevs || []);
       setFollowerCount(count || 0);
+      setShowVisited(prof?.show_visited_countries !== false);
       setLoading(false);
     }).catch(() => setLoading(false));
+
+    supabase.from('carnet_visited').select('country_code').eq('user_id', userId)
+      .then(({ data }) => setVisitedCountries((data || []).map((v) => v.country_code)))
+      .catch(() => {});
     if (user && user.id !== userId) {
       supabase.from('follows').select('follower_id')
         .eq('follower_id', user.id).eq('following_id', userId)
@@ -103,6 +111,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   }
 
   const name = profile?.display_name || 'Voyageur';
+  const totalReviews = reviews.length + destReviews.length;
 
   function reviewPhotos(r) {
     if (r.photo_urls?.length) return r.photo_urls;
@@ -112,62 +121,100 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
 
   return (
     <div className="auth-overlay">
-      <div className="profile-modal">
+      <div className="profile-modal profile-modal--public">
 
-        {/* Header */}
-        <div className="profile-modal-header profile-modal-header--public">
-          <div className="profile-modal-avatar-wrap" style={{ cursor: 'default' }}>
-            {profile?.avatar_url
-              ? <img src={profile.avatar_url} alt={name} className="profile-modal-avatar-img" />
-              : <div className="profile-modal-avatar-initials" style={{ background: avatarColor(name) }}>{name[0].toUpperCase()}</div>
-            }
-          </div>
-          <div className="profile-modal-header-info">
-            <span className="profile-modal-name">{name}</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
-              <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{reviews.length + destReviews.length} avis</span>
-              <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>·</span>
-              <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{followerCount} abonné{followerCount !== 1 ? 's' : ''}</span>
-            </div>
-          </div>
-          {user && user.id !== userId && (
-            <button
-              className={`follow-btn${isFollowing ? ' follow-btn--following' : ''}${isFollowing && followHovered ? ' follow-btn--unfollow' : ''}`}
-              onClick={toggleFollow}
-              disabled={followLoading}
-              onMouseEnter={() => setFollowHovered(true)}
-              onMouseLeave={() => setFollowHovered(false)}
-            >
-              {followLoading
-                ? '…'
-                : isFollowing
-                  ? (followHovered ? 'Se désabonner' : 'Abonné ✓')
-                  : 'S\'abonner'
+        {/* Header modernisé */}
+        <div className="pub-profile-header">
+          <div className="pub-profile-hero">
+            <div className="pub-profile-avatar-wrap">
+              {profile?.avatar_url
+                ? <img src={profile.avatar_url} alt={name} className="pub-profile-avatar-img" />
+                : <div className="pub-profile-avatar-initials" style={{ background: avatarColor(name) }}>{name[0].toUpperCase()}</div>
               }
-            </button>
-          )}
+            </div>
+            <div className="pub-profile-info">
+              <h2 className="pub-profile-name">{name}</h2>
+              <div className="pub-profile-stats">
+                <div className="pub-profile-stat">
+                  <span className="pub-profile-stat-value">{totalReviews}</span>
+                  <span className="pub-profile-stat-label">avis</span>
+                </div>
+                <div className="pub-profile-stat-sep" />
+                <div className="pub-profile-stat">
+                  <span className="pub-profile-stat-value">{followerCount}</span>
+                  <span className="pub-profile-stat-label">abonné{followerCount !== 1 ? 's' : ''}</span>
+                </div>
+                {showVisited && visitedCountries.length > 0 && (
+                  <>
+                    <div className="pub-profile-stat-sep" />
+                    <div className="pub-profile-stat">
+                      <span className="pub-profile-stat-value">{visitedCountries.length}</span>
+                      <span className="pub-profile-stat-label">pays visités</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            {user && user.id !== userId && (
+              <button
+                className={`follow-btn${isFollowing ? ' follow-btn--following' : ''}${isFollowing && followHovered ? ' follow-btn--unfollow' : ''}`}
+                onClick={toggleFollow}
+                disabled={followLoading}
+                onMouseEnter={() => setFollowHovered(true)}
+                onMouseLeave={() => setFollowHovered(false)}
+              >
+                {followLoading ? '…' : isFollowing ? (followHovered ? 'Se désabonner' : 'Abonné ✓') : 'S\'abonner'}
+              </button>
+            )}
+          </div>
         </div>
         <button className="auth-close public-profile-close" onClick={onClose}>✕</button>
 
         {/* Badges */}
         {!loading && <BadgeSection userId={userId} ownProfile={false} />}
 
-        {/* Sous-onglets */}
-        <div className="profile-reviews-subtabs">
-          <button className={`profile-reviews-subtab${reviewsSubTab === 'country' ? ' active' : ''}`} onClick={() => setReviewsSubTab('country')}>
-            Pays {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
+        {/* Onglets principaux */}
+        <div className="pub-profile-main-tabs">
+          <button
+            className={`pub-profile-main-tab${mainTab === 'reviews' ? ' active' : ''}`}
+            onClick={() => setMainTab('reviews')}
+          >
+            Avis
+            {totalReviews > 0 && <span className="profile-tab-count">{totalReviews}</span>}
           </button>
-          <button className={`profile-reviews-subtab${reviewsSubTab === 'dest' ? ' active' : ''}`} onClick={() => setReviewsSubTab('dest')}>
-            Destinations {destReviews.length > 0 && <span className="profile-tab-count">{destReviews.length}</span>}
+          <button
+            className={`pub-profile-main-tab${mainTab === 'visited' ? ' active' : ''}`}
+            onClick={() => setMainTab('visited')}
+          >
+            Pays visités
+            {showVisited && visitedCountries.length > 0 && <span className="profile-tab-count">{visitedCountries.length}</span>}
           </button>
         </div>
+
+        {/* Sous-onglets avis */}
+        {mainTab === 'reviews' && (
+          <div className="profile-reviews-subtabs profile-reviews-subtabs--nested">
+            <button
+              className={`profile-reviews-subtab${reviewsSubTab === 'country' ? ' active' : ''}`}
+              onClick={() => setReviewsSubTab('country')}
+            >
+              Pays {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
+            </button>
+            <button
+              className={`profile-reviews-subtab${reviewsSubTab === 'dest' ? ' active' : ''}`}
+              onClick={() => setReviewsSubTab('dest')}
+            >
+              Destinations {destReviews.length > 0 && <span className="profile-tab-count">{destReviews.length}</span>}
+            </button>
+          </div>
+        )}
 
         {/* Contenu */}
         <div className="profile-reviews-list">
           {loading && <div className="review-list-loading">Chargement…</div>}
 
           {/* Avis pays */}
-          {!loading && reviewsSubTab === 'country' && (
+          {!loading && mainTab === 'reviews' && reviewsSubTab === 'country' && (
             <>
               {reviews.length === 0 && (
                 <div className="profile-reviews-empty">
@@ -209,7 +256,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
           )}
 
           {/* Avis destinations — groupés par pays */}
-          {!loading && reviewsSubTab === 'dest' && (
+          {!loading && mainTab === 'reviews' && reviewsSubTab === 'dest' && (
             <>
               {destReviews.length === 0 && (
                 <div className="profile-reviews-empty">
@@ -265,6 +312,42 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
                   );
                 });
               })()}
+            </>
+          )}
+
+          {/* Pays visités */}
+          {!loading && mainTab === 'visited' && (
+            <>
+              {!showVisited && (
+                <div className="profile-reviews-empty">
+                  <span style={{ fontSize: 32 }}>🔒</span>
+                  <span>Cet utilisateur ne partage pas sa liste de pays visités.</span>
+                </div>
+              )}
+              {showVisited && visitedCountries.length === 0 && (
+                <div className="profile-reviews-empty">
+                  <span style={{ fontSize: 32 }}>🗺️</span>
+                  <span>Cet utilisateur n'a pas encore enregistré de pays visités.</span>
+                </div>
+              )}
+              {showVisited && visitedCountries.length > 0 && (
+                <div className="visited-countries-section">
+                  <div className="visited-countries-header">
+                    <span className="visited-countries-count">{visitedCountries.length} pays explorés</span>
+                  </div>
+                  <div className="visited-countries-grid">
+                    {visitedCountries.map((code) => {
+                      const country = findCountry(code);
+                      return (
+                        <div key={code} className="visited-country-chip">
+                          <FlagImage country={country} code={code} />
+                          <span>{country?.name || code}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>

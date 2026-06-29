@@ -68,6 +68,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [saveMsg, setSaveMsg] = useState('');
   const [notifCountryReviews, setNotifCountryReviews] = useState(true);
   const [notifDestReviews, setNotifDestReviews] = useState(true);
+  const [showVisitedCountries, setShowVisitedCountries] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [destReviews, setDestReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
@@ -85,12 +86,13 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews').eq('id', user.id).single().then(({ data }) => {
+    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, show_visited_countries').eq('id', user.id).single().then(({ data }) => {
       if (data?.display_name) setDisplayName(data.display_name);
       if (data?.avatar_url) { setAvatarUrl(data.avatar_url); setAvatarPreview(data.avatar_url); }
       else setDisplayName(user?.user_metadata?.display_name || user?.user_metadata?.full_name || '');
       if (data?.notif_country_reviews !== undefined) setNotifCountryReviews(data.notif_country_reviews !== false);
       if (data?.notif_dest_reviews !== undefined) setNotifDestReviews(data.notif_dest_reviews !== false);
+      if (data?.show_visited_countries !== undefined) setShowVisitedCountries(data.show_visited_countries !== false);
     });
   }, [user]);
 
@@ -146,6 +148,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       avatar_url: newAvatarUrl,
       notif_country_reviews: notifCountryReviews,
       notif_dest_reviews: notifDestReviews,
+      show_visited_countries: showVisitedCountries,
     });
 
     if (upsertErr) {
@@ -228,6 +231,16 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
                 <span>Recevoir une notification lorsqu'une personne suivie ajoute un avis sur une destination spécifique</span>
+              </label>
+            </div>
+            <div className="profile-notif-prefs">
+              <span className="profile-notif-prefs-title">Confidentialité</span>
+              <label className="profile-notif-pref-row">
+                <span className="profile-toggle">
+                  <input type="checkbox" checked={showVisitedCountries} onChange={(e) => setShowVisitedCountries(e.target.checked)} />
+                  <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+                </span>
+                <span>Afficher ma liste de pays visités sur mon profil public</span>
               </label>
             </div>
             {saveMsg && <div className="auth-success">{saveMsg}</div>}

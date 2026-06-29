@@ -3101,6 +3101,103 @@ html, body, #root { height: 100%; }
   display: flex; flex-direction: column;
 }
 
+/* ── Profil public modernisé ── */
+.profile-modal--public {
+  overflow: hidden;
+}
+.pub-profile-header {
+  flex-shrink: 0;
+  background: linear-gradient(150deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.04) 100%);
+  border-bottom: 1px solid var(--border);
+  padding-right: 52px;
+}
+.pub-profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 24px 20px;
+}
+.pub-profile-avatar-wrap {
+  flex-shrink: 0;
+}
+.pub-profile-avatar-img {
+  width: 68px; height: 68px; border-radius: 50%; object-fit: cover;
+  border: 2.5px solid rgba(99,102,241,0.4);
+  box-shadow: 0 0 0 5px rgba(99,102,241,0.09);
+  display: block;
+}
+.pub-profile-avatar-initials {
+  width: 68px; height: 68px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 700; color: #fff;
+  border: 2.5px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 0 5px rgba(99,102,241,0.12);
+}
+.pub-profile-info {
+  display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0;
+}
+.pub-profile-name {
+  margin: 0;
+  font-size: 18px; font-weight: 700; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pub-profile-stats {
+  display: flex; align-items: center; gap: 14px;
+}
+.pub-profile-stat {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+}
+.pub-profile-stat-value {
+  font-size: 15px; font-weight: 700; color: var(--text); line-height: 1;
+}
+.pub-profile-stat-label {
+  font-size: 10px; color: var(--text-muted); line-height: 1; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.pub-profile-stat-sep {
+  width: 1px; height: 22px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Onglets principaux du profil public (Avis / Pays visités) */
+.pub-profile-main-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--surface);
+}
+.pub-profile-main-tab {
+  flex: 1; background: none; border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted); font-size: 13px; font-weight: 600;
+  padding: 12px 10px; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.pub-profile-main-tab:hover { color: var(--text-dim); }
+.pub-profile-main-tab.active { color: var(--accent2); border-bottom-color: var(--accent); }
+
+/* Sous-onglets imbriqués (Pays / Destinations) */
+.profile-reviews-subtabs--nested {
+  display: flex; gap: 6px;
+  padding: 12px 20px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.profile-reviews-subtabs--nested .profile-reviews-subtab {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text-muted); font-size: 13px; font-weight: 600;
+  padding: 0 4px 10px; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; gap: 5px;
+  transition: color 0.15s;
+  margin-bottom: -1px;
+}
+.profile-reviews-subtabs--nested .profile-reviews-subtab:hover { color: var(--text-dim); }
+.profile-reviews-subtabs--nested .profile-reviews-subtab.active {
+  color: var(--text); border-bottom-color: var(--accent);
+}
+
 /* Header avec avatar + infos */
 .profile-modal-header {
   display: flex; align-items: center; gap: 14px;
@@ -3216,6 +3313,45 @@ html, body, #root { height: 100%; }
 }
 .profile-toggle input:checked + .profile-toggle-track .profile-toggle-thumb {
   transform: translateX(16px);
+}
+
+/* ── Pays visités dans le profil public ── */
+.visited-countries-section {
+  padding: 16px 20px;
+}
+.visited-countries-header {
+  margin-bottom: 12px;
+}
+.visited-countries-count {
+  font-size: 12px; font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.visited-countries-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.visited-country-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px 5px 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.visited-country-chip:hover {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.35);
+  transform: translateY(-1px);
+}
+.visited-country-chip .profile-review-flag-img {
+  width: 18px; height: auto; border-radius: 2px;
 }
 
 .profile-tab-actions {
