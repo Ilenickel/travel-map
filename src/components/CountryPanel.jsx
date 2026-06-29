@@ -220,25 +220,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setDestRefreshKey(k => k + 1);
   }
 
-  if (!data) return null;
-
-  const allDestinations = [...(data.destinations ?? []), ...userDestinations];
-
-  const tabs = [
-    { id: "overview",      label: "🗾 Aperçu" },
-    { id: "weather",       label: "🌤 Météo" },
-    { id: "cost",          label: "💴 Coût de la vie" },
-    { id: "destinations",  label: "📍 Destinations" },
-    { id: "practical",     label: "🧳 Pratique" },
-    { id: "reviews",       label: reviewCount > 0 ? `⭐ Avis (${reviewCount})` : "⭐ Avis" },
-  ];
-
-  const cityData = data.weatherCities[activeCity];
-  const tripBudget = data.costOfLiving.tripEstimate.budgets[activeBudget];
-
   // Charge les images uniquement pour les onglets visités (lazy per tab)
   const allSlugs = useMemo(() => {
     const slugs = new Set();
+    if (!data) return [];
     // Header + aperçu : toujours chargés
     data.destinations.slice(0, 3).forEach((d) => d.wikipedia && slugs.add(d.wikipedia));
     // Destinations + mustSee : seulement si l'onglet a été ouvert
@@ -255,6 +240,22 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
   const wikiImages = useWikipediaImages(allSlugs);
   const img = (slug) => wikiImages[slug] ?? null;
+
+  if (!data) return null;
+
+  const allDestinations = [...(data.destinations ?? []), ...userDestinations];
+
+  const tabs = [
+    { id: "overview",      label: "🗾 Aperçu" },
+    { id: "weather",       label: "🌤 Météo" },
+    { id: "cost",          label: "💴 Coût de la vie" },
+    { id: "destinations",  label: "📍 Destinations" },
+    { id: "practical",     label: "🧳 Pratique" },
+    { id: "reviews",       label: reviewCount > 0 ? `⭐ Avis (${reviewCount})` : "⭐ Avis" },
+  ];
+
+  const cityData = data.weatherCities[activeCity];
+  const tripBudget = data.costOfLiving.tripEstimate.budgets[activeBudget];
 
   return (
     <>

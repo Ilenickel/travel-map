@@ -168,7 +168,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
             <div className="filter-group-header">
               <span className="filter-group-title">📅 Mois de voyage</span>
               {month !== null && (
-                <button className="clear-month-btn" onClick={() => { setMonth(null); emit(budgetEnabled, tripBudget, null); }}>
+                <button className="clear-month-btn" onClick={() => { setMonth(null); emit(budgetEnabled, tripBudget, null, selectedTags); }}>
                   ✕
                 </button>
               )}

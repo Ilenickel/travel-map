@@ -320,6 +320,9 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
 
         pathsSelRef.current = paths;
         mapReadyRef.current = true;
+      })
+      .catch((err) => {
+        console.error("[WorldMap] Échec du chargement du fond de carte :", err);
       });
 
     // ── Zoom & pan (desktop + touch pinch) ──
