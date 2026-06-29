@@ -90,32 +90,58 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
         return;
       }
 
-      // Notifier les abonnés qui ont activé les notifs de destination
+      // Notifier le propriétaire de la destination + les abonnés (avec déduplication)
       if (!existingReview && countryCode && destinationName) {
-        const [{ data: newReview }, { data: followers }] = await Promise.all([
+        const destUuid = destinationId.slice(destinationId.indexOf('_') + 1);
+        const [{ data: newReview }, { data: followers }, { data: destOwnerRow }] = await Promise.all([
           supabase.from('destination_reviews').select('id').eq('user_id', user.id).eq('destination_id', destinationId).maybeSingle(),
           supabase.from('follows').select('follower_id').eq('following_id', user.id),
+          supabase.from('user_destinations').select('user_id').eq('id', destUuid).maybeSingle(),
         ]);
-        if (followers?.length && newReview) {
-          const followerIds = followers.map((f) => f.follower_id);
-          const { data: prefs } = await supabase.from('profiles').select('id, notif_dest_reviews').in('id', followerIds);
-          const eligible = followerIds.filter((id) => {
-            const pref = prefs?.find((p) => p.id === id);
-            return pref ? pref.notif_dest_reviews !== false : true;
-          });
-          if (eligible.length) {
-            const { error: notifErr } = await supabase.from('notifications').insert(
-              eligible.map((uid) => ({
-                user_id: uid,
-                type: 'new_dest_review',
-                destination_id: destinationId,
-                destination_name: destinationName,
-                country_code: countryCode,
-                from_user_id: user.id,
-              }))
-            );
-            if (notifErr) console.error('[ReviewForm] notif dest insert:', notifErr);
+
+        const ownerId = destOwnerRow?.user_id ?? null;
+        const notificationsToInsert = [];
+
+        // Notif au propriétaire (si ce n'est pas lui-même qui commente)
+        if (ownerId && ownerId !== user.id && newReview) {
+          const { data: ownerPref } = await supabase.from('profiles').select('notif_my_dest_reviews').eq('id', ownerId).maybeSingle();
+          if (ownerPref?.notif_my_dest_reviews !== false) {
+            notificationsToInsert.push({
+              user_id: ownerId,
+              type: 'new_own_dest_review',
+              destination_id: destinationId,
+              destination_name: destinationName,
+              country_code: countryCode,
+              from_user_id: user.id,
+              review_id: newReview.id,
+            });
           }
+        }
+
+        // Notif aux abonnés — en excluant le propriétaire (déjà notifié plus précisément)
+        if (followers?.length && newReview) {
+          const followerIds = followers.map((f) => f.follower_id).filter((id) => id !== ownerId);
+          if (followerIds.length) {
+            const { data: prefs } = await supabase.from('profiles').select('id, notif_dest_reviews').in('id', followerIds);
+            const eligible = followerIds.filter((id) => {
+              const pref = prefs?.find((p) => p.id === id);
+              return pref ? pref.notif_dest_reviews !== false : true;
+            });
+            eligible.forEach((uid) => notificationsToInsert.push({
+              user_id: uid,
+              type: 'new_dest_review',
+              destination_id: destinationId,
+              destination_name: destinationName,
+              country_code: countryCode,
+              from_user_id: user.id,
+              review_id: newReview.id,
+            }));
+          }
+        }
+
+        if (notificationsToInsert.length) {
+          const { error: notifErr } = await supabase.from('notifications').insert(notificationsToInsert);
+          if (notifErr) console.error('[ReviewForm] notif dest insert:', notifErr);
         }
       }
     } else {

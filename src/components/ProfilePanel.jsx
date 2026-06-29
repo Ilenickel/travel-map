@@ -68,6 +68,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [saveMsg, setSaveMsg] = useState('');
   const [notifCountryReviews, setNotifCountryReviews] = useState(true);
   const [notifDestReviews, setNotifDestReviews] = useState(true);
+  const [notifMyDestReviews, setNotifMyDestReviews] = useState(true);
   const [showVisitedCountries, setShowVisitedCountries] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [destGroupCounts, setDestGroupCounts] = useState({});
@@ -79,6 +80,10 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [lightbox, setLightbox] = useState(null); // { photos, index }
   const [followerCount, setFollowerCount] = useState(0);
+  const [addedDestCounts, setAddedDestCounts] = useState({});
+  const [expandedAddedDestGroups, setExpandedAddedDestGroups] = useState(new Set());
+  const [loadedAddedDestGroups, setLoadedAddedDestGroups] = useState({});
+  const [loadingAddedDestGroups, setLoadingAddedDestGroups] = useState(new Set());
   const fileInputRef = useRef(null);
   const touchStartX = useRef(null);
 
@@ -89,12 +94,13 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, show_visited_countries').eq('id', user.id).single().then(({ data }) => {
+    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, notif_my_dest_reviews, show_visited_countries').eq('id', user.id).single().then(({ data }) => {
       if (data?.display_name) setDisplayName(data.display_name);
       if (data?.avatar_url) { setAvatarUrl(data.avatar_url); setAvatarPreview(data.avatar_url); }
       else setDisplayName(user?.user_metadata?.display_name || user?.user_metadata?.full_name || '');
       if (data?.notif_country_reviews !== undefined) setNotifCountryReviews(data.notif_country_reviews !== false);
       if (data?.notif_dest_reviews !== undefined) setNotifDestReviews(data.notif_dest_reviews !== false);
+      if (data?.notif_my_dest_reviews !== undefined) setNotifMyDestReviews(data.notif_my_dest_reviews !== false);
       if (data?.show_visited_countries !== undefined) setShowVisitedCountries(data.show_visited_countries !== false);
     });
   }, [user]);
@@ -104,7 +110,8 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       supabase.from('reviews').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       supabase.from('destination_reviews').select('destination_id').eq('user_id', user.id),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', user.id),
-    ]).then(([{ data }, { data: dData }, { count }]) => {
+      supabase.from('user_destinations').select('country_code').eq('user_id', user.id),
+    ]).then(([{ data }, { data: dData }, { count }, { data: udData }]) => {
       setReviews(data || []);
       const counts = {};
       (dData || []).forEach((r) => {
@@ -114,6 +121,9 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       });
       setDestGroupCounts(counts);
       setFollowerCount(count || 0);
+      const udCounts = {};
+      (udData || []).forEach(d => { udCounts[d.country_code] = (udCounts[d.country_code] || 0) + 1; });
+      setAddedDestCounts(udCounts);
       setReviewsLoading(false);
     }).catch(() => setReviewsLoading(false));
   }, [user]);
@@ -157,6 +167,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       avatar_url: newAvatarUrl,
       notif_country_reviews: notifCountryReviews,
       notif_dest_reviews: notifDestReviews,
+      notif_my_dest_reviews: notifMyDestReviews,
       show_visited_countries: showVisitedCountries,
     });
 
@@ -206,6 +217,23 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   }
 
   const totalDestReviews = Object.values(destGroupCounts).reduce((a, b) => a + b, 0);
+  const totalAddedDests = Object.values(addedDestCounts).reduce((a, b) => a + b, 0);
+
+  async function toggleAddedDestGroup(key) {
+    if (expandedAddedDestGroups.has(key)) {
+      setExpandedAddedDestGroups(prev => { const s = new Set(prev); s.delete(key); return s; });
+      return;
+    }
+    setExpandedAddedDestGroups(prev => new Set([...prev, key]));
+    if (loadedAddedDestGroups[key] !== undefined) return;
+    setLoadingAddedDestGroups(prev => new Set([...prev, key]));
+    const { data } = await supabase.from('user_destinations')
+      .select('id, name, description, image_url, tags, country_code, created_at')
+      .eq('user_id', user.id).eq('country_code', key)
+      .order('created_at', { ascending: false });
+    setLoadedAddedDestGroups(prev => ({ ...prev, [key]: data || [] }));
+    setLoadingAddedDestGroups(prev => { const s = new Set(prev); s.delete(key); return s; });
+  }
 
   const name = displayName || user?.email || '?';
   const initials = name[0].toUpperCase();
@@ -240,6 +268,9 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <button className={`profile-modal-tab${tab === 'reviews' ? ' active' : ''}`} onClick={() => setTab('reviews')}>
             Mes avis <span className="profile-tab-count">{reviews.length + totalDestReviews}</span>
           </button>
+          <button className={`profile-modal-tab${tab === 'destinations' ? ' active' : ''}`} onClick={() => setTab('destinations')}>
+            Mes destinations {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
+          </button>
           <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>🏅 Badges</button>
         </div>
 
@@ -266,6 +297,13 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                 </span>
                 <span>Recevoir une notification lorsqu'une personne suivie ajoute un avis sur une destination spécifique</span>
               </label>
+              <label className="profile-notif-pref-row">
+                <span className="profile-toggle">
+                  <input type="checkbox" checked={notifMyDestReviews} onChange={(e) => setNotifMyDestReviews(e.target.checked)} />
+                  <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+                </span>
+                <span>Recevoir une notification lorsqu'une personne laisse un avis sur l'une de vos destinations</span>
+              </label>
             </div>
             <div className="profile-notif-prefs">
               <span className="profile-notif-prefs-title">Confidentialité</span>
@@ -286,6 +324,58 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                 Se déconnecter
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Onglet Destinations ajoutées */}
+        {tab === 'destinations' && (
+          <div className="profile-reviews-list">
+            {reviewsLoading && <div className="review-list-loading">Chargement…</div>}
+            {!reviewsLoading && totalAddedDests === 0 && (
+              <div className="profile-reviews-empty">
+                <span style={{ fontSize: 32 }}>📍</span>
+                <span>Tu n'as pas encore ajouté de destination.</span>
+              </div>
+            )}
+            {!reviewsLoading && Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
+              const countryMeta = findCountry(countryCode);
+              const isExpanded = expandedAddedDestGroups.has(countryCode);
+              const isGroupLoading = loadingAddedDestGroups.has(countryCode);
+              const dests = loadedAddedDestGroups[countryCode] || [];
+              return (
+                <div key={countryCode} className="profile-dest-group">
+                  <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
+                    {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
+                    <span className="profile-dest-group-name">{countryMeta?.name || countryCode}</span>
+                    <span className="profile-dest-group-count">{count} destination{count > 1 ? 's' : ''}</span>
+                    <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
+                  </div>
+                  {isExpanded && (
+                    <>
+                      {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>Chargement des destinations…</div>}
+                      {!isGroupLoading && dests.map(dest => (
+                        <div
+                          key={dest.id}
+                          className="profile-added-dest-item profile-review-item--clickable"
+                          onClick={() => { onOpenCountry?.(countryCode, 'destinations', { commDestId: dest.id }); onClose(); }}
+                        >
+                          <img src={dest.image_url} alt={dest.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                          <div className="profile-added-dest-info">
+                            <span className="profile-added-dest-name">📍 {dest.name}</span>
+                            {dest.tags?.length > 0 && (
+                              <div className="profile-added-dest-tags">
+                                {dest.tags.slice(0, 3).map(t => <span key={t} className="tag">{t}</span>)}
+                              </div>
+                            )}
+                            <span className="profile-review-date">{relativeTime(dest.created_at)}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 

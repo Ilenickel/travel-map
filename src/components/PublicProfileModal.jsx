@@ -67,6 +67,10 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   const [followHovered, setFollowHovered] = useState(false);
   const [visitedCountries, setVisitedCountries] = useState([]);
   const [showVisited, setShowVisited] = useState(true);
+  const [addedDestCounts, setAddedDestCounts] = useState({});
+  const [expandedAddedDestGroups, setExpandedAddedDestGroups] = useState(new Set());
+  const [loadedAddedDestGroups, setLoadedAddedDestGroups] = useState({});
+  const [loadingAddedDestGroups, setLoadingAddedDestGroups] = useState(new Set());
 
   useEffect(() => {
     if (!userId) return;
@@ -75,7 +79,8 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
       supabase.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('destination_reviews').select('destination_id').eq('user_id', userId),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
-    ]).then(([{ data: prof }, { data: revs }, { data: dRevs }, { count }]) => {
+      supabase.from('user_destinations').select('country_code').eq('user_id', userId),
+    ]).then(([{ data: prof }, { data: revs }, { data: dRevs }, { count }, { data: udData }]) => {
       setProfile(prof || { display_name: 'Voyageur', avatar_url: null });
       setReviews(revs || []);
       const counts = {};
@@ -87,6 +92,9 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
       setDestGroupCounts(counts);
       setFollowerCount(count || 0);
       setShowVisited(prof?.show_visited_countries !== false);
+      const udCounts = {};
+      (udData || []).forEach(d => { udCounts[d.country_code] = (udCounts[d.country_code] || 0) + 1; });
+      setAddedDestCounts(udCounts);
       setLoading(false);
     }).catch(() => setLoading(false));
 
@@ -143,6 +151,23 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
   }
 
   const totalDestReviews = Object.values(destGroupCounts).reduce((a, b) => a + b, 0);
+  const totalAddedDests = Object.values(addedDestCounts).reduce((a, b) => a + b, 0);
+
+  async function toggleAddedDestGroup(key) {
+    if (expandedAddedDestGroups.has(key)) {
+      setExpandedAddedDestGroups(prev => { const s = new Set(prev); s.delete(key); return s; });
+      return;
+    }
+    setExpandedAddedDestGroups(prev => new Set([...prev, key]));
+    if (loadedAddedDestGroups[key] !== undefined) return;
+    setLoadingAddedDestGroups(prev => new Set([...prev, key]));
+    const { data } = await supabase.from('user_destinations')
+      .select('id, name, description, image_url, tags, country_code, created_at')
+      .eq('user_id', userId).eq('country_code', key)
+      .order('created_at', { ascending: false });
+    setLoadedAddedDestGroups(prev => ({ ...prev, [key]: data || [] }));
+    setLoadingAddedDestGroups(prev => { const s = new Set(prev); s.delete(key); return s; });
+  }
   const name = profile?.display_name || 'Voyageur';
   const totalReviews = reviews.length + totalDestReviews;
 
@@ -214,6 +239,13 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
           >
             Avis
             {totalReviews > 0 && <span className="profile-tab-count">{totalReviews}</span>}
+          </button>
+          <button
+            className={`pub-profile-main-tab${mainTab === 'destinations' ? ' active' : ''}`}
+            onClick={() => setMainTab('destinations')}
+          >
+            Destinations
+            {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
           </button>
           <button
             className={`pub-profile-main-tab${mainTab === 'visited' ? ' active' : ''}`}
@@ -340,6 +372,57 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
                             </div>
                           );
                         })}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </>
+          )}
+
+          {/* Destinations ajoutées */}
+          {!loading && mainTab === 'destinations' && (
+            <>
+              {totalAddedDests === 0 && (
+                <div className="profile-reviews-empty">
+                  <span style={{ fontSize: 32 }}>📍</span>
+                  <span>Cet utilisateur n'a pas encore ajouté de destination.</span>
+                </div>
+              )}
+              {Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
+                const countryMeta = findCountry(countryCode);
+                const isExpanded = expandedAddedDestGroups.has(countryCode);
+                const isGroupLoading = loadingAddedDestGroups.has(countryCode);
+                const dests = loadedAddedDestGroups[countryCode] || [];
+                return (
+                  <div key={countryCode} className="profile-dest-group">
+                    <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
+                      {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
+                      <span className="profile-dest-group-name">{countryMeta?.name || countryCode}</span>
+                      <span className="profile-dest-group-count">{count} destination{count > 1 ? 's' : ''}</span>
+                      <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
+                    </div>
+                    {isExpanded && (
+                      <>
+                        {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>Chargement des destinations…</div>}
+                        {!isGroupLoading && dests.map(dest => (
+                          <div
+                            key={dest.id}
+                            className="profile-added-dest-item profile-review-item--clickable"
+                            onClick={() => { onOpenCountry?.(countryCode, 'destinations', { commDestId: dest.id }); onClose(); }}
+                          >
+                            <img src={dest.image_url} alt={dest.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
+                            <div className="profile-added-dest-info">
+                              <span className="profile-added-dest-name">📍 {dest.name}</span>
+                              {dest.tags?.length > 0 && (
+                                <div className="profile-added-dest-tags">
+                                  {dest.tags.slice(0, 3).map(t => <span key={t} className="tag">{t}</span>)}
+                                </div>
+                              )}
+                              <span className="profile-review-date">{relativeTime(dest.created_at)}</span>
+                            </div>
+                          </div>
+                        ))}
                       </>
                     )}
                   </div>

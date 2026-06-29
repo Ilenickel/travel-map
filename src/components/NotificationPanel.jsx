@@ -42,19 +42,23 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
 
   async function handleClick(notif) {
     await markRead(notif.id);
-    if (notif.type === 'new_dest_review') {
+    if (notif.type === 'new_dest_review' || notif.type === 'new_own_dest_review') {
       const underscore = notif.destination_id?.indexOf('_') ?? -1;
       const destLocalId = underscore !== -1 ? notif.destination_id.slice(underscore + 1) : null;
-      // Cherche l'id de l'avis pour pouvoir scroller jusqu'à lui
-      const { data: rev } = await supabase
-        .from('destination_reviews')
-        .select('id')
-        .eq('destination_id', notif.destination_id)
-        .eq('user_id', notif.from_user_id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      onOpenCountry(notif.country_code, 'destinations', { destId: destLocalId, reviewId: rev?.id ?? null });
+      // Utilise review_id stocké dans la notif, sinon requête de fallback
+      let reviewId = notif.review_id ?? null;
+      if (!reviewId && notif.destination_id && notif.from_user_id) {
+        const { data: rev } = await supabase
+          .from('destination_reviews')
+          .select('id')
+          .eq('destination_id', notif.destination_id)
+          .eq('user_id', notif.from_user_id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        reviewId = rev?.id ?? null;
+      }
+      onOpenCountry(notif.country_code, 'destinations', { destId: destLocalId, reviewId });
     } else {
       onOpenCountry(notif.country_code, 'reviews', { reviewId: notif.review_id ?? null });
     }
@@ -101,7 +105,11 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                   </div>
                   <div className="notif-content">
                     <p className="notif-text">
-                      {n.type === 'new_dest_review' ? (
+                      {n.type === 'new_own_dest_review' ? (
+                        <>
+                          <strong>{name}</strong> a laissé un avis sur votre destination <strong>{n.destination_name}</strong>
+                        </>
+                      ) : n.type === 'new_dest_review' ? (
                         <>
                           <strong>{name}</strong> a publié un avis sur <strong>{n.destination_name}</strong>{' '}
                           <span className="notif-country">
