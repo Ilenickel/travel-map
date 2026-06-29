@@ -3655,6 +3655,24 @@ html, body, #root { height: 100%; }
 .review-list { display: flex; flex-direction: column; gap: 14px; margin-top: 10px; }
 .review-list-loading { color: var(--text-muted); font-size: 14px; }
 .review-list-empty { color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px 0; }
+.review-load-more-btn {
+  align-self: center;
+  margin-top: 4px;
+  padding: 9px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.review-load-more-btn:hover:not(:disabled) {
+  background: var(--surface3);
+  border-color: rgba(99,102,241,0.4);
+  color: var(--accent2);
+}
+.review-load-more-btn:disabled { opacity: 0.6; cursor: default; }
 
 /* Item */
 .review-item {
