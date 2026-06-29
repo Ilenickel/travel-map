@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
+import { callModeration } from '../lib/moderation';
 import { useAuth } from '../context/AuthContext';
 import { useBadge } from '../context/BadgeContext';
 
@@ -41,160 +42,138 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
     setSubmitting(true);
     setError('');
 
-    const photosToUpload = photos.filter((p) => !p.url);
-    if (photosToUpload.length > 0) {
-      setUploadProgress({ done: 0, total: photosToUpload.length });
-    }
-
-    let uploadedUrls;
     try {
-      // Upload séquentiel pour afficher la progression photo par photo
-      uploadedUrls = [];
-      let done = 0;
-      for (const p of photos) {
-        if (p.url) { uploadedUrls.push(p.url); continue; }
-        const prefix = destinationId ? `dest_${destinationId}` : countryCode;
-        const path = `${user.id}/${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        const { error: uploadErr } = await supabase.storage.from('review-photos').upload(path, p.file);
-        if (uploadErr) throw new Error(uploadErr.message);
-        uploadedUrls.push(supabase.storage.from('review-photos').getPublicUrl(path).data.publicUrl);
-        done++;
-        setUploadProgress({ done, total: photosToUpload.length });
+      const photosToUpload = photos.filter((p) => !p.url);
+      if (photosToUpload.length > 0) {
+        setUploadProgress({ done: 0, total: photosToUpload.length });
       }
-    } catch (err) {
-      console.error('[ReviewForm] upload:', err);
-      setError("Une erreur est survenue lors de l'envoi des photos.");
-      setSubmitting(false);
+
+      let orderedPhotoUrls = [];
+      let newPhotos = [];
+      try {
+        let done = 0;
+        for (const p of photos) {
+          if (p.url) { orderedPhotoUrls.push(p.url); continue; }
+          const prefix = destinationId ? `dest_${destinationId}` : countryCode;
+          const path = `${user.id}/${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+          const { error: uploadErr } = await supabase.storage.from('review-photos').upload(path, p.file);
+          if (uploadErr) throw new Error(uploadErr.message);
+          const url = supabase.storage.from('review-photos').getPublicUrl(path).data.publicUrl;
+          orderedPhotoUrls.push(url);
+          newPhotos.push({ url, path });
+          done++;
+          setUploadProgress({ done, total: photosToUpload.length });
+        }
+      } catch (err) {
+        console.error('[ReviewForm] upload:', err);
+        setError("Une erreur est survenue lors de l'envoi des photos.");
+        setSubmitting(false);
+        setUploadProgress(null);
+        return;
+      }
       setUploadProgress(null);
-      return;
-    }
-    setUploadProgress(null);
 
-    if (destinationId) {
-      const { error: upsertErr } = await supabase.from('destination_reviews').upsert(
-        {
-          user_id: user.id,
-          destination_id: destinationId,
-          rating,
-          comment: comment.trim() || null,
-          photo_url: uploadedUrls[0] ?? null,
-          photo_urls: uploadedUrls,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'user_id,destination_id' }
-      );
-      if (upsertErr) {
-        console.error('[ReviewForm] upsert dest:', upsertErr);
-        setError("Une erreur est survenue lors de la publication de l'avis.");
+      const result = await callModeration('moderate-review', {
+        countryCode,
+        destinationId,
+        rating,
+        comment: comment.trim(),
+        newPhotos,
+        photoUrls: orderedPhotoUrls,
+      });
+
+      if (!result.ok) {
+        setError(result.reason || "La publication n'a pas pu être vérifiée. Réessayez.");
         setSubmitting(false);
         return;
       }
 
-      // Notifier le propriétaire de la destination + les abonnés (avec déduplication)
-      if (!existingReview && countryCode && destinationName) {
-        const destUuid = destinationId.slice(destinationId.indexOf('_') + 1);
-        const [{ data: newReview }, { data: followers }, { data: destOwnerRow }] = await Promise.all([
-          supabase.from('destination_reviews').select('id').eq('user_id', user.id).eq('destination_id', destinationId).maybeSingle(),
-          supabase.from('follows').select('follower_id').eq('following_id', user.id),
-          supabase.from('user_destinations').select('user_id').eq('id', destUuid).maybeSingle(),
-        ]);
+      const reviewId = result.reviewId;
 
-        const ownerId = destOwnerRow?.user_id ?? null;
-        const notificationsToInsert = [];
+      if (destinationId) {
+        if (!existingReview && countryCode && destinationName && reviewId) {
+          const destUuid = destinationId.slice(destinationId.indexOf('_') + 1);
+          const [{ data: followers }, { data: destOwnerRow }] = await Promise.all([
+            supabase.from('follows').select('follower_id').eq('following_id', user.id),
+            supabase.from('user_destinations').select('user_id').eq('id', destUuid).maybeSingle(),
+          ]);
 
-        // Notif au propriétaire (si ce n'est pas lui-même qui commente)
-        if (ownerId && ownerId !== user.id && newReview) {
-          const { data: ownerPref } = await supabase.from('profiles').select('notif_my_dest_reviews').eq('id', ownerId).maybeSingle();
-          if (ownerPref?.notif_my_dest_reviews !== false) {
-            notificationsToInsert.push({
-              user_id: ownerId,
-              type: 'new_own_dest_review',
-              destination_id: destinationId,
-              destination_name: destinationName,
-              country_code: countryCode,
-              from_user_id: user.id,
-              review_id: newReview.id,
-            });
-          }
-        }
+          const ownerId = destOwnerRow?.user_id ?? null;
+          const notificationsToInsert = [];
 
-        // Notif aux abonnés — en excluant le propriétaire (déjà notifié plus précisément)
-        if (followers?.length && newReview) {
-          const followerIds = followers.map((f) => f.follower_id).filter((id) => id !== ownerId);
-          if (followerIds.length) {
-            const { data: prefs } = await supabase.from('profiles').select('id, notif_dest_reviews').in('id', followerIds);
-            const eligible = followerIds.filter((id) => {
-              const pref = prefs?.find((p) => p.id === id);
-              return pref ? pref.notif_dest_reviews !== false : true;
-            });
-            eligible.forEach((uid) => notificationsToInsert.push({
-              user_id: uid,
-              type: 'new_dest_review',
-              destination_id: destinationId,
-              destination_name: destinationName,
-              country_code: countryCode,
-              from_user_id: user.id,
-              review_id: newReview.id,
-            }));
-          }
-        }
-
-        if (notificationsToInsert.length) {
-          const { error: notifErr } = await supabase.from('notifications').insert(notificationsToInsert);
-          if (notifErr) console.error('[ReviewForm] notif dest insert:', notifErr);
-        }
-      }
-    } else {
-      const { error: upsertErr } = await supabase.from('reviews').upsert(
-        {
-          user_id: user.id,
-          country_code: countryCode,
-          rating,
-          comment: comment.trim() || null,
-          photo_url: uploadedUrls[0] ?? null,
-          photo_urls: uploadedUrls,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'user_id,country_code' }
-      );
-
-      if (upsertErr) {
-        console.error('[ReviewForm] upsert:', upsertErr);
-        setError("Une erreur est survenue lors de la publication de l'avis.");
-        setSubmitting(false);
-        return;
-      }
-
-      // Notifier les abonnés qui ont activé les notifs d'avis pays
-      if (!existingReview) {
-        const [{ data: newReview }, { data: followers }] = await Promise.all([
-          supabase.from('reviews').select('id').eq('user_id', user.id).eq('country_code', countryCode).maybeSingle(),
-          supabase.from('follows').select('follower_id').eq('following_id', user.id),
-        ]);
-        if (followers?.length && newReview) {
-          const followerIds = followers.map((f) => f.follower_id);
-          const { data: prefs } = await supabase.from('profiles').select('id, notif_country_reviews').in('id', followerIds);
-          const eligible = followerIds.filter((id) => {
-            const pref = prefs?.find((p) => p.id === id);
-            return pref ? pref.notif_country_reviews !== false : true;
-          });
-          if (eligible.length) {
-            await supabase.from('notifications').insert(
-              eligible.map((uid) => ({
-                user_id: uid,
-                type: 'new_review',
-                review_id: newReview.id,
+          if (ownerId && ownerId !== user.id) {
+            const { data: ownerPref } = await supabase.from('profiles').select('notif_my_dest_reviews').eq('id', ownerId).maybeSingle();
+            if (ownerPref?.notif_my_dest_reviews !== false) {
+              notificationsToInsert.push({
+                user_id: ownerId,
+                type: 'new_own_dest_review',
+                destination_id: destinationId,
+                destination_name: destinationName,
                 country_code: countryCode,
                 from_user_id: user.id,
-              }))
-            );
+                review_id: reviewId,
+              });
+            }
+          }
+
+          if (followers?.length) {
+            const followerIds = followers.map((f) => f.follower_id).filter((id) => id !== ownerId);
+            if (followerIds.length) {
+              const { data: prefs } = await supabase.from('profiles').select('id, notif_dest_reviews').in('id', followerIds);
+              const eligible = followerIds.filter((id) => {
+                const pref = prefs?.find((p) => p.id === id);
+                return pref ? pref.notif_dest_reviews !== false : true;
+              });
+              eligible.forEach((uid) => notificationsToInsert.push({
+                user_id: uid,
+                type: 'new_dest_review',
+                destination_id: destinationId,
+                destination_name: destinationName,
+                country_code: countryCode,
+                from_user_id: user.id,
+                review_id: reviewId,
+              }));
+            }
+          }
+
+          if (notificationsToInsert.length) {
+            const { error: notifErr } = await supabase.from('notifications').insert(notificationsToInsert);
+            if (notifErr) console.error('[ReviewForm] notif dest insert:', notifErr);
+          }
+        }
+      } else {
+        if (!existingReview && reviewId) {
+          const { data: followers } = await supabase.from('follows').select('follower_id').eq('following_id', user.id);
+          if (followers?.length) {
+            const followerIds = followers.map((f) => f.follower_id);
+            const { data: prefs } = await supabase.from('profiles').select('id, notif_country_reviews').in('id', followerIds);
+            const eligible = followerIds.filter((id) => {
+              const pref = prefs?.find((p) => p.id === id);
+              return pref ? pref.notif_country_reviews !== false : true;
+            });
+            if (eligible.length) {
+              await supabase.from('notifications').insert(
+                eligible.map((uid) => ({
+                  user_id: uid,
+                  type: 'new_review',
+                  review_id: reviewId,
+                  country_code: countryCode,
+                  from_user_id: user.id,
+                }))
+              );
+            }
           }
         }
       }
-    }
 
-    setTimeout(() => triggerCheck(user.id), 300);
-    onSuccess();
+      setTimeout(() => triggerCheck(user.id), 300);
+      onSuccess();
+    } catch (err) {
+      console.error('[ReviewForm] handleSubmit unexpected error:', err);
+      setError("Une erreur inattendue est survenue. Réessayez.");
+      setSubmitting(false);
+      setUploadProgress(null);
+    }
   }
 
   const displayRating = hovered || rating;

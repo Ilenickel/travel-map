@@ -1,6 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
+import { callAdminAction } from '../lib/admin';
+import ReportModal from './ReportModal';
+
+const REASON_LABEL = {
+  photo_obscene: 'Photo obscène',
+  photo_logo: 'Photo avec logo caché',
+  photo_wrongplace: 'Photo ne correspond pas',
+  insult: 'Insulte / propos offensant',
+  politics: 'Contenu politique',
+  spam: 'Spam',
+  wrong_info: 'Informations incorrectes',
+  other: 'Autre',
+};
 
 function relativeTime(dateStr) {
   const diff = (Date.now() - new Date(dateStr)) / 1000;
@@ -37,10 +50,10 @@ export function HalfStars({ rating, size = 16 }) {
   );
 }
 
-export default function ReviewItem({ review, currentUserId, onDelete, onEdit, onVoteChange, onOpenProfile, isDestReview = false }) {
+export default function ReviewItem({ review, currentUserId, onDelete, onEdit, onVoteChange, onOpenProfile, isDestReview = false, hasAlert = false, alertData = null, onAdminAction }) {
   const voteTable = isDestReview ? 'destination_review_votes' : 'review_votes';
   const reviewTable = isDestReview ? 'destination_reviews' : 'reviews';
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [profile, setProfile] = useState(null);
   const [lightbox, setLightbox] = useState(null);
   const touchStartX = useRef(null);
@@ -51,9 +64,25 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
   });
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [adminActing, setAdminActing] = useState(false);
 
   const photos = review.photo_urls?.length ? review.photo_urls : review.photo_url ? [review.photo_url] : [];
   const isOwn = review.user_id === currentUserId;
+
+  // Vérifie en DB si l'utilisateur a déjà signalé cet avis (persiste au-delà de la session locale)
+  useEffect(() => {
+    if (!user || isOwn) return;
+    const contentType = isDestReview ? 'dest_review' : 'review';
+    supabase.from('reports')
+      .select('id')
+      .eq('reporter_id', user.id)
+      .eq('content_type', contentType)
+      .eq('content_id', review.id)
+      .maybeSingle()
+      .then(({ data }) => { if (data) setReported(true); });
+  }, [user, review.id, isOwn, isDestReview]);
 
   useEffect(() => {
     setVotes({ up: review._votes?.up || 0, down: review._votes?.down || 0, mine: review._votes?.myVote ?? null });
@@ -102,10 +131,48 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
     onDelete?.();
   }
 
-  return (
-    <div className="review-item" id={`review-${review.id}`}>
+  async function handleAdminActionLocal(action) {
+    if (adminActing) return;
+    setAdminActing(true);
+    const contentType = isDestReview ? 'dest_review' : 'review';
+    const result = await callAdminAction(action, contentType, review.id);
+    setAdminActing(false);
+    if (result.ok) onAdminAction?.();
+  }
 
-      {/* Ligne 1 : avatar + nom + date + boutons own */}
+  const contentType = isDestReview ? 'dest_review' : 'review';
+
+  return (
+    <>
+    {reportModalOpen && !reported && (
+      <ReportModal
+        contentType={contentType}
+        contentId={review.id}
+        onClose={() => setReportModalOpen(false)}
+        onReported={() => setReported(true)}
+      />
+    )}
+    <div className={`review-item${hasAlert && isAdmin ? ' review-item--alert' : ''}`} id={`review-${review.id}`}>
+
+      {/* Bandeau alerte admin */}
+      {hasAlert && isAdmin && (
+        <div className="admin-alert-bandeau">
+          <div className="admin-alert-bandeau-top">
+            <div className="admin-alert-bandeau-left">
+              <span>🚨</span>
+              <span className="admin-alert-bandeau-title">Contenu signalé</span>
+              {alertData?.reason && <span className="admin-alert-bandeau-reason">{REASON_LABEL[alertData.reason] || alertData.reason}</span>}
+            </div>
+            <div className="admin-alert-bandeau-actions">
+              <button className="admin-inline-btn admin-inline-btn--dismiss" disabled={adminActing} onClick={() => handleAdminActionLocal('dismiss_report')}>Fausse alerte</button>
+              <button className="admin-inline-btn admin-inline-btn--delete" disabled={adminActing} onClick={() => handleAdminActionLocal('delete_content')}>Supprimer</button>
+            </div>
+          </div>
+          {alertData?.detail && <div className="admin-alert-bandeau-detail">« {alertData.detail} »</div>}
+        </div>
+      )}
+
+      {/* Ligne 1 : avatar + nom + date + boutons own + signaler */}
       <div className="review-item-header">
         <Avatar profile={profile} />
         <div className="review-item-meta">
@@ -114,9 +181,9 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
           </button>
           <span className="review-item-date">{relativeTime(review.created_at)}</span>
         </div>
-        {isOwn && (
-          <div className="review-item-own-actions">
-            {confirmDelete ? (
+        <div className="review-item-own-actions">
+          {isOwn ? (
+            confirmDelete ? (
               <div className="review-confirm-delete">
                 <span className="review-confirm-msg">Supprimer ?</span>
                 <button className="review-confirm-yes" onClick={handleDelete} disabled={deleting}>Oui</button>
@@ -131,9 +198,25 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6l1 1h4v2H4V4h4l1-1zM5 8h14l-1 13H6L5 8zm5 2v8h1v-8h-1zm3 0v8h1v-8h-1z"/></svg>
                 </button>
               </>
-            )}
-          </div>
-        )}
+            )
+          ) : user && (
+            <button
+              className={`review-report-btn${reported ? ' reported' : ''}`}
+              onClick={() => !reported && setReportModalOpen(true)}
+              disabled={reported}
+              title={reported ? 'Signalement envoyé' : 'Signaler ce contenu'}
+            >
+              {reported ? '🚩 Signalé' : (
+                <>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
+                  </svg>
+                  Signaler
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Ligne 2 : étoiles */}
@@ -202,5 +285,6 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
         </div>
       )}
     </div>
+    </>
   );
 }

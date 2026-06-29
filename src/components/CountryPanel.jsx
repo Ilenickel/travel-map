@@ -10,15 +10,28 @@ import { HalfStars } from "./ReviewItem";
 import { supabase } from "../lib/supabase";
 import PublicProfileModal from "./PublicProfileModal";
 import DestinationForm from "./DestinationForm";
+import { callAdminAction } from "../lib/admin";
+import ReportModal from "./ReportModal";
+
+const REASON_LABEL = {
+  photo_obscene: 'Photo obscène',
+  photo_logo: 'Photo avec logo caché',
+  photo_wrongplace: 'Photo ne correspond pas',
+  insult: 'Insulte / propos offensant',
+  politics: 'Contenu politique',
+  spam: 'Spam',
+  wrong_info: 'Informations incorrectes',
+  other: 'Autre',
+};
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 
 const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
-export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, onNavigateCountry }) {
+export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, onNavigateCountry, alertIds = new Map(), onAdminAction }) {
   const data = COUNTRIES[countryCode];
-  const { user, setAuthModalOpen } = useAuth();
+  const { user, isAdmin, setAuthModalOpen } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab || "overview");
   const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
   const [avgRating, setAvgRating] = useState(null);
@@ -52,6 +65,9 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   const [editDest, setEditDest] = useState(null);
   const [deletingDestId, setDeletingDestId] = useState(null);
   const [deleteDestError, setDeleteDestError] = useState(false);
+  const [reportedDestIds, setReportedDestIds] = useState(new Set());
+  const [reportModalDestId, setReportModalDestId] = useState(null); // id de la dest dont le modal est ouvert
+  const [adminActingDestId, setAdminActingDestId] = useState(null);
 
   const handleTabChange = (id) => {
     setActiveTab(id);
@@ -220,6 +236,41 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setDestRefreshKey(k => k + 1);
   }
 
+  function handleReportDest(destId, e) {
+    e.stopPropagation();
+    if (!user || reportedDestIds.has(destId)) return;
+    setReportModalDestId(destId);
+  }
+
+  // Charge depuis la DB les destinations déjà signalées par l'utilisateur (pour ce pays)
+  useEffect(() => {
+    if (!user || !userDestinations.length) return;
+    const ids = userDestinations.map((d) => d.id);
+    supabase.from('reports')
+      .select('content_id')
+      .eq('reporter_id', user.id)
+      .eq('content_type', 'destination')
+      .in('content_id', ids)
+      .then(({ data }) => {
+        if (data?.length) {
+          setReportedDestIds(new Set(data.map((r) => r.content_id)));
+        }
+      });
+  }, [user, userDestinations]);
+
+  async function handleAdminActionDest(action, destId, e) {
+    e?.stopPropagation();
+    if (adminActingDestId) return;
+    setAdminActingDestId(destId);
+    const result = await callAdminAction(action, 'destination', destId);
+    setAdminActingDestId(null);
+    if (result.ok) {
+      setSelectedDest(null);
+      setDestRefreshKey((k) => k + 1);
+      onAdminAction?.();
+    }
+  }
+
   // Charge les images uniquement pour les onglets visités (lazy per tab)
   const allSlugs = useMemo(() => {
     const slugs = new Set();
@@ -259,11 +310,20 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
   return (
     <>
+      {reportModalDestId && (
+        <ReportModal
+          contentType="destination"
+          contentId={reportModalDestId}
+          onClose={() => setReportModalDestId(null)}
+          onReported={() => setReportedDestIds((prev) => new Set([...prev, reportModalDestId]))}
+        />
+      )}
       {showDestForm && (
         <div className="dest-form-overlay" onClick={(e) => e.stopPropagation()}>
           <div className="dest-form-modal" onClick={(e) => e.stopPropagation()}>
             <DestinationForm
               countryCode={countryCode}
+              countryName={data.name}
               existingDestination={editDest}
               onSuccess={(dest) => { setShowDestForm(false); setEditDest(null); setDestRefreshKey(k => k + 1); setSelectedDest(dest); }}
               onCancel={() => { setShowDestForm(false); setEditDest(null); }}
@@ -579,6 +639,28 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 {selectedDest ? (
                   <div className="dest-detail">
                     <button className="back-btn" onClick={() => setSelectedDest(null)}>← Retour</button>
+
+                    {/* Bandeau alerte admin sur la destination */}
+                    {selectedDest.isUserDest && isAdmin && alertIds.has(selectedDest.id) && (() => {
+                      const alert = alertIds.get(selectedDest.id);
+                      return (
+                        <div className="admin-alert-bandeau">
+                          <div className="admin-alert-bandeau-top">
+                            <div className="admin-alert-bandeau-left">
+                              <span>🚨</span>
+                              <span className="admin-alert-bandeau-title">Destination signalée</span>
+                              {alert?.reason && <span className="admin-alert-bandeau-reason">{REASON_LABEL[alert.reason] || alert.reason}</span>}
+                            </div>
+                            <div className="admin-alert-bandeau-actions">
+                              <button className="admin-inline-btn admin-inline-btn--dismiss" disabled={!!adminActingDestId} onClick={(e) => handleAdminActionDest('dismiss_report', selectedDest.id, e)}>Fausse alerte</button>
+                              <button className="admin-inline-btn admin-inline-btn--delete" disabled={!!adminActingDestId} onClick={(e) => handleAdminActionDest('delete_content', selectedDest.id, e)}>Supprimer</button>
+                            </div>
+                          </div>
+                          {alert?.detail && <div className="admin-alert-bandeau-detail">« {alert.detail} »</div>}
+                        </div>
+                      );
+                    })()}
+
                     {selectedDest.isUserDest
                       ? <img src={selectedDest.image_url} alt={selectedDest.name} className="dest-detail-img" style={{ objectFit: 'cover' }} />
                       : <WikiImage src={img(selectedDest.wikipedia)} alt={selectedDest.name} className="dest-detail-img" />
@@ -594,12 +676,29 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           </div>
                         )}
                       </div>
-                      <button
-                        className="dest-see-reviews-btn"
-                        onClick={() => destReviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                      >
-                        Voir les avis{destReviewCount > 0 ? ` (${destReviewCount})` : ''}
-                      </button>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                        {/* Bouton signaler (non-propriétaires) — à côté de "Voir les avis" */}
+                        {selectedDest.isUserDest && user && user.id !== selectedDest.user_id && (
+                          <button
+                            className={`review-report-btn${reportedDestIds.has(selectedDest.id) ? ' reported' : ''}`}
+                            disabled={reportedDestIds.has(selectedDest.id)}
+                            onClick={(e) => handleReportDest(selectedDest.id, e)}
+                          >
+                            {reportedDestIds.has(selectedDest.id) ? '🚩 Signalé' : (
+                              <>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
+                                Signaler
+                              </>
+                            )}
+                          </button>
+                        )}
+                        <button
+                          className="dest-see-reviews-btn"
+                          onClick={() => destReviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                        >
+                          Voir les avis{destReviewCount > 0 ? ` (${destReviewCount})` : ''}
+                        </button>
+                      </div>
                     </div>
                     {!selectedDest.isUserDest && <span className="dest-detail-region">{selectedDest.region}</span>}
                     <p className="dest-detail-desc">{selectedDest.description}</p>
@@ -615,6 +714,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       </div>
                     )}
 
+                    {/* Actions propriétaire : modifier / supprimer */}
                     {selectedDest.isUserDest && user?.id === selectedDest.user_id && (
                       <div className="dest-detail-actions">
                         {deletingDestId === selectedDest.id ? (
@@ -712,6 +812,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                             ? initialExtra.reviewId
                             : null
                         }
+                        alertIds={alertIds}
+                        onAdminAction={onAdminAction}
                       />
                     </div>
                   </div>
@@ -834,7 +936,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           </div>
                         </div>
                       ) : (
-                        <div key={dest.id} className="dest-card" onClick={() => setSelectedDest(dest)}>
+                        <div key={dest.id} className={`dest-card${isAdmin && alertIds.has(dest.id) ? ' dest-card--alert' : ''}`} onClick={() => setSelectedDest(dest)}>
                           <div className="dest-card-img-wrap">
                             <img src={dest.image_url} alt={dest.name} className="dest-card-img" style={{ objectFit: 'cover' }} />
                             <span className="dest-card-community-badge">👤</span>
@@ -842,6 +944,23 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           <div className="dest-card-info">
                             <div className="dest-card-top">
                               <span className="dest-card-name">{dest.name}</span>
+                              <div className="dest-card-top-actions" onClick={(e) => e.stopPropagation()}>
+                                {isAdmin && alertIds.has(dest.id) && <span className="dest-card-alert-badge">🚨</span>}
+                                {user && user.id !== dest.user_id && (
+                                  <button
+                                    className={`dest-card-report-btn-inline${reportedDestIds.has(dest.id) ? ' reported' : ''}`}
+                                    disabled={reportedDestIds.has(dest.id)}
+                                    onClick={(e) => handleReportDest(dest.id, e)}
+                                  >
+                                    {reportedDestIds.has(dest.id) ? '🚩 Signalé' : (
+                                      <>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
+                                        Signaler
+                                      </>
+                                    )}
+                                  </button>
+                                )}
+                              </div>
                             </div>
                             <p className="dest-card-desc">
                               {dest.description.length > 90 ? dest.description.slice(0, 90) + '…' : dest.description}
@@ -951,6 +1070,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                   onDelete={() => setReviewRefreshKey((k) => k + 1)}
                   onOpenProfile={(uid) => setPublicProfileId(uid)}
                   highlightId={!initialExtra?.destId ? initialExtra?.reviewId : null}
+                  alertIds={alertIds}
+                  onAdminAction={onAdminAction}
                 />
               </div>
             )}

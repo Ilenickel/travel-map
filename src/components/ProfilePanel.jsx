@@ -58,7 +58,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const { triggerCheck } = useBadge();
   const [tab, setTab] = useState('profile');
   const [badgeRefreshKey, setBadgeRefreshKey] = useState(0);
@@ -288,7 +288,10 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           </div>
           <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarChange} />
           <div className="profile-modal-header-info">
-            <span className="profile-modal-name">{displayName || user?.email}</span>
+            <div className="profile-modal-name-row">
+              <span className="profile-modal-name">{displayName || user?.email}</span>
+              {isAdmin && <span className="admin-badge">🛡️ Admin</span>}
+            </div>
             <span className="profile-modal-email">{user?.email}</span>
             <div className="profile-follow-counts">
               <button className="profile-follow-count-btn" onClick={() => setFollowListOpen('followers')}>

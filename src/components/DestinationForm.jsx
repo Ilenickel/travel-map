@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import imageCompression from "browser-image-compression";
 import { supabase } from "../lib/supabase";
+import { callModeration } from "../lib/moderation";
 import { useAuth } from "../context/AuthContext";
 
 const AVAILABLE_TAGS = [
@@ -11,7 +12,7 @@ const AVAILABLE_TAGS = [
   'Nightlife', 'Panorama', 'Rural', 'Ville',
 ];
 
-export default function DestinationForm({ countryCode, existingDestination, onSuccess, onCancel }) {
+export default function DestinationForm({ countryCode, countryName, existingDestination, onSuccess, onCancel }) {
   const { user } = useAuth();
   const [name, setName] = useState(existingDestination?.name ?? '');
   const [description, setDescription] = useState(existingDestination?.description ?? '');
@@ -112,60 +113,65 @@ export default function DestinationForm({ countryCode, existingDestination, onSu
     }
 
     let finalDestUrl = destImage.url;
+    let coverNewPath = null;
     if (destImage.file) {
       const path = `destinations/${user.id}/${countryCode}_dest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
       const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, destImage.file);
       if (upErr) { await cleanupAndFail("Impossible d'envoyer la photo de couverture. Vérifiez votre connexion et réessayez."); return; }
       uploadedPaths.push(path);
+      coverNewPath = path;
       finalDestUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
       doneUploads++;
       setUploadProgress({ done: doneUploads, total: totalUploads });
     }
 
     const finalPlaces = [];
+    const placesPayload = [];
     for (const [idx, place] of places.entries()) {
       let finalUrl = place.url;
+      let placeNewPath = null;
       if (place.file) {
         const path = `places/${user.id}/${countryCode}_place_${idx}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
         const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, place.file);
         if (upErr) { await cleanupAndFail(`Impossible d'envoyer la photo du lieu ${idx + 1}. Vérifiez votre connexion et réessayez.`); return; }
         uploadedPaths.push(path);
+        placeNewPath = path;
         finalUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
         doneUploads++;
         setUploadProgress({ done: doneUploads, total: totalUploads });
       }
       finalPlaces.push({ name: place.name.trim(), image_url: finalUrl, sort_order: idx });
+      placesPayload.push({ name: place.name.trim(), url: finalUrl, path: placeNewPath });
     }
     setUploadProgress(null);
 
+    // Vérification IA (modération) puis écriture en base côté serveur
+    const result = await callModeration('moderate-destination', {
+      countryCode,
+      countryName,
+      name: name.trim(),
+      description: description.trim(),
+      tags,
+      cover: { url: finalDestUrl, path: coverNewPath },
+      places: placesPayload,
+      existingDestinationId: existingDestination?.id ?? null,
+    });
+
+    if (!result.ok) {
+      // Le serveur a déjà supprimé les photos refusées : on évite un double nettoyage
+      setError(result.reason || "La publication n'a pas pu être vérifiée. Réessayez.");
+      setSubmitting(false);
+      return;
+    }
+
     if (!existingDestination) {
-      const { data: newDest, error: insErr } = await supabase
-        .from('user_destinations')
-        .insert({ user_id: user.id, country_code: countryCode, name: name.trim(), description: description.trim(), image_url: finalDestUrl, tags })
-        .select('id')
-        .single();
-      if (insErr) { await cleanupAndFail("La destination n'a pas pu être créée. Vérifiez votre connexion et réessayez."); return; }
-      const { error: placesErr } = await supabase.from('destination_places').insert(
-        finalPlaces.map(p => ({ ...p, destination_id: newDest.id }))
-      );
-      if (placesErr) { await cleanupAndFail("Les lieux n'ont pas pu être enregistrés. Vérifiez votre connexion et réessayez."); return; }
       onSuccess({
-        id: newDest.id, user_id: user.id, country_code: countryCode,
+        id: result.destinationId, user_id: user.id, country_code: countryCode,
         name: name.trim(), description: description.trim(), image_url: finalDestUrl,
         tags, isUserDest: true, created_at: new Date().toISOString(),
-        destination_places: finalPlaces.map((p, i) => ({ id: `tmp_${i}`, destination_id: newDest.id, ...p })),
+        destination_places: finalPlaces.map((p, i) => ({ id: `tmp_${i}`, destination_id: result.destinationId, ...p })),
       });
     } else {
-      const { error: updErr } = await supabase
-        .from('user_destinations')
-        .update({ name: name.trim(), description: description.trim(), image_url: finalDestUrl, updated_at: new Date().toISOString(), tags })
-        .eq('id', existingDestination.id);
-      if (updErr) { await cleanupAndFail("Les modifications n'ont pas pu être enregistrées. Vérifiez votre connexion et réessayez."); return; }
-      await supabase.from('destination_places').delete().eq('destination_id', existingDestination.id);
-      const { error: placesErr } = await supabase.from('destination_places').insert(
-        finalPlaces.map(p => ({ ...p, destination_id: existingDestination.id }))
-      );
-      if (placesErr) { await cleanupAndFail("Les lieux n'ont pas pu être mis à jour. Vérifiez votre connexion et réessayez."); return; }
       onSuccess({
         ...existingDestination,
         name: name.trim(), description: description.trim(), image_url: finalDestUrl,

@@ -4,7 +4,7 @@ import ReviewItem from './ReviewItem';
 
 const PAGE_SIZE = 10;
 
-export default function ReviewList({ countryCode, destinationId, currentUserId, refreshKey, sortBy = 'date', excludeId, onEdit, onDelete, onOpenProfile, emptyMessage, highlightId }) {
+export default function ReviewList({ countryCode, destinationId, currentUserId, refreshKey, sortBy = 'date', excludeId, onEdit, onDelete, onOpenProfile, emptyMessage, highlightId, alertIds = new Map(), onAdminAction }) {
   const [myReview, setMyReview] = useState(null);
   const [highlightedReview, setHighlightedReview] = useState(null);
   const [otherReviews, setOtherReviews] = useState([]);
@@ -194,6 +194,9 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
             onVoteChange={refreshVotes}
             onOpenProfile={onOpenProfile}
             isDestReview={isDestReview}
+            hasAlert={alertIds.has(myReview.id)}
+            alertData={alertIds.get(myReview.id)}
+            onAdminAction={() => { fetchInitial(); onAdminAction?.(); }}
           />
         </div>
       )}
@@ -207,6 +210,9 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
           onVoteChange={refreshVotes}
           onOpenProfile={onOpenProfile}
           isDestReview={isDestReview}
+          hasAlert={alertIds.has(highlightedReview.id)}
+          alertData={alertIds.get(highlightedReview.id)}
+          onAdminAction={() => { fetchInitial(); onAdminAction?.(); }}
         />
       )}
 
@@ -220,6 +226,9 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
           onVoteChange={refreshVotes}
           onOpenProfile={onOpenProfile}
           isDestReview={isDestReview}
+          hasAlert={alertIds.has(r.id)}
+          alertData={alertIds.get(r.id)}
+          onAdminAction={() => { fetchInitial(); onAdminAction?.(); }}
         />
       ))}
 

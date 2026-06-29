@@ -5,18 +5,28 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
+  async function fetchAdminStatus(userId) {
+    if (!userId) { setIsAdmin(false); return; }
+    const { data } = await supabase.from('profiles').select('is_admin').eq('id', userId).maybeSingle();
+    setIsAdmin(data?.is_admin === true);
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      fetchAdminStatus(u?.id);
       setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const u = session?.user ?? null;
       setUser(u);
+      fetchAdminStatus(u?.id);
       if (u) {
         // Crée le profil s'il n'existe pas encore, sans écraser les données existantes
         const displayName = u.user_metadata?.display_name || u.user_metadata?.full_name || u.email?.split('@')[0] || '';
@@ -63,7 +73,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, signInWithGoogle, signOut, authModalOpen, setAuthModalOpen }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, signUp, signIn, signInWithGoogle, signOut, authModalOpen, setAuthModalOpen }}>
       {children}
     </AuthContext.Provider>
   );

@@ -92,7 +92,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
     setReviewsSubTab('country');
     setLoading(true);
     Promise.all([
-      supabase.from('profiles').select('display_name, avatar_url, show_visited_countries').eq('id', userId).maybeSingle(),
+      supabase.from('profiles').select('display_name, avatar_url, show_visited_countries, is_admin').eq('id', userId).maybeSingle(),
       supabase.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('destination_reviews').select('destination_id').eq('user_id', userId),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
@@ -208,7 +208,10 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               }
             </div>
             <div className="pub-profile-info">
-              <h2 className="pub-profile-name">{name}</h2>
+              <div className="profile-modal-name-row">
+                <h2 className="pub-profile-name">{name}</h2>
+                {profile?.is_admin && <span className="admin-badge">🛡️ Admin</span>}
+              </div>
               <div className="pub-profile-stats">
                 <div className="pub-profile-stat">
                   <span className="pub-profile-stat-value">{followerCount}</span>

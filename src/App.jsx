@@ -9,10 +9,12 @@ import ComparePanel from "./components/ComparePanel";
 import AuthModal from "./components/AuthModal";
 import ProfilePanel from "./components/ProfilePanel";
 import NotificationPanel from "./components/NotificationPanel";
+import AdminAlertsPanel from "./components/AdminAlertsPanel";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { BadgeProvider } from "./context/BadgeContext";
 import BadgeUnlockAnimation from "./components/BadgeUnlockAnimation";
 import { useNotifications } from "./hooks/useNotifications";
+import { useAdminAlerts } from "./hooks/useAdminAlerts";
 import { checkBadgeUpgrades } from "./utils/checkBadgeUpgrades";
 import { supabase as supabaseClient } from "./lib/supabase";
 import { COUNTRIES } from "./data/index";
@@ -64,13 +66,16 @@ function TopbarAvatar({ user, onClick, refreshKey }) {
 }
 
 function AppInner() {
-  const { user, authModalOpen, setAuthModalOpen, signOut } = useAuth();
+  const { user, isAdmin, authModalOpen, setAuthModalOpen, signOut } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const [avatarRefreshKey, setAvatarRefreshKey] = useState(0);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const [countryInitialTab, setCountryInitialTab] = useState(null);
   const [countryInitialExtra, setCountryInitialExtra] = useState(null);
   const { notifications, unreadCount, markRead, markAllRead, deleteOne, deleteAll } = useNotifications(user?.id);
+  const { alerts, refresh: refreshAlerts } = useAdminAlerts(isAdmin);
+  const alertsMap = useMemo(() => new Map(alerts.map((a) => [a.content_id, a])), [alerts]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [filters, setFilters] = useState({ tripBudget: null, month: null, tags: [] });
   const [searchQuery, setSearchQuery] = useState("");
@@ -330,6 +335,21 @@ function AppInner() {
               </button>
             </div>
           )}
+          {isAdmin && (
+            <div className="notif-wrapper">
+              <button
+                className={`topbar-notif-btn topbar-admin-btn${adminPanelOpen ? ' active' : ''}`}
+                onClick={() => setAdminPanelOpen((o) => !o)}
+                aria-label="Alertes de modération"
+                title="Alertes de modération"
+              >
+                🚨
+                {alerts.length > 0 && (
+                  <span className="notif-badge admin-notif-badge">{alerts.length > 99 ? '99+' : alerts.length}</span>
+                )}
+              </button>
+            </div>
+          )}
           {user
             ? <TopbarAvatar user={user} onClick={() => setProfileOpen(true)} refreshKey={avatarRefreshKey} />
             : <button className="topbar-login-btn" onClick={() => setAuthModalOpen(true)}>Connexion</button>
@@ -365,6 +385,16 @@ function AppInner() {
           markAllRead={markAllRead}
           deleteOne={deleteOne}
           deleteAll={deleteAll}
+        />
+      )}
+      {adminPanelOpen && isAdmin && (
+        <AdminAlertsPanel
+          alerts={alerts}
+          onClose={() => setAdminPanelOpen(false)}
+          onRefresh={refreshAlerts}
+          onNavigate={({ countryCode, tab, extra }) => {
+            openCountry(countryCode, tab || null, extra || null);
+          }}
         />
       )}
 
@@ -415,6 +445,8 @@ function AppInner() {
           initialTab={countryInitialTab}
           initialExtra={countryInitialExtra}
           onNavigateCountry={(code, tab, extra) => openCountry(code, tab || null, extra || null)}
+          alertIds={alertsMap}
+          onAdminAction={refreshAlerts}
         />
       )}
 

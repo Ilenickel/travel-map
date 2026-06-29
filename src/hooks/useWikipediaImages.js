@@ -131,8 +131,10 @@ export function useWikipediaImages(slugs) {
 
   useEffect(() => {
     if (!slugs.length) return;
+    let cancelled = false;
 
     batchFetch(slugs).then(() => {
+      if (cancelled) return;
       const result = {};
 
       for (const s of slugs) {
@@ -141,8 +143,12 @@ export function useWikipediaImages(slugs) {
         }
       }
 
-      setImages(result);
+      // Fusion (et non remplacement) : évite qu'une résolution périmée
+      // (slugs partiels d'un render précédent) efface des images déjà chargées.
+      setImages((prev) => ({ ...prev, ...result }));
     });
+
+    return () => { cancelled = true; };
   }, [slugs.join(",")]); // eslint-disable-line
 
   return images;
