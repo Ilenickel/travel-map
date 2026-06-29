@@ -48,8 +48,9 @@ function FlagImage({ country, code }) {
   );
 }
 
-export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
+export default function PublicProfileModal({ userId: initialUserId, onClose, onOpenCountry }) {
   const { user } = useAuth();
+  const [userId, setUserId] = useState(initialUserId);
   const [profile, setProfile] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [destGroupCounts, setDestGroupCounts] = useState({});
@@ -74,13 +75,29 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
 
   useEffect(() => {
     if (!userId) return;
+    setProfile(null);
+    setReviews([]);
+    setDestGroupCounts({});
+    setExpandedDestGroups(new Set());
+    setLoadedDestGroups({});
+    setLoadingDestGroups(new Set());
+    setFollowerCount(0);
+    setIsFollowing(false);
+    setVisitedCountries([]);
+    setAddedDestCounts({});
+    setExpandedAddedDestGroups(new Set());
+    setLoadedAddedDestGroups({});
+    setLoadingAddedDestGroups(new Set());
+    setMainTab('reviews');
+    setReviewsSubTab('country');
+    setLoading(true);
     Promise.all([
       supabase.from('profiles').select('display_name, avatar_url, show_visited_countries').eq('id', userId).maybeSingle(),
       supabase.from('reviews').select('*').eq('user_id', userId).order('created_at', { ascending: false }),
       supabase.from('destination_reviews').select('destination_id').eq('user_id', userId),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
       supabase.from('user_destinations').select('country_code').eq('user_id', userId),
-    ]).then(([{ data: prof }, { data: revs }, { data: dRevs }, { count }, { data: udData }]) => {
+    ]).then(([{ data: prof }, { data: revs }, { data: dRevs }, { count: fCount }, { data: udData }]) => {
       setProfile(prof || { display_name: 'Voyageur', avatar_url: null });
       setReviews(revs || []);
       const counts = {};
@@ -90,7 +107,7 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
         counts[key] = (counts[key] || 0) + 1;
       });
       setDestGroupCounts(counts);
-      setFollowerCount(count || 0);
+      setFollowerCount(fCount || 0);
       setShowVisited(prof?.show_visited_countries !== false);
       const udCounts = {};
       (udData || []).forEach(d => { udCounts[d.country_code] = (udCounts[d.country_code] || 0) + 1; });
@@ -194,23 +211,9 @@ export default function PublicProfileModal({ userId, onClose, onOpenCountry }) {
               <h2 className="pub-profile-name">{name}</h2>
               <div className="pub-profile-stats">
                 <div className="pub-profile-stat">
-                  <span className="pub-profile-stat-value">{totalReviews}</span>
-                  <span className="pub-profile-stat-label">avis</span>
-                </div>
-                <div className="pub-profile-stat-sep" />
-                <div className="pub-profile-stat">
                   <span className="pub-profile-stat-value">{followerCount}</span>
                   <span className="pub-profile-stat-label">abonné{followerCount !== 1 ? 's' : ''}</span>
                 </div>
-                {showVisited && visitedCountries.length > 0 && (
-                  <>
-                    <div className="pub-profile-stat-sep" />
-                    <div className="pub-profile-stat">
-                      <span className="pub-profile-stat-value">{visitedCountries.length}</span>
-                      <span className="pub-profile-stat-label">pays visités</span>
-                    </div>
-                  </>
-                )}
               </div>
             </div>
             {user && user.id !== userId && (

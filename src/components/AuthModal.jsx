@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { supabase } from '../lib/supabase';
 
 export default function AuthModal({ onClose }) {
   const { signIn, signUp, signInWithGoogle } = useAuth();
@@ -28,9 +29,12 @@ export default function AuthModal({ onClose }) {
     if (tab === 'register') {
       if (password !== confirm) { setError('Les mots de passe ne correspondent pas.'); return; }
       if (displayName.trim().length < 2) { setError('Le pseudo doit faire au moins 2 caractères.'); return; }
+      setLoading(true);
+      const { data: taken } = await supabase.from('profiles').select('id').eq('display_name', displayName.trim()).maybeSingle();
+      if (taken) { setError('Ce pseudo est déjà utilisé, veuillez en choisir un autre.'); setLoading(false); return; }
+    } else {
+      setLoading(true);
     }
-
-    setLoading(true);
     if (tab === 'login') {
       const { error } = await signIn(email, password);
       if (error) { setError(error.message); setLoading(false); return; }
@@ -41,7 +45,7 @@ export default function AuthModal({ onClose }) {
       // Connexion automatique après inscription (confirmation email désactivée dans Supabase)
       const { error: signInErr } = await signIn(email, password);
       if (signInErr) {
-        setSuccess('Compte créé ! Tu peux maintenant te connecter.');
+        setSuccess('Compte créé ! Vous pouvez maintenant vous connecter.');
         setLoading(false);
       } else {
         onClose();
@@ -78,12 +82,12 @@ export default function AuthModal({ onClose }) {
             {tab === 'register' && (
               <div className="auth-field">
                 <label className="auth-label">Pseudo</label>
-                <input className="auth-input" type="text" placeholder="Ton prénom ou pseudo" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required autoFocus />
+                <input className="auth-input" type="text" placeholder="Votre prénom ou pseudo" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required autoFocus />
               </div>
             )}
             <div className="auth-field">
               <label className="auth-label">Email</label>
-              <input className="auth-input" type="email" placeholder="toi@exemple.com" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus={tab === 'login'} />
+              <input className="auth-input" type="email" placeholder="vous@exemple.com" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus={tab === 'login'} />
             </div>
             <div className="auth-field">
               <label className="auth-label">Mot de passe</label>

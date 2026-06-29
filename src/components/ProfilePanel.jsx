@@ -17,6 +17,8 @@ function parseDestId(destId) {
 }
 import BadgeSection from './BadgeSection';
 import { useBadge } from '../context/BadgeContext';
+import FollowListModal from './FollowListModal';
+import PublicProfileModal from './PublicProfileModal';
 
 function relativeTime(dateStr) {
   const diff = (Date.now() - new Date(dateStr)) / 1000;
@@ -66,6 +68,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [avatarFile, setAvatarFile] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState('');
+  const [saveError, setSaveError] = useState('');
   const [notifCountryReviews, setNotifCountryReviews] = useState(true);
   const [notifDestReviews, setNotifDestReviews] = useState(true);
   const [notifMyDestReviews, setNotifMyDestReviews] = useState(true);
@@ -80,6 +83,9 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [lightbox, setLightbox] = useState(null); // { photos, index }
   const [followerCount, setFollowerCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [followListOpen, setFollowListOpen] = useState(null); // 'followers' | 'following'
+  const [viewingProfile, setViewingProfile] = useState(null);
   const [addedDestCounts, setAddedDestCounts] = useState({});
   const [expandedAddedDestGroups, setExpandedAddedDestGroups] = useState(new Set());
   const [loadedAddedDestGroups, setLoadedAddedDestGroups] = useState({});
@@ -94,10 +100,9 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, notif_my_dest_reviews, show_visited_countries').eq('id', user.id).single().then(({ data }) => {
-      if (data?.display_name) setDisplayName(data.display_name);
+    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, notif_my_dest_reviews, show_visited_countries').eq('id', user.id).maybeSingle().then(({ data }) => {
+      setDisplayName(data?.display_name || user?.user_metadata?.display_name || user?.user_metadata?.full_name || '');
       if (data?.avatar_url) { setAvatarUrl(data.avatar_url); setAvatarPreview(data.avatar_url); }
-      else setDisplayName(user?.user_metadata?.display_name || user?.user_metadata?.full_name || '');
       if (data?.notif_country_reviews !== undefined) setNotifCountryReviews(data.notif_country_reviews !== false);
       if (data?.notif_dest_reviews !== undefined) setNotifDestReviews(data.notif_dest_reviews !== false);
       if (data?.notif_my_dest_reviews !== undefined) setNotifMyDestReviews(data.notif_my_dest_reviews !== false);
@@ -110,8 +115,9 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       supabase.from('reviews').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
       supabase.from('destination_reviews').select('destination_id').eq('user_id', user.id),
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', user.id),
+      supabase.from('follows').select('following_id', { count: 'exact' }).eq('follower_id', user.id),
       supabase.from('user_destinations').select('country_code').eq('user_id', user.id),
-    ]).then(([{ data }, { data: dData }, { count }, { data: udData }]) => {
+    ]).then(([{ data }, { data: dData }, { count: fCount }, { count: ingCount }, { data: udData }]) => {
       setReviews(data || []);
       const counts = {};
       (dData || []).forEach((r) => {
@@ -120,7 +126,8 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
         counts[key] = (counts[key] || 0) + 1;
       });
       setDestGroupCounts(counts);
-      setFollowerCount(count || 0);
+      setFollowerCount(fCount || 0);
+      setFollowingCount(ingCount || 0);
       const udCounts = {};
       (udData || []).forEach(d => { udCounts[d.country_code] = (udCounts[d.country_code] || 0) + 1; });
       setAddedDestCounts(udCounts);
@@ -140,12 +147,31 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   async function handleSave() {
     setSaving(true);
     setSaveMsg('');
+    setSaveError('');
+
+    if (displayName.trim().length < 2) {
+      setSaveError('Le pseudo doit faire au moins 2 caractères.');
+      setSaving(false);
+      return;
+    }
+
+    const { data: existing } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('display_name', displayName.trim())
+      .neq('id', user.id)
+      .maybeSingle();
+    if (existing) {
+      setSaveError('Ce pseudo est déjà utilisé par un autre compte.');
+      setSaving(false);
+      return;
+    }
+
     let newAvatarUrl = avatarUrl;
 
     if (avatarFile) {
       if (avatarFile.size > 4 * 1024 * 1024) {
-        setSaveMsg("Une erreur est survenue lors de l'enregistrement de votre nouvelle photo de profil.");
-        console.error('[ProfilePanel] fichier trop volumineux après compression :', avatarFile.size);
+        setSaveError("Fichier trop volumineux, veuillez choisir une image plus petite.");
         setSaving(false);
         return;
       }
@@ -153,7 +179,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       const { error: uploadErr } = await supabase.storage.from('review-photos').upload(path, avatarFile, { upsert: true });
       if (uploadErr) {
         console.error('[ProfilePanel] upload avatar:', uploadErr);
-        setSaveMsg("Une erreur est survenue lors de l'enregistrement de votre nouvelle photo de profil.");
+        setSaveError("Erreur lors de l'upload de la photo, veuillez réessayer.");
         setSaving(false);
         return;
       }
@@ -169,11 +195,19 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       notif_dest_reviews: notifDestReviews,
       notif_my_dest_reviews: notifMyDestReviews,
       show_visited_countries: showVisitedCountries,
-    });
+    }, { onConflict: 'id' });
 
     if (upsertErr) {
       console.error('[ProfilePanel] upsert profile:', upsertErr);
-      setSaveMsg("Une erreur est survenue lors de la sauvegarde du profil.");
+      setSaveError(`Erreur lors de la sauvegarde : ${upsertErr.message}. Veuillez réessayer.`);
+      setSaving(false);
+      return;
+    }
+
+    // Vérification : relire depuis la base pour confirmer que les données ont bien été sauvegardées
+    const { data: saved, error: readErr } = await supabase.from('profiles').select('display_name').eq('id', user.id).maybeSingle();
+    if (!readErr && saved !== null && saved?.display_name !== displayName.trim()) {
+      setSaveError('La sauvegarde a échoué. Veuillez vérifier les droits d\'accès (RLS) dans Supabase et réessayer.');
       setSaving(false);
       return;
     }
@@ -182,6 +216,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
     setAvatarPreview(newAvatarUrl);
     setAvatarFile(null);
     setSaveMsg('Profil mis à jour !');
+    setSaveError('');
     setSaving(false);
     setTimeout(() => setSaveMsg(''), 3000);
     onSave?.();
@@ -255,9 +290,17 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <div className="profile-modal-header-info">
             <span className="profile-modal-name">{displayName || user?.email}</span>
             <span className="profile-modal-email">{user?.email}</span>
-            <span style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-              {followerCount} abonné{followerCount !== 1 ? 's' : ''}
-            </span>
+            <div className="profile-follow-counts">
+              <button className="profile-follow-count-btn" onClick={() => setFollowListOpen('followers')}>
+                <span className="profile-follow-count-num">{followerCount}</span>
+                <span className="profile-follow-count-label">abonné{followerCount !== 1 ? 's' : ''}</span>
+              </button>
+              <span className="profile-follow-count-sep" />
+              <button className="profile-follow-count-btn" onClick={() => setFollowListOpen('following')}>
+                <span className="profile-follow-count-num">{followingCount}</span>
+                <span className="profile-follow-count-label">abonnement{followingCount !== 1 ? 's' : ''}</span>
+              </button>
+            </div>
           </div>
           <button className="auth-close" onClick={onClose}>✕</button>
         </div>
@@ -279,7 +322,8 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <div className="profile-tab-content">
             <div className="auth-field">
               <label className="auth-label">Pseudo</label>
-              <input className="auth-input" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Ton pseudo" />
+              <input className="auth-input" type="text" value={displayName} onChange={(e) => { setDisplayName(e.target.value); setSaveError(''); }} placeholder="Votre pseudo" />
+              {saveError && <div className="auth-error" style={{ marginTop: 6 }}>{saveError}</div>}
             </div>
             <div className="profile-notif-prefs">
               <span className="profile-notif-prefs-title">Notifications du compte</span>
@@ -316,6 +360,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
               </label>
             </div>
             {saveMsg && <div className="auth-success">{saveMsg}</div>}
+
             <div className="profile-tab-actions">
               <button className="auth-submit" onClick={handleSave} disabled={saving}>
                 {saving ? 'Enregistrement…' : 'Enregistrer'}
@@ -334,7 +379,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
             {!reviewsLoading && totalAddedDests === 0 && (
               <div className="profile-reviews-empty">
                 <span style={{ fontSize: 32 }}>📍</span>
-                <span>Tu n'as pas encore ajouté de destination.</span>
+                <span>Vous n'avez pas encore ajouté de destination.</span>
               </div>
             )}
             {!reviewsLoading && Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
@@ -406,7 +451,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   {reviews.length === 0 && (
                     <div className="profile-reviews-empty">
                       <span style={{ fontSize: 32 }}>⭐</span>
-                      <span>Tu n'as pas encore laissé d'avis sur un pays.</span>
+                      <span>Vous n'avez pas encore laissé d'avis sur un pays.</span>
                     </div>
                   )}
                   {reviews.map((r) => {
@@ -460,7 +505,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   {totalDestReviews === 0 && (
                     <div className="profile-reviews-empty">
                       <span style={{ fontSize: 32 }}>📍</span>
-                      <span>Tu n'as pas encore laissé d'avis sur une destination.</span>
+                      <span>Vous n'avez pas encore laissé d'avis sur une destination.</span>
                     </div>
                   )}
                   {Object.entries(destGroupCounts).map(([key, count]) => {
@@ -517,6 +562,23 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           </>
         )}
       </div>
+
+      {followListOpen && (
+        <FollowListModal
+          userId={user.id}
+          type={followListOpen}
+          onClose={() => setFollowListOpen(null)}
+          onOpenProfile={(id) => { setFollowListOpen(null); setViewingProfile(id); }}
+          onFollowChange={(delta) => setFollowingCount(c => Math.max(0, c + delta))}
+        />
+      )}
+      {viewingProfile && (
+        <PublicProfileModal
+          userId={viewingProfile}
+          onClose={() => setViewingProfile(null)}
+          onOpenCountry={(code, tab, extra) => { setViewingProfile(null); onOpenCountry?.(code, tab, extra); onClose(); }}
+        />
+      )}
 
       {/* Lightbox photos */}
       {lightbox && (

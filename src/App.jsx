@@ -39,15 +39,17 @@ function prep(name) {
 
 function TopbarAvatar({ user, onClick, refreshKey }) {
   const [avatarUrl, setAvatarUrl] = useState(null);
-  const name = user?.user_metadata?.display_name || user?.email || '?';
+  const [displayName, setDisplayName] = useState(null);
+  const name = displayName || user?.user_metadata?.display_name || user?.email || '?';
   const initials = name[0].toUpperCase();
   const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
   const color = colors[name.charCodeAt(0) % colors.length];
 
   useEffect(() => {
     if (!user) return;
-    supabaseClient.from('profiles').select('avatar_url').eq('id', user.id).single().then(({ data }) => {
+    supabaseClient.from('profiles').select('avatar_url, display_name').eq('id', user.id).maybeSingle().then(({ data }) => {
       setAvatarUrl(data?.avatar_url ?? null);
+      if (data?.display_name) setDisplayName(data.display_name);
     });
   }, [user, refreshKey]);
 
