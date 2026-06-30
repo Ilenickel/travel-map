@@ -140,6 +140,13 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
       );
       setIsFollowing(true);
       setFollowerCount((c) => c + 1);
+      supabase.auth.getSession().then(({ data: s }) => {
+        fetch('/api/notify-new-follower', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authToken: s?.session?.access_token ?? null, targetUserId: userId }),
+        });
+      });
     }
     setFollowLoading(false);
   }

@@ -44,6 +44,10 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
 
   async function handleClick(notif) {
     await markRead(notif.id);
+    if (notif.type === 'new_follower') {
+      onClose();
+      return;
+    }
     if (notif.type === 'destination_ownership_transfer') {
       onOpenCountry(notif.country_code, 'destinations', { destId: notif.destination_id });
     } else if (notif.type === 'new_dest_review' || notif.type === 'new_own_dest_review') {
@@ -96,10 +100,28 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
         <div className="notif-list">
           {notifications.map((n) => {
             const isOwnershipTransfer = n.type === 'destination_ownership_transfer';
-            const profile = isOwnershipTransfer ? null : profiles[n.from_user_id];
-            const name = profile?.display_name || 'Voyageur';
+            const isNewFollower = n.type === 'new_follower';
+            const followerList = isNewFollower ? (n.metadata?.followers ?? []) : null;
+            const profile = (isOwnershipTransfer || isNewFollower) ? null : profiles[n.from_user_id];
+            const name = isNewFollower
+              ? (followerList[0]?.name || 'Voyageur')
+              : (profile?.display_name || 'Voyageur');
             const color = AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
             const country = findCountry(n.country_code);
+
+            let followerAvatarUrl = null;
+            if (isNewFollower && followerList.length > 0) followerAvatarUrl = followerList[0].avatar;
+
+            function followerText() {
+              if (!followerList.length) return <>Quelqu'un vient de s'abonner à votre compte</>;
+              if (followerList.length === 1)
+                return <><strong>{followerList[0].name}</strong> vient de s'abonner à votre compte</>;
+              if (followerList.length === 2)
+                return <><strong>{followerList[0].name}</strong> et <strong>{followerList[1].name}</strong> viennent de s'abonner à votre compte</>;
+              const others = followerList.length - 2;
+              return <><strong>{followerList[0].name}</strong>, <strong>{followerList[1].name}</strong> et {others} autre{others > 1 ? 's' : ''} personne{others > 1 ? 's' : ''} se sont abonnées à votre compte</>;
+            }
+
             return (
               <div
                 key={n.id}
@@ -109,6 +131,10 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                   <div className="notif-avatar">
                     {isOwnershipTransfer ? (
                       <div className="notif-avatar-system">🔑</div>
+                    ) : isNewFollower ? (
+                      followerAvatarUrl
+                        ? <img src={followerAvatarUrl} alt={name} className="notif-avatar-img" />
+                        : <div className="notif-avatar-initials" style={{ background: color }}>{name[0].toUpperCase()}</div>
                     ) : profile?.avatar_url ? (
                       <img src={profile.avatar_url} alt={name} className="notif-avatar-img" />
                     ) : (
@@ -120,6 +146,8 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                     <p className="notif-text">
                       {isOwnershipTransfer ? (
                         <>Vous êtes désormais responsable de la destination <strong>{n.destination_name}</strong></>
+                      ) : isNewFollower ? (
+                        followerText()
                       ) : n.type === 'new_own_dest_review' ? (
                         <><strong>{name}</strong> a laissé un avis sur votre destination <strong>{n.destination_name}</strong></>
                       ) : n.type === 'new_dest_review' ? (

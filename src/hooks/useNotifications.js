@@ -28,6 +28,10 @@ export function useNotifications(userId) {
         event: 'INSERT', schema: 'public', table: 'notifications',
         filter: `user_id=eq.${userId}`,
       }, () => fetchNotifs())
+      .on('postgres_changes', {
+        event: 'UPDATE', schema: 'public', table: 'notifications',
+        filter: `user_id=eq.${userId}`,
+      }, () => fetchNotifs())
       .subscribe();
 
     const poll = setInterval(fetchNotifs, 20000);

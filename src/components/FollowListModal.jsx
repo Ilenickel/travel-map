@@ -98,6 +98,13 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
           }
         }
         onFollowChange?.(+1);
+        supabase.auth.getSession().then(({ data: s }) => {
+          fetch('/api/notify-new-follower', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ authToken: s?.session?.access_token ?? null, targetUserId: targetId }),
+          });
+        });
       }
     }
     setFollowLoadingId(null);

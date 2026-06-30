@@ -73,6 +73,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [notifDestReviews, setNotifDestReviews] = useState(true);
   const [notifMyDestReviews, setNotifMyDestReviews] = useState(true);
   const [notifOwnershipTransfer, setNotifOwnershipTransfer] = useState(true);
+  const [notifNewFollowers, setNotifNewFollowers] = useState(true);
   const [showVisitedCountries, setShowVisitedCountries] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [destGroupCounts, setDestGroupCounts] = useState({});
@@ -101,13 +102,14 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, notif_my_dest_reviews, notif_ownership_transfer, show_visited_countries').eq('id', user.id).maybeSingle().then(({ data }) => {
+    supabase.from('profiles').select('display_name, avatar_url, notif_country_reviews, notif_dest_reviews, notif_my_dest_reviews, notif_ownership_transfer, notif_new_followers, show_visited_countries').eq('id', user.id).maybeSingle().then(({ data }) => {
       setDisplayName(data?.display_name || user?.user_metadata?.display_name || user?.user_metadata?.full_name || '');
       if (data?.avatar_url) { setAvatarUrl(data.avatar_url); setAvatarPreview(data.avatar_url); }
       if (data?.notif_country_reviews !== undefined) setNotifCountryReviews(data.notif_country_reviews !== false);
       if (data?.notif_dest_reviews !== undefined) setNotifDestReviews(data.notif_dest_reviews !== false);
       if (data?.notif_my_dest_reviews !== undefined) setNotifMyDestReviews(data.notif_my_dest_reviews !== false);
       if (data?.notif_ownership_transfer !== undefined) setNotifOwnershipTransfer(data.notif_ownership_transfer !== false);
+      if (data?.notif_new_followers !== undefined) setNotifNewFollowers(data.notif_new_followers !== false);
       if (data?.show_visited_countries !== undefined) setShowVisitedCountries(data.show_visited_countries !== false);
     });
   }, [user]);
@@ -197,6 +199,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       notif_dest_reviews: notifDestReviews,
       notif_my_dest_reviews: notifMyDestReviews,
       notif_ownership_transfer: notifOwnershipTransfer,
+      notif_new_followers: notifNewFollowers,
       show_visited_countries: showVisitedCountries,
     }, { onConflict: 'id' });
 
@@ -360,6 +363,13 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
                 <span>Recevoir une notification lorsque vous devenez responsable d'une destination suite au retrait de son créateur</span>
+              </label>
+              <label className="profile-notif-pref-row">
+                <span className="profile-toggle">
+                  <input type="checkbox" checked={notifNewFollowers} onChange={(e) => setNotifNewFollowers(e.target.checked)} />
+                  <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+                </span>
+                <span>Recevoir une notification lorsqu'une personne s'abonne à votre compte</span>
               </label>
             </div>
             <div className="profile-notif-prefs">
