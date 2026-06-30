@@ -10,6 +10,7 @@ import { HalfStars } from "./ReviewItem";
 import { supabase } from "../lib/supabase";
 import PublicProfileModal from "./PublicProfileModal";
 import DestinationForm from "./DestinationForm";
+import PlacesList from "./PlacesList";
 import { callAdminAction } from "../lib/admin";
 import ReportModal from "./ReportModal";
 
@@ -153,6 +154,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
   useEffect(() => {
     panelBodyRef.current?.scrollTo({ top: 0 });
+    setDeletingDestId(null);
   }, [activeTab, selectedDest]);
 
   // Reset dest review state when navigating between destinations
@@ -207,31 +209,31 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   }, [activeTab, selectedDest, data?.destinations, userDestinations]);
 
   async function handleDeleteDest(destId) {
-    const dest = userDestinations.find(d => d.id === destId);
+    const { data: session } = await supabase.auth.getSession();
+    const authToken = session?.session?.access_token ?? null;
 
-    // Suppression complète via RPC (vérifie ownership + cascade votes/avis/places)
-    const { error: rpcErr } = await supabase.rpc('delete_user_destination', { dest_id: destId });
-    if (rpcErr) {
-      console.error('[CountryPanel] delete_user_destination:', rpcErr);
+    let result;
+    try {
+      const res = await fetch('/api/delete-destination', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authToken, destinationId: destId }),
+      });
+      result = await res.json();
+    } catch {
+      result = { ok: false };
+    }
+
+    if (!result.ok) {
+      console.error('[CountryPanel] delete-destination:', result.reason);
       setDeletingDestId(null);
-      setSelectedDest(null);
       setDeleteDestError(true);
       setTimeout(() => setDeleteDestError(false), 4000);
       return;
     }
 
-    // Nettoyer les fichiers Storage (best effort)
-    if (dest) {
-      const prefix = '/storage/v1/object/public/destination-photos/';
-      const files = [];
-      if (dest.image_url?.includes(prefix)) files.push(dest.image_url.split(prefix)[1]);
-      dest.destination_places?.forEach(p => {
-        if (p.image_url?.includes(prefix)) files.push(p.image_url.split(prefix)[1]);
-      });
-      if (files.length > 0) await supabase.storage.from('destination-photos').remove(files);
-    }
-
     setDeletingDestId(null);
+    // Dans les deux cas (suppression totale ou transfert), on revient à la liste
     setSelectedDest(null);
     setDestRefreshKey(k => k + 1);
   }
@@ -325,6 +327,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               countryCode={countryCode}
               countryName={data.name}
               existingDestination={editDest}
+              staticDestinations={data.destinations ?? []}
+              existingDestinations={userDestinations}
               onSuccess={(dest) => { setShowDestForm(false); setEditDest(null); setDestRefreshKey(k => k + 1); setSelectedDest(dest); }}
               onCancel={() => { setShowDestForm(false); setEditDest(null); }}
             />
@@ -718,12 +722,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     {selectedDest.isUserDest && user?.id === selectedDest.user_id && (
                       <div className="dest-detail-actions">
                         {deletingDestId === selectedDest.id ? (
-                          <div className="dest-card-confirm-block">
-                            <span className="dest-card-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
-                            <div className="dest-card-confirm-btns">
-                              <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Annuler</button>
-                              <button className="review-confirm-yes" onClick={() => handleDeleteDest(selectedDest.id)}>Supprimer</button>
-                            </div>
+                          <div className="review-confirm-delete">
+                            <span className="review-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
+                            <button className="review-confirm-yes" onClick={() => handleDeleteDest(selectedDest.id)}>Oui</button>
+                            <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Non</button>
                           </div>
                         ) : (
                           <>
@@ -739,28 +741,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       </div>
                     )}
 
-                    <h4 className="must-title">À ne pas manquer</h4>
-                    {selectedDest.isUserDest ? (
-                      <div className="must-list">
-                        {[...(selectedDest.destination_places || [])]
-                          .sort((a, b) => a.sort_order - b.sort_order)
-                          .map((place) => (
-                            <div key={place.id} className="must-item">
-                              <img src={place.image_url} alt={place.name} className="must-item-img" />
-                              <span className="must-item-name">{place.name}</span>
-                            </div>
-                          ))}
-                      </div>
-                    ) : (
-                      <div className="must-list">
-                        {selectedDest.mustSee.map((s) => (
-                          <div key={s.name} className="must-item">
-                            <WikiImage src={img(s.wikipedia)} alt={s.name} className="must-item-img" />
-                            <span className="must-item-name">{s.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <PlacesList dest={selectedDest} countryCode={countryCode} countryName={data.name} wikiImages={wikiImages} />
 
                     {/* Section avis destination */}
                     <div ref={destReviewsRef} className="dest-reviews-section">
@@ -870,12 +851,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                   )}
                                 </div>
                                 {deletingDestId === dest.id ? (
-                                  <div className="dest-card-confirm-block" onClick={e => e.stopPropagation()}>
-                                    <span className="dest-card-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
-                                    <div className="dest-card-confirm-btns">
-                                      <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Annuler</button>
-                                      <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>Supprimer</button>
-                                    </div>
+                                  <div className="review-confirm-delete" onClick={e => e.stopPropagation()}>
+                                    <span className="review-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
+                                    <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>Oui</button>
+                                    <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Non</button>
                                   </div>
                                 ) : (
                                   <>

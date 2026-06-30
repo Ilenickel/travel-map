@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { findCountry } from '../data/index';
 
@@ -28,6 +28,8 @@ function FlagImage({ country, code }) {
 
 export default function NotificationPanel({ notifications, onClose, onOpenCountry, markRead, markAllRead, deleteOne, deleteAll }) {
   const [profiles, setProfiles] = useState({});
+  const [tooltip, setTooltip] = useState(null); // { id, x, y }
+  const infoBtnRefs = useRef({});
 
   useEffect(() => {
     const ids = [...new Set(notifications.map((n) => n.from_user_id).filter(Boolean))];
@@ -42,10 +44,11 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
 
   async function handleClick(notif) {
     await markRead(notif.id);
-    if (notif.type === 'new_dest_review' || notif.type === 'new_own_dest_review') {
+    if (notif.type === 'destination_ownership_transfer') {
+      onOpenCountry(notif.country_code, 'destinations', { destId: notif.destination_id });
+    } else if (notif.type === 'new_dest_review' || notif.type === 'new_own_dest_review') {
       const underscore = notif.destination_id?.indexOf('_') ?? -1;
       const destLocalId = underscore !== -1 ? notif.destination_id.slice(underscore + 1) : null;
-      // Utilise review_id stocké dans la notif, sinon requête de fallback
       let reviewId = notif.review_id ?? null;
       if (!reviewId && notif.destination_id && notif.from_user_id) {
         const { data: rev } = await supabase
@@ -81,12 +84,19 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
         </div>
       </div>
 
+      {tooltip && (
+        <div className="notif-info-tooltip" style={{ top: tooltip.y, right: window.innerWidth - tooltip.x }}>
+          Le créateur de cette destination s'est retiré. Vous avez maintenant le droit de la modifier ou de la supprimer.
+        </div>
+      )}
+
       {notifications.length === 0 ? (
         <div className="notif-empty">Aucune notification pour l'instant.</div>
       ) : (
         <div className="notif-list">
           {notifications.map((n) => {
-            const profile = profiles[n.from_user_id];
+            const isOwnershipTransfer = n.type === 'destination_ownership_transfer';
+            const profile = isOwnershipTransfer ? null : profiles[n.from_user_id];
             const name = profile?.display_name || 'Voyageur';
             const color = AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
             const country = findCountry(n.country_code);
@@ -97,18 +107,21 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
               >
                 <button className="notif-item-main" onClick={() => handleClick(n)}>
                   <div className="notif-avatar">
-                    {profile?.avatar_url
-                      ? <img src={profile.avatar_url} alt={name} className="notif-avatar-img" />
-                      : <div className="notif-avatar-initials" style={{ background: color }}>{name[0].toUpperCase()}</div>
-                    }
+                    {isOwnershipTransfer ? (
+                      <div className="notif-avatar-system">🔑</div>
+                    ) : profile?.avatar_url ? (
+                      <img src={profile.avatar_url} alt={name} className="notif-avatar-img" />
+                    ) : (
+                      <div className="notif-avatar-initials" style={{ background: color }}>{name[0].toUpperCase()}</div>
+                    )}
                     {!n.read && <span className="notif-unread-dot" />}
                   </div>
                   <div className="notif-content">
                     <p className="notif-text">
-                      {n.type === 'new_own_dest_review' ? (
-                        <>
-                          <strong>{name}</strong> a laissé un avis sur votre destination <strong>{n.destination_name}</strong>
-                        </>
+                      {isOwnershipTransfer ? (
+                        <>Vous êtes désormais responsable de la destination <strong>{n.destination_name}</strong></>
+                      ) : n.type === 'new_own_dest_review' ? (
+                        <><strong>{name}</strong> a laissé un avis sur votre destination <strong>{n.destination_name}</strong></>
                       ) : n.type === 'new_dest_review' ? (
                         <>
                           <strong>{name}</strong> a publié un avis sur <strong>{n.destination_name}</strong>{' '}
@@ -130,6 +143,19 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                     <span className="notif-time">{relativeTime(n.created_at)}</span>
                   </div>
                 </button>
+                {isOwnershipTransfer && (
+                  <button
+                    ref={el => { infoBtnRefs.current[n.id] = el; }}
+                    className="notif-info-btn"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label="En savoir plus"
+                    onMouseEnter={() => {
+                      const rect = infoBtnRefs.current[n.id]?.getBoundingClientRect();
+                      if (rect) setTooltip({ id: n.id, x: rect.right, y: rect.bottom + 6 });
+                    }}
+                    onMouseLeave={() => setTooltip(null)}
+                  >ℹ</button>
+                )}
                 <button
                   className="notif-delete-btn"
                   onClick={(e) => { e.stopPropagation(); deleteOne(n.id); }}

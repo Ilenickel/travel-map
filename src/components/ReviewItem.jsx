@@ -185,7 +185,7 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
           {isOwn ? (
             confirmDelete ? (
               <div className="review-confirm-delete">
-                <span className="review-confirm-msg">Supprimer ?</span>
+                <span className="review-confirm-msg">Voulez-vous vraiment supprimer cet avis ?</span>
                 <button className="review-confirm-yes" onClick={handleDelete} disabled={deleting}>Oui</button>
                 <button className="review-confirm-no" onClick={() => setConfirmDelete(false)}>Non</button>
               </div>

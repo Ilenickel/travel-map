@@ -12,7 +12,50 @@ const AVAILABLE_TAGS = [
   'Nightlife', 'Panorama', 'Rural', 'Ville',
 ];
 
-export default function DestinationForm({ countryCode, countryName, existingDestination, onSuccess, onCancel }) {
+// ── Similarité de noms (même logique que le serveur) ─────────────────────────
+function normalizeName(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/\p{Mn}/gu, '')
+    .replace(/\b(le|la|les|l|de|du|des|un|une|the|a|an)\b\s*/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function levenshtein(a, b) {
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = i;
+    for (let j = 1; j <= b.length; j++) {
+      const next = a[i - 1] === b[j - 1] ? row[j - 1] : 1 + Math.min(prev, row[j], row[j - 1]);
+      row[j - 1] = prev; prev = next;
+    }
+    row[b.length] = prev;
+  }
+  return row[b.length];
+}
+function isSimilar(a, b) {
+  const na = normalizeName(a), nb = normalizeName(b);
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  if (na.includes(nb) || nb.includes(na)) return true;
+  const maxLen = Math.max(na.length, nb.length);
+  return maxLen > 0 && (1 - levenshtein(na, nb) / maxLen) >= 0.75;
+}
+function findDuplicate(name, destinations) {
+  return destinations.find((d) => isSimilar(name, d.name)) ?? null;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// staticDestinations = destinations des data files, existingDestinations = destinations communautaires
+export default function DestinationForm({
+  countryCode, countryName,
+  existingDestination,
+  staticDestinations = [],
+  existingDestinations = [],
+  onSuccess, onCancel,
+}) {
   const { user } = useAuth();
   const [name, setName] = useState(existingDestination?.name ?? '');
   const [description, setDescription] = useState(existingDestination?.description ?? '');
@@ -30,14 +73,16 @@ export default function DestinationForm({ countryCode, countryName, existingDest
       : [{ id: null, name: '', file: null, preview: null, url: null }]
   );
   const [submitting, setSubmitting] = useState(false);
-  // null | 'dest' | number (index du lieu)
   const [compressingSlot, setCompressingSlot] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(null);
   const [error, setError] = useState('');
   const [triedSubmit, setTriedSubmit] = useState(false);
   const [lightboxUrl, setLightboxUrl] = useState(null);
-  const formBodyRef = useRef(null);
 
+  // duplicateFound : { matchedName, existingDestId (null = dest statique), savedUpload (null = pas encore uploadé) }
+  const [duplicateFound, setDuplicateFound] = useState(null);
+
+  const formBodyRef = useRef(null);
   const isCompressing = compressingSlot !== null;
 
   const isValid =
@@ -56,9 +101,7 @@ export default function DestinationForm({ countryCode, countryName, existingDest
   }
 
   async function handleDestImage(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    e.target.value = '';
+    const file = e.target.files[0]; if (!file) return; e.target.value = '';
     setCompressingSlot('dest');
     const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1200, useWebWorker: true });
     setDestImage({ file: compressed, preview: URL.createObjectURL(compressed), url: null });
@@ -66,104 +109,109 @@ export default function DestinationForm({ countryCode, countryName, existingDest
   }
 
   async function handlePlaceImage(e, idx) {
-    const file = e.target.files[0];
-    if (!file) return;
-    e.target.value = '';
+    const file = e.target.files[0]; if (!file) return; e.target.value = '';
     setCompressingSlot(idx);
     const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 800, useWebWorker: true });
-    setPlaces(prev => prev.map((p, i) =>
-      i === idx ? { ...p, file: compressed, preview: URL.createObjectURL(compressed), url: null } : p
-    ));
+    setPlaces(prev => prev.map((p, i) => i === idx ? { ...p, file: compressed, preview: URL.createObjectURL(compressed), url: null } : p));
     setCompressingSlot(null);
   }
 
   function addPlace() {
     if (places.length >= 10) return;
     setPlaces(prev => [...prev, { id: null, name: '', file: null, preview: null, url: null }]);
-    setTimeout(() => {
-      formBodyRef.current?.scrollTo({ top: formBodyRef.current.scrollHeight, behavior: 'smooth' });
-    }, 50);
+    setTimeout(() => { formBodyRef.current?.scrollTo({ top: formBodyRef.current.scrollHeight, behavior: 'smooth' }); }, 50);
   }
 
-  function removePlace(idx) {
-    setPlaces(prev => prev.filter((_, i) => i !== idx));
-  }
+  function removePlace(idx) { setPlaces(prev => prev.filter((_, i) => i !== idx)); }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setTriedSubmit(true);
-    if (!isValid) {
-      setError('Merci de renseigner le nom, la description, une photo de couverture et au moins un lieu avec photo.');
-      return;
-    }
+  // Upload + appel serveur.
+  // mergeId   : UUID de la destination cible si on fusionne, null sinon.
+  // savedUpload : photos déjà uploadées lors d'un premier appel (évite un re-upload).
+  async function doSubmit(mergeId, savedUpload = null) {
     setSubmitting(true);
     setError('');
 
-    const needsDestUpload = !!destImage.file;
-    const placeUploads = places.filter(p => !!p.file);
-    const totalUploads = (needsDestUpload ? 1 : 0) + placeUploads.length;
-    let doneUploads = 0;
-    if (totalUploads > 0) setUploadProgress({ done: 0, total: totalUploads });
-
+    let finalDestUrl, coverNewPath, placesPayload;
     const uploadedPaths = [];
 
     async function cleanupAndFail(msg) {
       if (uploadedPaths.length) await supabase.storage.from('destination-photos').remove(uploadedPaths);
-      setError(msg || "Une erreur est survenue. Vérifiez votre connexion et réessayez."); setSubmitting(false); setUploadProgress(null);
+      setError(msg || "Une erreur est survenue. Vérifiez votre connexion et réessayez.");
+      setSubmitting(false); setUploadProgress(null);
     }
 
-    let finalDestUrl = destImage.url;
-    let coverNewPath = null;
-    if (destImage.file) {
-      const path = `destinations/${user.id}/${countryCode}_dest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-      const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, destImage.file);
-      if (upErr) { await cleanupAndFail("Impossible d'envoyer la photo de couverture. Vérifiez votre connexion et réessayez."); return; }
-      uploadedPaths.push(path);
-      coverNewPath = path;
-      finalDestUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
-      doneUploads++;
-      setUploadProgress({ done: doneUploads, total: totalUploads });
-    }
+    if (savedUpload) {
+      // Réutilise les photos déjà uploadées (doublon détecté après upload)
+      ({ finalDestUrl, coverNewPath, placesPayload } = savedUpload);
+    } else {
+      const needsDestUpload = !!destImage.file;
+      const placeUploads = places.filter(p => !!p.file);
+      const totalUploads = (needsDestUpload ? 1 : 0) + placeUploads.length;
+      let doneUploads = 0;
+      if (totalUploads > 0) setUploadProgress({ done: 0, total: totalUploads });
 
-    const finalPlaces = [];
-    const placesPayload = [];
-    for (const [idx, place] of places.entries()) {
-      let finalUrl = place.url;
-      let placeNewPath = null;
-      if (place.file) {
-        const path = `places/${user.id}/${countryCode}_place_${idx}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, place.file);
-        if (upErr) { await cleanupAndFail(`Impossible d'envoyer la photo du lieu ${idx + 1}. Vérifiez votre connexion et réessayez.`); return; }
-        uploadedPaths.push(path);
-        placeNewPath = path;
-        finalUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
-        doneUploads++;
-        setUploadProgress({ done: doneUploads, total: totalUploads });
+      finalDestUrl = destImage.url;
+      coverNewPath = null;
+      if (destImage.file) {
+        const path = `destinations/${user.id}/${countryCode}_dest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, destImage.file);
+        if (upErr) { await cleanupAndFail("Impossible d'envoyer la photo de couverture. Vérifiez votre connexion et réessayez."); return; }
+        uploadedPaths.push(path); coverNewPath = path;
+        finalDestUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
+        setUploadProgress({ done: ++doneUploads, total: totalUploads });
       }
-      finalPlaces.push({ name: place.name.trim(), image_url: finalUrl, sort_order: idx });
-      placesPayload.push({ name: place.name.trim(), url: finalUrl, path: placeNewPath });
-    }
-    setUploadProgress(null);
 
-    // Vérification IA (modération) puis écriture en base côté serveur
+      placesPayload = [];
+      for (const [idx, place] of places.entries()) {
+        let finalUrl = place.url, placeNewPath = null;
+        if (place.file) {
+          const path = `places/${user.id}/${countryCode}_place_${idx}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+          const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, place.file);
+          if (upErr) { await cleanupAndFail(`Impossible d'envoyer la photo du lieu ${idx + 1}. Vérifiez votre connexion et réessayez.`); return; }
+          uploadedPaths.push(path); placeNewPath = path;
+          finalUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
+          setUploadProgress({ done: ++doneUploads, total: totalUploads });
+        }
+        placesPayload.push({ name: place.name.trim(), url: finalUrl, path: placeNewPath });
+      }
+      setUploadProgress(null);
+    }
+
+    // Noms de toutes les destinations du pays (statiques + communautaires) pour la vérification IA cross-langue
+    const allExisting = [...staticDestinations, ...existingDestinations].filter(d => d.id !== existingDestination?.id);
+    const existingNames = allExisting.map(d => d.name).filter(Boolean);
+
     const result = await callModeration('moderate-destination', {
-      countryCode,
-      countryName,
-      name: name.trim(),
-      description: description.trim(),
-      tags,
+      countryCode, countryName,
+      name: name.trim(), description: description.trim(), tags,
       cover: { url: finalDestUrl, path: coverNewPath },
       places: placesPayload,
       existingDestinationId: existingDestination?.id ?? null,
+      mergeIntoId: mergeId ?? null,
+      existingNames: mergeId ? [] : existingNames, // pas besoin de vérifier les doublons si on fusionne
     });
 
     if (!result.ok) {
-      // Le serveur a déjà supprimé les photos refusées : on évite un double nettoyage
+      if (result.duplicate) {
+        // L'IA a trouvé un doublon cross-langue après upload — les photos de lieux sont conservées côté serveur
+        setDuplicateFound({
+          matchedName: result.matchedName,
+          existingDestId: result.existingDestId ?? null,
+          savedUpload: result.existingDestId
+            ? { finalDestUrl, coverNewPath: null, placesPayload } // cover nettoyée par le serveur
+            : null,
+        });
+        setSubmitting(false);
+        return;
+      }
       setError(result.reason || "La publication n'a pas pu être vérifiée. Réessayez.");
       setSubmitting(false);
       return;
     }
 
+    if (mergeId) { onSuccess(null); return; }
+
+    const finalPlaces = placesPayload.map((p, i) => ({ name: p.name, image_url: p.url, sort_order: i }));
     if (!existingDestination) {
       onSuccess({
         id: result.destinationId, user_id: user.id, country_code: countryCode,
@@ -181,6 +229,39 @@ export default function DestinationForm({ countryCode, countryName, existingDest
     }
   }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setTriedSubmit(true);
+    if (!isValid) {
+      setError('Merci de renseigner le nom, la description, une photo de couverture et au moins un lieu avec photo.');
+      return;
+    }
+
+    // Vérification rapide côté client (même langue) avant tout upload
+    if (!existingDestination) {
+      const allExisting = [...staticDestinations, ...existingDestinations];
+      const dup = findDuplicate(name.trim(), allExisting);
+      if (dup) {
+        setDuplicateFound({
+          matchedName: dup.name,
+          existingDestId: dup.isUserDest ? dup.id : null, // seules les destinations communautaires sont fusionnables
+          savedUpload: null,
+        });
+        return;
+      }
+    }
+
+    await doSubmit(null);
+  }
+
+  async function handleConfirmMerge() {
+    const { existingDestId, savedUpload } = duplicateFound;
+    setDuplicateFound(null);
+    await doSubmit(existingDestId, savedUpload);
+  }
+
+  const canMerge = duplicateFound?.existingDestId != null;
+
   return (
     <>
     {lightboxUrl && (
@@ -189,9 +270,38 @@ export default function DestinationForm({ countryCode, countryName, existingDest
         <button className="dest-lightbox-close" onClick={() => setLightboxUrl(null)}>✕</button>
       </div>
     )}
-    <form className="dest-form" onSubmit={handleSubmit}>
 
-      {/* Header sticky */}
+    {duplicateFound && (
+      <div className="dest-duplicate-overlay">
+        <div className="dest-duplicate-box">
+          <div className="dest-duplicate-title">🔄 Destination similaire trouvée</div>
+          <p className="dest-duplicate-msg">
+            La destination <strong>{duplicateFound.matchedName}</strong> existe déjà dans ce pays.
+            {canMerge
+              ? <><br />Voulez-vous y ajouter vos nouveaux lieux ?</>
+              : <><br />Vous pouvez retrouver cette destination dans la liste et y ajouter vos lieux manquants directement via le bouton <strong>Ajouter un lieu</strong>.</>
+            }
+          </p>
+          {canMerge && (
+            <p className="dest-duplicate-hint">
+              Les lieux au nom trop similaire à ceux déjà présents seront ignorés automatiquement.
+            </p>
+          )}
+          <div className="dest-duplicate-actions">
+            <button type="button" className="dest-duplicate-btn--cancel" onClick={() => setDuplicateFound(null)}>
+              {canMerge ? 'Non, annuler' : 'OK'}
+            </button>
+            {canMerge && (
+              <button type="button" className="dest-duplicate-btn--merge" onClick={handleConfirmMerge} disabled={submitting}>
+                {submitting ? 'Fusion en cours…' : 'Oui, fusionner'}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <form className="dest-form" onSubmit={handleSubmit}>
       <div className="dest-form-header">
         <span className="dest-form-header-title">
           {existingDestination ? 'Modifier la destination' : 'Nouvelle destination'}
@@ -199,19 +309,14 @@ export default function DestinationForm({ countryCode, countryName, existingDest
         <button type="button" className="dest-form-header-close" onClick={onCancel}>✕</button>
       </div>
 
-      {/* Body scrollable */}
       <div className="dest-form-body" ref={formBodyRef}>
 
-        {/* Photo de couverture */}
         <div className="dest-form-cover-section">
           {destImage.preview ? (
             <div className="dest-form-cover-preview">
               <img src={destImage.preview} alt="Couverture" className="dest-form-cover-img dest-form-cover-img--clickable" onClick={() => setLightboxUrl(destImage.preview)} />
               {compressingSlot === 'dest' && (
-                <div className="dest-form-cover-loading">
-                  <div className="dest-form-spinner" />
-                  <span>Compression…</span>
-                </div>
+                <div className="dest-form-cover-loading"><div className="dest-form-spinner" /><span>Compression…</span></div>
               )}
               {!submitting && compressingSlot !== 'dest' && (
                 <>
@@ -240,7 +345,6 @@ export default function DestinationForm({ countryCode, countryName, existingDest
           )}
         </div>
 
-        {/* Nom + Description */}
         <div className="dest-form-section">
           <input
             className="dest-form-name-input"
@@ -262,34 +366,24 @@ export default function DestinationForm({ countryCode, countryName, existingDest
           </div>
         </div>
 
-        {/* Tags */}
         <div className="dest-form-section">
           <div className="dest-form-section-label">
             Tags
-            <span className="dest-form-section-hint">
-              {tags.length === 0 ? '7 maximum' : `${tags.length} / 7 maximum`}
-            </span>
+            <span className="dest-form-section-hint">{tags.length === 0 ? '7 maximum' : `${tags.length} / 7 maximum`}</span>
           </div>
           <div className="dest-form-tags-grid">
             {AVAILABLE_TAGS.map(tag => {
               const selected = tags.includes(tag);
               const maxed = tags.length >= 7 && !selected;
               return (
-                <button
-                  key={tag}
-                  type="button"
+                <button key={tag} type="button"
                   className={`dest-form-tag-pill${selected ? ' selected' : ''}${maxed ? ' maxed' : ''}`}
-                  onClick={() => toggleTag(tag)}
-                  disabled={maxed}
-                >
-                  {tag}
-                </button>
+                  onClick={() => toggleTag(tag)} disabled={maxed}>{tag}</button>
               );
             })}
           </div>
         </div>
 
-        {/* Lieux */}
         <div className="dest-form-section">
           <div className="dest-form-section-label">
             Lieux à visiter <span className="required">*</span>
@@ -300,26 +394,17 @@ export default function DestinationForm({ countryCode, countryName, existingDest
             <div key={idx} className="dest-form-place-block">
               <div className="dest-form-place-header">
                 <span className="dest-form-place-num">Lieu {idx + 1}</span>
-                <button
-                  type="button"
-                  className="dest-form-place-remove"
-                  disabled={places.length === 1}
-                  onClick={() => removePlace(idx)}
-                  title={places.length === 1 ? "Au moins un lieu requis" : "Retirer ce lieu"}
-                >✕</button>
+                <button type="button" className="dest-form-place-remove"
+                  disabled={places.length === 1} onClick={() => removePlace(idx)}
+                  title={places.length === 1 ? "Au moins un lieu requis" : "Retirer ce lieu"}>✕</button>
               </div>
-              <input
-                className="dest-form-input"
-                placeholder="Nom du lieu *"
-                value={place.name}
-                maxLength={100}
+              <input className="dest-form-input" placeholder="Nom du lieu *" value={place.name} maxLength={100}
                 onChange={e => setPlaces(prev => prev.map((p, i) => i === idx ? { ...p, name: e.target.value } : p))}
               />
               <div className="dest-form-place-img-row">
                 {compressingSlot === idx ? (
                   <div className="dest-form-place-compressing">
-                    <div className="dest-form-spinner dest-form-spinner--small" />
-                    <span>Compression en cours…</span>
+                    <div className="dest-form-spinner dest-form-spinner--small" /><span>Compression en cours…</span>
                   </div>
                 ) : place.preview ? (
                   <div className="dest-form-img-preview-wrap">
@@ -347,12 +432,9 @@ export default function DestinationForm({ countryCode, countryName, existingDest
             </div>
           ))}
 
-          <button
-            type="button"
+          <button type="button"
             className={`dest-form-add-place-btn${places.length >= 10 ? ' disabled' : ''}`}
-            disabled={places.length >= 10}
-            onClick={addPlace}
-          >
+            disabled={places.length >= 10} onClick={addPlace}>
             ＋ Ajouter un lieu{places.length >= 10 ? ' (max atteint)' : ''}
           </button>
         </div>
@@ -360,8 +442,7 @@ export default function DestinationForm({ countryCode, countryName, existingDest
         {uploadProgress && (
           <div className="dest-form-section dest-form-progress">
             <div className="dest-form-progress-track">
-              <div className="dest-form-progress-fill"
-                style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }} />
+              <div className="dest-form-progress-fill" style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }} />
             </div>
             <span>Envoi… {uploadProgress.done}/{uploadProgress.total}</span>
           </div>
@@ -375,14 +456,9 @@ export default function DestinationForm({ countryCode, countryName, existingDest
         )}
       </div>
 
-      {/* Footer sticky */}
       <div className="dest-form-footer">
         <button type="button" className="dest-form-cancel-btn" onClick={onCancel}>Annuler</button>
-        <button
-          type="submit"
-          className="dest-form-submit-btn"
-          disabled={!isValid || submitting || isCompressing}
-        >
+        <button type="submit" className="dest-form-submit-btn" disabled={!isValid || submitting || isCompressing}>
           {submitting ? 'Publication…' : existingDestination ? 'Mettre à jour' : 'Publier →'}
         </button>
       </div>

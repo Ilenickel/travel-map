@@ -266,6 +266,91 @@ Réponds UNIQUEMENT en JSON : {"flagged": boolean, "category": "..."}. Si l'imag
 }
 
 /**
+ * Vérifie via GPT-4o-mini qu'un lieu à ne pas manquer est bien situé
+ * dans la destination indiquée (et le pays), quelle que soit la langue.
+ * Ex : "Hongya Cave" soumis pour "Pékin" → refus (c'est à Chongqing).
+ */
+export async function checkPlaceCoherence({ placeName, destName, countryName }) {
+  const system = `Tu es un expert en géographie et tourisme mondial. Un utilisateur soumet un nom de lieu touristique. Tu vérifies deux choses indépendantes, QUELLE QUE SOIT la langue :
+
+1. EXISTENCE — Le nom doit ressembler à un lieu touristique réel et sérieux : monument, quartier, musée, site naturel, rue, parc, plage, marché, temple, château, etc.
+REFUSE si le nom est manifestement inventé, du charabia, une suite de lettres sans sens, un test, ou ne ressemble pas du tout à un nom de lieu (exemples à refuser : "Ting Tant", "TIT tot", "abcdef", "test123", "azeaze", "blabla").
+ACCEPTE si le nom est plausible comme lieu touristique dans n'importe quelle langue ou culture, même peu connu.
+
+2. LOCALISATION — REFUSE uniquement si ce lieu est clairement et certainement dans une autre ville ou région que "${destName}". Si tu n'es pas certain, ACCEPTE.
+
+Réponds UNIQUEMENT en JSON : {"flagged": boolean, "reason": "phrase courte en français adressée à l'utilisateur si flagged=true, sinon null"}.`;
+
+  const userMsg = `Pays : "${countryName}"\nDestination : "${destName}"\nLieu soumis : "${placeName}"`;
+
+  let data;
+  try {
+    data = await callOpenAI('/chat/completions', {
+      model: TEXT_MODEL,
+      temperature: 0,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: userMsg },
+      ],
+    });
+  } catch {
+    return { ok: true }; // indisponible → on laisse passer
+  }
+
+  let verdict;
+  try { verdict = JSON.parse(data.choices?.[0]?.message?.content || '{}'); } catch { return { ok: true }; }
+  if (verdict.flagged) return { ok: false, reason: verdict.reason || `Ce lieu ne semble pas être situé à ${destName}.` };
+  return { ok: true };
+}
+
+/**
+ * Vérifie via GPT-4o-mini si le nom d'une destination est sémantiquement équivalent
+ * à l'un des noms existants, même dans des langues différentes
+ * (ex : "Tour Eiffel" ↔ "Eiffel Tower", "Pékin" ↔ "Beijing").
+ * Renvoie { duplicate: true, matchedName } ou { duplicate: false }.
+ */
+export async function checkSemanticDuplicate(newName, existingNames) {
+  if (!existingNames || !existingNames.length) return { duplicate: false };
+
+  const list = existingNames.map((n, i) => `${i + 1}. "${n}"`).join('\n');
+  const system = `Tu es un expert en géographie et toponymie internationale. Tu dois déterminer si un nom de destination soumis par un utilisateur désigne le MÊME lieu qu'un nom déjà présent dans une liste, même s'ils sont dans des langues différentes ou écrits différemment.
+Exemples de duplicata : "Tour Eiffel" / "Eiffel Tower", "Pékin" / "Beijing" / "Pechino", "Moscou" / "Moscow", "Venise" / "Venice" / "Venezia".
+Ne considère PAS comme duplicata : deux villes différentes dont les noms sont proches par hasard.
+Réponds UNIQUEMENT en JSON : {"duplicate": boolean, "matchedName": "nom exact de la liste si duplicate=true, sinon null"}.`;
+
+  const userMsg = `Nouveau nom soumis : "${newName}"\n\nListe des destinations existantes :\n${list}`;
+
+  let data;
+  try {
+    data = await callOpenAI('/chat/completions', {
+      model: TEXT_MODEL,
+      temperature: 0,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: userMsg },
+      ],
+    });
+  } catch {
+    // En cas d'indisponibilité on laisse passer (déjà bloqué par le check client)
+    return { duplicate: false };
+  }
+
+  let verdict;
+  try {
+    verdict = JSON.parse(data.choices?.[0]?.message?.content || '{}');
+  } catch {
+    return { duplicate: false };
+  }
+
+  return {
+    duplicate: !!verdict.duplicate,
+    matchedName: verdict.matchedName || null,
+  };
+}
+
+/**
  * Modère un ensemble de textes et d'images, avec vérification optionnelle de
  * cohérence factuelle (pour les destinations communautaires).
  * @param {Object} params

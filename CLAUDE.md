@@ -14,6 +14,7 @@
 
 - Ne pas modifier des choses qui n'ont pas été demandées (taille de modales, refactos, etc.)
 - Poser une question si le périmètre d'une demande est ambigu plutôt que d'en faire trop
+- Chaque message d'info, libellé, question ... doit être formulée en vouvoyant la personne.
 
 ## Phase de non-reg
 -Lorsque l'utilisateur me demande de faire une phase de non reg, il faut vérifier tout ce qui n'est pas commit en détail, chercher des potentielles régressions, réfléchir aux différents cas à la marge et cas particuliers possibles, regarder si le code ajouté correspond bien à ce qu'on veut faire ...
