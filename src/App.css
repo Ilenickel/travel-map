@@ -4882,7 +4882,40 @@ html, body, #root { height: 100%; }
 
 /* Add button top-right of destinations list */
 .dest-list-header {
-  display: flex; justify-content: flex-end; margin-bottom: 0;
+  display: flex; align-items: center; gap: 10px; margin-bottom: 0; flex-wrap: wrap;
+}
+.dest-search-wrapper {
+  position: relative; flex: 1; min-width: 160px;
+}
+.dest-search-wrapper::before {
+  content: "🔍";
+  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  font-size: 13px; pointer-events: none; opacity: 0.7;
+}
+.dest-search-input {
+  width: 100%; padding: 8px 32px 8px 32px; font-size: 13px;
+  background: var(--surface2);
+  border: 1.5px solid rgba(99,102,241,0.35);
+  border-radius: 20px; color: var(--text); outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.06);
+}
+.dest-search-input::placeholder { color: var(--text-dim); }
+.dest-search-input:focus {
+  border-color: rgba(99,102,241,0.75);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+.dest-search-clear {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  font-size: 12px; padding: 0; line-height: 1;
+  transition: color 0.15s;
+}
+.dest-search-clear:hover { color: var(--text); }
+.dest-search-empty {
+  text-align: center; color: var(--text-muted); font-size: 13px;
+  padding: 32px 0;
 }
 .dest-add-community-btn-top {
   display: inline-flex; align-items: center; gap: 6px;

@@ -61,6 +61,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   const destReviewsRef = useRef(null);
 
   // Community destinations state
+  const [destSearch, setDestSearch] = useState('');
   const [userDestinations, setUserDestinations] = useState([]);
   const [showDestForm, setShowDestForm] = useState(false);
   const [editDest, setEditDest] = useState(null);
@@ -74,6 +75,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setActiveTab(id);
     setVisitedTabs((prev) => { const s = new Set(prev); s.add(id); return s; });
     setSelectedDest(null);
+    setDestSearch('');
   };
 
   useEffect(() => {
@@ -90,6 +92,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setShowDestForm(false);
     setEditDest(null);
     setDeletingDestId(null);
+    setDestSearch('');
   }, [countryCode, initialTab]);
 
   // Load community destinations
@@ -297,6 +300,13 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   if (!data) return null;
 
   const allDestinations = [...(data.destinations ?? []), ...userDestinations];
+
+  const filteredAllDests = useMemo(() => {
+    const normalize = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const q = normalize(destSearch.trim());
+    if (!q) return null;
+    return [...(data.destinations ?? []), ...userDestinations].filter(d => normalize(d.name).includes(q));
+  }, [destSearch, data.destinations, userDestinations]);
 
   const tabs = [
     { id: "overview",      label: "🗾 Aperçu" },
@@ -810,6 +820,18 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       </div>
                     )}
                     <div className="dest-list-header">
+                      <div className="dest-search-wrapper">
+                        <input
+                          type="text"
+                          className="dest-search-input"
+                          placeholder="Rechercher une destination…"
+                          value={destSearch}
+                          onChange={e => setDestSearch(e.target.value)}
+                        />
+                        {destSearch && (
+                          <button className="dest-search-clear" onClick={() => setDestSearch('')}>✕</button>
+                        )}
+                      </div>
                       {user ? (
                         <button
                           className="dest-add-community-btn-top"
@@ -824,8 +846,123 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       )}
                     </div>
 
+                    {/* Résultats de recherche */}
+                    {filteredAllDests !== null && (() => {
+                      if (filteredAllDests.length === 0) {
+                        return <p className="dest-search-empty">Aucune destination ne correspond à votre recherche.</p>;
+                      }
+                      const M = 5; const C = 3.5;
+                      const bayesian = (d) => { const s = destStats[`${countryCode}_${d.id}`]; return s ? (s.count * s.avg + M * C) / (s.count + M) : -1; };
+                      const searchMyDests = user ? filteredAllDests.filter(d => d.isUserDest && d.user_id === user.id) : [];
+                      const searchOtherDests = filteredAllDests
+                        .filter(d => !user || !d.isUserDest || d.user_id !== user.id)
+                        .sort((a, b) => bayesian(b) - bayesian(a));
+                      const isOwner = (dest) => user?.id === dest.user_id;
+                      const renderCard = (dest) => dest.isUserDest ? (
+                        <div key={dest.id} className={`dest-card${isAdmin && alertIds.has(dest.id) ? ' dest-card--alert' : ''}`} onClick={() => setSelectedDest(dest)}>
+                          <div className="dest-card-img-wrap">
+                            <img src={dest.image_url} alt={dest.name} className="dest-card-img" style={{ objectFit: 'cover' }} />
+                            {!isOwner(dest) && <span className="dest-card-community-badge">👤</span>}
+                          </div>
+                          <div className="dest-card-info">
+                            <div className="dest-card-top">
+                              <span className="dest-card-name">{dest.name}</span>
+                              {isOwner(dest) && deletingDestId !== dest.id && (
+                                <div className="dest-card-owner-actions" onClick={e => e.stopPropagation()}>
+                                  <button className="review-action-btn review-action-btn--edit" title="Modifier"
+                                    onClick={() => { setEditDest(dest); setShowDestForm(true); }}>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                  </button>
+                                  <button className="review-action-btn review-action-btn--delete" title="Supprimer"
+                                    onClick={() => setDeletingDestId(dest.id)}>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6l1 1h4v2H4V4h4l1-1zM5 8h14l-1 13H6L5 8zm5 2v8h1v-8h-1zm3 0v8h1v-8h-1z"/></svg>
+                                  </button>
+                                </div>
+                              )}
+                              {!isOwner(dest) && (
+                                <div className="dest-card-top-actions" onClick={e => e.stopPropagation()}>
+                                  {isAdmin && alertIds.has(dest.id) && <span className="dest-card-alert-badge">🚨</span>}
+                                  {user && (
+                                    <button
+                                      className={`dest-card-report-btn-inline${reportedDestIds.has(dest.id) ? ' reported' : ''}`}
+                                      disabled={reportedDestIds.has(dest.id)}
+                                      onClick={(e) => handleReportDest(dest.id, e)}
+                                    >
+                                      {reportedDestIds.has(dest.id) ? '🚩 Signalé' : (
+                                        <>
+                                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
+                                          Signaler
+                                        </>
+                                      )}
+                                    </button>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            {deletingDestId === dest.id ? (
+                              <div className="dest-card-confirm-block" onClick={e => e.stopPropagation()}>
+                                <span className="dest-card-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
+                                <div className="dest-card-confirm-btns">
+                                  <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Annuler</button>
+                                  <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>Supprimer</button>
+                                </div>
+                              </div>
+                            ) : (
+                              <>
+                                <p className="dest-card-desc">{dest.description.length > 90 ? dest.description.slice(0, 90) + '…' : dest.description}</p>
+                                {dest.tags?.length > 0 && (
+                                  <div className="dest-tags">
+                                    {dest.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                                  </div>
+                                )}
+                                {destStats[`${countryCode}_${dest.id}`] && (
+                                  <div className="dest-card-rating">
+                                    <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
+                                    <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
+                                    <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div key={dest.id} className="dest-card" onClick={() => setSelectedDest(dest)}>
+                          <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-img" />
+                          <div className="dest-card-info">
+                            <div className="dest-card-top">
+                              <span className="dest-card-name">{dest.name}</span>
+                              <span className="dest-card-region">{dest.region}</span>
+                            </div>
+                            <p className="dest-card-desc">{dest.description.length > 90 ? dest.description.slice(0, 90) + '…' : dest.description}</p>
+                            <div className="dest-tags">
+                              {dest.tags?.map((t) => <span key={t} className="tag">{t}</span>)}
+                            </div>
+                            {destStats[`${countryCode}_${dest.id}`] && (
+                              <div className="dest-card-rating">
+                                <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
+                                <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
+                                <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                      return (
+                        <>
+                          {searchMyDests.length > 0 && (
+                            <div className="my-dests-section">
+                              <div className="my-dests-header">Mes destinations</div>
+                              <div className="dest-grid">{searchMyDests.map(renderCard)}</div>
+                            </div>
+                          )}
+                          {searchOtherDests.length > 0 && <div className="dest-grid">{searchOtherDests.map(renderCard)}</div>}
+                        </>
+                      );
+                    })()}
+
                     {/* Section "Mes destinations" */}
-                    {myDests.length > 0 && (
+                    {filteredAllDests === null && myDests.length > 0 && (
                       <div className="my-dests-section">
                         <div className="my-dests-header">Mes destinations</div>
                         <div className="dest-grid">
@@ -883,7 +1020,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     )}
 
                     {/* Destinations statiques + communautaires des autres, triées par note */}
-                    <div className="dest-grid">
+                    {filteredAllDests === null && <div className="dest-grid">
                       {[
                         ...(data?.destinations ?? []).map(d => ({ ...d, _type: 'static' })),
                         ...otherDests.map(d => ({ ...d, _type: 'community' })),
@@ -962,7 +1099,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           </div>
                         </div>
                       ))}
-                    </div>
+                    </div>}
                   </>
                   );
                 })()}
