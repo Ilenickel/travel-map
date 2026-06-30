@@ -888,9 +888,12 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         ...(data?.destinations ?? []).map(d => ({ ...d, _type: 'static' })),
                         ...otherDests.map(d => ({ ...d, _type: 'community' })),
                       ].sort((a, b) => {
-                        const avgA = destStats[`${countryCode}_${a.id}`]?.avg ?? -1;
-                        const avgB = destStats[`${countryCode}_${b.id}`]?.avg ?? -1;
-                        return avgB - avgA;
+                        const M = 5; const C = 3.5; // moyenne bayésienne : seuil de confiance + prior
+                        const sa = destStats[`${countryCode}_${a.id}`];
+                        const sb = destStats[`${countryCode}_${b.id}`];
+                        const scoreA = sa ? (sa.count * sa.avg + M * C) / (sa.count + M) : -1;
+                        const scoreB = sb ? (sb.count * sb.avg + M * C) / (sb.count + M) : -1;
+                        return scoreB - scoreA;
                       }).map((dest) => dest._type === 'static' ? (
                         <div key={dest.id} className="dest-card" onClick={() => setSelectedDest(dest)}>
                           <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-img" />
