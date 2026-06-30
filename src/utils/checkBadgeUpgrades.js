@@ -34,7 +34,7 @@ export async function checkBadgeUpgrades(userId) {
 
   if (!profile) return [];
 
-  // Compter les votes reçus sur les avis de l'utilisateur
+  // Compter les votes reçus sur les avis et les lieux de l'utilisateur
   let voteCount = 0;
   if (reviewIds?.length) {
     const ids = reviewIds.map((r) => r.id);
@@ -43,6 +43,22 @@ export async function checkBadgeUpgrades(userId) {
       .select('id', { count: 'exact', head: true })
       .in('review_id', ids);
     voteCount = count || 0;
+  }
+
+  const [{ data: commPlaces }, { data: staticPlaces }] = await Promise.all([
+    supabase.from('destination_places').select('id').eq('user_id', userId),
+    supabase.from('static_destination_places').select('id').eq('user_id', userId),
+  ]);
+  const allPlaceIds = [
+    ...(commPlaces || []).map(p => p.id),
+    ...(staticPlaces || []).map(p => p.id),
+  ];
+  if (allPlaceIds.length) {
+    const { count: placeVoteCount } = await supabase
+      .from('place_votes')
+      .select('id', { count: 'exact', head: true })
+      .in('place_id', allPlaceIds);
+    voteCount += placeVoteCount || 0;
   }
 
   const destinations = (dests || []).map((d) => ({
@@ -157,6 +173,22 @@ export async function loadBadgeData(userId) {
       .select('id', { count: 'exact', head: true })
       .in('review_id', ids);
     voteCount = count || 0;
+  }
+
+  const [{ data: commPlaces2 }, { data: staticPlaces2 }] = await Promise.all([
+    supabase.from('destination_places').select('id').eq('user_id', userId),
+    supabase.from('static_destination_places').select('id').eq('user_id', userId),
+  ]);
+  const allPlaceIds2 = [
+    ...(commPlaces2 || []).map(p => p.id),
+    ...(staticPlaces2 || []).map(p => p.id),
+  ];
+  if (allPlaceIds2.length) {
+    const { count: placeVoteCount } = await supabase
+      .from('place_votes')
+      .select('id', { count: 'exact', head: true })
+      .in('place_id', allPlaceIds2);
+    voteCount += placeVoteCount || 0;
   }
 
   const destinations = (dests || []).map((d) => ({
