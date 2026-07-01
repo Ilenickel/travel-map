@@ -1870,7 +1870,7 @@ html, body, #root { height: 100%; }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(139,92,246,0.85));
+  background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(129,140,248,0.85));
   border: 1px solid transparent;
   border-radius: 20px;
   padding: 0 16px 0 8px;
@@ -1885,7 +1885,7 @@ html, body, #root { height: 100%; }
   transition: box-shadow 0.15s, transform 0.1s, background 0.15s;
 }
 .topbar-plan-btn:hover {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
   box-shadow: 0 3px 10px rgba(99,102,241,0.35);
   transform: translateY(-1px);
 }
@@ -3250,23 +3250,34 @@ html, body, #root { height: 100%; }
 }
 .notif-invite-btn--decline:hover:not(:disabled) { background: rgba(255,255,255,0.06); }
 
-/* â”€â”€â”€ Bouton follow â”€â”€â”€ */
+/* ─── Bouton follow ─── */
 .follow-btn {
   flex-shrink: 0;
-  padding: 7px 16px;
+  padding: 8px 18px;
   border-radius: 20px;
-  border: 1px solid var(--accent);
-  background: var(--accent-subtle);
-  color: var(--accent2);
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(99,102,241,0.85), rgba(129,140,248,0.85));
+  color: #fff;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  box-shadow: 0 2px 6px rgba(99,102,241,0.25);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
   white-space: nowrap;
 }
-.follow-btn:hover { background: var(--accent-glow); }
-.follow-btn--following { background: var(--surface2); border-color: var(--border); color: var(--text-dim); }
-.follow-btn--unfollow { border-color: #ef4444 !important; color: #ef4444 !important; background: rgba(239,68,68,0.08) !important; }
+.follow-btn:hover {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 3px 10px rgba(99,102,241,0.35);
+  transform: translateY(-1px);
+}
+.follow-btn--following {
+  background: var(--surface2);
+  border-color: var(--border-light);
+  color: var(--text-dim);
+  box-shadow: none;
+}
+.follow-btn--following:hover { box-shadow: none; transform: none; }
+.follow-btn--unfollow { border-color: rgba(239,68,68,0.4) !important; color: #ef4444 !important; background: rgba(239,68,68,0.08) !important; }
 
 /* ─── Compteurs abonnés/abonnements dans ProfilePanel ─── */
 .profile-follow-counts {
@@ -3501,6 +3512,15 @@ html, body, #root { height: 100%; }
   animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1);
   display: flex; flex-direction: column;
 }
+.profile-modal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0.7;
+  z-index: 1;
+}
 
 /* ── Profil public modernisé ── */
 .profile-modal--public {
@@ -3563,46 +3583,52 @@ html, body, #root { height: 100%; }
 /* Onglets principaux du profil public (Avis / Pays visités) */
 .pub-profile-main-tabs {
   display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--surface2);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-  background: var(--surface);
 }
 .pub-profile-main-tab {
   flex: 1; background: none; border: none;
-  border-bottom: 2px solid transparent;
-  color: var(--text-muted); font-size: 13px; font-weight: 600;
-  padding: 12px 10px; cursor: pointer; font-family: inherit;
+  border-radius: 10px;
+  color: var(--text-muted); font-size: 13px; font-weight: 700;
+  padding: 9px 10px; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: color 0.15s, border-color 0.15s;
-  margin-bottom: -1px;
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
 }
-.pub-profile-main-tab:hover { color: var(--text-dim); }
-.pub-profile-main-tab.active { color: var(--accent2); border-bottom-color: var(--accent); }
+.pub-profile-main-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+.pub-profile-main-tab.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 2px 6px rgba(99,102,241,0.25);
+}
 
-/* Sous-onglets imbriqués (Pays / Destinations) */
+/* Sous-onglets imbriqués (Pays / Destinations) — petite pilule secondaire */
 .profile-reviews-subtabs--nested {
   display: flex; gap: 6px;
-  padding: 12px 20px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
   background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 .profile-reviews-subtabs--nested .profile-reviews-subtab {
-  background: none; border: none; border-bottom: 2px solid transparent;
-  color: var(--text-muted); font-size: 13px; font-weight: 600;
-  padding: 0 4px 10px; cursor: pointer; font-family: inherit;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted); font-size: 12.5px; font-weight: 700;
+  padding: 6px 14px; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; gap: 5px;
-  transition: color 0.15s;
-  margin-bottom: -1px;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
-.profile-reviews-subtabs--nested .profile-reviews-subtab:hover { color: var(--text-dim); }
+.profile-reviews-subtabs--nested .profile-reviews-subtab:hover { color: var(--text-dim); border-color: var(--border-light); }
 .profile-reviews-subtabs--nested .profile-reviews-subtab.active {
-  color: var(--text); border-bottom-color: var(--accent);
+  color: var(--accent2); background: var(--accent-subtle); border-color: rgba(99,102,241,0.35);
 }
 
 /* Header avec avatar + infos */
 .profile-modal-header {
-  display: flex; align-items: center; gap: 14px;
-  padding: 20px 20px 16px;
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px 20px 18px;
+  background: linear-gradient(150deg, rgba(99,102,241,0.08) 0%, rgba(129,140,248,0.04) 100%);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
@@ -3613,14 +3639,16 @@ html, body, #root { height: 100%; }
   border-radius: 50%;
 }
 .profile-modal-avatar-img {
-  width: 52px; height: 52px; border-radius: 50%; object-fit: cover; display: block;
-  border: 2px solid var(--border-light);
+  width: 60px; height: 60px; border-radius: 50%; object-fit: cover; display: block;
+  border: 2.5px solid rgba(99,102,241,0.4);
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.09);
 }
 .profile-modal-avatar-initials {
-  width: 52px; height: 52px; border-radius: 50%;
+  width: 60px; height: 60px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; font-weight: 700; color: #fff;
-  border: 2px solid rgba(255,255,255,0.15);
+  font-size: 22px; font-weight: 700; color: #fff;
+  border: 2.5px solid rgba(255,255,255,0.15);
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
 }
 .profile-modal-avatar-overlay {
   position: absolute; inset: 0; border-radius: 50%;
@@ -3639,30 +3667,38 @@ html, body, #root { height: 100%; }
 /* Tabs */
 .profile-modal-tabs {
   display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--surface2);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 .profile-modal-tab {
   flex: 1; background: none; border: none;
-  border-bottom: 2px solid transparent;
-  color: var(--text-muted); font-size: 13px; font-weight: 600;
-  padding: 12px 10px; cursor: pointer; font-family: inherit;
+  border-radius: 10px;
+  color: var(--text-muted); font-size: 13px; font-weight: 700;
+  padding: 9px 10px; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
 }
-.profile-modal-tab:hover { color: var(--text-dim); }
-.profile-modal-tab.active { color: var(--accent2); border-bottom-color: var(--accent); }
+.profile-modal-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+.profile-modal-tab.active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 2px 6px rgba(99,102,241,0.25);
+}
 
 .profile-tab-count {
   background: var(--accent-subtle); border: 1px solid rgba(99,102,241,0.25);
   border-radius: 20px; padding: 1px 6px; font-size: 10px; color: var(--accent2);
 }
+.profile-modal-tab.active .profile-tab-count,
+.pub-profile-main-tab.active .profile-tab-count {
+  background: rgba(255,255,255,0.25); border-color: transparent; color: #fff;
+}
 .pub-profile-main-tab .profile-tab-count {
   font-size: 11px; padding: 2px 8px; font-weight: 700;
   background: rgba(99,102,241,0.18); border-color: rgba(99,102,241,0.4);
-}
-.pub-profile-main-tab.active .profile-tab-count {
-  background: var(--accent); border-color: var(--accent); color: #fff;
 }
 
 /* Tab content */
@@ -3673,25 +3709,29 @@ html, body, #root { height: 100%; }
   scrollbar-width: thin; scrollbar-color: var(--border) transparent;
 }
 .profile-notif-prefs {
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex; flex-direction: column; gap: 4px;
   margin-top: 10px;
   padding: 14px 16px;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
 }
 .profile-notif-prefs-title {
-  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  font-size: 11px; font-weight: 800; color: var(--accent2);
   text-transform: uppercase; letter-spacing: 0.08em;
-  margin-bottom: 2px;
+  margin-bottom: 8px;
 }
 .profile-notif-pref-row {
   display: flex; align-items: center; gap: 10px;
   cursor: pointer;
   font-size: 13px; color: var(--text-dim);
   user-select: none;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
 }
-.profile-notif-pref-row:hover { color: var(--text); }
+.profile-notif-pref-row:hover { color: var(--text); background: rgba(255,255,255,0.04); }
 
 /* Toggle switch */
 .profile-toggle {
@@ -3728,11 +3768,18 @@ html, body, #root { height: 100%; }
   padding: 16px 20px;
 }
 .visited-countries-header {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.visited-countries-header::before {
+  content: '🗺️';
+  font-size: 14px;
 }
 .visited-countries-count {
-  font-size: 12px; font-weight: 700;
-  color: var(--text-muted);
+  font-size: 12px; font-weight: 800;
+  color: var(--accent2);
   text-transform: uppercase; letter-spacing: 0.08em;
 }
 .visited-countries-grid {
@@ -3743,23 +3790,25 @@ html, body, #root { height: 100%; }
 .visited-country-chip {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 5px 12px 5px 8px;
+  padding: 6px 14px 6px 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--text);
-  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .visited-country-chip:hover {
-  background: rgba(99, 102, 241, 0.08);
-  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.1);
+  border-color: var(--accent2);
+  box-shadow: 0 4px 14px rgba(99,102,241,0.2);
   transform: translateY(-1px);
 }
 .visited-country-chip .profile-review-flag-img {
-  width: 18px; height: auto; border-radius: 2px;
+  width: 20px; height: 15px; border-radius: 3px;
 }
 
 .profile-tab-actions {
@@ -3784,29 +3833,35 @@ html, body, #root { height: 100%; }
 }
 
 .profile-signout-btn {
-  background: none; border: 1px solid rgba(239,68,68,0.25);
-  border-radius: 10px; color: var(--red);
-  font-size: 13px; font-weight: 600; padding: 10px;
+  background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.22);
+  border-radius: 12px; color: var(--red);
+  font-size: 13px; font-weight: 600; padding: 11px;
   cursor: pointer; font-family: inherit; width: 100%;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
 }
-.profile-signout-btn:hover { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.5); }
+.profile-signout-btn:hover {
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.45);
+  box-shadow: 0 4px 14px rgba(239,68,68,0.15);
+  transform: translateY(-1px);
+}
 
 /* Reviews list */
-/* Sous-onglets avis (pays / destinations) */
+/* Sous-onglets avis (pays / destinations) — petite pilule secondaire */
 .profile-reviews-subtabs {
   display: flex; gap: 6px;
-  padding: 12px 20px 0;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border);
 }
 .profile-reviews-subtab {
-  background: none; border: none; border-bottom: 2px solid transparent;
-  color: var(--text-muted); font-size: 13px; font-weight: 600;
-  padding: 6px 4px 10px; cursor: pointer; font-family: inherit;
-  transition: color 0.15s;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted); font-size: 12.5px; font-weight: 700;
+  padding: 6px 14px; cursor: pointer; font-family: inherit;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
-.profile-reviews-subtab.active { color: var(--text); border-bottom-color: var(--accent); }
-.profile-reviews-subtab:hover:not(.active) { color: var(--text-dim); }
+.profile-reviews-subtab.active { color: var(--accent2); background: var(--accent-subtle); border-color: rgba(99,102,241,0.35); }
+.profile-reviews-subtab:hover:not(.active) { color: var(--text-dim); border-color: var(--border-light); }
 
 .profile-reviews-list {
   display: flex; flex-direction: column; gap: 10px;
@@ -3817,27 +3872,40 @@ html, body, #root { height: 100%; }
 
 .profile-reviews-empty {
   display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding: 32px 0; color: var(--text-muted); font-size: 13px; text-align: center;
+  padding: 32px 20px; color: var(--text-muted); font-size: 13px; text-align: center;
+  background: var(--surface2);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
 }
 
 .profile-review-item {
   position: relative;
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 12px; padding: 12px;
+  border-left: 3px solid rgba(129,140,248,0.5);
+  border-radius: 12px; padding: 12px 12px 12px 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   display: flex; flex-direction: column; gap: 8px;
 }
-.profile-review-item--clickable { cursor: pointer; transition: border-color 0.15s, background 0.15s; }
-.profile-review-item--clickable:hover { border-color: var(--border-light); background: var(--surface3); }
-.profile-review-item--dest { margin-left: 4px; }
+.profile-review-item--clickable { cursor: pointer; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.1s; }
+.profile-review-item--clickable:hover {
+  border-color: var(--border-light);
+  border-left-color: var(--accent2);
+  background: var(--surface3);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+.profile-review-item--dest { margin-left: 4px; border-left-color: rgba(245,158,11,0.5); }
+.profile-review-item--dest.profile-review-item--clickable:hover { border-left-color: var(--amber); }
 
 .profile-review-top {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
 }
 .profile-review-country-info {
-  display: flex; align-items: center; gap: 6px; flex: 1;
+  display: flex; align-items: center; gap: 7px; flex: 1;
 }
 .profile-review-dest-name {
-  font-size: 13px; font-weight: 700; color: var(--text); flex: 1;
+  font-size: 13.5px; font-weight: 800; color: var(--text); flex: 1;
+  letter-spacing: -0.005em;
 }
 
 /* Groupe pays pour avis destinations */
@@ -3871,14 +3939,30 @@ html, body, #root { height: 100%; }
 .profile-dest-group-header--clickable {
   cursor: pointer;
   user-select: none;
-  border-radius: 6px;
-  padding: 8px 10px;
+  border-radius: 10px;
+  border-left: 3px solid var(--accent2);
+  padding: 10px 12px;
   margin: 0 -10px 6px;
-  transition: background 0.15s;
+  background: var(--surface2);
+  border-top: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
 }
-.profile-dest-group-header--clickable:hover { background: var(--surface2); }
-.profile-dest-group-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.profile-dest-group-count { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+.profile-dest-group-header--clickable:hover {
+  background: var(--surface3);
+  border-top-color: var(--border); border-right-color: var(--border); border-bottom-color: var(--border);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+.profile-dest-group-name { font-size: 13.5px; font-weight: 800; color: var(--text); letter-spacing: -0.005em; }
+.profile-dest-group-count {
+  font-size: 11px; font-weight: 700; color: var(--text-dim);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2px 9px;
+  margin-left: auto;
+}
 .profile-dest-group-chevron { font-size: 9px; color: var(--text-muted); flex-shrink: 0; }
 @keyframes delayed-show { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
 .profile-dest-group-loading { animation: delayed-show 400ms step-end forwards; }
@@ -3890,10 +3974,24 @@ html, body, #root { height: 100%; }
 }
 .profile-review-country-btn:hover .profile-review-country { color: var(--accent2); text-decoration: underline; }
 .profile-review-flag { font-size: 18px; line-height: 1; }
-.profile-review-flag-img { width: 20px; height: auto; border-radius: 2px; flex-shrink: 0; }
-.profile-review-country { font-size: 13px; font-weight: 700; color: var(--text); transition: color 0.15s; }
-.profile-review-stars { font-size: 13px; letter-spacing: 1px; }
-.profile-review-date { font-size: 11px; color: var(--text-muted); }
+.profile-review-flag-img {
+  width: 22px; height: 16px; object-fit: cover; border-radius: 4px; flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+}
+.profile-review-country { font-size: 13.5px; font-weight: 800; color: var(--text); transition: color 0.15s; }
+.profile-review-stars {
+  font-size: 12px; letter-spacing: 1px; color: var(--amber);
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 20px;
+  padding: 3px 8px;
+}
+.profile-review-date {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  background: var(--surface3);
+  border-radius: 20px;
+  padding: 2px 8px;
+}
 .profile-review-comment { font-size: 13px; color: var(--text-dim); line-height: 1.5; overflow-wrap: break-word; word-break: break-word; white-space: pre-wrap; }
 
 /* Miniatures photos (style Amazon) */
