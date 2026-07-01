@@ -48,7 +48,7 @@ function FlagImage({ country, code }) {
   );
 }
 
-export default function PublicProfileModal({ userId: initialUserId, onClose, onOpenCountry }) {
+export default function PublicProfileModal({ userId: initialUserId, onClose, onOpenCountry, onFollowChange }) {
   const { user } = useAuth();
   const [userId, setUserId] = useState(initialUserId);
   const [profile, setProfile] = useState(null);
@@ -133,6 +133,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
       await supabase.from('follows').delete().eq('follower_id', user.id).eq('following_id', userId);
       setIsFollowing(false);
       setFollowerCount((c) => Math.max(0, c - 1));
+      onFollowChange?.(-1);
     } else {
       await supabase.from('follows').upsert(
         { follower_id: user.id, following_id: userId },
@@ -140,6 +141,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
       );
       setIsFollowing(true);
       setFollowerCount((c) => c + 1);
+      onFollowChange?.(+1);
       supabase.auth.getSession().then(({ data: s }) => {
         fetch('/api/notify-new-follower', {
           method: 'POST',

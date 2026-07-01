@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/pays/:slug", "destination": "/pays/:slug/index.html" }
+    { "source": "/pays/:slug", "destination": "/pays/:slug/index.html" },
+    { "source": "/((?!api|pays|assets|_vercel|[^/]+\\.[^/]+$).*)", "destination": "/index.html" }
   ]
 }

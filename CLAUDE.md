@@ -6,6 +6,7 @@
 
 - Implémenter le code = OK
 - Commit = attendre le go explicite ("tu peux commit", "commit ça", etc.)
+- **Avant chaque commit, demander sur quelle branche l'utilisateur souhaite commiter**, même si le contexte semble évident
 - Push = attendre le go explicite séparé ("tu peux push", "push", etc.)
 - Un go pour commit ne vaut pas un go pour push
 - Un go donné une fois ne vaut pas pour les fois suivantes

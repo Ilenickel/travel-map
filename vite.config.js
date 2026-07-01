@@ -5,4 +5,7 @@ import devApiPlugin from './dev-api-plugin.js'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), devApiPlugin()],
+  server: {
+    historyApiFallback: true,
+  },
 })

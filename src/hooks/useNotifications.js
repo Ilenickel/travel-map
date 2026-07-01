@@ -32,6 +32,10 @@ export function useNotifications(userId) {
         event: 'UPDATE', schema: 'public', table: 'notifications',
         filter: `user_id=eq.${userId}`,
       }, () => fetchNotifs())
+      .on('postgres_changes', {
+        event: 'DELETE', schema: 'public', table: 'notifications',
+        filter: `user_id=eq.${userId}`,
+      }, () => fetchNotifs())
       .subscribe();
 
     const poll = setInterval(fetchNotifs, 20000);
@@ -65,7 +69,25 @@ export function useNotifications(userId) {
     await supabase.from('notifications').delete().eq('user_id', userId);
   }, [userId]);
 
+  // Suppression sélective (utilisée quand seule une partie des notifications doit
+  // vraiment disparaître de la base, ex : "Tout supprimer" qui épargne les invitations
+  // de voyage en attente).
+  const deleteMany = useCallback(async (ids) => {
+    if (!ids.length) return;
+    ids.forEach((id) => deletedIds.current.add(id));
+    setNotifications((prev) => prev.filter((n) => !ids.includes(n.id)));
+    await supabase.from('notifications').delete().in('id', ids);
+  }, []);
+
+  // Retrait purement visuel, sans toucher à la base ni la blacklister : la notification
+  // reste en attente en base et réapparaîtra au prochain sondage/realtime (utilisé pour
+  // les invitations de voyage, qui ne doivent disparaître pour de bon qu'après un vrai
+  // Accepter/Refuser explicite).
+  const hideOne = useCallback((id) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
+
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  return { notifications, loading, unreadCount, markRead, markAllRead, deleteOne, deleteAll };
+  return { notifications, loading, unreadCount, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne };
 }

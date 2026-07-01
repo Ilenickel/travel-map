@@ -600,6 +600,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           userId={viewingProfile}
           onClose={() => setViewingProfile(null)}
           onOpenCountry={(code, tab, extra) => { setViewingProfile(null); onOpenCountry?.(code, tab, extra); onClose(); }}
+          onFollowChange={(delta) => setFollowingCount(c => Math.max(0, c + delta))}
         />
       )}
 

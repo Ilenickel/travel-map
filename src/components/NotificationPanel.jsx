@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { findCountry } from '../data/index';
 
@@ -26,10 +27,12 @@ function FlagImage({ country, code }) {
   );
 }
 
-export default function NotificationPanel({ notifications, onClose, onOpenCountry, markRead, markAllRead, deleteOne, deleteAll }) {
+export default function NotificationPanel({ notifications, onClose, onOpenCountry, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne }) {
   const [profiles, setProfiles] = useState({});
   const [tooltip, setTooltip] = useState(null); // { id, x, y }
+  const [invitePending, setInvitePending] = useState(null); // id de la notif en cours de traitement
   const infoBtnRefs = useRef({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const ids = [...new Set(notifications.map((n) => n.from_user_id).filter(Boolean))];
@@ -72,6 +75,51 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
     onClose();
   }
 
+  async function handleAcceptInvite(notif) {
+    const invitationId = notif.metadata?.invitation_id;
+    const tripId = notif.metadata?.trip_id;
+    if (!invitationId) return;
+    setInvitePending(notif.id);
+    const { error } = await supabase.rpc('accept_trip_invitation', { invitation_id: invitationId });
+    setInvitePending(null);
+    if (error) {
+      // L'invitation n'est plus valide (annulée par l'organisateur, ou déjà traitée).
+      // On retire la notification devenue inutile (son bouton Accepter n'aurait aucun
+      // effet) plutôt que de laisser l'utilisateur bloqué sans feedback.
+      await deleteOne(notif.id);
+      alert("Cette invitation n'est plus disponible (elle a été annulée ou déjà traitée).");
+      return;
+    }
+    await deleteOne(notif.id);
+    onClose();
+    navigate(tripId ? `/planifier?trip=${tripId}` : '/planifier');
+  }
+
+  async function handleDeclineInvite(notif) {
+    const invitationId = notif.metadata?.invitation_id;
+    if (!invitationId) { await deleteOne(notif.id); return; }
+    setInvitePending(notif.id);
+    await supabase.rpc('decline_trip_invitation', { invitation_id: invitationId });
+    setInvitePending(null);
+    await deleteOne(notif.id);
+  }
+
+  // Seul un vrai clic sur "Refuser" doit refuser une invitation de voyage. La croix
+  // générique (ou "Tout supprimer") ne fait que la retirer visuellement du panneau :
+  // elle reste "en attente" en base et réapparaîtra au prochain sondage/realtime tant
+  // que l'utilisateur n'a pas explicitement accepté ou refusé.
+  function handleDismiss(notif) {
+    if (notif.type === 'trip_invitation') { hideOne(notif.id); return; }
+    deleteOne(notif.id);
+  }
+
+  function handleDismissAll() {
+    const invites = notifications.filter(n => n.type === 'trip_invitation');
+    const others = notifications.filter(n => n.type !== 'trip_invitation');
+    invites.forEach(n => hideOne(n.id));
+    if (others.length) deleteMany(others.map(n => n.id));
+  }
+
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
@@ -83,7 +131,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
             <button className="notif-mark-all" onClick={markAllRead}>Tout lire</button>
           )}
           {notifications.length > 0 && (
-            <button className="notif-clear-all" onClick={deleteAll}>Tout supprimer</button>
+            <button className="notif-clear-all" onClick={handleDismissAll}>Tout supprimer</button>
           )}
         </div>
       </div>
@@ -101,6 +149,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
           {notifications.map((n) => {
             const isOwnershipTransfer = n.type === 'destination_ownership_transfer';
             const isNewFollower = n.type === 'new_follower';
+            const isTripInvitation = n.type === 'trip_invitation';
             const followerList = isNewFollower ? (n.metadata?.followers ?? []) : null;
             const profile = (isOwnershipTransfer || isNewFollower) ? null : profiles[n.from_user_id];
             const name = isNewFollower
@@ -127,7 +176,10 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                 key={n.id}
                 className={`notif-item${!n.read ? ' notif-item--unread' : ''}`}
               >
-                <button className="notif-item-main" onClick={() => handleClick(n)}>
+                <button
+                  className="notif-item-main"
+                  onClick={() => { if (isTripInvitation) { if (!n.read) markRead(n.id); } else handleClick(n); }}
+                >
                   <div className="notif-avatar">
                     {isOwnershipTransfer ? (
                       <div className="notif-avatar-system">🔑</div>
@@ -148,6 +200,8 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                         <>Vous êtes désormais responsable de la destination <strong>{n.destination_name}</strong></>
                       ) : isNewFollower ? (
                         followerText()
+                      ) : isTripInvitation ? (
+                        <><strong>{name}</strong> vous invite au voyage « {n.metadata?.trip_title || 'Voyage'} »</>
                       ) : n.type === 'new_own_dest_review' ? (
                         <><strong>{name}</strong> a laissé un avis sur votre destination <strong>{n.destination_name}</strong></>
                       ) : n.type === 'new_dest_review' ? (
@@ -169,6 +223,24 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                       )}
                     </p>
                     <span className="notif-time">{relativeTime(n.created_at)}</span>
+                    {isTripInvitation && (
+                      <div className="notif-invite-actions" onClick={e => e.stopPropagation()}>
+                        <button
+                          className="notif-invite-btn notif-invite-btn--accept"
+                          disabled={invitePending === n.id}
+                          onClick={() => handleAcceptInvite(n)}
+                        >
+                          Accepter
+                        </button>
+                        <button
+                          className="notif-invite-btn notif-invite-btn--decline"
+                          disabled={invitePending === n.id}
+                          onClick={() => handleDeclineInvite(n)}
+                        >
+                          Refuser
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </button>
                 {isOwnershipTransfer && (
@@ -186,7 +258,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                 )}
                 <button
                   className="notif-delete-btn"
-                  onClick={(e) => { e.stopPropagation(); deleteOne(n.id); }}
+                  onClick={(e) => { e.stopPropagation(); handleDismiss(n); }}
                   title="Supprimer"
                 >✕</button>
               </div>

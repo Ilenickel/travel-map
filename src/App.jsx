@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import WorldMap from "./components/WorldMap";
 import CountryPanel from "./components/CountryPanel";
 import SearchBar from "./components/SearchBar";
@@ -21,6 +22,7 @@ import { COUNTRIES } from "./data/index";
 import { computeHighlights } from "./utils/filter";
 import { useFavorites } from "./hooks/useFavorites";
 import { useVisited } from "./hooks/useVisited";
+import PlanningPage from "./pages/PlanningPage";
 import "./App.css";
 
 function normalize(str) {
@@ -73,7 +75,7 @@ function AppInner() {
   const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const [countryInitialTab, setCountryInitialTab] = useState(null);
   const [countryInitialExtra, setCountryInitialExtra] = useState(null);
-  const { notifications, unreadCount, markRead, markAllRead, deleteOne, deleteAll } = useNotifications(user?.id);
+  const { notifications, unreadCount, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne } = useNotifications(user?.id);
   const { alerts, refresh: refreshAlerts } = useAdminAlerts(isAdmin);
   const alertsMap = useMemo(() => new Map(alerts.map((a) => [a.content_id, a])), [alerts]);
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -314,6 +316,15 @@ function AppInner() {
             <span className="topbar-view-label">Liste</span>
           </button>
 
+          <Link to="/planifier" className="topbar-plan-btn" aria-label="Planifier un voyage">
+            <span className="topbar-plan-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+              </svg>
+            </span>
+            <span className="topbar-plan-label">Planifier</span>
+          </Link>
+
           <div className="topbar-badge">
             <span className="badge-dot" />
             {countryCount} destination{countryCount > 1 ? "s" : ""} disponible{countryCount > 1 ? "s" : ""}
@@ -385,6 +396,8 @@ function AppInner() {
           markAllRead={markAllRead}
           deleteOne={deleteOne}
           deleteAll={deleteAll}
+          deleteMany={deleteMany}
+          hideOne={hideOne}
         />
       )}
       {adminPanelOpen && isAdmin && (
@@ -489,7 +502,10 @@ function AppInner() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppInner />
+      <Routes>
+        <Route path="/planifier" element={<PlanningPage />} />
+        <Route path="*" element={<AppInner />} />
+      </Routes>
     </AuthProvider>
   );
 }
