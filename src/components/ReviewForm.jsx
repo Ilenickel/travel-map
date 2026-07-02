@@ -177,76 +177,82 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
   }
 
   const displayRating = hovered || rating;
+  const RATING_LABELS = { 0: 'Sélectionnez une note', 1: 'Décevant', 2: 'Moyen', 3: 'Correct', 4: 'Très bien', 5: 'Excellent !' };
 
   return (
-    <form className="review-form" onSubmit={handleSubmit}>
-      <div className="review-stars-row">
-        {[1, 2, 3, 4, 5].map((s) => (
-          <button
-            key={s} type="button"
-            className={`review-star-btn${s <= displayRating ? ' active' : ''}`}
-            onMouseEnter={() => setHovered(s)}
-            onMouseLeave={() => setHovered(0)}
-            onClick={() => setRating(s)}
-          >★</button>
-        ))}
-        {rating > 0 && <span className="review-rating-label">{rating}/5</span>}
-      </div>
-
-      <textarea
-        className="review-textarea"
-        placeholder="Partagez votre expérience… (optionnel)"
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        rows={4}
-      />
-
-      <div className="review-photos-row">
-        {photos.map((p, i) => (
-          <div key={i} className="review-photo-preview-wrap">
-            <img src={p.preview} alt="" className="review-photo-preview" onError={(e) => { e.currentTarget.style.opacity = '0.3'; }} />
-            {!submitting && <button type="button" className="review-photo-remove" onClick={() => setPhotos((prev) => prev.filter((_, j) => j !== i))}>✕</button>}
+    <div className="review-form-wrap">
+      <form className="review-form" onSubmit={handleSubmit}>
+        <div className="review-rating-block">
+          <div className="review-stars-row">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <button
+                key={s} type="button"
+                className={`review-star-btn${s <= displayRating ? ' active' : ''}`}
+                onMouseEnter={() => setHovered(s)}
+                onMouseLeave={() => setHovered(0)}
+                onClick={() => setRating(s)}
+              >★</button>
+            ))}
           </div>
-        ))}
-        {!submitting && !compressing && (
-          <label className="review-photo-add-btn" title="Ajouter une photo">
-            📷
-            <input type="file" accept="image/*" multiple style={{ display: 'none' }} onChange={handlePhotos} />
-          </label>
-        )}
-        {compressing && (
-          <div className="review-photo-compressing">
-            <div className="review-photo-spinner" />
-          </div>
-        )}
-      </div>
-
-      {uploadProgress && (
-        <div className="review-upload-progress">
-          <div className="review-upload-bar-track">
-            <div
-              className="review-upload-bar-fill"
-              style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }}
-            />
-          </div>
-          <span className="review-upload-label">
-            Envoi des photos… {uploadProgress.done}/{uploadProgress.total}
-          </span>
+          <span className={`review-rating-label${rating > 0 ? ' set' : ''}`}>{RATING_LABELS[displayRating]}</span>
         </div>
-      )}
 
-      {error && <div className="review-error">{error}</div>}
+        <textarea
+          className="review-textarea"
+          placeholder="Partagez votre expérience… (optionnel)"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          rows={4}
+        />
 
-      <div className="review-form-actions">
-        {onCancel && <button type="button" className="review-cancel-btn" onClick={onCancel}>Annuler</button>}
-        <button className="review-submit" type="submit" disabled={rating === 0 || submitting || compressing}>
-          {uploadProgress
-            ? `Photos… ${uploadProgress.done}/${uploadProgress.total}`
-            : submitting
-              ? 'Publication…'
-              : existingReview ? 'Mettre à jour' : 'Publier'}
-        </button>
-      </div>
-    </form>
+        <div className="review-photos-row">
+          {photos.map((p, i) => (
+            <div key={i} className="review-photo-preview-wrap">
+              <img src={p.preview} alt="" className="review-photo-preview" onError={(e) => { e.currentTarget.style.opacity = '0.3'; }} />
+              {!submitting && <button type="button" className="review-photo-remove" onClick={() => setPhotos((prev) => prev.filter((_, j) => j !== i))}>✕</button>}
+            </div>
+          ))}
+          {!submitting && !compressing && (
+            <label className="review-photo-add-btn" title="Ajouter une photo">
+              <span className="review-photo-add-icon">+</span>
+              <span className="review-photo-add-text">Photo</span>
+              <input type="file" accept="image/*" multiple style={{ display: 'none' }} onChange={handlePhotos} />
+            </label>
+          )}
+          {compressing && (
+            <div className="review-photo-compressing">
+              <div className="review-photo-spinner" />
+            </div>
+          )}
+        </div>
+
+        {uploadProgress && (
+          <div className="review-upload-progress">
+            <div className="review-upload-bar-track">
+              <div
+                className="review-upload-bar-fill"
+                style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }}
+              />
+            </div>
+            <span className="review-upload-label">
+              Envoi des photos… {uploadProgress.done}/{uploadProgress.total}
+            </span>
+          </div>
+        )}
+
+        {error && <div className="review-error">{error}</div>}
+
+        <div className="review-form-actions">
+          {onCancel && <button type="button" className="review-cancel-btn" onClick={onCancel}>Annuler</button>}
+          <button className="review-submit" type="submit" disabled={rating === 0 || submitting || compressing}>
+            {uploadProgress
+              ? `Photos… ${uploadProgress.done}/${uploadProgress.total}`
+              : submitting
+                ? 'Publication…'
+                : existingReview ? 'Mettre à jour' : 'Publier'}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
