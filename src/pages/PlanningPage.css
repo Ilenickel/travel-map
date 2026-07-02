@@ -88,8 +88,8 @@
 
 /* ─── Sidebar ─── */
 .pp-sidebar {
-  width: clamp(240px, 16%, 300px);
-  min-width: 240px;
+  width: clamp(200px, 15%, 300px);
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   background: var(--surface);
@@ -2113,6 +2113,7 @@
 }
 
 .pp-day-activity {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -2352,10 +2353,14 @@
 
 /* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte */
 .pp-city-panel {
-  width: 34%;
-  min-width: 340px;
+  width: 30%;
+  min-width: 260px;
   max-width: 560px;
-  flex-shrink: 0;
+  /* Sans flex-shrink:0, ce panneau ne pouvait jamais céder de place sur un écran
+     serré : villes/groupes/carte restaient rigides à leur % plein pendant que
+     l'excédent qui ne rentait pas était juste coupé (overflow:hidden), plutôt que
+     réparti. Il rétrécit maintenant lui aussi vers son min-width si besoin. */
+  flex-shrink: 1;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -2383,10 +2388,10 @@
    ordre de grandeur que le plafond du panneau villes à 560px) : le panneau planif,
    seul en flex:1, absorbe automatiquement la différence et se réduit d'autant. */
 .pp-groups-panel {
-  width: 26%;
-  min-width: 280px;
+  width: 18%;
+  min-width: 220px;
   max-width: 460px;
-  flex-shrink: 0;
+  flex-shrink: 1;
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -2407,7 +2412,7 @@
   flex: 1 1 0;
   overflow-y: auto;
   padding: 18px 22px 40px;
-  min-width: 420px;
+  min-width: 300px;
   max-width: 1500px;
   margin: 0 auto;
   transition: flex 0.3s ease;
@@ -2415,7 +2420,7 @@
 
 .pp-content-panel--narrowed {
   flex: 1 1 0;
-  min-width: 360px;
+  min-width: 260px;
   max-width: 1500px;
   margin: 0 auto;
 }
@@ -2426,15 +2431,27 @@
 
 /* Panneau carte */
 .pp-map-panel {
-  width: 38%;
-  min-width: 420px;
+  width: 30%;
+  /* Plancher en % (pas seulement en px) : la carte est optionnelle — si
+     l'utilisateur choisit de l'ouvrir, c'est qu'il en a besoin, elle doit donc
+     garder une vraie proportion de l'écran (30% minimum) plutôt que de continuer
+     à rétrécir avec le reste sur un petit écran. max() garde aussi un plancher
+     absolu pour les cas extrêmes (écran très étroit). */
+  min-width: max(260px, 30%);
   max-width: 760px;
   border-left: 1px solid var(--border);
-  flex-shrink: 0;
+  flex-shrink: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
+
+/* Répartition qui change selon la présence de la carte (utile surtout sur petit
+   écran — sur grand écran les max-width ci-dessus sont déjà atteints, donc rien
+   ne change visuellement) : carte fermée, villes/groupes profitent du surplus ;
+   carte ouverte, elle prend sa part (30% cf. ci-dessus) et villes cède un peu. */
+.pp-editor-split:has(.pp-map-panel) .pp-city-panel { width: 27%; }
+.pp-editor-split:not(:has(.pp-map-panel)) .pp-groups-panel { width: 24%; }
 
 .pp-map-panel-inner {
   flex: 1;
@@ -3777,3 +3794,97 @@
   font-size: 12px;
 }
 .pp-add-daytrip-btn:hover { opacity: 1; }
+
+/* ─── Étirement d'une activité (drag-to-resize) dans la vue par jour ─── */
+.pp-day-activity-resize-handle {
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: ns-resize;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.pp-day-activity:hover .pp-day-activity-resize-handle,
+.pp-day-activity--resizing .pp-day-activity-resize-handle {
+  opacity: 1;
+}
+.pp-day-activity-resize-grip {
+  width: 32px;
+  height: 4px;
+  border-radius: 3px;
+  background: var(--accent2);
+  box-shadow: 0 0 0 2px var(--surface2);
+}
+
+.pp-day-activity--resizing {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-glow) !important;
+  cursor: ns-resize;
+}
+
+.pp-day-slot--resize-target {
+  border-color: var(--accent2) !important;
+  background: rgba(129,140,248,0.06);
+  transition: border-color 0.1s, background 0.1s;
+}
+
+/* Carte "fantôme" d'une activité étirée qui se poursuit dans ce créneau/jour :
+   reprend la mise en forme complète d'une vraie carte (pas une simple bande de
+   texte), mais visuellement estompée + hachurée pour signaler que ce n'est pas
+   une instance à part entière (l'originale reste dans son créneau de départ). */
+.pp-day-activity--continuation,
+.pp-day-activity--continuation:active {
+  cursor: default;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--cat-color, var(--accent2)) 40%, var(--border));
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0 10px, transparent 10px 20px),
+    var(--surface2);
+  opacity: 0.82;
+}
+.pp-day-activity--continuation:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: color-mix(in srgb, var(--cat-color, var(--accent2)) 40%, var(--border));
+  background:
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.02) 0 10px, transparent 10px 20px),
+    var(--surface2);
+  opacity: 0.92;
+}
+.pp-day-activity-time--continuation {
+  background: none;
+  border-style: dashed;
+  color: var(--text-muted);
+}
+.pp-chip--continuation {
+  background: color-mix(in srgb, var(--cat-color, var(--accent2)) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cat-color, var(--accent2)) 30%, transparent);
+  color: var(--cat-color, var(--accent2));
+}
+
+/* Bouton "terminer ici" sur une carte de continuation : coupe l'étirement à cet
+   endroit précis sans avoir à reprendre le geste depuis le point de départ. */
+.pp-day-activity-cut-btn {
+  flex-shrink: 0;
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, background 0.15s;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+}
+.pp-day-activity--continuation:hover .pp-day-activity-cut-btn { opacity: 1; }
+.pp-day-activity-cut-btn:hover { color: var(--red); background: rgba(239,68,68,0.12); }

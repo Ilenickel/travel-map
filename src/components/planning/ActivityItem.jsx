@@ -10,6 +10,7 @@ const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
 export default function ActivityItem({
   act, index, tripStartDate, groups, onRemove, onUpdate, onAssignToGroup,
   variant = 'list', draggableIdPrefix = '', cities, destinations,
+  onResizeStart, resizing = false,
 }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(act.name);
@@ -120,7 +121,11 @@ export default function ActivityItem({
   const destEmoji = dest ? (COUNTRIES[dest.country_code]?.emoji || '📍') : '📍';
   const isTransport = act.category === 'transport';
   const displayIcon = isTransport ? (TRANSPORT_MODES[act.transport_mode]?.icon || cat.icon) : cat.icon;
-  const durationLabel = isTransport ? formatDuration(act.duration_minutes) : '';
+  // La durée sert aussi à étirer une activité (pas seulement un trajet) sur
+  // plusieurs créneaux de la vue par jour : on l'affiche donc quelle que soit
+  // la catégorie dès qu'elle est renseignée.
+  const durationLabel = act.duration_minutes ? formatDuration(act.duration_minutes) : '';
+  const canResize = variant === 'day' && !!onResizeStart && !!act.visit_time;
 
   return (
     <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index}>
@@ -131,7 +136,7 @@ export default function ActivityItem({
           {...(!editing ? provided.dragHandleProps : {})}
           className={
             variant === 'day'
-              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}`
+              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}`
               : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}`
           }
           style={{
@@ -300,6 +305,22 @@ export default function ActivityItem({
                 )}
                 {act.description && <p className="pp-day-activity-note">{act.description}</p>}
               </div>
+              {canResize && (
+                // <button> plutôt que <div> : @hello-pangea/dnd ignore nativement les
+                // éléments interactifs (input/button/textarea…) pour démarrer un drag
+                // classique, donc pas besoin (et pas fiable) de stopPropagation ici —
+                // le mousedown ne déclenche jamais le déplacement normal de la carte.
+                <button
+                  type="button"
+                  className="pp-day-activity-resize-handle"
+                  title="Glisser vers le bas pour étirer sur les créneaux (ou jours) suivants"
+                  onMouseDown={e => { e.preventDefault(); onResizeStart(act); }}
+                  onTouchStart={() => onResizeStart(act)}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <span className="pp-day-activity-resize-grip" />
+                </button>
+              )}
             </div>
           ) : (
             <div className="pp-activity-view" onClick={startEditing} role="button" tabIndex={0}>
@@ -372,8 +393,20 @@ export default function ActivityItem({
           {!editing && (
             <button
               className="pp-activity-del"
-              onClick={e => { e.stopPropagation(); onRemove(act.id); }}
-              title="Supprimer"
+              onClick={e => {
+                e.stopPropagation();
+                if (variant === 'day' && act.visit_date) {
+                  // Dans la vue par jour, la croix ne fait que déplanifier l'activité
+                  // (elle repasse en "Non planifiées") : elle reste disponible dans la
+                  // ville pour être replanifiée, au lieu d'être supprimée pour de bon.
+                  // Une activité déjà dans "Non planifiées" (pas de date) n'a plus rien
+                  // à déplanifier : la croix y supprime réellement, comme dans la liste.
+                  onUpdate(act.id, { visit_date: null, visit_time: null, duration_minutes: null });
+                } else {
+                  onRemove(act.id);
+                }
+              }}
+              title={variant === 'day' && act.visit_date ? 'Retirer de la planification (reste disponible dans la ville)' : 'Supprimer'}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>

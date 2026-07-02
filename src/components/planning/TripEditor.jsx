@@ -78,9 +78,16 @@ export default function TripEditor({
 
     // Drop sur la journée sans créneau (Horaire libre ou Non planifiées)
     if (destination.droppableId.startsWith('day-')) {
+      // Repose dans la même liste (réordonnancement sans changement de jour/heure) :
+      // ne rien faire, sinon on écraserait pour rien une durée déjà définie (voir
+      // le même garde-fou dans la branche "slot:" juste au-dessus).
+      if (source.droppableId === destination.droppableId) return;
       const dateStr = destination.droppableId.replace('day-', '');
       const date = dateStr === 'unplanned' ? null : dateStr;
-      onUpdateActivity(activityId, { visit_date: date, visit_time: null });
+      // duration_minutes efface aussi : sans heure de départ, un étirement n'a plus
+      // de sens et resterait une valeur fantôme prête à ressurgir si l'activité est
+      // replanifiée plus tard sur un créneau précis.
+      onUpdateActivity(activityId, { visit_date: date, visit_time: null, duration_minutes: null });
       return;
     }
 
