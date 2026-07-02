@@ -303,7 +303,12 @@ export function useTrips(userId) {
   const reorderActivities = useCallback(async (cityId, newOrder) => {
     setTripData(prev => {
       if (!prev) return prev;
-      const others = prev.activities.filter(a => a.city_id !== cityId);
+      // On exclut seulement les activités concernées par ce réordonnancement (pas
+      // toute la ville) : newOrder peut être un sous-ensemble (ex. juste les trajets
+      // d'une ville, séparés des lieux) — filtrer par city_id ferait disparaître les
+      // activités de l'autre sous-ensemble de l'état local, alors qu'elles n'ont pas
+      // bougé.
+      const others = prev.activities.filter(a => !newOrder.includes(a.id));
       const reordered = newOrder.map((id, idx) => ({ ...prev.activities.find(a => a.id === id), position: idx }));
       return { ...prev, activities: [...others, ...reordered] };
     });

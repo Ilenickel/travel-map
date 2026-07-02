@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Draggable } from '@hello-pangea/dnd';
-import { ACTIVITY_CATEGORIES, formatDateShort, formatTimeShort } from '../../lib/planningUtils';
+import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 
 const CATEGORY_LIST = Object.entries(ACTIVITY_CATEGORIES);
+const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
 
 export default function ActivityItem({
   act, index, tripStartDate, groups, onRemove, onUpdate, onAssignToGroup,
@@ -21,6 +22,9 @@ export default function ActivityItem({
   // seul créneau, sans avoir besoin d'une heure de fin.
   const [allDay, setAllDay] = useState(!!act.visit_date && !act.visit_time);
   const [category, setCategory] = useState(act.category || 'other');
+  const [transportMode, setTransportMode] = useState(act.transport_mode || 'voiture');
+  const [durationH, setDurationH] = useState(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
+  const [durationM, setDurationM] = useState(act.duration_minutes ? act.duration_minutes % 60 : '');
   const [groupId, setGroupId] = useState(act.group_id || null);
   const [showGroupPicker, setShowGroupPicker] = useState(false);
   // Le champ date s'ouvre pré-rempli à la date de début du voyage (pour éviter à
@@ -43,9 +47,12 @@ export default function ActivityItem({
       setTime(act.visit_time || '');
       setAllDay(!!act.visit_date && !act.visit_time);
       setCategory(act.category || 'other');
+      setTransportMode(act.transport_mode || 'voiture');
+      setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
+      setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
       setGroupId(act.group_id || null);
     }
-  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.group_id, editing]);
+  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.group_id, editing]);
 
   const toggleAllDay = () => {
     setAllDay(a => {
@@ -65,12 +72,17 @@ export default function ActivityItem({
     // Si l'activité n'avait pas de date et que l'utilisateur n'a pas touché le champ,
     // on ignore la valeur pré-remplie (jour 1) et on garde l'activité non planifiée.
     const finalDate = (!act.visit_date && !dateTouched) ? null : (date || null);
+    const isTransport = category === 'transport';
+    // Math.max : le min="0" des inputs n'empêche pas une saisie clavier négative
+    const totalMinutes = Math.max(0, parseInt(durationH, 10) || 0) * 60 + Math.max(0, parseInt(durationM, 10) || 0);
     onUpdate(act.id, {
       name: name.trim(),
       description: note.trim() || null,
       visit_date: finalDate,
       visit_time: allDay ? null : (time || null),
       category: category || 'other',
+      transport_mode: isTransport ? transportMode : null,
+      duration_minutes: isTransport && totalMinutes > 0 ? totalMinutes : null,
     });
     if (groupId !== act.group_id && onAssignToGroup) {
       onAssignToGroup(act.id, groupId);
@@ -85,6 +97,9 @@ export default function ActivityItem({
     setTime(act.visit_time || '');
     setAllDay(!!act.visit_date && !act.visit_time);
     setCategory(act.category || 'other');
+    setTransportMode(act.transport_mode || 'voiture');
+    setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
+    setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
     setGroupId(act.group_id || null);
     setEditing(false);
   };
@@ -103,6 +118,9 @@ export default function ActivityItem({
   const city = variant === 'day' ? cities?.find(c => c.id === act.city_id) : null;
   const dest = variant === 'day' ? destinations?.find(d => city && d.id === city.destination_id) : null;
   const destEmoji = dest ? (COUNTRIES[dest.country_code]?.emoji || '📍') : '📍';
+  const isTransport = act.category === 'transport';
+  const displayIcon = isTransport ? (TRANSPORT_MODES[act.transport_mode]?.icon || cat.icon) : cat.icon;
+  const durationLabel = isTransport ? formatDuration(act.duration_minutes) : '';
 
   return (
     <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index}>
@@ -150,6 +168,43 @@ export default function ActivityItem({
                   ))}
                 </div>
               </div>
+
+              {/* Mode de transport + durée (uniquement pour un trajet) */}
+              {category === 'transport' && (
+                <div className="pp-activity-field">
+                  <span className="pp-activity-field-label">Mode de transport</span>
+                  <div className="pp-cat-picker">
+                    {TRANSPORT_MODE_LIST.map(([key, val]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        className={`pp-cat-btn${transportMode === key ? ' active' : ''}`}
+                        onClick={() => setTransportMode(key)}
+                        title={val.label}
+                        style={{ '--cat-color': ACTIVITY_CATEGORIES.transport.color }}
+                      >
+                        {val.icon}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="pp-trajet-duration">
+                    <input
+                      type="number" min="0" placeholder="0"
+                      className="pp-trajet-duration-input"
+                      value={durationH}
+                      onChange={e => setDurationH(e.target.value)}
+                    />
+                    <span>h</span>
+                    <input
+                      type="number" min="0" max="59" placeholder="00"
+                      className="pp-trajet-duration-input"
+                      value={durationM}
+                      onChange={e => setDurationM(e.target.value)}
+                    />
+                    <span>min</span>
+                  </div>
+                </div>
+              )}
 
               {/* Date + heure */}
               <div className="pp-activity-datetime">
@@ -231,8 +286,9 @@ export default function ActivityItem({
               <div className="pp-day-activity-dot" style={{ background: accentColor }} title={group ? group.name : cat.label} />
               <div className="pp-day-activity-content">
                 <div className="pp-day-activity-title">
-                  <span className="pp-day-activity-cat">{cat.icon}</span>
+                  <span className="pp-day-activity-cat">{displayIcon}</span>
                   <span className="pp-day-activity-name">{act.name}</span>
+                  {durationLabel && <span className="pp-chip pp-chip--duration">⏱ {durationLabel}</span>}
                   {group && (
                     <span className="pp-day-activity-group-chip" style={{ color: group.color }}>● {group.name}</span>
                   )}
@@ -288,10 +344,11 @@ export default function ActivityItem({
 
               <div className="pp-activity-content">
                 <div className="pp-activity-main">
-                  <span className="pp-activity-cat-icon">{cat.icon}</span>
+                  <span className="pp-activity-cat-icon">{displayIcon}</span>
                   <span className="pp-activity-name">{act.name}</span>
                 </div>
                 <div className="pp-activity-chips">
+                  {durationLabel && <span className="pp-chip pp-chip--duration">⏱ {durationLabel}</span>}
                   {group && (
                     <span className="pp-chip pp-chip--group" style={{ '--group-color': group.color }}>
                       ● {group.name}

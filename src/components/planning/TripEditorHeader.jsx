@@ -32,7 +32,10 @@ export default function TripEditorHeader({
 
   const duration = tripDurationDays(trip?.start_date, trip?.end_date);
   const totalCities = cities.length;
-  const totalPlaces = activities.length;
+  // Cohérent avec le compteur "X lieux" affiché par ville : les trajets ne sont pas
+  // des lieux, ils ont leur propre section — sinon ce total ne correspondrait plus
+  // à la somme des compteurs par ville.
+  const totalPlaces = activities.filter(a => a.category !== 'transport').length;
   const totalCountries = destinations.length;
 
   return (

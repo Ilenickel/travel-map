@@ -826,6 +826,69 @@
   border-top: 1px solid var(--border);
 }
 
+/* ─── Durée d'un trajet (heures / minutes) ─── */
+.pp-trajet-duration {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.pp-trajet-duration-input {
+  width: 44px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 7px;
+  padding: 6px 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s;
+  color-scheme: dark;
+}
+.pp-trajet-duration-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+/* Masque les flèches natives du input[type=number], trop petites pour être utiles ici */
+.pp-trajet-duration-input::-webkit-outer-spin-button,
+.pp-trajet-duration-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pp-trajet-duration-input[type="number"] { -moz-appearance: textfield; }
+
+/* ─── Formulaire inline "Ajouter un trajet" ─── */
+.pp-add-trajet-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 10px 12px;
+  margin: 4px 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+}
+
+.pp-add-trajet-name {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  color-scheme: dark;
+  transition: border-color 0.15s;
+}
+.pp-add-trajet-name:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+
+.pp-add-trajet-actions {
+  display: flex;
+  gap: 8px;
+}
+
 /* ─── Add buttons ─── */
 .pp-add-item-btn {
   display: flex;
@@ -879,6 +942,21 @@
   box-shadow: 0 4px 14px rgba(245,158,11,0.35);
 }
 .pp-add-daytrip-btn:hover svg { background: rgba(0,0,0,0.15); }
+
+/* "Ajouter un trajet" — thème bleu (même couleur que la catégorie Transport) */
+.pp-add-item-btn--secondary {
+  background: rgba(59,130,246,0.09);
+  border-color: rgba(59,130,246,0.28);
+  color: #60a5fa;
+}
+.pp-add-item-btn--secondary svg { background: rgba(59,130,246,0.2); }
+.pp-add-item-btn--secondary:hover {
+  border-color: #3b82f6;
+  background: #3b82f6;
+  color: #0a1a33;
+  box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+}
+.pp-add-item-btn--secondary:hover svg { background: rgba(0,0,0,0.15); }
 
 /* "Ajouter une ville" — CTA la plus visible du bloc destination */
 .pp-add-city-btn {
@@ -1664,6 +1742,12 @@
   background: rgba(245,158,11,0.1);
   border: 1px solid rgba(245,158,11,0.2);
   color: #fbbf24;
+}
+
+.pp-chip--duration {
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.22);
+  color: #60a5fa;
 }
 
 /* ─── Category picker in activity edit ─── */
@@ -3588,6 +3672,45 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
+/* ─── Trajets — section à part, même logique d'indentation en pointillés que
+   les excursions ci-dessus, thème bleu (couleur de la catégorie Transport) ─── */
+.pp-trajets-section {
+  margin: 6px 0 6px 14px;
+  padding-left: 10px;
+  border-left: 2px dashed rgba(59,130,246,0.35);
+}
+
+.pp-trajets-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #60a5fa;
+  padding: 4px 2px 6px;
+}
+.pp-trajets-section-label svg { flex-shrink: 0; opacity: .85; }
+.pp-trajets-section-label span {
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+.pp-trajets-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+  transition: background 0.12s;
+}
+.pp-trajets-list--over { background: rgba(59,130,246,0.06); }
 
 .pp-daytrip-header {
   display: flex;

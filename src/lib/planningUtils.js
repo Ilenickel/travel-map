@@ -18,6 +18,27 @@ export const ACTIVITY_CATEGORIES = {
   other:     { label: 'Autre',        icon: '📍', color: '#64748b' },
 };
 
+// ─── Modes de transport (trajets) ─────────────────────────────────
+export const TRANSPORT_MODES = {
+  voiture: { label: 'Voiture', icon: '🚗' },
+  train:   { label: 'Train',   icon: '🚆' },
+  avion:   { label: 'Avion',   icon: '✈️' },
+  metro:   { label: 'Métro',   icon: '🚇' },
+  bus:     { label: 'Bus',     icon: '🚌' },
+  bateau:  { label: 'Bateau',  icon: '⛴️' },
+  velo:    { label: 'Vélo',    icon: '🚲' },
+  marche:  { label: 'Marche',  icon: '🚶' },
+};
+
+export function formatDuration(minutes) {
+  if (!minutes) return '';
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (!h) return `${m} min`;
+  if (!m) return `${h}h`;
+  return `${h}h${String(m).padStart(2, '0')}`;
+}
+
 // ─── Date helpers ─────────────────────────────────────────────────
 export function formatDate(d) {
   if (!d) return '';

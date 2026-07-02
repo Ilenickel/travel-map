@@ -84,15 +84,40 @@ export default function TripEditor({
       return;
     }
 
-    // Activity reordering within same city (uniquement depuis la liste de la ville, pas les puces de groupe)
-    if (source.droppableId.startsWith('activities-') && destination.droppableId.startsWith('activities-')) {
+    // Les listes "lieux" (activities-) et "trajets" (trajets-) d'une même ville
+    // n'ont volontairement pas de type RBD distinct (ça les empêcherait aussi
+    // d'être déposées sur les groupes/créneaux/jours) : un dépose croisé entre les
+    // deux est donc physiquement possible. Plutôt que de laisser cette action sans
+    // effet (l'utilisateur voit la zone s'illuminer comme si le dépôt était accepté,
+    // puis rien ne se passe), on le traite comme un changement de catégorie.
+    const isPlaceList = id => id.startsWith('activities-');
+    const isTrajetList = id => id.startsWith('trajets-');
+    if ((isPlaceList(source.droppableId) || isTrajetList(source.droppableId))
+      && (isPlaceList(destination.droppableId) || isTrajetList(destination.droppableId))) {
+      const srcCityId = source.droppableId.replace(/^(activities-|trajets-)/, '');
+      const destCityId = destination.droppableId.replace(/^(activities-|trajets-)/, '');
+      if (srcCityId !== destCityId) return; // pas de déplacement d'une ville à l'autre
+
+      if (isPlaceList(source.droppableId) !== isPlaceList(destination.droppableId)) {
+        // Dépose croisée : bascule la catégorie plutôt que de réordonner
+        if (isTrajetList(destination.droppableId)) {
+          onUpdateActivity(activityId, { category: 'transport', transport_mode: 'voiture' });
+        } else {
+          onUpdateActivity(activityId, { category: 'other', transport_mode: null, duration_minutes: null });
+        }
+        return;
+      }
+
+      // Réordonnancement dans la même liste (lieux ou trajets)
       if (source.droppableId !== destination.droppableId) return;
-      const cityId = source.droppableId.replace('activities-', '');
-      const cityActivities = activities.filter(a => a.city_id === cityId).sort((a, b) => a.position - b.position);
-      const ids = cityActivities.map(a => a.id);
+      const filterFn = isPlaceList(source.droppableId)
+        ? a => a.city_id === srcCityId && a.category !== 'transport'
+        : a => a.city_id === srcCityId && a.category === 'transport';
+      const subset = activities.filter(filterFn).sort((a, b) => a.position - b.position);
+      const ids = subset.map(a => a.id);
       const [removed] = ids.splice(source.index, 1);
       ids.splice(destination.index, 0, removed);
-      onReorderActivities(cityId, ids);
+      onReorderActivities(srcCityId, ids);
     }
   };
 

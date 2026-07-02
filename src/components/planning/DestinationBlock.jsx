@@ -19,8 +19,10 @@ export default function DestinationBlock({ dest, cities, activities, groups, tri
     (daytripsByParent[dt.parent_city_id] ||= []).push(dt);
   });
 
+  // Les trajets ne sont pas des lieux (section séparée) : exclus du compteur, comme
+  // pour le total du voyage et le compteur par ville.
   const destActivitiesCount = activities.filter(
-    a => destCities.some(c => c.id === a.city_id)
+    a => a.category !== 'transport' && destCities.some(c => c.id === a.city_id)
   ).length;
 
   const flag = COUNTRIES[dest.country_code]?.emoji || '🌍';

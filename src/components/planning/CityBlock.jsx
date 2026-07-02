@@ -4,9 +4,11 @@ import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
+import TrajetAddInput from './TrajetAddInput';
 
 export default function CityBlock({ city, activities, groups, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay }) {
   const [addingPlace, setAddingPlace] = useState(false);
+  const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
@@ -15,6 +17,10 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
   const cityActivities = activities
     .filter(a => a.city_id === city.id)
     .sort((a, b) => a.position - b.position);
+  // Les trajets vivent dans leur propre section : sinon, dans une longue liste de
+  // lieux, ils se noient au milieu et cassent la lecture "ce qu'on va voir".
+  const placeActivities = cityActivities.filter(a => a.category !== 'transport');
+  const trajetActivities = cityActivities.filter(a => a.category === 'transport');
 
   const saveRename = () => {
     const trimmed = cityName.trim();
@@ -96,7 +102,7 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
             )}
 
             <span className="pp-city-count">
-              {cityActivities.length} lieu{cityActivities.length !== 1 ? 'x' : ''}
+              {placeActivities.length} lieu{placeActivities.length !== 1 ? 'x' : ''}
             </span>
 
             <div className="pp-city-actions">
@@ -122,7 +128,7 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                   >
-                    {cityActivities.map((act, idx) => (
+                    {placeActivities.map((act, idx) => (
                       <ActivityItem
                         key={act.id}
                         act={act}
@@ -135,7 +141,7 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                       />
                     ))}
                     {provided.placeholder}
-                    {cityActivities.length === 0 && !snapshot.isDraggingOver && (
+                    {placeActivities.length === 0 && !snapshot.isDraggingOver && (
                       <li className="pp-activities-empty">Aucun lieu — ajoutez-en un ci-dessous</li>
                     )}
                   </ul>
@@ -204,6 +210,56 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                     <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
                   </svg>
                   Ajouter une excursion à la journée
+                </button>
+              )}
+
+              {/* Trajets — section à part en bas, pour ne pas se mélanger aux lieux
+                  ni aux excursions (les deux listes peuvent déjà être longues) */}
+              {trajetActivities.length > 0 && (
+                <div className="pp-trajets-section">
+                  <div className="pp-trajets-section-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+                    </svg>
+                    Trajets <span>({trajetActivities.length})</span>
+                  </div>
+                  <Droppable droppableId={`trajets-${city.id}`}>
+                    {(provided, snapshot) => (
+                      <ul
+                        className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
+                        {trajetActivities.map((act, idx) => (
+                          <ActivityItem
+                            key={act.id}
+                            act={act}
+                            index={idx}
+                            tripStartDate={tripStartDate}
+                            groups={groups}
+                            onRemove={onRemoveActivity}
+                            onUpdate={onUpdateActivity}
+                            onAssignToGroup={onAssignActivityToGroup}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </ul>
+                    )}
+                  </Droppable>
+                </div>
+              )}
+
+              {addingTrajet ? (
+                <TrajetAddInput
+                  onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
+                  onClose={() => setAddingTrajet(false)}
+                />
+              ) : (
+                <button className="pp-add-item-btn pp-add-item-btn--secondary" onClick={() => setAddingTrajet(true)}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+                  </svg>
+                  Ajouter un trajet
                 </button>
               )}
             </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
 import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
+import TrajetAddInput from './TrajetAddInput';
 import { getDaysBetween, formatDateShort } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 
@@ -25,6 +26,7 @@ function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
 
 export default function DaytripCard({ city, activities, groups, tripId, tripStartDate, tripEndDate, onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup, onAssignCityToDay }) {
   const [addingPlace, setAddingPlace] = useState(false);
+  const [addingTrajet, setAddingTrajet] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
   const [collapsed, setCollapsed] = useState(false);
@@ -33,6 +35,8 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
   const dtActivities = activities
     .filter(a => a.city_id === city.id)
     .sort((a, b) => a.position - b.position);
+  const dtPlaces = dtActivities.filter(a => a.category !== 'transport');
+  const dtTrajets = dtActivities.filter(a => a.category === 'transport');
 
   const saveRename = () => {
     const trimmed = cityName.trim();
@@ -91,7 +95,7 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
         )}
 
         <span className="pp-city-count">
-          {dtActivities.length} lieu{dtActivities.length !== 1 ? 'x' : ''}
+          {dtPlaces.length} lieu{dtPlaces.length !== 1 ? 'x' : ''}
           <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" style={{ transform: collapsed ? 'rotate(-90deg)' : 'none', transition: 'transform .15s', marginLeft: 3 }}>
             <path d="M7 10l5 5 5-5z"/>
           </svg>
@@ -140,7 +144,7 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {dtActivities.map((act, idx) => (
+                {dtPlaces.map((act, idx) => (
                   <ActivityItem
                     key={act.id}
                     act={act}
@@ -153,7 +157,7 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
                   />
                 ))}
                 {provided.placeholder}
-                {dtActivities.length === 0 && !snapshot.isDraggingOver && (
+                {dtPlaces.length === 0 && !snapshot.isDraggingOver && (
                   <li className="pp-activities-empty">Aucun lieu — ajoutez-en un ci-dessous</li>
                 )}
               </ul>
@@ -175,6 +179,54 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
             <button className="pp-add-item-btn" onClick={() => setAddingPlace(true)}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
               Ajouter un lieu
+            </button>
+          )}
+
+          {dtTrajets.length > 0 && (
+            <div className="pp-trajets-section">
+              <div className="pp-trajets-section-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+                </svg>
+                Trajets <span>({dtTrajets.length})</span>
+              </div>
+              <Droppable droppableId={`trajets-${city.id}`}>
+                {(provided, snapshot) => (
+                  <ul
+                    className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {dtTrajets.map((act, idx) => (
+                      <ActivityItem
+                        key={act.id}
+                        act={act}
+                        index={idx}
+                        tripStartDate={tripStartDate}
+                        groups={groups}
+                        onRemove={onRemoveActivity}
+                        onUpdate={onUpdateActivity}
+                        onAssignToGroup={onAssignActivityToGroup}
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </div>
+          )}
+
+          {addingTrajet ? (
+            <TrajetAddInput
+              onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
+              onClose={() => setAddingTrajet(false)}
+            />
+          ) : (
+            <button className="pp-add-item-btn pp-add-item-btn--secondary" onClick={() => setAddingTrajet(true)}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+              </svg>
+              Ajouter un trajet
             </button>
           )}
         </div>
