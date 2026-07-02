@@ -18,9 +18,17 @@ export default function TripCard({ trip, selected, userId, onSelect, onDelete, o
 
   const handleDelete = (e) => {
     e.stopPropagation();
-    if (confirmDel) { isOwner ? onDelete(trip.id) : onLeaveTrip(trip.id); }
-    else { setConfirmDel(true); setTimeout(() => setConfirmDel(false), 2500); }
-    setShowMenu(false);
+    if (confirmDel) {
+      // Ne ferme le menu qu'ici (action confirmée) : le fermer aussi sur le premier
+      // clic (qui ne fait qu'armer la confirmation) cachait immédiatement le bouton
+      // "Confirmer la suppression" avant que l'utilisateur ne puisse cliquer dessus,
+      // donnant l'impression que le bouton ne faisait rien.
+      isOwner ? onDelete(trip.id) : onLeaveTrip(trip.id);
+      setShowMenu(false);
+    } else {
+      setConfirmDel(true);
+      setTimeout(() => setConfirmDel(false), 2500);
+    }
   };
 
   const handleDuplicate = (e) => {
