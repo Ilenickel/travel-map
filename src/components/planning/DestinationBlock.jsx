@@ -5,7 +5,7 @@ import CityBlock from './CityBlock';
 import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 
-export default function DestinationBlock({ dest, cities, activities, groups, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup }) {
+export default function DestinationBlock({ dest, cities, activities, groups, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup }) {
   const [addingCity, setAddingCity] = useState(false);
 
   const destCities = cities
@@ -87,6 +87,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, tri
                   onAssignCityToDay={onAssignCityToDay}
                   onRemoveActivity={onRemoveActivity}
                   onUpdateActivity={onUpdateActivity}
+                  onDuplicateActivity={onDuplicateActivity}
                   onAssignActivityToGroup={onAssignActivityToGroup}
                 />
               ))}

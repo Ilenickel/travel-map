@@ -24,7 +24,7 @@ function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
   );
 }
 
-export default function DaytripCard({ city, activities, groups, tripId, tripStartDate, tripEndDate, onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup, onAssignCityToDay }) {
+export default function DaytripCard({ city, activities, groups, tripId, tripStartDate, tripEndDate, onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignCityToDay }) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -153,6 +153,7 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
                     groups={groups}
                     onRemove={onRemoveActivity}
                     onUpdate={onUpdateActivity}
+                    onDuplicate={onDuplicateActivity}
                     onAssignToGroup={onAssignActivityToGroup}
                   />
                 ))}

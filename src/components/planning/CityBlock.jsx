@@ -6,7 +6,7 @@ import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
 import TrajetAddInput from './TrajetAddInput';
 
-export default function CityBlock({ city, activities, groups, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay }) {
+export default function CityBlock({ city, activities, groups, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay }) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);
@@ -137,6 +137,7 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                         groups={groups}
                         onRemove={onRemoveActivity}
                         onUpdate={onUpdateActivity}
+                        onDuplicate={onDuplicateActivity}
                         onAssignToGroup={onAssignActivityToGroup}
                       />
                     ))}
@@ -186,6 +187,7 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                       onAddActivity={onAddActivity}
                       onRemoveActivity={onRemoveActivity}
                       onUpdateActivity={onUpdateActivity}
+                      onDuplicateActivity={onDuplicateActivity}
                       onAssignActivityToGroup={onAssignActivityToGroup}
                       onAssignCityToDay={onAssignCityToDay}
                       tripEndDate={tripEndDate}

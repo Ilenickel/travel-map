@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useAuth } from '../../context/AuthContext';
 import TripEditorHeader from './TripEditorHeader';
@@ -8,12 +8,14 @@ import DayView from './DayView';
 import GroupManager from './GroupManager';
 import MapPanel from './MapPanel';
 import TripShareModal from './TripShareModal';
+import { getHoveredActivity } from '../../lib/hoverTracker';
 
 export default function TripEditor({
   tripData, tripId,
   onUpdateTrip, onAddDestination, onRemoveDestination,
   onAddCity, onAddDaytrip, onRemoveCity, onRenameCity, onReorderCities,
   onAddActivity, onRemoveActivity, onUpdateActivity, onReorderActivities,
+  onDuplicateActivity, onUndoRemoveActivity,
   onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignGroupToDay, onAssignCityToDay,
   onLeaveTrip,
 }) {
@@ -21,10 +23,54 @@ export default function TripEditor({
   const { trip, destinations, cities, activities, groups = [] } = tripData;
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
+  // Affichage de la carte : "à côté" (colonne normale) ou "en superposition" (plein
+  // écran par-dessus le reste) — la carte est optionnelle, si l'utilisateur l'ouvre
+  // c'est qu'il en a besoin, autant lui laisser la possibilité de la voir en grand.
+  const [mapOverlay, setMapOverlay] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+
+  const closeMap = () => { setMapOpen(false); setMapOverlay(false); };
 
   const sortedDests = [...destinations].sort((a, b) => a.position - b.position);
   const alreadyAdded = destinations.map(d => d.country_code);
+
+  // Ctrl+C (survol d'un lieu/trajet) → le duplique. Ctrl+Z → annule la dernière
+  // suppression d'activité. Ignorés si le focus est dans un champ de saisie (pour
+  // ne jamais interférer avec un copier/coller ou un undo de texte normal), et
+  // Ctrl+C est aussi ignoré s'il y a une sélection de texte active (l'utilisateur
+  // essaie alors probablement de copier ce texte, pas de dupliquer une carte).
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      // e.repeat : le système génère des keydown en rafale tant qu'une touche reste
+      // enfoncée — sans ce garde-fou, garder Ctrl+C ne serait-ce qu'un instant de
+      // trop dupliquerait la carte plusieurs fois d'affilée au lieu d'une seule.
+      if (e.repeat) return;
+      const tag = document.activeElement?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+      if (e.key === 'c' || e.key === 'C') {
+        const hoveredId = getHoveredActivity();
+        if (!hoveredId) return;
+        if (window.getSelection()?.toString()) return;
+        e.preventDefault();
+        onDuplicateActivity(hoveredId);
+      } else if (e.key === 'z' || e.key === 'Z') {
+        e.preventDefault();
+        onUndoRemoveActivity();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onDuplicateActivity, onUndoRemoveActivity]);
+
+  // Échap réduit la carte en superposition (sans la fermer complètement)
+  useEffect(() => {
+    if (!mapOverlay) return;
+    const handleEscape = (e) => { if (e.key === 'Escape') setMapOverlay(false); };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [mapOverlay]);
 
   const handleCountrySelect = (country) => {
     onAddDestination(tripId, country.code, country.name);
@@ -138,7 +184,7 @@ export default function TripEditor({
         activities={activities}
         onUpdate={onUpdateTrip}
         mapOpen={mapOpen}
-        onToggleMap={() => setMapOpen(m => !m)}
+        onToggleMap={() => (mapOpen ? closeMap() : setMapOpen(true))}
         shareOpen={shareOpen}
         onToggleShare={() => setShareOpen(s => !s)}
       />
@@ -173,6 +219,7 @@ export default function TripEditor({
                     onAddActivity={onAddActivity}
                     onRemoveActivity={onRemoveActivity}
                     onUpdateActivity={onUpdateActivity}
+                    onDuplicateActivity={onDuplicateActivity}
                     onAssignActivityToGroup={onAssignActivityToGroup}
                   />
                 ))
@@ -225,15 +272,37 @@ export default function TripEditor({
               onAssignCityToDay={onAssignCityToDay}
               onRemoveActivity={onRemoveActivity}
               onUpdateActivity={onUpdateActivity}
+              onDuplicateActivity={onDuplicateActivity}
               onAssignActivityToGroup={onAssignActivityToGroup}
             />
           </div>
 
-          {/* ── Panneau carte (30% si ouvert) ── */}
+          {/* ── Panneau carte (à côté, ou en superposition plein écran) ── */}
           {mapOpen && (
-            <div className="pp-map-panel">
-              <MapPanel activities={activities} groups={groups} cities={cities} />
-            </div>
+            <>
+              {mapOverlay && (
+                <div className="pp-map-overlay-backdrop" onClick={() => setMapOverlay(false)} />
+              )}
+              <div className={`pp-map-panel${mapOverlay ? ' pp-map-panel--overlay' : ''}`}>
+                <button
+                  type="button"
+                  className="pp-map-overlay-toggle"
+                  onClick={() => setMapOverlay(o => !o)}
+                  title={mapOverlay ? 'Réduire la carte' : 'Agrandir la carte en superposition'}
+                >
+                  {mapOverlay ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 3H3v6h2V5h4V3zm12 0h-6v2h4v4h2V3zM5 15H3v6h6v-2H5v-4zm14 4h-4v2h6v-6h-2v4z"/>
+                    </svg>
+                  ) : (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                    </svg>
+                  )}
+                </button>
+                <MapPanel activities={activities} groups={groups} cities={cities} />
+              </div>
+            </>
           )}
         </div>
       </DragDropContext>

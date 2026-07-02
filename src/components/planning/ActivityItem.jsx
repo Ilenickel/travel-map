@@ -3,12 +3,13 @@ import { Draggable } from '@hello-pangea/dnd';
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
+import { setHoveredActivity, clearHoveredActivity } from '../../lib/hoverTracker';
 
 const CATEGORY_LIST = Object.entries(ACTIVITY_CATEGORIES);
 const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
 
 export default function ActivityItem({
-  act, index, tripStartDate, groups, onRemove, onUpdate, onAssignToGroup,
+  act, index, tripStartDate, groups, onRemove, onUpdate, onDuplicate, onAssignToGroup,
   variant = 'list', draggableIdPrefix = '', cities, destinations,
   onResizeStart, resizing = false,
 }) {
@@ -134,6 +135,8 @@ export default function ActivityItem({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...(!editing ? provided.dragHandleProps : {})}
+          onMouseEnter={() => setHoveredActivity(act.id)}
+          onMouseLeave={() => clearHoveredActivity(act.id)}
           className={
             variant === 'day'
               ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}`
@@ -388,6 +391,18 @@ export default function ActivityItem({
                 {act.description && <p className="pp-activity-desc">{act.description}</p>}
               </div>
             </div>
+          )}
+
+          {!editing && onDuplicate && (
+            <button
+              className="pp-activity-duplicate"
+              onClick={e => { e.stopPropagation(); onDuplicate(act.id); }}
+              title="Dupliquer (ou survoler la carte + Ctrl+C)"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+              </svg>
+            </button>
           )}
 
           {!editing && (

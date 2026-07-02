@@ -757,6 +757,23 @@
 .pp-day-activity:hover .pp-activity-del { opacity: 1; }
 .pp-activity-del:hover { color: var(--red); background: rgba(239,68,68,0.1); }
 
+.pp-activity-duplicate {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+}
+.pp-activity:hover .pp-activity-duplicate { opacity: 1; }
+.pp-day-activity:hover .pp-activity-duplicate { opacity: 1; }
+.pp-activity-duplicate:hover { color: var(--accent2); background: var(--accent-subtle); }
+
 /* Activity edit form */
 .pp-activity-edit {
   flex: 1;
@@ -2444,14 +2461,61 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
+
+/* Carte en superposition plein écran (plutôt qu'à côté) : la carte est optionnelle,
+   si l'utilisateur choisit de l'ouvrir en grand c'est qu'il en a vraiment besoin. */
+.pp-map-panel--overlay {
+  position: fixed;
+  inset: 32px;
+  width: auto;
+  height: auto;
+  min-width: 0;
+  max-width: none;
+  z-index: 300;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+
+.pp-map-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 299;
+}
+
+.pp-map-overlay-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 510;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: rgba(20,20,26,0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.pp-map-overlay-toggle:hover { color: var(--text); background: rgba(20,20,26,0.95); }
 
 /* Répartition qui change selon la présence de la carte (utile surtout sur petit
    écran — sur grand écran les max-width ci-dessus sont déjà atteints, donc rien
    ne change visuellement) : carte fermée, villes/groupes profitent du surplus ;
-   carte ouverte, elle prend sa part (30% cf. ci-dessus) et villes cède un peu. */
-.pp-editor-split:has(.pp-map-panel) .pp-city-panel { width: 27%; }
-.pp-editor-split:not(:has(.pp-map-panel)) .pp-groups-panel { width: 24%; }
+   carte ouverte (à côté), elle prend sa part (30% cf. ci-dessus) et villes cède
+   un peu. En superposition, la carte sort du flux (position: fixed) et n'occupe
+   plus de place dans la rangée : on exclut ce cas (:not(:has(...--overlay))),
+   sinon villes/groupes resteraient réduits pour rien, laissant un vide inutile. */
+.pp-editor-split:has(.pp-map-panel):not(:has(.pp-map-panel--overlay)) .pp-city-panel { width: 27%; }
+.pp-editor-split:not(:has(.pp-map-panel)) .pp-groups-panel,
+.pp-editor-split:has(.pp-map-panel--overlay) .pp-groups-panel { width: 24%; }
 
 .pp-map-panel-inner {
   flex: 1;

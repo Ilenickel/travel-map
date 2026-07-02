@@ -111,7 +111,7 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
 
 function DaySlot({
   slot, droppableId, acts, overflow, cities, destinations, groups, day, tripStartDate,
-  onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup,
+  onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resizingActId, resizeHighlight, onCutHere,
 }) {
   const sortByTime = (a, b) => {
@@ -154,7 +154,7 @@ function DaySlot({
               <ActivityItem
                 key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
                 cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
-                onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onAssignToGroup={onAssignActivityToGroup}
+                onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
                 onResizeStart={onResizeStart} resizing={resizingActId === act.id}
               />
             ))}
@@ -175,7 +175,7 @@ function DaySlot({
 
 export default function DayView({
   trip, destinations, cities, activities, groups = [], onAssignGroupToDay, onAssignCityToDay,
-  onRemoveActivity, onUpdateActivity, onAssignActivityToGroup,
+  onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
 }) {
   const days = useMemo(() => getDaysBetween(trip.start_date, trip.end_date), [trip.start_date, trip.end_date]);
   const hasNoDates = !trip.start_date || !trip.end_date;
@@ -304,7 +304,7 @@ export default function DayView({
                     <ActivityItem
                       key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
                       cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
-                      onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onAssignToGroup={onAssignActivityToGroup}
+                      onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
                     />
                   ))}
                   {provided.placeholder}
@@ -389,6 +389,7 @@ export default function DayView({
             onAssignCityToDay={onAssignCityToDay}
             onRemoveActivity={onRemoveActivity}
             onUpdateActivity={onUpdateActivity}
+            onDuplicateActivity={onDuplicateActivity}
             onAssignActivityToGroup={onAssignActivityToGroup}
             onResizeStart={beginResize}
             resize={resize}
@@ -418,7 +419,7 @@ export default function DayView({
                   <ActivityItem
                     key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
                     cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
-                    onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onAssignToGroup={onAssignActivityToGroup}
+                    onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
                   />
                 ))}
                 {provided.placeholder}
@@ -433,7 +434,7 @@ export default function DayView({
 
 function DaySection({
   day, dayIdx, totalDay, slotActs, slotOverflow, libreActs, cities, destinations, groups, tripStartDate,
-  onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onAssignActivityToGroup,
+  onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
   const libreDrop = useNativeDropTarget(
@@ -482,6 +483,7 @@ function DaySection({
             onAssignCityToDay={onAssignCityToDay}
             onRemoveActivity={onRemoveActivity}
             onUpdateActivity={onUpdateActivity}
+            onDuplicateActivity={onDuplicateActivity}
             onAssignActivityToGroup={onAssignActivityToGroup}
             onResizeStart={onResizeStart}
             resizingActId={resize?.actId}
@@ -513,7 +515,7 @@ function DaySection({
               <ActivityItem
                 key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
                 cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
-                onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onAssignToGroup={onAssignActivityToGroup}
+                onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
               />
             ))}
             {provided.placeholder}

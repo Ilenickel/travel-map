@@ -6,8 +6,14 @@ export function useTrips(userId) {
   const [selectedTripId, setSelectedTripId] = useState(null);
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [lastDeletedActivity, setLastDeletedActivity] = useState(null);
 
   const currentTripRef = useRef(null);
+  // Compteur incrémenté de façon synchrone (pas via un state) : deux Ctrl+C très
+  // rapprochés peuvent tous les deux lire le même instantané de tripData avant
+  // qu'aucun des deux n'ait eu le temps de se refléter — sans ce compteur, les
+  // deux copies obtiendraient exactement la même position.
+  const duplicateOffsetRef = useRef(0);
 
   // ─── Load trips list (own + shared) ───
   const loadTrips = useCallback(async () => {
@@ -62,6 +68,11 @@ export function useTrips(userId) {
   }, []);
 
   useEffect(() => {
+    // Un Ctrl+Z en attente d'un autre voyage n'a plus de sens ici (et restaurerait
+    // silencieusement une activité dans le mauvais voyage affiché à l'écran) — avant
+    // le "return" ci-dessous aussi (voyage fermé sans qu'un autre soit rouvert),
+    // pour ne jamais dépendre du fait que l'éditeur soit démonté entre-temps.
+    setLastDeletedActivity(null);
     if (!selectedTripId) { setTripData(null); return; }
     loadTripData(selectedTripId);
   }, [selectedTripId, loadTripData]);
@@ -212,6 +223,11 @@ export function useTrips(userId) {
       cities: prev.cities.filter(c => c.destination_id !== destId),
       activities: prev.activities.filter(a => !cityIds.includes(a.city_id)),
     } : prev);
+    // Un Ctrl+Z en attente pour un lieu de ce pays échouerait silencieusement (sa
+    // ville n'existe plus, la ré-insertion violerait la clé étrangère) : autant
+    // vider l'annulation proprement plutôt que de laisser une tentative vouée à
+    // l'échec.
+    setLastDeletedActivity(prev => (prev && cityIds.includes(prev.city_id)) ? null : prev);
   }, [tripData]);
 
   // ─── Cities CRUD ───
@@ -261,7 +277,14 @@ export function useTrips(userId) {
         activities: prev.activities.filter(a => !removedCityIds.has(a.city_id)),
       };
     });
-  }, []);
+    // Même filet de sécurité que removeDestination : un Ctrl+Z pour un lieu de
+    // cette ville (ou d'une de ses excursions) échouerait silencieusement.
+    setLastDeletedActivity(prev => {
+      if (!prev) return prev;
+      const childCityIds = (tripData?.cities ?? []).filter(c => c.parent_city_id === cityId).map(c => c.id);
+      return [cityId, ...childCityIds].includes(prev.city_id) ? null : prev;
+    });
+  }, [tripData]);
 
   const reorderCities = useCallback(async (destinationId, newOrder) => {
     setTripData(prev => {
@@ -296,9 +319,40 @@ export function useTrips(userId) {
   }, []);
 
   const removeActivity = useCallback(async (actId) => {
+    // On garde une copie de la ligne juste avant de la supprimer, pour permettre
+    // un Ctrl+Z (undoRemoveActivity) juste après — seule action couverte par
+    // l'annulation pour l'instant : c'est la seule vraiment destructrice/irréversible
+    // à l'oeil nu (une simple erreur de glisser-déposer se corrige en un geste).
+    const orig = tripData?.activities?.find(a => a.id === actId) || null;
     await supabase.from('trip_activities').delete().eq('id', actId);
     setTripData(prev => prev ? { ...prev, activities: prev.activities.filter(a => a.id !== actId) } : prev);
-  }, []);
+    if (orig) setLastDeletedActivity(orig);
+  }, [tripData]);
+
+  const undoRemoveActivity = useCallback(async () => {
+    if (!lastDeletedActivity) return;
+    const { data, error } = await supabase.from('trip_activities').insert(lastDeletedActivity).select().single();
+    if (error || !data) { console.error('undoRemoveActivity failed:', error); return; }
+    setTripData(prev => prev ? { ...prev, activities: [...prev.activities, data] } : prev);
+    setLastDeletedActivity(null);
+  }, [lastDeletedActivity]);
+
+  // Duplique une activité (lieu ou trajet) à l'identique, ajoutée à la fin de la
+  // liste de sa ville — utile pour une activité que l'on veut faire deux fois
+  // pendant le voyage (ex : le même restaurant à deux dates différentes).
+  const duplicateActivity = useCallback(async (actId) => {
+    const orig = tripData?.activities?.find(a => a.id === actId);
+    if (!orig) return null;
+    const { id, created_at, ...rest } = orig;
+    const cityActs = (tripData?.activities ?? []).filter(a => a.city_id === orig.city_id);
+    const maxPosition = cityActs.length ? Math.max(...cityActs.map(a => a.position)) : -1;
+    duplicateOffsetRef.current += 1;
+    const position = maxPosition + duplicateOffsetRef.current;
+    const { data, error } = await supabase.from('trip_activities').insert({ ...rest, position }).select().single();
+    if (error || !data) { console.error('duplicateActivity failed:', error); return null; }
+    setTripData(prev => prev ? { ...prev, activities: [...prev.activities, data] } : prev);
+    return data;
+  }, [tripData]);
 
   const reorderActivities = useCallback(async (cityId, newOrder) => {
     setTripData(prev => {
@@ -341,6 +395,10 @@ export function useTrips(userId) {
       groups: (prev.groups || []).filter(g => !g.is_auto),
       activities: prev.activities.map(a => autoGroupIds.includes(a.group_id) ? { ...a, group_id: null } : a),
     } : prev);
+    // Même filet de sécurité que removeCity/removeDestination : un Ctrl+Z pour un
+    // lieu qui appartenait à l'une de ces zones échouerait silencieusement (clé
+    // étrangère group_id pointant vers un groupe qui n'existe plus).
+    setLastDeletedActivity(prev => (prev && autoGroupIds.includes(prev.group_id)) ? null : prev);
   }, [tripData]);
 
   const updateGroup = useCallback(async (groupId, updates) => {
@@ -359,6 +417,7 @@ export function useTrips(userId) {
       groups: (prev.groups || []).filter(g => g.id !== groupId),
       activities: prev.activities.map(a => a.group_id === groupId ? { ...a, group_id: null } : a),
     } : prev);
+    setLastDeletedActivity(prev => (prev && prev.group_id === groupId) ? null : prev);
   }, []);
 
   const assignActivityToGroup = useCallback(async (actId, groupId) => {
@@ -396,6 +455,7 @@ export function useTrips(userId) {
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
     addActivity, updateActivity, removeActivity, reorderActivities,
+    duplicateActivity, undoRemoveActivity, canUndoRemoveActivity: !!lastDeletedActivity,
     addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignGroupToDay, assignCityToDay,
   };
 }
