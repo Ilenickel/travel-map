@@ -3,7 +3,23 @@ import {
   ACTIVITY_CATEGORIES, TRANSPORT_MODES,
   getDaysBetween, formatDayLabel, formatDate, formatTimeShort, formatDuration,
   todayLocalStr, getDayModeStatus, getCarriedOverActivities, formatCarriedOverLabel,
+  lodgingsForNight,
 } from '../../lib/planningUtils';
+
+// Ligne "où l'on dort cette nuit" sous le titre d'un jour — même règle que le
+// bandeau de la vue par jour (check_in <= jour < check_out).
+function LodgingNightLine({ lodging, cityName }) {
+  return (
+    <div className="pp-print-lodging">
+      <span className="pp-print-lodging-icon">🏨</span>
+      <span className="pp-print-lodging-text">
+        Nuit à <strong>{lodging.name}</strong>
+        {cityName ? ` · ${cityName}` : ''}
+        {lodging.address ? ` — ${lodging.address}` : ''}
+      </span>
+    </div>
+  );
+}
 
 // Rendu uniquement visible à l'impression (voir .pp-print-view dans App.css) :
 // invisible à l'écran, il n'a donc pas besoin de suivre le style du reste de
@@ -39,7 +55,7 @@ function ActivityLine({ act, cityName, label }) {
 // ce mode (voir TripEditor, isDayModeView). Reprend les mêmes règles que
 // TripDayModeView (activités du jour + reportées depuis hier via duration_minutes),
 // via les fonctions partagées de planningUtils pour ne jamais diverger de l'écran.
-function TodayPrintSection({ trip, cities, activities }) {
+function TodayPrintSection({ trip, cities, activities, lodgings }) {
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
   const today = todayLocalStr();
@@ -60,13 +76,17 @@ function TodayPrintSection({ trip, cities, activities }) {
   const carriedOver = getCarriedOverActivities(activities, today);
   const timed = todayActs.filter(a => a.visit_time).sort((a, b) => a.visit_time.localeCompare(b.visit_time));
   const allDayActs = todayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
+  const tonightLodgings = lodgingsForNight(lodgings, today);
 
-  if (carriedOver.length === 0 && todayActs.length === 0) {
+  if (carriedOver.length === 0 && todayActs.length === 0 && tonightLodgings.length === 0) {
     return <p className="pp-print-notes">Aucune activité prévue aujourd'hui.</p>;
   }
 
   return (
     <section className="pp-print-day">
+      {tonightLodgings.map(l => (
+        <LodgingNightLine key={l.id} lodging={l} cityName={cityById[l.city_id]?.name} />
+      ))}
       {carriedOver.map(({ act, daysBetween }) => (
         <ActivityLine
           key={act.id} act={act} cityName={cityById[act.city_id]?.name}
@@ -88,7 +108,7 @@ function TodayPrintSection({ trip, cities, activities }) {
   );
 }
 
-export default function TripPrintView({ trip, destinations, cities, activities, focusToday = false }) {
+export default function TripPrintView({ trip, destinations, cities, activities, lodgings = [], focusToday = false }) {
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
 
@@ -105,7 +125,7 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
           <h1 className="pp-print-title">✈️ {trip?.title || 'Mon voyage'}</h1>
           <p className="pp-print-dates">{formatDayLabel(todayLocalStr())}</p>
         </header>
-        <TodayPrintSection trip={trip} cities={cities} activities={activities} />
+        <TodayPrintSection trip={trip} cities={cities} activities={activities} lodgings={lodgings} />
       </div>
     );
   }
@@ -131,12 +151,18 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
             if (b.visit_time) return 1;
             return a.position - b.position;
           });
-        if (dayActs.length === 0) return null;
+        const nightLodgings = lodgingsForNight(lodgings, day);
+        // Un jour sans activité mais où l'on dort quelque part mérite quand même
+        // sa section (savoir où l'on dort fait partie de l'itinéraire imprimé)
+        if (dayActs.length === 0 && nightLodgings.length === 0) return null;
         return (
           <section key={day} className="pp-print-day">
             <h2 className="pp-print-day-title">{formatDayLabel(day)}</h2>
             {dayActs.map(act => (
               <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
+            ))}
+            {nightLodgings.map(l => (
+              <LodgingNightLine key={l.id} lodging={l} cityName={cityById[l.city_id]?.name} />
             ))}
           </section>
         );

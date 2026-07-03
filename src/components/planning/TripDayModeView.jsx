@@ -1,7 +1,7 @@
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import {
   formatDayLabel, formatDate, todayLocalStr, timeToMinutes, getDayModeStatus,
-  getCarriedOverActivities, formatCarriedOverLabel,
+  getCarriedOverActivities, formatCarriedOverLabel, lodgingsForNight,
 } from '../../lib/planningUtils';
 import ActivityItem from './ActivityItem';
 
@@ -11,7 +11,7 @@ function nowMinutes() {
 }
 
 export default function TripDayModeView({
-  trip, cities, destinations, groups = [], activities,
+  trip, cities, destinations, groups = [], activities, lodgings = [],
   onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   // standalone=true (mode Jour J plein écran, ordinateur) : ce composant est alors
   // seul monté, il doit fournir son propre DragDropContext puisqu'aucun autre
@@ -40,6 +40,10 @@ export default function TripDayModeView({
 
   const todayActs = activities.filter(a => a.visit_date === today);
   const carriedOver = getCarriedOverActivities(activities, today);
+  // Hébergement : où l'on dort ce soir, et duquel on part ce matin (check-out
+  // aujourd'hui) — les deux peuvent coexister un jour de changement d'hôtel.
+  const tonightLodgings = lodgingsForNight(lodgings, today);
+  const checkoutLodgings = (lodgings || []).filter(l => l.check_out === today);
 
   const timed = todayActs.filter(a => a.visit_time).sort((a, b) => a.visit_time.localeCompare(b.visit_time));
   const allDayActs = todayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
@@ -119,6 +123,25 @@ export default function TripDayModeView({
   return (
     <div className="pp-day-mode">
       <div className="pp-day-mode-date">{formatDayLabel(today)}</div>
+
+      {(checkoutLodgings.length > 0 || tonightLodgings.length > 0) && (
+        <div className="pp-day-mode-lodging">
+          {checkoutLodgings.map(l => (
+            <div key={`out-${l.id}`} className="pp-day-mode-lodging-row pp-day-mode-lodging-row--checkout">
+              <span className="pp-day-mode-lodging-icon">🧳</span>
+              Check-out de <strong>{l.name}</strong> ce matin
+            </div>
+          ))}
+          {tonightLodgings.map(l => (
+            <div key={`in-${l.id}`} className="pp-day-mode-lodging-row" title={l.address || undefined}>
+              <span className="pp-day-mode-lodging-icon">🏨</span>
+              Cette nuit : <strong>{l.name}</strong>
+              {l.check_in === today && <span className="pp-day-mode-lodging-tag">check-in aujourd'hui</span>}
+              {l.address && <span className="pp-day-mode-lodging-addr">📍 {l.address}</span>}
+            </div>
+          ))}
+        </div>
+      )}
 
       {todayActs.length === 0 && carriedOver.length === 0 ? (
         <div className="pp-day-mode-empty">

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { tripDurationDays } from '../../lib/planningUtils';
 
 export default function TripEditorHeader({
-  trip, tripId, destinations, cities, activities,
+  trip, tripId, destinations, cities, activities, lodgings = [],
   onUpdate, mapOpen, onToggleMap, onToggleShare,
   onExportPdf, onExportIcal,
   dayModeActive, onToggleDayMode,
@@ -46,8 +46,10 @@ export default function TripEditorHeader({
   const plannedCount = activities.filter(a => a.visit_date).length;
   // L'export iCal exclut les activités déjà cochées "faites" (voir exportTrip.js) :
   // un voyage entièrement planifié mais déjà terminé ne doit pas laisser croire
-  // qu'il y a encore quelque chose à exporter vers l'agenda.
-  const icalExportableCount = activities.filter(a => a.visit_date && !a.is_done).length;
+  // qu'il y a encore quelque chose à exporter vers l'agenda. Les hébergements
+  // datés (check-in + check-out) sont exportables aussi.
+  const icalExportableCount = activities.filter(a => a.visit_date && !a.is_done).length
+    + lodgings.filter(l => l.check_in && l.check_out).length;
 
   return (
     <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>

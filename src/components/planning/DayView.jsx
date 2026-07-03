@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES } from '../../lib/planningUtils';
+import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
@@ -178,7 +178,7 @@ function DaySlot({
 }
 
 export default function DayView({
-  trip, destinations, cities, activities, groups = [], onAssignGroupToDay, onAssignCityToDay,
+  trip, destinations, cities, activities, groups = [], lodgings = [], onAssignGroupToDay, onAssignCityToDay,
   onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
 }) {
   const days = useMemo(() => getDaysBetween(trip.start_date, trip.end_date), [trip.start_date, trip.end_date]);
@@ -376,6 +376,7 @@ export default function DayView({
         const totalDay = dayActs.length;
         const doneDay = dayActs.filter(a => a.is_done).length;
         const libreActs = dayActs.filter(a => !a.visit_time);
+        const nightLodgings = lodgingsForNight(lodgings, day);
 
         return (
           <DaySection
@@ -384,6 +385,7 @@ export default function DayView({
             dayIdx={dayIdx}
             totalDay={totalDay}
             doneDay={doneDay}
+            nightLodgings={nightLodgings}
             slotActs={daySlotActs[day]}
             slotOverflow={daySlotOverflow[day]}
             libreActs={libreActs}
@@ -439,7 +441,7 @@ export default function DayView({
 }
 
 function DaySection({
-  day, dayIdx, totalDay, doneDay, slotActs, slotOverflow, libreActs, cities, destinations, groups, tripStartDate,
+  day, dayIdx, totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
@@ -472,6 +474,27 @@ function DaySection({
           )}
         </div>
       </div>
+
+      {/* Où l'on dort CETTE nuit (check_in <= jour < check_out) — informatif
+          uniquement, l'édition se fait dans la ville (panneau Villes) */}
+      {nightLodgings.length > 0 && (
+        <div className="pp-day-lodging-banner">
+          {nightLodgings.map(l => {
+            const lCity = cities?.find(c => c.id === l.city_id);
+            const next = new Date(day + 'T12:00:00');
+            next.setDate(next.getDate() + 1);
+            const isLastNight = next.toISOString().slice(0, 10) === l.check_out;
+            return (
+              <span key={l.id} className="pp-day-lodging-item" title={l.address || undefined}>
+                <span className="pp-day-lodging-icon">🏨</span>
+                Nuit à <strong>{l.name}</strong>{lCity ? <span className="pp-day-lodging-city"> · {lCity.name}</span> : null}
+                {day === l.check_in && <span className="pp-day-lodging-tag">arrivée</span>}
+                {isLastNight && <span className="pp-day-lodging-tag pp-day-lodging-tag--last">dernière nuit</span>}
+              </span>
+            );
+          })}
+        </div>
+      )}
 
       {/* 3 créneaux */}
       <div className="pp-day-slots">

@@ -5,8 +5,9 @@ import PlaceSearchInput from './PlaceSearchInput';
 import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
 import TrajetAddInput from './TrajetAddInput';
+import LodgingSection from './LodgingSection';
 
-export default function CityBlock({ city, activities, groups, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay }) {
+export default function CityBlock({ city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);
@@ -171,6 +172,19 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                 </button>
               )}
 
+              {/* Hébergements de la ville : entité à part (dates de séjour, prix,
+                  lien de réservation), pas une activité — voir LodgingSection */}
+              <LodgingSection
+                city={city}
+                lodgings={lodgings}
+                tripId={tripId}
+                tripStartDate={tripStartDate}
+                tripEndDate={tripEndDate}
+                onAddLodging={onAddLodging}
+                onUpdateLodging={onUpdateLodging}
+                onRemoveLodging={onRemoveLodging}
+              />
+
               {/* Excursions à la journée rattachées à cette ville */}
               {daytrips.length > 0 && (
                 <div className="pp-daytrips-list">
@@ -180,6 +194,7 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                       city={dt}
                       activities={activities}
                       groups={groups}
+                      lodgings={lodgings}
                       tripId={tripId}
                       tripStartDate={tripStartDate}
                       onRemove={onRemove}
@@ -190,6 +205,9 @@ export default function CityBlock({ city, activities, groups, tripId, index, tri
                       onDuplicateActivity={onDuplicateActivity}
                       onAssignActivityToGroup={onAssignActivityToGroup}
                       onAssignCityToDay={onAssignCityToDay}
+                      onAddLodging={onAddLodging}
+                      onUpdateLodging={onUpdateLodging}
+                      onRemoveLodging={onRemoveLodging}
                       tripEndDate={tripEndDate}
                     />
                   ))}

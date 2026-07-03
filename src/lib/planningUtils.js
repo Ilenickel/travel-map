@@ -154,6 +154,32 @@ export function formatCarriedOverLabel(daysBetween, visitDate) {
   return `Depuis le ${formatDate(visitDate)}`;
 }
 
+// ─── Hébergements ─────────────────────────────────────────────────
+
+// Nombre de nuits d'un séjour (check-out exclusif : arrivée le 12, départ le 15
+// = 3 nuits). Renvoie null si les dates manquent ou sont incohérentes.
+export function lodgingNights(checkIn, checkOut) {
+  if (!checkIn || !checkOut) return null;
+  const n = Math.round((new Date(checkOut + 'T12:00:00') - new Date(checkIn + 'T12:00:00')) / 86400000);
+  return n > 0 ? n : null;
+}
+
+// Hébergements où l'on dort LA NUIT du jour donné : check_in <= day < check_out
+// (la nuit du check-out, on n'y dort plus). Plusieurs résultats possibles si
+// des séjours se chevauchent (ex : deux hôtels réservés par des co-voyageurs
+// différents) — on les affiche tous plutôt que d'en cacher un arbitrairement.
+export function lodgingsForNight(lodgings, day) {
+  return (lodgings || []).filter(l =>
+    l.check_in && l.check_out && day >= l.check_in && day < l.check_out
+  );
+}
+
+// Prix affiché "1 234,50 €" — centralisé pour la future répartition des dépenses
+export function formatPrice(n) {
+  if (n == null || n === '' || isNaN(Number(n))) return '';
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(Number(n));
+}
+
 // ─── String helpers ───────────────────────────────────────────────
 export function normalizeStr(s) {
   return s.normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase();

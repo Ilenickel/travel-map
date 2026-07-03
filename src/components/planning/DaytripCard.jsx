@@ -3,6 +3,7 @@ import { Droppable } from '@hello-pangea/dnd';
 import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import TrajetAddInput from './TrajetAddInput';
+import LodgingSection from './LodgingSection';
 import { getDaysBetween, formatDateShort } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 
@@ -24,7 +25,7 @@ function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
   );
 }
 
-export default function DaytripCard({ city, activities, groups, tripId, tripStartDate, tripEndDate, onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignCityToDay }) {
+export default function DaytripCard({ city, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignCityToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -182,6 +183,20 @@ export default function DaytripCard({ city, activities, groups, tripId, tripStar
               Ajouter un lieu
             </button>
           )}
+
+          {/* Hébergements de l'excursion : une excursion qui dure plusieurs jours
+              (trek, île, ville-étape) a son propre logement — une excursion est
+              une ville en base (trip_cities), la section marche donc telle quelle */}
+          <LodgingSection
+            city={city}
+            lodgings={lodgings}
+            tripId={tripId}
+            tripStartDate={tripStartDate}
+            tripEndDate={tripEndDate}
+            onAddLodging={onAddLodging}
+            onUpdateLodging={onUpdateLodging}
+            onRemoveLodging={onRemoveLodging}
+          />
 
           {dtTrajets.length > 0 && (
             <div className="pp-trajets-section">

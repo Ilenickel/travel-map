@@ -1,7 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
+import { ACTIVITY_CATEGORIES, formatDateShort } from '../../lib/planningUtils';
 
-export default function MapPanel({ activities, groups, cities }) {
+// Les popups Leaflet sont injectées en HTML brut : tout texte utilisateur doit
+// être échappé — sur un voyage partagé, le nom d'un hébergement est saisi par
+// n'importe quel membre et ne doit jamais pouvoir devenir du HTML exécutable.
+function escapeHtml(s) {
+  return String(s ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+export default function MapPanel({ activities, groups, cities, lodgings }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -57,7 +68,7 @@ export default function MapPanel({ activities, groups, cities }) {
     import('leaflet').then(module => {
       renderMarkers(module.default, mapRef.current);
     });
-  }, [activities, groups]);
+  }, [activities, groups, lodgings]);
 
   function renderMarkers(L, map) {
     markersRef.current.forEach(m => m.marker.remove());
@@ -67,9 +78,39 @@ export default function MapPanel({ activities, groups, cities }) {
     (groups || []).forEach(g => { groupMap[g.id] = g; });
 
     const geoActs = (activities || []).filter(a => a.place_lat && a.place_lng);
-    if (!geoActs.length) return;
+    const geoLodgings = (lodgings || []).filter(l => l.place_lat && l.place_lng);
+    if (!geoActs.length && !geoLodgings.length) return;
 
     const bounds = [];
+
+    // Hébergements : marqueur carré doré distinct des lieux (ronds, colorés par
+    // catégorie/zone) — un hôtel n'est pas une étape de visite, il doit se
+    // repérer d'un coup d'œil.
+    geoLodgings.forEach(l => {
+      const divIcon = L.divIcon({
+        className: '',
+        html: `<div class="pp-map-marker pp-map-marker--lodging">🏨</div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, -18],
+      });
+      const city = cities?.find(c => c.id === l.city_id);
+      const datesLine = (l.check_in && l.check_out)
+        ? `<div class="pp-map-popup-city">${formatDateShort(l.check_in)} → ${formatDateShort(l.check_out)}</div>`
+        : '';
+      const popupContent = `
+        <div class="pp-map-popup">
+          <div class="pp-map-popup-name">🏨 ${escapeHtml(l.name)}</div>
+          ${city ? `<div class="pp-map-popup-city">${escapeHtml(city.name)}</div>` : ''}
+          ${datesLine}
+          ${l.address ? `<div class="pp-map-popup-addr">${escapeHtml(l.address)}</div>` : ''}
+        </div>`;
+      const marker = L.marker([l.place_lat, l.place_lng], { icon: divIcon })
+        .addTo(map)
+        .bindPopup(popupContent);
+      markersRef.current.push({ marker, groupId: null, latlng: [l.place_lat, l.place_lng], isLodging: true });
+      bounds.push([l.place_lat, l.place_lng]);
+    });
     geoActs.forEach(act => {
       const group = act.group_id ? groupMap[act.group_id] : null;
       const cat = ACTIVITY_CATEGORIES[act.category] || ACTIVITY_CATEGORIES.other;
@@ -119,7 +160,8 @@ export default function MapPanel({ activities, groups, cities }) {
     }
   };
 
-  const hasGeoActs = (activities || []).some(a => a.place_lat && a.place_lng);
+  const hasGeoActs = (activities || []).some(a => a.place_lat && a.place_lng)
+    || (lodgings || []).some(l => l.place_lat && l.place_lng);
   const activeGroups = (groups || []).filter(g =>
     (activities || []).some(a => a.group_id === g.id && a.place_lat && a.place_lng)
   );

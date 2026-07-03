@@ -20,10 +20,11 @@ export default function TripEditor({
   onAddActivity, onRemoveActivity, onUpdateActivity, onReorderActivities,
   onDuplicateActivity, onUndoRemoveActivity,
   onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignGroupToDay, onAssignCityToDay,
+  onAddLodging, onUpdateLodging, onRemoveLodging,
   onLeaveTrip,
 }) {
   const { user } = useAuth();
-  const { trip, destinations, cities, activities, groups = [] } = tripData;
+  const { trip, destinations, cities, activities, groups = [], lodgings = [] } = tripData;
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   // Affichage de la carte : "à côté" (colonne normale) ou "en superposition" (plein
@@ -330,7 +331,8 @@ export default function TripEditor({
         shareOpen={shareOpen}
         onToggleShare={() => setShareOpen(s => !s)}
         onExportPdf={() => window.print()}
-        onExportIcal={() => downloadTripIcs({ trip, cities, activities })}
+        onExportIcal={() => downloadTripIcs({ trip, cities, activities, lodgings })}
+        lodgings={lodgings}
         dayModeActive={dayModeActive}
         onToggleDayMode={() => {
           // Sur mobile, Jour J est une page du pager (voir JOURJ_PAGE) : on ne
@@ -348,6 +350,7 @@ export default function TripEditor({
           destinations={destinations}
           groups={groups}
           activities={activities}
+          lodgings={lodgings}
           onRemoveActivity={onRemoveActivity}
           onUpdateActivity={onUpdateActivity}
           onDuplicateActivity={onDuplicateActivity}
@@ -378,6 +381,7 @@ export default function TripEditor({
                     cities={cities}
                     activities={activities}
                     groups={groups}
+                    lodgings={lodgings}
                     tripId={tripId}
                     tripStartDate={trip?.start_date || null}
                     tripEndDate={trip?.end_date || null}
@@ -392,6 +396,9 @@ export default function TripEditor({
                     onUpdateActivity={onUpdateActivity}
                     onDuplicateActivity={onDuplicateActivity}
                     onAssignActivityToGroup={onAssignActivityToGroup}
+                    onAddLodging={onAddLodging}
+                    onUpdateLodging={onUpdateLodging}
+                    onRemoveLodging={onRemoveLodging}
                   />
                 ))
               )}
@@ -439,6 +446,7 @@ export default function TripEditor({
               cities={cities}
               activities={activities}
               groups={groups}
+              lodgings={lodgings}
               onAssignGroupToDay={onAssignGroupToDay}
               onAssignCityToDay={onAssignCityToDay}
               onRemoveActivity={onRemoveActivity}
@@ -459,6 +467,7 @@ export default function TripEditor({
               destinations={destinations}
               groups={groups}
               activities={activities}
+              lodgings={lodgings}
               onRemoveActivity={onRemoveActivity}
               onUpdateActivity={onUpdateActivity}
               onDuplicateActivity={onDuplicateActivity}
@@ -490,7 +499,7 @@ export default function TripEditor({
                     </svg>
                   )}
                 </button>
-                <MapPanel activities={activities} groups={groups} cities={cities} />
+                <MapPanel activities={activities} groups={groups} cities={cities} lodgings={lodgings} />
               </div>
             </>
           )}
@@ -544,7 +553,7 @@ export default function TripEditor({
       )}
 
       {/* Invisible à l'écran, révélé uniquement à l'impression (voir .pp-print-view) */}
-      <TripPrintView trip={trip} destinations={destinations} cities={cities} activities={activities} focusToday={isDayModeView} />
+      <TripPrintView trip={trip} destinations={destinations} cities={cities} activities={activities} lodgings={lodgings} focusToday={isDayModeView} />
     </div>
   );
 }

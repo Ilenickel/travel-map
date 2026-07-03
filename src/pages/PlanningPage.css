@@ -3588,6 +3588,7 @@
      l'ambre et l'icône carte le disent déjà. */
   .pp-daytrips-list { margin-left: 6px; padding-left: 6px; }
   .pp-trajets-section { margin-left: 6px; padding-left: 6px; }
+  .pp-lodgings-section { margin-left: 6px; padding-left: 6px; }
   .pp-daytrip-header { padding: 8px 10px; gap: 7px; }
   .pp-daytrip-badge { display: none; }
 
@@ -4652,4 +4653,311 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 8px 0 2px;
+}
+
+/* ─── Hébergements (par ville) ─────────────────────────────────────
+   Même architecture visuelle que la section Trajets (sous-section indentée
+   avec un filet), déclinée en émeraude — la couleur de la catégorie
+   "Hébergement" (#10b981) déjà utilisée ailleurs dans l'appli. */
+.pp-lodgings-section {
+  margin: 6px 0 6px 14px;
+  padding-left: 10px;
+  border-left: 2px dashed rgba(16,185,129,0.35);
+}
+/* Sans hébergement (juste le bouton d'ajout) : pas de filet ni d'indentation,
+   pour que le bouton reste aligné avec les autres boutons d'ajout de la ville */
+.pp-lodgings-section--empty {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
+}
+
+.pp-lodgings-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #34d399;
+  padding: 4px 2px 6px;
+}
+.pp-lodgings-section-label svg { flex-shrink: 0; opacity: .85; }
+.pp-lodgings-section-label span {
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+.pp-lodgings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pp-lodging-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid #10b981;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pp-lodging-card:hover {
+  background: var(--surface3);
+  border-color: var(--border-light);
+  border-left-color: #10b981;
+}
+.pp-lodging-card:hover .pp-activity-del { opacity: 1; }
+.pp-lodging-card.pp-activity--editing {
+  cursor: default;
+  padding: 14px;
+  border: 1px solid #10b981;
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.12), 0 10px 28px rgba(0,0,0,0.32);
+}
+
+.pp-lodging-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+.pp-lodging-content { flex: 1; min-width: 0; }
+
+.pp-lodging-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pp-lodging-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pp-lodging-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #34d399;
+  text-decoration: none;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.25);
+  transition: background 0.15s;
+}
+.pp-lodging-link:hover { background: rgba(16,185,129,0.2); }
+
+.pp-lodging-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.pp-chip--lodging-dates {
+  background: rgba(16,185,129,0.1);
+  color: #34d399;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+.pp-chip--lodging-nodates {
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px dashed var(--border-light);
+}
+.pp-chip--lodging-price {
+  background: rgba(245,158,11,0.1);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,0.2);
+}
+
+.pp-lodging-addr {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin: 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pp-lodging-notes {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 3px 0 0;
+  font-style: italic;
+}
+
+/* Bouton d'ajout : même gabarit que les autres .pp-add-item-btn, teinté émeraude */
+.pp-add-lodging-btn { color: #34d399; }
+.pp-add-lodging-btn:hover { color: #6ee7b7; }
+
+/* Formulaire hébergement */
+.pp-lodging-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.pp-lodging-form input,
+.pp-lodging-form textarea {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12.5px;
+  font-family: inherit;
+}
+.pp-lodging-form input:focus,
+.pp-lodging-form textarea:focus {
+  outline: none;
+  border-color: #10b981;
+}
+.pp-lodging-name-input { font-weight: 600; }
+
+.pp-lodging-dates-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pp-lodging-field {
+  flex: 1;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.pp-lodging-field label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+.pp-lodging-field--price { max-width: 130px; }
+.pp-lodging-price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pp-lodging-price-wrap span { color: var(--text-dim); font-size: 13px; }
+
+.pp-lodging-date-error {
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--red, #ef4444);
+}
+
+/* ── Bandeau "Nuit à ..." dans la vue par jour ── */
+.pp-day-lodging-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 8px;
+  padding: 7px 12px;
+  border-radius: 9px;
+  background: rgba(16,185,129,0.07);
+  border: 1px solid rgba(16,185,129,0.18);
+  border-left: 3px solid #10b981;
+}
+.pp-day-lodging-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+.pp-day-lodging-item strong { color: var(--text); font-weight: 700; }
+.pp-day-lodging-icon { font-size: 13px; }
+.pp-day-lodging-city { color: var(--text-muted); }
+.pp-day-lodging-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 7px;
+  border-radius: 20px;
+  color: #34d399;
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.3);
+}
+.pp-day-lodging-tag--last {
+  color: #fbbf24;
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.3);
+}
+
+/* ── Hébergement dans le mode Jour J ── */
+.pp-day-mode-lodging {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(16,185,129,0.07);
+  border: 1px solid rgba(16,185,129,0.18);
+  border-left: 3px solid #10b981;
+  margin-bottom: 4px;
+}
+.pp-day-mode-lodging-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.pp-day-mode-lodging-row strong { color: var(--text); font-weight: 700; }
+.pp-day-mode-lodging-row--checkout { opacity: 0.85; }
+.pp-day-mode-lodging-icon { font-size: 15px; }
+.pp-day-mode-lodging-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 7px;
+  border-radius: 20px;
+  color: #34d399;
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.3);
+}
+.pp-day-mode-lodging-addr {
+  flex-basis: 100%;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* ── Marqueur carte dédié : carré arrondi émeraude, pour se distinguer
+      immédiatement des lieux (ronds, colorés par catégorie/zone) ── */
+.pp-map-marker--lodging {
+  border-radius: 8px;
+  background: #10b981;
+  border-color: #d1fae5;
+}
+
+/* ── Impression : ligne "Nuit à ..." (palette papier claire, comme le reste
+      de .pp-print-view) ── */
+@media print {
+  .pp-print-lodging {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    margin: 4px 0 6px;
+    background: #ecfdf5;
+    border-left: 3px solid #10b981;
+    border-radius: 0 6px 6px 0;
+    break-inside: avoid;
+    font-size: 13px;
+    color: #065f46;
+  }
+  .pp-print-lodging-icon { font-size: 15px; }
+  .pp-print-lodging-text strong { font-weight: 700; }
 }

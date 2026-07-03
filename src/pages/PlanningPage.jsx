@@ -99,6 +99,7 @@ function PlanningMain() {
     addActivity, updateActivity, removeActivity, reorderActivities,
     duplicateActivity, undoRemoveActivity,
     addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignGroupToDay, assignCityToDay,
+    addLodging, updateLodging, removeLodging,
   } = useTrips(user?.id);
 
   const { pending, accept: acceptInvite, decline: declineInvite } = useInvitations(user?.id);
@@ -170,6 +171,9 @@ function PlanningMain() {
             onAssignActivityToGroup={assignActivityToGroup}
             onAssignGroupToDay={assignGroupToDay}
             onAssignCityToDay={assignCityToDay}
+            onAddLodging={addLodging}
+            onUpdateLodging={updateLodging}
+            onRemoveLodging={removeLodging}
             onLeaveTrip={leaveTrip}
           />
         ) : (

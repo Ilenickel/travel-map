@@ -49,20 +49,24 @@ export function useTrips(userId) {
       { data: cities },
       { data: activities },
       { data: groups },
+      { data: lodgings, error: lodgingsError },
     ] = await Promise.all([
       supabase.from('trips').select('*').eq('id', tripId).single(),
       supabase.from('trip_destinations').select('*').eq('trip_id', tripId).order('position'),
       supabase.from('trip_cities').select('*').eq('trip_id', tripId).order('position'),
       supabase.from('trip_activities').select('*').eq('trip_id', tripId).order('position'),
       supabase.from('trip_groups').select('*').eq('trip_id', tripId).order('position'),
+      supabase.from('trip_lodgings').select('*').eq('trip_id', tripId).order('position'),
     ]);
     if (currentTripRef.current !== tripId) return;
+    if (lodgingsError) console.error('load trip_lodgings failed (avez-vous joué supabase/planning_tables_v8.sql ?):', lodgingsError);
     setTripData({
       trip: trip || null,
       destinations: destinations || [],
       cities: cities || [],
       activities: activities || [],
       groups: groups || [],
+      lodgings: lodgings || [],
     });
     setLoading(false);
   }, []);
@@ -141,13 +145,14 @@ export function useTrips(userId) {
 
     let srcData = tripData?.trip?.id === tripId ? tripData : null;
     if (!srcData) {
-      const [{ data: dests }, { data: ctns }, { data: acts }, { data: grps }] = await Promise.all([
+      const [{ data: dests }, { data: ctns }, { data: acts }, { data: grps }, { data: ldgs }] = await Promise.all([
         supabase.from('trip_destinations').select('*').eq('trip_id', tripId).order('position'),
         supabase.from('trip_cities').select('*').eq('trip_id', tripId).order('position'),
         supabase.from('trip_activities').select('*').eq('trip_id', tripId).order('position'),
         supabase.from('trip_groups').select('*').eq('trip_id', tripId).order('position'),
+        supabase.from('trip_lodgings').select('*').eq('trip_id', tripId).order('position'),
       ]);
-      srcData = { destinations: dests || [], cities: ctns || [], activities: acts || [], groups: grps || [] };
+      srcData = { destinations: dests || [], cities: ctns || [], activities: acts || [], groups: grps || [], lodgings: ldgs || [] };
     }
 
     const destMap = {};
@@ -199,6 +204,16 @@ export function useTrips(userId) {
         // checklist vierge, pas avec les coches du voyage d'origine.
       });
     }
+    for (const l of (srcData.lodgings || [])) {
+      const newCityId = cityMap[l.city_id];
+      if (!newCityId) continue;
+      await supabase.from('trip_lodgings').insert({
+        trip_id: newTrip.id, city_id: newCityId, name: l.name, address: l.address,
+        place_lat: l.place_lat, place_lng: l.place_lng,
+        check_in: l.check_in, check_out: l.check_out,
+        price: l.price, booking_url: l.booking_url, notes: l.notes, position: l.position,
+      });
+    }
     setTrips(prev => [newTrip, ...prev]);
     setSelectedTripId(newTrip.id);
     return newTrip;
@@ -225,6 +240,7 @@ export function useTrips(userId) {
       destinations: prev.destinations.filter(d => d.id !== destId),
       cities: prev.cities.filter(c => c.destination_id !== destId),
       activities: prev.activities.filter(a => !cityIds.includes(a.city_id)),
+      lodgings: (prev.lodgings || []).filter(l => !cityIds.includes(l.city_id)),
     } : prev);
     // Un Ctrl+Z en attente pour un lieu de ce pays échouerait silencieusement (sa
     // ville n'existe plus, la ré-insertion violerait la clé étrangère) : autant
@@ -278,6 +294,7 @@ export function useTrips(userId) {
         ...prev,
         cities: prev.cities.filter(c => !removedCityIds.has(c.id)),
         activities: prev.activities.filter(a => !removedCityIds.has(a.city_id)),
+        lodgings: (prev.lodgings || []).filter(l => !removedCityIds.has(l.city_id)),
       };
     });
     // Même filet de sécurité que removeDestination : un Ctrl+Z pour un lieu de
@@ -450,6 +467,37 @@ export function useTrips(userId) {
     } : prev);
   }, [tripData]);
 
+  // ─── Lodgings CRUD (hébergements par ville) ───
+
+  const addLodging = useCallback(async (tripId, cityId, fields) => {
+    const position = (tripData?.lodgings ?? []).filter(l => l.city_id === cityId).length;
+    const { data, error } = await supabase.from('trip_lodgings').insert({
+      trip_id: tripId, city_id: cityId, position, ...fields,
+    }).select().single();
+    if (error || !data) {
+      if (error) console.error('addLodging failed (avez-vous joué supabase/planning_tables_v8.sql ?):', error);
+      return null;
+    }
+    setTripData(prev => prev ? { ...prev, lodgings: [...(prev.lodgings || []), data] } : prev);
+    return data;
+  }, [tripData]);
+
+  const updateLodging = useCallback(async (lodgingId, updates) => {
+    const { error } = await supabase.from('trip_lodgings').update(updates).eq('id', lodgingId);
+    if (error) { console.error('updateLodging failed:', error); return; }
+    setTripData(prev => prev ? {
+      ...prev, lodgings: (prev.lodgings || []).map(l => l.id === lodgingId ? { ...l, ...updates } : l),
+    } : prev);
+  }, []);
+
+  const removeLodging = useCallback(async (lodgingId) => {
+    const { error } = await supabase.from('trip_lodgings').delete().eq('id', lodgingId);
+    if (error) { console.error('removeLodging failed:', error); return; }
+    setTripData(prev => prev ? {
+      ...prev, lodgings: (prev.lodgings || []).filter(l => l.id !== lodgingId),
+    } : prev);
+  }, []);
+
   // Planifie toutes les activités d'une ville (ou excursion) sur un jour donné
   const assignCityToDay = useCallback(async (cityId, date, time = null) => {
     const cityActs = (tripData?.activities || []).filter(a => a.city_id === cityId);
@@ -469,5 +517,6 @@ export function useTrips(userId) {
     addActivity, updateActivity, removeActivity, reorderActivities,
     duplicateActivity, undoRemoveActivity, canUndoRemoveActivity: !!lastDeletedActivity,
     addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignGroupToDay, assignCityToDay,
+    addLodging, updateLodging, removeLodging,
   };
 }
