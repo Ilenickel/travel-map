@@ -2453,9 +2453,6 @@
 .pp-pager-track { display: contents; }
 .pp-mobile-nav { display: none; }
 .pp-header-collapse-btn { display: none; }
-/* Combobox de la page Groupes (liste groupes+compteurs) : mobile uniquement,
-   cf. @media (max-width: 768px) plus bas. */
-.pp-groups-mobile-select { display: none; }
 
 /* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte */
 .pp-city-panel {
@@ -3431,11 +3428,12 @@
 
   .pp-pager-track {
     display: flex;
+    position: relative;
     width: 100%;
     height: 100%;
     min-height: 0;
-    transform: translateX(calc(var(--pp-page, 0) * -100%));
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    left: calc(var(--pp-page, 0) * -100%);
+    transition: left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Chaque page occupe exactement un écran et garde son défilement vertical
@@ -3641,32 +3639,6 @@
 
   .pp-activity-datetime { flex-direction: column; gap: 12px; }
   .pp-activity-datetime-field { min-width: 0; }
-
-  /* ── Page Groupes : liste remplacée par un combobox + le groupe sélectionné ──
-     Sur un petit écran, empiler une carte complète par groupe (swatch, nom,
-     compteur, actions, lieux dépliés) rendait la page interminable et les
-     groupes du bas invisibles sans long défilement. Un <select> natif liste
-     tous les groupes avec leur nombre de lieux (roue du système, aucune limite
-     de hauteur) ; seul le groupe choisi reste affiché en dessous, avec toutes
-     ses actions (renommer, couleur, planifier sur un jour, lieux du groupe). */
-  .pp-groups-mobile-select {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0 0 10px;
-    background: var(--surface);
-    border: 1px solid var(--border-light);
-    border-radius: 9px;
-    padding: 10px 10px;
-    color: var(--text);
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    color-scheme: dark;
-  }
-  .pp-groups-mobile-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-
-  .pp-group-row-wrap--mobile-hidden { display: none; }
 
   /* ── Carte : le bouton "agrandir en superposition" est masqué — la carte a
      déjà sa page plein écran ici, et une superposition en position:fixed à
@@ -3972,15 +3944,27 @@
 }
 
 .pp-map-legend-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
+  font-family: inherit;
   padding: 0 6px 6px;
   margin-bottom: 4px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  cursor: default;
+  pointer-events: none;
 }
+
+.pp-map-legend-chevron { display: none; }
 
 .pp-map-legend-list {
   display: flex;
@@ -4047,6 +4031,36 @@
   max-width: 170px;
   line-height: 1.4;
   padding: 4px 6px 2px;
+}
+
+/* ── Légende Zones sur la carte : widget déroulant sur mobile uniquement.
+   Repliée par défaut (seul le titre "Zones" est visible) pour ne jamais
+   empiéter sur la carte même avec beaucoup de groupes ; dépliée elle est
+   plafonnée en hauteur et défile plutôt que de continuer à grandir.
+   Placé après les règles de base ci-dessus pour gagner la cascade (même
+   spécificité, sinon les règles desktop non gardées par media query les
+   emporteraient sur mobile). */
+@media (max-width: 768px) {
+  .pp-map-legend {
+    max-width: 45%;
+    pointer-events: auto;
+  }
+  .pp-map-legend-title {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  .pp-map-legend-chevron {
+    display: block;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  .pp-map-legend--open .pp-map-legend-chevron { transform: rotate(180deg); }
+  .pp-map-legend-list {
+    display: none;
+    max-height: 38vh;
+    overflow-y: auto;
+  }
+  .pp-map-legend--open .pp-map-legend-list { display: flex; }
 }
 
 /* ─── Recherche par pseudo dans TripShareModal ─── */

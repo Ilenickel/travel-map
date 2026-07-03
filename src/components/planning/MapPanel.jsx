@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
 
 export default function MapPanel({ activities, groups, cities }) {
@@ -6,6 +6,10 @@ export default function MapPanel({ activities, groups, cities }) {
   const mapRef = useRef(null);
   const markersRef = useRef([]);
   const resizeObserverRef = useRef(null);
+  // Sur mobile, la légende démarre repliée (widget déroulant) pour ne pas
+  // envahir la carte s'il y a beaucoup de groupes ; sans effet sur ordinateur
+  // où elle reste toujours dépliée (cf. CSS).
+  const [legendOpen, setLegendOpen] = useState(false);
 
   useEffect(() => {
     let L, map;
@@ -135,8 +139,13 @@ export default function MapPanel({ activities, groups, cities }) {
 
       {/* Légende groupes — cliquer une zone recentre la carte dessus */}
       {hasGeoActs && activeGroups.length > 0 && (
-        <div className="pp-map-legend">
-          <div className="pp-map-legend-title">Zones</div>
+        <div className={`pp-map-legend${legendOpen ? ' pp-map-legend--open' : ''}`}>
+          <button className="pp-map-legend-title" onClick={() => setLegendOpen(o => !o)}>
+            <span>Zones</span>
+            <svg className="pp-map-legend-chevron" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
           <div className="pp-map-legend-list">
           {activeGroups.map(g => {
             const cnt = (activities || []).filter(a => a.group_id === g.id && a.place_lat && a.place_lng).length;

@@ -26,7 +26,7 @@ function DayDropdown({ trip, onSelect, onClose }) {
   );
 }
 
-function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, onAssignActivityToGroup, mobileHidden }) {
+function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, onAssignActivityToGroup }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(group.name);
   const [showDays, setShowDays] = useState(false);
@@ -51,7 +51,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className={`pp-group-row-wrap${snapshot.isDraggingOver ? ' pp-group-row--over' : ''}${mobileHidden ? ' pp-group-row-wrap--mobile-hidden' : ''}`}
+          className={`pp-group-row-wrap${snapshot.isDraggingOver ? ' pp-group-row--over' : ''}`}
         >
           <div
             className="pp-group-row"
@@ -193,13 +193,6 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
   const [newName, setNewName] = useState('');
   const [newColor, setNewColor] = useState(GROUP_COLORS[0]);
   const [detecting, setDetecting] = useState(false);
-  // Combobox mobile uniquement (cf. CSS) : au lieu d'empiler une carte complète
-  // par groupe, on choisit un groupe dans une liste déroulante native (compacte,
-  // et qui reste utilisable même avec beaucoup de groupes) et seul celui-ci
-  // s'affiche en dessous. Sans effet sur ordinateur, où la liste complète reste
-  // affichée et ce select est masqué en CSS.
-  const [mobileGroupId, setMobileGroupId] = useState(null);
-  const selectedMobileId = groups.some(g => g.id === mobileGroupId) ? mobileGroupId : groups[0]?.id;
 
   const handleCreate = async () => {
     const name = newName.trim() || `Groupe ${groups.length + 1}`;
@@ -263,23 +256,6 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
             </div>
           )}
 
-          {groups.length > 0 && (
-            <select
-              className="pp-groups-mobile-select"
-              value={selectedMobileId || ''}
-              onChange={e => setMobileGroupId(e.target.value)}
-            >
-              {groups.map(g => {
-                const count = activities.filter(a => a.group_id === g.id).length;
-                return (
-                  <option key={g.id} value={g.id}>
-                    {g.name} — {count} lieu{count !== 1 ? 'x' : ''}
-                  </option>
-                );
-              })}
-            </select>
-          )}
-
           <div className="pp-groups-list">
             {groups.map(g => (
               <GroupRow
@@ -291,7 +267,6 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
                 onRemove={onRemoveGroup}
                 onAssignToDay={onAssignGroupToDay}
                 onAssignActivityToGroup={onAssignActivityToGroup}
-                mobileHidden={g.id !== selectedMobileId}
               />
             ))}
           </div>
