@@ -1429,6 +1429,9 @@
 @media (max-width: 480px) {
   .pp-gate-card { padding: 32px 20px; }
   .pp-gate-title { font-size: 20px; }
+  /* Une seule colonne de vignettes : à cette largeur, deux colonnes forcent le
+     texte à se couper sur 3-4 lignes et les vignettes débordent de la carte. */
+  .pp-gate-features { grid-template-columns: 1fr; }
   .pp-editor-header { padding: 16px; }
   .pp-trip-title { font-size: 18px; }
 }
@@ -1586,7 +1589,8 @@
   white-space: nowrap;
 }
 
-.pp-toolbar-btn:hover { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+.pp-toolbar-btn:hover:not(:disabled) { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+.pp-toolbar-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .pp-toolbar-btn.active {
   background: var(--accent);
@@ -2395,11 +2399,18 @@
   min-height: 0;
 }
 
-/* Sélecteur de volet mobile (Villes/Groupes) et chevron de repli de l'en-tête :
-   masqués sur ordinateur, cf. @media (max-width: 768px) plus bas pour leur mise
-   en forme et leur activation. */
-.pp-mobile-tabbar { display: none; }
+/* ─── Pager mobile — neutralisé sur ordinateur ───
+   .pp-pager-track (piste translatée au balayage) n'existe que pour le mobile :
+   en display:contents ici, elle est transparente pour le layout — les panneaux
+   restent des colonnes directes du flex .pp-editor-split, exactement comme
+   avant son ajout. La barre de navigation basse et le chevron de repli de
+   l'en-tête sont masqués. Cf. @media (max-width: 768px) pour leur activation. */
+.pp-pager-track { display: contents; }
+.pp-mobile-nav { display: none; }
 .pp-header-collapse-btn { display: none; }
+/* Combobox de la page Groupes (liste groupes+compteurs) : mobile uniquement,
+   cf. @media (max-width: 768px) plus bas. */
+.pp-groups-mobile-select { display: none; }
 
 /* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte */
 .pp-city-panel {
@@ -3307,12 +3318,9 @@
   .pp-trip-stats::-webkit-scrollbar { display: none; }
   .pp-stat-pill { flex-shrink: 0; white-space: nowrap; }
 
-  /* Liste des voyages (bandeau horizontal du haut) : plus basse que les 220px
-     hérités du mode tablette, mais assez haute pour qu'une carte voyage complète
-     (titre + dates, paddings compactés ci-dessous) tienne sans être rognée. */
-  .pp-sidebar { max-height: 150px; }
-  .pp-sidebar-header { padding: 10px 12px 8px; }
-  .pp-trip-card { padding: 10px 12px; }
+  /* Liste des voyages : en-tête resserré (la hauteur du bandeau et les cartes
+     compactées sont réglées plus bas, dans la section Compaction). */
+  .pp-sidebar-header { padding: 8px 12px 6px; }
 
   /* Le menu "⋯" d'une carte voyage s'ouvre dans le bandeau horizontal, qui rogne
      tout ce qui dépasse (overflow-y: hidden obligatoire pour son défilement) : en
@@ -3359,91 +3367,280 @@
   /* Déplié, les actions passent sous la ligne titre+chevron (le chevron garde sa
      place en bout de ligne grâce au wrap + width:100% des actions, déjà posés). */
 
-  /* ── Deux volets superposés ──
-     En haut : Villes OU Groupes (sélecteur ci-dessous). En bas : la vue Jours,
-     toujours visible. Les deux volets affichés ensemble permettent le
-     glisser-déposer d'un lieu vers un créneau, qui est le cœur de la page —
-     un système d'onglets plein écran le rendait impossible. */
-  .pp-mobile-tabbar {
-    display: flex;
-    gap: 6px;
-    padding: 6px 10px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-
-  .pp-mobile-tab {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 7px 6px;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    background: none;
-    color: var(--text-muted);
-    font-size: 12px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-  }
-
-  .pp-mobile-tab.active {
-    background: var(--accent-subtle);
-    border-color: rgba(99,102,241,0.3);
-    color: var(--accent2);
-  }
-
+  /* ── Pager horizontal ──
+     Comme les écrans d'une appli : chaque panneau est une page plein écran, on
+     passe de l'une à l'autre d'un balayage horizontal ou via la barre basse.
+     [Villes] [Groupes] [Jours] [Carte, si ouverte].
+     La piste est translatée via --pp-page (posée par TripEditor) ; les gestes
+     verticaux restent du scroll natif dans la page courante (touch-action). */
   .pp-editor-split {
-    flex-direction: column;
     overflow: hidden;
+    touch-action: pan-y;
   }
 
+  .pp-pager-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    transform: translateX(calc(var(--pp-page, 0) * -100%));
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Chaque page occupe exactement un écran et garde son défilement vertical
+     interne (celui du desktop). overflow-x:hidden : aucun contenu ne doit
+     jamais élargir une page au-delà de l'écran. !important sur width : les
+     règles de répartition desktop en :has(.pp-map-panel)/:not(:has(...)) plus
+     haut sont plus spécifiques que ces sélecteurs simples. */
   .pp-city-panel,
   .pp-groups-panel,
-  .pp-content-panel {
-    /* !important : les règles de répartition desktop en :has(.pp-map-panel) /
-       :not(:has(...)) plus haut sont plus spécifiques que ces sélecteurs simples —
-       sans lui, elles regagneraient la main (ex : Groupes réduit à 24% de large)
-       selon que la carte est ouverte ou non. */
+  .pp-content-panel,
+  .pp-map-panel {
+    flex: 0 0 100%;
     width: 100% !important;
     max-width: none;
     min-width: 0;
-    max-height: none;
     min-height: 0;
     border: none;
+    overflow-x: hidden;
   }
 
-  /* Volet haut : hauteur fixe (42% de l'espace sous l'en-tête), scroll interne. */
-  .pp-city-panel,
-  .pp-groups-panel {
-    display: none;
-    flex: 0 0 42%;
-    border-bottom: 2px solid var(--border-light);
-  }
+  .pp-city-panel { display: flex; }
+  .pp-groups-panel { display: flex; overflow-y: auto; }
 
-  .pp-editor-split[data-mobile-pane="villes"] .pp-city-panel { display: flex; }
-  .pp-editor-split[data-mobile-pane="groupes"] .pp-groups-panel { display: flex; }
-
-  /* Volet bas : la vue Jours prend tout le reste, toujours affichée. */
+  /* Pages 3 : planning par jour. Padding bas = barre de navigation. */
   .pp-content-panel {
     display: block;
-    flex: 1 1 0;
-    padding: 10px 12px 30px;
+    padding: 10px 10px 76px;
   }
 
-  .pp-map-panel { display: none; }
+  .pp-city-panel-dests { padding-bottom: 66px; }
+  .pp-groups-panel { padding-bottom: 66px; }
 
-  /* La carte "à côté" n'a pas de place sur téléphone, mais la version en
-     superposition plein écran reste utilisable : c'est même le seul mode carte
-     pertinent sur mobile. */
-  .pp-map-panel--overlay {
+  /* Page 4 : la carte (le display:none hérité du bloc 900px est annulé — ici
+     elle a sa propre page). La superposition plein écran reste accessible via
+     son bouton, elle sort alors de la piste (position: fixed). */
+  .pp-map-panel {
     display: flex;
-    inset: 10px;
   }
+  .pp-map-panel--overlay {
+    inset: 10px;
+    width: auto !important;
+  }
+
+  /* ── Barre de navigation basse, façon appli ── */
+  .pp-mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 95;
+    background: rgba(8, 12, 20, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .pp-mobile-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 0 3px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .pp-mobile-nav-btn.active {
+    color: var(--accent2);
+    background: var(--accent-subtle);
+  }
+
+  .pp-mobile-nav-icon {
+    font-size: 17px;
+    line-height: 1.1;
+  }
+
+  /* ── Compaction : les blocs pensés pour un grand écran deviennent denses ──
+     Boutons d'ajout (pays / ville / lieu / trajet / excursion) en petits
+     boutons, en-têtes de pays et de ville resserrés, bandeau des voyages sur
+     une seule ligne par carte. */
+  .pp-add-dest-btn {
+    padding: 9px 12px;
+    font-size: 13px;
+    gap: 8px;
+    border-width: 1px;
+    border-radius: 10px;
+  }
+
+  .pp-add-city-btn {
+    padding: 8px 12px;
+    font-size: 12.5px;
+  }
+
+  .pp-add-item-btn {
+    padding: 7px 11px;
+    font-size: 12px;
+    margin: 3px 8px;
+    width: calc(100% - 16px);
+  }
+
+  .pp-destination-header { padding: 12px 14px; gap: 10px; }
+  .pp-destination-flag {
+    width: 34px;
+    height: 34px;
+    font-size: 19px;
+    border-radius: 10px;
+  }
+  .pp-destination-name { font-size: 16px; margin-bottom: 2px; }
+  .pp-cities { padding: 8px 8px; gap: 10px; }
+
+  /* ── En-tête de ville : sur ~340px de large, chaque décoration compte.
+     La pastille épinglée et le badge "VILLE" sont redondants (le liseré indigo
+     et la typo suffisent à identifier une ville) : masqués, le nom respire et
+     les boutons d'action restent dans l'écran. Le nom peut enfin rétrécir
+     (min-width:0) et se tronque proprement au lieu de pousser la ligne. */
+  .pp-city-header { padding: 8px 10px; gap: 6px; }
+  .pp-city-pin { display: none; }
+  .pp-city-eyebrow { display: none; }
+  .pp-city-name {
+    font-size: 15px;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pp-city-count { font-size: 10px; padding: 2px 7px; }
+  .pp-city-actions { gap: 2px; }
+  .pp-icon-btn { padding: 4px; }
+
+  /* Excursions et trajets : indentation en pointillés réduite (24px cumulés
+     par niveau, c'est un luxe de grand écran), badge "Excursion" masqué —
+     l'ambre et l'icône carte le disent déjà. */
+  .pp-daytrips-list { margin-left: 6px; padding-left: 6px; }
+  .pp-trajets-section { margin-left: 6px; padding-left: 6px; }
+  .pp-daytrip-header { padding: 8px 10px; gap: 7px; }
+  .pp-daytrip-badge { display: none; }
+
+  /* Lignes de lieu (panneau villes) : resserrées. */
+  .pp-activities { padding: 4px 8px 4px; }
+  .pp-activity { padding: 8px 6px; gap: 6px; }
+  .pp-activity-del,
+  .pp-activity-duplicate { padding: 2px; }
+
+  /* Vue Jours : lignes d'activité denses — la pastille de couleur est déjà
+     portée par la barre de groupe et le chip horaire, le point est masqué. */
+  .pp-day-section-header { padding: 10px 12px; gap: 10px; }
+  .pp-day-num { width: 30px; height: 30px; font-size: 11px; border-radius: 9px; }
+  .pp-day-slots { padding: 7px 8px 0; }
+  .pp-day-slot-drop { padding: 5px 6px 6px; }
+  .pp-day-slot-hint { display: none; }
+  .pp-day-libre { padding: 8px 10px 10px; }
+  .pp-day-activity { padding: 8px 8px 8px 10px; gap: 6px; }
+  .pp-day-activity-view { gap: 6px; }
+  .pp-day-activity-time { width: 38px; font-size: 10.5px; }
+  .pp-day-activity-dot { display: none; }
+  .pp-chip { font-size: 10px; }
+
+  /* La ligne titre passe en multi-lignes : le nom garde toute la largeur du
+     contenu (fini le nom écrasé sur 4 lignes à côté du chip de groupe), les
+     chips durée/groupe se rangent en dessous. */
+  .pp-day-activity-title {
+    flex-wrap: wrap;
+    row-gap: 3px;
+  }
+  .pp-day-activity-name { min-width: 0; overflow-wrap: anywhere; }
+  .pp-day-activity-group-chip { margin-left: 0; }
+  .pp-day-activity-location {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  /* ── Formulaire d'édition d'un lieu : pleine largeur, champs empilés ──
+     (mêmes sélecteurs composés que les règles desktop pour gagner la cascade) */
+  .pp-activity--editing,
+  .pp-day-activity.pp-activity--editing,
+  .pp-day-activity.pp-activity--editing:hover {
+    margin: 8px 0;
+    padding: 12px 10px;
+  }
+
+  .pp-activity-datetime { flex-direction: column; gap: 12px; }
+  .pp-activity-datetime-field { min-width: 0; }
+
+  /* ── Page Groupes : liste remplacée par un combobox + le groupe sélectionné ──
+     Sur un petit écran, empiler une carte complète par groupe (swatch, nom,
+     compteur, actions, lieux dépliés) rendait la page interminable et les
+     groupes du bas invisibles sans long défilement. Un <select> natif liste
+     tous les groupes avec leur nombre de lieux (roue du système, aucune limite
+     de hauteur) ; seul le groupe choisi reste affiché en dessous, avec toutes
+     ses actions (renommer, couleur, planifier sur un jour, lieux du groupe). */
+  .pp-groups-mobile-select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 10px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 9px;
+    padding: 10px 10px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    color-scheme: dark;
+  }
+  .pp-groups-mobile-select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+  .pp-group-row-wrap--mobile-hidden { display: none; }
+
+  /* ── Carte : le bouton "agrandir en superposition" est masqué — la carte a
+     déjà sa page plein écran ici, et une superposition en position:fixed à
+     l'intérieur de la piste translatée prendrait le transform comme référentiel
+     (elle partait s'afficher sur la première page, semblant "planter"). */
+  .pp-map-overlay-toggle { display: none; }
+
+  /* Bandeau "Mes voyages" : cartes sur une ligne (titre seul, les dates sont
+     dans l'en-tête du voyage ouvert), hauteur totale ~2 fois moindre. */
+  .pp-sidebar { max-height: 108px; }
+  .pp-sidebar-title { font-size: 14px; }
+  .pp-sidebar-title-icon { width: 22px; height: 22px; }
+  .pp-sidebar-list { padding: 6px 10px 10px; }
+  .pp-trip-card { padding: 8px 12px; min-width: 130px; align-items: center; }
+  .pp-trip-card-dates,
+  .pp-trip-card-nodates,
+  .pp-trip-card-date { display: none; }
+  .pp-trip-card-title { margin-bottom: 0; }
+
+  /* Vue Jours : le bandeau d'explication du drag est du remplissage sur un
+     petit écran, et les lieux "Non planifiées" passent en tête — c'est le
+     réservoir depuis lequel on glisse vers les créneaux, il doit être sous la
+     main plutôt qu'après le dernier jour. */
+  .pp-day-view-hint { display: none; }
+  .pp-day-section--unplanned { order: -1; }
+
+  /* ── Écran de connexion (gate) : sur un petit écran la carte est plus haute
+     que la fenêtre — elle doit défiler, pas être coupée. margin:auto garde le
+     centrage vertical quand il reste de la place. */
+  .pp-gate {
+    align-items: stretch;
+    overflow-y: auto;
+    padding: 16px 12px 24px;
+  }
+  .pp-gate-card { margin: auto; }
 }
 
 /* ─── Adapter empty/loading au flex layout ─── */
@@ -4186,5 +4383,118 @@
   .pp-day-activity-resize-handle,
   .pp-day-activity-cut-btn {
     opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Export PDF — vue imprimable de l'itinéraire (bouton "PDF" de l'en-tête,
+   déclenche window.print()). Invisible à l'écran ; à l'impression, c'est au
+   contraire tout le reste de l'éditeur qui disparaît pour ne laisser que
+   cette vue, pensée pour le papier plutôt que pour suivre le style de l'app.
+   ═══════════════════════════════════════════════════════════════ */
+.pp-print-view { display: none; }
+
+@media print {
+  @page { margin: 16mm 14mm; }
+
+  /* On masque par display:none (pas juste visibility:hidden) le reste de l'appli :
+     avec visibility:hidden, ces éléments restent dans le flux et occupent leur
+     pleine hauteur réelle (carte, kanban…) une fois l'overflow:hidden des
+     ancêtres levé juste en dessous — ça produisait des pages blanches en trop et
+     un texte rétréci (le navigateur essayant de "faire tenir" ce contenu fantôme).
+     Avec display:none ils ne comptent plus du tout dans la mise en page. */
+  .pp-topbar, .pp-sidebar, .pp-pending-invites,
+  .pp-editor-header, .pp-editor-split, .pp-mobile-nav,
+  .pp-modal-overlay {
+    display: none !important;
+  }
+
+  /* .pp-print-view reste alors le seul contenu de .pp-editor : sans ça, ses
+     ancêtres (.pp-app en 100vh, .pp-layout, .pp-main, .pp-editor), tous en
+     overflow:hidden, couperaient tout itinéraire dépassant une hauteur d'écran. */
+  .pp-app, .pp-layout, .pp-main, .pp-editor {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .pp-print-view {
+    display: block;
+    color: #1e1b2e;
+    background: #fff;
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pp-print-header {
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 3px solid #6366f1;
+  }
+  .pp-print-title {
+    font-size: 27px; font-weight: 800; margin: 0 0 4px;
+    color: #4338ca;
+  }
+  .pp-print-dates {
+    font-size: 14px; color: #6b7280; margin: 0;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .pp-print-notes {
+    font-size: 14px; color: #4b5563;
+    background: #f5f3ff;
+    padding: 10px 14px; margin: 0 0 20px;
+    border-radius: 8px;
+    border-left: 3px solid #a78bfa;
+  }
+
+  .pp-print-day { margin-bottom: 20px; break-inside: avoid; }
+  .pp-print-day-title {
+    font-size: 16px; font-weight: 700; text-transform: capitalize;
+    margin: 0 0 9px;
+    padding: 6px 14px;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .pp-print-unplanned { margin-top: 28px; }
+  .pp-print-unplanned .pp-print-day-title { background: #f3f4f6; color: #4b5563; }
+  .pp-print-unplanned-dest { margin-bottom: 10px; }
+  .pp-print-unplanned-country { font-size: 14px; font-weight: 700; margin: 10px 0 6px; color: #374151; }
+
+  .pp-print-activity {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: #fafafa;
+    border-left: 3px solid var(--cat-color, #6366f1);
+    border-radius: 0 6px 6px 0;
+    break-inside: avoid;
+  }
+  .pp-print-activity-icon {
+    flex: 0 0 auto;
+    font-size: 17px;
+    line-height: 1;
+    margin-top: 1px;
+  }
+  .pp-print-activity-body { flex: 1; min-width: 0; }
+  .pp-print-activity-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  }
+  .pp-print-activity-name { font-size: 14.5px; font-weight: 600; }
+  .pp-print-activity-time {
+    flex: 0 0 auto; font-size: 13px; font-weight: 700;
+    color: #4338ca; font-variant-numeric: tabular-nums;
+  }
+  .pp-print-activity-meta {
+    display: flex; gap: 10px; margin-top: 2px;
+  }
+  .pp-print-activity-city, .pp-print-activity-duration {
+    color: #6b7280; font-size: 12.5px;
+  }
+  .pp-print-activity-note {
+    font-size: 13px; color: #4b5563; margin: 4px 0 0;
+    font-style: italic;
   }
 }

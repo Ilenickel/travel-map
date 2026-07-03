@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useAuth } from '../../context/AuthContext';
 import TripEditorHeader from './TripEditorHeader';
@@ -8,7 +8,9 @@ import DayView from './DayView';
 import GroupManager from './GroupManager';
 import MapPanel from './MapPanel';
 import TripShareModal from './TripShareModal';
+import TripPrintView from './TripPrintView';
 import { getHoveredActivity } from '../../lib/hoverTracker';
+import { downloadTripIcs } from '../../lib/exportTrip';
 
 export default function TripEditor({
   tripData, tripId,
@@ -28,25 +30,94 @@ export default function TripEditor({
   // c'est qu'il en a besoin, autant lui laisser la possibilité de la voir en grand.
   const [mapOverlay, setMapOverlay] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
-  // Mobile uniquement (voir @media max-width:768px) : l'écran est coupé en deux
-  // volets superposés — en haut Villes OU Groupes (au choix), en bas la vue Jours,
-  // toujours visible. Les deux volets restant affichés en même temps, le
-  // glisser-déposer d'un lieu vers un créneau continue de fonctionner au toucher.
-  const [mobilePane, setMobilePane] = useState('villes');
+  // ─── Pager mobile (voir @media max-width:768px) ─────────────────────────────
+  // Sur téléphone, les panneaux deviennent des pages plein écran que l'on fait
+  // défiler horizontalement au doigt (ou via la barre de navigation basse),
+  // comme les écrans d'une appli : [Villes] [Groupes] [Jours] [Carte, si
+  // ouverte]. La piste (.pp-pager-track) est translatée en CSS via la variable
+  // --pp-page ; sur ordinateur elle est en display:contents et tout est inerte.
+  const [page, setPage] = useState(0);
+  const splitRef = useRef(null);
+  // true pendant un drag @hello-pangea/dnd : le geste appartient alors au drag
+  // d'une carte, il ne doit jamais déclencher un changement de page en plus.
+  const rbdDraggingRef = useRef(false);
+
+  const pagerActive = () => window.matchMedia('(max-width: 768px)').matches;
+  const showMapPage = mapOpen && !mapOverlay;
+  const pageCount = showMapPage ? 4 : 3;
+  const pageCountRef = useRef(pageCount);
+  pageCountRef.current = pageCount;
+
+  // Si la page carte disparaît (carte fermée ou passée en superposition) alors
+  // qu'on était dessus, on retombe sur la dernière page existante (Jours).
+  useEffect(() => {
+    if (page > pageCount - 1) setPage(pageCount - 1);
+  }, [page, pageCount]);
+
+  // Balayage horizontal → page précédente/suivante. Détection d'axe sur les
+  // ~10 premiers pixels : un geste vertical reste un scroll natif de la page
+  // courante (touch-action: pan-y), un geste horizontal change de page.
+  useEffect(() => {
+    const el = splitRef.current;
+    if (!el) return;
+    let startX = 0, startY = 0, tracking = false, horizontal = null;
+
+    const onStart = (e) => {
+      if (!pagerActive() || rbdDraggingRef.current) return;
+      // Un geste commencé sur la carte Leaflet est un panoramique de la carte,
+      // dans un champ texte une sélection : jamais un changement de page.
+      if (e.target.closest?.('.pp-map-panel, input, textarea, [contenteditable]')) return;
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY;
+      horizontal = null; tracking = true;
+    };
+    const onMove = (e) => {
+      if (!tracking) return;
+      // Un drag de carte @hello-pangea/dnd vient de démarrer (appui long) : le
+      // geste lui appartient définitivement, on abandonne ce suivi-ci.
+      if (rbdDraggingRef.current) { tracking = false; return; }
+      const t = e.touches[0];
+      const dx = t.clientX - startX, dy = t.clientY - startY;
+      if (horizontal === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+        horizontal = Math.abs(dx) > Math.abs(dy);
+      }
+    };
+    const onEnd = (e) => {
+      if (!tracking) return;
+      tracking = false;
+      if (rbdDraggingRef.current || !horizontal) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) < 55) return; // trop court pour être un vrai balayage
+      setPage(p => Math.max(0, Math.min(pageCountRef.current - 1, dx < 0 ? p + 1 : p - 1)));
+    };
+
+    el.addEventListener('touchstart', onStart, { passive: true });
+    el.addEventListener('touchmove', onMove, { passive: true });
+    el.addEventListener('touchend', onEnd, { passive: true });
+    return () => {
+      el.removeEventListener('touchstart', onStart);
+      el.removeEventListener('touchmove', onMove);
+      el.removeEventListener('touchend', onEnd);
+    };
+  }, []);
 
   const closeMap = () => { setMapOpen(false); setMapOverlay(false); };
-  // En dessous de 900px, le panneau "carte à côté" est masqué en CSS (et le bouton
-  // pour passer en superposition est dedans) : ouvrir la carte sans basculer en
-  // superposition ne montrerait donc rien du tout. Même seuil que le media query.
+  // Entre 769 et 900px, le panneau "carte à côté" est masqué en CSS (et le bouton
+  // pour passer en superposition est dedans) : la superposition est donc le seul
+  // mode carte visible à ces largeurs. Sous 768px en revanche, la carte a sa
+  // propre page dans le pager — on y amène directement l'utilisateur.
   const sideMapHidden = () => window.matchMedia('(max-width: 900px)').matches;
   const openMap = () => {
     setMapOpen(true);
-    if (sideMapHidden()) setMapOverlay(true);
+    if (pagerActive()) setPage(3);
+    else if (sideMapHidden()) setMapOverlay(true);
   };
-  // Réduire la superposition : quand la carte "à côté" n'existe pas, réduire
-  // laisserait la carte ouverte mais invisible — on la ferme donc complètement.
+  // Réduire la superposition : sous 768px on retombe sur la page carte du pager ;
+  // entre 769 et 900px la carte "à côté" n'existe pas, réduire la laisserait
+  // ouverte mais invisible — on la ferme complètement.
   const collapseOverlay = () => {
-    if (sideMapHidden()) closeMap();
+    if (pagerActive()) setMapOverlay(false);
+    else if (sideMapHidden()) closeMap();
     else setMapOverlay(false);
   };
 
@@ -206,29 +277,18 @@ export default function TripEditor({
         onToggleMap={() => (mapOpen ? closeMap() : openMap())}
         shareOpen={shareOpen}
         onToggleShare={() => setShareOpen(s => !s)}
+        onExportPdf={() => window.print()}
+        onExportIcal={() => downloadTripIcs({ trip, cities, activities })}
       />
 
-      {/* Sélecteur du volet haut, mobile uniquement (invisible sur ordinateur, cf.
-          CSS). Le volet bas (Jours) est toujours affiché, lui. */}
-      <div className="pp-mobile-tabbar">
-        <button
-          type="button"
-          className={`pp-mobile-tab${mobilePane === 'villes' ? ' active' : ''}`}
-          onClick={() => setMobilePane('villes')}
-        >
-          🌍 Villes
-        </button>
-        <button
-          type="button"
-          className={`pp-mobile-tab${mobilePane === 'groupes' ? ' active' : ''}`}
-          onClick={() => setMobilePane('groupes')}
-        >
-          🗂️ Groupes
-        </button>
-      </div>
-
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="pp-editor-split" data-mobile-pane={mobilePane}>
+      <DragDropContext
+        onDragStart={() => { rbdDraggingRef.current = true; }}
+        onDragEnd={(result) => { rbdDraggingRef.current = false; handleDragEnd(result); }}
+      >
+        <div className="pp-editor-split" ref={splitRef}>
+          {/* Piste du pager mobile : translatée d'une page à l'autre au balayage.
+              Sur ordinateur, display:contents la rend transparente pour le layout. */}
+          <div className="pp-pager-track" style={{ '--pp-page': page }}>
           {/* ── Panneau villes ── */}
           <div className="pp-city-panel">
             <div className="pp-city-panel-dests">
@@ -342,8 +402,36 @@ export default function TripEditor({
               </div>
             </>
           )}
+          </div>{/* /pp-pager-track */}
         </div>
       </DragDropContext>
+
+      {/* Barre de navigation basse, mobile uniquement (masquée sur ordinateur) :
+          les mêmes pages que le balayage, façon appli. L'onglet Carte ouvre la
+          carte à la demande — inutile de passer par l'en-tête déplié. */}
+      <nav className="pp-mobile-nav" aria-label="Navigation entre les volets">
+        {[
+          { icon: '🌍', label: 'Villes' },
+          { icon: '🗂️', label: 'Groupes' },
+          { icon: '📅', label: 'Jours' },
+          { icon: '🗺️', label: 'Carte' },
+        ].map(({ icon, label }, i) => (
+          <button
+            key={label}
+            type="button"
+            className={`pp-mobile-nav-btn${page === i ? ' active' : ''}`}
+            onClick={() => {
+              if (i === 3) { openMap(); return; }
+              setPage(i);
+            }}
+            aria-label={label}
+            aria-current={page === i}
+          >
+            <span className="pp-mobile-nav-icon" aria-hidden="true">{icon}</span>
+            {label}
+          </button>
+        ))}
+      </nav>
 
       {shareOpen && (
         <TripShareModal
@@ -354,6 +442,9 @@ export default function TripEditor({
           onLeaveTrip={onLeaveTrip}
         />
       )}
+
+      {/* Invisible à l'écran, révélé uniquement à l'impression (voir .pp-print-view) */}
+      <TripPrintView trip={trip} destinations={destinations} cities={cities} activities={activities} />
     </div>
   );
 }

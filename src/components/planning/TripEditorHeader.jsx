@@ -4,6 +4,7 @@ import { tripDurationDays } from '../../lib/planningUtils';
 export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities,
   onUpdate, mapOpen, onToggleMap, onToggleShare,
+  onExportPdf, onExportIcal,
 }) {
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
@@ -41,6 +42,7 @@ export default function TripEditorHeader({
   // à la somme des compteurs par ville.
   const totalPlaces = activities.filter(a => a.category !== 'transport').length;
   const totalCountries = destinations.length;
+  const plannedCount = activities.filter(a => a.visit_date).length;
 
   return (
     <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>
@@ -97,6 +99,29 @@ export default function TripEditorHeader({
                 <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
               </svg>
               Carte
+            </button>
+            <button
+              className="pp-toolbar-btn"
+              onClick={onExportPdf}
+              title="Exporter l'itinéraire en PDF"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+              </svg>
+              PDF
+            </button>
+            <button
+              className="pp-toolbar-btn"
+              onClick={onExportIcal}
+              disabled={plannedCount === 0}
+              title={plannedCount === 0
+                ? 'Planifiez au moins un lieu sur une date pour pouvoir l\'exporter vers votre agenda'
+                : 'Exporter les lieux planifiés vers votre agenda (fichier .ics, compatible Google Agenda et autres)'}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+              </svg>
+              Agenda
             </button>
           </div>
           <button
