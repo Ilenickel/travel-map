@@ -26,15 +26,28 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
   const [notes, setNotes] = useState(initial?.notes || '');
   const [dateError, setDateError] = useState(false);
   // En création, le nom passe par la recherche géolocalisée (pour récupérer
-  // adresse et coordonnées d'un coup) ; en édition, un simple champ texte
-  // (re-chercher écraserait des coordonnées déjà bonnes sans raison).
+  // adresse et coordonnées d'un coup). En édition, un simple champ texte pour
+  // ne pas imposer de re-rechercher pour une simple faute de frappe — mais si
+  // l'adresse est modifiée à la main, les coordonnées d'origine ne
+  // correspondent plus forcément : `coordsStale` le retient, pour ne jamais
+  // enregistrer un marqueur qui pointerait vers l'ancienne adresse. Un lien
+  // permet de rouvrir la recherche à la demande pour les récupérer à nouveau.
   const isCreate = !initial;
+  const [coordsStale, setCoordsStale] = useState(false);
+  const [showResearch, setShowResearch] = useState(false);
 
   const handlePlacePick = (place) => {
     setName(place.name);
     setAddress(place.address || '');
     setPlaceLat(place.lat ?? null);
     setPlaceLng(place.lng ?? null);
+    setCoordsStale(false);
+    setShowResearch(false);
+  };
+
+  const handleAddressChange = (val) => {
+    setAddress(val);
+    if (!isCreate && placeLat != null) setCoordsStale(true);
   };
 
   const save = () => {
@@ -46,8 +59,10 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
     onSave({
       name: trimmed,
       address: address.trim() || null,
-      place_lat: placeLat,
-      place_lng: placeLng,
+      // Adresse modifiée à la main sans repasser par la recherche : mieux vaut
+      // ne plus avoir de marqueur du tout qu'un marqueur à la mauvaise adresse.
+      place_lat: coordsStale ? null : placeLat,
+      place_lng: coordsStale ? null : placeLng,
       check_in: checkIn || null,
       check_out: checkOut || null,
       price: parsedPrice,
@@ -58,13 +73,13 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
 
   return (
     <div className="pp-lodging-form">
-      {isCreate ? (
+      {isCreate || showResearch ? (
         <PlaceSearchInput
           cityHint={cityName}
           onSelect={handlePlacePick}
           onManualAdd={n => setName(n)}
           placeholder={`Chercher l'hôtel/logement à ${cityName}… (Entrée pour saisir tel quel)`}
-          autoFocus
+          autoFocus={showResearch}
         />
       ) : null}
       <input
@@ -77,9 +92,23 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
       <input
         className="pp-lodging-addr-input"
         value={address}
-        onChange={e => setAddress(e.target.value)}
+        onChange={e => handleAddressChange(e.target.value)}
         placeholder="Adresse (remplie automatiquement via la recherche)"
       />
+      {!isCreate && !showResearch && (
+        coordsStale ? (
+          <p className="pp-lodging-coords-warning">
+            ⚠️ Adresse modifiée : le marqueur sur la carte sera retiré (les coordonnées ne correspondent plus).{' '}
+            <button type="button" className="pp-lodging-research-link" onClick={() => setShowResearch(true)}>
+              Rechercher à nouveau pour le repositionner
+            </button>
+          </p>
+        ) : (
+          <button type="button" className="pp-lodging-research-link" onClick={() => setShowResearch(true)}>
+            🔍 Rechercher à nouveau (pour changer la position sur la carte)
+          </button>
+        )
+      )}
       <div className="pp-lodging-dates-row">
         <div className="pp-lodging-field">
           <label>Arrivée</label>

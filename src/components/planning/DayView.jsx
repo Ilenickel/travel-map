@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight } from '../../lib/planningUtils';
+import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
@@ -481,9 +481,7 @@ function DaySection({
         <div className="pp-day-lodging-banner">
           {nightLodgings.map(l => {
             const lCity = cities?.find(c => c.id === l.city_id);
-            const next = new Date(day + 'T12:00:00');
-            next.setDate(next.getDate() + 1);
-            const isLastNight = next.toISOString().slice(0, 10) === l.check_out;
+            const isLastNight = addDaysToDateStr(day, 1) === l.check_out;
             return (
               <span key={l.id} className="pp-day-lodging-item" title={l.address || undefined}>
                 <span className="pp-day-lodging-icon">🏨</span>

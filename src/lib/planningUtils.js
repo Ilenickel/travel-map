@@ -108,6 +108,18 @@ export function timeToMinutes(t) {
   return h * 60 + m;
 }
 
+// "2026-07-03" + n jours -> "2026-07-04", calculé en local (pas via
+// toISOString, qui repasse par UTC et rend le mauvais jour pour les fuseaux
+// au-delà de UTC+12 — même précaution que todayLocalStr ci-dessus).
+export function addDaysToDateStr(dateStr, n) {
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setDate(d.getDate() + n);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 // Où en est le voyage par rapport à aujourd'hui — messages d'état partagés entre
 // le mode Jour J à l'écran et sa version imprimée, pour ne jamais afficher une
 // réponse différente ("pas commencé" à l'écran, silence à l'impression) selon

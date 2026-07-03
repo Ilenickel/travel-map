@@ -4854,6 +4854,29 @@
   color: var(--red, #ef4444);
 }
 
+.pp-lodging-research-link {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #34d399;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.pp-lodging-research-link:hover { color: #6ee7b7; }
+
+.pp-lodging-coords-warning {
+  margin: 0;
+  font-size: 11.5px;
+  color: #fbbf24;
+  line-height: 1.5;
+}
+.pp-lodging-coords-warning .pp-lodging-research-link { color: #fbbf24; }
+.pp-lodging-coords-warning .pp-lodging-research-link:hover { color: #fcd34d; }
+
 /* ── Bandeau "Nuit à ..." dans la vue par jour ── */
 .pp-day-lodging-banner {
   display: flex;

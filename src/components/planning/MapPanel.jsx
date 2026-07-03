@@ -128,10 +128,10 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
       const city = cities?.find(c => c.id === act.city_id);
       const popupContent = `
         <div class="pp-map-popup">
-          <div class="pp-map-popup-name">${act.name}</div>
-          ${city ? `<div class="pp-map-popup-city">${city.name}</div>` : ''}
-          ${group ? `<div class="pp-map-popup-group" style="color:${group.color}">● ${group.name}</div>` : ''}
-          ${act.place_address ? `<div class="pp-map-popup-addr">${act.place_address}</div>` : ''}
+          <div class="pp-map-popup-name">${escapeHtml(act.name)}</div>
+          ${city ? `<div class="pp-map-popup-city">${escapeHtml(city.name)}</div>` : ''}
+          ${group ? `<div class="pp-map-popup-group" style="color:${group.color}">● ${escapeHtml(group.name)}</div>` : ''}
+          ${act.place_address ? `<div class="pp-map-popup-addr">${escapeHtml(act.place_address)}</div>` : ''}
         </div>`;
 
       const marker = L.marker([act.place_lat, act.place_lng], { icon: divIcon })
