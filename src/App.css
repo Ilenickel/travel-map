@@ -2482,6 +2482,14 @@ html, body, #root { height: 100%; }
 
 @media (max-width: 768px) {
 
+  /* 100vh inclut la zone masquée par la barre d'adresse des navigateurs mobiles :
+     le bas de la carte serait coupé d'autant. 100dvh suit la hauteur réellement
+     visible (les navigateurs trop vieux pour dvh gardent la ligne 100vh). */
+  .app {
+    height: 100vh;
+    height: 100dvh;
+  }
+
   /* â”€â”€ Topbar mobile : search (max 50%) + fav + liste Ã  droite â”€â”€ */
   .topbar { padding: 0 10px; height: 52px; gap: 6px; }
   .topbar-brand { display: none; }
@@ -5909,4 +5917,13 @@ html, body, #root { height: 100%; }
   font-size: 0.76rem;
   color: rgba(255,255,255,0.5);
   font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ÉCRANS TACTILES — le :hover n'existe pas au toucher : les actions
+   révélées au survol doivent rester visibles en permanence.
+   (hover: none) exclut tout appareil avec souris : aucun effet PC.
+   ═══════════════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  .notif-delete-btn { opacity: 1; }
 }

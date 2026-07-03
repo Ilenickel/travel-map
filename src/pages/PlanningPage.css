@@ -1387,13 +1387,40 @@
 
   .pp-editor { padding: 16px 16px 40px; }
 
-  .pp-trip-dates-card { flex-direction: column; align-items: flex-start; }
+  /* Dates compactes sur mobile : Départ et Retour côte à côte (chacun la moitié
+     de la largeur), au lieu d'un empilement vertical qui mangeait tout l'écran. */
+  .pp-trip-dates-card {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .pp-date-group {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pp-date-input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .pp-date-arrow { display: none; }
+
+  .pp-duration-badge {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 
   .pp-mode-toggle { margin-left: 0; }
 
   .pp-topbar {
     padding: 0 16px;
     gap: 10px;
+    height: 52px;
   }
 
   .pp-brand-name { display: none; }
@@ -2368,6 +2395,12 @@
   min-height: 0;
 }
 
+/* Sélecteur de volet mobile (Villes/Groupes) et chevron de repli de l'en-tête :
+   masqués sur ordinateur, cf. @media (max-width: 768px) plus bas pour leur mise
+   en forme et leur activation. */
+.pp-mobile-tabbar { display: none; }
+.pp-header-collapse-btn { display: none; }
+
 /* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte */
 .pp-city-panel {
   width: 30%;
@@ -3222,14 +3255,195 @@
 @media (max-width: 900px) {
   .pp-city-panel { width: 36%; min-width: 220px; }
   .pp-map-panel { display: none; }
+  /* Le panneau "carte à côté" est masqué ci-dessus : la superposition plein écran
+     devient le seul mode carte — TripEditor l'active d'office (matchMedia 900px)
+     quand on ouvre la carte à ces largeurs. */
+  .pp-map-panel--overlay { display: flex; }
 }
 
 @media (max-width: 768px) {
-  .pp-editor-split { flex-direction: column; }
-  .pp-city-panel { width: 100%; max-width: none; border-right: none; border-bottom: 1px solid var(--border); max-height: 340px; }
-  .pp-content-panel { flex: 1; padding: 10px 12px 30px; }
+  /* 100vh inclut la zone masquée par la barre d'adresse des navigateurs mobiles :
+     le bas de l'app serait coupé d'autant. 100dvh suit la hauteur réellement
+     visible (les navigateurs trop vieux pour dvh gardent la ligne 100vh). */
+  .pp-app {
+    height: 100vh;
+    height: 100dvh;
+  }
+
   .pp-editor { padding: 0; }
-  .pp-editor-header { border-radius: 0; border-left: none; border-right: none; }
+
+  /* En-tête compact : il partage l'écran avec les onglets et le panneau actif,
+     chaque pixel de hauteur compte. */
+  .pp-editor-header {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 10px 12px;
+  }
+
+  .pp-trip-title-row {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .pp-trip-title { font-size: 19px; }
+
+  .pp-header-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  /* Stats sur une seule ligne qui défile horizontalement plutôt que 2-3 lignes
+     de pilules empilées. */
+  .pp-trip-stats {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-top: 10px;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .pp-trip-stats::-webkit-scrollbar { display: none; }
+  .pp-stat-pill { flex-shrink: 0; white-space: nowrap; }
+
+  /* Liste des voyages (bandeau horizontal du haut) : plus basse que les 220px
+     hérités du mode tablette, mais assez haute pour qu'une carte voyage complète
+     (titre + dates, paddings compactés ci-dessous) tienne sans être rognée. */
+  .pp-sidebar { max-height: 150px; }
+  .pp-sidebar-header { padding: 10px 12px 8px; }
+  .pp-trip-card { padding: 10px 12px; }
+
+  /* Le menu "⋯" d'une carte voyage s'ouvre dans le bandeau horizontal, qui rogne
+     tout ce qui dépasse (overflow-y: hidden obligatoire pour son défilement) : en
+     position fixed avec offsets auto, il garde sa position naturelle (sous le
+     bouton) mais échappe au rognage du conteneur. Marge négative pour le déporter
+     à gauche du bouton, comme le faisait right: 0 en absolu. */
+  .pp-trip-card-dropdown {
+    position: fixed;
+    top: auto;
+    right: auto;
+    margin-top: 4px;
+    margin-left: -148px;
+  }
+
+  /* ── En-tête repliable ──
+     Replié (par défaut), l'en-tête se réduit à la ligne du titre : dates, stats,
+     actions et notes n'apparaissent qu'à la demande, via le chevron. C'est ce qui
+     rend l'écran utilisable — dépliés en permanence, ils mangeaient toute la
+     hauteur du téléphone. */
+  .pp-header-collapse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+
+  .pp-editor-header--collapsed .pp-trip-dates-card,
+  .pp-editor-header--collapsed .pp-trip-stats,
+  .pp-editor-header--collapsed .pp-trip-notes,
+  .pp-editor-header--collapsed .pp-header-actions {
+    display: none;
+  }
+
+  .pp-editor-header--collapsed .pp-trip-title-row { margin-bottom: 0; }
+
+  /* Déplié, les actions passent sous la ligne titre+chevron (le chevron garde sa
+     place en bout de ligne grâce au wrap + width:100% des actions, déjà posés). */
+
+  /* ── Deux volets superposés ──
+     En haut : Villes OU Groupes (sélecteur ci-dessous). En bas : la vue Jours,
+     toujours visible. Les deux volets affichés ensemble permettent le
+     glisser-déposer d'un lieu vers un créneau, qui est le cœur de la page —
+     un système d'onglets plein écran le rendait impossible. */
+  .pp-mobile-tabbar {
+    display: flex;
+    gap: 6px;
+    padding: 6px 10px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .pp-mobile-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 6px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .pp-mobile-tab.active {
+    background: var(--accent-subtle);
+    border-color: rgba(99,102,241,0.3);
+    color: var(--accent2);
+  }
+
+  .pp-editor-split {
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pp-city-panel,
+  .pp-groups-panel,
+  .pp-content-panel {
+    /* !important : les règles de répartition desktop en :has(.pp-map-panel) /
+       :not(:has(...)) plus haut sont plus spécifiques que ces sélecteurs simples —
+       sans lui, elles regagneraient la main (ex : Groupes réduit à 24% de large)
+       selon que la carte est ouverte ou non. */
+    width: 100% !important;
+    max-width: none;
+    min-width: 0;
+    max-height: none;
+    min-height: 0;
+    border: none;
+  }
+
+  /* Volet haut : hauteur fixe (42% de l'espace sous l'en-tête), scroll interne. */
+  .pp-city-panel,
+  .pp-groups-panel {
+    display: none;
+    flex: 0 0 42%;
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .pp-editor-split[data-mobile-pane="villes"] .pp-city-panel { display: flex; }
+  .pp-editor-split[data-mobile-pane="groupes"] .pp-groups-panel { display: flex; }
+
+  /* Volet bas : la vue Jours prend tout le reste, toujours affichée. */
+  .pp-content-panel {
+    display: block;
+    flex: 1 1 0;
+    padding: 10px 12px 30px;
+  }
+
+  .pp-map-panel { display: none; }
+
+  /* La carte "à côté" n'a pas de place sur téléphone, mais la version en
+     superposition plein écran reste utilisable : c'est même le seul mode carte
+     pertinent sur mobile. */
+  .pp-map-panel--overlay {
+    display: flex;
+    inset: 10px;
+  }
 }
 
 /* ─── Adapter empty/loading au flex layout ─── */
@@ -3952,3 +4166,25 @@
 }
 .pp-day-activity--continuation:hover .pp-day-activity-cut-btn { opacity: 1; }
 .pp-day-activity-cut-btn:hover { color: var(--red); background: rgba(239,68,68,0.12); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ÉCRANS TACTILES — le :hover n'existe pas au toucher : toutes les
+   actions révélées au survol doivent être visibles en permanence,
+   sinon elles sont simplement inaccessibles (supprimer/dupliquer un
+   lieu, actions de ville/groupe, menu voyage, poignée d'étirement…).
+   (hover: none) exclut tout appareil avec souris : aucun effet sur PC,
+   y compris les portables à écran tactile (qui gardent hover: hover).
+   ═══════════════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  .pp-edit-icon,
+  .pp-city-actions,
+  .pp-activity-del,
+  .pp-activity-duplicate,
+  .pp-trip-card-menu-btn,
+  .pp-trip-card-accent,
+  .pp-group-actions,
+  .pp-day-activity-resize-handle,
+  .pp-day-activity-cut-btn {
+    opacity: 1;
+  }
+}

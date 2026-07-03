@@ -7,6 +7,10 @@ export default function TripEditorHeader({
 }) {
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
+  // Mobile uniquement (le bouton et les règles CSS associées n'existent que sous
+  // 768px) : l'en-tête complet (dates, stats, actions, notes) mangeait tout
+  // l'écran d'un téléphone — replié par défaut, il se réduit à la ligne du titre.
+  const [headerOpen, setHeaderOpen] = useState(false);
   const [showNotes, setShowNotes] = useState(!!(trip?.notes));
   const [notes, setNotes] = useState(trip?.notes || '');
   const [notesTimer, setNotesTimer] = useState(null);
@@ -39,7 +43,7 @@ export default function TripEditorHeader({
   const totalCountries = destinations.length;
 
   return (
-    <div className="pp-editor-header">
+    <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>
       <div className="pp-trip-title-row">
         {editingTitle ? (
           <input
@@ -61,6 +65,17 @@ export default function TripEditorHeader({
             </svg>
           </h2>
         )}
+        <button
+          type="button"
+          className="pp-header-collapse-btn"
+          onClick={() => setHeaderOpen(o => !o)}
+          title={headerOpen ? 'Masquer les détails du voyage' : 'Afficher les détails du voyage (dates, partage…)'}
+          aria-expanded={headerOpen}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ transform: headerOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+            <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+          </svg>
+        </button>
         <div className="pp-header-actions">
           <div className="pp-toolbar-group">
             <button

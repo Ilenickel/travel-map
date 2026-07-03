@@ -28,8 +28,27 @@ export default function TripEditor({
   // c'est qu'il en a besoin, autant lui laisser la possibilité de la voir en grand.
   const [mapOverlay, setMapOverlay] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  // Mobile uniquement (voir @media max-width:768px) : l'écran est coupé en deux
+  // volets superposés — en haut Villes OU Groupes (au choix), en bas la vue Jours,
+  // toujours visible. Les deux volets restant affichés en même temps, le
+  // glisser-déposer d'un lieu vers un créneau continue de fonctionner au toucher.
+  const [mobilePane, setMobilePane] = useState('villes');
 
   const closeMap = () => { setMapOpen(false); setMapOverlay(false); };
+  // En dessous de 900px, le panneau "carte à côté" est masqué en CSS (et le bouton
+  // pour passer en superposition est dedans) : ouvrir la carte sans basculer en
+  // superposition ne montrerait donc rien du tout. Même seuil que le media query.
+  const sideMapHidden = () => window.matchMedia('(max-width: 900px)').matches;
+  const openMap = () => {
+    setMapOpen(true);
+    if (sideMapHidden()) setMapOverlay(true);
+  };
+  // Réduire la superposition : quand la carte "à côté" n'existe pas, réduire
+  // laisserait la carte ouverte mais invisible — on la ferme donc complètement.
+  const collapseOverlay = () => {
+    if (sideMapHidden()) closeMap();
+    else setMapOverlay(false);
+  };
 
   const sortedDests = [...destinations].sort((a, b) => a.position - b.position);
   const alreadyAdded = destinations.map(d => d.country_code);
@@ -67,7 +86,7 @@ export default function TripEditor({
   // Échap réduit la carte en superposition (sans la fermer complètement)
   useEffect(() => {
     if (!mapOverlay) return;
-    const handleEscape = (e) => { if (e.key === 'Escape') setMapOverlay(false); };
+    const handleEscape = (e) => { if (e.key === 'Escape') collapseOverlay(); };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [mapOverlay]);
@@ -184,13 +203,32 @@ export default function TripEditor({
         activities={activities}
         onUpdate={onUpdateTrip}
         mapOpen={mapOpen}
-        onToggleMap={() => (mapOpen ? closeMap() : setMapOpen(true))}
+        onToggleMap={() => (mapOpen ? closeMap() : openMap())}
         shareOpen={shareOpen}
         onToggleShare={() => setShareOpen(s => !s)}
       />
 
+      {/* Sélecteur du volet haut, mobile uniquement (invisible sur ordinateur, cf.
+          CSS). Le volet bas (Jours) est toujours affiché, lui. */}
+      <div className="pp-mobile-tabbar">
+        <button
+          type="button"
+          className={`pp-mobile-tab${mobilePane === 'villes' ? ' active' : ''}`}
+          onClick={() => setMobilePane('villes')}
+        >
+          🌍 Villes
+        </button>
+        <button
+          type="button"
+          className={`pp-mobile-tab${mobilePane === 'groupes' ? ' active' : ''}`}
+          onClick={() => setMobilePane('groupes')}
+        >
+          🗂️ Groupes
+        </button>
+      </div>
+
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="pp-editor-split">
+        <div className="pp-editor-split" data-mobile-pane={mobilePane}>
           {/* ── Panneau villes ── */}
           <div className="pp-city-panel">
             <div className="pp-city-panel-dests">
@@ -281,13 +319,13 @@ export default function TripEditor({
           {mapOpen && (
             <>
               {mapOverlay && (
-                <div className="pp-map-overlay-backdrop" onClick={() => setMapOverlay(false)} />
+                <div className="pp-map-overlay-backdrop" onClick={collapseOverlay} />
               )}
               <div className={`pp-map-panel${mapOverlay ? ' pp-map-panel--overlay' : ''}`}>
                 <button
                   type="button"
                   className="pp-map-overlay-toggle"
-                  onClick={() => setMapOverlay(o => !o)}
+                  onClick={() => (mapOverlay ? collapseOverlay() : setMapOverlay(true))}
                   title={mapOverlay ? 'Réduire la carte' : 'Agrandir la carte en superposition'}
                 >
                   {mapOverlay ? (
