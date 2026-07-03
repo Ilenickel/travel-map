@@ -2653,7 +2653,7 @@ html, body, #root { height: 100%; }
   /* Onglets */
   .tab-btn { padding: 7px 10px; font-size: 12px; }
   .panel-tabs-wrapper::after {
-    content: 'â€º';
+    content: '›';
     position: absolute;
     right: 0; top: 0; bottom: 0; width: 36px;
     display: flex; align-items: center; justify-content: center;
