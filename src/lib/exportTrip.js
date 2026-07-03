@@ -87,7 +87,10 @@ function buildEvent(act, cityName) {
 }
 
 export function buildTripIcs({ trip, cities, activities }) {
-  const planned = activities.filter(a => a.visit_date);
+  // Un agenda sert à préparer ce qu'il reste à faire : une activité déjà cochée
+  // "faite" n'a plus sa place dans l'export, plutôt que d'y réapparaître comme
+  // une tâche encore à faire.
+  const planned = activities.filter(a => a.visit_date && !a.is_done);
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
 

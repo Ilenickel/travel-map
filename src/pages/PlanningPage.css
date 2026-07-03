@@ -2142,6 +2142,51 @@
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 3px 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pp-day-count--complete {
+  color: #10b981;
+  background: rgba(16,185,129,0.12);
+  border-color: rgba(16,185,129,0.3);
+}
+
+/* ─── Checklist (case à cocher "fait") ─── */
+.pp-activity-check {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-light);
+  background: transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  padding: 0;
+}
+.pp-activity-check:hover { border-color: var(--accent); }
+.pp-activity-check--done {
+  background: #10b981;
+  border-color: #10b981;
+}
+.pp-activity-check--done:hover { background: #0d9c6f; border-color: #0d9c6f; }
+
+.pp-activity--done .pp-activity-name,
+.pp-day-activity--done .pp-day-activity-name {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.pp-activity--done .pp-activity-desc,
+.pp-day-activity--done .pp-day-activity-note {
+  opacity: 0.6;
+}
+.pp-activity--done,
+.pp-day-activity--done {
+  opacity: 0.65;
 }
 
 .pp-day-activities {
@@ -2489,6 +2534,12 @@
 .pp-content-panel::-webkit-scrollbar { width: 4px; }
 .pp-content-panel::-webkit-scrollbar-track { background: transparent; }
 .pp-content-panel::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+
+/* Page "Jour J" du pager mobile (entre Jours et Carte) — sur ordinateur elle
+   n'existe pas : le bouton d'en-tête utilise à la place le mode plein écran
+   séparé (voir TripEditor, dayModeActive), donc cette page reste toujours
+   masquée ici. Redéfinie en page à part entière sous @media (max-width:768px). */
+.pp-daymode-page { display: none; }
 
 /* Panneau carte */
 .pp-map-panel {
@@ -3395,6 +3446,7 @@
   .pp-city-panel,
   .pp-groups-panel,
   .pp-content-panel,
+  .pp-daymode-page,
   .pp-map-panel {
     flex: 0 0 100%;
     width: 100% !important;
@@ -3412,6 +3464,15 @@
   .pp-content-panel {
     display: block;
     padding: 10px 10px 76px;
+  }
+
+  /* Page Jour J : redevient une page normale du pager ici (masquée par défaut
+     hors mobile, voir la règle de base). Padding bas identique aux autres pages
+     pour dégager la barre de navigation fixe. */
+  .pp-daymode-page {
+    display: block;
+    overflow-y: auto;
+    padding-bottom: 76px;
   }
 
   .pp-city-panel-dests { padding-bottom: 66px; }
@@ -4404,7 +4465,7 @@
      un texte rétréci (le navigateur essayant de "faire tenir" ce contenu fantôme).
      Avec display:none ils ne comptent plus du tout dans la mise en page. */
   .pp-topbar, .pp-sidebar, .pp-pending-invites,
-  .pp-editor-header, .pp-editor-split, .pp-mobile-nav,
+  .pp-editor-header, .pp-editor-split, .pp-mobile-nav, .pp-day-mode,
   .pp-modal-overlay {
     display: none !important;
   }
@@ -4490,11 +4551,91 @@
   .pp-print-activity-meta {
     display: flex; gap: 10px; margin-top: 2px;
   }
-  .pp-print-activity-city, .pp-print-activity-duration {
+  .pp-print-activity-city, .pp-print-activity-duration, .pp-print-activity-carried {
     color: #6b7280; font-size: 12.5px;
   }
   .pp-print-activity-note {
     font-size: 13px; color: #4b5563; margin: 4px 0 0;
     font-style: italic;
   }
+
+  .pp-print-activity--done { background: #f3f4f6; border-left-color: #9ca3af !important; }
+  .pp-print-activity--done .pp-print-activity-name { text-decoration: line-through; color: #6b7280; }
+}
+
+/* ─── Mode Jour J ─── */
+.pp-day-mode {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pp-day-mode-date {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  text-transform: capitalize;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.pp-day-mode-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 60px 20px;
+  color: var(--text-dim);
+}
+.pp-day-mode-empty-icon { font-size: 40px; opacity: 0.7; }
+.pp-day-mode-empty p { max-width: 380px; line-height: 1.5; }
+
+.pp-day-mode-card {
+  position: relative;
+}
+
+.pp-day-mode-badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 4px;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.pp-day-mode-card--ongoing .pp-day-mode-badge {
+  color: #10b981;
+  background: rgba(16,185,129,0.12);
+  border-color: rgba(16,185,129,0.3);
+}
+.pp-day-mode-card--ongoing .pp-day-activity {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+}
+.pp-day-mode-card--past { opacity: 0.55; }
+/* Une activité déjà cochée "faite" a son propre fondu (.pp-day-activity--done,
+   opacity 0.65) : sans ce reset, le cumuler avec le fondu "Passée" ci-dessus
+   (opacités qui se multiplient entre parent et enfant) rendrait le texte
+   quasi illisible (~0.36 net) — pile le cas le plus courant à l'usage. */
+.pp-day-mode-card--past .pp-day-activity--done { opacity: 1; }
+
+.pp-day-mode-card .pp-day-activity { cursor: default; }
+.pp-day-mode-card .pp-day-activity:active { cursor: default; }
+.pp-day-mode-card .pp-day-activity:hover { transform: none; }
+
+.pp-day-mode-allday-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 8px 0 2px;
 }

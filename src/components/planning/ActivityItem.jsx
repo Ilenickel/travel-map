@@ -11,7 +11,7 @@ const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
 export default function ActivityItem({
   act, index, tripStartDate, groups, onRemove, onUpdate, onDuplicate, onAssignToGroup,
   variant = 'list', draggableIdPrefix = '', cities, destinations,
-  onResizeStart, resizing = false,
+  onResizeStart, resizing = false, dragDisabled = false,
 }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(act.name);
@@ -75,8 +75,13 @@ export default function ActivityItem({
     // on ignore la valeur pré-remplie (jour 1) et on garde l'activité non planifiée.
     const finalDate = (!act.visit_date && !dateTouched) ? null : (date || null);
     const isTransport = category === 'transport';
-    // Math.max : le min="0" des inputs n'empêche pas une saisie clavier négative
-    const totalMinutes = Math.max(0, parseInt(durationH, 10) || 0) * 60 + Math.max(0, parseInt(durationM, 10) || 0);
+    // min/max des inputs n'empêchent ni une saisie clavier négative, ni une valeur
+    // au-delà de max (ces attributs HTML ne bloquent que les flèches +/-, pas la
+    // frappe libre) : on reclampe donc ici, sans quoi un "999" tapé au clavier
+    // produirait un trajet de plusieurs dizaines de jours.
+    const clampedH = Math.min(99, Math.max(0, parseInt(durationH, 10) || 0));
+    const clampedM = Math.min(59, Math.max(0, parseInt(durationM, 10) || 0));
+    const totalMinutes = clampedH * 60 + clampedM;
     onUpdate(act.id, {
       name: name.trim(),
       description: note.trim() || null,
@@ -128,19 +133,40 @@ export default function ActivityItem({
   const durationLabel = act.duration_minutes ? formatDuration(act.duration_minutes) : '';
   const canResize = variant === 'day' && !!onResizeStart && !!act.visit_time;
 
+  const toggleDone = (e) => {
+    e.stopPropagation();
+    onUpdate(act.id, { is_done: !act.is_done });
+  };
+
+  const checkButton = (
+    <button
+      type="button"
+      className={`pp-activity-check${act.is_done ? ' pp-activity-check--done' : ''}`}
+      onClick={toggleDone}
+      title={act.is_done ? 'Marquer comme non faite' : 'Marquer comme faite'}
+      aria-pressed={!!act.is_done}
+    >
+      {act.is_done ? (
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+      ) : null}
+    </button>
+  );
+
   return (
-    <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index}>
+    <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={dragDisabled}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...(!editing ? provided.dragHandleProps : {})}
+          {...(!editing && !dragDisabled ? provided.dragHandleProps : {})}
           onMouseEnter={() => setHoveredActivity(act.id)}
           onMouseLeave={() => clearHoveredActivity(act.id)}
           className={
             variant === 'day'
-              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}`
-              : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}`
+              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}${act.is_done ? ' pp-day-activity--done' : ''}`
+              : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${act.is_done ? ' pp-activity--done' : ''}`
           }
           style={{
             ...provided.draggableProps.style,
@@ -197,7 +223,7 @@ export default function ActivityItem({
                   </div>
                   <div className="pp-trajet-duration">
                     <input
-                      type="number" min="0" placeholder="0"
+                      type="number" min="0" max="99" placeholder="0"
                       className="pp-trajet-duration-input"
                       value={durationH}
                       onChange={e => setDurationH(e.target.value)}
@@ -290,6 +316,7 @@ export default function ActivityItem({
           ) : variant === 'day' ? (
             <div className="pp-day-activity-view" onClick={startEditing} role="button" tabIndex={0}>
               <div className="pp-day-activity-group-bar" style={{ background: accentColor }} title={group ? group.name : cat.label} />
+              {checkButton}
               <div className="pp-day-activity-time">{act.visit_time ? formatTimeShort(act.visit_time) : '—'}</div>
               <div className="pp-day-activity-dot" style={{ background: accentColor }} title={group ? group.name : cat.label} />
               <div className="pp-day-activity-content">
@@ -327,6 +354,7 @@ export default function ActivityItem({
             </div>
           ) : (
             <div className="pp-activity-view" onClick={startEditing} role="button" tabIndex={0}>
+              {checkButton}
               {/* Dot coloré = zone picker rapide */}
               <div style={{ position: 'relative', flexShrink: 0 }}>
                 <div

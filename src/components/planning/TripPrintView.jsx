@@ -2,24 +2,29 @@ import { COUNTRIES } from '../../data/index';
 import {
   ACTIVITY_CATEGORIES, TRANSPORT_MODES,
   getDaysBetween, formatDayLabel, formatDate, formatTimeShort, formatDuration,
+  todayLocalStr, getDayModeStatus, getCarriedOverActivities, formatCarriedOverLabel,
 } from '../../lib/planningUtils';
 
 // Rendu uniquement visible à l'impression (voir .pp-print-view dans App.css) :
 // invisible à l'écran, il n'a donc pas besoin de suivre le style du reste de
 // l'appli — priorité à la lisibilité papier plutôt qu'à la cohérence visuelle.
-function ActivityLine({ act, cityName }) {
+// `label` (optionnel) : puce "Depuis hier"/"Depuis le ..." pour une activité
+// reportée d'un jour précédent (voir TodayPrintSection) — par activité et non
+// par section, une carte report/étirement pouvant venir de jours différents.
+function ActivityLine({ act, cityName, label }) {
   const cat = ACTIVITY_CATEGORIES[act.category] || ACTIVITY_CATEGORIES.other;
   const isTransport = act.category === 'transport';
   const icon = isTransport ? (TRANSPORT_MODES[act.transport_mode]?.icon || cat.icon) : cat.icon;
   return (
-    <div className="pp-print-activity" style={{ '--cat-color': cat.color }}>
-      <div className="pp-print-activity-icon">{icon}</div>
+    <div className={`pp-print-activity${act.is_done ? ' pp-print-activity--done' : ''}`} style={{ '--cat-color': cat.color }}>
+      <div className="pp-print-activity-icon">{act.is_done ? '✓' : icon}</div>
       <div className="pp-print-activity-body">
         <div className="pp-print-activity-head">
           <span className="pp-print-activity-name">{act.name}</span>
           {act.visit_time && <span className="pp-print-activity-time">{formatTimeShort(act.visit_time)}</span>}
         </div>
         <div className="pp-print-activity-meta">
+          {label && <span className="pp-print-activity-carried">↳ {label}</span>}
           {cityName && <span className="pp-print-activity-city">📍 {cityName}</span>}
           {act.duration_minutes ? <span className="pp-print-activity-duration">{formatDuration(act.duration_minutes)}</span> : null}
         </div>
@@ -29,7 +34,61 @@ function ActivityLine({ act, cityName }) {
   );
 }
 
-export default function TripPrintView({ trip, destinations, cities, activities }) {
+// Version imprimée du mode Jour J : ne montre que la journée en cours, pas tout
+// le voyage — cohérent avec ce qu'on regarde à l'écran quand on imprime depuis
+// ce mode (voir TripEditor, isDayModeView). Reprend les mêmes règles que
+// TripDayModeView (activités du jour + reportées depuis hier via duration_minutes),
+// via les fonctions partagées de planningUtils pour ne jamais diverger de l'écran.
+function TodayPrintSection({ trip, cities, activities }) {
+  const cityById = {};
+  cities.forEach(c => { cityById[c.id] = c; });
+  const today = todayLocalStr();
+  const { hasDates, datesInverted, inRange, beforeTrip, afterTrip } = getDayModeStatus(trip, today);
+
+  if (!hasDates || !inRange) {
+    return (
+      <p className="pp-print-notes">
+        {!hasDates && "Dates du voyage non définies."}
+        {datesInverted && "Dates du voyage incohérentes (retour avant le départ)."}
+        {beforeTrip && `Ce voyage n'a pas encore commencé (départ le ${formatDate(trip.start_date)}).`}
+        {afterTrip && `Ce voyage est terminé (retour le ${formatDate(trip.end_date)}).`}
+      </p>
+    );
+  }
+
+  const todayActs = activities.filter(a => a.visit_date === today);
+  const carriedOver = getCarriedOverActivities(activities, today);
+  const timed = todayActs.filter(a => a.visit_time).sort((a, b) => a.visit_time.localeCompare(b.visit_time));
+  const allDayActs = todayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
+
+  if (carriedOver.length === 0 && todayActs.length === 0) {
+    return <p className="pp-print-notes">Aucune activité prévue aujourd'hui.</p>;
+  }
+
+  return (
+    <section className="pp-print-day">
+      {carriedOver.map(({ act, daysBetween }) => (
+        <ActivityLine
+          key={act.id} act={act} cityName={cityById[act.city_id]?.name}
+          label={formatCarriedOverLabel(daysBetween, act.visit_date)}
+        />
+      ))}
+      {timed.map(act => (
+        <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
+      ))}
+      {allDayActs.length > 0 && (
+        <>
+          <h3 className="pp-print-unplanned-country">Toute la journée</h3>
+          {allDayActs.map(act => (
+            <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
+          ))}
+        </>
+      )}
+    </section>
+  );
+}
+
+export default function TripPrintView({ trip, destinations, cities, activities, focusToday = false }) {
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
 
@@ -38,6 +97,18 @@ export default function TripPrintView({ trip, destinations, cities, activities }
   const unplanned = activities.filter(a => !a.visit_date);
 
   const sortedDests = [...destinations].sort((a, b) => a.position - b.position);
+
+  if (focusToday) {
+    return (
+      <div className="pp-print-view">
+        <header className="pp-print-header">
+          <h1 className="pp-print-title">✈️ {trip?.title || 'Mon voyage'}</h1>
+          <p className="pp-print-dates">{formatDayLabel(todayLocalStr())}</p>
+        </header>
+        <TodayPrintSection trip={trip} cities={cities} activities={activities} />
+      </div>
+    );
+  }
 
   return (
     <div className="pp-print-view">

@@ -9,6 +9,7 @@ import GroupManager from './GroupManager';
 import MapPanel from './MapPanel';
 import TripShareModal from './TripShareModal';
 import TripPrintView from './TripPrintView';
+import TripDayModeView from './TripDayModeView';
 import { getHoveredActivity } from '../../lib/hoverTracker';
 import { downloadTripIcs } from '../../lib/exportTrip';
 
@@ -30,12 +31,14 @@ export default function TripEditor({
   // c'est qu'il en a besoin, autant lui laisser la possibilité de la voir en grand.
   const [mapOverlay, setMapOverlay] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [dayModeActive, setDayModeActive] = useState(false);
   // ─── Pager mobile (voir @media max-width:768px) ─────────────────────────────
   // Sur téléphone, les panneaux deviennent des pages plein écran que l'on fait
   // défiler horizontalement au doigt (ou via la barre de navigation basse),
-  // comme les écrans d'une appli : [Villes] [Groupes] [Jours] [Carte, si
-  // ouverte]. La piste (.pp-pager-track) est translatée en CSS via la variable
-  // --pp-page ; sur ordinateur elle est en display:contents et tout est inerte.
+  // comme les écrans d'une appli : [Villes] [Groupes] [Jours] [Jour J] [Carte,
+  // si ouverte]. La piste (.pp-pager-track) est translatée en CSS via la
+  // variable --pp-page ; sur ordinateur elle est en display:contents et tout
+  // est inerte (Jour J y est géré séparément par dayModeActive, voir plus bas).
   const [page, setPage] = useState(0);
   const splitRef = useRef(null);
   // true pendant un drag @hello-pangea/dnd : le geste appartient alors au drag
@@ -43,16 +46,47 @@ export default function TripEditor({
   const rbdDraggingRef = useRef(false);
 
   const pagerActive = () => window.matchMedia('(max-width: 768px)').matches;
+  // Pages du pager mobile, dans l'ordre : 0 Villes, 1 Groupes, 2 Jours, 3 Jour J,
+  // 4 Carte (si ouverte). Jour J y est toujours présente (contrairement à la
+  // Carte, qui n'existe comme page que si mapOpen) : sur ordinateur elle n'a pas
+  // besoin d'un bouton dédié, mais sur mobile c'est justement l'usage le plus
+  // fréquent (consultation pendant le voyage) — elle doit être aussi facile
+  // d'accès que les autres onglets, pas cachée dans l'en-tête repliable.
+  const JOURJ_PAGE = 3;
   const showMapPage = mapOpen && !mapOverlay;
-  const pageCount = showMapPage ? 4 : 3;
+  const pageCount = showMapPage ? 5 : 4;
   const pageCountRef = useRef(pageCount);
   pageCountRef.current = pageCount;
+  // Miroir de mapOpen pour le geste de balayage (useEffect à deps figées ci-dessous) :
+  // même raison d'être que pageCountRef, avoir la valeur à jour sans réabonner les
+  // écouteurs touch à chaque changement.
+  const mapOpenRef = useRef(mapOpen);
+  mapOpenRef.current = mapOpen;
 
   // Si la page carte disparaît (carte fermée ou passée en superposition) alors
   // qu'on était dessus, on retombe sur la dernière page existante (Jours).
   useEffect(() => {
     if (page > pageCount - 1) setPage(pageCount - 1);
   }, [page, pageCount]);
+
+  // dayModeActive (plein écran) n'a de sens que sur ordinateur : sur mobile, Jour
+  // J est une page du pager (voir JOURJ_PAGE), pas ce mode-là. Sans cet effet, un
+  // redimensionnement/rotation vers une largeur mobile PENDANT que ce mode plein
+  // écran est ouvert (ex : fenêtre de bureau rétrécie sous 768px) le laisserait
+  // affiché tel quel — avec en plus la barre de navigation basse qui redevient
+  // visible par-dessus (elle n'est plus conditionnée à dayModeActive), superposée
+  // au contenu plutôt que de basculer proprement vers la page Jour J du pager.
+  useEffect(() => {
+    if (!dayModeActive) return;
+    const mq = window.matchMedia('(max-width: 768px)');
+    const handleChange = (e) => {
+      if (!e.matches) return;
+      setDayModeActive(false);
+      setPage(JOURJ_PAGE); // on retrouve le même contenu (Jour J), via sa page du pager cette fois
+    };
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
+  }, [dayModeActive]);
 
   // Balayage horizontal → page précédente/suivante. Détection d'axe sur les
   // ~10 premiers pixels : un geste vertical reste un scroll natif de la page
@@ -88,7 +122,19 @@ export default function TripEditor({
       if (rbdDraggingRef.current || !horizontal) return;
       const dx = e.changedTouches[0].clientX - startX;
       if (Math.abs(dx) < 55) return; // trop court pour être un vrai balayage
-      setPage(p => Math.max(0, Math.min(pageCountRef.current - 1, dx < 0 ? p + 1 : p - 1)));
+      setPage(p => {
+        const next = dx < 0 ? p + 1 : p - 1;
+        // Balayer vers la droite depuis Jour J alors que la carte n'a encore
+        // jamais été ouverte : elle n'existe pas encore comme page (pageCount
+        // ne l'inclut pas), le balayage buterait donc sans rien faire. On
+        // l'ouvre à la volée pour que le geste "je balaie, l'écran suivant
+        // apparaît" reste cohérent, sans exiger un tap supplémentaire sur Carte.
+        if (p === JOURJ_PAGE && next > p && !mapOpenRef.current) {
+          setMapOpen(true);
+          return JOURJ_PAGE + 1;
+        }
+        return Math.max(0, Math.min(pageCountRef.current - 1, next));
+      });
     };
 
     el.addEventListener('touchstart', onStart, { passive: true });
@@ -109,7 +155,7 @@ export default function TripEditor({
   const sideMapHidden = () => window.matchMedia('(max-width: 900px)').matches;
   const openMap = () => {
     setMapOpen(true);
-    if (pagerActive()) setPage(3);
+    if (pagerActive()) setPage(JOURJ_PAGE + 1); // Carte = page suivant Jour J
     else if (sideMapHidden()) setMapOverlay(true);
   };
   // Réduire la superposition : sous 768px on retombe sur la page carte du pager ;
@@ -120,6 +166,12 @@ export default function TripEditor({
     else if (sideMapHidden()) closeMap();
     else setMapOverlay(false);
   };
+
+  // Contexte lu par l'impression (voir TripPrintView, prop focusToday) : imprimer
+  // depuis le mode Jour J (plein écran sur ordinateur, page dédiée du pager sur
+  // mobile) n'a de sens que pour la journée en cours, pas tout le voyage — sinon
+  // l'impression contredisait ce qu'on regardait à l'écran juste avant de l'ouvrir.
+  const isDayModeView = dayModeActive || (pagerActive() && page === JOURJ_PAGE);
 
   const sortedDests = [...destinations].sort((a, b) => a.position - b.position);
   const alreadyAdded = destinations.map(d => d.country_code);
@@ -279,8 +331,29 @@ export default function TripEditor({
         onToggleShare={() => setShareOpen(s => !s)}
         onExportPdf={() => window.print()}
         onExportIcal={() => downloadTripIcs({ trip, cities, activities })}
+        dayModeActive={dayModeActive}
+        onToggleDayMode={() => {
+          // Sur mobile, Jour J est une page du pager (voir JOURJ_PAGE) : on ne
+          // passe jamais par le mode plein écran `dayModeActive`, qui n'existe
+          // que pour l'ordinateur (là où il n'y a pas de pager à faire glisser).
+          if (pagerActive()) { setPage(JOURJ_PAGE); return; }
+          setDayModeActive(a => !a);
+        }}
       />
 
+      {dayModeActive ? (
+        <TripDayModeView
+          trip={trip}
+          cities={cities}
+          destinations={destinations}
+          groups={groups}
+          activities={activities}
+          onRemoveActivity={onRemoveActivity}
+          onUpdateActivity={onUpdateActivity}
+          onDuplicateActivity={onDuplicateActivity}
+          onAssignActivityToGroup={onAssignActivityToGroup}
+        />
+      ) : (
       <DragDropContext
         onDragStart={() => { rbdDraggingRef.current = true; }}
         onDragEnd={(result) => { rbdDraggingRef.current = false; handleDragEnd(result); }}
@@ -375,6 +448,25 @@ export default function TripEditor({
             />
           </div>
 
+          {/* ── Page Jour J (mobile uniquement — masquée en CSS sur ordinateur,
+              où le bouton d'en-tête utilise le mode plein écran ci-dessus à la
+              place). Imbriquée ici dans le DragDropContext déjà ouvert pour le
+              reste du planning, d'où standalone={false} (voir TripDayModeView). ── */}
+          <div className="pp-daymode-page">
+            <TripDayModeView
+              trip={trip}
+              cities={cities}
+              destinations={destinations}
+              groups={groups}
+              activities={activities}
+              onRemoveActivity={onRemoveActivity}
+              onUpdateActivity={onUpdateActivity}
+              onDuplicateActivity={onDuplicateActivity}
+              onAssignActivityToGroup={onAssignActivityToGroup}
+              standalone={false}
+            />
+          </div>
+
           {/* ── Panneau carte (à côté, ou en superposition plein écran) ── */}
           {mapOpen && (
             <>
@@ -405,15 +497,19 @@ export default function TripEditor({
           </div>{/* /pp-pager-track */}
         </div>
       </DragDropContext>
+      )}
 
       {/* Barre de navigation basse, mobile uniquement (masquée sur ordinateur) :
-          les mêmes pages que le balayage, façon appli. L'onglet Carte ouvre la
-          carte à la demande — inutile de passer par l'en-tête déplié. */}
+          les mêmes pages que le balayage, façon appli. Jour J y a son propre
+          onglet (toujours accessible, pas caché dans l'en-tête repliable comme
+          sur ordinateur) puisque c'est l'usage mobile le plus fréquent. L'onglet
+          Carte ouvre la carte à la demande — inutile de passer par l'en-tête. */}
       <nav className="pp-mobile-nav" aria-label="Navigation entre les volets">
         {[
           { icon: '🌍', label: 'Villes' },
           { icon: '🗂️', label: 'Groupes' },
           { icon: '📅', label: 'Jours' },
+          { icon: '🧭', label: 'Jour J' },
           { icon: '🗺️', label: 'Carte' },
         ].map(({ icon, label }, i) => (
           <button
@@ -421,7 +517,11 @@ export default function TripEditor({
             type="button"
             className={`pp-mobile-nav-btn${page === i ? ' active' : ''}`}
             onClick={() => {
-              if (i === 3) { openMap(); return; }
+              if (i === JOURJ_PAGE + 1) { openMap(); return; }
+              // Filet de sécurité : si dayModeActive était resté vrai (ouvert sur
+              // ordinateur juste avant un redimensionnement/rotation vers une
+              // largeur mobile), on en sort pour retrouver un pager cohérent.
+              if (dayModeActive) setDayModeActive(false);
               setPage(i);
             }}
             aria-label={label}
@@ -444,7 +544,7 @@ export default function TripEditor({
       )}
 
       {/* Invisible à l'écran, révélé uniquement à l'impression (voir .pp-print-view) */}
-      <TripPrintView trip={trip} destinations={destinations} cities={cities} activities={activities} />
+      <TripPrintView trip={trip} destinations={destinations} cities={cities} activities={activities} focusToday={isDayModeView} />
     </div>
   );
 }

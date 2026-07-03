@@ -5,6 +5,7 @@ export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities,
   onUpdate, mapOpen, onToggleMap, onToggleShare,
   onExportPdf, onExportIcal,
+  dayModeActive, onToggleDayMode,
 }) {
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
@@ -43,6 +44,10 @@ export default function TripEditorHeader({
   const totalPlaces = activities.filter(a => a.category !== 'transport').length;
   const totalCountries = destinations.length;
   const plannedCount = activities.filter(a => a.visit_date).length;
+  // L'export iCal exclut les activités déjà cochées "faites" (voir exportTrip.js) :
+  // un voyage entièrement planifié mais déjà terminé ne doit pas laisser croire
+  // qu'il y a encore quelque chose à exporter vers l'agenda.
+  const icalExportableCount = activities.filter(a => a.visit_date && !a.is_done).length;
 
   return (
     <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>
@@ -101,6 +106,21 @@ export default function TripEditorHeader({
               Carte
             </button>
             <button
+              className={`pp-toolbar-btn${dayModeActive ? ' active' : ''}`}
+              onClick={onToggleDayMode}
+              disabled={!trip?.start_date || !trip?.end_date}
+              title={
+                !trip?.start_date || !trip?.end_date
+                  ? 'Définissez des dates de voyage pour utiliser le mode Jour J'
+                  : (dayModeActive ? 'Revenir au planning complet' : 'Mode Jour J : affiche seulement les activités du jour en cours')
+              }
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4zm7.9-3a7.94 7.94 0 00-1.6-3.86l1.14-1.14-1.41-1.41-1.14 1.14A7.94 7.94 0 0013 4.1V2h-2v2.1a7.94 7.94 0 00-3.86 1.6L5.99 4.56 4.58 5.97l1.14 1.14A7.94 7.94 0 004.1 11H2v2h2.1a7.94 7.94 0 001.6 3.86l-1.14 1.14 1.41 1.41 1.14-1.14A7.94 7.94 0 0011 19.9V22h2v-2.1a7.94 7.94 0 003.86-1.6l1.14 1.14 1.41-1.41-1.14-1.14A7.94 7.94 0 0019.9 13H22v-2h-2.1z"/>
+              </svg>
+              Jour J
+            </button>
+            <button
               className="pp-toolbar-btn"
               onClick={onExportPdf}
               title="Exporter l'itinéraire en PDF"
@@ -113,10 +133,12 @@ export default function TripEditorHeader({
             <button
               className="pp-toolbar-btn"
               onClick={onExportIcal}
-              disabled={plannedCount === 0}
-              title={plannedCount === 0
-                ? 'Planifiez au moins un lieu sur une date pour pouvoir l\'exporter vers votre agenda'
-                : 'Exporter les lieux planifiés vers votre agenda (fichier .ics, compatible Google Agenda et autres)'}
+              disabled={icalExportableCount === 0}
+              title={icalExportableCount === 0
+                ? (plannedCount > 0
+                  ? 'Toutes les activités planifiées sont déjà cochées comme faites — rien à exporter vers l\'agenda'
+                  : 'Planifiez au moins un lieu sur une date pour pouvoir l\'exporter vers votre agenda')
+                : 'Exporter les lieux planifiés (non cochés) vers votre agenda (fichier .ics, compatible Google Agenda et autres)'}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
@@ -145,7 +167,15 @@ export default function TripEditorHeader({
             type="date"
             className="pp-date-input"
             value={trip?.start_date || ''}
-            onChange={e => onUpdate(tripId, { start_date: e.target.value || null })}
+            max={trip?.end_date || undefined}
+            onChange={e => {
+              const val = e.target.value || null;
+              // `max` n'empêche que la sélection dans le calendrier natif, pas une saisie
+              // clavier directe des chiffres du champ : sans ce garde-fou JS, un départ
+              // après le retour resterait possible et rendrait les dates incohérentes.
+              if (val && trip?.end_date && val > trip.end_date) return;
+              onUpdate(tripId, { start_date: val });
+            }}
           />
         </div>
         <svg className="pp-date-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -158,7 +188,11 @@ export default function TripEditorHeader({
             className="pp-date-input"
             value={trip?.end_date || ''}
             min={trip?.start_date || undefined}
-            onChange={e => onUpdate(tripId, { end_date: e.target.value || null })}
+            onChange={e => {
+              const val = e.target.value || null;
+              if (val && trip?.start_date && val < trip.start_date) return;
+              onUpdate(tripId, { end_date: val });
+            }}
           />
         </div>
         {duration && (

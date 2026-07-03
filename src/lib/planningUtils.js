@@ -87,6 +87,73 @@ export function tripDurationDays(startDate, endDate) {
   return diff > 0 ? diff : null;
 }
 
+// ─── Mode Jour J (partagé entre la vue à l'écran et l'impression) ────────────
+
+// Date locale (pas UTC) : un `new Date().toISOString()` déciderait du jour selon
+// le fuseau UTC, ce qui peut être "hier" ou "demain" par rapport à l'heure locale
+// de l'utilisateur en soirée/petit matin — les dates de voyage (visit_date) sont
+// elles-mêmes de simples chaînes locales "YYYY-MM-DD", donc la comparaison doit
+// utiliser la même convention.
+export function todayLocalStr() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+export function timeToMinutes(t) {
+  if (!t) return null;
+  const [h, m] = t.slice(0, 5).split(':').map(Number);
+  return h * 60 + m;
+}
+
+// Où en est le voyage par rapport à aujourd'hui — messages d'état partagés entre
+// le mode Jour J à l'écran et sa version imprimée, pour ne jamais afficher une
+// réponse différente ("pas commencé" à l'écran, silence à l'impression) selon
+// l'endroit d'où on regarde.
+export function getDayModeStatus(trip, today = todayLocalStr()) {
+  const hasDates = !!(trip?.start_date && trip?.end_date);
+  // Rien n'empêche (en tout cas pour d'anciennes données, le champ de saisie
+  // l'empêche désormais) un départ après le retour : sans ce garde-fou, une
+  // plage inversée ferait passer "pas commencé" ET "déjà terminé" à vrai en
+  // même temps pour un même "aujourd'hui".
+  const datesInverted = hasDates && trip.start_date > trip.end_date;
+  const inRange = hasDates && !datesInverted && today >= trip.start_date && today <= trip.end_date;
+  const beforeTrip = hasDates && !datesInverted && today < trip.start_date;
+  const afterTrip = hasDates && !datesInverted && today > trip.end_date;
+  return { hasDates, datesInverted, inRange, beforeTrip, afterTrip };
+}
+
+// Activité commencée un jour précédent (pas forcément la veille : une activité
+// de plusieurs jours reste "reportée" tant que sa durée continue de couvrir
+// aujourd'hui) mais étirée (duration_minutes) jusqu'à aujourd'hui — ex : un
+// trajet de nuit posé hier 22h avec une durée de 10h. Sans ce repêchage, elle
+// disparaîtrait du mode Jour J le jour même où elle se termine, alors que
+// c'est justement le jour où l'utilisateur la vit encore. Renvoie daysBetween
+// avec chaque activité (et pas seulement un booléen) pour permettre d'afficher
+// "depuis hier"/"avant-hier"/une date précise selon le nombre réel de jours,
+// plutôt qu'un texte "depuis hier" qui serait faux au-delà d'un jour.
+export function getCarriedOverActivities(activities, today) {
+  const result = [];
+  for (const a of activities) {
+    if (!a.visit_date || !a.visit_time || !a.duration_minutes || a.visit_date >= today) continue;
+    const daysBetween = Math.round((new Date(`${today}T00:00:00`) - new Date(`${a.visit_date}T00:00:00`)) / 86400000);
+    if (daysBetween <= 0) continue;
+    const endMinutesFromStartDay = timeToMinutes(a.visit_time) + a.duration_minutes;
+    if (endMinutesFromStartDay > daysBetween * 1440) result.push({ act: a, daysBetween });
+  }
+  return result;
+}
+
+// Libellé "depuis quand" d'une activité reportée — évite un "Depuis hier"
+// trompeur pour une activité commencée il y a 2 jours ou plus.
+export function formatCarriedOverLabel(daysBetween, visitDate) {
+  if (daysBetween === 1) return 'Depuis hier';
+  if (daysBetween === 2) return 'Depuis avant-hier';
+  return `Depuis le ${formatDate(visitDate)}`;
+}
+
 // ─── String helpers ───────────────────────────────────────────────
 export function normalizeStr(s) {
   return s.normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase();

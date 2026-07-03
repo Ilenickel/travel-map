@@ -192,8 +192,11 @@ export function useTrips(userId) {
       await supabase.from('trip_activities').insert({
         trip_id: newTrip.id, city_id: newCityId, name: a.name, description: a.description,
         visit_date: a.visit_date, visit_time: a.visit_time, category: a.category,
+        transport_mode: a.transport_mode, duration_minutes: a.duration_minutes,
         position: a.position, place_lat: a.place_lat, place_lng: a.place_lng,
         place_address: a.place_address, group_id: a.group_id ? (groupMap[a.group_id] || null) : null,
+        // is_done volontairement absent : une copie de voyage repart avec une
+        // checklist vierge, pas avec les coches du voyage d'origine.
       });
     }
     setTrips(prev => [newTrip, ...prev]);
@@ -312,7 +315,12 @@ export function useTrips(userId) {
   }, [tripData]);
 
   const updateActivity = useCallback(async (actId, updates) => {
-    await supabase.from('trip_activities').update(updates).eq('id', actId);
+    // Si l'écriture échoue (connexion perdue en plein voyage, RLS, etc.), on
+    // n'applique pas le changement localement : sans ce garde-fou, l'écran
+    // affichait un changement (ex. case cochée) jamais réellement enregistré
+    // en base, qui redisparaissait silencieusement au prochain chargement.
+    const { error } = await supabase.from('trip_activities').update(updates).eq('id', actId);
+    if (error) { console.error('updateActivity failed:', error); return; }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => a.id === actId ? { ...a, ...updates } : a),
     } : prev);
@@ -348,7 +356,10 @@ export function useTrips(userId) {
     const maxPosition = cityActs.length ? Math.max(...cityActs.map(a => a.position)) : -1;
     duplicateOffsetRef.current += 1;
     const position = maxPosition + duplicateOffsetRef.current;
-    const { data, error } = await supabase.from('trip_activities').insert({ ...rest, position }).select().single();
+    // Une copie repart toujours non cochée : dupliquer un lieu déjà fait sert
+    // justement à le refaire (ex : même resto à une autre date) — le marquer
+    // fait d'office masquerait par erreur cette nouvelle occurrence de la checklist.
+    const { data, error } = await supabase.from('trip_activities').insert({ ...rest, position, is_done: false }).select().single();
     if (error || !data) { console.error('duplicateActivity failed:', error); return null; }
     setTripData(prev => prev ? { ...prev, activities: [...prev.activities, data] } : prev);
     return data;
@@ -422,7 +433,8 @@ export function useTrips(userId) {
 
   const assignActivityToGroup = useCallback(async (actId, groupId) => {
     const val = groupId || null;
-    await supabase.from('trip_activities').update({ group_id: val }).eq('id', actId);
+    const { error } = await supabase.from('trip_activities').update({ group_id: val }).eq('id', actId);
+    if (error) { console.error('assignActivityToGroup failed:', error); return; }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => a.id === actId ? { ...a, group_id: val } : a),
     } : prev);

@@ -79,7 +79,11 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
   const destEmoji = dest ? (COUNTRIES[dest.country_code]?.emoji || '📍') : '📍';
 
   return (
-    <div className="pp-day-activity pp-day-activity--continuation" style={{ '--cat-color': accentColor }} title={`${act.name} — débute ${fromLabel}`}>
+    <div
+      className={`pp-day-activity pp-day-activity--continuation${act.is_done ? ' pp-day-activity--done' : ''}`}
+      style={{ '--cat-color': accentColor }}
+      title={`${act.name} — débute ${fromLabel}`}
+    >
       <div className="pp-day-activity-group-bar" style={{ background: accentColor }} />
       <div className="pp-day-activity-time pp-day-activity-time--continuation">⋯</div>
       <div className="pp-day-activity-dot" style={{ background: accentColor }} />
@@ -370,6 +374,7 @@ export default function DayView({
       {days.map((day, dayIdx) => {
         const dayActs = activities.filter(a => a.visit_date === day);
         const totalDay = dayActs.length;
+        const doneDay = dayActs.filter(a => a.is_done).length;
         const libreActs = dayActs.filter(a => !a.visit_time);
 
         return (
@@ -378,6 +383,7 @@ export default function DayView({
             day={day}
             dayIdx={dayIdx}
             totalDay={totalDay}
+            doneDay={doneDay}
             slotActs={daySlotActs[day]}
             slotOverflow={daySlotOverflow[day]}
             libreActs={libreActs}
@@ -433,7 +439,7 @@ export default function DayView({
 }
 
 function DaySection({
-  day, dayIdx, totalDay, slotActs, slotOverflow, libreActs, cities, destinations, groups, tripStartDate,
+  day, dayIdx, totalDay, doneDay, slotActs, slotOverflow, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
@@ -460,7 +466,9 @@ function DaySection({
         <div className="pp-day-info">
           <span className="pp-day-label">{formatDayLabel(day)}</span>
           {totalDay > 0 && (
-            <span className="pp-day-count">{totalDay} activité{totalDay > 1 ? 's' : ''}</span>
+            <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={`${doneDay} activité${doneDay > 1 ? 's' : ''} faite${doneDay > 1 ? 's' : ''} sur ${totalDay}`}>
+              {doneDay}/{totalDay}
+            </span>
           )}
         </div>
       </div>
