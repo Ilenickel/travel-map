@@ -2265,6 +2265,52 @@
   opacity: 0.85;
 }
 
+.pp-day-section-header--toggle {
+  width: 100%;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  border: none;
+  margin: 0;
+}
+
+.pp-day-section-header--toggle:hover { background-color: rgba(255,255,255,0.03); }
+
+.pp-day-section-chevron {
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: transform 0.18s ease;
+}
+
+.pp-day-section-chevron--open { transform: rotate(180deg); }
+
+.pp-day-section-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.pp-day-activities--collapsed {
+  /* Toujours une fine bande non nulle (jamais 0px) : @hello-pangea/dnd et le
+     drag natif HTML5 (groupe/excursion) ont besoin d'une vraie surface pour
+     détecter un survol, sinon la section repliée deviendrait indétectable
+     comme cible de drop tant qu'on ne l'a pas manuellement dépliée. */
+  min-height: 6px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Non planifiées : au-delà de ~5 activités visibles, on scrolle plutôt que de
+   laisser le bandeau grandir indéfiniment en haut de la vue par jour. */
+.pp-day-unplanned-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+.pp-day-unplanned-list::-webkit-scrollbar { width: 6px; }
+.pp-day-unplanned-list::-webkit-scrollbar-track { background: transparent; }
+.pp-day-unplanned-list::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
 .pp-day-section-header {
   display: flex;
   align-items: center;
@@ -3850,11 +3896,8 @@
   .pp-trip-card-title { margin-bottom: 0; }
 
   /* Vue Jours : le bandeau d'explication du drag est du remplissage sur un
-     petit écran, et les lieux "Non planifiées" passent en tête — c'est le
-     réservoir depuis lequel on glisse vers les créneaux, il doit être sous la
-     main plutôt qu'après le dernier jour. */
+     petit écran. */
   .pp-day-view-hint { display: none; }
-  .pp-day-section--unplanned { order: -1; }
 
   /* ── Écran de connexion (gate) : sur un petit écran la carte est plus haute
      que la fenêtre — elle doit défiler, pas être coupée. margin:auto garde le

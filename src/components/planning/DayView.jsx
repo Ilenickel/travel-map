@@ -210,6 +210,7 @@ export default function DayView({
   // { actId, startDay, startDayIdx, startMinutes, startSlotIdx,
   //   hoverDay, hoverDayIdx, hoverSlotIdx, hadDuration }
   const [resize, setResize] = useState(null);
+  const [unplannedOpen, setUnplannedOpen] = useState(false);
 
   const beginResize = useCallback((act) => {
     const startMinutes = timeToMinutes(act.visit_time);
@@ -382,6 +383,57 @@ export default function DayView({
         Glissez un lieu vers un créneau (Matin / Après-midi / Soir) pour le planifier, ou tirez la poignée en bas d'une activité planifiée pour l'étirer sur les créneaux — voire les jours — suivants
       </div>
 
+      {unplanned.length > 0 && (
+        <div className="pp-day-section pp-day-section--unplanned">
+          <button
+            type="button"
+            className="pp-day-section-header pp-day-section-header--toggle"
+            onClick={() => setUnplannedOpen(o => !o)}
+            aria-expanded={unplannedOpen}
+          >
+            <div className="pp-day-num pp-day-num--unplanned">?</div>
+            <div className="pp-day-info">
+              <span className="pp-day-label">Non planifiées</span>
+              <span className="pp-day-count">{unplanned.length} activité{unplanned.length > 1 ? 's' : ''}</span>
+              {!unplannedOpen && <span className="pp-day-section-hint">Cliquez pour afficher</span>}
+            </div>
+            <svg
+              className={`pp-day-section-chevron${unplannedOpen ? ' pp-day-section-chevron--open' : ''}`}
+              width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+            >
+              <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+            </svg>
+          </button>
+          <Droppable droppableId="day-unplanned">
+            {(provided, snapshot) => {
+              // Le conteneur reste toujours monté avec sa géométrie réelle (jamais
+              // display:none) : sinon, replié, il n'aurait plus aucune surface et
+              // deviendrait indétectable comme cible de drop par @hello-pangea/dnd
+              // et par le drag natif HTML5 (groupe/excursion).
+              const isOver = snapshot.isDraggingOver || unplannedDrop.isNativeOver;
+              const forceOpen = unplannedOpen || isOver;
+              return (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  {...unplannedDrop.handlers}
+                  className={`pp-day-activities pp-day-unplanned-list${isOver ? ' pp-day-activities--over' : ''}${forceOpen ? '' : ' pp-day-activities--collapsed'}`}
+                >
+                  {forceOpen && unplanned.map((act, idx) => (
+                    <ActivityItem
+                      key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
+                      cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
+                      onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              );
+            }}
+          </Droppable>
+        </div>
+      )}
+
       {days.map((day, dayIdx) => {
         const dayActs = activities.filter(a => a.visit_date === day);
         const totalDay = dayActs.length;
@@ -429,37 +481,6 @@ export default function DayView({
           />
         );
       })}
-
-      {unplanned.length > 0 && (
-        <div className="pp-day-section pp-day-section--unplanned">
-          <div className="pp-day-section-header">
-            <div className="pp-day-num pp-day-num--unplanned">?</div>
-            <div className="pp-day-info">
-              <span className="pp-day-label">Non planifiées</span>
-              <span className="pp-day-count">{unplanned.length} activité{unplanned.length > 1 ? 's' : ''}</span>
-            </div>
-          </div>
-          <Droppable droppableId="day-unplanned">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                {...unplannedDrop.handlers}
-                className={`pp-day-activities${snapshot.isDraggingOver || unplannedDrop.isNativeOver ? ' pp-day-activities--over' : ''}`}
-              >
-                {unplanned.map((act, idx) => (
-                  <ActivityItem
-                    key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
-                    cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
-                    onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </div>
-      )}
     </div>
   );
 }
