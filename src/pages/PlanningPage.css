@@ -2401,6 +2401,45 @@
 }
 .pp-activity-check--done:hover { background: #0d9c6f; border-color: #0d9c6f; }
 
+/* ─── Sélection multiple — un ROND placé à droite de la carte (zone occupée
+   sinon par dupliquer/supprimer, masqués pendant la sélection), plutôt que
+   collé à la case "fait" à gauche : les deux commandes ne se marchent plus
+   dessus visuellement. */
+.pp-select-circle {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  /* Centré sur toute la hauteur de la carte (qui peut avoir plusieurs lignes :
+     nom, meta, chips, description) plutôt qu'aligné en haut comme la case
+     "fait"/le point de couleur, pensés eux pour la seule ligne du nom. */
+  align-self: center;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-light);
+  background: transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pp-select-circle--checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.pp-activity-view--selected {
+  background: var(--accent-subtle);
+  border-radius: 8px;
+  margin: -4px -6px;
+  padding: 4px 6px;
+}
+
+.pp-icon-btn--active {
+  color: var(--accent2);
+  background: var(--accent-subtle);
+  border-color: rgba(99,102,241,0.35);
+}
+
 .pp-activity--done .pp-activity-name,
 .pp-day-activity--done .pp-day-activity-name {
   text-decoration: line-through;
@@ -3195,6 +3234,54 @@
   flex-shrink: 0;
 }
 
+/* ─── Barre d'actions pour la sélection multiple (SelectionActionBar) ───
+   Ligne normale (pas fixed/sticky) juste au-dessus de la liste de lieux : reste
+   simple et évite tout conflit de z-index avec la barre de navigation mobile en
+   bas d'écran, qui est déjà en position fixed. */
+.pp-selection-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 10px;
+  margin: 0 8px 8px;
+  background: var(--accent-subtle);
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 10px;
+}
+
+.pp-selection-count {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent2);
+  flex-shrink: 0;
+}
+
+.pp-selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pp-selection-dropdown-wrap {
+  position: relative;
+}
+/* .pp-group-day-dropdown s'ouvre normalement aligné à droite (right:0), pensé
+   pour un déclencheur seul en bout de ligne (GroupManager/DaytripCard). Ici les
+   boutons Groupe/Jour sont en début de rangée : aligner à droite le ferait
+   déborder hors écran à gauche. */
+.pp-selection-dropdown-wrap .pp-group-day-dropdown {
+  left: 0;
+  right: auto;
+}
+
+.pp-selection-delete:hover {
+  color: var(--red);
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.3);
+}
+
 /* ─── Groupe picker dans ActivityItem ─── */
 .pp-group-picker-field {
   display: flex;
@@ -3821,6 +3908,13 @@
   .pp-activity { padding: 9px 8px 8px 6px; gap: 6px; }
   .pp-activity-del,
   .pp-activity-duplicate { padding: 2px; }
+
+  /* Barre de sélection multiple : les 4 actions (groupe/jour/supprimer/annuler)
+     ne tiennent pas sur une ligne à cette largeur — elles passent à la ligne
+     plutôt que déborder, et le compteur garde toute la largeur au-dessus. */
+  .pp-selection-bar { margin: 0 4px 8px; padding: 8px; }
+  .pp-selection-count { width: 100%; }
+  .pp-selection-actions { margin-left: 0; }
 
   /* Vue Jours : lignes d'activité denses — la pastille de couleur est déjà
      portée par la barre de groupe et le chip horaire, le point est masqué. */

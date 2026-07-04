@@ -4,6 +4,7 @@ import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
+import SelectionActionBar from './SelectionActionBar';
 import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 
@@ -25,13 +26,21 @@ function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
   );
 }
 
-export default function DaytripCard({ city, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignCityToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
+export default function DaytripCard({
+  city, activities, groups, lodgings, tripId, tripStartDate, tripEndDate,
+  onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
+  onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAssignCityToDay,
+  onAddLodging, onUpdateLodging, onRemoveLodging,
+}) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
   const [collapsed, setCollapsed] = useState(false);
   const [showDays, setShowDays] = useState(false);
+  // Sélection multiple (lieux uniquement) — même mécanique que CityBlock.jsx.
+  const [selecting, setSelecting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
 
   const dtActivities = activities
     .filter(a => a.city_id === city.id)
@@ -59,6 +68,35 @@ export default function DaytripCard({ city, activities, groups, lodgings, tripId
   const handleManualAdd = (name) => {
     onAddActivity(tripId, city.id, name, {});
     setAddingPlace(false);
+  };
+
+  const toggleSelecting = () => {
+    setSelecting(s => !s);
+    setSelectedIds(new Set());
+  };
+
+  const toggleSelected = (actId) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(actId)) next.delete(actId); else next.add(actId);
+      return next;
+    });
+  };
+
+  const validSelectedIds = dtPlaces.filter(a => selectedIds.has(a.id)).map(a => a.id);
+
+  const handleAssignGroup = (groupId) => {
+    if (validSelectedIds.length) onAssignActivitiesToGroup(validSelectedIds, groupId);
+  };
+
+  const handleAssignDay = (date) => {
+    if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
+  };
+
+  const handleDeleteSelection = () => {
+    if (validSelectedIds.length) onRemoveActivities(validSelectedIds);
+    setSelecting(false);
+    setSelectedIds(new Set());
   };
 
   const stop = (e) => e.stopPropagation();
@@ -110,6 +148,17 @@ export default function DaytripCard({ city, activities, groups, lodgings, tripId
         </span>
 
         <div className="pp-city-actions" onClick={stop}>
+          {dtPlaces.length > 0 && (
+            <button
+              className={`pp-icon-btn${selecting ? ' pp-icon-btn--active' : ''}`}
+              onClick={toggleSelecting}
+              title={selecting ? 'Quitter la sélection' : 'Sélectionner plusieurs lieux'}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </button>
+          )}
           {dtActivities.length > 0 && (
             <div style={{ position: 'relative' }}>
               <button className="pp-icon-btn" title="Planifier cette excursion sur un jour" onClick={() => setShowDays(s => !s)}>
@@ -145,6 +194,18 @@ export default function DaytripCard({ city, activities, groups, lodgings, tripId
 
       {!collapsed && (
         <div className="pp-daytrip-body">
+          {selecting && validSelectedIds.length > 0 && (
+            <SelectionActionBar
+              count={validSelectedIds.length}
+              groups={groups}
+              tripStartDate={tripStartDate}
+              tripEndDate={tripEndDate}
+              onAssignGroup={handleAssignGroup}
+              onAssignDay={handleAssignDay}
+              onDelete={handleDeleteSelection}
+              onCancel={toggleSelecting}
+            />
+          )}
           <Droppable droppableId={`activities-${city.id}`}>
             {(provided, snapshot) => (
               <ul
@@ -163,6 +224,10 @@ export default function DaytripCard({ city, activities, groups, lodgings, tripId
                     onUpdate={onUpdateActivity}
                     onDuplicate={onDuplicateActivity}
                     onAssignToGroup={onAssignActivityToGroup}
+                    selectable={selecting}
+                    selected={selectedIds.has(act.id)}
+                    onToggleSelect={toggleSelected}
+                    dragDisabled={selecting}
                   />
                 ))}
                 {provided.placeholder}

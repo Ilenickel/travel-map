@@ -6,15 +6,26 @@ import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
 import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
+import SelectionActionBar from './SelectionActionBar';
 import { sumCosts, formatPrice } from '../../lib/planningUtils';
 
-export default function CityBlock({ city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
+export default function CityBlock({
+  city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [],
+  onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
+  onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
+  onAddLodging, onUpdateLodging, onRemoveLodging,
+}) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
   const [collapsed, setCollapsed] = useState(false);
+  // Sélection multiple (lieux uniquement, pas les trajets) : cocher plusieurs
+  // cartes pour les assigner à un groupe, les déplacer sur un jour, ou les
+  // supprimer en une fois — cf. SelectionActionBar.
+  const [selecting, setSelecting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
 
   const cityActivities = activities
     .filter(a => a.city_id === city.id)
@@ -48,6 +59,37 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
       place_address: place.address || null,
     });
     setAddingPlace(false);
+  };
+
+  const toggleSelecting = () => {
+    setSelecting(s => !s);
+    setSelectedIds(new Set());
+  };
+
+  const toggleSelected = (actId) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(actId)) next.delete(actId); else next.add(actId);
+      return next;
+    });
+  };
+
+  // Ne garde que les ids qui existent encore réellement parmi les lieux affichés
+  // (filet de sécurité si un lieu a disparu par un autre biais pendant la sélection).
+  const validSelectedIds = placeActivities.filter(a => selectedIds.has(a.id)).map(a => a.id);
+
+  const handleAssignGroup = (groupId) => {
+    if (validSelectedIds.length) onAssignActivitiesToGroup(validSelectedIds, groupId);
+  };
+
+  const handleAssignDay = (date) => {
+    if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
+  };
+
+  const handleDeleteSelection = () => {
+    if (validSelectedIds.length) onRemoveActivities(validSelectedIds);
+    setSelecting(false);
+    setSelectedIds(new Set());
   };
 
   const handleManualAdd = (name) => {
@@ -119,6 +161,17 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
             )}
 
             <div className="pp-city-actions">
+              {placeActivities.length > 0 && (
+                <button
+                  className={`pp-icon-btn${selecting ? ' pp-icon-btn--active' : ''}`}
+                  onClick={toggleSelecting}
+                  title={selecting ? 'Quitter la sélection' : 'Sélectionner plusieurs lieux'}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </button>
+              )}
               <button className="pp-icon-btn" onClick={() => setEditing(true)} title="Renommer la ville">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
@@ -134,6 +187,18 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
 
           {!collapsed && (
             <div className="pp-city-body">
+              {selecting && validSelectedIds.length > 0 && (
+                <SelectionActionBar
+                  count={validSelectedIds.length}
+                  groups={groups}
+                  tripStartDate={tripStartDate}
+                  tripEndDate={tripEndDate}
+                  onAssignGroup={handleAssignGroup}
+                  onAssignDay={handleAssignDay}
+                  onDelete={handleDeleteSelection}
+                  onCancel={toggleSelecting}
+                />
+              )}
               <Droppable droppableId={`activities-${city.id}`}>
                 {(provided, snapshot) => (
                   <ul
@@ -152,6 +217,10 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
                         onUpdate={onUpdateActivity}
                         onDuplicate={onDuplicateActivity}
                         onAssignToGroup={onAssignActivityToGroup}
+                        selectable={selecting}
+                        selected={selectedIds.has(act.id)}
+                        onToggleSelect={toggleSelected}
+                        dragDisabled={selecting}
                       />
                     ))}
                     {provided.placeholder}
@@ -213,9 +282,12 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
                       onRename={onRename}
                       onAddActivity={onAddActivity}
                       onRemoveActivity={onRemoveActivity}
+                      onRemoveActivities={onRemoveActivities}
                       onUpdateActivity={onUpdateActivity}
                       onDuplicateActivity={onDuplicateActivity}
                       onAssignActivityToGroup={onAssignActivityToGroup}
+                      onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+                      onAssignActivitiesToDay={onAssignActivitiesToDay}
                       onAssignCityToDay={onAssignCityToDay}
                       onAddLodging={onAddLodging}
                       onUpdateLodging={onUpdateLodging}

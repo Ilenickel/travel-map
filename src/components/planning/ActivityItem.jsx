@@ -15,6 +15,7 @@ export default function ActivityItem({
   act, index, tripStartDate, groups, onRemove, onUpdate, onDuplicate, onAssignToGroup,
   variant = 'list', draggableIdPrefix = '', cities, destinations,
   onResizeStart, resizing = false, dragDisabled = false,
+  selectable = false, selected = false, onToggleSelect,
 }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(act.name);
@@ -169,14 +170,21 @@ export default function ActivityItem({
     </button>
   );
 
+  // Le glisser-déposer normal (réordonner, déplacer vers un groupe/jour) et la
+  // sélection multiple se marchent dessus si les deux sont actifs en même temps
+  // (un mousedown pour démarrer un drag vs un clic pour cocher) — désactivé le
+  // temps que la sélection est active, quel que soit ce que le parent a lui-même
+  // déjà réglé via `dragDisabled`.
+  const effectiveDragDisabled = dragDisabled || selectable;
+
   return (
-    <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={dragDisabled}>
+    <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={effectiveDragDisabled}>
       {(provided, snapshot) => {
         const card = (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...(!editing && !dragDisabled ? provided.dragHandleProps : {})}
+          {...(!editing && !effectiveDragDisabled ? provided.dragHandleProps : {})}
           onMouseEnter={() => setHoveredActivity(act.id)}
           onMouseLeave={() => clearHoveredActivity(act.id)}
           className={
@@ -392,16 +400,22 @@ export default function ActivityItem({
               )}
             </div>
           ) : (
-            <div className="pp-activity-view" onClick={startEditing} role="button" tabIndex={0}>
+            <div
+              className={`pp-activity-view${selected ? ' pp-activity-view--selected' : ''}`}
+              onClick={selectable ? () => onToggleSelect(act.id) : startEditing}
+              role="button"
+              tabIndex={0}
+            >
               {checkButton}
-              {/* Dot coloré = zone picker rapide */}
+              {/* Dot coloré = zone picker rapide (désactivé en mode sélection : pas
+                  de sous-menu à ouvrir pendant qu'on coche plusieurs cartes) */}
               <div style={{ position: 'relative', flexShrink: 0 }}>
                 <div
-                  className={`pp-activity-cat-dot${groups?.length ? ' pp-activity-cat-dot--clickable' : ''}`}
+                  className={`pp-activity-cat-dot${groups?.length && !selectable ? ' pp-activity-cat-dot--clickable' : ''}`}
                   style={{ background: accentColor }}
                   title={groups?.length ? (group ? `Groupe : ${group.name} — cliquer pour changer` : 'Cliquer pour assigner un groupe') : (cat.label)}
                   onClick={e => {
-                    if (!groups?.length) return;
+                    if (!groups?.length || selectable) return;
                     e.stopPropagation();
                     setShowGroupPicker(s => !s);
                   }}
@@ -467,10 +481,19 @@ export default function ActivityItem({
                 </div>
                 {act.description && <p className="pp-activity-desc">{act.description}</p>}
               </div>
+              {selectable && (
+                <span className={`pp-select-circle${selected ? ' pp-select-circle--checked' : ''}`}>
+                  {selected && (
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                  )}
+                </span>
+              )}
             </div>
           )}
 
-          {!editing && onDuplicate && (
+          {!editing && !selectable && onDuplicate && (
             <button
               className="pp-activity-duplicate"
               onClick={e => { e.stopPropagation(); onDuplicate(act.id); }}
@@ -482,7 +505,7 @@ export default function ActivityItem({
             </button>
           )}
 
-          {!editing && (
+          {!editing && !selectable && (
             <button
               className="pp-activity-del"
               onClick={e => {

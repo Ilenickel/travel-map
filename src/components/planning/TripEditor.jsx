@@ -18,9 +18,9 @@ export default function TripEditor({
   tripData, tripId,
   onUpdateTrip, onAddDestination, onRemoveDestination,
   onAddCity, onAddDaytrip, onRemoveCity, onRenameCity, onReorderCities,
-  onAddActivity, onRemoveActivity, onUpdateActivity, onReorderActivities,
-  onDuplicateActivity, onUndoRemoveActivity,
-  onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignGroupToDay, onAssignCityToDay,
+  onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onReorderActivities,
+  onDuplicateActivity, onUndoLastDelete,
+  onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignGroupToDay, onAssignCityToDay, onAssignActivitiesToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
   onLeaveTrip,
 }) {
@@ -201,12 +201,12 @@ export default function TripEditor({
         onDuplicateActivity(hoveredId);
       } else if (e.key === 'z' || e.key === 'Z') {
         e.preventDefault();
-        onUndoRemoveActivity();
+        onUndoLastDelete();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onDuplicateActivity, onUndoRemoveActivity]);
+  }, [onDuplicateActivity, onUndoLastDelete]);
 
   // Échap réduit la carte en superposition (sans la fermer complètement)
   useEffect(() => {
@@ -426,9 +426,12 @@ export default function TripEditor({
                     onRenameCity={onRenameCity}
                     onAddActivity={onAddActivity}
                     onRemoveActivity={onRemoveActivity}
+                    onRemoveActivities={onRemoveActivities}
                     onUpdateActivity={onUpdateActivity}
                     onDuplicateActivity={onDuplicateActivity}
                     onAssignActivityToGroup={onAssignActivityToGroup}
+                    onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+                    onAssignActivitiesToDay={onAssignActivitiesToDay}
                     onAddLodging={onAddLodging}
                     onUpdateLodging={onUpdateLodging}
                     onRemoveLodging={onRemoveLodging}

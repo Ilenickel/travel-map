@@ -7,7 +7,13 @@ export function useTrips(userId) {
   const [selectedTripId, setSelectedTripId] = useState(null);
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [lastDeletedActivity, setLastDeletedActivity] = useState(null);
+  // Annulation (Ctrl+Z) — un seul niveau, comme avant, mais généralisé à 3 types
+  // d'entités au lieu de la seule activité : { cities, activities, lodgings }
+  // (tableaux, vides sauf ceux concernés). Les lignes capturées gardent leur `id`
+  // d'origine pour que la ré-insertion restaure exactement la même ligne (et pas
+  // une copie avec un nouvel id, qui casserait toute référence externe déjà
+  // affichée ailleurs le temps du rendu suivant).
+  const [lastDeletedItem, setLastDeletedItem] = useState(null);
 
   const currentTripRef = useRef(null);
   // Compteur incrémenté de façon synchrone (pas via un state) : deux Ctrl+C très
@@ -77,7 +83,7 @@ export function useTrips(userId) {
     // silencieusement une activité dans le mauvais voyage affiché à l'écran) — avant
     // le "return" ci-dessous aussi (voyage fermé sans qu'un autre soit rouvert),
     // pour ne jamais dépendre du fait que l'éditeur soit démonté entre-temps.
-    setLastDeletedActivity(null);
+    setLastDeletedItem(null);
     if (!selectedTripId) { setTripData(null); return; }
     loadTripData(selectedTripId);
   }, [selectedTripId, loadTripData]);
@@ -268,11 +274,17 @@ export function useTrips(userId) {
       activities: prev.activities.filter(a => !cityIds.includes(a.city_id)),
       lodgings: (prev.lodgings || []).filter(l => !cityIds.includes(l.city_id)),
     } : prev);
-    // Un Ctrl+Z en attente pour un lieu de ce pays échouerait silencieusement (sa
-    // ville n'existe plus, la ré-insertion violerait la clé étrangère) : autant
-    // vider l'annulation proprement plutôt que de laisser une tentative vouée à
-    // l'échec.
-    setLastDeletedActivity(prev => (prev && cityIds.includes(prev.city_id)) ? null : prev);
+    // Un Ctrl+Z en attente pour un lieu (ou une ville) de ce pays échouerait
+    // silencieusement (la ville/le pays référencé n'existe plus, la ré-insertion
+    // violerait la clé étrangère) : autant vider l'annulation proprement plutôt
+    // que de laisser une tentative vouée à l'échec.
+    setLastDeletedItem(prev => {
+      if (!prev) return prev;
+      const stale = prev.cities.some(c => c.destination_id === destId)
+        || prev.activities.some(a => cityIds.includes(a.city_id))
+        || prev.lodgings.some(l => cityIds.includes(l.city_id));
+      return stale ? null : prev;
+    });
   }, [tripData]);
 
   // ─── Cities CRUD ───
@@ -309,14 +321,25 @@ export function useTrips(userId) {
   const removeCity = useCallback(async (cityId) => {
     // Les excursions (daytrips) rattachées à cette ville cascadent aussi en base
     // (parent_city_id ... ON DELETE CASCADE) : leurs activités/hébergements doivent
-    // être nettoyés du Storage ici aussi, avant la suppression SQL.
-    const childCityIds = (tripData?.cities ?? []).filter(c => c.parent_city_id === cityId).map(c => c.id);
-    const allCityIds = [cityId, ...childCityIds];
+    // être nettoyés du Storage ici aussi, avant la suppression SQL. On capture tout
+    // le sous-arbre (ville + excursions + leurs activités/hébergements) AVANT la
+    // suppression pour permettre un Ctrl+Z qui restaure l'ensemble d'un coup.
+    const baseCity = (tripData?.cities ?? []).find(c => c.id === cityId) || null;
+    const childCities = (tripData?.cities ?? []).filter(c => c.parent_city_id === cityId);
+    const allCityIds = [cityId, ...childCities.map(c => c.id)];
+    const capturedActivities = (tripData?.activities ?? []).filter(a => allCityIds.includes(a.city_id));
+    const capturedLodgings = (tripData?.lodgings ?? []).filter(l => allCityIds.includes(l.city_id));
     await cleanupAttachmentsStorage({
-      activityIds: (tripData?.activities ?? []).filter(a => allCityIds.includes(a.city_id)).map(a => a.id),
-      lodgingIds: (tripData?.lodgings ?? []).filter(l => allCityIds.includes(l.city_id)).map(l => l.id),
+      activityIds: capturedActivities.map(a => a.id),
+      lodgingIds: capturedLodgings.map(l => l.id),
     });
-    await supabase.from('trip_cities').delete().eq('id', cityId);
+    // Comme deleteTrip : si la ligne ne matche aucune règle RLS (ex. appelée par
+    // erreur sur un voyage partagé sans les droits), .delete() réussit sans
+    // erreur mais n'affecte aucune ligne — sans cette vérification, la ville
+    // disparaîtrait de l'écran (et un Ctrl+Z serait proposé) alors qu'elle existe
+    // toujours en base, prête à réapparaître au prochain rechargement.
+    const { data: deletedCityRows, error: cityDelErr } = await supabase.from('trip_cities').delete().eq('id', cityId).select('id');
+    if (cityDelErr || !deletedCityRows?.length) { console.error('removeCity failed (aucune ligne supprimée ?):', cityDelErr); return; }
     setTripData(prev => {
       if (!prev) return prev;
       // La suppression cascade en base (parent_city_id ... ON DELETE CASCADE) sur les
@@ -332,13 +355,16 @@ export function useTrips(userId) {
         lodgings: (prev.lodgings || []).filter(l => !removedCityIds.has(l.city_id)),
       };
     });
-    // Même filet de sécurité que removeDestination : un Ctrl+Z pour un lieu de
-    // cette ville (ou d'une de ses excursions) échouerait silencieusement.
-    setLastDeletedActivity(prev => {
-      if (!prev) return prev;
-      const childCityIds = (tripData?.cities ?? []).filter(c => c.parent_city_id === cityId).map(c => c.id);
-      return [cityId, ...childCityIds].includes(prev.city_id) ? null : prev;
-    });
+    // Une ville supprimée par erreur reste rare mais très coûteuse (elle peut
+    // emporter des dizaines de lieux planifiés) : elle mérite le même filet de
+    // sécurité que la suppression d'un seul lieu.
+    if (baseCity) {
+      setLastDeletedItem({
+        cities: [baseCity, ...childCities],
+        activities: capturedActivities,
+        lodgings: capturedLodgings,
+      });
+    }
   }, [tripData]);
 
   const reorderCities = useCallback(async (destinationId, newOrder) => {
@@ -387,24 +413,106 @@ export function useTrips(userId) {
 
   const removeActivity = useCallback(async (actId) => {
     // On garde une copie de la ligne juste avant de la supprimer, pour permettre
-    // un Ctrl+Z (undoRemoveActivity) juste après — seule action couverte par
-    // l'annulation pour l'instant : c'est la seule vraiment destructrice/irréversible
+    // un Ctrl+Z (undoLastDelete) juste après — les suppressions (lieu, hébergement,
+    // ville, sélection multiple) sont les seules vraiment destructrices/irréversibles
     // à l'oeil nu (une simple erreur de glisser-déposer se corrige en un geste).
     const orig = tripData?.activities?.find(a => a.id === actId) || null;
     // Nettoyage Storage AVANT la suppression SQL (voir deleteTrip pour le pourquoi).
     await cleanupAttachmentsStorage({ activityIds: [actId] });
-    await supabase.from('trip_activities').delete().eq('id', actId);
+    // .select('id') pour vérifier que la ligne a vraiment été supprimée (voir
+    // deleteTrip) : sans ça, un lieu bloqué par RLS semblait supprimé à l'écran
+    // (et un Ctrl+Z se proposait de le "restaurer") alors qu'il existait toujours
+    // en base — l'undo échouait alors silencieusement (clé déjà existante) et
+    // rien ne revenait jamais, même si le lieu réapparaissait après rechargement.
+    const { data, error } = await supabase.from('trip_activities').delete().eq('id', actId).select('id');
+    if (error || !data?.length) { console.error('removeActivity failed (aucune ligne supprimée ?):', error); return; }
     setTripData(prev => prev ? { ...prev, activities: prev.activities.filter(a => a.id !== actId) } : prev);
-    if (orig) setLastDeletedActivity(orig);
+    if (orig) setLastDeletedItem({ cities: [], activities: [orig], lodgings: [] });
   }, [tripData]);
 
-  const undoRemoveActivity = useCallback(async () => {
-    if (!lastDeletedActivity) return;
-    const { data, error } = await supabase.from('trip_activities').insert(lastDeletedActivity).select().single();
-    if (error || !data) { console.error('undoRemoveActivity failed:', error); return; }
-    setTripData(prev => prev ? { ...prev, activities: [...prev.activities, data] } : prev);
-    setLastDeletedActivity(null);
-  }, [lastDeletedActivity]);
+  // Suppression groupée (sélection multiple) — même filet de sécurité que
+  // removeActivity, mais capture toutes les lignes concernées d'un coup pour
+  // qu'un seul Ctrl+Z restaure toute la sélection, pas juste la dernière.
+  const removeActivities = useCallback(async (ids) => {
+    if (!ids?.length) return;
+    const origs = (tripData?.activities ?? []).filter(a => ids.includes(a.id));
+    if (!origs.length) return;
+    await cleanupAttachmentsStorage({ activityIds: ids });
+    // .select('id') pour ne retirer de l'écran (et ne proposer en Ctrl+Z) QUE ce
+    // qui a vraiment été supprimé en base (voir deleteTrip/removeActivity) — une
+    // suppression groupée bloquée en partie par RLS ne doit ni faire disparaître
+    // les lignes non supprimées, ni fausser l'undo sur celles qui l'ont été.
+    const { data, error } = await supabase.from('trip_activities').delete().in('id', ids).select('id');
+    if (error) { console.error('removeActivities failed:', error); return; }
+    const deletedIds = new Set((data || []).map(r => r.id));
+    if (!deletedIds.size) { console.error('removeActivities: aucune ligne supprimée (droits insuffisants ?)'); return; }
+    setTripData(prev => prev ? { ...prev, activities: prev.activities.filter(a => !deletedIds.has(a.id)) } : prev);
+    setLastDeletedItem({ cities: [], activities: origs.filter(a => deletedIds.has(a.id)), lodgings: [] });
+  }, [tripData]);
+
+  // Annulation générique (Ctrl+Z) — restaure la dernière suppression, quel que
+  // soit son type (lieu, sélection de lieux, hébergement, ou ville entière avec
+  // ses excursions/lieux/hébergements). Les villes sont réinsérées en 2 temps
+  // (ville de base, puis excursions) : `parent_city_id` doit pouvoir résoudre
+  // vers une ville déjà présente en base, un insert groupé ne garantit pas que
+  // les lignes soient traitées dans l'ordre où on les donne.
+  const undoLastDelete = useCallback(async () => {
+    if (!lastDeletedItem) return;
+    // `const`, jamais réassignées : un setTripData(prev => ...) planifié ici ne
+    // s'exécute pas forcément avant la ligne suivante (React 18 rejoue même la
+    // fonction de mise à jour en double en dev, pour vérifier sa pureté) — si ces
+    // variables étaient réassignées à [] juste après avoir été passées à
+    // setTripData (comme dans une version précédente de cette fonction), la
+    // fermeture pouvait retomber sur un tableau déjà vidé et ne rien restaurer
+    // du tout, silencieusement. En ne les mutant jamais, chaque relecture de la
+    // fermeture retombe forcément sur la même valeur correcte.
+    const { cities = [], activities = [], lodgings = [] } = lastDeletedItem;
+
+    // Chaque groupe (villes, puis activités, puis hébergements) est restauré et
+    // reflété en local dès qu'il réussit, avant de passer au suivant — si une
+    // étape plus loin échoue (réseau perdu en plein Ctrl+Z, par ex.), on ne
+    // garde dans lastDeletedItem QUE ce qui reste réellement à restaurer : sans
+    // ça, réessayer réinsérerait une ligne déjà restaurée (clé déjà existante).
+    if (cities.length) {
+      const [baseCity, ...childCities] = cities;
+      const { error: baseErr } = await supabase.from('trip_cities').insert(baseCity);
+      if (baseErr) { console.error('undoLastDelete (ville) failed:', baseErr); return; }
+      if (childCities.length) {
+        const { error: childErr } = await supabase.from('trip_cities').insert(childCities);
+        if (childErr) {
+          console.error('undoLastDelete (excursions) failed:', childErr);
+          setTripData(prev => prev ? { ...prev, cities: [...prev.cities, baseCity] } : prev);
+          // La ville de base est restaurée ; ses excursions restent perdues plutôt
+          // que de risquer un doublon en réessayant plus tard.
+          setLastDeletedItem({ cities: [], activities, lodgings });
+          return;
+        }
+      }
+      setTripData(prev => prev ? { ...prev, cities: [...prev.cities, ...cities] } : prev);
+    }
+
+    if (activities.length) {
+      const { error } = await supabase.from('trip_activities').insert(activities);
+      if (error) {
+        console.error('undoLastDelete (activités) failed:', error);
+        setLastDeletedItem({ cities: [], activities, lodgings });
+        return;
+      }
+      setTripData(prev => prev ? { ...prev, activities: [...prev.activities, ...activities] } : prev);
+    }
+
+    if (lodgings.length) {
+      const { error } = await supabase.from('trip_lodgings').insert(lodgings);
+      if (error) {
+        console.error('undoLastDelete (hébergements) failed:', error);
+        setLastDeletedItem({ cities: [], activities: [], lodgings });
+        return;
+      }
+      setTripData(prev => prev ? { ...prev, lodgings: [...(prev.lodgings || []), ...lodgings] } : prev);
+    }
+
+    setLastDeletedItem(null);
+  }, [lastDeletedItem]);
 
   // Duplique une activité (lieu ou trajet) à l'identique, ajoutée à la fin de la
   // liste de sa ville — utile pour une activité que l'on veut faire deux fois
@@ -470,7 +578,7 @@ export function useTrips(userId) {
     // Même filet de sécurité que removeCity/removeDestination : un Ctrl+Z pour un
     // lieu qui appartenait à l'une de ces zones échouerait silencieusement (clé
     // étrangère group_id pointant vers un groupe qui n'existe plus).
-    setLastDeletedActivity(prev => (prev && autoGroupIds.includes(prev.group_id)) ? null : prev);
+    setLastDeletedItem(prev => (prev && prev.activities.some(a => autoGroupIds.includes(a.group_id))) ? null : prev);
   }, [tripData]);
 
   const updateGroup = useCallback(async (groupId, updates) => {
@@ -489,7 +597,7 @@ export function useTrips(userId) {
       groups: (prev.groups || []).filter(g => g.id !== groupId),
       activities: prev.activities.map(a => a.group_id === groupId ? { ...a, group_id: null } : a),
     } : prev);
-    setLastDeletedActivity(prev => (prev && prev.group_id === groupId) ? null : prev);
+    setLastDeletedItem(prev => (prev && prev.activities.some(a => a.group_id === groupId)) ? null : prev);
   }, []);
 
   const assignActivityToGroup = useCallback(async (actId, groupId) => {
@@ -498,6 +606,28 @@ export function useTrips(userId) {
     if (error) { console.error('assignActivityToGroup failed:', error); return; }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => a.id === actId ? { ...a, group_id: val } : a),
+    } : prev);
+  }, []);
+
+  // Assignation groupée (sélection multiple) — même requête que assignGroupToDay/
+  // assignCityToDay, juste paramétrée par une liste d'ids choisie à la main plutôt
+  // que par "tout un groupe" ou "toute une ville".
+  const assignActivitiesToGroup = useCallback(async (ids, groupId) => {
+    if (!ids?.length) return;
+    const val = groupId || null;
+    const { error } = await supabase.from('trip_activities').update({ group_id: val }).in('id', ids);
+    if (error) { console.error('assignActivitiesToGroup failed:', error); return; }
+    setTripData(prev => prev ? {
+      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, group_id: val } : a),
+    } : prev);
+  }, []);
+
+  const assignActivitiesToDay = useCallback(async (ids, date, time = null) => {
+    if (!ids?.length) return;
+    const { error } = await supabase.from('trip_activities').update({ visit_date: date, visit_time: time }).in('id', ids);
+    if (error) { console.error('assignActivitiesToDay failed:', error); return; }
+    setTripData(prev => prev ? {
+      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time } : a),
     } : prev);
   }, []);
 
@@ -535,14 +665,20 @@ export function useTrips(userId) {
   }, []);
 
   const removeLodging = useCallback(async (lodgingId) => {
+    // Même filet de sécurité que removeActivity : une copie avant suppression
+    // permet un Ctrl+Z (undoLastDelete) juste après.
+    const orig = tripData?.lodgings?.find(l => l.id === lodgingId) || null;
     // Nettoyage Storage AVANT la suppression SQL (voir deleteTrip pour le pourquoi).
     await cleanupAttachmentsStorage({ lodgingIds: [lodgingId] });
-    const { error } = await supabase.from('trip_lodgings').delete().eq('id', lodgingId);
-    if (error) { console.error('removeLodging failed:', error); return; }
+    // .select('id') pour vérifier que la ligne a vraiment été supprimée (voir
+    // deleteTrip/removeActivity).
+    const { data, error } = await supabase.from('trip_lodgings').delete().eq('id', lodgingId).select('id');
+    if (error || !data?.length) { console.error('removeLodging failed (aucune ligne supprimée ?):', error); return; }
     setTripData(prev => prev ? {
       ...prev, lodgings: (prev.lodgings || []).filter(l => l.id !== lodgingId),
     } : prev);
-  }, []);
+    if (orig) setLastDeletedItem({ cities: [], activities: [], lodgings: [orig] });
+  }, [tripData]);
 
   // Planifie toutes les activités d'une ville (ou excursion) sur un jour donné
   const assignCityToDay = useCallback(async (cityId, date, time = null) => {
@@ -560,9 +696,9 @@ export function useTrips(userId) {
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
-    addActivity, updateActivity, removeActivity, reorderActivities,
-    duplicateActivity, undoRemoveActivity, canUndoRemoveActivity: !!lastDeletedActivity,
-    addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignGroupToDay, assignCityToDay,
+    addActivity, updateActivity, removeActivity, removeActivities, reorderActivities,
+    duplicateActivity, undoLastDelete, canUndo: !!lastDeletedItem,
+    addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignActivitiesToGroup, assignGroupToDay, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
   };
 }
