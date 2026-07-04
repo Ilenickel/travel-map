@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Draggable } from '@hello-pangea/dnd';
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration, formatPrice } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
@@ -170,7 +171,8 @@ export default function ActivityItem({
 
   return (
     <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={dragDisabled}>
-      {(provided, snapshot) => (
+      {(provided, snapshot) => {
+        const card = (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
@@ -504,7 +506,15 @@ export default function ActivityItem({
             </button>
           )}
         </div>
-      )}
+        );
+        // Pendant le drag, la lib positionne la carte en `position: fixed` par
+        // rapport au viewport — mais si un ancêtre a `overflow` (ex. la liste
+        // scrollable des activités "Non planifiées"), ce fixed se retrouve
+        // piégé/rogné dans ce conteneur au lieu de suivre le curseur à l'écran.
+        // Un portail vers <body> sort la carte de tout ancêtre à overflow le
+        // temps du drag, sans rien changer au rendu normal (non-dragging).
+        return snapshot.isDragging ? createPortal(card, document.body) : card;
+      }}
     </Draggable>
   );
 }
