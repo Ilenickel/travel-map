@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { useTrips } from '../hooks/useTrips';
 import { useInvitations } from '../hooks/useInvitations';
 import AuthModal from '../components/AuthModal';
@@ -13,6 +15,7 @@ import './PlanningPage.css';
 // ─── SEO ─────────────────────────────────────────────────────────
 
 function usePlanningPageSEO() {
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     const prev = {
       title: document.title,
@@ -20,11 +23,11 @@ function usePlanningPageSEO() {
       ogTitle: document.querySelector('meta[property="og:title"]')?.getAttribute('content'),
       canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href'),
     };
-    document.title = 'Planifier mon voyage — Triply';
-    document.querySelector('meta[name="description"]')?.setAttribute('content',
-      'Planifiez votre voyage étape par étape avec Triply : créez votre itinéraire, organisez vos villes, lieux et activités, gérez vos dates — gratuitement et en ligne.'
-    );
-    document.querySelector('meta[property="og:title"]')?.setAttribute('content', 'Planifier mon voyage — Triply');
+    document.title = t('page.title');
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t('page.description'));
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', t('page.title'));
+    // L'URL canonique reste fixe (une seule route /planifier, pas de version /en) :
+    // hors du périmètre i18n de cette page tant qu'il n'y a pas de routes localisées.
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://travel-map-blush.vercel.app/planifier');
     return () => {
       document.title = prev.title;
@@ -32,32 +35,57 @@ function usePlanningPageSEO() {
       if (prev.ogTitle) document.querySelector('meta[property="og:title"]')?.setAttribute('content', prev.ogTitle);
       if (prev.canonical) document.querySelector('link[rel="canonical"]')?.setAttribute('href', prev.canonical);
     };
-  }, []);
+  }, [i18n.language, t]);
 }
 
 // ─── Topbar ───────────────────────────────────────────────────────
 
+function LanguageSwitcher() {
+  const { t } = useTranslation();
+  const { language, changeLanguage } = useLanguage();
+  return (
+    <div className="pp-toolbar-group" role="group" aria-label={t('languageSwitcher.label')}>
+      <button
+        type="button"
+        className={`pp-toolbar-btn${language === 'fr' ? ' active' : ''}`}
+        onClick={() => changeLanguage('fr')}
+      >
+        FR
+      </button>
+      <button
+        type="button"
+        className={`pp-toolbar-btn${language === 'en' ? ' active' : ''}`}
+        onClick={() => changeLanguage('en')}
+      >
+        EN
+      </button>
+    </div>
+  );
+}
+
 function PlanningTopbar() {
+  const { t } = useTranslation();
   return (
     <header className="pp-topbar">
-      <Link to="/" className="pp-topbar-brand" aria-label="Retour à la carte">
+      <Link to="/" className="pp-topbar-brand" aria-label={t('topbar.backToMapLabel')}>
         <img src="/icon.png" alt="Triply" className="pp-brand-icon" />
         <span className="pp-brand-name">Triply</span>
       </Link>
       <nav className="pp-topbar-nav">
         <span className="pp-topbar-breadcrumb">
           <span className="pp-topbar-breadcrumb-sep">/</span>
-          Planifier
+          {t('topbar.breadcrumb')}
         </span>
       </nav>
       <div className="pp-topbar-right">
+        <LanguageSwitcher />
         <Link to="/" className="pp-btn pp-btn--home">
           <span className="pp-btn--home-icon">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
             </svg>
           </span>
-          Accueil
+          {t('topbar.homeButton')}
         </Link>
       </div>
     </header>
@@ -67,19 +95,20 @@ function PlanningTopbar() {
 // ─── Invitations en attente (bandeau) ────────────────────────────
 
 function PendingInvitations({ pending, onAccept, onDecline }) {
+  const { t } = useTranslation();
   if (!pending.length) return null;
   return (
     <div className="pp-pending-invites">
       {pending.map(inv => (
         <div key={inv.id} className="pp-pending-invite">
           <div className="pp-pending-invite-text">
-            <span className="pp-pending-invite-from">{inv.inviter?.display_name || 'Quelqu\'un'}</span>
-            {' '}vous invite au voyage{' '}
-            <strong>« {inv.trips?.title || 'Voyage'} »</strong>
+            <span className="pp-pending-invite-from">{inv.inviter?.display_name || t('invite.someoneFallback')}</span>
+            {' '}{t('invite.inviteVerb')}{' '}
+            <strong>{t('invite.tripQuoted', { title: inv.trips?.title || t('invite.tripFallback') })}</strong>
           </div>
           <div className="pp-pending-invite-actions">
-            <button className="pp-btn pp-btn--primary pp-btn--xs" onClick={() => onAccept(inv.id)}>Accepter</button>
-            <button className="pp-btn pp-btn--ghost pp-btn--xs" onClick={() => onDecline(inv.id)}>Refuser</button>
+            <button className="pp-btn pp-btn--primary pp-btn--xs" onClick={() => onAccept(inv.id)}>{t('invite.acceptButton')}</button>
+            <button className="pp-btn pp-btn--ghost pp-btn--xs" onClick={() => onDecline(inv.id)}>{t('invite.declineButton')}</button>
           </div>
         </div>
       ))}
@@ -90,6 +119,7 @@ function PendingInvitations({ pending, onAccept, onDecline }) {
 // ─── Main content (requires auth) ────────────────────────────────
 
 function PlanningMain() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const {
     trips, loading, selectedTripId, setSelectedTripId, tripData,
@@ -144,7 +174,7 @@ function PlanningMain() {
         {loading ? (
           <div className="pp-loading">
             <div className="pp-spinner" />
-            <span>Chargement…</span>
+            <span>{t('common:loading')}</span>
           </div>
         ) : selectedTripId && tripData?.trip ? (
           <TripEditor
@@ -191,6 +221,7 @@ function PlanningMain() {
 
 export default function PlanningPage() {
   usePlanningPageSEO();
+  const { t } = useTranslation();
   const { user, authModalOpen, setAuthModalOpen } = useAuth();
 
   if (!user) {
@@ -200,8 +231,8 @@ export default function PlanningPage() {
         <PlanningGate onConnect={() => setAuthModalOpen(true)} />
         {authModalOpen && <AuthModal onClose={() => setAuthModalOpen(false)} />}
         <div className="sr-only">
-          <h1>Planifier mon voyage — Triply</h1>
-          <p>Créez et organisez votre itinéraire de voyage étape par étape avec Triply.</p>
+          <h1>{t('page.title')}</h1>
+          <p>{t('page.description')}</p>
         </div>
       </div>
     );
@@ -210,7 +241,7 @@ export default function PlanningPage() {
   return (
     <div className="pp-app">
       <PlanningTopbar />
-      <div className="sr-only"><h1>Planifier mon voyage — Triply</h1></div>
+      <div className="sr-only"><h1>{t('page.title')}</h1></div>
       <PlanningMain />
     </div>
   );

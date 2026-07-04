@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useAttachmentsCount } from '../../context/AttachmentsCountContext';
 import { listAttachments, uploadAttachment, deleteAttachment, getSignedUrl, ALLOWED_MIME_TYPES } from '../../lib/attachments';
 
-function formatFileSize(bytes) {
+function formatFileSize(bytes, t) {
   if (!bytes) return '';
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} Ko`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+  if (bytes < 1024 * 1024) return t('attachments.sizeKo', { value: Math.round(bytes / 1024) });
+  return t('attachments.sizeMo', { value: (bytes / (1024 * 1024)).toFixed(1) });
 }
 
 function iconFor(mime) {
@@ -20,6 +21,7 @@ function iconFor(mime) {
 // useTrips — évite de faire traverser tripId/callbacks toute la hiérarchie
 // CityBlock → DaytripCard → DayView → ActivityItem pour cette seule fonctionnalité.
 export default function AttachmentsPanel({ tripId, activityId, lodgingId }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [attachments, setAttachments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,19 +81,19 @@ export default function AttachmentsPanel({ tripId, activityId, lodgingId }) {
     const tab = window.open('', '_blank', 'noopener,noreferrer');
     const url = await getSignedUrl(attachment.file_path);
     if (!url) {
-      setError("Impossible d'ouvrir ce fichier pour le moment.");
+      setError(t('attachments.openFailed'));
       tab?.close();
       return;
     }
     if (tab) tab.location.href = url;
-    else setError('Autorisez les pop-ups pour ouvrir cette pièce jointe.');
+    else setError(t('attachments.allowPopups'));
   };
 
   const handleDelete = async (attachment) => {
     setAttachments(prev => prev.filter(a => a.id !== attachment.id));
     const { error: delErr } = await deleteAttachment(attachment);
     if (!mountedRef.current) return;
-    if (delErr) { setError('Échec de la suppression.'); load(); return; }
+    if (delErr) { setError(t('attachments.deleteFailed')); load(); return; }
     refreshCounts();
   };
 
@@ -99,7 +101,7 @@ export default function AttachmentsPanel({ tripId, activityId, lodgingId }) {
 
   return (
     <div className="pp-attachments" onClick={e => e.stopPropagation()}>
-      <div className="pp-attachments-label">📎 Mes pièces jointes (billets, réservations, QR codes…) — visibles par vous seul{!user?.id ? ' (connectez-vous pour en ajouter)' : ''}</div>
+      <div className="pp-attachments-label">{t('attachments.panelLabel')}{!user?.id ? t('attachments.panelLabelLoginHint') : ''}</div>
       {!loading && attachments.length > 0 && (
         <ul className="pp-attachments-list">
           {attachments.map(a => (
@@ -108,17 +110,17 @@ export default function AttachmentsPanel({ tripId, activityId, lodgingId }) {
                 type="button"
                 className="pp-attachment-open"
                 onClick={() => handleOpen(a)}
-                title={`Ouvrir ${a.file_name}`}
+                title={t('attachments.openTitle', { name: a.file_name })}
               >
                 <span className="pp-attachment-icon">{iconFor(a.mime_type)}</span>
                 <span className="pp-attachment-name">{a.file_name}</span>
-                {a.file_size ? <span className="pp-attachment-size">{formatFileSize(a.file_size)}</span> : null}
+                {a.file_size ? <span className="pp-attachment-size">{formatFileSize(a.file_size, t)}</span> : null}
               </button>
               <button
                 type="button"
                 className="pp-attachment-del"
                 onClick={() => handleDelete(a)}
-                title="Supprimer cette pièce jointe"
+                title={t('attachments.deleteTitle')}
               >
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
@@ -141,7 +143,7 @@ export default function AttachmentsPanel({ tripId, activityId, lodgingId }) {
         onClick={() => fileInputRef.current?.click()}
         disabled={uploading || !user?.id}
       >
-        {uploading ? 'Envoi…' : '+ Ajouter un fichier (image ou PDF, 15 Mo max)'}
+        {uploading ? t('attachments.uploading') : t('attachments.addButton')}
       </button>
       {error && <p className="pp-attachment-error">{error}</p>}
     </div>

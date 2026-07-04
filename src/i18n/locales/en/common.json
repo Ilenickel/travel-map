@@ -1,0 +1,15 @@
+{
+  "actions": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "create": "Create",
+    "confirm": "Confirm",
+    "add": "Add",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "close": "Close"
+  },
+  "none": "None",
+  "loading": "Loading…"
+}

@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import i18n from '../i18n';
 
 const BUCKET = 'trip-attachments';
 
@@ -22,12 +23,12 @@ function sanitizeFileName(name) {
 }
 
 export function validateFile(file) {
-  if (!file) return "Aucun fichier sélectionné.";
+  if (!file) return i18n.t('attachments.validateNoFile', { ns: 'planning' });
   if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-    return 'Type de fichier non accepté (image JPG/PNG/WEBP/HEIC ou PDF uniquement).';
+    return i18n.t('attachments.validateBadType', { ns: 'planning' });
   }
   if (file.size > MAX_FILE_SIZE) {
-    return 'Fichier trop volumineux (15 Mo maximum).';
+    return i18n.t('attachments.validateTooLarge', { ns: 'planning' });
   }
   return null;
 }
@@ -45,7 +46,7 @@ export async function listAttachments({ activityId, lodgingId, uploadedBy }) {
 }
 
 export async function uploadAttachment({ tripId, activityId, lodgingId, file, uploadedBy }) {
-  if (!uploadedBy) return { error: 'Vous devez être connecté pour ajouter une pièce jointe.' };
+  if (!uploadedBy) return { error: i18n.t('attachments.needLoginToAdd', { ns: 'planning' }) };
   const validationError = validateFile(file);
   if (validationError) return { error: validationError };
 
@@ -61,7 +62,7 @@ export async function uploadAttachment({ tripId, activityId, lodgingId, file, up
     contentType: file.type,
     upsert: false,
   });
-  if (upErr) { console.error('uploadAttachment storage failed:', upErr); return { error: "Échec de l'envoi du fichier." }; }
+  if (upErr) { console.error('uploadAttachment storage failed:', upErr); return { error: i18n.t('attachments.uploadFailed', { ns: 'planning' }) }; }
 
   const { data, error: dbErr } = await supabase.from('trip_attachments').insert({
     trip_id: tripId,
@@ -78,7 +79,7 @@ export async function uploadAttachment({ tripId, activityId, lodgingId, file, up
     // Ne laisse pas un fichier orphelin dans le bucket privé si l'insert échoue.
     await supabase.storage.from(BUCKET).remove([path]);
     console.error('uploadAttachment db insert failed:', dbErr);
-    return { error: "Échec de l'enregistrement de la pièce jointe." };
+    return { error: i18n.t('attachments.saveFailed', { ns: 'planning' }) };
   }
   return { data };
 }

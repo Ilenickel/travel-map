@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { AttachmentsCountProvider } from '../../context/AttachmentsCountContext';
 import TripEditorHeader from './TripEditorHeader';
@@ -24,6 +25,7 @@ export default function TripEditor({
   onAddLodging, onUpdateLodging, onRemoveLodging,
   onLeaveTrip,
 }) {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { trip, destinations, cities, activities, groups = [], lodgings = [] } = tripData;
   const [showCountryPicker, setShowCountryPicker] = useState(false);
@@ -404,7 +406,7 @@ export default function TripEditor({
               {sortedDests.length === 0 ? (
                 <div className="pp-empty-destinations">
                   <div className="pp-empty-destinations-icon">🌍</div>
-                  <p>Ajoutez un pays pour commencer</p>
+                  <p>{t('editor.addCountryPrompt')}</p>
                 </div>
               ) : (
                 sortedDests.map(dest => (
@@ -453,7 +455,7 @@ export default function TripEditor({
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
-                Ajouter un pays
+                {t('country.addTitle')}
               </button>
             )}
           </div>
@@ -523,7 +525,7 @@ export default function TripEditor({
                   type="button"
                   className="pp-map-overlay-toggle"
                   onClick={() => (mapOverlay ? collapseOverlay() : setMapOverlay(true))}
-                  title={mapOverlay ? 'Réduire la carte' : 'Agrandir la carte en superposition'}
+                  title={mapOverlay ? t('editor.collapseMapTitle') : t('editor.expandMapTitle')}
                 >
                   {mapOverlay ? (
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -549,13 +551,13 @@ export default function TripEditor({
           onglet (toujours accessible, pas caché dans l'en-tête repliable comme
           sur ordinateur) puisque c'est l'usage mobile le plus fréquent. L'onglet
           Carte ouvre la carte à la demande — inutile de passer par l'en-tête. */}
-      <nav className="pp-mobile-nav" aria-label="Navigation entre les volets">
+      <nav className="pp-mobile-nav" aria-label={t('editor.navLabel')}>
         {[
-          { icon: '🌍', label: 'Villes' },
-          { icon: '🗂️', label: 'Groupes' },
-          { icon: '📅', label: 'Jours' },
-          { icon: '🧭', label: 'Jour J' },
-          { icon: '🗺️', label: 'Carte' },
+          { icon: '🌍', label: t('editor.navCities') },
+          { icon: '🗂️', label: t('editor.navGroups') },
+          { icon: '📅', label: t('editor.navDays') },
+          { icon: '🧭', label: t('header.dayModeButton') },
+          { icon: '🗺️', label: t('header.mapButton') },
         ].map(({ icon, label }, i) => (
           <button
             key={label}

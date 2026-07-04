@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { cleanupAttachmentsStorage } from '../lib/attachments';
 
 export function useTrips(userId) {
+  const { t } = useTranslation();
   const [trips, setTrips] = useState([]);
   const [selectedTripId, setSelectedTripId] = useState(null);
   const [tripData, setTripData] = useState(null);
@@ -98,7 +100,7 @@ export function useTrips(userId) {
 
   const createTrip = useCallback(async () => {
     const { data, error } = await supabase.from('trips').insert({
-      user_id: userId, title: 'Nouveau voyage', planning_mode: 'city',
+      user_id: userId, title: t('trips.untitledDefault'), planning_mode: 'city',
     }).select().single();
     if (error || !data) return null;
     setTrips(prev => [data, ...prev]);
@@ -147,7 +149,7 @@ export function useTrips(userId) {
     const source = trips.find(t => t.id === tripId);
     if (!source) return null;
     const { data: newTrip, error } = await supabase.from('trips').insert({
-      user_id: userId, title: `${source.title} (copie)`,
+      user_id: userId, title: t('trips.copySuffix', { title: source.title }),
       planning_mode: source.planning_mode, start_date: source.start_date,
       end_date: source.end_date, notes: source.notes,
     }).select().single();
@@ -234,12 +236,12 @@ export function useTrips(userId) {
     }
     if (failedActivities || failedLodgings) {
       const parts = [];
-      if (failedActivities) parts.push(`${failedActivities} activité${failedActivities > 1 ? 's' : ''}`);
-      if (failedLodgings) parts.push(`${failedLodgings} hébergement${failedLodgings > 1 ? 's' : ''}`);
+      if (failedActivities) parts.push(t('trips.duplicateFailedActivities', { count: failedActivities }));
+      if (failedLodgings) parts.push(t('trips.duplicateFailedLodgings', { count: failedLodgings }));
       // "il manque" (impersonnel) plutôt qu'un verbe accordé sur le nombre d'échecs :
       // évite tout problème d'accord singulier/pluriel selon qu'il manque 1 ou
       // plusieurs éléments, sans avoir à gérer le genre (activité/hébergement).
-      alert(`Votre voyage a bien été dupliqué, mais il manque ${parts.join(' et ')} dans la copie. Vérifiez le nouveau voyage et complétez-le si nécessaire.`);
+      alert(t('trips.duplicatePartialWarning', { parts: parts.join(t('trips.duplicatePartsSeparator')) }));
     }
     setTrips(prev => [newTrip, ...prev]);
     setSelectedTripId(newTrip.id);

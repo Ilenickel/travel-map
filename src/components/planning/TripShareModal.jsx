@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabase';
 
 function Avatar({ profile }) {
@@ -10,6 +11,7 @@ function Avatar({ profile }) {
 }
 
 export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveTrip }) {
+  const { t } = useTranslation();
   const [tab, setTab] = useState('members');
   const [members, setMembers] = useState([]);
   const [invites, setInvites] = useState([]);
@@ -94,7 +96,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
       setSearchResults([]);
       return;
     }
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       const { data } = await supabase
         .from('profiles')
         .select('id, display_name, avatar_url, allow_trip_invitations')
@@ -103,7 +105,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
         .limit(6);
       setSearchResults(data || []);
     }, 300);
-    setSearchTimer(t);
+    setSearchTimer(timer);
   };
 
   const selectProfile = (profile) => {
@@ -114,22 +116,22 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
 
   const handleInvite = async () => {
     if (!selectedProfile) {
-      setStatus({ type: 'error', msg: 'Sélectionnez un utilisateur dans la liste.' });
+      setStatus({ type: 'error', msg: t('share.errSelectUser') });
       return;
     }
     setLoading(true);
     setStatus(null);
     try {
       if (selectedProfile.allow_trip_invitations === false) {
-        setStatus({ type: 'error', msg: 'Cet utilisateur n\'accepte pas les invitations de voyage.' });
+        setStatus({ type: 'error', msg: t('share.errNoInvitations') });
         return;
       }
       if (members.some(m => m.user_id === selectedProfile.id)) {
-        setStatus({ type: 'error', msg: 'Cet utilisateur est déjà membre du voyage.' });
+        setStatus({ type: 'error', msg: t('share.errAlreadyMember') });
         return;
       }
       if (invites.some(i => i.invitee_id === selectedProfile.id)) {
-        setStatus({ type: 'error', msg: 'Une invitation est déjà en attente pour ce voyageur.' });
+        setStatus({ type: 'error', msg: t('share.errAlreadyPending') });
         return;
       }
       const { data: invitation, error } = await supabase.from('trip_invitations').insert({
@@ -139,7 +141,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
         invitee_id: selectedProfile.id,
         status: 'pending',
       }).select().single();
-      if (error || !invitation) { setStatus({ type: 'error', msg: 'Erreur lors de l\'envoi de l\'invitation.' }); return; }
+      if (error || !invitation) { setStatus({ type: 'error', msg: t('share.errSendFailed') }); return; }
       const { error: notifErr } = await supabase.from('notifications').insert({
         user_id: selectedProfile.id,
         from_user_id: userId,
@@ -148,7 +150,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
         read: false,
       });
       if (notifErr) console.error('[TripShareModal] notification insert failed:', notifErr);
-      setStatus({ type: 'success', msg: `Invitation envoyée à ${selectedProfile.display_name} !` });
+      setStatus({ type: 'success', msg: t('share.successInviteSent', { name: selectedProfile.display_name }) });
       setPseudo('');
       setSelectedProfile(null);
       loadInvites();
@@ -183,7 +185,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
     <div className="pp-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="pp-modal">
         <div className="pp-modal-header">
-          <h3 className="pp-modal-title">Partager ce voyage</h3>
+          <h3 className="pp-modal-title">{t('share.title')}</h3>
           <button className="pp-icon-btn" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
@@ -191,10 +193,10 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
 
         <div className="pp-modal-tabs">
           <button className={`pp-modal-tab${tab === 'members' ? ' active' : ''}`} onClick={() => setTab('members')}>
-            Membres {members.length > 0 && <span className="pp-modal-tab-badge">{members.length + 1}</span>}
+            {t('share.membersTab')} {members.length > 0 && <span className="pp-modal-tab-badge">{members.length + 1}</span>}
           </button>
           <button className={`pp-modal-tab${tab === 'invite' ? ' active' : ''}`} onClick={() => setTab('invite')}>
-            Inviter
+            {t('share.inviteTab')}
           </button>
         </div>
 
@@ -204,36 +206,36 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
               <div className="pp-member-row">
                 <Avatar profile={ownerProfile} />
                 <div className="pp-member-info">
-                  <span className="pp-member-name">{ownerProfile?.display_name || 'Organisateur'}</span>
-                  <span className="pp-member-role pp-member-role--owner">Organisateur</span>
+                  <span className="pp-member-name">{ownerProfile?.display_name || t('share.ownerFallback')}</span>
+                  <span className="pp-member-role pp-member-role--owner">{t('share.ownerRole')}</span>
                 </div>
-                {trip?.user_id === userId && <span className="pp-member-you">Vous</span>}
+                {trip?.user_id === userId && <span className="pp-member-you">{t('share.youLabel')}</span>}
               </div>
 
               {members.map(m => (
                 <div key={m.id} className="pp-member-row">
                   <Avatar profile={m.profiles} />
                   <div className="pp-member-info">
-                    <span className="pp-member-name">{m.profiles?.display_name || 'Voyageur'}</span>
-                    <span className="pp-member-role">Co-voyageur</span>
+                    <span className="pp-member-name">{m.profiles?.display_name || t('share.travelerFallback')}</span>
+                    <span className="pp-member-role">{t('share.travelerRole')}</span>
                   </div>
-                  {m.user_id === userId && <span className="pp-member-you">Vous</span>}
+                  {m.user_id === userId && <span className="pp-member-you">{t('share.youLabel')}</span>}
                   {isOwner && m.user_id !== userId && (
                     <button
                       className={`pp-btn pp-btn--ghost pp-btn--xs${kickConfirm === m.id ? ' pp-btn--danger' : ''}`}
                       onClick={() => handleKick(m.id)}
-                      title={kickConfirm === m.id ? 'Confirmer' : 'Retirer du voyage'}
+                      title={kickConfirm === m.id ? t('common:actions.confirm') : t('share.removeTitle')}
                     >
-                      {kickConfirm === m.id ? 'Confirmer' : 'Retirer'}
+                      {kickConfirm === m.id ? t('common:actions.confirm') : t('share.removeButton')}
                     </button>
                   )}
                   {!isOwner && m.user_id === userId && (
                     <button
                       className={`pp-btn pp-btn--ghost pp-btn--xs${leaveConfirm ? ' pp-btn--danger' : ''}`}
                       onClick={handleLeave}
-                      title={leaveConfirm ? 'Confirmer' : 'Quitter ce voyage'}
+                      title={leaveConfirm ? t('common:actions.confirm') : t('share.leaveThisTripTitle')}
                     >
-                      {leaveConfirm ? 'Confirmer' : 'Quitter le voyage'}
+                      {leaveConfirm ? t('common:actions.confirm') : t('tripCard.leaveTripButton')}
                     </button>
                   )}
                 </div>
@@ -241,17 +243,17 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
 
               {invites.length > 0 && (
                 <>
-                  <div className="pp-members-section-label">Invitations en attente</div>
+                  <div className="pp-members-section-label">{t('share.pendingInvitesLabel')}</div>
                   {invites.map(inv => (
                     <div key={inv.id} className="pp-member-row pp-member-row--pending">
                       <div className="pp-member-avatar pp-member-avatar--pending">✉️</div>
                       <div className="pp-member-info">
                         <span className="pp-member-name">{inv.invitee_email}</span>
-                        <span className="pp-member-role">En attente de réponse</span>
+                        <span className="pp-member-role">{t('share.pendingResponseLabel')}</span>
                       </div>
                       {isOwner && (
                         <button className="pp-btn pp-btn--ghost pp-btn--xs" onClick={() => handleCancelInvite(inv.id)}>
-                          Annuler
+                          {t('common:actions.cancel')}
                         </button>
                       )}
                     </div>
@@ -260,20 +262,20 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
               )}
 
               {members.length === 0 && invites.length === 0 && (
-                <p className="pp-members-empty">Vous voyagez seul pour l'instant. Invitez vos compagnons de voyage !</p>
+                <p className="pp-members-empty">{t('share.noCompanionsYet')}</p>
               )}
             </div>
           )}
 
           {tab === 'invite' && (
             <div className="pp-invite-form">
-              <p className="pp-invite-desc">Invitez un voyageur Triply par son pseudo. Il pourra voir et modifier ce voyage.</p>
+              <p className="pp-invite-desc">{t('share.inviteDesc')}</p>
               <div className="pp-invite-search-wrap">
                 <div className="pp-invite-input-row">
                   <input
                     type="text"
                     className="pp-invite-input"
-                    placeholder="Pseudo de l'utilisateur…"
+                    placeholder={t('share.pseudoPlaceholder')}
                     value={pseudo}
                     onChange={e => handlePseudoChange(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter' && selectedProfile) handleInvite(); }}
@@ -285,7 +287,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
                     onClick={handleInvite}
                     disabled={loading || !selectedProfile}
                   >
-                    {loading ? '…' : 'Inviter'}
+                    {loading ? '…' : t('share.inviteButton')}
                   </button>
                 </div>
                 {searchResults.length > 0 && !selectedProfile && (
@@ -300,14 +302,14 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
                         </div>
                         <span className="pp-invite-result-name">{p.display_name}</span>
                         {p.allow_trip_invitations === false && (
-                          <span className="pp-invite-result-blocked" title="N'accepte pas les invitations">🔒</span>
+                          <span className="pp-invite-result-blocked" title={t('share.blockedTitle')}>🔒</span>
                         )}
                       </button>
                     ))}
                   </div>
                 )}
                 {pseudo.length >= 2 && searchResults.length === 0 && !selectedProfile && (
-                  <div className="pp-invite-no-results">Aucun utilisateur trouvé pour « {pseudo} »</div>
+                  <div className="pp-invite-no-results">{t('share.noUserFound', { pseudo })}</div>
                 )}
               </div>
 
@@ -336,7 +338,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
                 </svg>
-                L'utilisateur doit avoir un compte Triply. Les voyageurs peuvent désactiver les invitations dans leurs paramètres de profil.
+                {t('share.accountNote')}
               </div>
             </div>
           )}

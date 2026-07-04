@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ALL_COUNTRIES, normalizeStr } from '../../lib/planningUtils';
 import CountryFlag from './CountryFlag';
 
 export default function CountryPicker({ alreadyAdded = [], onSelect, onClose }) {
+  const { t } = useTranslation();
   const [q, setQ] = useState('');
   const inputRef = useRef(null);
 
@@ -23,8 +25,8 @@ export default function CountryPicker({ alreadyAdded = [], onSelect, onClose }) 
   return (
     <div className="pp-country-picker">
       <div className="pp-country-picker-header">
-        <span className="pp-country-picker-title">Ajouter un pays</span>
-        <button className="pp-icon-btn" onClick={onClose} aria-label="Fermer">✕</button>
+        <span className="pp-country-picker-title">{t('country.addTitle')}</span>
+        <button className="pp-icon-btn" onClick={onClose} aria-label={t('country.closeLabel')}>✕</button>
       </div>
       <div className="pp-search-wrap pp-country-picker-search">
         <div className="pp-search-input-row">
@@ -34,7 +36,7 @@ export default function CountryPicker({ alreadyAdded = [], onSelect, onClose }) 
           <input
             ref={inputRef}
             className="pp-search-input"
-            placeholder="Rechercher un pays…"
+            placeholder={t('country.searchPlaceholder')}
             value={q}
             onChange={e => setQ(e.target.value)}
           />
@@ -51,12 +53,12 @@ export default function CountryPicker({ alreadyAdded = [], onSelect, onClose }) 
             >
               <CountryFlag emoji={c.emoji} size={20} className="pp-country-emoji" />
               <span className="pp-country-name">{c.name}</span>
-              {added && <span className="pp-country-added-badge">✓ Ajouté</span>}
+              {added && <span className="pp-country-added-badge">{t('country.added')}</span>}
             </li>
           );
         })}
         {filtered.length === 0 && (
-          <li className="pp-country-empty">Aucun pays trouvé</li>
+          <li className="pp-country-empty">{t('country.empty')}</li>
         )}
       </ul>
     </div>

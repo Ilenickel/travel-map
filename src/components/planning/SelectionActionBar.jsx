@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getDaysBetween, formatDateShort } from '../../lib/planningUtils';
 
 // Barre d'actions groupées pour la sélection multiple (CityBlock/DaytripCard) —
@@ -9,13 +10,14 @@ export default function SelectionActionBar({
   count, groups = [], tripStartDate, tripEndDate,
   onAssignGroup, onAssignDay, onDelete, onCancel,
 }) {
+  const { t } = useTranslation();
   const [showGroups, setShowGroups] = useState(false);
   const [showDays, setShowDays] = useState(false);
   const days = getDaysBetween(tripStartDate, tripEndDate);
 
   return (
     <div className="pp-selection-bar">
-      <span className="pp-selection-count">{count} sélectionné{count !== 1 ? 's' : ''}</span>
+      <span className="pp-selection-count">{t('selection.count', { count })}</span>
       <div className="pp-selection-actions">
         {groups.length > 0 && (
           <div className="pp-selection-dropdown-wrap">
@@ -24,7 +26,7 @@ export default function SelectionActionBar({
               className="pp-btn pp-btn--ghost pp-btn--xs"
               onClick={() => { setShowGroups(s => !s); setShowDays(false); }}
             >
-              Groupe ▾
+              {t('selection.groupDropdown')}
             </button>
             {showGroups && (
               <>
@@ -32,7 +34,7 @@ export default function SelectionActionBar({
                 <div className="pp-group-day-dropdown">
                   <button className="pp-group-day-opt" onClick={() => { onAssignGroup(null); setShowGroups(false); }}>
                     <span className="pp-group-chip-dot" style={{ background: 'var(--border-light)' }} />
-                    <span>Aucun</span>
+                    <span>{t('common:none')}</span>
                   </button>
                   {groups.map(g => (
                     <button key={g.id} className="pp-group-day-opt" onClick={() => { onAssignGroup(g.id); setShowGroups(false); }}>
@@ -52,9 +54,9 @@ export default function SelectionActionBar({
             className="pp-btn pp-btn--ghost pp-btn--xs"
             onClick={() => { setShowDays(s => !s); setShowGroups(false); }}
             disabled={days.length === 0}
-            title={days.length === 0 ? 'Ajoutez des dates au voyage pour planifier' : undefined}
+            title={days.length === 0 ? t('day.addDatesTitle') : undefined}
           >
-            Déplacer vers un jour ▾
+            {t('selection.moveToDayDropdown')}
           </button>
           {showDays && (
             <>
@@ -62,7 +64,7 @@ export default function SelectionActionBar({
               <div className="pp-group-day-dropdown">
                 {days.map((d, i) => (
                   <button key={d} className="pp-group-day-opt" onClick={() => { onAssignDay(d); setShowDays(false); }}>
-                    <span className="pp-group-day-num">J{i + 1}</span>
+                    <span className="pp-group-day-num">{t('day.short', { n: i + 1 })}</span>
                     <span>{formatDateShort(d)}</span>
                   </button>
                 ))}
@@ -72,10 +74,10 @@ export default function SelectionActionBar({
         </div>
 
         <button type="button" className="pp-btn pp-btn--ghost pp-btn--xs pp-selection-delete" onClick={onDelete}>
-          Supprimer
+          {t('common:actions.delete')}
         </button>
         <button type="button" className="pp-btn pp-btn--ghost pp-btn--xs" onClick={onCancel}>
-          Annuler
+          {t('common:actions.cancel')}
         </button>
       </div>
     </div>

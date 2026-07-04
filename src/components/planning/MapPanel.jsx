@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ACTIVITY_CATEGORIES, formatDateShort } from '../../lib/planningUtils';
 
 // Les popups Leaflet sont injectées en HTML brut : tout texte utilisateur doit
@@ -13,6 +14,7 @@ function escapeHtml(s) {
 }
 
 export default function MapPanel({ activities, groups, cities, lodgings }) {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -175,7 +177,7 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
           <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" opacity=".3">
             <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5z"/>
           </svg>
-          <p>Ajoutez des lieux via la recherche pour les voir sur la carte</p>
+          <p>{t('map.emptyHint')}</p>
         </div>
       )}
 
@@ -183,7 +185,7 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
       {hasGeoActs && activeGroups.length > 0 && (
         <div className={`pp-map-legend${legendOpen ? ' pp-map-legend--open' : ''}`}>
           <button className="pp-map-legend-title" onClick={() => setLegendOpen(o => !o)}>
-            <span>Zones</span>
+            <span>{t('map.zonesLabel')}</span>
             <svg className="pp-map-legend-chevron" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7 10l5 5 5-5z"/>
             </svg>
@@ -192,7 +194,7 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
           {activeGroups.map(g => {
             const cnt = (activities || []).filter(a => a.group_id === g.id && a.place_lat && a.place_lng).length;
             return (
-              <button key={g.id} className="pp-map-legend-item" onClick={() => focusOnGroup(g.id)} title={`Recentrer la carte sur « ${g.name} »`}>
+              <button key={g.id} className="pp-map-legend-item" onClick={() => focusOnGroup(g.id)} title={t('map.recenterTitle', { name: g.name })}>
                 <span className="pp-map-legend-dot" style={{ background: g.color }} />
                 <span className="pp-map-legend-name">{g.name}</span>
                 <span className="pp-map-legend-count">{cnt}</span>

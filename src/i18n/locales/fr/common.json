@@ -1,0 +1,15 @@
+{
+  "actions": {
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "create": "Créer",
+    "confirm": "Confirmer",
+    "add": "Ajouter",
+    "rename": "Renommer",
+    "duplicate": "Dupliquer",
+    "close": "Fermer"
+  },
+  "none": "Aucun",
+  "loading": "Chargement…"
+}

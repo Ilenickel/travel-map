@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { fetchPlaceSuggestions } from '../../lib/planningUtils';
 
 export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, placeholder, autoFocus }) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
@@ -55,7 +57,7 @@ export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, plac
           value={query}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder || 'Rechercher un lieu, un monument… (Entrée pour ajouter)'}
+          placeholder={placeholder || t('place.searchPlaceholderDefault')}
           onFocus={() => results.length > 0 && setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 180)}
         />
@@ -76,7 +78,7 @@ export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, plac
       )}
       {open && !busy && query.length >= 2 && results.length === 0 && (
         <div className="pp-search-empty">
-          Aucun résultat — appuyez sur Entrée pour ajouter « {query} »
+          {t('place.noResults', { query })}
         </div>
       )}
     </div>

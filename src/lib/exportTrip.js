@@ -1,4 +1,5 @@
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES } from './planningUtils';
+import i18n from '../i18n';
 
 // ─── Export iCal (.ics) ────────────────────────────────────────────
 // Un seul événement par activité *planifiée* (visit_date renseignée) : les
@@ -100,7 +101,7 @@ function buildLodgingEvent(l, cityName) {
   if (location) lines.push(`LOCATION:${icsEscape(location)}`);
   const descParts = [];
   if (l.notes?.trim()) descParts.push(l.notes.trim());
-  if (l.booking_url) descParts.push(`Réservation : ${l.booking_url}`);
+  if (l.booking_url) descParts.push(i18n.t('export.bookingLabel', { ns: 'planning', url: l.booking_url }));
   if (descParts.length) lines.push(`DESCRIPTION:${icsEscape(descParts.join('\n'))}`);
   lines.push('END:VEVENT');
   return lines;
@@ -119,10 +120,10 @@ export function buildTripIcs({ trip, cities, activities, lodgings }) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Triply//Planification de voyage//FR',
+    `PRODID:-//Triply//Planification de voyage//${i18n.language.toUpperCase()}`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    `X-WR-CALNAME:${icsEscape(trip?.title || 'Mon voyage')}`,
+    `X-WR-CALNAME:${icsEscape(trip?.title || i18n.t('header.untitledTrip', { ns: 'planning' }))}`,
   ];
 
   for (const act of planned) {
@@ -137,7 +138,7 @@ export function buildTripIcs({ trip, cities, activities, lodgings }) {
 }
 
 function sanitizeFilename(name) {
-  return (name || 'voyage').trim().replace(/[\\/:*?"<>|]+/g, '-').slice(0, 80);
+  return (name || i18n.t('export.filenameFallback', { ns: 'planning' })).trim().replace(/[\\/:*?"<>|]+/g, '-').slice(0, 80);
 }
 
 export function downloadTripIcs({ trip, cities, activities, lodgings }) {

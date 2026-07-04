@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PlaceSearchInput from './PlaceSearchInput';
 import { formatDateShort, lodgingNights, formatPrice } from '../../lib/planningUtils';
 import { useAttachmentsCount } from '../../context/AttachmentsCountContext';
@@ -17,6 +18,7 @@ function sanitizeBookingUrl(raw) {
 }
 
 function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, onCancel }) {
+  const { t } = useTranslation();
   const [name, setName] = useState(initial?.name || '');
   const [address, setAddress] = useState(initial?.address || '');
   const [placeLat, setPlaceLat] = useState(initial?.place_lat ?? null);
@@ -80,7 +82,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
           cityHint={cityName}
           onSelect={handlePlacePick}
           onManualAdd={n => setName(n)}
-          placeholder={`Chercher l'hôtel/logement à ${cityName}… (Entrée pour saisir tel quel)`}
+          placeholder={t('lodging.searchPlaceholder', { city: cityName })}
           autoFocus={showResearch}
         />
       ) : null}
@@ -88,32 +90,32 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
         className="pp-lodging-name-input"
         value={name}
         onChange={e => setName(e.target.value)}
-        placeholder="Nom de l'hébergement"
+        placeholder={t('lodging.namePlaceholder')}
         onKeyDown={e => e.key === 'Enter' && save()}
       />
       <input
         className="pp-lodging-addr-input"
         value={address}
         onChange={e => handleAddressChange(e.target.value)}
-        placeholder="Adresse (remplie automatiquement via la recherche)"
+        placeholder={t('lodging.addressPlaceholder')}
       />
       {!isCreate && !showResearch && (
         coordsStale ? (
           <p className="pp-lodging-coords-warning">
-            ⚠️ Adresse modifiée : le marqueur sur la carte sera retiré (les coordonnées ne correspondent plus).{' '}
+            {t('lodging.coordsStaleWarning')}{' '}
             <button type="button" className="pp-lodging-research-link" onClick={() => setShowResearch(true)}>
-              Rechercher à nouveau pour le repositionner
+              {t('lodging.researchLinkReposition')}
             </button>
           </p>
         ) : (
           <button type="button" className="pp-lodging-research-link" onClick={() => setShowResearch(true)}>
-            🔍 Rechercher à nouveau (pour changer la position sur la carte)
+            {t('lodging.researchLinkChange')}
           </button>
         )
       )}
       <div className="pp-lodging-dates-row">
         <div className="pp-lodging-field">
-          <label>Arrivée</label>
+          <label>{t('lodging.checkInLabel')}</label>
           <input
             type="date"
             value={checkIn}
@@ -123,7 +125,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
           />
         </div>
         <div className="pp-lodging-field">
-          <label>Départ</label>
+          <label>{t('lodging.checkOutLabel')}</label>
           <input
             type="date"
             value={checkOut}
@@ -133,7 +135,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
           />
         </div>
         <div className="pp-lodging-field pp-lodging-field--price">
-          <label>Prix total</label>
+          <label>{t('lodging.totalPriceLabel')}</label>
           <div className="pp-lodging-price-wrap">
             <input
               type="number" min="0" step="0.01" placeholder="0"
@@ -145,34 +147,35 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
         </div>
       </div>
       {dateError && (
-        <p className="pp-lodging-date-error">La date de départ doit être postérieure ou égale à la date d'arrivée.</p>
+        <p className="pp-lodging-date-error">{t('lodging.dateError')}</p>
       )}
       <input
         className="pp-lodging-url-input"
         type="url"
         value={bookingUrl}
         onChange={e => setBookingUrl(e.target.value)}
-        placeholder="Lien de réservation (Booking, Airbnb…)"
+        placeholder={t('lodging.bookingUrlPlaceholder')}
       />
       <textarea
         className="pp-lodging-notes-input"
         value={notes}
         onChange={e => setNotes(e.target.value)}
-        placeholder="Note (n° de réservation, petit-déjeuner, code d'entrée…)"
+        placeholder={t('lodging.notesPlaceholder')}
         rows={2}
       />
       {!isCreate && <AttachmentsPanel tripId={initial.trip_id} lodgingId={initial.id} />}
       <div className="pp-activity-edit-actions">
         <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={save} disabled={!name.trim()}>
-          Enregistrer
+          {t('common:actions.save')}
         </button>
-        <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={onCancel}>Annuler</button>
+        <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={onCancel}>{t('common:actions.cancel')}</button>
       </div>
     </div>
   );
 }
 
 function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, onRemove }) {
+  const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
   const nights = lodgingNights(lodging.check_in, lodging.check_out);
   const priceLabel = formatPrice(lodging.price);
@@ -206,12 +209,12 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}
-              title="Ouvrir le lien de réservation"
+              title={t('lodging.openBookingTitle')}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
               </svg>
-              Réservation
+              {t('lodging.bookingLinkLabel')}
             </a>
           )}
         </div>
@@ -219,17 +222,17 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
           {lodging.check_in && lodging.check_out ? (
             <span className="pp-chip pp-chip--lodging-dates">
               📅 {formatDateShort(lodging.check_in)} → {formatDateShort(lodging.check_out)}
-              {nights ? ` · ${nights} nuit${nights > 1 ? 's' : ''}` : ''}
+              {nights ? ` · ${t('lodging.nights', { count: nights })}` : ''}
             </span>
           ) : (
-            <span className="pp-chip pp-chip--lodging-nodates">📅 Dates à définir</span>
+            <span className="pp-chip pp-chip--lodging-nodates">{t('lodging.datesUndefined')}</span>
           )}
         </div>
         {(priceLabel || attachmentCount > 0) && (
           <div className="pp-meta-line">
             {priceLabel && <span className="pp-meta-item pp-meta-item--price"><span className="pp-meta-icon">💰</span> {priceLabel}</span>}
             {attachmentCount > 0 && (
-              <span className="pp-meta-item" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+              <span className="pp-meta-item" title={t('activity.attachmentCount', { count: attachmentCount })}>
                 <span className="pp-meta-icon">📎</span> {attachmentCount}
               </span>
             )}
@@ -241,7 +244,7 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
       <button
         className="pp-activity-del"
         onClick={e => { e.stopPropagation(); onRemove(lodging.id); }}
-        title="Supprimer cet hébergement"
+        title={t('lodging.deleteTitle')}
       >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
@@ -255,6 +258,7 @@ export default function LodgingSection({
   city, lodgings, tripId, tripStartDate, tripEndDate,
   onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
+  const { t } = useTranslation();
   const [adding, setAdding] = useState(false);
   const cityLodgings = (lodgings || [])
     .filter(l => l.city_id === city.id)
@@ -271,7 +275,7 @@ export default function LodgingSection({
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
             </svg>
-            Hébergements <span>({cityLodgings.length})</span>
+            {t('lodging.sectionLabel')} <span>({cityLodgings.length})</span>
           </div>
           <div className="pp-lodgings-list">
             {cityLodgings.map(l => (
@@ -304,7 +308,7 @@ export default function LodgingSection({
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
             <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
           </svg>
-          Ajouter un hébergement
+          {t('lodging.addButton')}
         </button>
       )}
     </div>

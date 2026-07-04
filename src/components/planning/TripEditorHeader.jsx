@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { tripDurationDays, sumCosts, formatPrice } from '../../lib/planningUtils';
 
 export default function TripEditorHeader({
@@ -7,6 +8,7 @@ export default function TripEditorHeader({
   onExportPdf, onExportIcal,
   dayModeActive, onToggleDayMode,
 }) {
+  const { t } = useTranslation();
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
   // Mobile uniquement (le bouton et les règles CSS associées n'existent que sous
@@ -24,8 +26,8 @@ export default function TripEditorHeader({
   }, [trip?.id]);
 
   const saveTitle = () => {
-    const t = title.trim();
-    if (t && t !== trip?.title) onUpdate(tripId, { title: t });
+    const trimmed = title.trim();
+    if (trimmed && trimmed !== trip?.title) onUpdate(tripId, { title: trimmed });
     else setTitle(trip?.title || '');
     setEditingTitle(false);
   };
@@ -59,7 +61,7 @@ export default function TripEditorHeader({
   const tripBudget = activitiesCost == null && lodgingsCost == null
     ? null
     : (activitiesCost ?? 0) + (lodgingsCost ?? 0);
-  const tripBudgetTitle = `Budget total : ${formatPrice(activitiesCost ?? 0)} d'activités et trajets + ${formatPrice(lodgingsCost ?? 0)} d'hébergements`;
+  const tripBudgetTitle = t('header.budgetTitle', { activities: formatPrice(activitiesCost ?? 0), lodgings: formatPrice(lodgingsCost ?? 0) });
 
   return (
     <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>
@@ -77,8 +79,8 @@ export default function TripEditorHeader({
             autoFocus
           />
         ) : (
-          <h2 className="pp-trip-title" onClick={() => setEditingTitle(true)} title="Cliquer pour renommer">
-            {trip?.title || 'Mon voyage'}
+          <h2 className="pp-trip-title" onClick={() => setEditingTitle(true)} title={t('header.renameTitleHint')}>
+            {trip?.title || t('header.untitledTrip')}
             <svg className="pp-edit-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
             </svg>
@@ -88,7 +90,7 @@ export default function TripEditorHeader({
           type="button"
           className="pp-header-collapse-btn"
           onClick={() => setHeaderOpen(o => !o)}
-          title={headerOpen ? 'Masquer les détails du voyage' : 'Afficher les détails du voyage (dates, partage…)'}
+          title={headerOpen ? t('header.collapseDetailsTitle') : t('header.expandDetailsTitle')}
           aria-expanded={headerOpen}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ transform: headerOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
@@ -100,22 +102,22 @@ export default function TripEditorHeader({
             <button
               className={`pp-toolbar-btn${showNotes ? ' active' : ''}`}
               onClick={() => setShowNotes(n => !n)}
-              title="Notes du voyage"
+              title={t('header.notesButtonTitle')}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
               </svg>
-              Notes
+              {t('header.notesButton')}
             </button>
             <button
               className={`pp-toolbar-btn${mapOpen ? ' active' : ''}`}
               onClick={onToggleMap}
-              title={mapOpen ? 'Fermer la carte' : 'Afficher la carte'}
+              title={mapOpen ? t('header.closeMapTitle') : t('header.showMapTitle')}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
               </svg>
-              Carte
+              {t('header.mapButton')}
             </button>
             <button
               className={`pp-toolbar-btn${dayModeActive ? ' active' : ''}`}
@@ -123,24 +125,24 @@ export default function TripEditorHeader({
               disabled={!trip?.start_date || !trip?.end_date}
               title={
                 !trip?.start_date || !trip?.end_date
-                  ? 'Définissez des dates de voyage pour utiliser le mode Jour J'
-                  : (dayModeActive ? 'Revenir au planning complet' : 'Mode Jour J : affiche seulement les activités du jour en cours')
+                  ? t('header.dayModeNeedDatesTitle')
+                  : (dayModeActive ? t('header.dayModeBackTitle') : t('header.dayModeEnterTitle'))
               }
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4zm7.9-3a7.94 7.94 0 00-1.6-3.86l1.14-1.14-1.41-1.41-1.14 1.14A7.94 7.94 0 0013 4.1V2h-2v2.1a7.94 7.94 0 00-3.86 1.6L5.99 4.56 4.58 5.97l1.14 1.14A7.94 7.94 0 004.1 11H2v2h2.1a7.94 7.94 0 001.6 3.86l-1.14 1.14 1.41 1.41 1.14-1.14A7.94 7.94 0 0011 19.9V22h2v-2.1a7.94 7.94 0 003.86-1.6l1.14 1.14 1.41-1.41-1.14-1.14A7.94 7.94 0 0019.9 13H22v-2h-2.1z"/>
               </svg>
-              Jour J
+              {t('header.dayModeButton')}
             </button>
             <button
               className="pp-toolbar-btn"
               onClick={onExportPdf}
-              title="Exporter l'itinéraire en PDF"
+              title={t('header.exportPdfTitle')}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
               </svg>
-              PDF
+              {t('header.exportPdfButton')}
             </button>
             <button
               className="pp-toolbar-btn"
@@ -148,25 +150,25 @@ export default function TripEditorHeader({
               disabled={icalExportableCount === 0}
               title={icalExportableCount === 0
                 ? (plannedCount > 0
-                  ? 'Toutes les activités planifiées sont déjà cochées comme faites — rien à exporter vers l\'agenda'
-                  : 'Planifiez au moins un lieu sur une date pour pouvoir l\'exporter vers votre agenda')
-                : 'Exporter les lieux planifiés (non cochés) vers votre agenda (fichier .ics, compatible Google Agenda et autres)'}
+                  ? t('header.icalAllDoneTitle')
+                  : t('header.icalNoneTitle'))
+                : t('header.icalExportTitle')}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
               </svg>
-              Agenda
+              {t('header.exportIcalButton')}
             </button>
           </div>
           <button
             className="pp-btn pp-btn--share"
             onClick={onToggleShare}
-            title="Partager ce voyage"
+            title={t('header.shareTitle')}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
             </svg>
-            Partager
+            {t('header.shareButton')}
           </button>
         </div>
       </div>
@@ -174,7 +176,7 @@ export default function TripEditorHeader({
       {/* Dates */}
       <div className="pp-trip-dates-card">
         <div className="pp-date-group">
-          <label className="pp-date-label">Départ</label>
+          <label className="pp-date-label">{t('header.departureLabel')}</label>
           <input
             type="date"
             className="pp-date-input"
@@ -194,7 +196,7 @@ export default function TripEditorHeader({
           <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
         </svg>
         <div className="pp-date-group">
-          <label className="pp-date-label">Retour</label>
+          <label className="pp-date-label">{t('header.returnLabel')}</label>
           <input
             type="date"
             className="pp-date-input"
@@ -212,7 +214,7 @@ export default function TripEditorHeader({
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
               <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
             </svg>
-            {duration} jour{duration > 1 ? 's' : ''}
+            {t('header.durationBadge', { count: duration })}
           </div>
         )}
       </div>
@@ -221,19 +223,19 @@ export default function TripEditorHeader({
       <div className="pp-trip-stats">
         <span className="pp-stat-pill">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-          {totalCountries} pays
+          {t('header.countriesCount', { count: totalCountries })}
         </span>
         <span className="pp-stat-pill">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
-          {totalCities} villes
+          {t('destination.citiesCount', { count: totalCities })}
         </span>
         <span className="pp-stat-pill">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-          {totalPlaces} lieux
+          {t('place.count', { count: totalPlaces })}
         </span>
         {activities.filter(a => a.visit_date).length > 0 && (
           <span className="pp-stat-pill pp-stat-pill--accent">
-            📅 {activities.filter(a => a.visit_date).length} planifié{activities.filter(a => a.visit_date).length > 1 ? 's' : ''}
+            📅 {t('header.plannedCount', { count: activities.filter(a => a.visit_date).length })}
           </span>
         )}
         {tripBudget != null && (
@@ -249,7 +251,7 @@ export default function TripEditorHeader({
             className="pp-notes-textarea"
             value={notes}
             onChange={e => handleNotesChange(e.target.value)}
-            placeholder="Notes générales du voyage (hôtel, budget, contacts utiles…)"
+            placeholder={t('header.notesPlaceholder')}
             rows={3}
           />
         </div>

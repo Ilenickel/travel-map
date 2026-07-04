@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import { getDaysBetween, formatDateShort, kMeansActivities, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
 import { NATIVE_GROUP_DRAG_TYPE } from './DayView';
 
@@ -9,15 +10,16 @@ const GROUP_COLORS = [
 ];
 
 function DayDropdown({ trip, onSelect, onClose }) {
+  const { t } = useTranslation();
   const days = getDaysBetween(trip?.start_date, trip?.end_date);
   return (
     <div className="pp-group-day-dropdown">
       {days.length === 0 ? (
-        <div className="pp-group-day-empty">Ajoutez des dates au voyage pour planifier</div>
+        <div className="pp-group-day-empty">{t('day.addDatesTitle')}</div>
       ) : (
         days.map((d, i) => (
           <button key={d} className="pp-group-day-opt" onClick={() => { onSelect(d); onClose(); }}>
-            <span className="pp-group-day-num">J{i + 1}</span>
+            <span className="pp-group-day-num">{t('day.short', { n: i + 1 })}</span>
             <span>{formatDateShort(d)}</span>
           </button>
         ))
@@ -27,6 +29,7 @@ function DayDropdown({ trip, onSelect, onClose }) {
 }
 
 function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, onAssignActivityToGroup }) {
+  const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(group.name);
   const [showDays, setShowDays] = useState(false);
@@ -37,8 +40,8 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
   const count = groupActivities.length;
 
   const save = () => {
-    const t = name.trim();
-    if (t && t !== group.name) onUpdate(group.id, { name: t });
+    const trimmed = name.trim();
+    if (trimmed && trimmed !== group.name) onUpdate(group.id, { name: trimmed });
     else setName(group.name);
     setEditing(false);
   };
@@ -62,14 +65,14 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
               e.dataTransfer.setData(NATIVE_GROUP_DRAG_TYPE, group.id);
               e.dataTransfer.effectAllowed = 'move';
             }}
-            title={count > 0 ? (expanded ? 'Masquer les lieux (glisser la carte pour tout planifier sur un jour)' : 'Voir les lieux du groupe (glisser la carte pour tout planifier sur un jour)') : 'Glisser pour tout planifier sur un jour'}
+            title={count > 0 ? (expanded ? t('group.hideActivitiesTitle') : t('group.showActivitiesTitle')) : t('group.dragToPlanTitle')}
           >
             <div style={{ position: 'relative' }} onClick={stop}>
               <div
                 className="pp-group-swatch"
                 style={{ background: group.color }}
                 onClick={() => setShowColors(s => !s)}
-                title="Changer la couleur"
+                title={t('group.changeColorTitle')}
               />
               {showColors && (
                 <>
@@ -99,13 +102,13 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
                 autoFocus
               />
             ) : (
-              <span className="pp-group-name" onDoubleClick={e => { stop(e); setEditing(true); }} title="Double-clic pour renommer">
+              <span className="pp-group-name" onDoubleClick={e => { stop(e); setEditing(true); }} title={t('group.renameHintTitle')}>
                 {group.name}
               </span>
             )}
 
             <span className="pp-group-count">
-              {count} lieu{count !== 1 ? 'x' : ''}
+              {t('place.count', { count })}
               {count > 0 && (
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform .15s', marginLeft: 3 }}>
                   <path d="M7 10l5 5 5-5z"/>
@@ -118,7 +121,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
                 <div style={{ position: 'relative' }}>
                   <button
                     className="pp-icon-btn"
-                    title="Planifier tous les lieux de ce groupe sur un jour"
+                    title={t('group.planGroupOnDayTitle')}
                     onClick={() => setShowDays(s => !s)}
                   >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -133,12 +136,12 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
                   )}
                 </div>
               )}
-              <button className="pp-icon-btn" title="Renommer" onClick={() => setEditing(true)}>
+              <button className="pp-icon-btn" title={t('common:actions.rename')} onClick={() => setEditing(true)}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                 </svg>
               </button>
-              <button className="pp-icon-btn pp-icon-btn--danger" title="Supprimer le groupe" onClick={() => onRemove(group.id)}>
+              <button className="pp-icon-btn pp-icon-btn--danger" title={t('group.deleteGroupTitle')} onClick={() => onRemove(group.id)}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                 </svg>
@@ -164,7 +167,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
                         <button
                           className="pp-group-activity-remove"
                           onClick={e => { e.stopPropagation(); onAssignActivityToGroup(act.id, null); }}
-                          title="Retirer du groupe"
+                          title={t('group.removeFromGroupTitle')}
                         >
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
@@ -176,7 +179,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
                 );
               })}
               {groupActivities.length === 0 && (
-                <div className="pp-group-activities-empty">Glissez un lieu ici</div>
+                <div className="pp-group-activities-empty">{t('group.emptyDropHint')}</div>
               )}
             </div>
           )}
@@ -188,6 +191,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
 }
 
 export default function GroupManager({ tripId, groups, activities, trip, onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignGroupToDay, onAssignActivityToGroup }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(true);
   const [creating, setCreating] = useState(false);
   const [newName, setNewName] = useState('');
@@ -195,7 +199,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
   const [detecting, setDetecting] = useState(false);
 
   const handleCreate = async () => {
-    const name = newName.trim() || `Groupe ${groups.length + 1}`;
+    const name = newName.trim() || t('group.defaultName', { n: groups.length + 1 });
     await onAddGroup(tripId, name, newColor);
     setNewName('');
     setNewColor(GROUP_COLORS[groups.length % GROUP_COLORS.length]);
@@ -214,7 +218,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
     for (let ci = 0; ci < k; ci++) {
       const pts = clustered.filter(p => p.cluster === ci);
       if (!pts.length) continue;
-      const g = await onAddGroup(tripId, `Zone ${created + 1}`, clusterColors[ci], { isAuto: true });
+      const g = await onAddGroup(tripId, t('group.autoZoneName', { n: created + 1 }), clusterColors[ci], { isAuto: true });
       if (g) {
         created += 1;
         await Promise.all(pts.map(p => onAssignActivityToGroup(p.id, g.id)));
@@ -232,7 +236,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
           <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
         </svg>
-        <span>Groupes d'activité</span>
+        <span>{t('group.header')}</span>
         {groups.length > 0 && (
           <span className="pp-groups-swatches">
             {groups.slice(0, 5).map(g => (
@@ -252,7 +256,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
         <div className="pp-groups-body">
           {groups.length === 0 && !creating && (
             <div className="pp-groups-empty">
-              <p>Regroupez vos lieux par quartier ou thème. Cliquez sur le point coloré d'un lieu pour l'assigner.</p>
+              <p>{t('group.emptyHint')}</p>
             </div>
           )}
 
@@ -278,7 +282,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') handleCreate(); if (e.key === 'Escape') { setCreating(false); setNewName(''); } }}
-                placeholder={`Groupe ${groups.length + 1}`}
+                placeholder={t('group.defaultName', { n: groups.length + 1 })}
                 autoFocus
               />
               <div className="pp-group-colors pp-group-colors--inline">
@@ -287,8 +291,8 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
                 ))}
               </div>
               <div className="pp-group-create-actions">
-                <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleCreate}>Créer</button>
-                <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => { setCreating(false); setNewName(''); }}>Annuler</button>
+                <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleCreate}>{t('common:actions.create')}</button>
+                <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => { setCreating(false); setNewName(''); }}>{t('common:actions.cancel')}</button>
               </div>
             </div>
           )}
@@ -297,7 +301,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
             {!creating && (
               <button className="pp-add-item-btn" onClick={() => setCreating(true)}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                Nouveau groupe
+                {t('group.newGroupButton')}
               </button>
             )}
             {geoActsCount >= 3 && (
@@ -305,7 +309,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
                 className="pp-btn pp-btn--ghost pp-btn--xs pp-btn--autodetect"
                 onClick={() => handleAutoDetect(Math.min(3, Math.floor(geoActsCount / 2)))}
                 disabled={detecting}
-                title={`Détecter automatiquement des groupes géographiques (${geoActsCount} lieux géolocalisés)`}
+                title={t('group.autoDetectTitle', { count: geoActsCount })}
                 style={{ marginTop: 4 }}
               >
                 {detecting ? '…' : (
@@ -313,7 +317,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
                     <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
                   </svg>
                 )}
-                Détecter zones auto
+                {t('group.autoDetectButton')}
               </button>
             )}
           </div>

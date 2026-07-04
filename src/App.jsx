@@ -12,6 +12,7 @@ import ProfilePanel from "./components/ProfilePanel";
 import NotificationPanel from "./components/NotificationPanel";
 import AdminAlertsPanel from "./components/AdminAlertsPanel";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { LanguageProvider } from "./context/LanguageContext";
 import { BadgeProvider } from "./context/BadgeContext";
 import BadgeUnlockAnimation from "./components/BadgeUnlockAnimation";
 import { useNotifications } from "./hooks/useNotifications";
@@ -502,10 +503,12 @@ function AppInner() {
 export default function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/planifier" element={<PlanningPage />} />
-        <Route path="*" element={<AppInner />} />
-      </Routes>
+      <LanguageProvider>
+        <Routes>
+          <Route path="/planifier" element={<PlanningPage />} />
+          <Route path="*" element={<AppInner />} />
+        </Routes>
+      </LanguageProvider>
     </AuthProvider>
   );
 }

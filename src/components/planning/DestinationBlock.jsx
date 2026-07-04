@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
 import CityBlock from './CityBlock';
 import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 
 export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
+  const { t } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
 
   const destCities = cities
@@ -37,23 +39,23 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
       <div className="pp-destination-header">
         <div className="pp-destination-flag"><CountryFlag emoji={flag} size={26} /></div>
         <div className="pp-destination-info">
-          <span className="pp-destination-eyebrow">Pays</span>
+          <span className="pp-destination-eyebrow">{t('destination.eyebrow')}</span>
           <h3 className="pp-destination-name">{dest.country_name}</h3>
           <div className="pp-destination-stats">
             <span className="pp-dest-stat">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-              {baseCities.length} ville{baseCities.length !== 1 ? 's' : ''}
+              {t('destination.citiesCount', { count: baseCities.length })}
             </span>
             <span className="pp-dest-stat">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-              {destActivitiesCount} lieu{destActivitiesCount !== 1 ? 'x' : ''}
+              {t('place.count', { count: destActivitiesCount })}
             </span>
           </div>
         </div>
         <button
           className="pp-icon-btn pp-icon-btn--danger"
           onClick={() => onRemove(dest.id)}
-          title="Retirer ce pays du voyage"
+          title={t('destination.removeTitle')}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
@@ -108,11 +110,11 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
             <CitySearchInput
               onSelect={handleCityAdd}
               onManual={handleCityAdd}
-              placeholder="Chercher une ville… (ou Entrée pour ajouter)"
+              placeholder={t('city.searchPlaceholderDefault')}
               autoFocus
             />
             <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingCity(false)}>
-              Annuler
+              {t('common:actions.cancel')}
             </button>
           </div>
         ) : (
@@ -120,7 +122,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
             </svg>
-            Ajouter une ville
+            {t('destination.addCityButton')}
           </button>
         )}
       </div>

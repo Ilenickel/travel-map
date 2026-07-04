@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import TrajetAddInput from './TrajetAddInput';
@@ -9,15 +10,16 @@ import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../li
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 
 function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
+  const { t } = useTranslation();
   const days = getDaysBetween(tripStartDate, tripEndDate);
   return (
     <div className="pp-group-day-dropdown">
       {days.length === 0 ? (
-        <div className="pp-group-day-empty">Ajoutez des dates au voyage pour planifier</div>
+        <div className="pp-group-day-empty">{t('day.addDatesTitle')}</div>
       ) : (
         days.map((d, i) => (
           <button key={d} className="pp-group-day-opt" onClick={() => { onSelect(d); onClose(); }}>
-            <span className="pp-group-day-num">J{i + 1}</span>
+            <span className="pp-group-day-num">{t('day.short', { n: i + 1 })}</span>
             <span>{formatDateShort(d)}</span>
           </button>
         ))
@@ -41,6 +43,7 @@ export default function DaytripCard({
   // Sélection multiple (lieux uniquement) — même mécanique que CityBlock.jsx.
   const [selecting, setSelecting] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
+  const { t } = useTranslation();
 
   const dtActivities = activities
     .filter(a => a.city_id === city.id)
@@ -111,7 +114,7 @@ export default function DaytripCard({
           e.dataTransfer.setData(NATIVE_DAYTRIP_DRAG_TYPE, city.id);
           e.dataTransfer.effectAllowed = 'move';
         }}
-        title={collapsed ? 'Développer (glisser la carte pour tout planifier sur un jour)' : 'Réduire (glisser la carte pour tout planifier sur un jour)'}
+        title={collapsed ? t('daytrip.expandTitle') : t('daytrip.collapseTitle')}
       >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="pp-daytrip-icon">
           <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
@@ -130,18 +133,18 @@ export default function DaytripCard({
         ) : (
           <span className="pp-daytrip-name-wrap">
             <span className="pp-daytrip-name" onDoubleClick={e => { stop(e); setEditing(true); }}>{city.name}</span>
-            <span className="pp-daytrip-badge">Excursion</span>
+            <span className="pp-daytrip-badge">{t('daytrip.badge')}</span>
           </span>
         )}
 
         {dtCost != null && (
-          <span className="pp-city-cost" title={`Coût des activités et trajets de l'excursion ${city.name} (hors hébergements)`}>
+          <span className="pp-city-cost" title={t('daytrip.costTitle', { city: city.name })}>
             💰 {formatPrice(dtCost)}
           </span>
         )}
 
         <span className="pp-city-count">
-          {dtPlaces.length} lieu{dtPlaces.length !== 1 ? 'x' : ''}
+          {t('place.count', { count: dtPlaces.length })}
           <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor" style={{ transform: collapsed ? 'rotate(-90deg)' : 'none', transition: 'transform .15s', marginLeft: 3 }}>
             <path d="M7 10l5 5 5-5z"/>
           </svg>
@@ -152,7 +155,7 @@ export default function DaytripCard({
             <button
               className={`pp-icon-btn${selecting ? ' pp-icon-btn--active' : ''}`}
               onClick={toggleSelecting}
-              title={selecting ? 'Quitter la sélection' : 'Sélectionner plusieurs lieux'}
+              title={selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -161,7 +164,7 @@ export default function DaytripCard({
           )}
           {dtActivities.length > 0 && (
             <div style={{ position: 'relative' }}>
-              <button className="pp-icon-btn" title="Planifier cette excursion sur un jour" onClick={() => setShowDays(s => !s)}>
+              <button className="pp-icon-btn" title={t('daytrip.planOnDayTitle')} onClick={() => setShowDays(s => !s)}>
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
                 </svg>
@@ -179,12 +182,12 @@ export default function DaytripCard({
               )}
             </div>
           )}
-          <button className="pp-icon-btn" onClick={() => setEditing(true)} title="Renommer l'excursion">
+          <button className="pp-icon-btn" onClick={() => setEditing(true)} title={t('daytrip.renameTitle')}>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
             </svg>
           </button>
-          <button className="pp-icon-btn pp-icon-btn--danger" onClick={() => onRemove(city.id)} title="Supprimer l'excursion">
+          <button className="pp-icon-btn pp-icon-btn--danger" onClick={() => onRemove(city.id)} title={t('daytrip.deleteTitle')}>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
             </svg>
@@ -232,7 +235,7 @@ export default function DaytripCard({
                 ))}
                 {provided.placeholder}
                 {dtPlaces.length === 0 && !snapshot.isDraggingOver && (
-                  <li className="pp-activities-empty">Aucun lieu — ajoutez-en un ci-dessous</li>
+                  <li className="pp-activities-empty">{t('place.emptyList')}</li>
                 )}
               </ul>
             )}
@@ -244,15 +247,15 @@ export default function DaytripCard({
                 cityHint={city.name}
                 onSelect={handlePlaceSelect}
                 onManualAdd={handleManualAdd}
-                placeholder={`Rechercher un lieu à ${city.name}… (Entrée pour ajouter)`}
+                placeholder={t('place.searchPlaceholder', { city: city.name })}
                 autoFocus
               />
-              <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingPlace(false)}>Annuler</button>
+              <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingPlace(false)}>{t('common:actions.cancel')}</button>
             </div>
           ) : (
             <button className="pp-add-item-btn" onClick={() => setAddingPlace(true)}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              Ajouter un lieu
+              {t('place.addButton')}
             </button>
           )}
 
@@ -276,7 +279,7 @@ export default function DaytripCard({
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
                 </svg>
-                Trajets <span>({dtTrajets.length})</span>
+                {t('trajetsSection.label')} <span>({dtTrajets.length})</span>
               </div>
               <Droppable droppableId={`trajets-${city.id}`}>
                 {(provided, snapshot) => (
@@ -314,7 +317,7 @@ export default function DaytripCard({
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
               </svg>
-              Ajouter un trajet
+              {t('trajetsSection.addButton')}
             </button>
           )}
         </div>

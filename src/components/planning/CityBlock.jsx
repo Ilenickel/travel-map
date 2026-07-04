@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import CitySearchInput from './CitySearchInput';
@@ -15,6 +16,7 @@ export default function CityBlock({
   onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
+  const { t } = useTranslation();
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);
@@ -106,7 +108,7 @@ export default function CityBlock({
           className={`pp-city${citySnapshot.isDragging ? ' pp-city--dragging' : ''}`}
         >
           <div className="pp-city-header">
-            <div className="pp-city-drag" {...cityProvided.dragHandleProps} title="Réordonner la ville">
+            <div className="pp-city-drag" {...cityProvided.dragHandleProps} title={t('city.reorderTitle')}>
               <svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor" opacity=".3">
                 <circle cx="3" cy="3" r="1.5"/><circle cx="9" cy="3" r="1.5"/>
                 <circle cx="3" cy="8" r="1.5"/><circle cx="9" cy="8" r="1.5"/>
@@ -117,7 +119,7 @@ export default function CityBlock({
             <button
               className="pp-city-collapse"
               onClick={() => setCollapsed(c => !c)}
-              title={collapsed ? 'Développer' : 'Réduire'}
+              title={collapsed ? t('city.expandTitle') : t('city.collapseTitle')}
             >
               <svg
                 width="14" height="14"
@@ -146,16 +148,16 @@ export default function CityBlock({
               />
             ) : (
               <span className="pp-city-name" onDoubleClick={() => setEditing(true)}>
-                <span className="pp-city-eyebrow">Ville</span> {city.name}
+                <span className="pp-city-eyebrow">{t('city.eyebrow')}</span> {city.name}
               </span>
             )}
 
             <span className="pp-city-count">
-              {placeActivities.length} lieu{placeActivities.length !== 1 ? 'x' : ''}
+              {t('place.count', { count: placeActivities.length })}
             </span>
 
             {cityCost != null && (
-              <span className="pp-city-cost" title={`Coût des activités et trajets de ${city.name} (hors hébergements et excursions)`}>
+              <span className="pp-city-cost" title={t('city.costTitle', { city: city.name })}>
                 💰 {formatPrice(cityCost)}
               </span>
             )}
@@ -165,19 +167,19 @@ export default function CityBlock({
                 <button
                   className={`pp-icon-btn${selecting ? ' pp-icon-btn--active' : ''}`}
                   onClick={toggleSelecting}
-                  title={selecting ? 'Quitter la sélection' : 'Sélectionner plusieurs lieux'}
+                  title={selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                   </svg>
                 </button>
               )}
-              <button className="pp-icon-btn" onClick={() => setEditing(true)} title="Renommer la ville">
+              <button className="pp-icon-btn" onClick={() => setEditing(true)} title={t('city.renameTitle')}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                 </svg>
               </button>
-              <button className="pp-icon-btn pp-icon-btn--danger" onClick={() => onRemove(city.id)} title="Supprimer la ville">
+              <button className="pp-icon-btn pp-icon-btn--danger" onClick={() => onRemove(city.id)} title={t('city.deleteTitle')}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
                 </svg>
@@ -225,7 +227,7 @@ export default function CityBlock({
                     ))}
                     {provided.placeholder}
                     {placeActivities.length === 0 && !snapshot.isDraggingOver && (
-                      <li className="pp-activities-empty">Aucun lieu — ajoutez-en un ci-dessous</li>
+                      <li className="pp-activities-empty">{t('place.emptyList')}</li>
                     )}
                   </ul>
                 )}
@@ -237,11 +239,11 @@ export default function CityBlock({
                     cityHint={city.name}
                     onSelect={handlePlaceSelect}
                     onManualAdd={handleManualAdd}
-                    placeholder={`Rechercher un lieu à ${city.name}… (Entrée pour ajouter)`}
+                    placeholder={t('place.searchPlaceholder', { city: city.name })}
                     autoFocus
                   />
                   <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingPlace(false)}>
-                    Annuler
+                    {t('common:actions.cancel')}
                   </button>
                 </div>
               ) : (
@@ -249,7 +251,7 @@ export default function CityBlock({
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                   </svg>
-                  Ajouter un lieu ou activité
+                  {t('city.addPlaceOrActivityButton')}
                 </button>
               )}
 
@@ -303,17 +305,17 @@ export default function CityBlock({
                   <CitySearchInput
                     onSelect={name => { onAddDaytrip(tripId, city.destination_id, city.id, name); setAddingDaytrip(false); }}
                     onManual={name => { onAddDaytrip(tripId, city.destination_id, city.id, name); setAddingDaytrip(false); }}
-                    placeholder="Chercher une ville pour l'excursion… (ou Entrée pour ajouter)"
+                    placeholder={t('city.addDaytripSearchPlaceholder')}
                     autoFocus
                   />
-                  <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingDaytrip(false)}>Annuler</button>
+                  <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingDaytrip(false)}>{t('common:actions.cancel')}</button>
                 </div>
               ) : (
                 <button className="pp-add-item-btn pp-add-daytrip-btn" onClick={() => setAddingDaytrip(true)}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
                   </svg>
-                  Ajouter une excursion à la journée
+                  {t('city.addDaytripButton')}
                 </button>
               )}
 
@@ -325,7 +327,7 @@ export default function CityBlock({
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
                     </svg>
-                    Trajets <span>({trajetActivities.length})</span>
+                    {t('trajetsSection.label')} <span>({trajetActivities.length})</span>
                   </div>
                   <Droppable droppableId={`trajets-${city.id}`}>
                     {(provided, snapshot) => (
@@ -363,7 +365,7 @@ export default function CityBlock({
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
                   </svg>
-                  Ajouter un trajet
+                  {t('trajetsSection.addButton')}
                 </button>
               )}
             </div>

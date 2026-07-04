@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
 import {
   ACTIVITY_CATEGORIES, TRANSPORT_MODES,
@@ -12,11 +13,12 @@ import {
 // le connecteur affiché à l'écran (voir TravelConnector), jamais un temps de
 // trajet (voir estimateTravel dans planningUtils pour le pourquoi).
 function PrintTravelLine({ segment }) {
+  const { t } = useTranslation();
   const { from, est } = segment;
   return (
     <p className="pp-print-travel">
-      ↳ ~{formatTravelDistance(est.distanceKm)} à vol d'oiseau depuis {from.name}
-      {est.far ? ' — prévoir un transport' : ''}
+      {t('print.travelLine', { distance: formatTravelDistance(est.distanceKm), place: from.name })}
+      {est.far ? t('print.travelFarSuffix') : ''}
     </p>
   );
 }
@@ -24,11 +26,12 @@ function PrintTravelLine({ segment }) {
 // Ligne "où l'on dort cette nuit" sous le titre d'un jour — même règle que le
 // bandeau de la vue par jour (check_in <= jour < check_out).
 function LodgingNightLine({ lodging, cityName }) {
+  const { t } = useTranslation();
   return (
     <div className="pp-print-lodging">
       <span className="pp-print-lodging-icon">🏨</span>
       <span className="pp-print-lodging-text">
-        Nuit à <strong>{lodging.name}</strong>
+        {t('dayView.nightAt')} <strong>{lodging.name}</strong>
         {cityName ? ` · ${cityName}` : ''}
         {lodging.address ? ` — ${lodging.address}` : ''}
       </span>
@@ -72,6 +75,7 @@ function ActivityLine({ act, cityName, label }) {
 // TripDayModeView (activités du jour + reportées depuis hier via duration_minutes),
 // via les fonctions partagées de planningUtils pour ne jamais diverger de l'écran.
 function TodayPrintSection({ trip, cities, activities, lodgings }) {
+  const { t } = useTranslation();
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
   const today = todayLocalStr();
@@ -80,10 +84,10 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
   if (!hasDates || !inRange) {
     return (
       <p className="pp-print-notes">
-        {!hasDates && "Dates du voyage non définies."}
-        {datesInverted && "Dates du voyage incohérentes (retour avant le départ)."}
-        {beforeTrip && `Ce voyage n'a pas encore commencé (départ le ${formatDate(trip.start_date)}).`}
-        {afterTrip && `Ce voyage est terminé (retour le ${formatDate(trip.end_date)}).`}
+        {!hasDates && t('print.statusNoDates')}
+        {datesInverted && t('print.statusDatesInverted')}
+        {beforeTrip && t('print.statusBeforeTrip', { date: formatDate(trip.start_date) })}
+        {afterTrip && t('print.statusAfterTrip', { date: formatDate(trip.end_date) })}
       </p>
     );
   }
@@ -98,7 +102,7 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
   const tonightLodgings = lodgingsForNight(lodgings, today);
 
   if (carriedOver.length === 0 && todayActs.length === 0 && tonightLodgings.length === 0) {
-    return <p className="pp-print-notes">Aucune activité prévue aujourd'hui.</p>;
+    return <p className="pp-print-notes">{t('dayMode.noActivityToday')}</p>;
   }
 
   // Coût du jour : uniquement les activités qui démarrent aujourd'hui — les
@@ -126,20 +130,21 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
       ))}
       {allDayActs.length > 0 && (
         <>
-          <h3 className="pp-print-unplanned-country">Toute la journée</h3>
+          <h3 className="pp-print-unplanned-country">{t('activity.allDayChip')}</h3>
           {allDayActs.map(act => (
             <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
           ))}
         </>
       )}
       {todayCost != null && (
-        <p className="pp-print-day-total">Total du jour : <strong>{formatPrice(todayCost)}</strong></p>
+        <p className="pp-print-day-total">{t('print.dayTotalPrefix')} <strong>{formatPrice(todayCost)}</strong></p>
       )}
     </section>
   );
 }
 
 export default function TripPrintView({ trip, destinations, cities, activities, lodgings = [], focusToday = false }) {
+  const { t } = useTranslation();
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
 
@@ -163,7 +168,7 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
     return (
       <div className="pp-print-view">
         <header className="pp-print-header">
-          <h1 className="pp-print-title">✈️ {trip?.title || 'Mon voyage'}</h1>
+          <h1 className="pp-print-title">✈️ {trip?.title || t('header.untitledTrip')}</h1>
           <p className="pp-print-dates">{formatDayLabel(todayLocalStr())}</p>
         </header>
         <TodayPrintSection trip={trip} cities={cities} activities={activities} lodgings={lodgings} />
@@ -174,7 +179,7 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
   return (
     <div className="pp-print-view">
       <header className="pp-print-header">
-        <h1 className="pp-print-title">✈️ {trip?.title || 'Mon voyage'}</h1>
+        <h1 className="pp-print-title">✈️ {trip?.title || t('header.untitledTrip')}</h1>
         {(trip?.start_date || trip?.end_date) && (
           <p className="pp-print-dates">
             {formatDate(trip.start_date) || '?'} → {formatDate(trip.end_date) || '?'}
@@ -215,7 +220,7 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
 
       {unplanned.length > 0 && (
         <section className="pp-print-day pp-print-unplanned">
-          <h2 className="pp-print-day-title">Non planifiées</h2>
+          <h2 className="pp-print-day-title">{t('dayView.unplannedLabel')}</h2>
           {sortedDests.map(dest => {
             const destCities = cities.filter(c => c.destination_id === dest.id);
             const destUnplanned = unplanned
@@ -237,22 +242,22 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
 
       {tripBudget != null && (
         <section className="pp-print-day pp-print-budget">
-          <h2 className="pp-print-day-title">Budget</h2>
+          <h2 className="pp-print-day-title">{t('print.budgetTitle')}</h2>
           <div className="pp-print-budget-rows">
             {activitiesCost != null && (
               <div className="pp-print-budget-row">
-                <span>Activités et trajets</span>
+                <span>{t('print.activitiesAndTrips')}</span>
                 <span>{formatPrice(activitiesCost)}</span>
               </div>
             )}
             {lodgingsCost != null && (
               <div className="pp-print-budget-row">
-                <span>Hébergements</span>
+                <span>{t('lodging.sectionLabel')}</span>
                 <span>{formatPrice(lodgingsCost)}</span>
               </div>
             )}
             <div className="pp-print-budget-row pp-print-budget-row--total">
-              <span>Total</span>
+              <span>{t('print.total')}</span>
               <span>{formatPrice(tripBudget)}</span>
             </div>
           </div>

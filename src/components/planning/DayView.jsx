@@ -1,15 +1,20 @@
 import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
 import TravelConnector from './TravelConnector';
+import i18n from '../../i18n';
 
+function slotLabel(key) {
+  return { matin: 'daySlots.matin', 'apres-midi': 'daySlots.apresMidi', soir: 'daySlots.soir' }[key];
+}
 const SLOTS = [
-  { key: 'matin',      label: 'Matin',       icon: '🌅', range: [0, 12],  defaultTime: '09:00' },
-  { key: 'apres-midi', label: 'Après-midi',  icon: '☀',  range: [12, 18], defaultTime: '14:00' },
-  { key: 'soir',       label: 'Soir',        icon: '🌙', range: [18, 24], defaultTime: '20:00' },
+  { key: 'matin',      get label() { return i18n.t(slotLabel('matin'), { ns: 'planning' }); },      icon: '🌅', range: [0, 12],  defaultTime: '09:00' },
+  { key: 'apres-midi', get label() { return i18n.t(slotLabel('apres-midi'), { ns: 'planning' }); },  icon: '☀',  range: [12, 18], defaultTime: '14:00' },
+  { key: 'soir',       get label() { return i18n.t(slotLabel('soir'), { ns: 'planning' }); },        icon: '🌙', range: [18, 24], defaultTime: '20:00' },
 ];
 const SLOT_END_MINUTES = { matin: 12 * 60, 'apres-midi': 18 * 60, soir: 24 * 60 };
 const SLOT_START_MINUTES = { matin: 0, 'apres-midi': 12 * 60, soir: 18 * 60 };
@@ -76,6 +81,7 @@ function useNativeDropTarget(onDropGroup, onDropCity) {
 // mais sans être un <Draggable> : l'activité d'origine (dans son créneau de
 // départ) reste la seule instance réellement déplaçable/éditable pour cet id.
 function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups, onCutHere }) {
+  const { t } = useTranslation();
   const cat = ACTIVITY_CATEGORIES[act.category] || ACTIVITY_CATEGORIES.other;
   const group = groups?.find(g => g.id === act.group_id);
   const accentColor = group ? group.color : cat.color;
@@ -89,7 +95,7 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
     <div
       className={`pp-day-activity pp-day-activity--continuation${act.is_done ? ' pp-day-activity--done' : ''}`}
       style={{ '--cat-color': accentColor }}
-      title={`${act.name} — débute ${fromLabel}`}
+      title={t('dayView.continuationTitle', { name: act.name, from: fromLabel })}
     >
       <div className="pp-day-activity-group-bar" style={{ background: accentColor }} />
       <div className="pp-day-activity-time pp-day-activity-time--continuation">⋯</div>
@@ -97,7 +103,7 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
         <div className="pp-day-activity-title">
           <span className="pp-day-activity-cat">{displayIcon}</span>
           <span className="pp-day-activity-name">{act.name}</span>
-          <span className="pp-chip pp-chip--continuation">↳ suite ({fromLabel})</span>
+          <span className="pp-chip pp-chip--continuation">{t('dayView.continuationChip', { from: fromLabel })}</span>
         </div>
         {(city || dest) && (
           <div className="pp-day-activity-location">
@@ -108,7 +114,7 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
       <button
         type="button"
         className="pp-day-activity-cut-btn"
-        title="Arrêter l'activité juste avant ce créneau (retire celui-ci et tous les suivants)"
+        title={t('dayView.cutHereTitle')}
         onClick={() => onCutHere()}
       >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -124,6 +130,7 @@ function DaySlot({
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resizingActId, resizeHighlight, onCutHere, travelSegments = {},
 }) {
+  const { t } = useTranslation();
   const sorted = sortActsByTimeThenPosition(acts);
 
   const { isNativeOver, handlers } = useNativeDropTarget(
@@ -152,7 +159,7 @@ function DaySlot({
             className={`pp-day-slot-drop${snapshot.isDraggingOver || isNativeOver ? ' pp-day-slot-drop--over' : ''}${acts.length === 0 && overflow.length === 0 ? ' pp-day-slot-drop--empty' : ''}`}
           >
             {acts.length === 0 && overflow.length === 0 && !snapshot.isDraggingOver && (
-              <div className="pp-day-slot-empty">Glissez ici</div>
+              <div className="pp-day-slot-empty">{t('dayView.dropHere')}</div>
             )}
             {sorted.map((act, idx) => (
               <Fragment key={act.id}>
@@ -192,6 +199,7 @@ export default function DayView({
   trip, destinations, cities, activities, groups = [], lodgings = [], onAssignGroupToDay, onAssignCityToDay,
   onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
 }) {
+  const { t } = useTranslation();
   const days = useMemo(() => getDaysBetween(trip.start_date, trip.end_date), [trip.start_date, trip.end_date]);
   const hasNoDates = !trip.start_date || !trip.end_date;
 
@@ -303,7 +311,7 @@ export default function DayView({
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" opacity=".4">
             <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
           </svg>
-          <p>Définissez des dates pour voir la vue par jour et planifier vos activités par créneaux.</p>
+          <p>{t('dayView.noDatesNotice')}</p>
         </div>
         {activities.length > 0 && (
           <Droppable droppableId="day-unplanned">
@@ -313,7 +321,7 @@ export default function DayView({
                 {...unplannedDrop.handlers}
               >
                 <div className="pp-day-section-header">
-                  <span className="pp-day-label">Activités ({activities.length})</span>
+                  <span className="pp-day-label">{t('dayView.activitiesCount', { count: activities.length })}</span>
                 </div>
                 <div className="pp-day-activities" ref={provided.innerRef} {...provided.droppableProps}>
                   {activities.map((act, idx) => (
@@ -380,7 +388,7 @@ export default function DayView({
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
           <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>
         </svg>
-        Glissez un lieu vers un créneau (Matin / Après-midi / Soir) pour le planifier, ou tirez la poignée en bas d'une activité planifiée pour l'étirer sur les créneaux — voire les jours — suivants
+        {t('dayView.hint')}
       </div>
 
       {unplanned.length > 0 && (
@@ -393,9 +401,9 @@ export default function DayView({
           >
             <div className="pp-day-num pp-day-num--unplanned">?</div>
             <div className="pp-day-info">
-              <span className="pp-day-label">Non planifiées</span>
-              <span className="pp-day-count">{unplanned.length} activité{unplanned.length > 1 ? 's' : ''}</span>
-              {!unplannedOpen && <span className="pp-day-section-hint">Cliquez pour afficher</span>}
+              <span className="pp-day-label">{t('dayView.unplannedLabel')}</span>
+              <span className="pp-day-count">{t('dayView.unplannedCount', { count: unplanned.length })}</span>
+              {!unplannedOpen && <span className="pp-day-section-hint">{t('dayView.clickToShow')}</span>}
             </div>
             <svg
               className={`pp-day-section-chevron${unplannedOpen ? ' pp-day-section-chevron--open' : ''}`}
@@ -490,6 +498,7 @@ function DaySection({
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
+  const { t } = useTranslation();
   const libreDrop = useNativeDropTarget(
     groupId => onAssignGroupToDay(groupId, day, null),
     cityId => onAssignCityToDay(cityId, day, null),
@@ -509,11 +518,11 @@ function DaySection({
   return (
     <div className="pp-day-section">
       <div className="pp-day-section-header">
-        <div className="pp-day-num">J{dayIdx + 1}</div>
+        <div className="pp-day-num">{t('day.short', { n: dayIdx + 1 })}</div>
         <div className="pp-day-info">
           <span className="pp-day-label">{formatDayLabel(day)}</span>
           {totalDay > 0 && (
-            <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={`${doneDay} activité${doneDay > 1 ? 's' : ''} faite${doneDay > 1 ? 's' : ''} sur ${totalDay}`}>
+            <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={t('dayView.doneCountTitle', { done: doneDay, total: totalDay, count: doneDay })}>
               {doneDay}/{totalDay}
             </span>
           )}
@@ -530,9 +539,9 @@ function DaySection({
             return (
               <span key={l.id} className="pp-day-lodging-item" title={l.address || undefined}>
                 <span className="pp-day-lodging-icon">🏨</span>
-                Nuit à <strong>{l.name}</strong>{lCity ? <span className="pp-day-lodging-city"> · {lCity.name}</span> : null}
-                {day === l.check_in && <span className="pp-day-lodging-tag">arrivée</span>}
-                {isLastNight && <span className="pp-day-lodging-tag pp-day-lodging-tag--last">dernière nuit</span>}
+                {t('dayView.nightAt')} <strong>{l.name}</strong>{lCity ? <span className="pp-day-lodging-city"> · {lCity.name}</span> : null}
+                {day === l.check_in && <span className="pp-day-lodging-tag">{t('dayView.arrivalTag')}</span>}
+                {isLastNight && <span className="pp-day-lodging-tag pp-day-lodging-tag--last">{t('dayView.lastNightTag')}</span>}
               </span>
             );
           })}
@@ -583,7 +592,7 @@ function DaySection({
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
                   <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
                 </svg>
-                Toute la journée
+                {t('activity.allDayChip')}
               </div>
             )}
             {libreActs.map((act, idx) => (
@@ -595,7 +604,7 @@ function DaySection({
             ))}
             {provided.placeholder}
             {(snapshot.isDraggingOver || libreDrop.isNativeOver) && libreActs.length === 0 && (
-              <div className="pp-day-libre-empty">Déposer pour toute la journée</div>
+              <div className="pp-day-libre-empty">{t('dayView.dropAllDay')}</div>
             )}
           </div>
         )}

@@ -1,4 +1,5 @@
 import { COUNTRIES } from '../data/index';
+import i18n from '../i18n';
 
 // ─── Country list (sorted, fr) ────────────────────────────────────
 export const ALL_COUNTRIES = Object.entries(COUNTRIES)
@@ -6,28 +7,37 @@ export const ALL_COUNTRIES = Object.entries(COUNTRIES)
   .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
 // ─── Activity categories ──────────────────────────────────────────
+// `label` est un getter (relu à chaque accès) plutôt qu'une valeur figée : il
+// doit toujours refléter la langue active, sans que les ~6 fichiers qui font
+// `ACTIVITY_CATEGORIES[cat].label` aient à changer leur façon de le lire.
+function activityCategory(key, icon, color) {
+  return { icon, color, get label() { return i18n.t(`activityCategories.${key}`, { ns: 'planning' }); } };
+}
 export const ACTIVITY_CATEGORIES = {
-  visit:     { label: 'Visite',       icon: '🏛️', color: '#6366f1' },
-  food:      { label: 'Restauration', icon: '🍽️', color: '#f59e0b' },
-  hotel:     { label: 'Hébergement',  icon: '🏨', color: '#10b981' },
-  transport: { label: 'Transport',    icon: '✈️', color: '#3b82f6' },
-  nature:    { label: 'Nature',       icon: '🌿', color: '#22c55e' },
-  beach:     { label: 'Plage',        icon: '🏖️', color: '#06b6d4' },
-  shopping:  { label: 'Shopping',     icon: '🛍️', color: '#ec4899' },
-  night:     { label: 'Soirée',       icon: '🌙', color: '#8b5cf6' },
-  other:     { label: 'Autre',        icon: '📍', color: '#64748b' },
+  visit:     activityCategory('visit', '🏛️', '#6366f1'),
+  food:      activityCategory('food', '🍽️', '#f59e0b'),
+  hotel:     activityCategory('hotel', '🏨', '#10b981'),
+  transport: activityCategory('transport', '✈️', '#3b82f6'),
+  nature:    activityCategory('nature', '🌿', '#22c55e'),
+  beach:     activityCategory('beach', '🏖️', '#06b6d4'),
+  shopping:  activityCategory('shopping', '🛍️', '#ec4899'),
+  night:     activityCategory('night', '🌙', '#8b5cf6'),
+  other:     activityCategory('other', '📍', '#64748b'),
 };
 
 // ─── Modes de transport (trajets) ─────────────────────────────────
+function transportMode(key, icon) {
+  return { icon, get label() { return i18n.t(`transportModes.${key}`, { ns: 'planning' }); } };
+}
 export const TRANSPORT_MODES = {
-  voiture: { label: 'Voiture', icon: '🚗' },
-  train:   { label: 'Train',   icon: '🚆' },
-  avion:   { label: 'Avion',   icon: '✈️' },
-  metro:   { label: 'Métro',   icon: '🚇' },
-  bus:     { label: 'Bus',     icon: '🚌' },
-  bateau:  { label: 'Bateau',  icon: '⛴️' },
-  velo:    { label: 'Vélo',    icon: '🚲' },
-  marche:  { label: 'Marche',  icon: '🚶' },
+  voiture: transportMode('voiture', '🚗'),
+  train:   transportMode('train', '🚆'),
+  avion:   transportMode('avion', '✈️'),
+  metro:   transportMode('metro', '🚇'),
+  bus:     transportMode('bus', '🚌'),
+  bateau:  transportMode('bateau', '⛴️'),
+  velo:    transportMode('velo', '🚲'),
+  marche:  transportMode('marche', '🚶'),
 };
 
 export function formatDuration(minutes) {
@@ -40,16 +50,22 @@ export function formatDuration(minutes) {
 }
 
 // ─── Date helpers ─────────────────────────────────────────────────
+// Locale Intl dérivée de la langue active (fr/en) plutôt qu'en dur : c'est ce
+// qui fait suivre à formatDate/formatDateShort/formatDayLabel le widget de
+// langue de la topbar planif.
+const INTL_LOCALE = { fr: 'fr-FR', en: 'en-GB' };
+function currentLocale() { return INTL_LOCALE[i18n.language] || 'fr-FR'; }
+
 export function formatDate(d) {
   if (!d) return '';
-  return new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {
+  return new Date(d + 'T12:00:00').toLocaleDateString(currentLocale(), {
     day: 'numeric', month: 'short', year: 'numeric',
   });
 }
 
 export function formatDateShort(d) {
   if (!d) return '';
-  return new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', {
+  return new Date(d + 'T12:00:00').toLocaleDateString(currentLocale(), {
     weekday: 'short', day: 'numeric', month: 'short',
   });
 }
@@ -64,7 +80,7 @@ export function formatTimeShort(t) {
 export function formatDayLabel(d) {
   if (!d) return '';
   const date = new Date(d + 'T12:00:00');
-  return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  return date.toLocaleDateString(currentLocale(), { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
 export function getDaysBetween(startDate, endDate) {
@@ -189,9 +205,9 @@ export function getCarriedOverActivities(activities, today) {
 // Libellé "depuis quand" d'une activité reportée — évite un "Depuis hier"
 // trompeur pour une activité commencée il y a 2 jours ou plus.
 export function formatCarriedOverLabel(daysBetween, visitDate) {
-  if (daysBetween === 1) return 'Depuis hier';
-  if (daysBetween === 2) return 'Depuis avant-hier';
-  return `Depuis le ${formatDate(visitDate)}`;
+  if (daysBetween === 1) return i18n.t('carriedOver.yesterday', { ns: 'planning' });
+  if (daysBetween === 2) return i18n.t('carriedOver.dayBeforeYesterday', { ns: 'planning' });
+  return i18n.t('carriedOver.sinceDate', { ns: 'planning', date: formatDate(visitDate) });
 }
 
 // ─── Hébergements ─────────────────────────────────────────────────
@@ -214,10 +230,12 @@ export function lodgingsForNight(lodgings, day) {
   );
 }
 
-// Prix affiché "1 234,50 €" — centralisé pour la future répartition des dépenses
+// Prix affiché "1 234,50 €" (ou "€1,234.50" en anglais) — devise EUR fixe pour
+// l'instant (multi-devise hors scope, voir la note i18n), seule la locale
+// d'affichage suit la langue active.
 export function formatPrice(n) {
   if (n == null || n === '' || isNaN(Number(n))) return '';
-  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(Number(n));
+  return new Intl.NumberFormat(currentLocale(), { style: 'currency', currency: 'EUR' }).format(Number(n));
 }
 
 // Somme des coûts d'une liste (activités via `cost`, hébergements via `price`).
@@ -263,10 +281,13 @@ export function estimateTravel(actA, actB) {
   return { far: distanceKm > FAR_KM, distanceKm };
 }
 
-// Distance affichée : "650 m", "3,4 km", "370 km" — même convention fr partout.
+// Distance affichée : "650 m", "3,4 km" ("3.4 km" en anglais), "370 km".
 export function formatTravelDistance(km) {
   if (km < 1) return `${Math.max(50, Math.round((km * 1000) / 50) * 50)} m`;
-  if (km < 10) return `${km.toFixed(1).replace('.', ',')} km`;
+  if (km < 10) {
+    const decimal = new Intl.NumberFormat(currentLocale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(km);
+    return `${decimal} km`;
+  }
   return `${Math.round(km)} km`;
 }
 
@@ -306,8 +327,7 @@ export function normalizeStr(s) {
 const GEOAPIFY_API_KEY = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
 // Langues supportées par Geoapify pour lesquelles OSM a une bonne couverture
-// de traductions. On suit la langue du navigateur du visiteur (et non une
-// langue fixe), avec repli sur l'anglais qui a la meilleure couverture
+// de traductions, avec repli sur l'anglais qui a la meilleure couverture
 // mondiale de traductions de noms de lieux sur OSM.
 const SUPPORTED_GEO_LANGS = ['en', 'fr', 'de', 'es', 'it', 'pt', 'nl', 'ru', 'zh', 'ja', 'ko'];
 function detectGeoLang() {
@@ -319,13 +339,18 @@ function detectGeoLang() {
   }
   return 'en';
 }
-const GEO_LANG = detectGeoLang();
+// Recalculée à chaque appel (pas une const figée au chargement du module) :
+// doit suivre la langue choisie via le widget de la topbar planif, pas
+// seulement la langue du navigateur au premier chargement.
+function currentGeoLang() {
+  return SUPPORTED_GEO_LANGS.includes(i18n.language) ? i18n.language : detectGeoLang();
+}
 
 export async function fetchPlaceSuggestions(query, cityHint) {
   if (query.length < 2) return [];
   const q = cityHint ? `${query} ${cityHint}` : query;
   try {
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&lang=${GEO_LANG}&limit=8&apiKey=${GEOAPIFY_API_KEY}`;
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&lang=${currentGeoLang()}&limit=8&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
     if (!res.ok) return [];
     const data = await res.json();
@@ -350,7 +375,7 @@ export async function fetchPlaceSuggestions(query, cityHint) {
 export async function fetchCitySuggestions(query) {
   if (query.length < 2) return [];
   try {
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&lang=${GEO_LANG}&type=city&limit=12&apiKey=${GEOAPIFY_API_KEY}`;
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&lang=${currentGeoLang()}&type=city&limit=12&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) return [];
     const data = await res.json();
@@ -440,7 +465,8 @@ export function exportTripAsText({ trip, destinations, cities, activities }) {
   lines.push(`✈️ ${trip.title}`);
   const dur = tripDurationDays(trip.start_date, trip.end_date);
   if (dur) {
-    lines.push(`📅 ${formatDate(trip.start_date)} → ${formatDate(trip.end_date)} (${dur} jour${dur > 1 ? 's' : ''})`);
+    const durationLabel = i18n.t('export.durationDays', { ns: 'planning', count: dur });
+    lines.push(`📅 ${formatDate(trip.start_date)} → ${formatDate(trip.end_date)} (${durationLabel})`);
   } else if (trip.start_date || trip.end_date) {
     lines.push(`📅 ${formatDate(trip.start_date) || '?'} → ${formatDate(trip.end_date) || '?'}`);
   }

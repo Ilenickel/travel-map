@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TRANSPORT_MODES } from '../../lib/planningUtils';
 
 const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
@@ -7,6 +8,7 @@ const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
 // DaytripCard. Contrairement à un lieu, un trajet n'a pas de coordonnées à chercher —
 // pas de recherche géographique ici, juste un nom libre, un mode et une durée.
 export default function TrajetAddInput({ onAdd, onClose }) {
+  const { t } = useTranslation();
   const [mode, setMode] = useState('voiture');
   const [name, setName] = useState('');
   const [h, setH] = useState('');
@@ -42,7 +44,7 @@ export default function TrajetAddInput({ onAdd, onClose }) {
         className="pp-add-trajet-name"
         value={name}
         onChange={e => setName(e.target.value)}
-        placeholder={`Nom du trajet (ex : ${TRANSPORT_MODES[mode].label} vers…)`}
+        placeholder={t('trajet.namePlaceholder', { mode: TRANSPORT_MODES[mode].label })}
         onKeyDown={e => e.key === 'Enter' && handleAdd()}
         autoFocus
       />
@@ -63,8 +65,8 @@ export default function TrajetAddInput({ onAdd, onClose }) {
         <span>min</span>
       </div>
       <div className="pp-add-trajet-actions">
-        <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleAdd}>Ajouter</button>
-        <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={onClose}>Annuler</button>
+        <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleAdd}>{t('common:actions.add')}</button>
+        <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={onClose}>{t('common:actions.cancel')}</button>
       </div>
     </div>
   );

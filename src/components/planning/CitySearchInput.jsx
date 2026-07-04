@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { fetchCitySuggestions } from '../../lib/planningUtils';
 
 export default function CitySearchInput({ onSelect, onManual, placeholder, autoFocus }) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState(false);
@@ -55,7 +57,7 @@ export default function CitySearchInput({ onSelect, onManual, placeholder, autoF
           value={query}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder || 'Chercher une ville… (ou Entrée pour ajouter)'}
+          placeholder={placeholder || t('city.searchPlaceholderDefault')}
           onFocus={() => results.length > 0 && setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 180)}
         />

@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import {
   formatDayLabel, formatDate, todayLocalStr, timeToMinutes, getDayModeStatus,
   getCarriedOverActivities, formatCarriedOverLabel, lodgingsForNight, buildTravelSegments,
@@ -24,6 +25,7 @@ export default function TripDayModeView({
   // (@hello-pangea/dnd n'accepte pas de DragDropContext imbriqués).
   standalone = true,
 }) {
+  const { t } = useTranslation();
   const today = todayLocalStr();
   const { hasDates, datesInverted, inRange, beforeTrip, afterTrip } = getDayModeStatus(trip, today);
 
@@ -32,10 +34,10 @@ export default function TripDayModeView({
       <div className="pp-day-mode">
         <div className="pp-day-mode-empty">
           <div className="pp-day-mode-empty-icon">🧭</div>
-          {!hasDates && <p>Définissez les dates de départ et de retour du voyage pour utiliser le mode Jour J.</p>}
-          {datesInverted && <p>La date de retour est antérieure à la date de départ — vérifiez les dates du voyage dans l'en-tête.</p>}
-          {beforeTrip && <p>Ce voyage n'a pas encore commencé (départ le {formatDate(trip.start_date)}). Le mode Jour J affiche les activités du jour en cours pendant le voyage.</p>}
-          {afterTrip && <p>Ce voyage est terminé (retour le {formatDate(trip.end_date)}). Le mode Jour J n'a plus rien à afficher.</p>}
+          {!hasDates && <p>{t('dayMode.noDates')}</p>}
+          {datesInverted && <p>{t('dayMode.datesInverted')}</p>}
+          {beforeTrip && <p>{t('dayMode.beforeTrip', { date: formatDate(trip.start_date) })}</p>}
+          {afterTrip && <p>{t('dayMode.afterTrip', { date: formatDate(trip.end_date) })}</p>}
         </div>
       </div>
     );
@@ -79,7 +81,7 @@ export default function TripDayModeView({
     return 'past';
   };
 
-  const STATUS_LABEL = { ongoing: 'En cours', upcoming: 'À venir', past: 'Passée' };
+  const STATUS_LABEL = { ongoing: t('dayMode.statusOngoing'), upcoming: t('dayMode.statusUpcoming'), past: t('dayMode.statusPast') };
 
   const list = (
     <Droppable droppableId="day-mode-list">
@@ -116,7 +118,7 @@ export default function TripDayModeView({
             );
           })}
           {allDayActs.length > 0 && (
-            <div className="pp-day-mode-allday-label">Toute la journée</div>
+            <div className="pp-day-mode-allday-label">{t('activity.allDayChip')}</div>
           )}
           {allDayActs.map((act, idx) => (
             <div key={act.id} className="pp-day-mode-card">
@@ -142,14 +144,14 @@ export default function TripDayModeView({
           {checkoutLodgings.map(l => (
             <div key={`out-${l.id}`} className="pp-day-mode-lodging-row pp-day-mode-lodging-row--checkout">
               <span className="pp-day-mode-lodging-icon">🧳</span>
-              Check-out de <strong>{l.name}</strong> ce matin
+              {t('dayMode.checkoutPrefix')} <strong>{l.name}</strong> {t('dayMode.checkoutSuffix')}
             </div>
           ))}
           {tonightLodgings.map(l => (
             <div key={`in-${l.id}`} className="pp-day-mode-lodging-row" title={l.address || undefined}>
               <span className="pp-day-mode-lodging-icon">🏨</span>
-              Cette nuit : <strong>{l.name}</strong>
-              {l.check_in === today && <span className="pp-day-mode-lodging-tag">check-in aujourd'hui</span>}
+              {t('dayMode.tonightPrefix')} <strong>{l.name}</strong>
+              {l.check_in === today && <span className="pp-day-mode-lodging-tag">{t('dayMode.checkinTodayTag')}</span>}
               {l.address && <span className="pp-day-mode-lodging-addr">📍 {l.address}</span>}
             </div>
           ))}
@@ -159,7 +161,7 @@ export default function TripDayModeView({
       {todayActs.length === 0 && carriedOver.length === 0 ? (
         <div className="pp-day-mode-empty">
           <div className="pp-day-mode-empty-icon">☕</div>
-          <p>Aucune activité prévue aujourd'hui.</p>
+          <p>{t('dayMode.noActivityToday')}</p>
         </div>
       ) : standalone ? (
         <DragDropContext onDragEnd={() => {}}>{list}</DragDropContext>

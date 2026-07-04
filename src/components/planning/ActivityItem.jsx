@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Draggable } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration, formatPrice } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
@@ -17,6 +18,7 @@ export default function ActivityItem({
   onResizeStart, resizing = false, dragDisabled = false,
   selectable = false, selected = false, onToggleSelect,
 }) {
+  const { t } = useTranslation();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(act.name);
   const [note, setNote] = useState(act.description || '');
@@ -159,7 +161,7 @@ export default function ActivityItem({
       type="button"
       className={`pp-activity-check${act.is_done ? ' pp-activity-check--done' : ''}`}
       onClick={toggleDone}
-      title={act.is_done ? 'Marquer comme non faite' : 'Marquer comme faite'}
+      title={act.is_done ? t('activity.markUndone') : t('activity.markDone')}
       aria-pressed={!!act.is_done}
     >
       {act.is_done ? (
@@ -204,14 +206,14 @@ export default function ActivityItem({
                 className="pp-activity-name-input"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="Nom du lieu"
+                placeholder={t('activity.namePlaceholder')}
                 autoFocus
                 onKeyDown={e => e.key === 'Enter' && save()}
               />
 
               {/* Category */}
               <div className="pp-activity-field">
-                <span className="pp-activity-field-label">Catégorie</span>
+                <span className="pp-activity-field-label">{t('activity.categoryLabel')}</span>
                 <div className="pp-cat-picker">
                   {CATEGORY_LIST.map(([key, val]) => (
                     <button
@@ -230,7 +232,7 @@ export default function ActivityItem({
               {/* Mode de transport + durée (uniquement pour un trajet) */}
               {category === 'transport' && (
                 <div className="pp-activity-field">
-                  <span className="pp-activity-field-label">Mode de transport</span>
+                  <span className="pp-activity-field-label">{t('activity.transportModeLabel')}</span>
                   <div className="pp-cat-picker">
                     {TRANSPORT_MODE_LIST.map(([key, val]) => (
                       <button
@@ -267,7 +269,7 @@ export default function ActivityItem({
               {/* Date + heure */}
               <div className="pp-activity-datetime">
                 <div className="pp-activity-datetime-field">
-                  <label>Date</label>
+                  <label>{t('activity.dateLabel')}</label>
                   <input
                     className="pp-activity-date-input"
                     type="date"
@@ -278,15 +280,15 @@ export default function ActivityItem({
                 </div>
                 <div className="pp-activity-datetime-field">
                   <div className="pp-activity-datetime-field-head">
-                    <label>Heure</label>
+                    <label>{t('activity.timeLabel')}</label>
                     <button
                       type="button"
                       className={`pp-allday-toggle${allDay ? ' active' : ''}`}
                       onClick={toggleAllDay}
-                      title="Toute la journée (pas de créneau précis — utile pour une excursion)"
+                      title={t('activity.allDayToggleTitle')}
                     >
                       <span className="pp-allday-toggle-track"><span className="pp-allday-toggle-thumb" /></span>
-                      Journée entière
+                      {t('activity.allDayToggleLabel')}
                     </button>
                   </div>
                   <input
@@ -298,14 +300,14 @@ export default function ActivityItem({
                   />
                 </div>
                 <div className="pp-activity-datetime-field pp-activity-datetime-field--cost">
-                  <label>Prix</label>
+                  <label>{t('activity.priceLabel')}</label>
                   <div className="pp-activity-cost-wrap">
                     <input
                       className="pp-activity-cost-input"
                       type="number" min="0" step="0.01" placeholder="—"
                       value={cost}
                       onChange={e => setCost(e.target.value)}
-                      title="Prix de l'activité (billet, entrée, repas…) — laissez vide si inconnu"
+                      title={t('activity.costInputTitle')}
                     />
                     <span>€</span>
                   </div>
@@ -315,13 +317,13 @@ export default function ActivityItem({
               {/* Zone (group) */}
               {groups && groups.length > 0 && (
                 <div className="pp-group-picker-field">
-                  <label className="pp-group-picker-label">Groupe</label>
+                  <label className="pp-group-picker-label">{t('activity.groupLabel')}</label>
                   <div className="pp-group-chips">
                     <button
                       className={`pp-group-chip${!groupId ? ' active' : ''}`}
                       onClick={() => setGroupId(null)}
                     >
-                      Aucun
+                      {t('common:none')}
                     </button>
                     {groups.map(g => (
                       <button
@@ -342,13 +344,13 @@ export default function ActivityItem({
                 className="pp-activity-note-input"
                 value={note}
                 onChange={e => setNote(e.target.value)}
-                placeholder="Note (horaires, infos, adresse…)"
+                placeholder={t('activity.notePlaceholder')}
                 rows={2}
               />
               <AttachmentsPanel tripId={act.trip_id} activityId={act.id} />
               <div className="pp-activity-edit-actions">
-                <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={save}>Enregistrer</button>
-                <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={cancel}>Annuler</button>
+                <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={save}>{t('common:actions.save')}</button>
+                <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={cancel}>{t('common:actions.cancel')}</button>
               </div>
             </div>
           ) : variant === 'day' ? (
@@ -367,9 +369,9 @@ export default function ActivityItem({
                 {(durationLabel || costLabel || attachmentCount > 0) && (
                   <div className="pp-meta-line">
                     {durationLabel && <span className="pp-meta-item"><span className="pp-meta-icon">⏱</span> {durationLabel}</span>}
-                    {costLabel && <span className="pp-meta-item pp-meta-item--price" title="Prix de l'activité"><span className="pp-meta-icon">💰</span> {costLabel}</span>}
+                    {costLabel && <span className="pp-meta-item pp-meta-item--price" title={t('activity.priceTitle')}><span className="pp-meta-icon">💰</span> {costLabel}</span>}
                     {attachmentCount > 0 && (
-                      <span className="pp-meta-item" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+                      <span className="pp-meta-item" title={t('activity.attachmentCount', { count: attachmentCount })}>
                         <span className="pp-meta-icon">📎</span> {attachmentCount}
                       </span>
                     )}
@@ -390,7 +392,7 @@ export default function ActivityItem({
                 <button
                   type="button"
                   className="pp-day-activity-resize-handle"
-                  title="Glisser vers le bas pour étirer sur les créneaux (ou jours) suivants"
+                  title={t('activity.resizeHandleTitle')}
                   onMouseDown={e => { e.preventDefault(); onResizeStart(act); }}
                   onTouchStart={() => onResizeStart(act)}
                   onClick={e => e.stopPropagation()}
@@ -413,7 +415,7 @@ export default function ActivityItem({
                 <div
                   className={`pp-activity-cat-dot${groups?.length && !selectable ? ' pp-activity-cat-dot--clickable' : ''}`}
                   style={{ background: accentColor }}
-                  title={groups?.length ? (group ? `Groupe : ${group.name} — cliquer pour changer` : 'Cliquer pour assigner un groupe') : (cat.label)}
+                  title={groups?.length ? (group ? t('activity.groupTitleWithName', { name: group.name }) : t('activity.groupTitleAssign')) : (cat.label)}
                   onClick={e => {
                     if (!groups?.length || selectable) return;
                     e.stopPropagation();
@@ -424,13 +426,13 @@ export default function ActivityItem({
                   <>
                     <div className="pp-backdrop-overlay" onClick={() => setShowGroupPicker(false)} />
                     <div className="pp-quick-group-picker">
-                      <div className="pp-quick-group-label">Assigner un groupe</div>
+                      <div className="pp-quick-group-label">{t('activity.assignGroupLabel')}</div>
                       <button
                         className={`pp-quick-group-opt${!act.group_id ? ' active' : ''}`}
                         onClick={e => { e.stopPropagation(); handleQuickGroup(null); }}
                       >
                         <span className="pp-quick-group-dot" style={{ background: 'var(--border-light)' }} />
-                        Aucun
+                        {t('common:none')}
                       </button>
                       {groups.map(g => (
                         <button
@@ -455,9 +457,9 @@ export default function ActivityItem({
                 {(durationLabel || costLabel || attachmentCount > 0) && (
                   <div className="pp-meta-line">
                     {durationLabel && <span className="pp-meta-item"><span className="pp-meta-icon">⏱</span> {durationLabel}</span>}
-                    {costLabel && <span className="pp-meta-item pp-meta-item--price" title="Prix de l'activité"><span className="pp-meta-icon">💰</span> {costLabel}</span>}
+                    {costLabel && <span className="pp-meta-item pp-meta-item--price" title={t('activity.priceTitle')}><span className="pp-meta-icon">💰</span> {costLabel}</span>}
                     {attachmentCount > 0 && (
-                      <span className="pp-meta-item" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+                      <span className="pp-meta-item" title={t('activity.attachmentCount', { count: attachmentCount })}>
                         <span className="pp-meta-icon">📎</span> {attachmentCount}
                       </span>
                     )}
@@ -472,7 +474,7 @@ export default function ActivityItem({
                   {act.visit_date && (
                     <span className="pp-chip pp-chip--date">
                       📅 {formatDateShort(act.visit_date)}
-                      {act.visit_time ? ` · ${formatTimeShort(act.visit_time)}` : ' · Toute la journée'}
+                      {act.visit_time ? ` · ${formatTimeShort(act.visit_time)}` : ` · ${t('activity.allDayChip')}`}
                     </span>
                   )}
                   {!act.visit_date && act.visit_time && (
@@ -497,7 +499,7 @@ export default function ActivityItem({
             <button
               className="pp-activity-duplicate"
               onClick={e => { e.stopPropagation(); onDuplicate(act.id); }}
-              title="Dupliquer (ou survoler la carte + Ctrl+C)"
+              title={t('activity.duplicateTitle')}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
@@ -521,7 +523,7 @@ export default function ActivityItem({
                   onRemove(act.id);
                 }
               }}
-              title={variant === 'day' && act.visit_date ? 'Retirer de la planification (reste disponible dans la ville)' : 'Supprimer'}
+              title={variant === 'day' && act.visit_date ? t('activity.removeFromPlanningTitle') : t('activity.deleteTitle')}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
