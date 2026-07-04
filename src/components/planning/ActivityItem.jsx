@@ -145,15 +145,7 @@ export default function ActivityItem({
   const durationLabel = act.duration_minutes ? formatDuration(act.duration_minutes) : '';
   const canResize = variant === 'day' && !!onResizeStart && !!act.visit_time;
   const costLabel = formatPrice(act.cost);
-  const costChip = costLabel ? (
-    <span className="pp-chip pp-chip--price" title="Prix de l'activité">💰 {costLabel}</span>
-  ) : null;
   const { count: attachmentCount } = useAttachmentsCount(act.id);
-  const attachmentChip = attachmentCount > 0 && (
-    <span className="pp-chip pp-chip--attachment" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
-      📎 {attachmentCount}
-    </span>
-  );
 
   const toggleDone = (e) => {
     e.stopPropagation();
@@ -354,18 +346,25 @@ export default function ActivityItem({
               <div className="pp-day-activity-group-bar" style={{ background: accentColor }} title={group ? group.name : cat.label} />
               {checkButton}
               <div className="pp-day-activity-time">{act.visit_time ? formatTimeShort(act.visit_time) : '—'}</div>
-              <div className="pp-day-activity-dot" style={{ background: accentColor }} title={group ? group.name : cat.label} />
               <div className="pp-day-activity-content">
                 <div className="pp-day-activity-title">
                   <span className="pp-day-activity-cat">{displayIcon}</span>
                   <span className="pp-day-activity-name">{act.name}</span>
-                  {durationLabel && <span className="pp-chip pp-chip--duration">⏱ {durationLabel}</span>}
-                  {costChip}
-                  {attachmentChip}
                   {group && (
                     <span className="pp-day-activity-group-chip" style={{ color: group.color }}>● {group.name}</span>
                   )}
                 </div>
+                {(durationLabel || costLabel || attachmentCount > 0) && (
+                  <div className="pp-meta-line">
+                    {durationLabel && <span className="pp-meta-item"><span className="pp-meta-icon">⏱</span> {durationLabel}</span>}
+                    {costLabel && <span className="pp-meta-item pp-meta-item--price" title="Prix de l'activité"><span className="pp-meta-icon">💰</span> {costLabel}</span>}
+                    {attachmentCount > 0 && (
+                      <span className="pp-meta-item" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+                        <span className="pp-meta-icon">📎</span> {attachmentCount}
+                      </span>
+                    )}
+                  </div>
+                )}
                 {(city || dest) && (
                   <div className="pp-day-activity-location">
                     <CountryFlag emoji={destEmoji} size={13} /> {city?.name}{dest ? `, ${dest.country_name}` : ''}
@@ -437,10 +436,18 @@ export default function ActivityItem({
                   <span className="pp-activity-cat-icon">{displayIcon}</span>
                   <span className="pp-activity-name">{act.name}</span>
                 </div>
+                {(durationLabel || costLabel || attachmentCount > 0) && (
+                  <div className="pp-meta-line">
+                    {durationLabel && <span className="pp-meta-item"><span className="pp-meta-icon">⏱</span> {durationLabel}</span>}
+                    {costLabel && <span className="pp-meta-item pp-meta-item--price" title="Prix de l'activité"><span className="pp-meta-icon">💰</span> {costLabel}</span>}
+                    {attachmentCount > 0 && (
+                      <span className="pp-meta-item" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+                        <span className="pp-meta-icon">📎</span> {attachmentCount}
+                      </span>
+                    )}
+                  </div>
+                )}
                 <div className="pp-activity-chips">
-                  {durationLabel && <span className="pp-chip pp-chip--duration">⏱ {durationLabel}</span>}
-                  {costChip}
-                  {attachmentChip}
                   {group && (
                     <span className="pp-chip pp-chip--group" style={{ '--group-color': group.color }}>
                       ● {group.name}

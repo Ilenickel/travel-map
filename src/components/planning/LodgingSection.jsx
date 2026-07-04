@@ -224,13 +224,17 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
           ) : (
             <span className="pp-chip pp-chip--lodging-nodates">📅 Dates à définir</span>
           )}
-          {priceLabel && <span className="pp-chip pp-chip--lodging-price">💰 {priceLabel}</span>}
-          {attachmentCount > 0 && (
-            <span className="pp-chip pp-chip--attachment" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
-              📎 {attachmentCount}
-            </span>
-          )}
         </div>
+        {(priceLabel || attachmentCount > 0) && (
+          <div className="pp-meta-line">
+            {priceLabel && <span className="pp-meta-item pp-meta-item--price"><span className="pp-meta-icon">💰</span> {priceLabel}</span>}
+            {attachmentCount > 0 && (
+              <span className="pp-meta-item" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+                <span className="pp-meta-icon">📎</span> {attachmentCount}
+              </span>
+            )}
+          </div>
+        )}
         {lodging.address && <p className="pp-lodging-addr">📍 {lodging.address}</p>}
         {lodging.notes && <p className="pp-lodging-notes">{lodging.notes}</p>}
       </div>

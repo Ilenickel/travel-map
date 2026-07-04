@@ -1913,23 +1913,33 @@
   color: #fbbf24;
 }
 
-.pp-chip--duration {
-  background: rgba(59,130,246,0.1);
-  border: 1px solid rgba(59,130,246,0.22);
-  color: #60a5fa;
-}
-
-.pp-chip--attachment {
-  background: rgba(148,163,184,0.12);
-  border: 1px solid rgba(148,163,184,0.25);
+/* ─── Métadonnées secondaires (durée, prix, pièces jointes) ─── Contrairement
+   aux chips ci-dessus (date, groupe : l'info qu'on scanne visuellement par
+   couleur), celles-ci se lisent, elles ne se repèrent pas — un simple texte
+   discret évite d'empiler une pastille colorée de plus sur chaque carte. */
+.pp-meta-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 4px 0 6px;
+  font-size: 12px;
   color: var(--text-dim);
 }
 
-/* Prix d'une activité — même teinte ambre que le prix des hébergements
-   (pp-chip--lodging-price), pour que "ça coûte" ait partout la même couleur */
-.pp-chip--price {
-  background: rgba(245,158,11,0.1);
-  border: 1px solid rgba(245,158,11,0.2);
+.pp-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.pp-meta-icon {
+  font-size: 14.5px;
+  line-height: 1;
+}
+
+.pp-meta-item--price {
   color: #fbbf24;
   font-variant-numeric: tabular-nums;
 }
@@ -2044,6 +2054,10 @@
   box-sizing: border-box;
 }
 .pp-activity-cost-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+/* Masque les flèches natives du input[type=number], comme pour la durée de trajet */
+.pp-activity-cost-input::-webkit-outer-spin-button,
+.pp-activity-cost-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pp-activity-cost-input[type="number"] { -moz-appearance: textfield; }
 
 /* ─── Toggle "Journée entière" — remplace la case à cocher native, replacé à
    côté du champ Heure qu'il désactive, pour un lien visuel direct ─── */
@@ -2430,7 +2444,8 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   cursor: pointer;
 }
 
@@ -2447,15 +2462,6 @@
   border-radius: 7px;
   padding: 3px 0;
   width: 42px;
-}
-
-.pp-day-activity-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin: 6px 2px 0 2px;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
 }
 
 .pp-day-activity-content {
@@ -3774,9 +3780,12 @@
   .pp-daytrip-header { padding: 8px 10px; gap: 7px; }
   .pp-daytrip-badge { display: none; }
 
-  /* Lignes de lieu (panneau villes) : resserrées. */
+  /* Lignes de lieu (panneau villes) : resserrées. Padding haut/droite >= le
+     border-radius de la carte (8px) : en dessous, les boutons dupliquer/
+     supprimer (calés en haut à droite, toujours visibles au toucher) débordent
+     visuellement du coin arrondi au lieu d'y rester clos. */
   .pp-activities { padding: 4px 8px 4px; }
-  .pp-activity { padding: 8px 6px; gap: 6px; }
+  .pp-activity { padding: 9px 8px 8px 6px; gap: 6px; }
   .pp-activity-del,
   .pp-activity-duplicate { padding: 2px; }
 
@@ -3794,11 +3803,18 @@
   .pp-day-slot-drop { padding: 5px 6px 6px; }
   .pp-day-slot-hint { display: none; }
   .pp-day-libre { padding: 8px 10px 10px; }
-  .pp-day-activity { padding: 8px 8px 8px 10px; gap: 6px; }
+  /* Haut/droite >= le border-radius de la carte (10px), sinon les boutons
+     dupliquer/supprimer (calés en haut à droite, toujours visibles au
+     toucher) débordent visuellement du coin arrondi. */
+  .pp-day-activity { padding: 10px 10px 8px 10px; gap: 6px; }
   .pp-day-activity-view { gap: 6px; }
   .pp-day-activity-time { width: 38px; font-size: 10.5px; }
-  .pp-day-activity-dot { display: none; }
   .pp-chip { font-size: 10px; }
+  /* Même compaction que les chips ci-dessus : sans ça, le texte "discret" de la
+     ligne durée/prix/pièces jointes ressortirait plus gros que les chips
+     colorés qu'il est censé faire passer au second plan. */
+  .pp-meta-line { font-size: 10.5px; gap: 3px 8px; margin: 3px 0 5px; }
+  .pp-meta-icon { font-size: 13px; }
 
   /* La ligne titre passe en multi-lignes : le nom garde toute la largeur du
      contenu (fini le nom écrasé sur 4 lignes à côté du chip de groupe), les
@@ -4685,6 +4701,11 @@
   .pp-day-activity-cut-btn {
     opacity: 1;
   }
+
+  /* La poignée d'étirement reste donc en permanence visible ici (pas de survol
+     pour la révéler à la demande) : sans plus d'espace entre les cartes, elle
+     se retrouve collée à la carte ou au connecteur de distance suivant. */
+  .pp-day-slot-drop { gap: 14px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -5035,11 +5056,6 @@
   color: var(--text-muted);
   border: 1px dashed var(--border-light);
 }
-.pp-chip--lodging-price {
-  background: rgba(245,158,11,0.1);
-  color: #fbbf24;
-  border: 1px solid rgba(245,158,11,0.2);
-}
 
 .pp-lodging-addr {
   font-size: 11.5px;
@@ -5060,57 +5076,74 @@
 .pp-add-lodging-btn { color: #34d399; }
 .pp-add-lodging-btn:hover { color: #6ee7b7; }
 
-/* Formulaire hébergement */
+/* Formulaire hébergement — mêmes gabarits que le formulaire d'édition d'une
+   activité (.pp-activity-edit et consorts), teintés émeraude pour rester
+   identifiable comme "hébergement" au premier coup d'œil. */
 .pp-lodging-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 14px;
   width: 100%;
+  padding: 4px 2px;
 }
 .pp-lodging-form input,
 .pp-lodging-form textarea {
   width: 100%;
-  padding: 7px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border-radius: 9px;
+  border: 1px solid var(--border-light);
   background: var(--surface);
   color: var(--text);
-  font-size: 12.5px;
+  font-size: 13px;
   font-family: inherit;
+  outline: none;
+  color-scheme: dark;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 .pp-lodging-form input:focus,
 .pp-lodging-form textarea:focus {
-  outline: none;
   border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.18);
 }
-.pp-lodging-name-input { font-weight: 600; }
+.pp-lodging-name-input {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  padding: 10px 12px;
+}
 
 .pp-lodging-dates-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .pp-lodging-field {
   flex: 1;
-  min-width: 110px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 6px;
 }
 .pp-lodging-field label {
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
 }
-.pp-lodging-field--price { max-width: 130px; }
+.pp-lodging-field--price { flex: 0 1 auto; min-width: 96px; max-width: 130px; }
 .pp-lodging-price-wrap {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 .pp-lodging-price-wrap span { color: var(--text-dim); font-size: 13px; }
+/* Masque les flèches natives du input[type=number] — trop petites, imprécises
+   au clic, et hors-style par rapport au reste des champs du formulaire. */
+.pp-lodging-price-wrap input::-webkit-outer-spin-button,
+.pp-lodging-price-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pp-lodging-price-wrap input[type="number"] { -moz-appearance: textfield; }
 
 .pp-lodging-date-error {
   margin: 0;

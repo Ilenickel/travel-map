@@ -93,7 +93,6 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
     >
       <div className="pp-day-activity-group-bar" style={{ background: accentColor }} />
       <div className="pp-day-activity-time pp-day-activity-time--continuation">⋯</div>
-      <div className="pp-day-activity-dot" style={{ background: accentColor }} />
       <div className="pp-day-activity-content">
         <div className="pp-day-activity-title">
           <span className="pp-day-activity-cat">{displayIcon}</span>
