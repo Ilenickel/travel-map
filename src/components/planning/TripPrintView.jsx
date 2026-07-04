@@ -1,10 +1,25 @@
+import { Fragment } from 'react';
 import { COUNTRIES } from '../../data/index';
 import {
   ACTIVITY_CATEGORIES, TRANSPORT_MODES,
   getDaysBetween, formatDayLabel, formatDate, formatTimeShort, formatDuration,
   todayLocalStr, getDayModeStatus, getCarriedOverActivities, formatCarriedOverLabel,
-  lodgingsForNight,
+  lodgingsForNight, sumCosts, formatPrice, buildTravelSegments, formatTravelDistance,
+  sortActivitiesByTimeThenPosition,
 } from '../../lib/planningUtils';
+
+// Distance à vol d'oiseau entre deux activités consécutives — même donnée que
+// le connecteur affiché à l'écran (voir TravelConnector), jamais un temps de
+// trajet (voir estimateTravel dans planningUtils pour le pourquoi).
+function PrintTravelLine({ segment }) {
+  const { from, est } = segment;
+  return (
+    <p className="pp-print-travel">
+      ↳ ~{formatTravelDistance(est.distanceKm)} à vol d'oiseau depuis {from.name}
+      {est.far ? ' — prévoir un transport' : ''}
+    </p>
+  );
+}
 
 // Ligne "où l'on dort cette nuit" sous le titre d'un jour — même règle que le
 // bandeau de la vue par jour (check_in <= jour < check_out).
@@ -43,6 +58,7 @@ function ActivityLine({ act, cityName, label }) {
           {label && <span className="pp-print-activity-carried">↳ {label}</span>}
           {cityName && <span className="pp-print-activity-city">📍 {cityName}</span>}
           {act.duration_minutes ? <span className="pp-print-activity-duration">{formatDuration(act.duration_minutes)}</span> : null}
+          {act.cost != null && <span className="pp-print-activity-cost">{formatPrice(act.cost)}</span>}
         </div>
         {act.description?.trim() && <p className="pp-print-activity-note">{act.description.trim()}</p>}
       </div>
@@ -74,13 +90,22 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
 
   const todayActs = activities.filter(a => a.visit_date === today);
   const carriedOver = getCarriedOverActivities(activities, today);
-  const timed = todayActs.filter(a => a.visit_time).sort((a, b) => a.visit_time.localeCompare(b.visit_time));
+  // Même tri que TripDayModeView à l'écran (heure puis position) — sinon le
+  // papier pourrait contredire l'ordre affiché pour deux activités à égalité
+  // d'heure.
+  const timed = sortActivitiesByTimeThenPosition(todayActs.filter(a => a.visit_time));
   const allDayActs = todayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
   const tonightLodgings = lodgingsForNight(lodgings, today);
 
   if (carriedOver.length === 0 && todayActs.length === 0 && tonightLodgings.length === 0) {
     return <p className="pp-print-notes">Aucune activité prévue aujourd'hui.</p>;
   }
+
+  // Coût du jour : uniquement les activités qui démarrent aujourd'hui — les
+  // reportées d'un jour précédent ont déjà été comptées à leur jour de début
+  // (même règle que les totaux par jour de la vue par jour à l'écran).
+  const todayCost = sumCosts(todayActs);
+  const travelSegments = buildTravelSegments(timed);
 
   return (
     <section className="pp-print-day">
@@ -94,7 +119,10 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
         />
       ))}
       {timed.map(act => (
-        <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
+        <Fragment key={act.id}>
+          {travelSegments[act.id] && <PrintTravelLine segment={travelSegments[act.id]} />}
+          <ActivityLine act={act} cityName={cityById[act.city_id]?.name} />
+        </Fragment>
       ))}
       {allDayActs.length > 0 && (
         <>
@@ -103,6 +131,9 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
             <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
           ))}
         </>
+      )}
+      {todayCost != null && (
+        <p className="pp-print-day-total">Total du jour : <strong>{formatPrice(todayCost)}</strong></p>
       )}
     </section>
   );
@@ -115,6 +146,16 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
   const days = getDaysBetween(trip?.start_date, trip?.end_date);
   const planned = activities.filter(a => a.visit_date);
   const unplanned = activities.filter(a => !a.visit_date);
+
+  // Récapitulatif budget (mode complet) : TOUTES les activités (les non
+  // planifiées coûteront aussi) + hébergements — mêmes règles que le pill
+  // budget de l'en-tête à l'écran (TripEditorHeader), pour que le papier ne
+  // contredise jamais l'écran.
+  const activitiesCost = sumCosts(activities);
+  const lodgingsCost = sumCosts(lodgings, 'price');
+  const tripBudget = activitiesCost == null && lodgingsCost == null
+    ? null
+    : (activitiesCost ?? 0) + (lodgingsCost ?? 0);
 
   const sortedDests = [...destinations].sort((a, b) => a.position - b.position);
 
@@ -143,23 +184,27 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
       {trip?.notes?.trim() && <p className="pp-print-notes">📝 {trip.notes.trim()}</p>}
 
       {days.map(day => {
-        const dayActs = planned
-          .filter(a => a.visit_date === day)
-          .sort((a, b) => {
-            if (a.visit_time && b.visit_time) return a.visit_time.localeCompare(b.visit_time);
-            if (a.visit_time) return -1;
-            if (b.visit_time) return 1;
-            return a.position - b.position;
-          });
+        // Même tri que la vue par jour à l'écran (heure puis position) : les
+        // segments ci-dessous DOIVENT être calculés sur ce même ordre, sinon la
+        // distance affichée se retrouve associée à la mauvaise paire de cartes
+        // (bug déjà rencontré et corrigé une fois entre l'écran et l'ordre
+        // affiché — jamais recalculer séparément avec un tri différent).
+        const dayActs = sortActivitiesByTimeThenPosition(planned.filter(a => a.visit_date === day));
         const nightLodgings = lodgingsForNight(lodgings, day);
+        const dayCost = sumCosts(dayActs);
+        const daySegments = buildTravelSegments(dayActs.filter(a => a.visit_time));
         // Un jour sans activité mais où l'on dort quelque part mérite quand même
         // sa section (savoir où l'on dort fait partie de l'itinéraire imprimé)
         if (dayActs.length === 0 && nightLodgings.length === 0) return null;
         return (
           <section key={day} className="pp-print-day">
             <h2 className="pp-print-day-title">{formatDayLabel(day)}</h2>
+            {dayCost != null && <span className="pp-print-day-cost">{formatPrice(dayCost)}</span>}
             {dayActs.map(act => (
-              <ActivityLine key={act.id} act={act} cityName={cityById[act.city_id]?.name} />
+              <Fragment key={act.id}>
+                {daySegments[act.id] && <PrintTravelLine segment={daySegments[act.id]} />}
+                <ActivityLine act={act} cityName={cityById[act.city_id]?.name} />
+              </Fragment>
             ))}
             {nightLodgings.map(l => (
               <LodgingNightLine key={l.id} lodging={l} cityName={cityById[l.city_id]?.name} />
@@ -187,6 +232,30 @@ export default function TripPrintView({ trip, destinations, cities, activities, 
               </div>
             );
           })}
+        </section>
+      )}
+
+      {tripBudget != null && (
+        <section className="pp-print-day pp-print-budget">
+          <h2 className="pp-print-day-title">Budget</h2>
+          <div className="pp-print-budget-rows">
+            {activitiesCost != null && (
+              <div className="pp-print-budget-row">
+                <span>Activités et trajets</span>
+                <span>{formatPrice(activitiesCost)}</span>
+              </div>
+            )}
+            {lodgingsCost != null && (
+              <div className="pp-print-budget-row">
+                <span>Hébergements</span>
+                <span>{formatPrice(lodgingsCost)}</span>
+              </div>
+            )}
+            <div className="pp-print-budget-row pp-print-budget-row--total">
+              <span>Total</span>
+              <span>{formatPrice(tripBudget)}</span>
+            </div>
+          </div>
         </section>
       )}
     </div>

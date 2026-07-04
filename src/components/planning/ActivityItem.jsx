@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Draggable } from '@hello-pangea/dnd';
-import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration } from '../../lib/planningUtils';
+import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration, formatPrice } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import { setHoveredActivity, clearHoveredActivity } from '../../lib/hoverTracker';
+import { useAttachmentsCount } from '../../context/AttachmentsCountContext';
+import AttachmentsPanel from './AttachmentsPanel';
 
 const CATEGORY_LIST = Object.entries(ACTIVITY_CATEGORIES);
 const TRANSPORT_MODE_LIST = Object.entries(TRANSPORT_MODES);
@@ -27,6 +29,10 @@ export default function ActivityItem({
   const [transportMode, setTransportMode] = useState(act.transport_mode || 'voiture');
   const [durationH, setDurationH] = useState(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
   const [durationM, setDurationM] = useState(act.duration_minutes ? act.duration_minutes % 60 : '');
+  // `?? ''` et non `|| ''` : un coût de 0 € (activité gratuite notée
+  // volontairement) doit réapparaître dans le champ, pas être confondu
+  // avec "pas de coût renseigné".
+  const [cost, setCost] = useState(act.cost ?? '');
   const [groupId, setGroupId] = useState(act.group_id || null);
   const [showGroupPicker, setShowGroupPicker] = useState(false);
   // Le champ date s'ouvre pré-rempli à la date de début du voyage (pour éviter à
@@ -52,9 +58,10 @@ export default function ActivityItem({
       setTransportMode(act.transport_mode || 'voiture');
       setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
       setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
+      setCost(act.cost ?? '');
       setGroupId(act.group_id || null);
     }
-  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.group_id, editing]);
+  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, act.group_id, editing]);
 
   const toggleAllDay = () => {
     setAllDay(a => {
@@ -82,6 +89,9 @@ export default function ActivityItem({
     const clampedH = Math.min(99, Math.max(0, parseInt(durationH, 10) || 0));
     const clampedM = Math.min(59, Math.max(0, parseInt(durationM, 10) || 0));
     const totalMinutes = clampedH * 60 + clampedM;
+    // Même règle que le prix des hébergements (LodgingForm) : min="0" ne bloque
+    // pas une saisie clavier négative, on reclampe donc à l'enregistrement.
+    const parsedCost = cost === '' ? null : Math.max(0, parseFloat(cost) || 0);
     onUpdate(act.id, {
       name: name.trim(),
       description: note.trim() || null,
@@ -90,6 +100,7 @@ export default function ActivityItem({
       category: category || 'other',
       transport_mode: isTransport ? transportMode : null,
       duration_minutes: isTransport && totalMinutes > 0 ? totalMinutes : null,
+      cost: parsedCost,
     });
     if (groupId !== act.group_id && onAssignToGroup) {
       onAssignToGroup(act.id, groupId);
@@ -107,6 +118,7 @@ export default function ActivityItem({
     setTransportMode(act.transport_mode || 'voiture');
     setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
     setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
+    setCost(act.cost ?? '');
     setGroupId(act.group_id || null);
     setEditing(false);
   };
@@ -132,6 +144,16 @@ export default function ActivityItem({
   // la catégorie dès qu'elle est renseignée.
   const durationLabel = act.duration_minutes ? formatDuration(act.duration_minutes) : '';
   const canResize = variant === 'day' && !!onResizeStart && !!act.visit_time;
+  const costLabel = formatPrice(act.cost);
+  const costChip = costLabel ? (
+    <span className="pp-chip pp-chip--price" title="Prix de l'activité">💰 {costLabel}</span>
+  ) : null;
+  const { count: attachmentCount } = useAttachmentsCount(act.id);
+  const attachmentChip = attachmentCount > 0 && (
+    <span className="pp-chip pp-chip--attachment" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+      📎 {attachmentCount}
+    </span>
+  );
 
   const toggleDone = (e) => {
     e.stopPropagation();
@@ -273,6 +295,19 @@ export default function ActivityItem({
                     onChange={e => setTime(e.target.value)}
                   />
                 </div>
+                <div className="pp-activity-datetime-field pp-activity-datetime-field--cost">
+                  <label>Prix</label>
+                  <div className="pp-activity-cost-wrap">
+                    <input
+                      className="pp-activity-cost-input"
+                      type="number" min="0" step="0.01" placeholder="—"
+                      value={cost}
+                      onChange={e => setCost(e.target.value)}
+                      title="Prix de l'activité (billet, entrée, repas…) — laissez vide si inconnu"
+                    />
+                    <span>€</span>
+                  </div>
+                </div>
               </div>
 
               {/* Zone (group) */}
@@ -308,6 +343,7 @@ export default function ActivityItem({
                 placeholder="Note (horaires, infos, adresse…)"
                 rows={2}
               />
+              <AttachmentsPanel tripId={act.trip_id} activityId={act.id} />
               <div className="pp-activity-edit-actions">
                 <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={save}>Enregistrer</button>
                 <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={cancel}>Annuler</button>
@@ -324,6 +360,8 @@ export default function ActivityItem({
                   <span className="pp-day-activity-cat">{displayIcon}</span>
                   <span className="pp-day-activity-name">{act.name}</span>
                   {durationLabel && <span className="pp-chip pp-chip--duration">⏱ {durationLabel}</span>}
+                  {costChip}
+                  {attachmentChip}
                   {group && (
                     <span className="pp-day-activity-group-chip" style={{ color: group.color }}>● {group.name}</span>
                   )}
@@ -401,6 +439,8 @@ export default function ActivityItem({
                 </div>
                 <div className="pp-activity-chips">
                   {durationLabel && <span className="pp-chip pp-chip--duration">⏱ {durationLabel}</span>}
+                  {costChip}
+                  {attachmentChip}
                   {group && (
                     <span className="pp-chip pp-chip--group" style={{ '--group-color': group.color }}>
                       ● {group.name}

@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useAuth } from '../../context/AuthContext';
+import { AttachmentsCountProvider } from '../../context/AttachmentsCountContext';
 import TripEditorHeader from './TripEditorHeader';
 import DestinationBlock from './DestinationBlock';
 import CountryPicker from './CountryPicker';
-import DayView from './DayView';
+import DayView, { activitiesInSlot } from './DayView';
 import GroupManager from './GroupManager';
 import MapPanel from './MapPanel';
 import TripShareModal from './TripShareModal';
@@ -253,13 +254,44 @@ export default function TripEditor({
 
     // Drop sur un créneau horaire (Matin / Après-midi / Soir)
     if (destination.droppableId.startsWith('slot:')) {
-      // Repose dans le même créneau (les activités y sont triées par heure, donc pas
-      // de réordonnancement manuel possible) : ne rien faire, pour ne pas écraser une
-      // heure personnalisée par l'heure par défaut du créneau.
-      if (source.droppableId === destination.droppableId) return;
       const colonIdx = destination.droppableId.indexOf(':', 5);
       const slot = destination.droppableId.slice(5, colonIdx);
       const date = destination.droppableId.slice(colonIdx + 1);
+
+      // Repose dans le même créneau : les activités y sont triées par heure, donc
+      // ce glisser-déposer n'a d'effet visible que pour celles à égalité d'heure
+      // (typiquement toutes calées sur l'heure par défaut du créneau tant qu'elles
+      // n'ont pas été personnalisées) — sert à décider laquelle se fait avant
+      // l'autre (utile par ex. pour comparer les temps de trajet estimés selon
+      // l'ordre). On persiste ce nouvel ordre via `position`, mais seulement la
+      // position RELATIVE des activités du créneau entre elles : jamais leur
+      // position par rapport aux autres activités hors créneau de la même
+      // ville/catégorie, sous peine de dupliquer des valeurs de position déjà
+      // utilisées par la liste "Lieux"/"Trajets" de la ville pour son propre ordre.
+      if (source.droppableId === destination.droppableId) {
+        const slotIds = activitiesInSlot(activities, date, slot).map(a => a.id);
+        const [movedId] = slotIds.splice(source.index, 1);
+        slotIds.splice(destination.index, 0, movedId);
+        const slotIdSet = new Set(slotIds);
+
+        const groupKey = a => `${a.city_id}::${a.category === 'transport' ? 't' : 'p'}`;
+        const groups = new Map();
+        for (const a of activities) {
+          const key = groupKey(a);
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(a);
+        }
+        for (const members of groups.values()) {
+          const touched = members.filter(m => slotIdSet.has(m.id));
+          if (touched.length < 2) continue; // rien à réordonner l'un par rapport à l'autre dans ce groupe
+          members.sort((a, b) => a.position - b.position);
+          const wanted = slotIds.filter(id => touched.some(m => m.id === id));
+          let w = 0;
+          onReorderActivities(null, members.map(m => slotIdSet.has(m.id) ? wanted[w++] : m.id));
+        }
+        return;
+      }
+
       const slotTimes = { matin: '09:00', 'apres-midi': '14:00', soir: '20:00' };
       onUpdateActivity(activityId, { visit_date: date, visit_time: slotTimes[slot] || null });
       return;
@@ -318,6 +350,7 @@ export default function TripEditor({
   };
 
   return (
+    <AttachmentsCountProvider tripId={tripId}>
     <div className="pp-editor">
       <TripEditorHeader
         trip={trip}
@@ -555,5 +588,6 @@ export default function TripEditor({
       {/* Invisible à l'écran, révélé uniquement à l'impression (voir .pp-print-view) */}
       <TripPrintView trip={trip} destinations={destinations} cities={cities} activities={activities} lodgings={lodgings} focusToday={isDayModeView} />
     </div>
+    </AttachmentsCountProvider>
   );
 }

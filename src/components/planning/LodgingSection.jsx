@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import PlaceSearchInput from './PlaceSearchInput';
 import { formatDateShort, lodgingNights, formatPrice } from '../../lib/planningUtils';
+import { useAttachmentsCount } from '../../context/AttachmentsCountContext';
+import AttachmentsPanel from './AttachmentsPanel';
 
 // Normalise un lien de réservation saisi à la main : on n'accepte que du
 // http(s) — un "javascript:..." collé (même par accident) ne doit jamais
@@ -159,6 +161,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
         placeholder="Note (n° de réservation, petit-déjeuner, code d'entrée…)"
         rows={2}
       />
+      {!isCreate && <AttachmentsPanel tripId={initial.trip_id} lodgingId={initial.id} />}
       <div className="pp-activity-edit-actions">
         <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={save} disabled={!name.trim()}>
           Enregistrer
@@ -173,6 +176,7 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
   const [editing, setEditing] = useState(false);
   const nights = lodgingNights(lodging.check_in, lodging.check_out);
   const priceLabel = formatPrice(lodging.price);
+  const { count: attachmentCount } = useAttachmentsCount(lodging.id);
 
   if (editing) {
     return (
@@ -221,6 +225,11 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
             <span className="pp-chip pp-chip--lodging-nodates">📅 Dates à définir</span>
           )}
           {priceLabel && <span className="pp-chip pp-chip--lodging-price">💰 {priceLabel}</span>}
+          {attachmentCount > 0 && (
+            <span className="pp-chip pp-chip--attachment" title={`${attachmentCount} pièce${attachmentCount > 1 ? 's' : ''} jointe${attachmentCount > 1 ? 's' : ''}`}>
+              📎 {attachmentCount}
+            </span>
+          )}
         </div>
         {lodging.address && <p className="pp-lodging-addr">📍 {lodging.address}</p>}
         {lodging.notes && <p className="pp-lodging-notes">{lodging.notes}</p>}

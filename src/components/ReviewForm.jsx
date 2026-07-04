@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { callModeration } from '../lib/moderation';
 import { useAuth } from '../context/AuthContext';
 import { useBadge } from '../context/BadgeContext';
+import { validateImageFile } from '../lib/imageValidation';
 
 export default function ReviewForm({ countryCode, destinationId, destinationName, existingReview, onSuccess, onCancel }) {
   const { user } = useAuth();
@@ -27,8 +28,19 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
     e.target.value = '';
     if (!files.length) return;
     setError('');
+    // accept="image/*" sur l'input ne bloque rien réellement (juste une suggestion
+    // pour la boîte de dialogue du système) : on vérifie donc le type nous-mêmes,
+    // avant compression, pour ne jamais stocker un SVG (peut embarquer du script).
+    const validFiles = [];
+    let rejected = false;
+    for (const file of files) {
+      if (validateImageFile(file)) rejected = true;
+      else validFiles.push(file);
+    }
+    if (rejected) setError('Certains fichiers ont été ignorés (format non accepté : JPG, PNG, WEBP ou GIF uniquement).');
+    if (!validFiles.length) return;
     setCompressing(true);
-    const newPhotos = await Promise.all(files.map(async (file) => {
+    const newPhotos = await Promise.all(validFiles.map(async (file) => {
       const compressed = await imageCompression(file, { maxSizeMB: 0.4, maxWidthOrHeight: 900, useWebWorker: true });
       return { file: compressed, preview: URL.createObjectURL(compressed), url: null };
     }));

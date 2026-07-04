@@ -601,6 +601,7 @@
 
 .pp-city-name {
   flex: 1;
+  min-width: 0;
   font-size: 19px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -612,6 +613,13 @@
 
 .pp-city-name-input {
   flex: 1;
+  /* Un <input>, contrairement au <span> qu'il remplace en édition, a une largeur
+     minimale intrinsèque (min-width: auto par défaut sur un flex item) qui
+     l'empêche de rétrécir sous ce seuil : sans ce reset, le champ forçait tout
+     l'en-tête à déborder et poussait les boutons renommer/supprimer hors du
+     widget dès que la ville avait un compteur ou un chip coût à côté. */
+  min-width: 0;
+  width: 100%;
   background: var(--surface3);
   border: 1px solid var(--accent);
   border-radius: 6px;
@@ -634,6 +642,22 @@
   border-radius: 20px;
   padding: 3px 9px;
   flex-shrink: 0;
+}
+
+/* Coût total des activités d'une ville / excursion (en-tête de bloc) */
+.pp-city-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fbbf24;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 20px;
+  padding: 3px 9px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .pp-city-actions {
@@ -834,6 +858,94 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-muted);
+}
+
+.pp-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+  border-top: 1px dashed var(--border-light);
+}
+
+.pp-attachments-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.pp-attachments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pp-attachment-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 4px 4px 4px 8px;
+}
+
+.pp-attachment-open {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  color: var(--text);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pp-attachment-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pp-attachment-size {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.pp-attachment-del {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+}
+
+.pp-attachment-del:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.pp-attachment-add {
+  align-self: flex-start;
+}
+
+.pp-attachment-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin: 0;
 }
 
 .pp-activity-edit-actions {
@@ -1661,6 +1773,15 @@
   color: var(--accent2);
 }
 
+/* Budget total du voyage (activités + hébergements) — même ambre que les
+   chips de prix, le détail activités/hébergements est dans l'infobulle */
+.pp-stat-pill--budget {
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.25);
+  color: #fbbf24;
+  font-variant-numeric: tabular-nums;
+}
+
 .pp-trip-notes {
   margin-top: 14px;
   padding-top: 14px;
@@ -1798,6 +1919,21 @@
   color: #60a5fa;
 }
 
+.pp-chip--attachment {
+  background: rgba(148,163,184,0.12);
+  border: 1px solid rgba(148,163,184,0.25);
+  color: var(--text-dim);
+}
+
+/* Prix d'une activité — même teinte ambre que le prix des hébergements
+   (pp-chip--lodging-price), pour que "ça coûte" ait partout la même couleur */
+.pp-chip--price {
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.2);
+  color: #fbbf24;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ─── Category picker in activity edit ─── */
 .pp-cat-picker {
   display: flex;
@@ -1878,6 +2014,36 @@
 }
 .pp-activity-time-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .pp-activity-time-input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Champ Prix (3e champ de la ligne Date / Heure / Prix) — plus étroit que les
+   deux autres : un montant tient sur peu de chiffres, lui donner la même
+   largeur laisserait un grand champ vide qui appelle une longue saisie */
+.pp-activity-datetime-field--cost {
+  flex: 0 1 auto;
+  min-width: 96px;
+  max-width: 130px;
+}
+.pp-activity-cost-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pp-activity-cost-wrap > span { color: var(--text-dim); font-size: 13px; }
+.pp-activity-cost-input {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 9px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  color-scheme: dark;
+  width: 100%;
+  box-sizing: border-box;
+}
+.pp-activity-cost-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
 /* ─── Toggle "Journée entière" — remplace la case à cocher native, replacé à
    côté du champ Heure qu'il désactive, pour un lien visuel direct ─── */
@@ -2149,6 +2315,19 @@
   color: #10b981;
   background: rgba(16,185,129,0.12);
   border-color: rgba(16,185,129,0.3);
+}
+
+/* Coût des activités de la journée (en-tête de jour, vue par jour) */
+.pp-day-cost {
+  font-size: 11px;
+  font-weight: 600;
+  color: #fbbf24;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
 }
 
 /* ─── Checklist (case à cocher "fait") ─── */
@@ -3580,6 +3759,9 @@
     text-overflow: ellipsis;
   }
   .pp-city-count { font-size: 10px; padding: 2px 7px; }
+  /* Chip coût : compacté comme le compteur de lieux — à deux pilules dans
+     l'en-tête, un montant à 4 chiffres écraserait sinon le nom de la ville */
+  .pp-city-cost { font-size: 10px; padding: 2px 7px; }
   .pp-city-actions { gap: 2px; }
   .pp-icon-btn { padding: 4px; }
 
@@ -3601,6 +3783,12 @@
   /* Vue Jours : lignes d'activité denses — la pastille de couleur est déjà
      portée par la barre de groupe et le chip horaire, le point est masqué. */
   .pp-day-section-header { padding: 10px 12px; gap: 10px; }
+  /* Avec le pill 💰 du jour en plus du compteur, une date longue ("mercredi 24
+     septembre" + "5/5" + "1 234,50 €") dépasse la largeur d'un petit écran :
+     on laisse les pills passer sous la date plutôt que de déborder — la ligne
+     n'a pas d'ellipsis contrairement au nom de ville. */
+  .pp-day-info { flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+  .pp-day-cost { font-size: 10px; padding: 2px 7px; }
   .pp-day-num { width: 30px; height: 30px; font-size: 11px; border-radius: 9px; }
   .pp-day-slots { padding: 7px 8px 0; }
   .pp-day-slot-drop { padding: 5px 6px 6px; }
@@ -4440,6 +4628,43 @@
 .pp-day-activity--continuation:hover .pp-day-activity-cut-btn { opacity: 1; }
 .pp-day-activity-cut-btn:hover { color: var(--red); background: rgba(239,68,68,0.12); }
 
+/* ─── Distance estimée entre deux activités consécutives ───
+   Petit connecteur discret (pointillé vertical + libellé) affiché entre deux
+   cartes d'activités horodatées, dans la vue par jour et le mode Jour J. */
+.pp-travel-connector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  padding: 2px 6px 2px 22px;
+  min-height: 18px;
+}
+/* Trait pointillé vertical qui relie visuellement les deux cartes */
+.pp-travel-connector::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: -3px;
+  bottom: -3px;
+  border-left: 2px dotted var(--border-light);
+}
+.pp-travel-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.pp-travel-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+/* Changement de ville probable (> 50 km) : suggestion de transport */
+.pp-travel-connector--far .pp-travel-label { color: var(--text-muted); font-style: italic; }
+
 /* ═══════════════════════════════════════════════════════════════
    ÉCRANS TACTILES — le :hover n'existe pas au toucher : toutes les
    actions révélées au survol doivent être visibles en permanence,
@@ -4568,6 +4793,46 @@
   }
   .pp-print-activity-city, .pp-print-activity-duration, .pp-print-activity-carried {
     color: #6b7280; font-size: 12.5px;
+  }
+
+  /* Distance à vol d'oiseau entre deux activités consécutives — même donnée
+     que le connecteur à l'écran (voir TravelConnector), jamais un temps */
+  .pp-print-travel {
+    font-size: 12px; color: #9ca3af; font-style: italic;
+    margin: 2px 0 6px 12px;
+  }
+  .pp-print-activity-cost {
+    color: #92400e; font-size: 12.5px; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Coût du jour, affiché à droite du titre du jour (mode complet) */
+  .pp-print-day-cost {
+    font-size: 13px; font-weight: 700; color: #92400e;
+    margin-left: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Total du jour du mode Jour J imprimé */
+  .pp-print-day-total {
+    font-size: 13.5px; color: #374151;
+    margin: 8px 0 0; padding: 6px 12px;
+    background: #fffbeb;
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 6px 6px 0;
+  }
+
+  /* Récapitulatif budget en fin d'itinéraire */
+  .pp-print-budget-rows { max-width: 320px; }
+  .pp-print-budget-row {
+    display: flex; justify-content: space-between; gap: 24px;
+    font-size: 13.5px; color: #374151;
+    padding: 4px 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .pp-print-budget-row--total {
+    font-weight: 800; color: #1e1b2e;
+    border-top: 2px solid #e5e7eb;
+    margin-top: 2px; padding-top: 7px;
   }
   .pp-print-activity-note {
     font-size: 13px; color: #4b5563; margin: 4px 0 0;

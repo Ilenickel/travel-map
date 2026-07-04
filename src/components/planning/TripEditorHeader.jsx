@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { tripDurationDays } from '../../lib/planningUtils';
+import { tripDurationDays, sumCosts, formatPrice } from '../../lib/planningUtils';
 
 export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities, lodgings = [],
@@ -50,6 +50,16 @@ export default function TripEditorHeader({
   // datés (check-in + check-out) sont exportables aussi.
   const icalExportableCount = activities.filter(a => a.visit_date && !a.is_done).length
     + lodgings.filter(l => l.check_in && l.check_out).length;
+  // Budget total du voyage = coûts des activités + prix des hébergements : c'est
+  // LE chiffre qu'on cherche en regardant l'en-tête ("combien coûte ce voyage ?"),
+  // pas seulement la part activités — le détail est dans l'infobulle. Chacun des
+  // deux sous-totaux peut être null (rien de renseigné de ce côté-là).
+  const activitiesCost = sumCosts(activities);
+  const lodgingsCost = sumCosts(lodgings, 'price');
+  const tripBudget = activitiesCost == null && lodgingsCost == null
+    ? null
+    : (activitiesCost ?? 0) + (lodgingsCost ?? 0);
+  const tripBudgetTitle = `Budget total : ${formatPrice(activitiesCost ?? 0)} d'activités et trajets + ${formatPrice(lodgingsCost ?? 0)} d'hébergements`;
 
   return (
     <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>
@@ -224,6 +234,11 @@ export default function TripEditorHeader({
         {activities.filter(a => a.visit_date).length > 0 && (
           <span className="pp-stat-pill pp-stat-pill--accent">
             📅 {activities.filter(a => a.visit_date).length} planifié{activities.filter(a => a.visit_date).length > 1 ? 's' : ''}
+          </span>
+        )}
+        {tripBudget != null && (
+          <span className="pp-stat-pill pp-stat-pill--budget" title={tripBudgetTitle}>
+            💰 {formatPrice(tripBudget)}
           </span>
         )}
       </div>

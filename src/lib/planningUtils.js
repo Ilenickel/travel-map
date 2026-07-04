@@ -108,6 +108,34 @@ export function timeToMinutes(t) {
   return h * 60 + m;
 }
 
+// Tri canonique des activités d'une journée : par heure, puis par `position`
+// pour départager les égalités (fréquent : plusieurs activités déposées dans
+// le même créneau restent toutes calées sur l'heure par défaut du créneau tant
+// que l'utilisateur n'a pas personnalisé chacune — ce tri permet alors de les
+// réordonner entre elles). Comparaison via timeToMinutes (jamais une
+// comparaison de chaînes brutes) : Postgres renvoie les colonnes TIME avec les
+// secondes ("14:00:00") pour une activité déjà rechargée depuis la base, alors
+// qu'une activité qui vient d'être déposée dans un créneau reçoit localement
+// "14:00" (sans secondes) tant qu'aucun rechargement n'est passé par là — deux
+// heures identiques à l'affichage pouvaient ainsi comparer comme différentes
+// en tant que chaînes, empêchant à tort le repli sur `position`.
+//
+// Partagée par DayView (écran + drag&drop), TripDayModeView (mode Jour J) et
+// TripPrintView (impression, complet + Jour J) : la même fonction PARTOUT est
+// ce qui garantit que l'ordre affiché, l'ordre utilisé pour calculer les
+// distances entre activités consécutives (buildTravelSegments) et l'ordre
+// imprimé ne divergent jamais entre eux.
+export function sortActivitiesByTimeThenPosition(acts) {
+  return [...acts].sort((a, b) => {
+    const ta = timeToMinutes(a.visit_time);
+    const tb = timeToMinutes(b.visit_time);
+    if (ta != null && tb != null) return ta !== tb ? ta - tb : a.position - b.position;
+    if (ta != null) return -1;
+    if (tb != null) return 1;
+    return a.position - b.position;
+  });
+}
+
 // "2026-07-03" + n jours -> "2026-07-04", calculé en local (pas via
 // toISOString, qui repasse par UTC et rend le mauvais jour pour les fuseaux
 // au-delà de UTC+12 — même précaution que todayLocalStr ci-dessus).
@@ -190,6 +218,82 @@ export function lodgingsForNight(lodgings, day) {
 export function formatPrice(n) {
   if (n == null || n === '' || isNaN(Number(n))) return '';
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(Number(n));
+}
+
+// Somme des coûts d'une liste (activités via `cost`, hébergements via `price`).
+// Renvoie null — et non 0 — quand AUCUN élément n'a de coût renseigné : les
+// totaux (jour, ville, voyage, impression) ne s'affichent que si l'utilisateur
+// a commencé à saisir des prix, un "0 €" permanent sur chaque en-tête ne serait
+// que du bruit. Un total de 0 € reste en revanche affiché s'il vient de coûts
+// réellement saisis à 0 (activités gratuites notées volontairement).
+export function sumCosts(items, key = 'cost') {
+  let total = null;
+  for (const it of items || []) {
+    const raw = it?.[key];
+    if (raw == null || raw === '' || isNaN(Number(raw))) continue;
+    total = (total ?? 0) + Number(raw);
+  }
+  return total;
+}
+
+// ─── Distance estimée entre lieux consécutifs ────────────────────
+// Distance à vol d'oiseau (haversine, réutilisée du k-means ci-dessous) — et
+// RIEN de plus : on a renoncé à en déduire un temps de trajet. Convertir une
+// distance en minutes suppose de deviner un mode de transport (marche, bus,
+// tram...) et une vitesse moyenne, deux choses qu'aucune formule ne peut savoir
+// à la place de l'utilisateur. Pire, le géocodage réduit un lieu à un seul
+// point : pour un grand site (un palais, une place, un parc), la distance
+// mesurée entre "points" dépend de l'entrée que le géocodeur a choisie et peut
+// n'avoir aucun rapport avec la marche réelle (murs d'enceinte, contrôles de
+// sécurité, sens de circulation). Une distance à vol d'oiseau reste un fait
+// géométrique vérifiable ; un temps de trajet ne l'aurait été pour l'essentiel
+// que par hasard.
+const FAR_KM = 50; // au-delà, on suggère de prévoir un vrai trajet (train, avion…)
+
+// null si l'un des deux lieux n'a pas de coordonnées (comportement dégradé :
+// rien n'est affiché) ou s'ils sont quasi confondus. Sinon
+// { far: bool, distanceKm }.
+export function estimateTravel(actA, actB) {
+  // `== null` et non un test falsy : 0 est une coordonnée valide (équateur,
+  // méridien de Greenwich) — un test falsy ferait silencieusement disparaître
+  // le trajet pour un lieu géocodé exactement à 0.
+  if (actA?.place_lat == null || actA?.place_lng == null || actB?.place_lat == null || actB?.place_lng == null) return null;
+  const distanceKm = haversineKm(actA.place_lat, actA.place_lng, actB.place_lat, actB.place_lng);
+  if (distanceKm < 0.08) return null; // même lieu (à ~80 m près) : rien à afficher
+  return { far: distanceKm > FAR_KM, distanceKm };
+}
+
+// Distance affichée : "650 m", "3,4 km", "370 km" — même convention fr partout.
+export function formatTravelDistance(km) {
+  if (km < 1) return `${Math.max(50, Math.round((km * 1000) / 50) * 50)} m`;
+  if (km < 10) return `${km.toFixed(1).replace('.', ',')} km`;
+  return `${Math.round(km)} km`;
+}
+
+// Segments de trajet entre activités horodatées consécutives d'une même journée
+// (déjà triées par visit_time). Renvoie une map { [idActivitéArrivée]: segment }
+// pour que chaque vue affiche le connecteur juste au-dessus de l'activité
+// d'arrivée. Partagé entre la vue par jour et le mode Jour J — jamais dupliqué.
+// Pas d'alerte de conflit d'horaire ici : l'estimation (à vol d'oiseau + vitesse
+// conventionnelle) n'est pas fiable au point de pouvoir reprocher à l'utilisateur
+// un planning "trop juste" — beaucoup ne renseignent d'ailleurs qu'un créneau
+// large (après-midi) sans heure précise, pour qui la notion même de "temps
+// disponible entre deux activités" n'a pas de sens.
+export function buildTravelSegments(sortedTimedActs) {
+  const segments = {};
+  for (let i = 1; i < sortedTimedActs.length; i++) {
+    const from = sortedTimedActs[i - 1];
+    const to = sortedTimedActs[i];
+    // Les coordonnées d'un trajet (catégorie transport) désignent son point de
+    // DÉPART : après lui, l'utilisateur est ailleurs — estimer la distance
+    // depuis ces coordonnées serait faux, on ne relie donc jamais DEPUIS un
+    // trajet (vers un trajet reste valable : c'est le chemin jusqu'à la gare).
+    if (from.category === 'transport') continue;
+    const est = estimateTravel(from, to);
+    if (!est) continue;
+    segments[to.id] = { from, est };
+  }
+  return segments;
 }
 
 // ─── String helpers ───────────────────────────────────────────────

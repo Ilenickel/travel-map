@@ -1,9 +1,12 @@
+import { Fragment } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import {
   formatDayLabel, formatDate, todayLocalStr, timeToMinutes, getDayModeStatus,
-  getCarriedOverActivities, formatCarriedOverLabel, lodgingsForNight,
+  getCarriedOverActivities, formatCarriedOverLabel, lodgingsForNight, buildTravelSegments,
+  sortActivitiesByTimeThenPosition,
 } from '../../lib/planningUtils';
 import ActivityItem from './ActivityItem';
+import TravelConnector from './TravelConnector';
 
 function nowMinutes() {
   const d = new Date();
@@ -45,9 +48,16 @@ export default function TripDayModeView({
   const tonightLodgings = lodgingsForNight(lodgings, today);
   const checkoutLodgings = (lodgings || []).filter(l => l.check_out === today);
 
-  const timed = todayActs.filter(a => a.visit_time).sort((a, b) => a.visit_time.localeCompare(b.visit_time));
+  // Même tri (heure puis position) que la vue par jour à l'écran : sinon deux
+  // activités à égalité d'heure pourraient s'afficher dans un ordre différent
+  // ici qu'en vue par jour, alors que l'utilisateur vient justement de choisir
+  // leur ordre par glisser-déposer dans cette dernière.
+  const timed = sortActivitiesByTimeThenPosition(todayActs.filter(a => a.visit_time));
   const allDayActs = todayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
   const now = nowMinutes();
+  // Temps de trajet entre activités consécutives du jour — même logique
+  // (planningUtils) que la vue par jour, jamais dupliquée.
+  const travelSegments = buildTravelSegments(timed);
 
   // Sans durée renseignée, on borne la fin "En cours" au début de l'activité
   // suivante (ou, faute de suivante, une heure par défaut) — sinon l'activité
@@ -92,14 +102,17 @@ export default function TripDayModeView({
           {timed.map((act, idx) => {
             const status = statusOf(act, idx);
             return (
-              <div key={act.id} className={`pp-day-mode-card${status ? ` pp-day-mode-card--${status}` : ''}`}>
-                {status && <span className="pp-day-mode-badge">{STATUS_LABEL[status]}</span>}
-                <ActivityItem
-                  act={act} index={carriedOver.length + idx} variant="day" draggableIdPrefix="daymode:" dragDisabled
-                  cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
-                  onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
-                />
-              </div>
+              <Fragment key={act.id}>
+                {travelSegments[act.id] && <TravelConnector segment={travelSegments[act.id]} />}
+                <div className={`pp-day-mode-card${status ? ` pp-day-mode-card--${status}` : ''}`}>
+                  {status && <span className="pp-day-mode-badge">{STATUS_LABEL[status]}</span>}
+                  <ActivityItem
+                    act={act} index={carriedOver.length + idx} variant="day" draggableIdPrefix="daymode:" dragDisabled
+                    cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
+                    onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
+                  />
+                </div>
+              </Fragment>
             );
           })}
           {allDayActs.length > 0 && (

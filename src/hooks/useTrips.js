@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabase';
+import { cleanupAttachmentsStorage } from '../lib/attachments';
 
 export function useTrips(userId) {
   const [trips, setTrips] = useState([]);
@@ -108,6 +109,9 @@ export function useTrips(userId) {
   }, []);
 
   const deleteTrip = useCallback(async (tripId) => {
+    // Nettoyage Storage AVANT la suppression SQL : depuis planning_tables_v13.sql,
+    // plus aucun trigger ne peut le faire à notre place (voir cleanupAttachmentsStorage).
+    await cleanupAttachmentsStorage({ tripId });
     // Le RLS ne laisse le propriétaire supprimer sa ligne trips (les membres invités
     // n'ont qu'un accès UPDATE) : si la requête ne supprime rien (ex : appelée par
     // erreur sur un voyage partagé), on ne doit surtout pas le faire disparaître de
@@ -191,28 +195,45 @@ export function useTrips(userId) {
       }).select().single();
       if (ng) groupMap[g.id] = ng.id;
     }
+    // Ni .select() ni vérification d'erreur avant : un insert qui échoue (colonne
+    // manquante faute d'avoir joué la dernière migration, contrainte violée...)
+    // passait inaperçu — la copie du voyage semblait réussie (pays/villes créés)
+    // mais se retrouvait avec des activités ou hébergements manquants en silence.
+    let failedActivities = 0;
     for (const a of srcData.activities) {
       const newCityId = cityMap[a.city_id];
       if (!newCityId) continue;
-      await supabase.from('trip_activities').insert({
+      const { error: actErr } = await supabase.from('trip_activities').insert({
         trip_id: newTrip.id, city_id: newCityId, name: a.name, description: a.description,
         visit_date: a.visit_date, visit_time: a.visit_time, category: a.category,
         transport_mode: a.transport_mode, duration_minutes: a.duration_minutes,
-        position: a.position, place_lat: a.place_lat, place_lng: a.place_lng,
+        cost: a.cost, position: a.position, place_lat: a.place_lat, place_lng: a.place_lng,
         place_address: a.place_address, group_id: a.group_id ? (groupMap[a.group_id] || null) : null,
         // is_done volontairement absent : une copie de voyage repart avec une
         // checklist vierge, pas avec les coches du voyage d'origine.
       });
+      if (actErr) { failedActivities++; console.error(`duplicateTrip: copie de l'activité "${a.name}" échouée:`, actErr); }
     }
+    let failedLodgings = 0;
     for (const l of (srcData.lodgings || [])) {
       const newCityId = cityMap[l.city_id];
       if (!newCityId) continue;
-      await supabase.from('trip_lodgings').insert({
+      const { error: ldgErr } = await supabase.from('trip_lodgings').insert({
         trip_id: newTrip.id, city_id: newCityId, name: l.name, address: l.address,
         place_lat: l.place_lat, place_lng: l.place_lng,
         check_in: l.check_in, check_out: l.check_out,
         price: l.price, booking_url: l.booking_url, notes: l.notes, position: l.position,
       });
+      if (ldgErr) { failedLodgings++; console.error(`duplicateTrip: copie de l'hébergement "${l.name}" échouée:`, ldgErr); }
+    }
+    if (failedActivities || failedLodgings) {
+      const parts = [];
+      if (failedActivities) parts.push(`${failedActivities} activité${failedActivities > 1 ? 's' : ''}`);
+      if (failedLodgings) parts.push(`${failedLodgings} hébergement${failedLodgings > 1 ? 's' : ''}`);
+      // "il manque" (impersonnel) plutôt qu'un verbe accordé sur le nombre d'échecs :
+      // évite tout problème d'accord singulier/pluriel selon qu'il manque 1 ou
+      // plusieurs éléments, sans avoir à gérer le genre (activité/hébergement).
+      alert(`Votre voyage a bien été dupliqué, mais il manque ${parts.join(' et ')} dans la copie. Vérifiez le nouveau voyage et complétez-le si nécessaire.`);
     }
     setTrips(prev => [newTrip, ...prev]);
     setSelectedTripId(newTrip.id);
@@ -234,6 +255,11 @@ export function useTrips(userId) {
 
   const removeDestination = useCallback(async (destId) => {
     const cityIds = (tripData?.cities ?? []).filter(c => c.destination_id === destId).map(c => c.id);
+    // Nettoyage Storage AVANT la suppression SQL (voir deleteTrip pour le pourquoi).
+    await cleanupAttachmentsStorage({
+      activityIds: (tripData?.activities ?? []).filter(a => cityIds.includes(a.city_id)).map(a => a.id),
+      lodgingIds: (tripData?.lodgings ?? []).filter(l => cityIds.includes(l.city_id)).map(l => l.id),
+    });
     await supabase.from('trip_destinations').delete().eq('id', destId);
     setTripData(prev => prev ? {
       ...prev,
@@ -281,6 +307,15 @@ export function useTrips(userId) {
   }, []);
 
   const removeCity = useCallback(async (cityId) => {
+    // Les excursions (daytrips) rattachées à cette ville cascadent aussi en base
+    // (parent_city_id ... ON DELETE CASCADE) : leurs activités/hébergements doivent
+    // être nettoyés du Storage ici aussi, avant la suppression SQL.
+    const childCityIds = (tripData?.cities ?? []).filter(c => c.parent_city_id === cityId).map(c => c.id);
+    const allCityIds = [cityId, ...childCityIds];
+    await cleanupAttachmentsStorage({
+      activityIds: (tripData?.activities ?? []).filter(a => allCityIds.includes(a.city_id)).map(a => a.id),
+      lodgingIds: (tripData?.lodgings ?? []).filter(l => allCityIds.includes(l.city_id)).map(l => l.id),
+    });
     await supabase.from('trip_cities').delete().eq('id', cityId);
     setTripData(prev => {
       if (!prev) return prev;
@@ -337,7 +372,14 @@ export function useTrips(userId) {
     // affichait un changement (ex. case cochée) jamais réellement enregistré
     // en base, qui redisparaissait silencieusement au prochain chargement.
     const { error } = await supabase.from('trip_activities').update(updates).eq('id', actId);
-    if (error) { console.error('updateActivity failed:', error); return; }
+    if (error) {
+      // Colonne cost absente = migration pas jouée : sans cet indice, l'échec
+      // silencieux de TOUT l'enregistrement (nom, date…) serait incompréhensible.
+      const hint = 'cost' in updates && /cost/.test(error.message || '')
+        ? ' (avez-vous joué supabase/planning_tables_v10.sql ?)' : '';
+      console.error(`updateActivity failed${hint}:`, error);
+      return;
+    }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => a.id === actId ? { ...a, ...updates } : a),
     } : prev);
@@ -349,6 +391,8 @@ export function useTrips(userId) {
     // l'annulation pour l'instant : c'est la seule vraiment destructrice/irréversible
     // à l'oeil nu (une simple erreur de glisser-déposer se corrige en un geste).
     const orig = tripData?.activities?.find(a => a.id === actId) || null;
+    // Nettoyage Storage AVANT la suppression SQL (voir deleteTrip pour le pourquoi).
+    await cleanupAttachmentsStorage({ activityIds: [actId] });
     await supabase.from('trip_activities').delete().eq('id', actId);
     setTripData(prev => prev ? { ...prev, activities: prev.activities.filter(a => a.id !== actId) } : prev);
     if (orig) setLastDeletedActivity(orig);
@@ -491,6 +535,8 @@ export function useTrips(userId) {
   }, []);
 
   const removeLodging = useCallback(async (lodgingId) => {
+    // Nettoyage Storage AVANT la suppression SQL (voir deleteTrip pour le pourquoi).
+    await cleanupAttachmentsStorage({ lodgingIds: [lodgingId] });
     const { error } = await supabase.from('trip_lodgings').delete().eq('id', lodgingId);
     if (error) { console.error('removeLodging failed:', error); return; }
     setTripData(prev => prev ? {

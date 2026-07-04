@@ -4,7 +4,7 @@ import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
-import { getDaysBetween, formatDateShort } from '../../lib/planningUtils';
+import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 
 function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
@@ -38,6 +38,7 @@ export default function DaytripCard({ city, activities, groups, lodgings, tripId
     .sort((a, b) => a.position - b.position);
   const dtPlaces = dtActivities.filter(a => a.category !== 'transport');
   const dtTrajets = dtActivities.filter(a => a.category === 'transport');
+  const dtCost = sumCosts(dtActivities);
 
   const saveRename = () => {
     const trimmed = cityName.trim();
@@ -92,6 +93,12 @@ export default function DaytripCard({ city, activities, groups, lodgings, tripId
           <span className="pp-daytrip-name-wrap">
             <span className="pp-daytrip-name" onDoubleClick={e => { stop(e); setEditing(true); }}>{city.name}</span>
             <span className="pp-daytrip-badge">Excursion</span>
+          </span>
+        )}
+
+        {dtCost != null && (
+          <span className="pp-city-cost" title={`Coût des activités et trajets de l'excursion ${city.name} (hors hébergements)`}>
+            💰 {formatPrice(dtCost)}
           </span>
         )}
 

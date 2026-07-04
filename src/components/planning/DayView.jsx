@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr } from '../../lib/planningUtils';
+import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, sumCosts, formatPrice, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
+import TravelConnector from './TravelConnector';
 
 const SLOTS = [
   { key: 'matin',      label: 'Matin',       icon: '🌅', range: [0, 12],  defaultTime: '09:00' },
@@ -14,15 +15,21 @@ const SLOT_END_MINUTES = { matin: 12 * 60, 'apres-midi': 18 * 60, soir: 24 * 60 
 const SLOT_START_MINUTES = { matin: 0, 'apres-midi': 12 * 60, soir: 18 * 60 };
 const MINUTES_PER_DAY = 24 * 60;
 
-function timeToMinutes(t) {
-  if (!t) return null;
-  const [h, m] = t.slice(0, 5).split(':').map(Number);
-  return h * 60 + m;
-}
 function slotIndexForMinutes(min) {
   if (min < 12 * 60) return 0;
   if (min < 18 * 60) return 1;
   return 2;
+}
+
+// Sous-ensemble ordonné (activités "de départ" seulement — jamais les cartes de
+// suite/overflow d'un étirement, qui ne sont pas de vrais Draggable) d'un
+// jour+créneau donné.
+export function activitiesInSlot(activities, date, slotKey) {
+  const slotIdx = SLOTS.findIndex(s => s.key === slotKey);
+  if (slotIdx === -1) return [];
+  return sortActsByTimeThenPosition(
+    activities.filter(a => a.visit_date === date && a.visit_time && slotIndexForMinutes(timeToMinutes(a.visit_time)) === slotIdx)
+  );
 }
 
 // Types de données pour le drag-and-drop natif HTML5 (glisser un groupe/excursion
@@ -116,15 +123,9 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
 function DaySlot({
   slot, droppableId, acts, overflow, cities, destinations, groups, day, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
-  onResizeStart, resizingActId, resizeHighlight, onCutHere,
+  onResizeStart, resizingActId, resizeHighlight, onCutHere, travelSegments = {},
 }) {
-  const sortByTime = (a, b) => {
-    if (a.visit_time && b.visit_time) return a.visit_time.localeCompare(b.visit_time);
-    if (a.visit_time) return -1;
-    if (b.visit_time) return 1;
-    return a.position - b.position;
-  };
-  const sorted = [...acts].sort(sortByTime);
+  const sorted = sortActsByTimeThenPosition(acts);
 
   const { isNativeOver, handlers } = useNativeDropTarget(
     groupId => onAssignGroupToDay(groupId, day, slot.defaultTime),
@@ -155,12 +156,23 @@ function DaySlot({
               <div className="pp-day-slot-empty">Glissez ici</div>
             )}
             {sorted.map((act, idx) => (
-              <ActivityItem
-                key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
-                cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
-                onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
-                onResizeStart={onResizeStart} resizing={resizingActId === act.id}
-              />
+              <Fragment key={act.id}>
+                {/* Temps de trajet estimé depuis l'activité horodatée précédente de la
+                    journée (même si elle est dans un créneau antérieur) — affiché juste
+                    au-dessus de l'activité d'arrivée. Masqué pendant un drag qui
+                    concerne ce créneau (départ ou survol) : dnd n'anime que les
+                    Draggables, un connecteur resterait figé au milieu des cartes qui
+                    s'écartent — avec une estimation de toute façon périmée puisque
+                    l'ordre est en train de changer. Il réapparaît recalculé au drop. */}
+                {!snapshot.isDraggingOver && !snapshot.draggingFromThisWith
+                  && travelSegments[act.id] && <TravelConnector segment={travelSegments[act.id]} />}
+                <ActivityItem
+                  act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
+                  cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
+                  onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
+                  onResizeStart={onResizeStart} resizing={resizingActId === act.id}
+                />
+              </Fragment>
             ))}
             {provided.placeholder}
             {overflow.map(({ act, fromLabel }) => (
@@ -375,8 +387,24 @@ export default function DayView({
         const dayActs = activities.filter(a => a.visit_date === day);
         const totalDay = dayActs.length;
         const doneDay = dayActs.filter(a => a.is_done).length;
+        // Coût du jour = activités qui DÉMARRENT ce jour (une activité étirée sur
+        // plusieurs jours n'est comptée qu'une fois, le jour de son début — son
+        // prix n'est pas payé deux fois).
+        const dayCost = sumCosts(dayActs);
         const libreActs = dayActs.filter(a => !a.visit_time);
         const nightLodgings = lodgingsForNight(lodgings, day);
+        // Temps de trajet entre activités horodatées consécutives de la journée —
+        // dérivé des activités à chaque rendu, donc recalculé automatiquement à
+        // chaque déplacement, changement d'heure ou de lieu. Doit utiliser EXACTEMENT
+        // le même tri que celui affiché par créneau (sortActsByTimeThenPosition) :
+        // un tri différent (ex. comparaison de chaînes brutes sur visit_time, qui ne
+        // départage pas les égalités par position) désynchronise les paires "from/to"
+        // des cartes réellement adjacentes à l'écran — la distance affichée se
+        // retrouve alors au-dessus de la mauvaise activité, ou manque entre deux
+        // cartes visuellement consécutives.
+        const travelSegments = buildTravelSegments(
+          sortActsByTimeThenPosition(dayActs.filter(a => a.visit_time))
+        );
 
         return (
           <DaySection
@@ -385,9 +413,11 @@ export default function DayView({
             dayIdx={dayIdx}
             totalDay={totalDay}
             doneDay={doneDay}
+            dayCost={dayCost}
             nightLodgings={nightLodgings}
             slotActs={daySlotActs[day]}
             slotOverflow={daySlotOverflow[day]}
+            travelSegments={travelSegments}
             libreActs={libreActs}
             cities={cities}
             destinations={destinations}
@@ -441,7 +471,7 @@ export default function DayView({
 }
 
 function DaySection({
-  day, dayIdx, totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, libreActs, cities, destinations, groups, tripStartDate,
+  day, dayIdx, totalDay, doneDay, dayCost = null, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
@@ -470,6 +500,11 @@ function DaySection({
           {totalDay > 0 && (
             <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={`${doneDay} activité${doneDay > 1 ? 's' : ''} faite${doneDay > 1 ? 's' : ''} sur ${totalDay}`}>
               {doneDay}/{totalDay}
+            </span>
+          )}
+          {dayCost != null && (
+            <span className="pp-day-cost" title="Coût des activités de la journée (hors hébergements)">
+              💰 {formatPrice(dayCost)}
             </span>
           )}
         </div>
@@ -504,6 +539,7 @@ function DaySection({
             droppableId={`slot:${slot.key}:${day}`}
             acts={slotActs[slot.key] || []}
             overflow={slotOverflow[slot.key] || []}
+            travelSegments={travelSegments}
             cities={cities}
             destinations={destinations}
             groups={groups}

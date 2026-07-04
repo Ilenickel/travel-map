@@ -1,0 +1,31 @@
+-- ═══════════════════════════════════════════════════════════════
+-- planning_tables_v13.sql — ADDITIONS seulement (DROP inclus)
+-- ═══════════════════════════════════════════════════════════════
+-- Fix : suppression bloquée dès qu'une activité/hébergement/voyage contient
+-- au moins une pièce jointe.
+--
+-- Le trigger de nettoyage automatique du Storage (planning_tables_v9.sql,
+-- delete_attachment_storage_object) fait un DELETE FROM storage.objects en
+-- SQL brut. Supabase bloque désormais INCONDITIONNELLEMENT ce genre de
+-- suppression directe, quel que soit le rôle (authentifié, service_role, ou
+-- même postgres dans l'éditeur SQL) :
+--
+--   ERROR: 42501: Direct deletion from storage tables is not allowed.
+--          Use the Storage API instead.
+--   CONTEXT: PL/pgSQL function storage.protect_delete() ...
+--
+-- Comme il s'agit d'un trigger AFTER DELETE qui lève une exception, TOUTE la
+-- transaction englobante est annulée — pas seulement le nettoyage du fichier.
+-- Résultat : supprimer une activité, un hébergement, une ville, un pays ou un
+-- voyage ENTIER échoue purement et simplement dès qu'un seul de ses
+-- descendants a une pièce jointe, pour tout le monde, systématiquement.
+--
+-- Ce trigger ne pourra plus jamais fonctionner tel quel (protection
+-- plateforme, pas un bug ponctuel) : on le retire. Le nettoyage des fichiers
+-- Storage se fait désormais côté application, AVANT la suppression SQL, via
+-- l'API Storage (seule voie autorisée) — voir cleanupAttachmentsStorage()
+-- dans src/lib/attachments.js, appelée par useTrips.js avant chaque
+-- suppression qui pourrait cascader sur trip_attachments.
+
+DROP TRIGGER IF EXISTS trg_delete_attachment_storage_object ON trip_attachments;
+DROP FUNCTION IF EXISTS delete_attachment_storage_object();

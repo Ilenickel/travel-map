@@ -6,6 +6,7 @@ import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
 import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
+import { sumCosts, formatPrice } from '../../lib/planningUtils';
 
 export default function CityBlock({ city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [], onRemove, onRename, onAddActivity, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddDaytrip, onAssignCityToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
   const [addingPlace, setAddingPlace] = useState(false);
@@ -22,6 +23,11 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
   // lieux, ils se noient au milieu et cassent la lecture "ce qu'on va voir".
   const placeActivities = cityActivities.filter(a => a.category !== 'transport');
   const trajetActivities = cityActivities.filter(a => a.category === 'transport');
+  // Lieux ET trajets de la ville (un billet de train a un prix aussi), mais pas
+  // les excursions rattachées : chaque DaytripCard affiche son propre total,
+  // comme pour les compteurs "X lieux" — sinon les chiffres ne se recouperaient
+  // plus entre l'en-tête de la ville et ceux des excursions.
+  const cityCost = sumCosts(cityActivities);
 
   const saveRename = () => {
     const trimmed = cityName.trim();
@@ -105,6 +111,12 @@ export default function CityBlock({ city, activities, groups, lodgings, tripId, 
             <span className="pp-city-count">
               {placeActivities.length} lieu{placeActivities.length !== 1 ? 'x' : ''}
             </span>
+
+            {cityCost != null && (
+              <span className="pp-city-cost" title={`Coût des activités et trajets de ${city.name} (hors hébergements et excursions)`}>
+                💰 {formatPrice(cityCost)}
+              </span>
+            )}
 
             <div className="pp-city-actions">
               <button className="pp-icon-btn" onClick={() => setEditing(true)} title="Renommer la ville">

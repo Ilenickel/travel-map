@@ -3,6 +3,7 @@ import imageCompression from "browser-image-compression";
 import { supabase } from "../lib/supabase";
 import { callModeration } from "../lib/moderation";
 import { useAuth } from "../context/AuthContext";
+import { validateImageFile } from "../lib/imageValidation";
 
 const AVAILABLE_TAGS = [
   'Histoire', 'Culture', 'Nature', 'Architecture', 'Gastronomie',
@@ -102,6 +103,11 @@ export default function DestinationForm({
 
   async function handleDestImage(e) {
     const file = e.target.files[0]; if (!file) return; e.target.value = '';
+    // accept="image/*" sur l'input ne bloque rien réellement (juste une suggestion
+    // pour la boîte de dialogue du système) : on vérifie donc le type nous-mêmes,
+    // avant compression, pour ne jamais stocker un SVG (peut embarquer du script).
+    const validationError = validateImageFile(file);
+    if (validationError) { setError(validationError); return; }
     setCompressingSlot('dest');
     const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1200, useWebWorker: true });
     setDestImage({ file: compressed, preview: URL.createObjectURL(compressed), url: null });
@@ -110,6 +116,8 @@ export default function DestinationForm({
 
   async function handlePlaceImage(e, idx) {
     const file = e.target.files[0]; if (!file) return; e.target.value = '';
+    const validationError = validateImageFile(file);
+    if (validationError) { setError(validationError); return; }
     setCompressingSlot(idx);
     const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 800, useWebWorker: true });
     setPlaces(prev => prev.map((p, i) => i === idx ? { ...p, file: compressed, preview: URL.createObjectURL(compressed), url: null } : p));
