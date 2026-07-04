@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, sumCosts, formatPrice, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition } from '../../lib/planningUtils';
+import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
@@ -386,10 +386,6 @@ export default function DayView({
         const dayActs = activities.filter(a => a.visit_date === day);
         const totalDay = dayActs.length;
         const doneDay = dayActs.filter(a => a.is_done).length;
-        // Coût du jour = activités qui DÉMARRENT ce jour (une activité étirée sur
-        // plusieurs jours n'est comptée qu'une fois, le jour de son début — son
-        // prix n'est pas payé deux fois).
-        const dayCost = sumCosts(dayActs);
         const libreActs = dayActs.filter(a => !a.visit_time);
         const nightLodgings = lodgingsForNight(lodgings, day);
         // Temps de trajet entre activités horodatées consécutives de la journée —
@@ -412,7 +408,6 @@ export default function DayView({
             dayIdx={dayIdx}
             totalDay={totalDay}
             doneDay={doneDay}
-            dayCost={dayCost}
             nightLodgings={nightLodgings}
             slotActs={daySlotActs[day]}
             slotOverflow={daySlotOverflow[day]}
@@ -470,7 +465,7 @@ export default function DayView({
 }
 
 function DaySection({
-  day, dayIdx, totalDay, doneDay, dayCost = null, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
+  day, dayIdx, totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
@@ -499,11 +494,6 @@ function DaySection({
           {totalDay > 0 && (
             <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={`${doneDay} activité${doneDay > 1 ? 's' : ''} faite${doneDay > 1 ? 's' : ''} sur ${totalDay}`}>
               {doneDay}/{totalDay}
-            </span>
-          )}
-          {dayCost != null && (
-            <span className="pp-day-cost" title="Coût des activités de la journée (hors hébergements)">
-              💰 {formatPrice(dayCost)}
             </span>
           )}
         </div>
