@@ -9,7 +9,7 @@ export const JAPAN = {
   timezone: "UTC+9",
   filter: {
     budgetMin: 40, budgetMid: 100,  // €/jour (conservé pour référence)
-    tripMin: 2100, tripMid: 4500,   // budget total voyage (3 semaines)
+    tripMin: 2200, tripMid: 4400,   // budget total voyage (3 semaines)
   },
   description:
     "Le Japon est un archipel d'Asie de l'Est mêlant traditions millénaires et modernité. Entre temples bouddhistes, cerisiers en fleurs, gastronomie raffinée et technologie de pointe, il offre une expérience de voyage incomparable.",
@@ -284,8 +284,8 @@ export const JAPAN = {
         label: "Hébergement / nuit",
         items: [
           { label: "Dortoir Hostel", price: "15–30 €", detail: "Bonne ambiance, souvent très propres" },
-          { label: "Capsule Hotel", price: "25–50 €", detail: "Expérience unique japonaise" },
-          { label: "Business Hotel", price: "60–120 €", detail: "Chambre solo confortable" },
+          { label: "Capsule Hotel", price: "25–55 €", detail: "Expérience unique japonaise — plus cher en haute saison" },
+          { label: "Business Hotel", price: "65–130 €", detail: "Chambre solo confortable — prix en forte hausse depuis 2024" },
           { label: "Ryokan (budget)", price: "80–150 €", detail: "Avec repas traditionnel inclus" },
           { label: "Ryokan (luxe)", price: "200–500 €", detail: "Expérience haut de gamme" },
         ],
@@ -311,8 +311,8 @@ export const JAPAN = {
           { label: "Ticket de métro (Tokyo)", price: "1–3 €", detail: "Selon distance (170–320 ¥)" },
           { label: "Pass journalier Tokyo", price: "6–8 €", detail: "Illimité réseau Toei/Metro" },
           { label: "Bus intercités", price: "5–20 €", detail: "Option économique entre villes" },
-          { label: "JR Pass 21 jours", price: "~530 €", detail: "Shinkansen + trains JR illimités" },
-          { label: "Shinkansen Tokyo–Kyoto", price: "~110 €", detail: "~2h15 en Nozomi (sans JR Pass)" },
+          { label: "JR Pass 21 jours", price: "~650 €", detail: "Shinkansen + trains JR illimités — tarif doublé depuis 2023" },
+          { label: "Shinkansen Tokyo–Kyoto", price: "~95 €", detail: "~2h15 en Nozomi (sans JR Pass)" },
         ],
       },
       {
@@ -340,11 +340,11 @@ export const JAPAN = {
         {
           type: "Routard",
           color: "#22c55e",
-          total: "2 100 – 2 800 €",
+          total: "2 200 – 2 950 €",
           includesFlights: true,
           breakdown: [
             { label: "Vol A/R Paris–Tokyo", amount: "600–900 €" },
-            { label: "JR Pass 21 jours", amount: "~530 €" },
+            { label: "JR Pass 21 jours", amount: "~650 €" },
             { label: "Hébergement (21 nuits)", amount: "400–600 €" },
             { label: "Nourriture", amount: "350–500 €" },
             { label: "Activités & imprévus", amount: "200–300 €" },
@@ -353,11 +353,11 @@ export const JAPAN = {
         {
           type: "Confort",
           color: "#3b82f6",
-          total: "4 500 – 6 500 €",
+          total: "4 400 – 6 650 €",
           includesFlights: true,
           breakdown: [
             { label: "Vol A/R Paris–Tokyo", amount: "800–1 200 €" },
-            { label: "JR Pass 21 jours", amount: "~530 €" },
+            { label: "JR Pass 21 jours", amount: "~650 €" },
             { label: "Hébergement (21 nuits)", amount: "1 500–2 200 €" },
             { label: "Nourriture", amount: "900–1 400 €" },
             { label: "Activités & imprévus", amount: "500–800 €" },

@@ -8,10 +8,10 @@ export const FRANCE = {
   currency: "Euro (EUR)",
   timezone: "UTC+1 (été UTC+2)",
   filter: {
-    budgetMin: 80,
-    budgetMid: 160,
+    budgetMin: 70,
+    budgetMid: 110,
     tripMin: 1100,
-    tripMid: 2200,
+    tripMid: 2000,
   },
   description:
     "La France est l'une des destinations touristiques les plus visitées au monde, alliant patrimoine historique exceptionnel, gastronomie renommée et paysages variés. Des plages de la Côte d'Azur aux sommets alpins, en passant par les châteaux de la Loire et les vignobles bordelais, le pays offre une diversité remarquable. Paris, ville lumière, reste l'un des centres culturels et artistiques les plus importants de la planète.",
@@ -363,7 +363,7 @@ export const FRANCE = {
         items: [
           {
             label: "Auberge de jeunesse (dortoir)",
-            price: "25–40 €",
+            price: "25–45 €",
             detail: "Grandes villes, literie fournie",
           },
           {
@@ -454,7 +454,7 @@ export const FRANCE = {
       },
       {
         type: "Confort",
-        daily: "140–200 €/j",
+        daily: "110–170 €/j",
         desc: "Hôtel 3 étoiles, restaurants midi et soir, quelques musées",
         color: "#3b82f6",
       },
@@ -479,13 +479,13 @@ export const FRANCE = {
         {
           type: "Confort",
           color: "#3b82f6",
-          total: "2 200 – 3 000 €",
+          total: "2 000 – 2 900 €",
           includesFlights: true,
           breakdown: [
             { label: "Vol A/R (Europe)", amount: "150–300 €" },
-            { label: "Hébergement (9 nuits)", amount: "900–1 200 €" },
+            { label: "Hébergement (9 nuits)", amount: "800–1 200 €" },
             { label: "Transports locaux + TGV", amount: "200–300 €" },
-            { label: "Nourriture + boissons", amount: "700–900 €" },
+            { label: "Nourriture + boissons", amount: "650–850 €" },
             { label: "Activités + musées", amount: "150–250 €" },
           ],
         },

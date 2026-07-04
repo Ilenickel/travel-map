@@ -8,7 +8,7 @@ export const CANADA = {
   currency: "Dollar canadien (CAD)",
   timezone: "UTC−8 (Pac.) à UTC−3,5 (Nfld.)",
   filter: {
-    budgetMin: 80, budgetMid: 160,
+    budgetMin: 80, budgetMid: 170,
     tripMin: 2500, tripMid: 5000,
   },
   description:
@@ -190,7 +190,7 @@ export const CANADA = {
         label: "Hébergement / nuit",
         items: [
           { label: "Hostel / camping", price: "25–50 €", detail: "Dortoir ou tente en parc national" },
-          { label: "Hôtel 3★", price: "80–140 €", detail: "Standard en ville" },
+          { label: "Hôtel 3★", price: "90–180 €", detail: "Standard en ville — Vancouver plus cher que Toronto" },
           { label: "Chalet ou lodge", price: "150–400 €", detail: "Banff, Whistler, Québec" },
         ],
       },
@@ -227,7 +227,7 @@ export const CANADA = {
     ],
     budgetSummary: [
       { type: "Routard", daily: "80–120 €/j", desc: "Hostel + cuisine maison + transports en commun", color: "#22c55e" },
-      { type: "Confort", daily: "160–250 €/j", desc: "Hôtel 3★ + restos + location voiture", color: "#3b82f6" },
+      { type: "Confort", daily: "170–260 €/j", desc: "Hôtel 3★ + restos + location voiture", color: "#3b82f6" },
       { type: "Luxe", daily: "400 €+/j", desc: "Lodges en parc + gastronomie + aventures guidées", color: "#f59e0b" },
     ],
     tripEstimate: {
@@ -250,11 +250,11 @@ export const CANADA = {
         {
           type: "Confort",
           color: "#3b82f6",
-          total: "5 000 – 7 000 €",
+          total: "4 900 – 7 800 €",
           includesFlights: true,
           breakdown: [
             { label: "Vol A/R Paris–Canada", amount: "600–1 000 €" },
-            { label: "Hébergement (21 nuits)", amount: "1 500–2 500 €" },
+            { label: "Hébergement (21 nuits)", amount: "1 700–2 800 €" },
             { label: "Nourriture", amount: "1 200–1 800 €" },
             { label: "Location voiture & vols intérieurs", amount: "800–1 200 €" },
             { label: "Activités premium", amount: "600–1 000 €" },

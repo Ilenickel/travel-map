@@ -182,7 +182,7 @@ export const SWEDEN = {
         label: "Transport",
         items: [
           { label: "Train SJ Stockholm–Göteborg (3h)", price: "20–60 €", detail: "Réservation à l'avance conseillée" },
-          { label: "SL (métro + bus Stockholm, ticket 24h)", price: "10 €", detail: "Réseau très efficace" },
+          { label: "SL (métro + bus Stockholm, ticket 24h)", price: "14–16 €", detail: "Réseau très efficace" },
           { label: "Ferry Stockholm–Gotland (6h)", price: "25–60 €", detail: "Destination + vélo possible" },
         ],
       },

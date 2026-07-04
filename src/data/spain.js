@@ -8,7 +8,7 @@ export const SPAIN = {
   currency: "Euro (€)",
   timezone: "UTC+1",
   filter: {
-    budgetMin: 50, budgetMid: 110,
+    budgetMin: 50, budgetMid: 120,
     tripMin: 1500, tripMid: 2800,
   },
   description:
@@ -273,7 +273,7 @@ export const SPAIN = {
         icon: "🏨",
         label: "Hébergement / nuit",
         items: [
-          { label: "Dortoir hostel", price: "15–28 €", detail: "Très bons hostels, ambiance internationale" },
+          { label: "Dortoir hostel", price: "20–35 €", detail: "Très bons hostels, ambiance internationale" },
           { label: "Pension / hostal", price: "35–60 €", detail: "Chambre privée abordable" },
           { label: "Hôtel confort", price: "60–120 €", detail: "Chambre double bien équipée" },
           { label: "Parador (château ou monastère)", price: "100–200 €", detail: "Réseau d'hôtels dans des monuments historiques" },
@@ -309,8 +309,8 @@ export const SPAIN = {
         icon: "🎭",
         label: "Activités & Culture",
         items: [
-          { label: "Sagrada Família", price: "26–36 €", detail: "Réservation indispensable plusieurs semaines avant" },
-          { label: "Alhambra de Grenade", price: "14–19 €", detail: "Vendre ses billets 2-3 mois avant en haute saison !" },
+          { label: "Sagrada Família", price: "27–40 €", detail: "Réservation indispensable plusieurs semaines avant" },
+          { label: "Alhambra de Grenade", price: "16–20 €", detail: "Vendre ses billets 2-3 mois avant en haute saison !" },
           { label: "Musée du Prado", price: "15 €", detail: "Gratuit le soir de 18h à 20h" },
           { label: "Spectacle de flamenco", price: "25–50 €", detail: "Authentique à Séville, Grenade, Madrid" },
           { label: "Cours de cuisine espagnole", price: "50–80 €", detail: "Paella, tapas, sangria" },
@@ -319,7 +319,7 @@ export const SPAIN = {
     ],
     budgetSummary: [
       { type: "Routard", daily: "50–75 €/j", desc: "Hostel + tapas + menu del día + transports", color: "#22c55e" },
-      { type: "Confort", daily: "110–180 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
+      { type: "Confort", daily: "120–190 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
       { type: "Luxe", daily: "300 €+/j", desc: "Hôtel boutique + gastronomie étoilée + expériences", color: "#f59e0b" },
     ],
     tripEstimate: {

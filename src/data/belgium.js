@@ -126,7 +126,7 @@ export const BELGIUM = {
         icon: "🏨",
         label: "Hébergement / nuit",
         items: [
-          { label: "Auberge de jeunesse (dortoir)", price: "25–40 €", detail: "Bonne couverture dans les villes touristiques" },
+          { label: "Auberge de jeunesse (dortoir)", price: "20–38 €", detail: "Bonne couverture dans les villes touristiques" },
           { label: "Hôtel budget / B&B", price: "65–100 €", detail: "Chambre double confortable en centre-ville" },
           { label: "Hôtel confort 3–4 étoiles", price: "110–180 €", detail: "Hôtels de charme à Bruges ou Gand" },
         ],

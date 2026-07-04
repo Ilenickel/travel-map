@@ -244,8 +244,8 @@ export const SWITZERLAND = {
           },
           {
             label: "Dîner au restaurant",
-            price: "35–65 €",
-            detail: "Fondue, raclette, rösti — spécialités locales incontournables",
+            price: "40–90 €",
+            detail: "Fondue, raclette, rösti — compter 90 CHF pour une fondue à deux en montagne",
           },
         ],
       },

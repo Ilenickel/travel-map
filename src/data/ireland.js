@@ -156,7 +156,7 @@ export const IRELAND = {
         icon: "🎭",
         label: "Activités",
         items: [
-          { label: "Entrée Chaussée des Géants", price: "13–16 €", detail: "Accès au site avec centre d'accueil" },
+          { label: "Entrée Chaussée des Géants", price: "16–19 €", detail: "Accès au site avec centre d'accueil (tarifs en livres sterling, Irlande du Nord)" },
           { label: "Musée national d'Irlande", price: "Gratuit", detail: "Archéologie, art et histoire irlandaise à Dublin" },
           { label: "Bateau vers Skellig Michael", price: "80–110 €", detail: "Excursion d'une journée depuis Portmagee" },
         ],

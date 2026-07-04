@@ -212,7 +212,7 @@ export const UK = {
         items: [
           {
             label: "Auberge de jeunesse (dortoir)",
-            price: "30–50 €",
+            price: "25–45 €",
             detail: "Londres parmi les plus chères, mais bonne qualité",
           },
           {
@@ -239,7 +239,7 @@ export const UK = {
           },
           {
             label: "Déjeuner au pub ou café",
-            price: "14–20 €",
+            price: "17–25 €",
             detail: "Sunday roast très populaire le week-end",
           },
           {
@@ -283,7 +283,7 @@ export const UK = {
           },
           {
             label: "Tour de Londres",
-            price: "30 €",
+            price: "40 €",
             detail: "Joyaux de la Couronne inclus, réservation conseillée",
           },
           {

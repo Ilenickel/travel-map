@@ -172,7 +172,7 @@ export const NORWAY = {
         items: [
           { label: "Camping / DNT (refuges de randonnée)", price: "20–50 €", detail: "Cabanes non gardées en montagne" },
           { label: "Auberge / guesthouse (dortoir ou chambre double)", price: "60–120 €", detail: "Villes et fjords" },
-          { label: "Hôtel 3★ Oslo ou Bergen", price: "150–280 €", detail: "Confort standard" },
+          { label: "Hôtel 3★ Oslo ou Bergen", price: "110–200 €", detail: "Confort standard" },
         ],
       },
       {
@@ -181,7 +181,7 @@ export const NORWAY = {
         label: "Nourriture",
         items: [
           { label: "Sandwich / kebab / supermarché (Rema 1000, Kiwi)", price: "8–15 €", detail: "Option économique indispensable" },
-          { label: "Restaurant mid-range (burger, pizza)", price: "20–35 €", detail: "Repas simple en ville" },
+          { label: "Restaurant mid-range (burger, pizza)", price: "20–45 €", detail: "Repas simple en ville, dîner à table dès 30–40 €" },
           { label: "Scampis grillées au marché de Bergen (Fisketorget)", price: "15–25 €", detail: "Fruits de mer locaux frais" },
         ],
       },

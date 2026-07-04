@@ -311,7 +311,7 @@ export const ITALY = {
         items: [
           { label: "Colisée + Forum romain", price: "16–22 €", detail: "Réservation en ligne fortement conseillée" },
           { label: "Musées du Vatican", price: "17–21 €", detail: "File d'attente à éviter — réserver !" },
-          { label: "Galerie des Offices (Florence)", price: "20–25 €", detail: "Réservation obligatoire en haute saison" },
+          { label: "Galerie des Offices (Florence)", price: "19–29 €", detail: "19 € tôt le matin, jusqu'à 29 € (avec réservation) en haute saison" },
           { label: "Tour en gondole (Venise)", price: "80 € (gondole entière)", detail: "30 min, tarif officiel, partager à 6" },
           { label: "Excursion Etna (Sicile)", price: "30–60 €", detail: "Avec guide, accès au sommet" },
         ],

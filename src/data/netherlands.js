@@ -216,12 +216,12 @@ export const NETHERLANDS = {
           },
           {
             label: "Déjeuner restaurant / broodje",
-            price: "10–16 €",
+            price: "12–20 €",
             detail: "Sandwichs hollandais (broodjes) ou plat du jour",
           },
           {
             label: "Dîner restaurant",
-            price: "22–40 €",
+            price: "25–45 €",
             detail: "Cuisine internationale très développée à Amsterdam",
           },
         ],
@@ -255,7 +255,7 @@ export const NETHERLANDS = {
         items: [
           {
             label: "Rijksmuseum ou Van Gogh Museum",
-            price: "20–22 €",
+            price: "22–27 €",
             detail: "Réservation en ligne obligatoire pour Van Gogh Museum",
           },
           {
@@ -274,7 +274,7 @@ export const NETHERLANDS = {
     budgetSummary: [
       {
         type: "Routard",
-        daily: "70–90 €/j",
+        daily: "80–105 €/j",
         desc: "Auberge, street food et supermarché, vélo loué, musée par jour",
         color: "#22c55e",
       },
@@ -298,8 +298,8 @@ export const NETHERLANDS = {
             { label: "Vol A/R Paris–Amsterdam", amount: "80–150 €" },
             { label: "Hébergement (6 nuits)", amount: "200–280 €" },
             { label: "Transports locaux + trains", amount: "100–130 €" },
-            { label: "Nourriture + boissons", amount: "380–460 €" },
-            { label: "Activités + musées", amount: "100–140 €" },
+            { label: "Nourriture + boissons", amount: "410–490 €" },
+            { label: "Activités + musées", amount: "110–150 €" },
           ],
         },
         {

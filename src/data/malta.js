@@ -148,7 +148,7 @@ export const MALTA = {
         items: [
           { label: "Bus maltais (trajet unique)", price: "1,50–2 €", detail: "Réseau couvrant toute l'île, principal moyen de transport" },
           { label: "Ferries inter-îles (Malte–Gozo)", price: "4,65 €", detail: "Traversée aller-retour Cirkewwa–Mġarr, 25 minutes" },
-          { label: "Bateau vers la Lagune Bleue", price: "15–20 €", detail: "Excursion aller-retour depuis Malte ou Gozo" },
+          { label: "Bateau vers la Lagune Bleue", price: "25–40 €", detail: "Excursion en bateau depuis Malte ou Gozo, tour de l'île inclus" },
         ],
       },
       {

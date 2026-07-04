@@ -172,9 +172,9 @@ export const MEXICO = {
         items: [
           { label: "Dortoir hostel", price: "8–15 €", detail: "Bon niveau dans les villes touristiques" },
           { label: "Guesthouse / posada", price: "20–45 €", detail: "Chambre privée avec ambiance locale" },
-          { label: "Hôtel confort", price: "45–100 €", detail: "Chambre double bien équipée, parfois piscine" },
+          { label: "Hôtel confort", price: "45–125 €", detail: "Chambre double bien équipée, parfois piscine" },
           { label: "Boutique hôtel (Oaxaca, Mérida)", price: "80–180 €", detail: "Maison coloniale avec patio" },
-          { label: "Resort all-inclusive (Cancún)", price: "150–500 €", detail: "Tout inclus, formule très populaire" },
+          { label: "Resort all-inclusive (Cancún)", price: "130–500 €", detail: "Tout inclus, formule très populaire" },
         ],
       },
       {
@@ -182,7 +182,7 @@ export const MEXICO = {
         icon: "🍜",
         label: "Nourriture",
         items: [
-          { label: "Tacos de rue (3 pièces)", price: "1–2 €", detail: "La base de l'alimentation mexicaine" },
+          { label: "Tacos de rue (3 pièces)", price: "2–3 €", detail: "La base de l'alimentation mexicaine" },
           { label: "Comida corrida (menu midi)", price: "4–8 €", detail: "Soupe + plat + boisson, repas complet" },
           { label: "Guacamole + chips + margarita", price: "6–12 €", detail: "Ritual apéritif mexicain" },
           { label: "Restaurant mid-range", price: "10–20 €", detail: "Mole, enchiladas, chile en nogada" },

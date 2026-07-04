@@ -229,7 +229,7 @@ export const THAILAND = {
           { label: "Tuk-tuk (trajet court)", price: "1–3 €", detail: "Négocier le prix avant de monter" },
           { label: "Grab (taxi appli)", price: "2–8 €", detail: "Prix fixe, très pratique" },
           { label: "Bus BTS/MRT (Bangkok)", price: "0,50–1,50 €", detail: "Réseau de métro efficace" },
-          { label: "Bus longue distance", price: "5–15 €", detail: "Chiang Mai–Bangkok ~10 €" },
+          { label: "Bus longue distance", price: "8–25 €", detail: "Chiang Mai–Bangkok en bus ~15 €, en train couchette ~25 €" },
           { label: "Vol intérieur", price: "20–60 €", detail: "AirAsia, Nok Air — très abordable" },
         ],
       },

@@ -8,7 +8,7 @@ export const GREECE = {
   currency: "Euro (€)",
   timezone: "UTC+2",
   filter: {
-    budgetMin: 50, budgetMid: 110,
+    budgetMin: 50, budgetMid: 100,
     tripMin: 1500, tripMid: 2800,
   },
   description:
@@ -189,7 +189,7 @@ export const GREECE = {
         icon: "🏨",
         label: "Hébergement / nuit",
         items: [
-          { label: "Dortoir hostel", price: "15–25 €", detail: "Principalement dans les grandes villes" },
+          { label: "Dortoir hostel", price: "18–25 €", detail: "Principalement dans les grandes villes" },
           { label: "Studios / appartements", price: "40–80 €", detail: "Avec kitchenette, très pratique sur les îles" },
           { label: "Hôtel confort", price: "60–120 €", detail: "Chambre double avec vue mer souvent accessible" },
           { label: "Hôtel piscine (Crète, Rhodes)", price: "80–180 €", detail: "Formule tout inclus disponible" },
@@ -215,7 +215,7 @@ export const GREECE = {
         items: [
           { label: "Métro Athènes", price: "1,20–2,50 €", detail: "Ticket 90 min ou pass journalier" },
           { label: "Bus KTEL longue distance", price: "8–30 €", detail: "Réseau national bien développé" },
-          { label: "Ferry inter-îles", price: "15–80 €", detail: "Athènes–Santorin ~50 € (5h rapide)" },
+          { label: "Ferry inter-îles", price: "15–90 €", detail: "Athènes–Santorin dès 45 € (~8h) à 90 €+ (rapide, ~5h)" },
           { label: "Vol intérieur (Aegean, Sky Express)", price: "30–100 €", detail: "Athènes–Héraklion–Santorin bien desservi" },
           { label: "Location de quad / scooter (îles)", price: "20–40 €/j", detail: "Idéal pour explorer les îles" },
         ],
@@ -225,7 +225,7 @@ export const GREECE = {
         icon: "🎭",
         label: "Activités & Culture",
         items: [
-          { label: "Acropole + sites environnants", price: "30 € (billet combiné)", detail: "Valable 5 jours pour 7 sites" },
+          { label: "Acropole (billet seul)", price: "15–30 €", detail: "30 € l'été, 15 € l'hiver — le billet combiné 7 sites a été supprimé en 2025" },
           { label: "Musée archéologique national", price: "12 €", detail: "L'un des plus riches du monde" },
           { label: "Palais de Cnossos (Crète)", price: "15 €", detail: "Civilisation minoenne, 3 000 ans av. J.-C." },
           { label: "Excursion voilier (Cyclades)", price: "60–120 €", detail: "Demi-journée ou journée, repas inclus" },
@@ -235,7 +235,7 @@ export const GREECE = {
     ],
     budgetSummary: [
       { type: "Routard", daily: "50–75 €/j", desc: "Hostel + taverne + ferry + bus", color: "#22c55e" },
-      { type: "Confort", daily: "110–180 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
+      { type: "Confort", daily: "100–160 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
       { type: "Luxe", daily: "350 €+/j", desc: "Cave house Santorin + gastronomie + excursions privées", color: "#f59e0b" },
     ],
     tripEstimate: {

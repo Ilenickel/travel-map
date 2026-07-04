@@ -8,8 +8,8 @@ export const PORTUGAL = {
   currency: "Euro (€)",
   timezone: "UTC+0",
   filter: {
-    budgetMin: 45, budgetMid: 100,
-    tripMin: 1400, tripMid: 2600,
+    budgetMin: 45, budgetMid: 120,
+    tripMin: 1400, tripMid: 2700,
   },
   description:
     "Le Portugal séduit par sa douceur de vivre : Lisbonne avec ses tramways et ses azulejos, le fado mélancolique, les plages de l'Algarve, le vin de Porto et les monastères manuélins de Sintra. Un pays accessible, chaleureux et riche en histoire.",
@@ -155,9 +155,9 @@ export const PORTUGAL = {
         icon: "🏨",
         label: "Hébergement / nuit",
         items: [
-          { label: "Dortoir hostel", price: "15–28 €", detail: "Parmi les meilleurs d'Europe — ambiance top" },
+          { label: "Dortoir hostel", price: "20–35 €", detail: "Parmi les meilleurs d'Europe — ambiance top" },
           { label: "Guesthouse / pension", price: "35–65 €", detail: "Chambre privée avec petit-déj souvent inclus" },
-          { label: "Hôtel confort", price: "60–120 €", detail: "Chambre double bien équipée" },
+          { label: "Hôtel confort", price: "70–150 €", detail: "Chambre double bien équipée, ~150 € en moyenne à Lisbonne" },
           { label: "Quinta (maison de campagne)", price: "80–180 €", detail: "Vignobles, piscine, authenticité" },
           { label: "Hôtel boutique / pousada", price: "150–400 €", detail: "Château ou couvent converti" },
         ],
@@ -167,7 +167,7 @@ export const PORTUGAL = {
         icon: "🍜",
         label: "Nourriture",
         items: [
-          { label: "Pastel de nata + café", price: "1–2 €", detail: "À la Pastéis de Belém — indispensable !" },
+          { label: "Pastel de nata + café", price: "2–3,50 €", detail: "1,50 € le pastel à la Pastéis de Belém — indispensable !" },
           { label: "Prato do dia (plat du jour)", price: "7–12 €", detail: "Entrée + plat + dessert + boisson" },
           { label: "Bacalhau (morue) au restaurant", price: "12–20 €", detail: "365 façons de le préparer selon la légende" },
           { label: "Petiscos (tapas portugaises)", price: "2–5 €/petisco", detail: "Chouriço, pica-pau, amêijoas" },
@@ -181,7 +181,7 @@ export const PORTUGAL = {
         items: [
           { label: "Métro Lisbonne / Porto", price: "1,50–2,50 €", detail: "Viva Viagem — ticket ou pass journalier" },
           { label: "Tramway historique (Lisbonne)", price: "3 €", detail: "Le fameux tram 28" },
-          { label: "Train Comboios de Portugal", price: "5–25 €", detail: "Lisbonne–Porto en 3h (~25 €) ou 3h30 (~15 €)" },
+          { label: "Train Comboios de Portugal", price: "12–36 €", detail: "Lisbonne–Porto Intercidades ~28 €, Alfa Pendular ~36 € (dès 12 € tôt)" },
           { label: "Bus Rede Expressos", price: "5–20 €", detail: "Réseau national bon marché" },
           { label: "Location de voiture", price: "25–60 €/j", detail: "Indispensable pour l'Algarve et l'intérieur" },
         ],
@@ -201,7 +201,7 @@ export const PORTUGAL = {
     ],
     budgetSummary: [
       { type: "Routard", daily: "45–70 €/j", desc: "Hostel + pastelaria + transports en commun", color: "#22c55e" },
-      { type: "Confort", daily: "100–160 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
+      { type: "Confort", daily: "120–180 €/j", desc: "Hôtel confort + restos + activités", color: "#3b82f6" },
       { type: "Luxe", daily: "280 €+/j", desc: "Pousada + gastronomie + expériences exclusives", color: "#f59e0b" },
     ],
     tripEstimate: {
@@ -224,12 +224,12 @@ export const PORTUGAL = {
         {
           type: "Confort",
           color: "#3b82f6",
-          total: "2 600 – 3 600 €",
+          total: "2 700 – 3 900 €",
           includesFlights: true,
           breakdown: [
             { label: "Vol A/R Paris–Lisbonne", amount: "100–250 €" },
             { label: "Transports & location voiture (partielle)", amount: "200–350 €" },
-            { label: "Hébergement (14 nuits)", amount: "900–1 400 €" },
+            { label: "Hébergement (14 nuits)", amount: "1 000–1 700 €" },
             { label: "Nourriture & restaurants", amount: "800–1 100 €" },
             { label: "Activités & imprévus", amount: "450–650 €" },
           ],
