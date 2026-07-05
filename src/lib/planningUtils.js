@@ -351,11 +351,26 @@ function currentGeoLang() {
   return SUPPORTED_GEO_LANGS.includes(i18n.language) ? i18n.language : detectGeoLang();
 }
 
-export async function fetchPlaceSuggestions(query, cityHint) {
+// Dérive le code pays alpha-2 (attendu par le paramètre `filter=countrycode:`
+// de Geoapify) depuis l'emoji drapeau d'un pays (paire d'indicateurs
+// régionaux Unicode) — même technique que le lookup alpha-2 dans
+// src/data/index.js et ProfilePanel.jsx.
+export function countryAlpha2FromEmoji(emoji) {
+  const chars = [...(emoji || '')];
+  if (chars.length < 2) return null;
+  return chars.slice(0, 2).map((c) => String.fromCharCode(c.codePointAt(0) - 0x1F1E6 + 65)).join('').toLowerCase();
+}
+
+// `countryAlpha2` restreint la recherche à un pays (paramètre `filter` de
+// Geoapify) : sans ça, un nom de lieu ambigu (ex. "The Bund", qui existe aussi
+// comme toponyme aux États-Unis) peut renvoyer un résultat dans le mauvais
+// pays, silencieusement accepté si son nom correspond au texte recherché.
+export async function fetchPlaceSuggestions(query, cityHint, countryAlpha2) {
   if (query.length < 2) return [];
   const q = cityHint ? `${query} ${cityHint}` : query;
   try {
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&lang=${currentGeoLang()}&limit=8&apiKey=${GEOAPIFY_API_KEY}`;
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${countryAlpha2}` : '';
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&lang=${currentGeoLang()}&limit=8${filterParam}&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
     if (!res.ok) return [];
     const data = await res.json();

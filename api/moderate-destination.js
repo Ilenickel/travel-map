@@ -4,6 +4,7 @@
 // photos fraîchement téléversées sont supprimées et un motif est renvoyé.
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { moderateContent, checkSemanticDuplicate, ModerationUnavailableError } from './_lib/moderation.js';
+import { invalidateTranslations } from './_lib/translation.js';
 
 // ── Similarité de noms (miroir de la logique client) ─────────────────────────
 function normalizeName(str) {
@@ -280,6 +281,7 @@ export default async function handler(req, res) {
     console.error('[moderate-destination] update dest:', updErr);
     return res.status(500).json({ ok: false, reason: "Les modifications n'ont pas pu être enregistrées. Réessayez." });
   }
+  await invalidateTranslations(admin, 'user_destination', existingDestinationId);
 
   // En édition : on ne remplace que les lieux appartenant à l'éditeur
   // pour ne pas effacer les lieux d'autres contributeurs.

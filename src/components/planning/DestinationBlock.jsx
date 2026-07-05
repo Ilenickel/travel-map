@@ -79,6 +79,8 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
                   groups={groups}
                   lodgings={lodgings}
                   tripId={tripId}
+                  countryCode={dest.country_code}
+                  countryName={dest.country_name}
                   index={idx}
                   tripStartDate={tripStartDate}
                   tripEndDate={tripEndDate}

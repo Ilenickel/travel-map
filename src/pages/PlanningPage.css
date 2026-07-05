@@ -1087,6 +1087,56 @@
 }
 .pp-add-item-btn--secondary:hover svg { background: rgba(0,0,0,0.15); }
 
+/* Suggestions de lieux (bandeau de découverte) — volontairement distinct des
+   .pp-add-item-btn : ce n'est pas une action d'ajout direct mais une liste à
+   dérouler, donc thème teal + forme "banner" plutôt que bouton d'action, et
+   placé en haut du bloc ville (pas mêlé aux CTA d'ajout du bas). */
+.pp-place-suggestions {
+  /* position:relative requis : .pp-place-suggestions-dropdown (partage la classe
+     .pp-search-dropdown) se positionne en absolute par rapport à ce conteneur,
+     sinon il se calcule par rapport à un ancêtre positionné plus haut dans
+     l'arbre et s'affiche hors champ — d'où l'impression que le clic n'ouvrait rien. */
+  position: relative;
+  margin: 4px 10px 8px;
+}
+.pp-place-suggestions-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: rgba(20,184,166,0.10);
+  border: 1px solid rgba(20,184,166,0.3);
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2dd4bf;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pp-place-suggestions-btn svg {
+  flex-shrink: 0;
+  background: rgba(20,184,166,0.22);
+  border-radius: 50%;
+  padding: 3px;
+  box-sizing: content-box;
+}
+.pp-place-suggestions-btn:hover {
+  border-color: #14b8a6;
+  background: rgba(20,184,166,0.18);
+}
+.pp-place-suggestions-dropdown {
+  margin-top: 6px;
+  border: 1px solid rgba(20,184,166,0.25);
+}
+.pp-place-suggestions-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 /* "Ajouter une ville" — CTA la plus visible du bloc destination */
 .pp-add-city-btn {
   margin: 2px 0 0;

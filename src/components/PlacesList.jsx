@@ -4,6 +4,7 @@ import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import WikiImage from './WikiImage';
+import { fetchTranslatedFields, translationKey } from '../lib/translateContent';
 
 const PAGE_SIZE = 10;
 const EMPTY_VOTES = { up: 0, down: 0, myVote: null };
@@ -131,14 +132,20 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function PlacesList({ dest, countryCode, countryName, wikiImages = {} }) {
-  const { t } = useTranslation('app');
+  const { t, i18n } = useTranslation('app');
   const { user } = useAuth();
   const isUserDest = !!dest.isUserDest;
   const destType = isUserDest ? 'community' : 'static';
   const staticDestId = !isUserDest ? String(dest.id) : null;
   const userId = user?.id ?? null;
+  const translationContentType = isUserDest ? 'destination_place' : 'static_destination_place';
 
   const [places, setPlaces] = useState([]);
+  // Noms traduits des lieux communautaires/statiques (pas les lieux "à ne pas
+  // manquer" statiques du JSON, déjà bilingues via localizeCountry) — un objet
+  // { lang, text } par id pour savoir si la traduction en cache correspond
+  // encore à la langue actuellement affichée (sinon, on la recharge).
+  const [translatedNames, setTranslatedNames] = useState({});
   const [hasMore, setHasMore] = useState(false);
   const [communityOffset, setCommunityOffset] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -263,6 +270,31 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     loadInitial();
   }, [loadInitial]);
 
+  // Traduction des noms de lieux communautaires/statiques dans la langue
+  // active, avec cache serveur (voir api/get-translated-content.js). Ne
+  // retraduit que les lieux pas encore résolus pour la langue courante,
+  // pour ne pas ré-appeler l'API à chaque mise à jour optimiste de `places`.
+  useEffect(() => {
+    const lang = i18n.language;
+    const pending = places.filter(p => !p.isJson && translatedNames[p.id]?.lang !== lang);
+    if (!pending.length) return;
+    let cancelled = false;
+    (async () => {
+      const items = pending.map(p => ({ contentType: translationContentType, contentId: p.id, field: 'name', sourceText: p.name }));
+      const result = await fetchTranslatedFields(items, lang);
+      if (cancelled) return;
+      setTranslatedNames(prev => {
+        const next = { ...prev };
+        for (const p of pending) {
+          const key = translationKey(translationContentType, p.id, 'name');
+          next[p.id] = { lang, text: result[key] ?? p.name };
+        }
+        return next;
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [places, i18n.language, translationContentType]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Même logique que ReviewItem : upsert si vote nouveau/changé, delete si annulation
   async function handleVote(place, voteType) {
     if (!user || votingId === place.id) return;
@@ -350,14 +382,16 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
       )}
 
       <div className="must-list">
-        {places.map(place => (
+        {places.map(place => {
+          const displayName = place.isJson ? place.name : (translatedNames[place.id]?.text ?? place.name);
+          return (
           <div key={place.id} className="must-item">
             {place.isJson ? (
-              <WikiImage src={wikiImages[place.wikipedia] ?? null} alt={place.name} className="must-item-img" />
+              <WikiImage src={wikiImages[place.wikipedia] ?? null} alt={displayName} className="must-item-img" />
             ) : (
-              <img src={place.image_url} alt={place.name} className="must-item-img" />
+              <img src={place.image_url} alt={displayName} className="must-item-img" />
             )}
-            <span className="must-item-name">{place.name}</span>
+            <span className="must-item-name">{displayName}</span>
 
             {!place.isJson && (
               <div className="must-item-actions">
@@ -393,7 +427,8 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {loading && <div className="places-loading">{t('placesList.loading')}</div>}

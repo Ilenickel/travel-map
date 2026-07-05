@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { callAdminAction } from '../lib/admin';
 import { relativeTime } from '../lib/relativeTime';
 import ReportModal from './ReportModal';
+import { fetchTranslatedFields, translationKey } from '../lib/translateContent';
 
 function Avatar({ profile }) {
   const name = profile?.display_name || '?';
@@ -31,7 +32,7 @@ export function HalfStars({ rating, size = 16 }) {
 }
 
 export default function ReviewItem({ review, currentUserId, onDelete, onEdit, onVoteChange, onOpenProfile, isDestReview = false, hasAlert = false, alertData = null, onAdminAction }) {
-  const { t } = useTranslation('app');
+  const { t, i18n } = useTranslation('app');
   const voteTable = isDestReview ? 'destination_review_votes' : 'review_votes';
   const reviewTable = isDestReview ? 'destination_reviews' : 'reviews';
   const { user, isAdmin } = useAuth();
@@ -51,6 +52,26 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
 
   const photos = review.photo_urls?.length ? review.photo_urls : review.photo_url ? [review.photo_url] : [];
   const isOwn = review.user_id === currentUserId;
+
+  // Traduction du commentaire dans la langue active, avec cache serveur
+  // (voir api/get-translated-content.js). Un avis peut être édité (le
+  // commentaire change alors sans changer d'id) : re-déclenché à chaque
+  // changement de `review.comment`, le cache serveur se rafraîchit lui-même
+  // via l'invalidation faite dans api/moderate-review.js.
+  const [translatedComment, setTranslatedComment] = useState(null);
+  useEffect(() => {
+    if (!review.comment) { setTranslatedComment(null); return; }
+    let cancelled = false;
+    const contentType = isDestReview ? 'destination_review' : 'review';
+    (async () => {
+      const result = await fetchTranslatedFields(
+        [{ contentType, contentId: review.id, field: 'comment', sourceText: review.comment }],
+        i18n.language
+      );
+      if (!cancelled) setTranslatedComment(result[translationKey(contentType, review.id, 'comment')] ?? null);
+    })();
+    return () => { cancelled = true; };
+  }, [review.id, review.comment, isDestReview, i18n.language]);
 
   // Vérifie en DB si l'utilisateur a déjà signalé cet avis (persiste au-delà de la session locale)
   useEffect(() => {
@@ -204,7 +225,7 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
       <HalfStars rating={review.rating} size={19} />
 
       {/* Commentaire */}
-      {review.comment && <p className="review-item-comment">{review.comment}</p>}
+      {review.comment && <p className="review-item-comment">{translatedComment ?? review.comment}</p>}
 
       {/* Miniatures photos */}
       {photos.length > 0 && (

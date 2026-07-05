@@ -16,6 +16,7 @@ import PlacesList from "./PlacesList";
 import { callAdminAction } from "../lib/admin";
 import ReportModal from "./ReportModal";
 import { monthAbbrev } from "../lib/monthAbbrev";
+import { fetchTranslatedFields, translationKey } from "../lib/translateContent";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 
@@ -56,6 +57,12 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   // Community destinations state
   const [destSearch, setDestSearch] = useState('');
   const [userDestinations, setUserDestinations] = useState([]);
+  // Version affichée (nom + description traduits) des destinations communautaires,
+  // avec cache serveur — voir api/get-translated-content.js. `userDestinations`
+  // reste inchangée (texte d'origine) : nécessaire pour existingDestinations
+  // (détection de doublon à la soumission) et pour l'édition (DestinationForm
+  // doit repartir du texte original, pas d'une traduction).
+  const [translatedUserDestinations, setTranslatedUserDestinations] = useState([]);
   const [showDestForm, setShowDestForm] = useState(false);
   const [editDest, setEditDest] = useState(null);
   const [deletingDestId, setDeletingDestId] = useState(null);
@@ -101,6 +108,28 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     loadUserDests();
   }, [countryCode, destRefreshKey]);
 
+  // Traduction en lot des noms/descriptions des destinations communautaires
+  // dans la langue active (cache serveur, voir api/get-translated-content.js).
+  useEffect(() => {
+    if (!userDestinations.length) { setTranslatedUserDestinations([]); return; }
+    const lang = i18n.language;
+    let cancelled = false;
+    (async () => {
+      const items = userDestinations.flatMap((d) => [
+        { contentType: 'user_destination', contentId: d.id, field: 'name', sourceText: d.name },
+        { contentType: 'user_destination', contentId: d.id, field: 'description', sourceText: d.description },
+      ]);
+      const result = await fetchTranslatedFields(items, lang);
+      if (cancelled) return;
+      setTranslatedUserDestinations(userDestinations.map((d) => ({
+        ...d,
+        name: result[translationKey('user_destination', d.id, 'name')] ?? d.name,
+        description: result[translationKey('user_destination', d.id, 'description')] ?? d.description,
+      })));
+    })();
+    return () => { cancelled = true; };
+  }, [userDestinations, i18n.language]);
+
   // Auto-select destination + scroll to review from external navigation (profile/notif)
   useEffect(() => {
     if (!initialExtra?.destId) return;
@@ -110,18 +139,18 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
       if (dest) { setSelectedDest(dest); return; }
     }
     // Destinations communautaires (UUID)
-    if (userDestinations.length) {
-      const dest = userDestinations.find((d) => d.id === initialExtra.destId);
+    if (translatedUserDestinations.length) {
+      const dest = translatedUserDestinations.find((d) => d.id === initialExtra.destId);
       if (dest) setSelectedDest(dest);
     }
-  }, [initialExtra, data, userDestinations]);
+  }, [initialExtra, data, translatedUserDestinations]);
 
   // Auto-select community destination from profile navigation
   useEffect(() => {
-    if (!initialExtra?.commDestId || !userDestinations.length) return;
-    const dest = userDestinations.find(d => d.id === initialExtra.commDestId);
+    if (!initialExtra?.commDestId || !translatedUserDestinations.length) return;
+    const dest = translatedUserDestinations.find(d => d.id === initialExtra.commDestId);
     if (dest) setSelectedDest(dest);
-  }, [initialExtra, userDestinations]);
+  }, [initialExtra, translatedUserDestinations]);
 
   useEffect(() => {
     async function loadReviewStats() {
@@ -298,8 +327,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     const normalize = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     const q = normalize(destSearch.trim());
     if (!q) return null;
-    return [...(data.destinations ?? []), ...userDestinations].filter(d => normalize(d.name).includes(q));
-  }, [destSearch, data.destinations, userDestinations]);
+    return [...(data.destinations ?? []), ...translatedUserDestinations].filter(d => normalize(d.name).includes(q));
+  }, [destSearch, data.destinations, translatedUserDestinations]);
 
   const tabs = [
     { id: "overview",      label: t("countryPanel.tabOverview") },
@@ -802,8 +831,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     </div>
                   </div>
                 ) : (() => {
-                  const myDests = user ? userDestinations.filter(d => d.user_id === user.id) : [];
-                  const otherDests = userDestinations.filter(d => !user || d.user_id !== user.id);
+                  const myDests = user ? translatedUserDestinations.filter(d => d.user_id === user.id) : [];
+                  const otherDests = translatedUserDestinations.filter(d => !user || d.user_id !== user.id);
                   return (
                   <>
                     {deleteDestError && (

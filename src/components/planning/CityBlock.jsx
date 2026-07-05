@@ -3,6 +3,7 @@ import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
+import PlaceSuggestionsButton from './PlaceSuggestionsButton';
 import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
 import TrajetAddInput from './TrajetAddInput';
@@ -12,6 +13,7 @@ import { sumCosts, formatPrice } from '../../lib/planningUtils';
 
 export default function CityBlock({
   city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [],
+  countryCode, countryName,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
   onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
@@ -189,6 +191,19 @@ export default function CityBlock({
 
           {!collapsed && (
             <div className="pp-city-body">
+              {/* Distinct des boutons "+ Ajouter" ci-dessous : ceci ne fait que
+                  suggérer des lieux déjà connus pour cette ville, pas les ajouter
+                  directement — d'où sa place à part, en haut du bloc. */}
+              <PlaceSuggestionsButton
+                cityName={city.name}
+                countryCode={countryCode}
+                countryName={countryName}
+                tripId={tripId}
+                cityId={city.id}
+                existingActivityNames={cityActivities.map(a => a.name)}
+                onAddActivity={onAddActivity}
+              />
+
               {selecting && validSelectedIds.length > 0 && (
                 <SelectionActionBar
                   count={validSelectedIds.length}

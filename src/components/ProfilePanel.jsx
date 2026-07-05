@@ -45,7 +45,7 @@ function FlagImage({ country, code }) {
     <img
       src={`https://flagcdn.com/w20/${alpha2}.png`}
       srcSet={`https://flagcdn.com/w40/${alpha2}.png 2x`}
-      alt={country.name}
+      alt={localizeField(country.name, i18n.language)}
       className="profile-review-flag-img"
       onError={(e) => { e.currentTarget.style.display = 'none'; }}
     />
@@ -410,7 +410,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                 <div key={countryCode} className="profile-dest-group">
                   <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
                     {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
-                    <span className="profile-dest-group-name">{countryMeta?.name || countryCode}</span>
+                    <span className="profile-dest-group-name">{localizeField(countryMeta?.name, i18n.language) || countryCode}</span>
                     <span className="profile-dest-group-count">{t('profile.destinationsCount', { count })}</span>
                     <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
                   </div>
@@ -496,7 +496,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                         <div className="profile-review-top">
                           <div className="profile-review-country-info">
                             <FlagImage country={country} code={r.country_code} />
-                            <span className="profile-review-country">{country?.name || r.country_code}</span>
+                            <span className="profile-review-country">{localizeField(country?.name, i18n.language) || r.country_code}</span>
                           </div>
                           <span className="profile-review-stars">
                             {[1,2,3,4,5].map((s) => <span key={s} className={s <= r.rating ? 'star-filled' : 'star-empty'}>★</span>)}
@@ -536,7 +536,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                       <div key={key} className="profile-dest-group">
                         <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleDestGroup(key)}>
                           {countryMeta && <FlagImage country={countryMeta} code={key} />}
-                          <span className="profile-dest-group-name">{countryMeta?.name || key}</span>
+                          <span className="profile-dest-group-name">{localizeField(countryMeta?.name, i18n.language) || key}</span>
                           <span className="profile-dest-group-count">{t('profile.reviewsCount', { count })}</span>
                           <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
                         </div>

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { findCountry } from '../data/index';
+import { localizeField } from '../lib/localizeCountry';
+import i18n from '../i18n';
 import { relativeTime } from '../lib/relativeTime';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
@@ -13,7 +15,7 @@ function FlagImage({ country, code }) {
   if (chars.length < 2) return <span>{country.emoji}</span>;
   const alpha2 = chars.slice(0, 2).map((c) => String.fromCharCode(c.codePointAt(0) - 0x1F1E6 + 65)).join('').toLowerCase();
   return (
-    <img src={`https://flagcdn.com/w20/${alpha2}.png`} alt={country?.name || code}
+    <img src={`https://flagcdn.com/w20/${alpha2}.png`} alt={localizeField(country?.name, i18n.language) || code}
       style={{ width: 16, borderRadius: 2, verticalAlign: 'middle', flexShrink: 0 }}
       onError={(e) => { e.currentTarget.style.display = 'none'; }} />
   );
@@ -202,7 +204,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                           <strong>{name}</strong> {t('notification.postedReviewOn')} <strong>{n.destination_name}</strong>{' '}
                           <span className="notif-country">
                             <FlagImage country={country} code={n.country_code} />
-                            {' '}{country?.name || n.country_code}
+                            {' '}{localizeField(country?.name, i18n.language) || n.country_code}
                           </span>
                         </>
                       ) : (
@@ -210,7 +212,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                           <strong>{name}</strong> {t('notification.postedReviewOn')}{' '}
                           <span className="notif-country">
                             <FlagImage country={country} code={n.country_code} />
-                            {' '}{country?.name || n.country_code}
+                            {' '}{localizeField(country?.name, i18n.language) || n.country_code}
                           </span>
                         </>
                       )}

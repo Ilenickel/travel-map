@@ -88,6 +88,12 @@
     "selectTitle": "Select multiple places",
     "exitSelectTitle": "Exit selection"
   },
+  "placeSuggestions": {
+    "button_one": "{{count}} suggested place",
+    "button_other": "{{count}} suggested places",
+    "addButton": "Add",
+    "added": "Added"
+  },
   "trajetsSection": {
     "label": "Trips",
     "addButton": "Add a trip"

@@ -4,6 +4,7 @@
 // téléversées sont supprimées et un motif de refus est renvoyé.
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { moderateContent, ModerationUnavailableError } from './_lib/moderation.js';
+import { invalidateTranslations } from './_lib/translation.js';
 
 const PHOTO_BUCKET = 'review-photos';
 
@@ -134,6 +135,9 @@ export default async function handler(req, res) {
   if (upsertErr) {
     console.error('[moderate-review] upsert:', upsertErr);
     return res.status(500).json({ ok: false, reason: "L'avis n'a pas pu être publié. Réessayez." });
+  }
+  if (reviewId) {
+    await invalidateTranslations(admin, destinationId ? 'destination_review' : 'review', reviewId);
   }
 
   return res.status(200).json({ ok: true, reviewId });

@@ -88,6 +88,12 @@
     "selectTitle": "Sélectionner plusieurs lieux",
     "exitSelectTitle": "Quitter la sélection"
   },
+  "placeSuggestions": {
+    "button_one": "{{count}} lieu conseillé",
+    "button_other": "{{count}} lieux conseillés",
+    "addButton": "Ajouter",
+    "added": "Ajouté"
+  },
   "trajetsSection": {
     "label": "Trajets",
     "addButton": "Ajouter un trajet"
