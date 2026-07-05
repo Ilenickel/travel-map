@@ -707,6 +707,11 @@
   background: var(--surface2);
   border: 1px solid var(--accent);
   box-shadow: 0 0 0 4px var(--accent-glow), 0 10px 28px rgba(0,0,0,0.32);
+  /* Container query (pas juste un @media) : le panneau d'édition peut être
+     étroit même sur un grand écran (fenêtre réduite, colonne de jour serrée
+     dans un planning à plusieurs destinations) — le seuil dépend de LA
+     LARGEUR DU PANNEAU, pas de celle du viewport. */
+  container-type: inline-size;
 }
 .pp-activity--editing:hover {
   border-color: var(--accent);
@@ -2113,6 +2118,18 @@
 .pp-activity-cost-input::-webkit-outer-spin-button,
 .pp-activity-cost-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .pp-activity-cost-input[type="number"] { -moz-appearance: textfield; }
+
+/* En dessous de ~480px de large, le toggle "Journée entière" passe sur deux
+   lignes et le champ Prix ne tient plus à côté de Date+Heure : il retombe
+   seul sur sa propre ligne mais garde sa largeur étroite (130px, prévue pour
+   partager la ligne avec les deux autres champs), ce qui laisse un grand vide
+   à sa droite et donne une impression de mise en page cassée. On empile donc
+   proprement les 3 champs avant que ça n'arrive, et on laisse Prix prendre
+   toute la largeur une fois seul sur sa ligne. */
+@container (max-width: 470px) {
+  .pp-activity-datetime { flex-direction: column; gap: 10px; }
+  .pp-activity-datetime-field--cost { max-width: none; }
+}
 
 /* ─── Toggle "Journée entière" — remplace la case à cocher native, replacé à
    côté du champ Heure qu'il désactive, pour un lien visuel direct ─── */
@@ -4025,6 +4042,11 @@
 
   .pp-activity-datetime { flex-direction: column; gap: 12px; }
   .pp-activity-datetime-field { min-width: 0; }
+  /* Sans ça, Prix garde son max-width:130px pensé pour partager la ligne
+     avec Date/Heure — une fois seul et empilé pleine largeur, ça laisse un
+     grand vide à sa droite (même défaut que corrigé pour la version desktop
+     étroite, voir la container query plus haut). */
+  .pp-activity-datetime-field--cost { max-width: none; }
 
   /* ── Carte : le bouton "agrandir en superposition" est masqué — la carte a
      déjà sa page plein écran ici, et une superposition en position:fixed à
