@@ -13,7 +13,7 @@ import ProfilePanel from "./components/ProfilePanel";
 import NotificationPanel from "./components/NotificationPanel";
 import AdminAlertsPanel from "./components/AdminAlertsPanel";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { LanguageProvider } from "./context/LanguageContext";
+import { LanguageProvider, useLanguage } from "./context/LanguageContext";
 import { BadgeProvider } from "./context/BadgeContext";
 import BadgeUnlockAnimation from "./components/BadgeUnlockAnimation";
 import { useNotifications } from "./hooks/useNotifications";
@@ -27,6 +27,29 @@ import { useFavorites } from "./hooks/useFavorites";
 import { useVisited } from "./hooks/useVisited";
 import PlanningPage from "./pages/PlanningPage";
 import "./App.css";
+
+function LanguageSwitcher() {
+  const { t } = useTranslation();
+  const { language, changeLanguage } = useLanguage();
+  return (
+    <div className="topbar-lang-switcher" role="group" aria-label={t('languageSwitcher.label')}>
+      <button
+        type="button"
+        className={`topbar-lang-btn${language === 'fr' ? ' active' : ''}`}
+        onClick={() => changeLanguage('fr')}
+      >
+        FR
+      </button>
+      <button
+        type="button"
+        className={`topbar-lang-btn${language === 'en' ? ' active' : ''}`}
+        onClick={() => changeLanguage('en')}
+      >
+        EN
+      </button>
+    </div>
+  );
+}
 
 function normalize(str) {
   return str.normalize("NFD").replace(/\p{Mn}/gu, "").toLowerCase();
@@ -244,6 +267,7 @@ function AppInner() {
             <img src="/icon.png" alt="" className="brand-icon" />
             <span className="brand-name">Triply</span>
           </div>
+          <LanguageSwitcher />
         </div>
 
         {/* Centre : recherche */}

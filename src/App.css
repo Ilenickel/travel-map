@@ -52,6 +52,41 @@ html, body, #root { height: 100%; }
 
 .topbar-brand { display: flex; align-items: center; gap: 18px; }
 
+.topbar-lang-switcher {
+  display: flex;
+  align-items: center;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.topbar-lang-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+}
+
+.topbar-lang-btn:hover { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+
+.topbar-lang-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+}
+
 .topbar-right {
   display: flex;
   align-items: center;

@@ -1,11 +1,11 @@
 export const PHILIPPINES = {
   code: "PHL",
   numericId: 608,
-  name: "Philippines",
+  name: { fr: "Philippines", en: "Philippines" },
   emoji: "🇵🇭",
-  capital: "Manille",
-  language: "Filipino (tagalog), anglais",
-  currency: "Peso philippin (PHP)",
+  capital: { fr: "Manille", en: "Manila" },
+  language: { fr: "Filipino (tagalog), anglais", en: "Filipino (Tagalog), English" },
+  currency: { fr: "Peso philippin (PHP)", en: "Philippine peso (PHP)" },
   timezone: "UTC+8",
   filter: {
     budgetMin: 30,
@@ -13,24 +13,30 @@ export const PHILIPPINES = {
     tripMin: 1300,
     tripMid: 2500,
   },
-  description:
-    "L'archipel des Philippines compte plus de 7 100 îles baignées par des eaux parmi les plus riches en biodiversité marine au monde. Des rizières en terrasses de Banaue aux lagons de Palawan, des volcans d'Albay aux plages d'El Nido, c'est l'une des destinations les plus spectaculaires d'Asie du Sud-Est.",
+  description: {
+    fr: "L'archipel des Philippines compte plus de 7 100 îles baignées par des eaux parmi les plus riches en biodiversité marine au monde. Des rizières en terrasses de Banaue aux lagons de Palawan, des volcans d'Albay aux plages d'El Nido, c'est l'une des destinations les plus spectaculaires d'Asie du Sud-Est.",
+    en: "The Philippine archipelago has over 7,100 islands surrounded by some of the most marine-biodiverse waters in the world. From the Banaue rice terraces to the lagoons of Palawan, from the Albay volcanoes to the beaches of El Nido, it's one of the most spectacular destinations in Southeast Asia.",
+  },
 
   bestPeriods: [
     {
-      months: "Novembre – Mai",
-      label: "Saison sèche (amihan)",
+      months: { fr: "Novembre – Mai", en: "November – May" },
+      label: { fr: "Saison sèche (amihan)", en: "Dry season (amihan)" },
       color: "#fbbf24",
-      description:
-        "Vent du nord-est qui apporte temps sec et ensoleillé sur la côte ouest et les îles Visayas. Idéal pour Palawan, Boracay et Cebu.",
+      description: {
+        fr: "Vent du nord-est qui apporte temps sec et ensoleillé sur la côte ouest et les îles Visayas. Idéal pour Palawan, Boracay et Cebu.",
+        en: "North-east wind bringing dry, sunny weather to the west coast and the Visayas islands. Ideal for Palawan, Boracay and Cebu.",
+      },
       icon: "☀️",
     },
     {
-      months: "Juin – Octobre",
-      label: "Côte Est (Mindanao, Siargao)",
+      months: { fr: "Juin – Octobre", en: "June – October" },
+      label: { fr: "Côte Est (Mindanao, Siargao)", en: "East coast (Mindanao, Siargao)" },
       color: "#22c55e",
-      description:
-        "La côte est reste ensoleillée pendant la saison des pluies de la côte ouest. Siargao et Davao sont idéaux.",
+      description: {
+        fr: "La côte est reste ensoleillée pendant la saison des pluies de la côte ouest. Siargao et Davao sont idéaux.",
+        en: "The east coast stays sunny during the west coast's rainy season. Siargao and Davao are ideal.",
+      },
       icon: "🏄",
     },
   ],
@@ -39,7 +45,7 @@ export const PHILIPPINES = {
     {
       id: "manila",
       name: "Manille",
-      region: "Luzon",
+      region: { fr: "Luzon", en: "Luzon" },
       data: [
         { month: "Jan", temp: 25, rain: 20, icon: "☀️" },
         { month: "Fév", temp: 26, rain: 10, icon: "☀️" },
@@ -58,7 +64,7 @@ export const PHILIPPINES = {
     {
       id: "palawan",
       name: "Palawan (Puerto Princesa)",
-      region: "Palawan",
+      region: { fr: "Palawan", en: "Palawan" },
       data: [
         { month: "Jan", temp: 25, rain: 15, icon: "☀️" },
         { month: "Fév", temp: 26, rain: 10, icon: "☀️" },
@@ -77,7 +83,7 @@ export const PHILIPPINES = {
     {
       id: "cebu",
       name: "Cebu",
-      region: "Visayas",
+      region: { fr: "Visayas", en: "Visayas" },
       data: [
         { month: "Jan", temp: 26, rain: 90, icon: "🌦" },
         { month: "Fév", temp: 26, rain: 70, icon: "⛅" },
@@ -98,59 +104,67 @@ export const PHILIPPINES = {
   destinations: [
     {
       id: 1,
-      name: "Palawan & El Nido",
-      region: "Palawan",
-      description:
-        "Palawan est régulièrement élue plus belle île du monde. El Nido et Coron offrent des lagons émeraude entourés de falaises karstiques, des plages secrètes et une vie sous-marine exceptionnelle. La rivière souterraine de Puerto Princesa est classée UNESCO.",
+      name: { fr: "Palawan & El Nido", en: "Palawan & El Nido" },
+      region: { fr: "Palawan", en: "Palawan" },
+      description: {
+        fr: "Palawan est régulièrement élue plus belle île du monde. El Nido et Coron offrent des lagons émeraude entourés de falaises karstiques, des plages secrètes et une vie sous-marine exceptionnelle. La rivière souterraine de Puerto Princesa est classée UNESCO.",
+        en: "Palawan is regularly voted the most beautiful island in the world. El Nido and Coron offer emerald lagoons surrounded by karst cliffs, secret beaches and exceptional marine life. The Puerto Princesa Underground River is a UNESCO World Heritage site.",
+      },
       wikipedia: "Palawan",
       tags: ["lagons", "plongée", "île", "UNESCO", "Plage", "Nature", "Randonnée"],
       mustSee: [
         { name: "El Nido (Bacuit Archipelago)", wikipedia: "El_Nido,_Palawan" },
-        { name: "Coron (épaves)", wikipedia: "Coron,_Palawan" },
-        { name: "Rivière souterraine de Puerto Princesa", wikipedia: "Puerto_Princesa_Subterranean_River_National_Park" },
+        { name: { fr: "Coron (épaves)", en: "Coron (shipwrecks)" }, wikipedia: "Coron,_Palawan" },
+        { name: { fr: "Rivière souterraine de Puerto Princesa", en: "Puerto Princesa Underground River" }, wikipedia: "Puerto_Princesa_Subterranean_River_National_Park" },
         { name: "Big Lagoon", wikipedia: "El_Nido,_Palawan" },
       ],
     },
     {
       id: 2,
       name: "Boracay",
-      region: "Visayas (Aklan)",
-      description:
-        "La plage White Beach de Boracay est l'une des plus belles d'Asie : sable poudreux blanc, eaux turquoise et ambiance festive. Après sa fermeture pour nettoyage en 2018, l'île est revenue plus belle et plus réglementée.",
+      region: { fr: "Visayas (Aklan)", en: "Visayas (Aklan)" },
+      description: {
+        fr: "La plage White Beach de Boracay est l'une des plus belles d'Asie : sable poudreux blanc, eaux turquoise et ambiance festive. Après sa fermeture pour nettoyage en 2018, l'île est revenue plus belle et plus réglementée.",
+        en: "Boracay's White Beach is one of the most beautiful in Asia: powdery white sand, turquoise waters and a lively atmosphere. After its clean-up closure in 2018, the island came back more beautiful and better regulated.",
+      },
       wikipedia: "Boracay",
       tags: ["Plage", "nightlife", "sports nautiques", "soleil"],
       mustSee: [
         { name: "White Beach", wikipedia: "Boracay" },
         { name: "Puka Shell Beach", wikipedia: "File:Puka Beach Boracay - panoramio.jpg" },
         { name: "Diniwid Beach", wikipedia: "File:Sunset_at_Diniwid_Beach,_Boracay_Island.jpg" },
-        { name: "Mount Luho (point de vue)", wikipedia: "File:View_from_Mount_Luho_View_Deck_Boracay_-_panoramio.jpg" },
+        { name: { fr: "Mount Luho (point de vue)", en: "Mount Luho (viewpoint)" }, wikipedia: "File:View_from_Mount_Luho_View_Deck_Boracay_-_panoramio.jpg" },
       ],
     },
     {
       id: 3,
-      name: "Rizières de Banaue",
-      region: "Ifugao (Cordillère de Luzon)",
-      description:
-        "Les rizières en terrasses des Cordillères de Luzon, sculptées il y a 2 000 ans par les ancêtres des peuples Ifugao, sont inscrites au patrimoine UNESCO. Un paysage agricole extraordinaire à 1 200 m d'altitude.",
+      name: { fr: "Rizières de Banaue", en: "Banaue Rice Terraces" },
+      region: { fr: "Ifugao (Cordillère de Luzon)", en: "Ifugao (Luzon Cordillera)" },
+      description: {
+        fr: "Les rizières en terrasses des Cordillères de Luzon, sculptées il y a 2 000 ans par les ancêtres des peuples Ifugao, sont inscrites au patrimoine UNESCO. Un paysage agricole extraordinaire à 1 200 m d'altitude.",
+        en: "The rice terraces of the Luzon Cordilleras, carved 2,000 years ago by the ancestors of the Ifugao people, are a UNESCO World Heritage site. An extraordinary agricultural landscape at 1,200 m altitude.",
+      },
       wikipedia: "File:Pana_Banaue_Rice_Terraces_(Cropped).jpg",
       tags: ["UNESCO", "Culture", "Randonnée", "paysages", "Nature"],
       mustSee: [
-        { name: "Batad (terrasses)", wikipedia: "File:Batad Rice Terraces 4.jpg" },
+        { name: { fr: "Batad (terrasses)", en: "Batad (terraces)" }, wikipedia: "File:Batad Rice Terraces 4.jpg" },
         { name: "Banaue viewpoint", wikipedia: "File:Pana_Banaue_Rice_Terraces_(Cropped).jpg" },
         { name: "Bangaan village", wikipedia: "File:Banaue Viewpoint (3294295523).jpg" },
-        { name: "Sagada (grottes)", wikipedia: "Sagada" },
+        { name: { fr: "Sagada (grottes)", en: "Sagada (caves)" }, wikipedia: "Sagada" },
       ],
     },
     {
       id: 4,
       name: "Siargao",
-      region: "Surigao del Norte",
-      description:
-        "Siargao est la capitale philippine du surf grâce à la vague Cloud 9, l'une des plus belles d'Asie. L'île conserve une atmosphère détendue avec ses mangroves, ses lagons secrets et sa faune marine exceptionnelle.",
+      region: { fr: "Surigao del Norte", en: "Surigao del Norte" },
+      description: {
+        fr: "Siargao est la capitale philippine du surf grâce à la vague Cloud 9, l'une des plus belles d'Asie. L'île conserve une atmosphère détendue avec ses mangroves, ses lagons secrets et sa faune marine exceptionnelle.",
+        en: "Siargao is the surfing capital of the Philippines thanks to the Cloud 9 wave, one of the finest in Asia. The island keeps a laid-back atmosphere with its mangroves, secret lagoons and exceptional marine wildlife.",
+      },
       wikipedia: "File:Siargao Island.jpg",
       tags: ["surf", "île", "plongée", "Nature"],
       mustSee: [
-        { name: "Cloud 9 (vague surf)", wikipedia: "File:Catching the Wave.jpg" },
+        { name: { fr: "Cloud 9 (vague surf)", en: "Cloud 9 (surf wave)" }, wikipedia: "File:Catching the Wave.jpg" },
         { name: "Sugba Lagoon", wikipedia: "File:SUGBA LAGOON (MAY 2019).jpg" },
         { name: "Sohoton Cove", wikipedia: "File:Middle Bucas Grande in Dapa, Siargao.jpg" },
         { name: "Naked Island", wikipedia: "File:Naked Island.jpg" },
@@ -158,113 +172,117 @@ export const PHILIPPINES = {
     },
     {
       id: 5,
-      name: "Manille & Intramuros",
-      region: "Luzon",
-      description:
-        "Capitale trépidante des Philippines, Manille mêle héritage colonial espagnol et modernité chaotique. La cité fortifiée d'Intramuros et son fort Santiago témoignent de plus de trois siècles d'histoire. Binondo, plus ancien quartier chinois du monde, et la baie au coucher du soleil complètent la visite.",
+      name: { fr: "Manille & Intramuros", en: "Manila & Intramuros" },
+      region: { fr: "Luzon", en: "Luzon" },
+      description: {
+        fr: "Capitale trépidante des Philippines, Manille mêle héritage colonial espagnol et modernité chaotique. La cité fortifiée d'Intramuros et son fort Santiago témoignent de plus de trois siècles d'histoire. Binondo, plus ancien quartier chinois du monde, et la baie au coucher du soleil complètent la visite.",
+        en: "The bustling capital of the Philippines, Manila blends Spanish colonial heritage with chaotic modernity. The walled city of Intramuros and its Fort Santiago bear witness to over three centuries of history. Binondo, the oldest Chinatown in the world, and the bay at sunset round out the visit.",
+      },
       wikipedia: "Manila",
       tags: ["Ville", "Histoire", "Architecture", "Culture"],
       mustSee: [
-        { name: "Intramuros — cité coloniale espagnole", wikipedia: "Intramuros" },
+        { name: { fr: "Intramuros — cité coloniale espagnole", en: "Intramuros — Spanish colonial walled city" }, wikipedia: "Intramuros" },
         { name: "Fort Santiago", wikipedia: "Fort_Santiago" },
         { name: "Rizal Park", wikipedia: "Rizal_Park" },
-        { name: "Binondo — plus vieux Chinatown du monde", wikipedia: "File:Chinatown, Manila (F. Achilli pic) - Flickr.jpg" },
-        { name: "Baie de Manille au coucher du soleil", wikipedia: "File:Manila Bay Sunset by Gerald Mondala.jpg" },
+        { name: { fr: "Binondo — plus vieux Chinatown du monde", en: "Binondo — oldest Chinatown in the world" }, wikipedia: "File:Chinatown, Manila (F. Achilli pic) - Flickr.jpg" },
+        { name: { fr: "Baie de Manille au coucher du soleil", en: "Manila Bay at sunset" }, wikipedia: "File:Manila Bay Sunset by Gerald Mondala.jpg" },
       ],
     },
   ],
 
   costOfLiving: {
-    intro:
-      "Les Philippines sont une destination très abordable. Les coûts varient entre les îles touristiques (Palawan, Boracay) et les zones moins fréquentées. Les transports inter-îles en avion sont nécessaires pour les grandes distances.",
-    currency: "Peso philippin (PHP)",
+    intro: {
+      fr: "Les Philippines sont une destination très abordable. Les coûts varient entre les îles touristiques (Palawan, Boracay) et les zones moins fréquentées. Les transports inter-îles en avion sont nécessaires pour les grandes distances.",
+      en: "The Philippines is a very affordable destination. Costs vary between tourist islands (Palawan, Boracay) and less-visited areas. Inter-island flights are necessary for long distances.",
+    },
+    currency: { fr: "Peso philippin (PHP)", en: "Philippine peso (PHP)" },
     exchangeRate: "1€ ≈ 60–65 PHP",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
-          { label: "Dortoir auberge de jeunesse", price: "6–12 €", detail: "Manille, Cebu, bonne qualité" },
-          { label: "Bungalow sur la plage", price: "20–45 €", detail: "Fan ou AC, qualité variable" },
-          { label: "Resort 4★ bord de mer", price: "80–180 €", detail: "El Nido ou Boracay, avec piscine" },
+          { label: { fr: "Dortoir auberge de jeunesse", en: "Youth hostel dorm" }, price: "6–12 €", detail: { fr: "Manille, Cebu, bonne qualité", en: "Manila, Cebu, good quality" } },
+          { label: { fr: "Bungalow sur la plage", en: "Beach bungalow" }, price: "20–45 €", detail: { fr: "Fan ou AC, qualité variable", en: "Fan or AC, variable quality" } },
+          { label: { fr: "Resort 4★ bord de mer", en: "4★ seaside resort" }, price: "80–180 €", detail: { fr: "El Nido ou Boracay, avec piscine", en: "El Nido or Boracay, with pool" } },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
-          { label: "Turo-turo (resto local)", price: "2–4 €", detail: "Adobo, kare-kare, sinigang" },
-          { label: "Lechon (cochon rôti, portion)", price: "3–6 €", detail: "Spécialité nationale de Cebu" },
-          { label: "Restaurant touristique", price: "8–20 €", detail: "Fruits de mer frais, poisson grillé" },
+          { label: { fr: "Turo-turo (resto local)", en: "Turo-turo (local eatery)" }, price: "2–4 €", detail: { fr: "Adobo, kare-kare, sinigang", en: "Adobo, kare-kare, sinigang" } },
+          { label: { fr: "Lechon (cochon rôti, portion)", en: "Lechon (roast pig, portion)" }, price: "3–6 €", detail: { fr: "Spécialité nationale de Cebu", en: "National speciality from Cebu" } },
+          { label: { fr: "Restaurant touristique", en: "Tourist restaurant" }, price: "8–20 €", detail: { fr: "Fruits de mer frais, poisson grillé", en: "Fresh seafood, grilled fish" } },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
-          { label: "Vol intérieur (ex: Manille–Palawan)", price: "25–80 €", detail: "Cebu Pacific ou AirAsia, réserver tôt" },
-          { label: "Jeepney (transport local)", price: "0,20–0,50 €", detail: "Emblème culturel philippin, partout" },
+          { label: { fr: "Vol intérieur (ex: Manille–Palawan)", en: "Domestic flight (e.g. Manila–Palawan)" }, price: "25–80 €", detail: { fr: "Cebu Pacific ou AirAsia, réserver tôt", en: "Cebu Pacific or AirAsia, book early" } },
+          { label: { fr: "Jeepney (transport local)", en: "Jeepney (local transport)" }, price: "0,20–0,50 €", detail: { fr: "Emblème culturel philippin, partout", en: "A Philippine cultural icon, found everywhere" } },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités & Culture",
+        label: { fr: "Activités & Culture", en: "Activities & Culture" },
         items: [
-          { label: "Island hopping (journée) El Nido", price: "15–25 €", detail: "Tour A, B, C ou D en groupe" },
-          { label: "Plongée (baptême ou fun dive)", price: "25–50 €", detail: "Sites exceptionnels à Coron ou Tubbataha" },
+          { label: { fr: "Island hopping (journée) El Nido", en: "Island hopping (day trip) El Nido" }, price: "15–25 €", detail: { fr: "Tour A, B, C ou D en groupe", en: "Tour A, B, C or D in a group" } },
+          { label: { fr: "Plongée (baptême ou fun dive)", en: "Diving (intro or fun dive)" }, price: "25–50 €", detail: { fr: "Sites exceptionnels à Coron ou Tubbataha", en: "Exceptional sites in Coron or Tubbataha" } },
         ],
       },
     ],
     budgetSummary: [
-      { type: "Routard", daily: "30–50 €/j", desc: "Auberge/bungalow, turo-turo, transports locaux", color: "#22c55e" },
-      { type: "Confort", daily: "65–120 €/j", desc: "Resort, restos mid-range, island hopping", color: "#3b82f6" },
-      { type: "Luxe", daily: "200 €+/j", desc: "Resort 5★, plongée privée, vols intérieurs fréquents", color: "#f59e0b" },
+      { type: { fr: "Routard", en: "Backpacker" }, daily: "30–50 €/j", desc: { fr: "Auberge/bungalow, turo-turo, transports locaux", en: "Hostel/bungalow, turo-turo, local transport" }, color: "#22c55e" },
+      { type: { fr: "Confort", en: "Comfort" }, daily: "65–120 €/j", desc: { fr: "Resort, restos mid-range, island hopping", en: "Resort, mid-range restaurants, island hopping" }, color: "#3b82f6" },
+      { type: { fr: "Luxe", en: "Luxury" }, daily: "200 €+/j", desc: { fr: "Resort 5★, plongée privée, vols intérieurs fréquents", en: "5★ resort, private diving, frequent domestic flights" }, color: "#f59e0b" },
     ],
     tripEstimate: {
-      duration: "2 semaines",
-      route: "Manille – Palawan (El Nido) – Cebu – Siargao",
+      duration: { fr: "2 semaines", en: "2 weeks" },
+      route: { fr: "Manille – Palawan (El Nido) – Cebu – Siargao", en: "Manila – Palawan (El Nido) – Cebu – Siargao" },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "1 300 – 1 800 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Manille", amount: "550–800 €" },
-            { label: "Hébergement (14 nuits)", amount: "200–350 €" },
-            { label: "Nourriture", amount: "200–300 €" },
-            { label: "Vols intérieurs + bateaux", amount: "200–300 €" },
-            { label: "Activités & imprévus", amount: "100–200 €" },
+            { label: { fr: "Vol A/R Paris–Manille", en: "Return flight Paris–Manila" }, amount: "550–800 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "200–350 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "200–300 €" },
+            { label: { fr: "Vols intérieurs + bateaux", en: "Domestic flights + boats" }, amount: "200–300 €" },
+            { label: { fr: "Activités & imprévus", en: "Activities & contingency" }, amount: "100–200 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "2 500 – 3 500 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Manille", amount: "750–1 000 €" },
-            { label: "Hébergement (14 nuits)", amount: "600–900 €" },
-            { label: "Nourriture", amount: "400–600 €" },
-            { label: "Vols intérieurs + transports", amount: "350–550 €" },
-            { label: "Activités & imprévus", amount: "300–500 €" },
+            { label: { fr: "Vol A/R Paris–Manille", en: "Return flight Paris–Manila" }, amount: "750–1 000 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "600–900 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "400–600 €" },
+            { label: { fr: "Vols intérieurs + transports", en: "Domestic flights + transport" }, amount: "350–550 €" },
+            { label: { fr: "Activités & imprévus", en: "Activities & contingency" }, amount: "300–500 €" },
           ],
         },
         {
-          type: "Luxe",
+          type: { fr: "Luxe", en: "Luxury" },
           color: "#f59e0b",
           total: "6 000 €+",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Manille (Business)", amount: "2 500–3 500 €" },
-            { label: "Hébergement (14 nuits)", amount: "1 800–2 500 €" },
-            { label: "Nourriture & restaurants", amount: "500–800 €" },
-            { label: "Transport & excursions privées", amount: "500–800 €" },
-            { label: "Plongée & activités premium", amount: "400–600 €" },
+            { label: { fr: "Vol A/R Paris–Manille (Business)", en: "Return flight Paris–Manila (Business)" }, amount: "2 500–3 500 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "1 800–2 500 €" },
+            { label: { fr: "Nourriture & restaurants", en: "Food & restaurants" }, amount: "500–800 €" },
+            { label: { fr: "Transport & excursions privées", en: "Transport & private excursions" }, amount: "500–800 €" },
+            { label: { fr: "Plongée & activités premium", en: "Diving & premium activities" }, amount: "400–600 €" },
           ],
         },
       ],
@@ -272,13 +290,13 @@ export const PHILIPPINES = {
   },
 
   practicalities: [
-    { icon: "✈️", label: "Vol depuis Paris", value: "~14–15h avec escale (Bangkok, HK, KL)" },
-    { icon: "🪪", label: "Visa", value: "Sans visa pour les Français (30 jours, prolongeable à 59 jours)" },
-    { icon: "💰", label: "Monnaie", value: "Peso philippin (1€ ≈ 60–65 PHP)" },
-    { icon: "🗣️", label: "Langue", value: "Filipino (tagalog) et anglais (officiel)" },
-    { icon: "🔌", label: "Prise électrique", value: "Type A/B – 220 V (adaptateur conseillé)" },
-    { icon: "📱", label: "Réseau", value: "4G dans les villes et grandes îles, SIM locale chez Globe ou Smart" },
-    { icon: "🚰", label: "Eau du robinet", value: "Non potable, eau en bouteille indispensable" },
-    { icon: "💊", label: "Santé", value: "Antipaludéens pour certaines îles (Palawan rural), vaccin hépatite A recommandé" },
+    { icon: "✈️", label: { fr: "Vol depuis Paris", en: "Flight from Paris" }, value: { fr: "~14–15h avec escale (Bangkok, HK, KL)", en: "~14–15h with a layover (Bangkok, HK, KL)" } },
+    { icon: "🪪", label: { fr: "Visa", en: "Visa" }, value: { fr: "Sans visa pour les Français (30 jours, prolongeable à 59 jours)", en: "Visa-free for French citizens (30 days, extendable to 59 days)" } },
+    { icon: "💰", label: { fr: "Monnaie", en: "Currency" }, value: { fr: "Peso philippin (1€ ≈ 60–65 PHP)", en: "Philippine peso (1€ ≈ 60–65 PHP)" } },
+    { icon: "🗣️", label: { fr: "Langue", en: "Language" }, value: { fr: "Filipino (tagalog) et anglais (officiel)", en: "Filipino (Tagalog) and English (official)" } },
+    { icon: "🔌", label: { fr: "Prise électrique", en: "Power outlet" }, value: { fr: "Type A/B – 220 V (adaptateur conseillé)", en: "Type A/B — 220V (adapter recommended)" } },
+    { icon: "📱", label: { fr: "Réseau", en: "Network" }, value: { fr: "4G dans les villes et grandes îles, SIM locale chez Globe ou Smart", en: "4G in cities and major islands, local SIM from Globe or Smart" } },
+    { icon: "🚰", label: { fr: "Eau du robinet", en: "Tap water" }, value: { fr: "Non potable, eau en bouteille indispensable", en: "Not drinkable, bottled water essential" } },
+    { icon: "💊", label: { fr: "Santé", en: "Health" }, value: { fr: "Antipaludéens pour certaines îles (Palawan rural), vaccin hépatite A recommandé", en: "Antimalarials for certain islands (rural Palawan), hepatitis A vaccine recommended" } },
   ],
 };

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
-import { useLanguage } from '../context/LanguageContext';
 import { useTrips } from '../hooks/useTrips';
 import { useInvitations } from '../hooks/useInvitations';
 import AuthModal from '../components/AuthModal';
@@ -40,29 +39,6 @@ function usePlanningPageSEO() {
 
 // ─── Topbar ───────────────────────────────────────────────────────
 
-function LanguageSwitcher() {
-  const { t } = useTranslation();
-  const { language, changeLanguage } = useLanguage();
-  return (
-    <div className="pp-toolbar-group" role="group" aria-label={t('languageSwitcher.label')}>
-      <button
-        type="button"
-        className={`pp-toolbar-btn${language === 'fr' ? ' active' : ''}`}
-        onClick={() => changeLanguage('fr')}
-      >
-        FR
-      </button>
-      <button
-        type="button"
-        className={`pp-toolbar-btn${language === 'en' ? ' active' : ''}`}
-        onClick={() => changeLanguage('en')}
-      >
-        EN
-      </button>
-    </div>
-  );
-}
-
 function PlanningTopbar() {
   const { t } = useTranslation();
   return (
@@ -78,7 +54,6 @@ function PlanningTopbar() {
         </span>
       </nav>
       <div className="pp-topbar-right">
-        <LanguageSwitcher />
         <Link to="/" className="pp-btn pp-btn--home">
           <span className="pp-btn--home-icon">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
