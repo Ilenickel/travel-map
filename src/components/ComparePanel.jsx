@@ -1,12 +1,14 @@
 import { useState, useMemo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
 import { weatherRating } from "../utils/weather";
+import { localizeCountry, localizeField } from "../lib/localizeCountry";
+import { monthAbbrev } from "../lib/monthAbbrev";
 
-const MONTHS = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
-const TABS = [
-  { id: "resume",  label: "Résumé",          icon: "📊" },
-  { id: "meteo",   label: "Météo",            icon: "🌤" },
-  { id: "cout",    label: "Coût de la vie",   icon: "💰" },
+const TAB_DEFS = [
+  { id: "resume", labelKey: "tabResume",       icon: "📊" },
+  { id: "meteo",  labelKey: "tabWeather",      icon: "🌤" },
+  { id: "cout",   labelKey: "tabCostOfLiving", icon: "💰" },
 ];
 
 function normalize(str) {
@@ -15,20 +17,23 @@ function normalize(str) {
 
 /* ── Recherche pays ── */
 function CountrySearch({ onSelect, exclude }) {
+  const { t, i18n } = useTranslation("app");
   const [q, setQ] = useState("");
   const results = useMemo(() => {
     if (!q.trim()) return [];
     const nq = normalize(q.trim());
+    const lang = i18n.language;
     return Object.entries(COUNTRIES)
+      .map(([code, d]) => [code, { ...d, name: localizeField(d.name, lang) }])
       .filter(([code, d]) => !exclude.includes(code) && normalize(d.name).includes(nq))
       .slice(0, 6);
-  }, [q, exclude]);
+  }, [q, exclude, i18n.language]);
 
   return (
     <div className="compare-search">
       <input
         className="compare-search-input"
-        placeholder="Rechercher un pays…"
+        placeholder={t("topbar.searchPlaceholder")}
         value={q}
         onChange={(e) => setQ(e.target.value)}
         autoFocus
@@ -51,10 +56,11 @@ function CountrySearch({ onSelect, exclude }) {
 
 /* ── Onglet Résumé ── */
 function TabResume({ data }) {
+  const { t } = useTranslation("app");
   return (
     <>
       <div className="compare-section">
-        <div className="compare-section-title">🗓 Quand y aller ?</div>
+        <div className="compare-section-title">{t("compare.whenToGo")}</div>
         <div className="compare-periods">
           {data.bestPeriods.map((p) => (
             <div key={p.months} className="compare-period" style={{ borderColor: p.color }}>
@@ -67,7 +73,7 @@ function TabResume({ data }) {
       </div>
 
       <div className="compare-section">
-        <div className="compare-section-title">💰 Budget / jour</div>
+        <div className="compare-section-title">{t("compare.budgetPerDay")}</div>
         <div className="compare-budgets">
           {data.costOfLiving.budgetSummary.map((b) => (
             <div key={b.type} className="compare-budget-row">
@@ -89,11 +95,11 @@ function TabMeteo({ data }) {
         <div key={city.id} className="compare-section">
           <div className="compare-section-title">🌡 {city.name} <span className="compare-city-region">— {city.region}</span></div>
           <div className="compare-weather-grid">
-            {city.data.map((m) => {
+            {city.data.map((m, i) => {
               const r = weatherRating(m.temp, m.rain);
               return (
                 <div key={m.month} className={`compare-weather-cell compare-weather-${r}`}>
-                  <span className="compare-weather-month">{m.month}</span>
+                  <span className="compare-weather-month">{monthAbbrev(i)}</span>
                   <span className="compare-weather-icon">{m.icon}</span>
                   <span className="compare-weather-temp">{m.temp}°</span>
                   <span className="compare-weather-rain">{m.rain}mm</span>
@@ -131,7 +137,8 @@ function TabCout({ data }) {
 
 /* ── Colonne pays ── */
 function Col({ code, onRemove, canRemove, activeTab, onOpen }) {
-  const data = COUNTRIES[code];
+  const { t, i18n } = useTranslation("app");
+  const data = useMemo(() => localizeCountry(COUNTRIES[code], i18n.language), [code, i18n.language]);
   if (!data) return null;
 
   const tabContent = () => {
@@ -143,7 +150,7 @@ function Col({ code, onRemove, canRemove, activeTab, onOpen }) {
   return (
     <div className="compare-col">
       <div className="compare-col-header">
-        <button className="compare-col-open" onClick={onOpen} title="Ouvrir la fiche">
+        <button className="compare-col-open" onClick={onOpen} title={t("compare.openTitle")}>
           <span className="compare-col-emoji">{data.emoji}</span>
           <div className="compare-col-info">
             <div className="compare-col-name">{data.name}</div>
@@ -151,7 +158,7 @@ function Col({ code, onRemove, canRemove, activeTab, onOpen }) {
           </div>
         </button>
         {canRemove && (
-          <button className="compare-col-remove" onClick={onRemove} title="Retirer ce pays">✕</button>
+          <button className="compare-col-remove" onClick={onRemove} title={t("compare.removeCountryTitle")}>✕</button>
         )}
       </div>
       {tabContent()}
@@ -161,9 +168,10 @@ function Col({ code, onRemove, canRemove, activeTab, onOpen }) {
 
 /* ── Colonne vide (ajout d'un pays) ── */
 function ColEmpty({ exclude, onAdd }) {
+  const { t } = useTranslation("app");
   return (
     <div className="compare-col compare-col-empty">
-      <div className="compare-empty-label">Choisissez un pays à comparer</div>
+      <div className="compare-empty-label">{t("compare.chooseCountryToCompare")}</div>
       <CountrySearch onSelect={onAdd} exclude={exclude} />
     </div>
   );
@@ -171,6 +179,7 @@ function ColEmpty({ exclude, onAdd }) {
 
 /* ── Panel principal ── */
 export default function ComparePanel({ baseCode, initialCodes, onClose, onCountryClick }) {
+  const { t } = useTranslation("app");
   const [codes, setCodes] = useState(() =>
     initialCodes && initialCodes.length >= 1 ? initialCodes : [baseCode]
   );
@@ -212,23 +221,23 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
 
         {/* Topbar */}
         <div className="compare-topbar">
-          <span className="compare-title">⚖ Comparaison</span>
+          <span className="compare-title">{t("compare.title")}</span>
           <button className="compare-share-btn" onClick={handleCopyLink}>
-            {copied ? "✓ Lien copié !" : "🔗 Partager"}
+            {copied ? t("compare.linkCopied") : t("compare.shareButton")}
           </button>
           <button className="compare-close" onClick={onClose}>✕</button>
         </div>
 
         {/* Onglets partagés */}
         <div className="compare-tabs">
-          {TABS.map((t) => (
+          {TAB_DEFS.map((tab) => (
             <button
-              key={t.id}
-              className={`compare-tab-btn${activeTab === t.id ? " active" : ""}`}
-              onClick={() => setActiveTab(t.id)}
+              key={tab.id}
+              className={`compare-tab-btn${activeTab === tab.id ? " active" : ""}`}
+              onClick={() => setActiveTab(tab.id)}
             >
-              <span>{t.icon}</span>
-              <span>{t.label}</span>
+              <span>{tab.icon}</span>
+              <span>{t(`compare.${tab.labelKey}`)}</span>
             </button>
           ))}
         </div>
@@ -260,7 +269,7 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
         {showAddBtn && (
           <div className="compare-footer">
             <button className="compare-add-btn" onClick={() => setAddingThird(true)}>
-              <span>+</span> Ajouter un pays à comparer
+              <span>+</span> {t("compare.addCountryButton")}
             </button>
           </div>
         )}

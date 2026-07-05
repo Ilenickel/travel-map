@@ -1,18 +1,9 @@
 import { useState } from 'react';
-import { reportContent } from '../lib/admin';
-
-const REPORT_REASONS = [
-  { value: 'photo_obscene', label: 'Photo obscène ou inappropriée' },
-  { value: 'photo_logo', label: 'Photo avec logo / contenu caché' },
-  { value: 'photo_wrongplace', label: 'Photo ne correspond pas au lieu' },
-  { value: 'insult', label: 'Insulte ou propos offensant' },
-  { value: 'politics', label: 'Contenu politique ou polémique' },
-  { value: 'spam', label: 'Spam ou contenu sans rapport' },
-  { value: 'wrong_info', label: 'Informations incorrectes / fausses' },
-  { value: 'other', label: 'Autre' },
-];
+import { useTranslation } from 'react-i18next';
+import { reportContent, REPORT_REASON_CODES } from '../lib/admin';
 
 export default function ReportModal({ contentType, contentId, onClose, onReported }) {
+  const { t } = useTranslation('app');
   const [reason, setReason] = useState('');
   const [detail, setDetail] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -20,13 +11,13 @@ export default function ReportModal({ contentType, contentId, onClose, onReporte
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!reason) { setError('Veuillez choisir une raison.'); return; }
+    if (!reason) { setError(t('report.chooseReasonError')); return; }
     setSubmitting(true);
     setError('');
     const result = await reportContent(contentType, contentId, reason, detail.trim());
     setSubmitting(false);
     if (!result.ok) {
-      setError(result.reason || 'Une erreur est survenue.');
+      setError(result.reason || t('report.genericError'));
       return;
     }
     onReported();
@@ -37,28 +28,28 @@ export default function ReportModal({ contentType, contentId, onClose, onReporte
     <div className="report-modal-backdrop">
       <div className="report-modal" onClick={(e) => e.stopPropagation()}>
         <div className="report-modal-header">
-          <span className="report-modal-title">🚩 Signaler ce contenu</span>
+          <span className="report-modal-title">🚩 {t('report.title')}</span>
           <button className="report-modal-close" onClick={onClose}>✕</button>
         </div>
         <form className="report-modal-body" onSubmit={handleSubmit}>
-          <p className="report-modal-hint">Aidez-nous à comprendre le problème :</p>
+          <p className="report-modal-hint">{t('report.hint')}</p>
           <div className="report-modal-reasons">
-            {REPORT_REASONS.map((r) => (
-              <label key={r.value} className={`report-reason-option${reason === r.value ? ' selected' : ''}`}>
+            {REPORT_REASON_CODES.map((code) => (
+              <label key={code} className={`report-reason-option${reason === code ? ' selected' : ''}`}>
                 <input
                   type="radio"
                   name="reason"
-                  value={r.value}
-                  checked={reason === r.value}
-                  onChange={() => setReason(r.value)}
+                  value={code}
+                  checked={reason === code}
+                  onChange={() => setReason(code)}
                 />
-                {r.label}
+                {t(`report.reasonsLong.${code}`)}
               </label>
             ))}
           </div>
           <textarea
             className="report-modal-detail"
-            placeholder="Détails supplémentaires (optionnel)…"
+            placeholder={t('report.detailPlaceholder')}
             value={detail}
             onChange={(e) => setDetail(e.target.value)}
             maxLength={400}
@@ -67,10 +58,10 @@ export default function ReportModal({ contentType, contentId, onClose, onReporte
           {error && <p className="report-modal-error">{error}</p>}
           <div className="report-modal-actions">
             <button type="button" className="report-modal-cancel" onClick={onClose} disabled={submitting}>
-              Annuler
+              {t('common:actions.cancel')}
             </button>
             <button type="submit" className="report-modal-submit" disabled={submitting || !reason}>
-              {submitting ? 'Envoi…' : '🚩 Envoyer le signalement'}
+              {submitting ? t('report.sending') : t('report.submitButton')}
             </button>
           </div>
         </form>

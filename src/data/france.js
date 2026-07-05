@@ -1,11 +1,11 @@
 export const FRANCE = {
   code: "FRA",
   numericId: 250,
-  name: "France",
+  name: { fr: "France", en: "France" },
   emoji: "🇫🇷",
-  capital: "Paris",
-  language: "Français",
-  currency: "Euro (EUR)",
+  capital: { fr: "Paris", en: "Paris" },
+  language: { fr: "Français", en: "French" },
+  currency: { fr: "Euro (EUR)", en: "Euro (EUR)" },
   timezone: "UTC+1 (été UTC+2)",
   filter: {
     budgetMin: 70,
@@ -13,39 +13,49 @@ export const FRANCE = {
     tripMin: 1100,
     tripMid: 2000,
   },
-  description:
-    "La France est l'une des destinations touristiques les plus visitées au monde, alliant patrimoine historique exceptionnel, gastronomie renommée et paysages variés. Des plages de la Côte d'Azur aux sommets alpins, en passant par les châteaux de la Loire et les vignobles bordelais, le pays offre une diversité remarquable. Paris, ville lumière, reste l'un des centres culturels et artistiques les plus importants de la planète.",
+  description: {
+    fr: "La France est l'une des destinations touristiques les plus visitées au monde, alliant patrimoine historique exceptionnel, gastronomie renommée et paysages variés. Des plages de la Côte d'Azur aux sommets alpins, en passant par les châteaux de la Loire et les vignobles bordelais, le pays offre une diversité remarquable. Paris, ville lumière, reste l'un des centres culturels et artistiques les plus importants de la planète.",
+    en: "France is one of the most visited tourist destinations in the world, combining exceptional historical heritage, renowned cuisine and varied landscapes. From the beaches of the French Riviera to the Alpine peaks, via the Loire Valley châteaux and Bordeaux vineyards, the country offers remarkable diversity. Paris, the City of Light, remains one of the most important cultural and artistic centres on the planet.",
+  },
   bestPeriods: [
     {
-      months: "Avr – Juin",
-      label: "Idéal",
+      months: { fr: "Avr – Juin", en: "Apr – Jun" },
+      label: { fr: "Idéal", en: "Ideal" },
       color: "#22c55e",
-      description:
-        "Temps doux, foules modérées, fleurs de printemps. Idéal pour explorer Paris et les régions.",
+      description: {
+        fr: "Temps doux, foules modérées, fleurs de printemps. Idéal pour explorer Paris et les régions.",
+        en: "Mild weather, moderate crowds, spring flowers. Ideal for exploring Paris and the regions.",
+      },
       icon: "☀️",
     },
     {
-      months: "Sep – Oct",
-      label: "Très bien",
+      months: { fr: "Sep – Oct", en: "Sep – Oct" },
+      label: { fr: "Très bien", en: "Great" },
       color: "#22c55e",
-      description:
-        "Lumière dorée de l'automne, vendanges dans les vignobles, moins de touristes qu'en été.",
+      description: {
+        fr: "Lumière dorée de l'automne, vendanges dans les vignobles, moins de touristes qu'en été.",
+        en: "Golden autumn light, grape harvest in the vineyards, fewer tourists than in summer.",
+      },
       icon: "🍂",
     },
     {
-      months: "Jul – Aoû",
-      label: "Haute saison",
+      months: { fr: "Jul – Aoû", en: "Jul – Aug" },
+      label: { fr: "Haute saison", en: "High season" },
       color: "#f59e0b",
-      description:
-        "Beau temps mais foules importantes et prix élevés, surtout sur la côte et à Paris.",
+      description: {
+        fr: "Beau temps mais foules importantes et prix élevés, surtout sur la côte et à Paris.",
+        en: "Good weather but large crowds and high prices, especially on the coast and in Paris.",
+      },
       icon: "🌞",
     },
     {
-      months: "Nov – Mar",
-      label: "Basse saison",
+      months: { fr: "Nov – Mar", en: "Nov – Mar" },
+      label: { fr: "Basse saison", en: "Low season" },
       color: "#94a3b8",
-      description:
-        "Hiver frais à Paris, mais ski dans les Alpes et Pyrénées. Prix avantageux en ville.",
+      description: {
+        fr: "Hiver frais à Paris, mais ski dans les Alpes et Pyrénées. Prix avantageux en ville.",
+        en: "Cool winter in Paris, but skiing in the Alps and Pyrenees. Good city prices.",
+      },
       icon: "❄️",
     },
   ],
@@ -53,7 +63,7 @@ export const FRANCE = {
     {
       id: "paris",
       name: "Paris",
-      region: "Île-de-France — climat océanique tempéré",
+      region: { fr: "Île-de-France — climat océanique tempéré", en: "Île-de-France — temperate oceanic climate" },
       data: [
         { month: "Jan", temp: 4, rain: 55, icon: "❄️" },
         { month: "Fév", temp: 5, rain: 45, icon: "❄️" },
@@ -72,7 +82,7 @@ export const FRANCE = {
     {
       id: "lyon",
       name: "Lyon",
-      region: "Auvergne-Rhône-Alpes — continental doux",
+      region: { fr: "Auvergne-Rhône-Alpes — continental doux", en: "Auvergne-Rhône-Alpes — mild continental" },
       data: [
         { month: "Jan", temp:  3, rain: 52,  icon: "❄️" },
         { month: "Fév", temp:  5, rain: 48,  icon: "❄️" },
@@ -91,7 +101,7 @@ export const FRANCE = {
     {
       id: "strasbourg",
       name: "Strasbourg (Alsace)",
-      region: "Alsace — climat semi-continental",
+      region: { fr: "Alsace — climat semi-continental", en: "Alsace — semi-continental climate" },
       data: [
         { month: "Jan", temp:  1, rain: 45,  icon: "❄️" },
         { month: "Fév", temp:  3, rain: 40,  icon: "❄️" },
@@ -110,7 +120,7 @@ export const FRANCE = {
     {
       id: "avignon",
       name: "Avignon (Provence)",
-      region: "Provence — climat méditerranéen",
+      region: { fr: "Provence — climat méditerranéen", en: "Provence — Mediterranean climate" },
       data: [
         { month: "Jan", temp:  6, rain: 48,  icon: "⛅" },
         { month: "Fév", temp:  8, rain: 42,  icon: "⛅" },
@@ -129,7 +139,7 @@ export const FRANCE = {
     {
       id: "bordeaux",
       name: "Bordeaux",
-      region: "Nouvelle-Aquitaine — climat océanique tempéré",
+      region: { fr: "Nouvelle-Aquitaine — climat océanique tempéré", en: "Nouvelle-Aquitaine — temperate oceanic climate" },
       data: [
         { month: "Jan", temp:  7, rain: 80,  icon: "⛅" },
         { month: "Fév", temp:  8, rain: 65,  icon: "⛅" },
@@ -148,7 +158,7 @@ export const FRANCE = {
     {
       id: "nice",
       name: "Nice",
-      region: "Côte d'Azur — climat méditerranéen ensoleillé",
+      region: { fr: "Côte d'Azur — climat méditerranéen ensoleillé", en: "French Riviera — sunny Mediterranean climate" },
       data: [
         { month: "Jan", temp: 9, rain: 60, icon: "⛅" },
         { month: "Fév", temp: 10, rain: 55, icon: "⛅" },
@@ -169,324 +179,344 @@ export const FRANCE = {
     {
       id: 1,
       name: "Paris",
-      region: "Île-de-France",
-      description:
-        "Capitale incontournable, Paris concentre une densité de chefs-d'œuvre artistiques et architecturaux sans équivalent mondial. La Tour Eiffel, le Louvre, Notre-Dame et Montmartre forment un décor iconique que des millions de visiteurs viennent admirer chaque année. Au-delà des monuments, la ville séduit par ses cafés, ses marchés animés et sa vie culturelle bouillonnante.",
+      region: { fr: "Île-de-France", en: "Île-de-France" },
+      description: {
+        fr: "Capitale incontournable, Paris concentre une densité de chefs-d'œuvre artistiques et architecturaux sans équivalent mondial. La Tour Eiffel, le Louvre, Notre-Dame et Montmartre forment un décor iconique que des millions de visiteurs viennent admirer chaque année. Au-delà des monuments, la ville séduit par ses cafés, ses marchés animés et sa vie culturelle bouillonnante.",
+        en: "An unmissable capital, Paris concentrates a density of artistic and architectural masterpieces unmatched anywhere in the world. The Eiffel Tower, the Louvre, Notre-Dame and Montmartre form an iconic backdrop that millions of visitors come to admire every year. Beyond the monuments, the city charms with its cafés, lively markets and buzzing cultural life.",
+      },
       wikipedia: "Paris",
       tags: ["Culture", "Art", "Gastronomie", "Histoire", "Shopping", "Ville", "UNESCO"],
       mustSee: [
         {
-          name: "Tour Eiffel — symbole de Paris, vue panoramique depuis le sommet",
+          name: { fr: "Tour Eiffel — symbole de Paris, vue panoramique depuis le sommet", en: "Eiffel Tower — symbol of Paris, panoramic view from the top" },
           wikipedia: "Eiffel_Tower",
         },
         {
-          name: "Musée du Louvre — plus grand musée du monde, abrite la Joconde",
+          name: { fr: "Musée du Louvre — plus grand musée du monde, abrite la Joconde", en: "Louvre Museum — the world's largest museum, home to the Mona Lisa" },
           wikipedia: "Louvre",
         },
         {
-          name: "Cathédrale Notre-Dame — chef-d'œuvre gothique en cours de restauration",
+          name: { fr: "Cathédrale Notre-Dame — chef-d'œuvre gothique en cours de restauration", en: "Notre-Dame Cathedral — Gothic masterpiece under restoration" },
           wikipedia: "Notre-Dame_de_Paris",
         },
         {
-          name: "Montmartre & Sacré-Cœur — quartier bohème avec vue sur toute la ville",
+          name: { fr: "Montmartre & Sacré-Cœur — quartier bohème avec vue sur toute la ville", en: "Montmartre & Sacré-Cœur — bohemian district with city-wide views" },
           wikipedia: "Montmartre",
         },
       ],
     },
     {
       id: 2,
-      name: "Côte d'Azur",
-      region: "Provence-Alpes-Côte d'Azur",
-      description:
-        "La French Riviera s'étire de Menton à Saint-Tropez avec ses eaux turquoise, ses villas belles époque et ses marchés colorés. Nice, Cannes et Monaco offrent chacune une identité distincte, entre promenade des Anglais, Festival du Film et palais princier. Le cadre méditerranéen, la cuisine provençale et l'art de vivre ensoleillé en font une destination de rêve.",
+      name: { fr: "Côte d'Azur", en: "French Riviera" },
+      region: { fr: "Provence-Alpes-Côte d'Azur", en: "Provence-Alpes-Côte d'Azur" },
+      description: {
+        fr: "La French Riviera s'étire de Menton à Saint-Tropez avec ses eaux turquoise, ses villas belles époque et ses marchés colorés. Nice, Cannes et Monaco offrent chacune une identité distincte, entre promenade des Anglais, Festival du Film et palais princier. Le cadre méditerranéen, la cuisine provençale et l'art de vivre ensoleillé en font une destination de rêve.",
+        en: "The French Riviera stretches from Menton to Saint-Tropez with its turquoise waters, Belle Époque villas and colourful markets. Nice, Cannes and Monaco each offer a distinct identity, from the Promenade des Anglais to the Film Festival and the princely palace. The Mediterranean setting, Provençal cuisine and sun-drenched lifestyle make it a dream destination.",
+      },
       wikipedia: "French_Riviera",
       tags: ["Plage", "Luxe", "Gastronomie", "Nature", "Culture", "Randonnée"],
       mustSee: [
         {
-          name: "Promenade des Anglais à Nice — balade iconique en bord de mer",
+          name: { fr: "Promenade des Anglais à Nice — balade iconique en bord de mer", en: "Promenade des Anglais in Nice — iconic seafront walk" },
           wikipedia: "Promenade_des_Anglais",
         },
         {
-          name: "Monaco & Rocher — microétat fascinant surplombant la Méditerranée",
+          name: { fr: "Monaco & Rocher — microétat fascinant surplombant la Méditerranée", en: "Monaco & the Rock — fascinating microstate overlooking the Mediterranean" },
           wikipedia: "File:Panorama von Monaco-La Turbie.jpg",
         },
         {
-          name: "Gorges du Verdon — grand canyon européen aux eaux émeraude",
+          name: { fr: "Gorges du Verdon — grand canyon européen aux eaux émeraude", en: "Verdon Gorge — Europe's grand canyon with emerald waters" },
           wikipedia: "Verdon_Gorge",
         },
         {
-          name: "Vieux-Nice — ruelles colorées et marché du Cours Saleya",
+          name: { fr: "Vieux-Nice — ruelles colorées et marché du Cours Saleya", en: "Old Nice — colourful alleys and the Cours Saleya market" },
           wikipedia: "Nice",
         },
       ],
     },
     {
       id: 3,
-      name: "Vallée de la Loire",
-      region: "Centre-Val de Loire",
-      description:
-        "Surnommée le « jardin de la France », la vallée de la Loire abrite plus de 300 châteaux Renaissance classés au patrimoine mondial de l'UNESCO. Chambord, Chenonceau et Amboise témoignent de la splendeur royale des XVe et XVIe siècles. Les vignobles environnants produisent des vins réputés comme le Vouvray, le Sancerre et le Muscadet.",
+      name: { fr: "Vallée de la Loire", en: "Loire Valley" },
+      region: { fr: "Centre-Val de Loire", en: "Centre-Val de Loire" },
+      description: {
+        fr: "Surnommée le « jardin de la France », la vallée de la Loire abrite plus de 300 châteaux Renaissance classés au patrimoine mondial de l'UNESCO. Chambord, Chenonceau et Amboise témoignent de la splendeur royale des XVe et XVIe siècles. Les vignobles environnants produisent des vins réputés comme le Vouvray, le Sancerre et le Muscadet.",
+        en: "Nicknamed \"the garden of France\", the Loire Valley is home to over 300 Renaissance châteaux listed as UNESCO World Heritage. Chambord, Chenonceau and Amboise bear witness to the royal splendour of the 15th and 16th centuries. The surrounding vineyards produce renowned wines such as Vouvray, Sancerre and Muscadet.",
+      },
       wikipedia: "Loire_Valley",
       tags: ["Histoire", "Châteaux", "Vin", "Vélo", "UNESCO", "Architecture"],
       mustSee: [
         {
-          name: "Château de Chambord — joyau Renaissance aux 440 pièces et double escalier",
+          name: { fr: "Château de Chambord — joyau Renaissance aux 440 pièces et double escalier", en: "Château de Chambord — Renaissance jewel with 440 rooms and a double staircase" },
           wikipedia: "Château_de_Chambord",
         },
         {
-          name: "Château de Chenonceau — château des dames enjambant le Cher",
+          name: { fr: "Château de Chenonceau — château des dames enjambant le Cher", en: "Château de Chenonceau — the \"ladies' château\" spanning the Cher river" },
           wikipedia: "Château_de_Chenonceau",
         },
         {
-          name: "Château d'Amboise — résidence royale avec tombe de Léonard de Vinci",
+          name: { fr: "Château d'Amboise — résidence royale avec tombe de Léonard de Vinci", en: "Château d'Amboise — royal residence with Leonardo da Vinci's tomb" },
           wikipedia: "Château_d'Amboise",
         },
         {
-          name: "Clos Lucé — dernière demeure de Léonard de Vinci",
+          name: { fr: "Clos Lucé — dernière demeure de Léonard de Vinci", en: "Clos Lucé — Leonardo da Vinci's last home" },
           wikipedia: "File:Clos luce 04.jpg",
         },
       ],
     },
     {
       id: 4,
-      name: "Mont-Saint-Michel & Bretagne",
-      region: "Normandie / Bretagne",
-      description:
-        "Le Mont-Saint-Michel, abbaye médiévale surgissant de la mer à marée haute, est l'un des sites les plus photographiés de France. La côte bretonne voisine offre des paysages sauvages de landes et de falaises, des villages de pêcheurs pittoresques et une culture celtique vivace. Crêpes, galettes, cidre et fruits de mer complètent cette expérience authentiquement bretonne.",
+      name: { fr: "Mont-Saint-Michel & Bretagne", en: "Mont-Saint-Michel & Brittany" },
+      region: { fr: "Normandie / Bretagne", en: "Normandy / Brittany" },
+      description: {
+        fr: "Le Mont-Saint-Michel, abbaye médiévale surgissant de la mer à marée haute, est l'un des sites les plus photographiés de France. La côte bretonne voisine offre des paysages sauvages de landes et de falaises, des villages de pêcheurs pittoresques et une culture celtique vivace. Crêpes, galettes, cidre et fruits de mer complètent cette expérience authentiquement bretonne.",
+        en: "Mont-Saint-Michel, a medieval abbey rising from the sea at high tide, is one of the most photographed sites in France. The neighbouring Breton coast offers wild moorland and cliff landscapes, picturesque fishing villages and a lively Celtic culture. Crêpes, galettes, cider and seafood complete this authentically Breton experience.",
+      },
       wikipedia: "Mont-Saint-Michel",
       tags: ["UNESCO", "Nature", "Gastronomie", "Histoire", "Mer", "Randonnée"],
       mustSee: [
         {
-          name: "Abbaye du Mont-Saint-Michel — merveille médiévale sur son îlot rocheux",
+          name: { fr: "Abbaye du Mont-Saint-Michel — merveille médiévale sur son îlot rocheux", en: "Mont-Saint-Michel Abbey — medieval wonder on its rocky islet" },
           wikipedia: "Mont-Saint-Michel",
         },
         {
-          name: "Saint-Malo — cité corsaire aux remparts grandioses face à la mer",
+          name: { fr: "Saint-Malo — cité corsaire aux remparts grandioses face à la mer", en: "Saint-Malo — corsair city with grand ramparts facing the sea" },
           wikipedia: "Saint-Malo",
         },
         {
-          name: "Pointe du Raz — cap sauvage à l'extrémité ouest de l'Europe",
+          name: { fr: "Pointe du Raz — cap sauvage à l'extrémité ouest de l'Europe", en: "Pointe du Raz — wild headland at Europe's westernmost tip" },
           wikipedia: "Pointe_du_Raz",
         },
         {
-          name: "Carnac — alignements mégalithiques parmi les plus importants du monde",
+          name: { fr: "Carnac — alignements mégalithiques parmi les plus importants du monde", en: "Carnac — one of the world's most important megalithic alignments" },
           wikipedia: "Carnac_stones",
         },
       ],
     },
     {
       id: 5,
-      name: "Alpes & Chamonix",
-      region: "Auvergne-Rhône-Alpes",
-      description:
-        "Au pied du toit de l'Europe, Chamonix est la capitale mondiale de l'alpinisme et du ski. La vallée offre des panoramas grandioses sur le massif du Mont-Blanc, des glaciers spectaculaires et des stations réputées. En été, la randonnée et les remontées mécaniques ouvrent l'accès à la haute montagne.",
+      name: { fr: "Alpes & Chamonix", en: "Alps & Chamonix" },
+      region: { fr: "Auvergne-Rhône-Alpes", en: "Auvergne-Rhône-Alpes" },
+      description: {
+        fr: "Au pied du toit de l'Europe, Chamonix est la capitale mondiale de l'alpinisme et du ski. La vallée offre des panoramas grandioses sur le massif du Mont-Blanc, des glaciers spectaculaires et des stations réputées. En été, la randonnée et les remontées mécaniques ouvrent l'accès à la haute montagne.",
+        en: "At the foot of the roof of Europe, Chamonix is the world capital of mountaineering and skiing. The valley offers grand panoramas of the Mont Blanc massif, spectacular glaciers and renowned resorts. In summer, hiking and cable cars open up access to the high mountains.",
+      },
       wikipedia: "Chamonix",
       tags: ["Ski", "Randonnée", "Nature", "UNESCO"],
       mustSee: [
-        { name: "Mont-Blanc", wikipedia: "File:Absolute_MtBlanc_01.jpg" },
-        { name: "Chamonix — vallée et remontées mécaniques", wikipedia: "Chamonix" },
-        { name: "Vallée Blanche — ski hors-piste légendaire", wikipedia: "File:ValleeBlancheFromSE_(cropped).JPG" },
-        { name: "Mer de Glace", wikipedia: "Mer_de_Glace" },
-        { name: "Annecy & son lac", wikipedia: "Annecy" },
+        { name: { fr: "Mont-Blanc", en: "Mont Blanc" }, wikipedia: "File:Absolute_MtBlanc_01.jpg" },
+        { name: { fr: "Chamonix — vallée et remontées mécaniques", en: "Chamonix — valley and cable cars" }, wikipedia: "Chamonix" },
+        { name: { fr: "Vallée Blanche — ski hors-piste légendaire", en: "Vallée Blanche — legendary off-piste skiing" }, wikipedia: "File:ValleeBlancheFromSE_(cropped).JPG" },
+        { name: { fr: "Mer de Glace", en: "Mer de Glace glacier" }, wikipedia: "Mer_de_Glace" },
+        { name: { fr: "Annecy & son lac", en: "Annecy & its lake" }, wikipedia: "Annecy" },
       ],
     },
     {
       id: 6,
-      name: "Lyon & Gastronomie",
-      region: "Auvergne-Rhône-Alpes",
-      description:
-        "Lyon est la capitale mondiale de la gastronomie, avec ses bouchons lyonnais, ses marchés couverts (Halles Paul Bocuse) et le plus grand nombre de restaurants étoilés Michelin au km² en France. Sa vieille ville Renaissance et ses traboules — ces passages secrets entre les immeubles — forment un labyrinthe classé UNESCO. Confluent de la Saône et du Rhône, Lyon est aussi une ville de culture dynamique.",
+      name: { fr: "Lyon & Gastronomie", en: "Lyon & Gastronomy" },
+      region: { fr: "Auvergne-Rhône-Alpes", en: "Auvergne-Rhône-Alpes" },
+      description: {
+        fr: "Lyon est la capitale mondiale de la gastronomie, avec ses bouchons lyonnais, ses marchés couverts (Halles Paul Bocuse) et le plus grand nombre de restaurants étoilés Michelin au km² en France. Sa vieille ville Renaissance et ses traboules — ces passages secrets entre les immeubles — forment un labyrinthe classé UNESCO. Confluent de la Saône et du Rhône, Lyon est aussi une ville de culture dynamique.",
+        en: "Lyon is the world capital of gastronomy, with its \"bouchons\" bistros, covered markets (Halles Paul Bocuse) and the highest density of Michelin-starred restaurants in France. Its Renaissance old town and \"traboules\" — secret passageways between buildings — form a UNESCO-listed labyrinth. At the confluence of the Saône and Rhône rivers, Lyon is also a vibrant cultural city.",
+      },
       wikipedia: "Lyon",
       tags: ["Gastronomie", "Culture", "Histoire", "UNESCO", "Architecture", "Ville"],
       mustSee: [
-        { name: "Vieux Lyon & traboules — quartier Renaissance classé UNESCO", wikipedia: "Vieux_Lyon" },
-        { name: "Halles Paul Bocuse — temple de la gastronomie lyonnaise", wikipedia: "File:Halles de Lyon-Paul Bocuse 001.jpg" },
-        { name: "Basilique Notre-Dame de Fourvière — surplombant la ville", wikipedia: "Basilica_of_Notre-Dame_de_Fourvière" },
-        { name: "Théâtre des Célestins", wikipedia: "File:Théâtre des Célestins 2015.jpg" },
+        { name: { fr: "Vieux Lyon & traboules — quartier Renaissance classé UNESCO", en: "Old Lyon & traboules — UNESCO-listed Renaissance district" }, wikipedia: "Vieux_Lyon" },
+        { name: { fr: "Halles Paul Bocuse — temple de la gastronomie lyonnaise", en: "Halles Paul Bocuse — temple of Lyonnaise gastronomy" }, wikipedia: "File:Halles de Lyon-Paul Bocuse 001.jpg" },
+        { name: { fr: "Basilique Notre-Dame de Fourvière — surplombant la ville", en: "Notre-Dame de Fourvière Basilica — overlooking the city" }, wikipedia: "Basilica_of_Notre-Dame_de_Fourvière" },
+        { name: { fr: "Théâtre des Célestins", en: "Célestins Theatre" }, wikipedia: "File:Théâtre des Célestins 2015.jpg" },
       ],
     },
     {
       id: 7,
-      name: "Alsace & Strasbourg",
-      region: "Grand Est",
-      description:
-        "L'Alsace est une région à la frontière franco-allemande avec une identité culturelle unique : maisons à colombages fleuries, vignobles de la Route des Vins, choucroute et kouglof. Strasbourg abrite le Parlement européen et une cathédrale gothique exceptionnelle. Son marché de Noël, le plus ancien et célèbre d'Europe, attire chaque année des millions de visiteurs.",
+      name: { fr: "Alsace & Strasbourg", en: "Alsace & Strasbourg" },
+      region: { fr: "Grand Est", en: "Grand Est" },
+      description: {
+        fr: "L'Alsace est une région à la frontière franco-allemande avec une identité culturelle unique : maisons à colombages fleuries, vignobles de la Route des Vins, choucroute et kouglof. Strasbourg abrite le Parlement européen et une cathédrale gothique exceptionnelle. Son marché de Noël, le plus ancien et célèbre d'Europe, attire chaque année des millions de visiteurs.",
+        en: "Alsace is a region on the Franco-German border with a unique cultural identity: flower-decked half-timbered houses, vineyards along the Wine Route, sauerkraut and kouglof. Strasbourg is home to the European Parliament and an exceptional Gothic cathedral. Its Christmas market, the oldest and most famous in Europe, attracts millions of visitors every year.",
+      },
       wikipedia: "Alsace",
       tags: ["Culture", "Gastronomie", "Architecture", "UNESCO", "Vin", "Histoire", "Randonnée"],
       mustSee: [
-        { name: "Cathédrale Notre-Dame de Strasbourg — flèche gothique de 142 m", wikipedia: "Strasbourg_Cathedral" },
-        { name: "La Petite France — quartier de tanneurs aux maisons à colombages", wikipedia: "File:Straßburg (Frankreich), Petite France -- 2011 -- 1759.jpg" },
-        { name: "Marché de Noël de Strasbourg — le plus ancien d'Europe", wikipedia: "File:Strasbourg Christkindelsmärik 30 nov 2014.jpg" },
+        { name: { fr: "Cathédrale Notre-Dame de Strasbourg — flèche gothique de 142 m", en: "Strasbourg Cathedral — 142 m Gothic spire" }, wikipedia: "Strasbourg_Cathedral" },
+        { name: { fr: "La Petite France — quartier de tanneurs aux maisons à colombages", en: "La Petite France — former tanners' district with half-timbered houses" }, wikipedia: "File:Straßburg (Frankreich), Petite France -- 2011 -- 1759.jpg" },
+        { name: { fr: "Marché de Noël de Strasbourg — le plus ancien d'Europe", en: "Strasbourg Christmas Market — the oldest in Europe" }, wikipedia: "File:Strasbourg Christkindelsmärik 30 nov 2014.jpg" },
       ],
     },
     {
       id: 8,
-      name: "Provence & Avignon",
-      region: "Provence-Alpes-Côte d'Azur",
-      description:
-        "La Provence est une symphonie de lavande, de cigales et d'art de vivre sous le soleil du Sud. Avignon et son Palais des Papes, le Pont du Gard romain, les Baux-de-Provence accrochés aux falaises, les marchés colorés d'Aix et les champs de lavande du Luberon forment l'une des régions les plus photographiées au monde. Vin rosé, tapenade et pastis compris.",
+      name: { fr: "Provence & Avignon", en: "Provence & Avignon" },
+      region: { fr: "Provence-Alpes-Côte d'Azur", en: "Provence-Alpes-Côte d'Azur" },
+      description: {
+        fr: "La Provence est une symphonie de lavande, de cigales et d'art de vivre sous le soleil du Sud. Avignon et son Palais des Papes, le Pont du Gard romain, les Baux-de-Provence accrochés aux falaises, les marchés colorés d'Aix et les champs de lavande du Luberon forment l'une des régions les plus photographiées au monde. Vin rosé, tapenade et pastis compris.",
+        en: "Provence is a symphony of lavender, cicadas and joie de vivre under the southern sun. Avignon and its Papal Palace, the Roman Pont du Gard, the cliffside village of Les Baux-de-Provence, the colourful markets of Aix and the lavender fields of the Luberon make it one of the most photographed regions in the world. Rosé wine, tapenade and pastis included.",
+      },
       wikipedia: "Provence",
       tags: ["Nature", "Histoire", "UNESCO", "Gastronomie", "Vin", "Paysage", "Randonnée"],
       mustSee: [
-        { name: "Palais des Papes d'Avignon — plus grand palais gothique médiéval du monde", wikipedia: "File:Avignon,_Palais_des_Papes_by_JM_Rosier.jpg" },
-        { name: "Pont du Gard — aqueduc romain à 3 niveaux classé UNESCO", wikipedia: "Pont_du_Gard" },
-        { name: "Champs de lavande du Luberon & Valensole — juin–juillet", wikipedia: "File:Lavanda sahəsi - Çuxur Qəbələ k - Qəbələ r.jpg" },
-        { name: "Les Baux-de-Provence — village perché et Carrières de Lumières", wikipedia: "File:Les Baux-de-Provence.jpg" },
+        { name: { fr: "Palais des Papes d'Avignon — plus grand palais gothique médiéval du monde", en: "Avignon's Papal Palace — the world's largest medieval Gothic palace" }, wikipedia: "File:Avignon,_Palais_des_Papes_by_JM_Rosier.jpg" },
+        { name: { fr: "Pont du Gard — aqueduc romain à 3 niveaux classé UNESCO", en: "Pont du Gard — UNESCO-listed 3-tier Roman aqueduct" }, wikipedia: "Pont_du_Gard" },
+        { name: { fr: "Champs de lavande du Luberon & Valensole — juin–juillet", en: "Lavender fields of Luberon & Valensole — June–July" }, wikipedia: "File:Lavanda sahəsi - Çuxur Qəbələ k - Qəbələ r.jpg" },
+        { name: { fr: "Les Baux-de-Provence — village perché et Carrières de Lumières", en: "Les Baux-de-Provence — clifftop village and Carrières de Lumières" }, wikipedia: "File:Les Baux-de-Provence.jpg" },
       ],
     },
     {
       id: 9,
-      name: "Bordeaux & Vignobles",
-      region: "Nouvelle-Aquitaine",
-      description:
-        "Bordeaux est la capitale mondiale du vin et une ville classée au patrimoine UNESCO pour son ensemble architectural XVIIIe exceptionnel. La Cité du Vin est un musée immersif spectaculaire, la Place de la Bourse se reflète dans le miroir d'eau géant, et le Médoc, Saint-Émilion et Sauternes sont à portée de vélo. Depuis l'arrivée du TGV en 2017 (2h de Paris), la ville est devenue l'une des plus tendance de France.",
+      name: { fr: "Bordeaux & Vignobles", en: "Bordeaux & Vineyards" },
+      region: { fr: "Nouvelle-Aquitaine", en: "Nouvelle-Aquitaine" },
+      description: {
+        fr: "Bordeaux est la capitale mondiale du vin et une ville classée au patrimoine UNESCO pour son ensemble architectural XVIIIe exceptionnel. La Cité du Vin est un musée immersif spectaculaire, la Place de la Bourse se reflète dans le miroir d'eau géant, et le Médoc, Saint-Émilion et Sauternes sont à portée de vélo. Depuis l'arrivée du TGV en 2017 (2h de Paris), la ville est devenue l'une des plus tendance de France.",
+        en: "Bordeaux is the world capital of wine and a UNESCO-listed city for its exceptional 18th-century architecture. La Cité du Vin is a spectacular immersive museum, the Place de la Bourse is reflected in the giant water mirror, and the Médoc, Saint-Émilion and Sauternes are within cycling distance. Since the high-speed train arrived in 2017 (2h from Paris), the city has become one of the trendiest in France.",
+      },
       wikipedia: "Bordeaux",
       tags: ["Vin", "Architecture", "UNESCO", "Gastronomie", "Culture", "Histoire", "Vélo"],
       mustSee: [
-        { name: "Cité du Vin — musée immersif dédié aux civilisations du vin", wikipedia: "Cité_du_Vin" },
-        { name: "Place de la Bourse & Miroir d'Eau — reflet monumental sur l'eau", wikipedia: "Place_de_la_Bourse,_Bordeaux" },
-        { name: "Saint-Émilion — village médiéval et vignoble grand cru UNESCO", wikipedia: "File:Saint Émilion, Gironde, France..JPG" },
-        { name: "Place des Quinconces", wikipedia: "File:Bordeaux Place des Quinconces 2.jpg" },
+        { name: { fr: "Cité du Vin — musée immersif dédié aux civilisations du vin", en: "Cité du Vin — immersive museum dedicated to wine civilisations" }, wikipedia: "Cité_du_Vin" },
+        { name: { fr: "Place de la Bourse & Miroir d'Eau — reflet monumental sur l'eau", en: "Place de la Bourse & Water Mirror — monumental reflection on water" }, wikipedia: "Place_de_la_Bourse,_Bordeaux" },
+        { name: { fr: "Saint-Émilion — village médiéval et vignoble grand cru UNESCO", en: "Saint-Émilion — medieval village and UNESCO grand cru vineyard" }, wikipedia: "File:Saint Émilion, Gironde, France..JPG" },
+        { name: { fr: "Place des Quinconces", en: "Place des Quinconces" }, wikipedia: "File:Bordeaux Place des Quinconces 2.jpg" },
       ],
     },
   ],
   costOfLiving: {
-    intro:
-      "La France est une destination européenne de milieu de gamme. Paris reste plus chère que la moyenne nationale, mais les régions offrent un excellent rapport qualité-prix. La gastronomie peut être abordable avec les formules déjeuner et les boulangeries.",
+    intro: {
+      fr: "La France est une destination européenne de milieu de gamme. Paris reste plus chère que la moyenne nationale, mais les régions offrent un excellent rapport qualité-prix. La gastronomie peut être abordable avec les formules déjeuner et les boulangeries.",
+      en: "France is a mid-range European destination. Paris remains pricier than the national average, but the regions offer excellent value for money. Dining can be affordable with lunch set menus and bakeries.",
+    },
     currency: "EUR",
     exchangeRate: "1€ = 1€",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
           {
-            label: "Auberge de jeunesse (dortoir)",
+            label: { fr: "Auberge de jeunesse (dortoir)", en: "Youth hostel (dorm)" },
             price: "25–45 €",
-            detail: "Grandes villes, literie fournie",
+            detail: { fr: "Grandes villes, literie fournie", en: "Big cities, bedding provided" },
           },
           {
-            label: "Hôtel 2–3 étoiles",
+            label: { fr: "Hôtel 2–3 étoiles", en: "2–3 star hotel" },
             price: "70–130 €",
-            detail: "Chambre double en province, 90–160 € à Paris",
+            detail: { fr: "Chambre double en province, 90–160 € à Paris", en: "Double room outside Paris, 90–160 € in Paris" },
           },
           {
-            label: "Hôtel 4 étoiles / boutique",
+            label: { fr: "Hôtel 4 étoiles / boutique", en: "4-star / boutique hotel" },
             price: "150–280 €",
-            detail: "Centre-ville Paris ou Côte d'Azur",
+            detail: { fr: "Centre-ville Paris ou Côte d'Azur", en: "Central Paris or the French Riviera" },
           },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
           {
-            label: "Boulangerie / sandwich",
+            label: { fr: "Boulangerie / sandwich", en: "Bakery / sandwich" },
             price: "5–9 €",
-            detail: "Croissant, baguette, jambon-beurre",
+            detail: { fr: "Croissant, baguette, jambon-beurre", en: "Croissant, baguette, ham & butter sandwich" },
           },
           {
-            label: "Formule déjeuner bistrot",
+            label: { fr: "Formule déjeuner bistrot", en: "Bistro lunch set" },
             price: "13–18 €",
-            detail: "Entrée + plat ou plat + dessert, boisson incluse",
+            detail: { fr: "Entrée + plat ou plat + dessert, boisson incluse", en: "Starter + main or main + dessert, drink included" },
           },
           {
-            label: "Restaurant le soir",
+            label: { fr: "Restaurant le soir", en: "Dinner at a restaurant" },
             price: "25–45 €",
-            detail: "Menu 2–3 plats, verre de vin compris",
+            detail: { fr: "Menu 2–3 plats, verre de vin compris", en: "2–3 course menu, glass of wine included" },
           },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
           {
-            label: "Métro / bus (ticket unité)",
+            label: { fr: "Métro / bus (ticket unité)", en: "Metro / bus (single ticket)" },
             price: "1,90–2,20 €",
-            detail: "Carnet de 10 tickets plus avantageux",
+            detail: { fr: "Carnet de 10 tickets plus avantageux", en: "Book of 10 tickets is better value" },
           },
           {
-            label: "TGV Paris–Lyon",
+            label: { fr: "TGV Paris–Lyon", en: "Paris–Lyon high-speed train" },
             price: "30–80 €",
-            detail: "En 2h, tarif Ouigo dès 15 € si réservé tôt",
+            detail: { fr: "En 2h, tarif Ouigo dès 15 € si réservé tôt", en: "2h journey, Ouigo fares from 15 € if booked early" },
           },
           {
-            label: "Location de vélo / trottinette",
+            label: { fr: "Location de vélo / trottinette", en: "Bike / scooter rental" },
             price: "3–10 €/j",
-            detail: "Vélib' à Paris, nombreuses pistes cyclables",
+            detail: { fr: "Vélib' à Paris, nombreuses pistes cyclables", en: "Vélib' in Paris, many cycle paths" },
           },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités",
+        label: { fr: "Activités", en: "Activities" },
         items: [
           {
-            label: "Musée national (Louvre, Orsay…)",
+            label: { fr: "Musée national (Louvre, Orsay…)", en: "National museum (Louvre, Orsay…)" },
             price: "15–22 €",
-            detail: "Gratuit le 1er dimanche du mois, réduit -26 ans",
+            detail: { fr: "Gratuit le 1er dimanche du mois, réduit -26 ans", en: "Free on the first Sunday of the month, reduced rate under 26" },
           },
           {
-            label: "Tour Eiffel (sommet)",
+            label: { fr: "Tour Eiffel (sommet)", en: "Eiffel Tower (summit)" },
             price: "29 €",
-            detail: "Réservation en ligne conseillée",
+            detail: { fr: "Réservation en ligne conseillée", en: "Online booking recommended" },
           },
           {
-            label: "Visite château Loire",
+            label: { fr: "Visite château Loire", en: "Loire château visit" },
             price: "12–18 €",
-            detail: "Chambord 14 €, Chenonceau 17 €",
+            detail: { fr: "Chambord 14 €, Chenonceau 17 €", en: "Chambord 14 €, Chenonceau 17 €" },
           },
         ],
       },
     ],
     budgetSummary: [
       {
-        type: "Routard",
+        type: { fr: "Routard", en: "Backpacker" },
         daily: "70–90 €/j",
-        desc: "Auberge, sandwichs et formules midi, transports en commun",
+        desc: { fr: "Auberge, sandwichs et formules midi, transports en commun", en: "Hostel, sandwiches and lunch sets, public transport" },
         color: "#22c55e",
       },
       {
-        type: "Confort",
+        type: { fr: "Confort", en: "Comfort" },
         daily: "110–170 €/j",
-        desc: "Hôtel 3 étoiles, restaurants midi et soir, quelques musées",
+        desc: { fr: "Hôtel 3 étoiles, restaurants midi et soir, quelques musées", en: "3-star hotel, lunch and dinner out, a few museums" },
         color: "#3b82f6",
       },
     ],
     tripEstimate: {
-      duration: "10 jours",
-      route: "Paris (4j) → Vallée de la Loire (2j) → Côte d'Azur (4j)",
+      duration: { fr: "10 jours", en: "10 days" },
+      route: { fr: "Paris (4j) → Vallée de la Loire (2j) → Côte d'Azur (4j)", en: "Paris (4d) → Loire Valley (2d) → French Riviera (4d)" },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "1 100 – 1 400 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R (Europe)", amount: "100–200 €" },
-            { label: "Hébergement (9 nuits)", amount: "270–360 €" },
-            { label: "Transports locaux + TGV", amount: "120–160 €" },
-            { label: "Nourriture + boissons", amount: "450–540 €" },
-            { label: "Activités + musées", amount: "80–120 €" },
+            { label: { fr: "Vol A/R (Europe)", en: "Return flight (Europe)" }, amount: "100–200 €" },
+            { label: { fr: "Hébergement (9 nuits)", en: "Accommodation (9 nights)" }, amount: "270–360 €" },
+            { label: { fr: "Transports locaux + TGV", en: "Local transport + high-speed train" }, amount: "120–160 €" },
+            { label: { fr: "Nourriture + boissons", en: "Food + drinks" }, amount: "450–540 €" },
+            { label: { fr: "Activités + musées", en: "Activities + museums" }, amount: "80–120 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "2 000 – 2 900 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R (Europe)", amount: "150–300 €" },
-            { label: "Hébergement (9 nuits)", amount: "800–1 200 €" },
-            { label: "Transports locaux + TGV", amount: "200–300 €" },
-            { label: "Nourriture + boissons", amount: "650–850 €" },
-            { label: "Activités + musées", amount: "150–250 €" },
+            { label: { fr: "Vol A/R (Europe)", en: "Return flight (Europe)" }, amount: "150–300 €" },
+            { label: { fr: "Hébergement (9 nuits)", en: "Accommodation (9 nights)" }, amount: "800–1 200 €" },
+            { label: { fr: "Transports locaux + TGV", en: "Local transport + high-speed train" }, amount: "200–300 €" },
+            { label: { fr: "Nourriture + boissons", en: "Food + drinks" }, amount: "650–850 €" },
+            { label: { fr: "Activités + musées", en: "Activities + museums" }, amount: "150–250 €" },
           ],
         },
       ],
@@ -495,43 +525,43 @@ export const FRANCE = {
   practicalities: [
     {
       icon: "✈️",
-      label: "Vol depuis Paris",
-      value: "Destination intérieure — train TGV recommandé pour les villes reliées",
+      label: { fr: "Vol depuis Paris", en: "Flight from Paris" },
+      value: { fr: "Destination intérieure — train TGV recommandé pour les villes reliées", en: "Domestic destination — high-speed train recommended for connected cities" },
     },
     {
       icon: "🪪",
-      label: "Visa",
-      value: "Pas de visa pour les citoyens UE/Schengen. Carte d'identité suffisante.",
+      label: { fr: "Visa", en: "Visa" },
+      value: { fr: "Pas de visa pour les citoyens UE/Schengen. Carte d'identité suffisante.", en: "No visa required for EU/Schengen citizens. ID card is sufficient. Other nationalities should check Schengen visa requirements." },
     },
     {
       icon: "💰",
-      label: "Monnaie",
-      value: "Euro (€). CB acceptée partout, mais prévoir du liquide pour marchés et petits commerces.",
+      label: { fr: "Monnaie", en: "Currency" },
+      value: { fr: "Euro (€). CB acceptée partout, mais prévoir du liquide pour marchés et petits commerces.", en: "Euro (€). Cards accepted everywhere, but keep some cash for markets and small shops." },
     },
     {
       icon: "🗣️",
-      label: "Langue",
-      value: "Français. Anglais parlé dans les zones touristiques mais pas garanti en province.",
+      label: { fr: "Langue", en: "Language" },
+      value: { fr: "Français. Anglais parlé dans les zones touristiques mais pas garanti en province.", en: "French. English spoken in tourist areas but not guaranteed outside big cities." },
     },
     {
       icon: "🔌",
-      label: "Prise électrique",
-      value: "Type E (ronde, 2 broches + trou). 230V / 50Hz. Adaptateur nécessaire hors Europe.",
+      label: { fr: "Prise électrique", en: "Power outlet" },
+      value: { fr: "Type E (ronde, 2 broches + trou). 230V / 50Hz. Adaptateur nécessaire hors Europe.", en: "Type E (round, 2 pins + hole). 230V / 50Hz. Adapter needed outside Europe." },
     },
     {
       icon: "💊",
-      label: "Santé",
-      value: "Excellents soins médicaux. Carte Européenne d'Assurance Maladie valable pour les ressortissants UE.",
+      label: { fr: "Santé", en: "Health" },
+      value: { fr: "Excellents soins médicaux. Carte Européenne d'Assurance Maladie valable pour les ressortissants UE.", en: "Excellent medical care. European Health Insurance Card valid for EU nationals." },
     },
     {
       icon: "🚆",
-      label: "Transport principal",
-      value: "Réseau TGV très développé. Paris possède un métro dense. Location de voiture utile en région.",
+      label: { fr: "Transport principal", en: "Main transport" },
+      value: { fr: "Réseau TGV très développé. Paris possède un métro dense. Location de voiture utile en région.", en: "Extensive high-speed rail network. Paris has a dense metro. Car rental useful in the regions." },
     },
     {
       icon: "📅",
-      label: "Jours fériés",
-      value: "14 juillet (Fête nationale), 15 août, 1er novembre… Certains commerces fermés.",
+      label: { fr: "Jours fériés", en: "Public holidays" },
+      value: { fr: "14 juillet (Fête nationale), 15 août, 1er novembre… Certains commerces fermés.", en: "14 July (Bastille Day), 15 August, 1 November… Some shops closed." },
     },
   ],
 };

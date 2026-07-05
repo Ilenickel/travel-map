@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 
 export default function AuthModal({ onClose }) {
+  const { t } = useTranslation('app');
   const { signIn, signUp, signInWithGoogle } = useAuth();
   const [tab, setTab] = useState('login');
   const [displayName, setDisplayName] = useState('');
@@ -27,11 +29,11 @@ export default function AuthModal({ onClose }) {
     setSuccess('');
 
     if (tab === 'register') {
-      if (password !== confirm) { setError('Les mots de passe ne correspondent pas.'); return; }
-      if (displayName.trim().length < 2) { setError('Le pseudo doit faire au moins 2 caractères.'); return; }
+      if (password !== confirm) { setError(t('auth.passwordMismatch')); return; }
+      if (displayName.trim().length < 2) { setError(t('auth.pseudoTooShort')); return; }
       setLoading(true);
       const { data: taken } = await supabase.from('profiles').select('id').eq('display_name', displayName.trim()).maybeSingle();
-      if (taken) { setError('Ce pseudo est déjà utilisé, veuillez en choisir un autre.'); setLoading(false); return; }
+      if (taken) { setError(t('auth.pseudoTaken')); setLoading(false); return; }
     } else {
       setLoading(true);
     }
@@ -45,7 +47,7 @@ export default function AuthModal({ onClose }) {
       // Connexion automatique après inscription (confirmation email désactivée dans Supabase)
       const { error: signInErr } = await signIn(email, password);
       if (signInErr) {
-        setSuccess('Compte créé ! Vous pouvez maintenant vous connecter.');
+        setSuccess(t('auth.accountCreatedSuccess'));
         setLoading(false);
       } else {
         onClose();
@@ -59,8 +61,8 @@ export default function AuthModal({ onClose }) {
         <button className="auth-close" onClick={onClose}>✕</button>
 
         <div className="auth-tabs">
-          <button className={`auth-tab${tab === 'login' ? ' active' : ''}`} onClick={() => { setTab('login'); setError(''); setSuccess(''); }}>Connexion</button>
-          <button className={`auth-tab${tab === 'register' ? ' active' : ''}`} onClick={() => { setTab('register'); setError(''); setSuccess(''); }}>Inscription</button>
+          <button className={`auth-tab${tab === 'login' ? ' active' : ''}`} onClick={() => { setTab('login'); setError(''); setSuccess(''); }}>{t('auth.loginTab')}</button>
+          <button className={`auth-tab${tab === 'register' ? ' active' : ''}`} onClick={() => { setTab('register'); setError(''); setSuccess(''); }}>{t('auth.registerTab')}</button>
         </div>
 
         <button className="auth-google-btn" onClick={handleGoogleLogin} disabled={googleLoading}>
@@ -70,10 +72,10 @@ export default function AuthModal({ onClose }) {
             <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z" fill="#FBBC05"/>
             <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58Z" fill="#EA4335"/>
           </svg>
-          {googleLoading ? 'Redirection…' : 'Continuer avec Google'}
+          {googleLoading ? t('auth.redirecting') : t('auth.continueWithGoogle')}
         </button>
 
-        <div className="auth-divider"><span>ou</span></div>
+        <div className="auth-divider"><span>{t('auth.or')}</span></div>
 
         {success ? (
           <div className="auth-success">{success}</div>
@@ -81,32 +83,32 @@ export default function AuthModal({ onClose }) {
           <form className="auth-form" onSubmit={handleSubmit}>
             {tab === 'register' && (
               <div className="auth-field">
-                <label className="auth-label">Pseudo</label>
-                <input className="auth-input" type="text" placeholder="Votre prénom ou pseudo" value={displayName} onChange={(e) => setDisplayName(e.target.value)} required autoFocus />
+                <label className="auth-label">{t('auth.pseudoLabel')}</label>
+                <input className="auth-input" type="text" placeholder={t('auth.pseudoPlaceholder')} value={displayName} onChange={(e) => setDisplayName(e.target.value)} required autoFocus />
               </div>
             )}
             <div className="auth-field">
-              <label className="auth-label">Email</label>
-              <input className="auth-input" type="email" placeholder="vous@exemple.com" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus={tab === 'login'} />
+              <label className="auth-label">{t('auth.emailLabel')}</label>
+              <input className="auth-input" type="email" placeholder={t('auth.emailPlaceholder')} value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus={tab === 'login'} />
             </div>
             <div className="auth-field">
-              <label className="auth-label">Mot de passe</label>
+              <label className="auth-label">{t('auth.passwordLabel')}</label>
               <input className="auth-input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
             </div>
             {tab === 'register' && (
               <div className="auth-field">
-                <label className="auth-label">Confirmer le mot de passe</label>
+                <label className="auth-label">{t('auth.confirmPasswordLabel')}</label>
                 <input className="auth-input" type="password" placeholder="••••••••" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
               </div>
             )}
             {error && <div className="auth-error">{error}</div>}
             <button className="auth-submit" type="submit" disabled={loading}>
-              {loading ? 'Chargement…' : tab === 'login' ? 'Se connecter' : 'Créer mon compte'}
+              {loading ? t('common:loading') : tab === 'login' ? t('auth.loginButton') : t('auth.createAccountButton')}
             </button>
           </form>
         )}
 
-        <button className="auth-skip" onClick={onClose}>Continuer sans compte</button>
+        <button className="auth-skip" onClick={onClose}>{t('auth.skipButton')}</button>
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ALL_COUNTRIES, normalizeStr } from '../../lib/planningUtils';
+import { getAllCountries, normalizeStr } from '../../lib/planningUtils';
 import CountryFlag from './CountryFlag';
 
 export default function CountryPicker({ alreadyAdded = [], onSelect, onClose }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [q, setQ] = useState('');
   const inputRef = useRef(null);
 
@@ -12,9 +12,10 @@ export default function CountryPicker({ alreadyAdded = [], onSelect, onClose }) 
     inputRef.current?.focus();
   }, []);
 
+  const allCountries = useMemo(() => getAllCountries(i18n.language), [i18n.language]);
   const filtered = q.length < 1
-    ? ALL_COUNTRIES.slice(0, 60)
-    : ALL_COUNTRIES.filter(c => normalizeStr(c.name).includes(normalizeStr(q)));
+    ? allCountries.slice(0, 60)
+    : allCountries.filter(c => normalizeStr(c.name).includes(normalizeStr(q)));
 
   const handleSelect = (country) => {
     if (alreadyAdded.includes(country.code)) return;

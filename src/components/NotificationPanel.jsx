@@ -1,17 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { findCountry } from '../data/index';
-
-function relativeTime(dateStr) {
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
-  if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
-  if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-  if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-  if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
-  return rtf.format(-Math.floor(diff / 2592000), 'month');
-}
+import { relativeTime } from '../lib/relativeTime';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 
@@ -28,6 +20,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function NotificationPanel({ notifications, onClose, onOpenCountry, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne }) {
+  const { t } = useTranslation('app');
   const [profiles, setProfiles] = useState({});
   const [tooltip, setTooltip] = useState(null); // { id, x, y }
   const [invitePending, setInvitePending] = useState(null); // id de la notif en cours de traitement
@@ -87,7 +80,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
       // On retire la notification devenue inutile (son bouton Accepter n'aurait aucun
       // effet) plutôt que de laisser l'utilisateur bloqué sans feedback.
       await deleteOne(notif.id);
-      alert("Cette invitation n'est plus disponible (elle a été annulée ou déjà traitée).");
+      alert(t('notification.invitationGone'));
       return;
     }
     await deleteOne(notif.id);
@@ -125,25 +118,25 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
   return (
     <div className="notif-panel">
       <div className="notif-panel-header">
-        <span className="notif-panel-title">Notifications</span>
+        <span className="notif-panel-title">{t('notification.panelTitle')}</span>
         <div className="notif-panel-actions">
           {unreadCount > 0 && (
-            <button className="notif-mark-all" onClick={markAllRead}>Tout lire</button>
+            <button className="notif-mark-all" onClick={markAllRead}>{t('notification.markAllRead')}</button>
           )}
           {notifications.length > 0 && (
-            <button className="notif-clear-all" onClick={handleDismissAll}>Tout supprimer</button>
+            <button className="notif-clear-all" onClick={handleDismissAll}>{t('notification.clearAll')}</button>
           )}
         </div>
       </div>
 
       {tooltip && (
         <div className="notif-info-tooltip" style={{ top: tooltip.y, right: window.innerWidth - tooltip.x }}>
-          Le créateur de cette destination s'est retiré. Vous avez maintenant le droit de la modifier ou de la supprimer.
+          {t('notification.ownershipTooltip')}
         </div>
       )}
 
       {notifications.length === 0 ? (
-        <div className="notif-empty">Aucune notification pour l'instant.</div>
+        <div className="notif-empty">{t('notification.empty')}</div>
       ) : (
         <div className="notif-list">
           {notifications.map((n) => {
@@ -153,8 +146,8 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
             const followerList = isNewFollower ? (n.metadata?.followers ?? []) : null;
             const profile = (isOwnershipTransfer || isNewFollower) ? null : profiles[n.from_user_id];
             const name = isNewFollower
-              ? (followerList[0]?.name || 'Voyageur')
-              : (profile?.display_name || 'Voyageur');
+              ? (followerList[0]?.name || t('review.travelerFallback'))
+              : (profile?.display_name || t('review.travelerFallback'));
             const color = AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
             const country = findCountry(n.country_code);
 
@@ -162,13 +155,13 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
             if (isNewFollower && followerList.length > 0) followerAvatarUrl = followerList[0].avatar;
 
             function followerText() {
-              if (!followerList.length) return <>Quelqu'un vient de s'abonner à votre compte</>;
+              if (!followerList.length) return <>{t('notification.followerNone')}</>;
               if (followerList.length === 1)
-                return <><strong>{followerList[0].name}</strong> vient de s'abonner à votre compte</>;
+                return <><strong>{followerList[0].name}</strong> {t('notification.followerOneSuffix')}</>;
               if (followerList.length === 2)
-                return <><strong>{followerList[0].name}</strong> et <strong>{followerList[1].name}</strong> viennent de s'abonner à votre compte</>;
+                return <><strong>{followerList[0].name}</strong> {t('notification.followerTwoConjunction')} <strong>{followerList[1].name}</strong> {t('notification.followerTwoSuffix')}</>;
               const others = followerList.length - 2;
-              return <><strong>{followerList[0].name}</strong>, <strong>{followerList[1].name}</strong> et {others} autre{others > 1 ? 's' : ''} personne{others > 1 ? 's' : ''} se sont abonnées à votre compte</>;
+              return <><strong>{followerList[0].name}</strong>, <strong>{followerList[1].name}</strong> {t('notification.followerMoreConjunction')} {t('notification.followerMoreOthers', { count: others })} {t('notification.followerMoreSuffix')}</>;
             }
 
             return (
@@ -197,16 +190,16 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                   <div className="notif-content">
                     <p className="notif-text">
                       {isOwnershipTransfer ? (
-                        <>Vous êtes désormais responsable de la destination <strong>{n.destination_name}</strong></>
+                        <>{t('notification.ownershipTransferPrefix')} <strong>{n.destination_name}</strong></>
                       ) : isNewFollower ? (
                         followerText()
                       ) : isTripInvitation ? (
-                        <><strong>{name}</strong> vous invite au voyage « {n.metadata?.trip_title || 'Voyage'} »</>
+                        <><strong>{name}</strong> {t('planning:invite.inviteVerb')} {t('planning:invite.tripQuoted', { title: n.metadata?.trip_title || t('planning:invite.tripFallback') })}</>
                       ) : n.type === 'new_own_dest_review' ? (
-                        <><strong>{name}</strong> a laissé un avis sur votre destination <strong>{n.destination_name}</strong></>
+                        <><strong>{name}</strong> {t('notification.leftReviewOnYourDest')} <strong>{n.destination_name}</strong></>
                       ) : n.type === 'new_dest_review' ? (
                         <>
-                          <strong>{name}</strong> a publié un avis sur <strong>{n.destination_name}</strong>{' '}
+                          <strong>{name}</strong> {t('notification.postedReviewOn')} <strong>{n.destination_name}</strong>{' '}
                           <span className="notif-country">
                             <FlagImage country={country} code={n.country_code} />
                             {' '}{country?.name || n.country_code}
@@ -214,7 +207,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                         </>
                       ) : (
                         <>
-                          <strong>{name}</strong> a publié un avis sur{' '}
+                          <strong>{name}</strong> {t('notification.postedReviewOn')}{' '}
                           <span className="notif-country">
                             <FlagImage country={country} code={n.country_code} />
                             {' '}{country?.name || n.country_code}
@@ -230,14 +223,14 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                           disabled={invitePending === n.id}
                           onClick={() => handleAcceptInvite(n)}
                         >
-                          Accepter
+                          {t('notification.acceptButton')}
                         </button>
                         <button
                           className="notif-invite-btn notif-invite-btn--decline"
                           disabled={invitePending === n.id}
                           onClick={() => handleDeclineInvite(n)}
                         >
-                          Refuser
+                          {t('notification.declineButton')}
                         </button>
                       </div>
                     )}
@@ -248,7 +241,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                     ref={el => { infoBtnRefs.current[n.id] = el; }}
                     className="notif-info-btn"
                     onClick={(e) => e.stopPropagation()}
-                    aria-label="En savoir plus"
+                    aria-label={t('notification.infoAriaLabel')}
                     onMouseEnter={() => {
                       const rect = infoBtnRefs.current[n.id]?.getBoundingClientRect();
                       if (rect) setTooltip({ id: n.id, x: rect.right, y: rect.bottom + 6 });
@@ -259,7 +252,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                 <button
                   className="notif-delete-btn"
                   onClick={(e) => { e.stopPropagation(); handleDismiss(n); }}
-                  title="Supprimer"
+                  title={t('common:actions.delete')}
                 >✕</button>
               </div>
             );

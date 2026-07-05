@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
+import { localizeCountry } from "../lib/localizeCountry";
 import WikiImage from "./WikiImage";
 import { useWikipediaImages } from "../hooks/useWikipediaImages";
 import { weatherRating } from "../utils/weather";
@@ -13,17 +15,7 @@ import DestinationForm from "./DestinationForm";
 import PlacesList from "./PlacesList";
 import { callAdminAction } from "../lib/admin";
 import ReportModal from "./ReportModal";
-
-const REASON_LABEL = {
-  photo_obscene: 'Photo obscène',
-  photo_logo: 'Photo avec logo caché',
-  photo_wrongplace: 'Photo ne correspond pas',
-  insult: 'Insulte / propos offensant',
-  politics: 'Contenu politique',
-  spam: 'Spam',
-  wrong_info: 'Informations incorrectes',
-  other: 'Autre',
-};
+import { monthAbbrev } from "../lib/monthAbbrev";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 
@@ -31,7 +23,8 @@ const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
 export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, onNavigateCountry, alertIds = new Map(), onAdminAction }) {
-  const data = COUNTRIES[countryCode];
+  const { t, i18n } = useTranslation("app");
+  const data = useMemo(() => localizeCountry(COUNTRIES[countryCode], i18n.language), [countryCode, i18n.language]);
   const { user, isAdmin, setAuthModalOpen } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab || "overview");
   const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
@@ -309,12 +302,12 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   }, [destSearch, data.destinations, userDestinations]);
 
   const tabs = [
-    { id: "overview",      label: "🗾 Aperçu" },
-    { id: "weather",       label: "🌤 Météo" },
-    { id: "cost",          label: "💴 Coût de la vie" },
-    { id: "destinations",  label: "📍 Destinations" },
-    { id: "practical",     label: "🧳 Pratique" },
-    { id: "reviews",       label: reviewCount > 0 ? `⭐ Avis (${reviewCount})` : "⭐ Avis" },
+    { id: "overview",      label: t("countryPanel.tabOverview") },
+    { id: "weather",       label: t("countryPanel.tabWeather") },
+    { id: "cost",          label: t("countryPanel.tabCost") },
+    { id: "destinations",  label: t("countryPanel.tabDestinations") },
+    { id: "practical",     label: t("countryPanel.tabPractical") },
+    { id: "reviews",       label: reviewCount > 0 ? t("countryPanel.tabReviewsWithCount", { count: reviewCount }) : t("countryPanel.tabReviews") },
   ];
 
   const cityData = data.weatherCities[activeCity];
@@ -363,26 +356,26 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
             <button
               className="panel-compare-btn"
               onClick={(e) => { e.stopPropagation(); onCompare?.(); }}
-              aria-label="Comparer"
+              aria-label={t("countryPanel.compareAriaLabel")}
             >
-              ⚖ Comparer
+              {t("countryPanel.compareButton")}
             </button>
             <button
               className={`panel-visited-btn${isVisited ? " active" : ""}`}
               onClick={(e) => { e.stopPropagation(); onToggleVisited(); }}
-              aria-label={isVisited ? "Retirer des visités" : "Marquer comme visité"}
-              title={isVisited ? "Retirer des visités" : "Marquer comme visité"}
+              aria-label={isVisited ? t("countryPanel.removeFromVisited") : t("countryPanel.markAsVisited")}
+              title={isVisited ? t("countryPanel.removeFromVisited") : t("countryPanel.markAsVisited")}
             >
               ✈️
             </button>
             <button
               className={`panel-fav-btn${isFavorite ? " active" : ""}`}
               onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
-              aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+              aria-label={isFavorite ? t("countryPanel.removeFromFavorites") : t("countryPanel.addToFavorites")}
             >
               {isFavorite ? "⭐" : "☆"}
             </button>
-            <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label="Fermer">✕</button>
+            <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label={t("common:actions.close")}>✕</button>
             <div className="panel-header-content">
               <span className="panel-emoji">{data.emoji}</span>
               <h1 className="panel-title">{data.name}</h1>
@@ -417,7 +410,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               <div className="tab-content">
                 <p className="country-description">{data.description}</p>
 
-                <h3 className="section-title">Quand y aller ?</h3>
+                <h3 className="section-title">{t("countryPanel.sectionWhenToGo")}</h3>
                 <div className="period-cards">
                   {data.bestPeriods.map((p) => (
                     <div key={p.months} className="period-card" style={{ borderLeftColor: p.color }}>
@@ -431,7 +424,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                   ))}
                 </div>
 
-                <h3 className="section-title">Destinations phares</h3>
+                <h3 className="section-title">{t("countryPanel.topDestinations")}</h3>
                 <div className="dest-grid-preview">
                   {data.destinations.slice(0, 3).map((dest) => (
                     <div
@@ -459,18 +452,18 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               <div className="tab-content">
                 {/* Global bilan */}
                 <div className="bilan-section">
-                  <h3 className="section-title">Bilan mensuel par ville</h3>
+                  <h3 className="section-title">{t("countryPanel.monthlyOverviewByCity")}</h3>
                   <p className="section-intro bilan-legend-row">
-                    <span className="bilan-dot good" /><span>Idéal</span>
-                    <span className="bilan-dot ok" /><span>Acceptable</span>
-                    <span className="bilan-dot bad" /><span>Déconseillé</span>
-                    <span className="bilan-note">Chaleur + pluie + humidité</span>
+                    <span className="bilan-dot good" /><span>{t("search.legendIdeal")}</span>
+                    <span className="bilan-dot ok" /><span>{t("countryPanel.legendAcceptable")}</span>
+                    <span className="bilan-dot bad" /><span>{t("countryPanel.legendNotRecommended")}</span>
+                    <span className="bilan-note">{t("countryPanel.weatherFactorsNote")}</span>
                   </p>
                   <div className="bilan-table">
                     <div className="bilan-header-row">
                       <div className="bilan-city-col" />
-                      {data.weatherCities[0].data.map((m) => (
-                        <div key={m.month} className="bilan-month-label">{m.month}</div>
+                      {data.weatherCities[0].data.map((m, i) => (
+                        <div key={m.month} className="bilan-month-label">{monthAbbrev(i)}</div>
                       ))}
                     </div>
                     {data.weatherCities.map((city, idx) => (
@@ -497,7 +490,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 </div>
 
                 {/* City selector */}
-                <h3 className="section-title">Détail par ville</h3>
+                <h3 className="section-title">{t("countryPanel.detailByCity")}</h3>
                 <div className="city-tabs">
                   {data.weatherCities.map((c, i) => (
                     <button
@@ -514,7 +507,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 <div className="weather-chart">
                   {(() => {
                     const cityMaxRain = Math.max(...cityData.data.map(m => m.rain), MAX_RAIN);
-                    return cityData.data.map((m) => {
+                    return cityData.data.map((m, i) => {
                     const maxTemp = 35;
                     const rainH = Math.round((m.rain / cityMaxRain) * 80);
                     const tempH = Math.max(Math.round(((m.temp + 5) / (maxTemp + 5)) * 80), 4);
@@ -526,7 +519,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         </div>
                         <span className="weather-temp">{m.temp}°</span>
                         <span className="weather-icon">{m.icon}</span>
-                        <span className="weather-month-label">{m.month}</span>
+                        <span className="weather-month-label">{monthAbbrev(i)}</span>
                       </div>
                     );
                   });
@@ -534,8 +527,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 </div>
 
                 <div className="weather-legend">
-                  <span><span className="legend-dot rain" />Pluie (mm)</span>
-                  <span><span className="legend-dot temp" />Température (°C)</span>
+                  <span><span className="legend-dot rain" />{t("countryPanel.legendRain")}</span>
+                  <span><span className="legend-dot temp" />{t("countryPanel.legendTemp")}</span>
                 </div>
               </div>
             )}
@@ -546,9 +539,9 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 {/* Sub-tabs */}
                 <div className="cost-subtabs">
                   {[
-                    { id: "summary",    label: "💰 Résumé" },
-                    { id: "estimate",   label: "🧾 Estimation" },
-                    { id: "prices",     label: "🛒 Prix courants" },
+                    { id: "summary",    label: t("countryPanel.costSummaryTab") },
+                    { id: "estimate",   label: t("countryPanel.costEstimateTab") },
+                    { id: "prices",     label: t("countryPanel.costPricesTab") },
                   ].map((s) => (
                     <button
                       key={s.id}
@@ -567,7 +560,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
                     <div className="cost-exchange">
                       <span className="cost-exchange-icon">💱</span>
-                      <span className="cost-exchange-label">Taux de change</span>
+                      <span className="cost-exchange-label">{t("countryPanel.exchangeRateLabel")}</span>
                       <span className="cost-exchange-value">{data.costOfLiving.exchangeRate}</span>
                     </div>
 
@@ -587,7 +580,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 {costSubTab === "estimate" && (
                   <div className="trip-estimate">
                     <h3 className="section-title">
-                      Estimation — {data.costOfLiving.tripEstimate.duration}
+                      {t("countryPanel.estimateTitle", { duration: data.costOfLiving.tripEstimate.duration })}
                     </h3>
                     <p className="trip-route">{data.costOfLiving.tripEstimate.route}</p>
 
@@ -606,7 +599,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
                     <div className="trip-budget-card" style={{ "--budget-color": tripBudget.color }}>
                       <div className="trip-total">
-                        <span className="trip-total-label">Total estimé</span>
+                        <span className="trip-total-label">{t("countryPanel.totalEstimated")}</span>
                         <span className="trip-total-value">{tripBudget.total}</span>
                       </div>
                       <div className="trip-breakdown">
@@ -652,7 +645,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               <div className="tab-content">
                 {selectedDest ? (
                   <div className="dest-detail">
-                    <button className="back-btn" onClick={() => setSelectedDest(null)}>← Retour</button>
+                    <button className="back-btn" onClick={() => setSelectedDest(null)}>{t("countryPanel.backButton")}</button>
 
                     {/* Bandeau alerte admin sur la destination */}
                     {selectedDest.isUserDest && isAdmin && alertIds.has(selectedDest.id) && (() => {
@@ -662,12 +655,12 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           <div className="admin-alert-bandeau-top">
                             <div className="admin-alert-bandeau-left">
                               <span>🚨</span>
-                              <span className="admin-alert-bandeau-title">Destination signalée</span>
-                              {alert?.reason && <span className="admin-alert-bandeau-reason">{REASON_LABEL[alert.reason] || alert.reason}</span>}
+                              <span className="admin-alert-bandeau-title">{t("countryPanel.destinationReportedTitle")}</span>
+                              {alert?.reason && <span className="admin-alert-bandeau-reason">{t(`report.reasonsShort.${alert.reason}`, { defaultValue: alert.reason })}</span>}
                             </div>
                             <div className="admin-alert-bandeau-actions">
-                              <button className="admin-inline-btn admin-inline-btn--dismiss" disabled={!!adminActingDestId} onClick={(e) => handleAdminActionDest('dismiss_report', selectedDest.id, e)}>Fausse alerte</button>
-                              <button className="admin-inline-btn admin-inline-btn--delete" disabled={!!adminActingDestId} onClick={(e) => handleAdminActionDest('delete_content', selectedDest.id, e)}>Supprimer</button>
+                              <button className="admin-inline-btn admin-inline-btn--dismiss" disabled={!!adminActingDestId} onClick={(e) => handleAdminActionDest('dismiss_report', selectedDest.id, e)}>{t("adminPanel.dismissButton")}</button>
+                              <button className="admin-inline-btn admin-inline-btn--delete" disabled={!!adminActingDestId} onClick={(e) => handleAdminActionDest('delete_content', selectedDest.id, e)}>{t("common:actions.delete")}</button>
                             </div>
                           </div>
                           {alert?.detail && <div className="admin-alert-bandeau-detail">« {alert.detail} »</div>}
@@ -698,10 +691,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                             disabled={reportedDestIds.has(selectedDest.id)}
                             onClick={(e) => handleReportDest(selectedDest.id, e)}
                           >
-                            {reportedDestIds.has(selectedDest.id) ? '🚩 Signalé' : (
+                            {reportedDestIds.has(selectedDest.id) ? t("review.reportedBadge") : (
                               <>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
-                                Signaler
+                                {t("review.reportButtonLabel")}
                               </>
                             )}
                           </button>
@@ -710,7 +703,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           className="dest-see-reviews-btn"
                           onClick={() => destReviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                         >
-                          Voir les avis{destReviewCount > 0 ? ` (${destReviewCount})` : ''}
+                          {destReviewCount > 0 ? t("countryPanel.seeReviewsButtonWithCount", { count: destReviewCount }) : t("countryPanel.seeReviewsButton")}
                         </button>
                       </div>
                     </div>
@@ -733,18 +726,18 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       <div className="dest-detail-actions">
                         {deletingDestId === selectedDest.id ? (
                           <div className="review-confirm-delete">
-                            <span className="review-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
-                            <button className="review-confirm-yes" onClick={() => handleDeleteDest(selectedDest.id)}>Oui</button>
-                            <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Non</button>
+                            <span className="review-confirm-msg">{t("countryPanel.confirmDeleteDestination")}</span>
+                            <button className="review-confirm-yes" onClick={() => handleDeleteDest(selectedDest.id)}>{t("common:yes")}</button>
+                            <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>{t("common:no")}</button>
                           </div>
                         ) : (
                           <>
                             <button className="dest-edit-btn"
                               onClick={() => { setEditDest(selectedDest); setShowDestForm(true); setSelectedDest(null); }}>
-                              ✏️ Modifier
+                              {t("countryPanel.editButton")}
                             </button>
                             <button className="dest-delete-btn" onClick={() => setDeletingDestId(selectedDest.id)}>
-                              🗑 Supprimer
+                              {t("countryPanel.deleteButtonWithIcon")}
                             </button>
                           </>
                         )}
@@ -755,25 +748,25 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
                     {/* Section avis destination */}
                     <div ref={destReviewsRef} className="dest-reviews-section">
-                      <h4 className="dest-reviews-title">Avis sur {selectedDest.name}</h4>
+                      <h4 className="dest-reviews-title">{t("countryPanel.reviewsOn", { name: selectedDest.name })}</h4>
 
                       {!destShowForm && (destReviewCount > 0 || (user && !destUserReview)) && (
                         <div className="reviews-controls">
                           {destReviewCount > 0 && (
                             <div className="reviews-sort-btns">
-                              <button className={`reviews-sort-btn${destSortBy === 'date' ? ' active' : ''}`} onClick={() => setDestSortBy('date')}>Plus récents</button>
-                              <button className={`reviews-sort-btn${destSortBy === 'votes' ? ' active' : ''}`} onClick={() => setDestSortBy('votes')}>Les plus utiles</button>
+                              <button className={`reviews-sort-btn${destSortBy === 'date' ? ' active' : ''}`} onClick={() => setDestSortBy('date')}>{t("countryPanel.sortRecent")}</button>
+                              <button className={`reviews-sort-btn${destSortBy === 'votes' ? ' active' : ''}`} onClick={() => setDestSortBy('votes')}>{t("countryPanel.sortMostHelpful")}</button>
                             </div>
                           )}
                                     {user && !destUserReview && (
-                            <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setDestShowForm(true)}>✏️ Écrire un avis</button>
+                            <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setDestShowForm(true)}>{t("countryPanel.writeReviewButton")}</button>
                           )}
                         </div>
                       )}
 
                       {!destShowForm && !user && (
                         <button className="review-login-prompt" onClick={() => setAuthModalOpen(true)}>
-                          ✍️ Connectez-vous pour laisser un avis
+                          {t("countryPanel.loginToReviewPrompt")}
                         </button>
                       )}
 
@@ -797,7 +790,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         onEdit={(review) => { setDestEditReview(review); setDestShowForm(true); }}
                         onDelete={() => setDestRefreshKey((k) => k + 1)}
                         onOpenProfile={(uid) => setPublicProfileId(uid)}
-                        emptyMessage={`Aucun avis pour ${selectedDest.name}. Soyez le premier !`}
+                        emptyMessage={t("countryPanel.noReviewsForDest", { name: selectedDest.name })}
                         highlightId={
                           initialExtra?.destId && String(selectedDest?.id) === initialExtra.destId
                             ? initialExtra.reviewId
@@ -816,7 +809,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     {deleteDestError && (
                       <div className="dest-delete-error">
                         <span className="dest-delete-error-icon">⚠</span>
-                        <span>La suppression a échoué. Vérifiez votre connexion et réessayez.</span>
+                        <span>{t("countryPanel.deleteFailedError")}</span>
                       </div>
                     )}
                     <div className="dest-list-header">
@@ -824,7 +817,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         <input
                           type="text"
                           className="dest-search-input"
-                          placeholder="Rechercher une destination…"
+                          placeholder={t("countryPanel.searchDestinationPlaceholder")}
                           value={destSearch}
                           onChange={e => setDestSearch(e.target.value)}
                         />
@@ -837,11 +830,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                           className="dest-add-community-btn-top"
                           onClick={() => { setShowDestForm(true); setEditDest(null); }}
                         >
-                          Ajouter une destination
+                          {t("countryPanel.addDestinationButton")}
                         </button>
                       ) : (
                         <button className="dest-add-community-btn-top dest-add-community-btn-top--muted" onClick={() => setAuthModalOpen(true)}>
-                          Ajouter une destination
+                          {t("countryPanel.addDestinationButton")}
                         </button>
                       )}
                     </div>
@@ -849,7 +842,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     {/* Résultats de recherche */}
                     {filteredAllDests !== null && (() => {
                       if (filteredAllDests.length === 0) {
-                        return <p className="dest-search-empty">Aucune destination ne correspond à votre recherche.</p>;
+                        return <p className="dest-search-empty">{t("countryPanel.noDestinationMatch")}</p>;
                       }
                       const M = 5; const C = 3.5;
                       const bayesian = (d) => { const s = destStats[`${countryCode}_${d.id}`]; return s ? (s.count * s.avg + M * C) / (s.count + M) : -1; };
@@ -869,11 +862,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                               <span className="dest-card-name">{dest.name}</span>
                               {isOwner(dest) && deletingDestId !== dest.id && (
                                 <div className="dest-card-owner-actions" onClick={e => e.stopPropagation()}>
-                                  <button className="review-action-btn review-action-btn--edit" title="Modifier"
+                                  <button className="review-action-btn review-action-btn--edit" title={t('countryPanel.editButton')}
                                     onClick={() => { setEditDest(dest); setShowDestForm(true); }}>
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                                   </button>
-                                  <button className="review-action-btn review-action-btn--delete" title="Supprimer"
+                                  <button className="review-action-btn review-action-btn--delete" title={t('common:actions.delete')}
                                     onClick={() => setDeletingDestId(dest.id)}>
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6l1 1h4v2H4V4h4l1-1zM5 8h14l-1 13H6L5 8zm5 2v8h1v-8h-1zm3 0v8h1v-8h-1z"/></svg>
                                   </button>
@@ -888,10 +881,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                       disabled={reportedDestIds.has(dest.id)}
                                       onClick={(e) => handleReportDest(dest.id, e)}
                                     >
-                                      {reportedDestIds.has(dest.id) ? '🚩 Signalé' : (
+                                      {reportedDestIds.has(dest.id) ? t('review.reportedBadge') : (
                                         <>
                                           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
-                                          Signaler
+                                          {t('review.reportButtonLabel')}
                                         </>
                                       )}
                                     </button>
@@ -901,10 +894,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                             </div>
                             {deletingDestId === dest.id ? (
                               <div className="dest-card-confirm-block" onClick={e => e.stopPropagation()}>
-                                <span className="dest-card-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
+                                <span className="dest-card-confirm-msg">{t('countryPanel.confirmDeleteDestination')}</span>
                                 <div className="dest-card-confirm-btns">
-                                  <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Annuler</button>
-                                  <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>Supprimer</button>
+                                  <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>{t('common:actions.cancel')}</button>
+                                  <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>{t('common:actions.delete')}</button>
                                 </div>
                               </div>
                             ) : (
@@ -919,7 +912,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                   <div className="dest-card-rating">
                                     <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
                                     <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
-                                    <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                                    <span className="dest-card-rating-count">({t('profile.reviewsCount', { count: destStats[`${countryCode}_${dest.id}`].count })})</span>
                                   </div>
                                 )}
                               </>
@@ -942,7 +935,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                               <div className="dest-card-rating">
                                 <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
                                 <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
-                                <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                                <span className="dest-card-rating-count">({t('profile.reviewsCount', { count: destStats[`${countryCode}_${dest.id}`].count })})</span>
                               </div>
                             )}
                           </div>
@@ -952,7 +945,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         <>
                           {searchMyDests.length > 0 && (
                             <div className="my-dests-section">
-                              <div className="my-dests-header">Mes destinations</div>
+                              <div className="my-dests-header">{t('countryPanel.myDestinationsHeader')}</div>
                               <div className="dest-grid">{searchMyDests.map(renderCard)}</div>
                             </div>
                           )}
@@ -964,7 +957,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     {/* Section "Mes destinations" */}
                     {filteredAllDests === null && myDests.length > 0 && (
                       <div className="my-dests-section">
-                        <div className="my-dests-header">Mes destinations</div>
+                        <div className="my-dests-header">{t('countryPanel.myDestinationsHeader')}</div>
                         <div className="dest-grid">
                           {myDests.map((dest) => (
                             <div key={dest.id} className="dest-card" onClick={() => setSelectedDest(dest)}>
@@ -976,11 +969,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                   <span className="dest-card-name">{dest.name}</span>
                                   {deletingDestId !== dest.id && (
                                     <div className="dest-card-owner-actions" onClick={e => e.stopPropagation()}>
-                                      <button className="review-action-btn review-action-btn--edit" title="Modifier"
+                                      <button className="review-action-btn review-action-btn--edit" title={t('countryPanel.editButton')}
                                         onClick={() => { setEditDest(dest); setShowDestForm(true); }}>
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                                       </button>
-                                      <button className="review-action-btn review-action-btn--delete" title="Supprimer"
+                                      <button className="review-action-btn review-action-btn--delete" title={t('common:actions.delete')}
                                         onClick={() => setDeletingDestId(dest.id)}>
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6l1 1h4v2H4V4h4l1-1zM5 8h14l-1 13H6L5 8zm5 2v8h1v-8h-1zm3 0v8h1v-8h-1z"/></svg>
                                       </button>
@@ -989,9 +982,9 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                 </div>
                                 {deletingDestId === dest.id ? (
                                   <div className="review-confirm-delete" onClick={e => e.stopPropagation()}>
-                                    <span className="review-confirm-msg">Voulez-vous vraiment supprimer cette destination ?</span>
-                                    <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>Oui</button>
-                                    <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>Non</button>
+                                    <span className="review-confirm-msg">{t('countryPanel.confirmDeleteDestination')}</span>
+                                    <button className="review-confirm-yes" onClick={() => handleDeleteDest(dest.id)}>{t('common:yes')}</button>
+                                    <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>{t('common:no')}</button>
                                   </div>
                                 ) : (
                                   <>
@@ -1007,7 +1000,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                       <div className="dest-card-rating">
                                         <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
                                         <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
-                                        <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                                        <span className="dest-card-rating-count">({t('profile.reviewsCount', { count: destStats[`${countryCode}_${dest.id}`].count })})</span>
                                       </div>
                                     )}
                                   </>
@@ -1049,7 +1042,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                               <div className="dest-card-rating">
                                 <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
                                 <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
-                                <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                                <span className="dest-card-rating-count">({t('profile.reviewsCount', { count: destStats[`${countryCode}_${dest.id}`].count })})</span>
                               </div>
                             )}
                           </div>
@@ -1071,10 +1064,10 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                     disabled={reportedDestIds.has(dest.id)}
                                     onClick={(e) => handleReportDest(dest.id, e)}
                                   >
-                                    {reportedDestIds.has(dest.id) ? '🚩 Signalé' : (
+                                    {reportedDestIds.has(dest.id) ? t('review.reportedBadge') : (
                                       <>
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/></svg>
-                                        Signaler
+                                        {t('review.reportButtonLabel')}
                                       </>
                                     )}
                                   </button>
@@ -1093,7 +1086,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                               <div className="dest-card-rating">
                                 <HalfStars rating={destStats[`${countryCode}_${dest.id}`].avg} size={12} />
                                 <span className="dest-card-rating-score">{destStats[`${countryCode}_${dest.id}`].avg}/5</span>
-                                <span className="dest-card-rating-count">({destStats[`${countryCode}_${dest.id}`].count} avis)</span>
+                                <span className="dest-card-rating-count">({t('profile.reviewsCount', { count: destStats[`${countryCode}_${dest.id}`].count })})</span>
                               </div>
                             )}
                           </div>
@@ -1111,8 +1104,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               <div className="tab-content">
                 <div className="visa-disclaimer">
                   <span className="visa-disclaimer-icon">⚠️</span>
-                  <span>Les informations sur les visas sont indicatives et peuvent évoluer. Vérifiez toujours auprès de l'ambassade ou sur&nbsp;
-                    <a href="https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/" target="_blank" rel="noopener noreferrer">France Diplomatie</a> avant de voyager.
+                  <span>{t("countryPanel.visaDisclaimerPrefix")}&nbsp;
+                    <a href="https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/" target="_blank" rel="noopener noreferrer">{t("countryPanel.visaDisclaimerLink")}</a> {t("countryPanel.visaDisclaimerSuffix")}
                   </span>
                 </div>
                 <div className="practical-list">
@@ -1138,12 +1131,12 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       <span className="review-summary-avg">{avgRating}</span>
                       <div className="review-summary-detail">
                         <HalfStars rating={avgRating} size={19} />
-                        <span className="review-summary-count">{reviewCount} {reviewCount === 1 ? 'avis' : 'avis'}</span>
+                        <span className="review-summary-count">{t("profile.reviewsCount", { count: reviewCount })}</span>
                       </div>
                     </div>
                     <div className="review-summary-right">
-                      <span className="review-summary-label">Note globale</span>
-                      <span className="review-summary-sublabel">des voyageurs Triply</span>
+                      <span className="review-summary-label">{t("countryPanel.overallRating")}</span>
+                      <span className="review-summary-sublabel">{t("countryPanel.fromTriplyTravelers")}</span>
                     </div>
                   </div>
                 )}
@@ -1153,19 +1146,19 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                   <div className="reviews-controls">
                     {reviewCount > 0 && (
                       <div className="reviews-sort-btns">
-                        <button className={`reviews-sort-btn${sortBy === 'date' ? ' active' : ''}`} onClick={() => setSortBy('date')}>Plus récents</button>
-                        <button className={`reviews-sort-btn${sortBy === 'votes' ? ' active' : ''}`} onClick={() => setSortBy('votes')}>Les plus utiles</button>
+                        <button className={`reviews-sort-btn${sortBy === 'date' ? ' active' : ''}`} onClick={() => setSortBy('date')}>{t("countryPanel.sortRecent")}</button>
+                        <button className={`reviews-sort-btn${sortBy === 'votes' ? ' active' : ''}`} onClick={() => setSortBy('votes')}>{t("countryPanel.sortMostHelpful")}</button>
                       </div>
                     )}
                     {user && !userReview && (
-                      <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowForm(true)}>✏️ Écrire un avis</button>
+                      <button className="review-write-btn" style={{ marginLeft: 'auto' }} onClick={() => setShowForm(true)}>{t("countryPanel.writeReviewButton")}</button>
                     )}
                   </div>
                 )}
 
                 {!showForm && !user && (
                   <button className="review-login-prompt" onClick={() => setAuthModalOpen(true)}>
-                    ✍️ Connectez-vous pour laisser un avis
+                    {t("countryPanel.loginToReviewPrompt")}
                   </button>
                 )}
 

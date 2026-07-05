@@ -1,11 +1,11 @@
 export const UK = {
   code: "GBR",
   numericId: 826,
-  name: "Royaume-Uni",
+  name: { fr: "Royaume-Uni", en: "United Kingdom" },
   emoji: "🇬🇧",
-  capital: "Londres",
-  language: "Anglais",
-  currency: "Livre sterling (GBP)",
+  capital: { fr: "Londres", en: "London" },
+  language: { fr: "Anglais", en: "English" },
+  currency: { fr: "Livre sterling (GBP)", en: "Pound Sterling (GBP)" },
   timezone: "UTC+0 (été UTC+1)",
   filter: {
     budgetMin: 90,
@@ -13,47 +13,57 @@ export const UK = {
     tripMin: 1150,
     tripMid: 2400,
   },
-  description:
-    "Le Royaume-Uni est une destination fascinante qui conjugue une histoire millénaire, une culture pop influente et des paysages d'une beauté sauvage. Londres, l'une des villes les plus cosmopolites du monde, côtoie les campagnes verdoyantes du Cotswolds, les Highlands écossais brumeux et les côtes dramatiques du Pays de Galles. Des châteaux normands aux pubs chaleureux, en passant par les musées gratuits et les théâtres du West End, le pays ne manque jamais de surprendre.",
+  description: {
+    fr: "Le Royaume-Uni est une destination fascinante qui conjugue une histoire millénaire, une culture pop influente et des paysages d'une beauté sauvage. Londres, l'une des villes les plus cosmopolites du monde, côtoie les campagnes verdoyantes du Cotswolds, les Highlands écossais brumeux et les côtes dramatiques du Pays de Galles. Des châteaux normands aux pubs chaleureux, en passant par les musées gratuits et les théâtres du West End, le pays ne manque jamais de surprendre.",
+    en: "The United Kingdom is a fascinating destination that combines centuries of history, an influential pop culture and landscapes of wild beauty. London, one of the world's most cosmopolitan cities, sits alongside the green countryside of the Cotswolds, the misty Scottish Highlands and the dramatic coasts of Wales. From Norman castles to cosy pubs, free museums to West End theatres, the country never fails to surprise.",
+  },
   bestPeriods: [
     {
-      months: "Mai – Sep",
-      label: "Idéal",
+      months: { fr: "Mai – Sep", en: "May – Sep" },
+      label: { fr: "Idéal", en: "Ideal" },
       color: "#22c55e",
-      description:
-        "Températures douces, journées longues, festivals estivaux et jardins en fleurs. Meilleure période pour les Highlands.",
+      description: {
+        fr: "Températures douces, journées longues, festivals estivaux et jardins en fleurs. Meilleure période pour les Highlands.",
+        en: "Mild temperatures, long days, summer festivals and gardens in bloom. Best period for the Highlands.",
+      },
       icon: "☀️",
     },
     {
-      months: "Mar – Avr",
-      label: "Printemps",
+      months: { fr: "Mar – Avr", en: "Mar – Apr" },
+      label: { fr: "Printemps", en: "Spring" },
       color: "#22c55e",
-      description:
-        "Foules moins importantes, prix plus bas, cerisiers en fleurs dans les parcs londoniens.",
+      description: {
+        fr: "Foules moins importantes, prix plus bas, cerisiers en fleurs dans les parcs londoniens.",
+        en: "Smaller crowds, lower prices, cherry blossoms in London's parks.",
+      },
       icon: "🌸",
     },
     {
-      months: "Oct – Nov",
-      label: "Automne",
+      months: { fr: "Oct – Nov", en: "Oct – Nov" },
+      label: { fr: "Automne", en: "Autumn" },
       color: "#f59e0b",
-      description:
-        "Couleurs automnales magnifiques, ambiance cosy dans les pubs. Temps capricieux mais supportable.",
+      description: {
+        fr: "Couleurs automnales magnifiques, ambiance cosy dans les pubs. Temps capricieux mais supportable.",
+        en: "Beautiful autumn colours, cosy pub atmosphere. Changeable but bearable weather.",
+      },
       icon: "🍂",
     },
     {
-      months: "Déc – Fév",
-      label: "Hiver",
+      months: { fr: "Déc – Fév", en: "Dec – Feb" },
+      label: { fr: "Hiver", en: "Winter" },
       color: "#94a3b8",
-      description:
-        "Marchés de Noël à Londres et Édimbourg. Froid et pluvieux mais peu de touristes.",
+      description: {
+        fr: "Marchés de Noël à Londres et Édimbourg. Froid et pluvieux mais peu de touristes.",
+        en: "Christmas markets in London and Edinburgh. Cold and rainy but few tourists.",
+      },
       icon: "🌧️",
     },
   ],
   weatherCities: [
     {
       id: "london",
-      name: "Londres",
-      region: "Angleterre du Sud — climat océanique doux et nuageux",
+      name: "London",
+      region: { fr: "Angleterre du Sud — climat océanique doux et nuageux", en: "Southern England — mild, cloudy oceanic climate" },
       data: [
         { month: "Jan", temp: 6, rain: 55, icon: "❄️" },
         { month: "Fév", temp: 7, rain: 45, icon: "❄️" },
@@ -71,8 +81,8 @@ export const UK = {
     },
     {
       id: "edinburgh",
-      name: "Édimbourg",
-      region: "Écosse — climat plus froid et venteux",
+      name: { fr: "Édimbourg", en: "Edinburgh" },
+      region: { fr: "Écosse — climat plus froid et venteux", en: "Scotland — colder, windier climate" },
       data: [
         { month: "Jan", temp: 4, rain: 60, icon: "❄️" },
         { month: "Fév", temp: 4, rain: 50, icon: "❄️" },
@@ -92,10 +102,12 @@ export const UK = {
   destinations: [
     {
       id: 1,
-      name: "Londres",
-      region: "Angleterre",
-      description:
-        "Londres est une métropole mondiale d'une richesse culturelle inépuisable, où les musées gratuits de classe mondiale côtoient les palais royaux et les marchés colorés. De Buckingham Palace à la Tate Modern, du Borough Market à Shoreditch, la ville multiplie les visages et les expériences. Le réseau de transports en commun, malgré son coût, est l'un des plus efficaces du monde et permet d'explorer chaque quartier à son rythme.",
+      name: "London",
+      region: { fr: "Angleterre", en: "England" },
+      description: {
+        fr: "Londres est une métropole mondiale d'une richesse culturelle inépuisable, où les musées gratuits de classe mondiale côtoient les palais royaux et les marchés colorés. De Buckingham Palace à la Tate Modern, du Borough Market à Shoreditch, la ville multiplie les visages et les expériences. Le réseau de transports en commun, malgré son coût, est l'un des plus efficaces du monde et permet d'explorer chaque quartier à son rythme.",
+        en: "London is a global metropolis of inexhaustible cultural richness, where world-class free museums sit alongside royal palaces and colourful markets. From Buckingham Palace to Tate Modern, from Borough Market to Shoreditch, the city offers countless faces and experiences. Its public transport network, despite the cost, is one of the most efficient in the world and lets you explore every neighbourhood at your own pace.",
+      },
       wikipedia: "London",
       tags: ["Culture", "Musées", "Histoire", "Shopping", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
@@ -104,238 +116,246 @@ export const UK = {
           wikipedia: "File:Big Ben (Queen Elizabeth Tower) 07.jpg",
         },
         {
-          name: "Tour de Londres — forteresse millénaire gardienne des joyaux de la Couronne",
+          name: { fr: "Tour de Londres — forteresse millénaire gardienne des joyaux de la Couronne", en: "Tower of London — millennium-old fortress guarding the Crown Jewels" },
           wikipedia: "Tower_of_London",
         },
         {
-          name: "Tate Modern — temple de l'art contemporain dans une ancienne centrale électrique",
+          name: { fr: "Tate Modern — temple de l'art contemporain dans une ancienne centrale électrique", en: "Tate Modern — temple of contemporary art in a former power station" },
           wikipedia: "Tate_Modern",
         },
         {
-          name: "Buckingham Palace & Hyde Park — résidence royale et poumon vert de la capitale",
+          name: { fr: "Buckingham Palace & Hyde Park — résidence royale et poumon vert de la capitale", en: "Buckingham Palace & Hyde Park — royal residence and the capital's green lung" },
           wikipedia: "Buckingham_Palace",
         },
       ],
     },
     {
       id: 2,
-      name: "Écosse & Édimbourg",
-      region: "Écosse",
-      description:
-        "Édimbourg est l'une des plus belles capitales d'Europe, dominée par son château médiéval et divisée entre Old Town historique et New Town géorgienne. Les Highlands écossais voisins déroulent leurs paysages spectaculaires de landes violettes, de lochs mystérieux et de châteaux en ruines. La culture écossaise, des kilts aux whiskies de malt, est une découverte à part entière.",
+      name: { fr: "Écosse & Édimbourg", en: "Scotland & Edinburgh" },
+      region: { fr: "Écosse", en: "Scotland" },
+      description: {
+        fr: "Édimbourg est l'une des plus belles capitales d'Europe, dominée par son château médiéval et divisée entre Old Town historique et New Town géorgienne. Les Highlands écossais voisins déroulent leurs paysages spectaculaires de landes violettes, de lochs mystérieux et de châteaux en ruines. La culture écossaise, des kilts aux whiskies de malt, est une découverte à part entière.",
+        en: "Edinburgh is one of the most beautiful capitals in Europe, dominated by its medieval castle and split between the historic Old Town and Georgian New Town. The neighbouring Scottish Highlands unfold spectacular landscapes of purple moorland, mysterious lochs and ruined castles. Scottish culture, from kilts to malt whiskies, is a discovery in its own right.",
+      },
       wikipedia: "Edinburgh",
       tags: ["Histoire", "Nature", "Whisky", "Châteaux", "Randonnée", "Ville", "Ski"],
       mustSee: [
         {
-          name: "Château d'Édimbourg — forteresse volcanique surplombant le Royal Mile",
+          name: { fr: "Château d'Édimbourg — forteresse volcanique surplombant le Royal Mile", en: "Edinburgh Castle — volcanic fortress overlooking the Royal Mile" },
           wikipedia: "Edinburgh_Castle",
         },
         {
-          name: "Loch Ness & Highlands — paysages sauvages et légende du monstre",
+          name: { fr: "Loch Ness & Highlands — paysages sauvages et légende du monstre", en: "Loch Ness & Highlands — wild landscapes and the legend of the monster" },
           wikipedia: "Loch_Ness",
         },
         {
-          name: "Palais de Holyrood — résidence officielle du roi en Écosse",
+          name: { fr: "Palais de Holyrood — résidence officielle du roi en Écosse", en: "Holyrood Palace — the King's official residence in Scotland" },
           wikipedia: "Holyrood_Palace",
         },
         {
-          name: "Distillerie de Glenfiddich — découverte du scotch whisky en plein cœur du Speyside",
+          name: { fr: "Distillerie de Glenfiddich — découverte du scotch whisky en plein cœur du Speyside", en: "Glenfiddich Distillery — discover Scotch whisky in the heart of Speyside" },
           wikipedia: "File:Glenfiddich Distillery.jpg",
         },
       ],
     },
     {
       id: 3,
-      name: "Cotswolds & Bath",
-      region: "Angleterre du Sud-Ouest",
-      description:
-        "Les Cotswolds incarnent l'Angleterre de carte postale avec leurs villages aux cottages en pierre miel, leurs jardins fleuris et leurs chemins de randonnée verdoyants. Toute proche, Bath est une ville d'exception avec ses thermes romains et son architecture géorgienne classée au patrimoine mondial de l'UNESCO. Jane Austen y vécut, et l'atmosphère élégante de la ville rappelle cette époque romanesque.",
+      name: { fr: "Cotswolds & Bath", en: "Cotswolds & Bath" },
+      region: { fr: "Angleterre du Sud-Ouest", en: "Southwest England" },
+      description: {
+        fr: "Les Cotswolds incarnent l'Angleterre de carte postale avec leurs villages aux cottages en pierre miel, leurs jardins fleuris et leurs chemins de randonnée verdoyants. Toute proche, Bath est une ville d'exception avec ses thermes romains et son architecture géorgienne classée au patrimoine mondial de l'UNESCO. Jane Austen y vécut, et l'atmosphère élégante de la ville rappelle cette époque romanesque.",
+        en: "The Cotswolds embody postcard England with its villages of honey-coloured stone cottages, flowering gardens and green walking trails. Nearby, Bath is an exceptional city with its Roman baths and Georgian architecture listed as UNESCO World Heritage. Jane Austen lived there, and the city's elegant atmosphere recalls that romantic era.",
+      },
       wikipedia: "Cotswolds",
       tags: ["Nature", "UNESCO", "Architecture", "Randonnée", "Charme"],
       mustSee: [
         {
-          name: "Bourton-on-the-Water — surnommée la Venise des Cotswolds",
+          name: { fr: "Bourton-on-the-Water — surnommée la Venise des Cotswolds", en: "Bourton-on-the-Water — nicknamed the Venice of the Cotswolds" },
           wikipedia: "Bourton-on-the-Water",
         },
         {
-          name: "Bains romains de Bath — thermes antiques exceptionnellement bien conservés",
+          name: { fr: "Bains romains de Bath — thermes antiques exceptionnellement bien conservés", en: "Roman Baths of Bath — exceptionally well-preserved ancient baths" },
           wikipedia: "File:Baños_Romanos,_Bath,_Inglaterra,_2014-08-12,_DD_39-41_HDR.JPG",
         },
         {
-          name: "Royal Crescent de Bath — emblème de l'architecture géorgienne anglaise",
+          name: { fr: "Royal Crescent de Bath — emblème de l'architecture géorgienne anglaise", en: "Royal Crescent of Bath — icon of English Georgian architecture" },
           wikipedia: "Royal_Crescent",
         },
         {
-          name: "Bibury — village de pêcheurs considéré comme le plus beau d'Angleterre",
+          name: { fr: "Bibury — village de pêcheurs considéré comme le plus beau d'Angleterre", en: "Bibury — often called the most beautiful village in England" },
           wikipedia: "Bibury",
         },
       ],
     },
     {
       id: 4,
-      name: "Pays de Galles",
-      region: "Pays de Galles",
-      description:
-        "Le Pays de Galles est une petite nation à la grande personnalité, avec ses paysages montagneux du Parc national de Snowdonia, ses châteaux médiévaux imposants et sa langue celtique toujours vivante. Cardiff, sa capitale dynamique, est une ville universitaire animée dotée d'un château en plein centre-ville. Le littoral gallois alterne falaises dramatiques et plages de sable fin très préservées.",
+      name: { fr: "Pays de Galles", en: "Wales" },
+      region: { fr: "Pays de Galles", en: "Wales" },
+      description: {
+        fr: "Le Pays de Galles est une petite nation à la grande personnalité, avec ses paysages montagneux du Parc national de Snowdonia, ses châteaux médiévaux imposants et sa langue celtique toujours vivante. Cardiff, sa capitale dynamique, est une ville universitaire animée dotée d'un château en plein centre-ville. Le littoral gallois alterne falaises dramatiques et plages de sable fin très préservées.",
+        en: "Wales is a small nation with a big personality, with its mountainous landscapes in Snowdonia National Park, imposing medieval castles and a Celtic language still very much alive. Cardiff, its lively capital, is a buzzing university city with a castle right in the city centre. The Welsh coastline alternates between dramatic cliffs and unspoilt sandy beaches.",
+      },
       wikipedia: "File:At_Wales_2008_27.jpg",
       tags: ["Nature", "Châteaux", "Randonnée", "Mer", "Culture celtique"],
       mustSee: [
         {
-          name: "Château de Caernarfon — forteresse édouardienne classée au patrimoine UNESCO",
+          name: { fr: "Château de Caernarfon — forteresse édouardienne classée au patrimoine UNESCO", en: "Caernarfon Castle — Edwardian fortress listed as UNESCO World Heritage" },
           wikipedia: "Caernarfon_Castle",
         },
         {
-          name: "Snowdonia — toit du Pays de Galles à 1 085 m, accessible en train à crémaillère",
+          name: { fr: "Snowdonia — toit du Pays de Galles à 1 085 m, accessible en train à crémaillère", en: "Snowdonia — the roof of Wales at 1,085 m, reachable by rack railway" },
           wikipedia: "Snowdonia",
         },
         {
-          name: "Brecon Beacons — parc national idéal pour la randonnée et l'astronomie",
+          name: { fr: "Brecon Beacons — parc national idéal pour la randonnée et l'astronomie", en: "Brecon Beacons — national park ideal for hiking and stargazing" },
           wikipedia: "Brecon_Beacons",
         },
         {
-          name: "Castell Coch — château néo-gothique de conte de fées près de Cardiff",
+          name: { fr: "Castell Coch — château néo-gothique de conte de fées près de Cardiff", en: "Castell Coch — fairy-tale neo-Gothic castle near Cardiff" },
           wikipedia: "Castell_Coch",
         },
       ],
     },
   ],
   costOfLiving: {
-    intro:
-      "Le Royaume-Uni, et notamment Londres, est l'une des destinations les plus onéreuses d'Europe occidentale. La livre sterling ajoute une couche de coût pour les voyageurs de la zone euro. Cependant, les nombreux musées gratuits de Londres compensent partiellement ces dépenses.",
+    intro: {
+      fr: "Le Royaume-Uni, et notamment Londres, est l'une des destinations les plus onéreuses d'Europe occidentale. La livre sterling ajoute une couche de coût pour les voyageurs de la zone euro. Cependant, les nombreux musées gratuits de Londres compensent partiellement ces dépenses.",
+      en: "The United Kingdom, and especially London, is one of the most expensive destinations in Western Europe. The pound sterling adds an extra layer of cost for eurozone travellers. However, London's many free museums partly offset these expenses.",
+    },
     currency: "GBP",
     exchangeRate: "1€ ≈ 0,85 GBP",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
           {
-            label: "Auberge de jeunesse (dortoir)",
+            label: { fr: "Auberge de jeunesse (dortoir)", en: "Youth hostel (dorm)" },
             price: "25–45 €",
-            detail: "Londres parmi les plus chères, mais bonne qualité",
+            detail: { fr: "Londres parmi les plus chères, mais bonne qualité", en: "London is among the priciest, but good quality" },
           },
           {
-            label: "Hôtel 2–3 étoiles",
+            label: { fr: "Hôtel 2–3 étoiles", en: "2–3 star hotel" },
             price: "90–160 €",
-            detail: "Chambre double à Londres ; moins cher en province",
+            detail: { fr: "Chambre double à Londres ; moins cher en province", en: "Double room in London; cheaper outside the capital" },
           },
           {
-            label: "Hôtel 4 étoiles",
+            label: { fr: "Hôtel 4 étoiles", en: "4-star hotel" },
             price: "180–350 €",
-            detail: "Centre de Londres, prix très variables selon quartier",
+            detail: { fr: "Centre de Londres, prix très variables selon quartier", en: "Central London, prices vary widely by area" },
           },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
           {
-            label: "Fish & chips / sandwich / pub snack",
+            label: { fr: "Fish & chips / sandwich / pub snack", en: "Fish & chips / sandwich / pub snack" },
             price: "7–12 €",
-            detail: "Le pub reste l'endroit le plus abordable pour manger",
+            detail: { fr: "Le pub reste l'endroit le plus abordable pour manger", en: "The pub remains the most affordable place to eat" },
           },
           {
-            label: "Déjeuner au pub ou café",
+            label: { fr: "Déjeuner au pub ou café", en: "Lunch at a pub or café" },
             price: "17–25 €",
-            detail: "Sunday roast très populaire le week-end",
+            detail: { fr: "Sunday roast très populaire le week-end", en: "Sunday roast very popular at weekends" },
           },
           {
-            label: "Restaurant le soir",
+            label: { fr: "Restaurant le soir", en: "Dinner at a restaurant" },
             price: "25–50 €",
-            detail: "London propose une scène gastronomique internationale variée",
+            detail: { fr: "London propose une scène gastronomique internationale variée", en: "London offers a varied international dining scene" },
           },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
           {
-            label: "Métro de Londres (Oyster Card)",
+            label: { fr: "Métro de Londres (Oyster Card)", en: "London Underground (Oyster Card)" },
             price: "2,80–5 €",
-            detail: "Plafond journalier automatique, payer sans contact",
+            detail: { fr: "Plafond journalier automatique, payer sans contact", en: "Automatic daily cap, contactless payment" },
           },
           {
-            label: "Train Londres–Édimbourg",
+            label: { fr: "Train Londres–Édimbourg", en: "London–Edinburgh train" },
             price: "40–120 €",
-            detail: "En 4h30 avec LNER, tarifs avance très avantageux",
+            detail: { fr: "En 4h30 avec LNER, tarifs avance très avantageux", en: "4h30 with LNER, great advance fares" },
           },
           {
-            label: "National Express (bus longue distance)",
+            label: { fr: "National Express (bus longue distance)", en: "National Express (long-distance bus)" },
             price: "15–40 €",
-            detail: "Alternative économique au train pour les villes secondaires",
+            detail: { fr: "Alternative économique au train pour les villes secondaires", en: "Cheap alternative to train for smaller towns" },
           },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités",
+        label: { fr: "Activités", en: "Activities" },
         items: [
           {
-            label: "Grands musées londoniens",
+            label: { fr: "Grands musées londoniens", en: "Major London museums" },
             price: "Gratuit",
             detail: "British Museum, National Gallery, V&A, Natural History Museum",
           },
           {
-            label: "Tour de Londres",
+            label: { fr: "Tour de Londres", en: "Tower of London" },
             price: "40 €",
-            detail: "Joyaux de la Couronne inclus, réservation conseillée",
+            detail: { fr: "Joyaux de la Couronne inclus, réservation conseillée", en: "Crown Jewels included, booking recommended" },
           },
           {
-            label: "Théâtre West End",
+            label: { fr: "Théâtre West End", en: "West End theatre" },
             price: "25–90 €",
-            detail: "Billets day-of dès 20 € à certains guichets",
+            detail: { fr: "Billets day-of dès 20 € à certains guichets", en: "Day-of tickets from 20 € at some booths" },
           },
         ],
       },
     ],
     budgetSummary: [
       {
-        type: "Routard",
+        type: { fr: "Routard", en: "Backpacker" },
         daily: "80–110 €/j",
-        desc: "Auberge, pubs et sandwichs, musées gratuits, Oyster Card",
+        desc: { fr: "Auberge, pubs et sandwichs, musées gratuits, Oyster Card", en: "Hostel, pubs and sandwiches, free museums, Oyster Card" },
         color: "#22c55e",
       },
       {
-        type: "Confort",
+        type: { fr: "Confort", en: "Comfort" },
         daily: "160–250 €/j",
-        desc: "Hôtel 3 étoiles, restaurants mid-range, activités payantes",
+        desc: { fr: "Hôtel 3 étoiles, restaurants mid-range, activités payantes", en: "3-star hotel, mid-range restaurants, paid activities" },
         color: "#3b82f6",
       },
     ],
     tripEstimate: {
-      duration: "10 jours",
-      route: "Londres (5j) → Cotswolds/Bath (2j) → Édimbourg (3j)",
+      duration: { fr: "10 jours", en: "10 days" },
+      route: { fr: "Londres (5j) → Cotswolds/Bath (2j) → Édimbourg (3j)", en: "London (5d) → Cotswolds/Bath (2d) → Edinburgh (3d)" },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "1 150 – 1 500 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Londres", amount: "80–150 €" },
-            { label: "Hébergement (9 nuits)", amount: "300–450 €" },
-            { label: "Transports locaux + trains", amount: "170–230 €" },
-            { label: "Nourriture + boissons", amount: "480–560 €" },
-            { label: "Activités + sorties", amount: "80–120 €" },
+            { label: { fr: "Vol A/R Paris–Londres", en: "Return flight Paris–London" }, amount: "80–150 €" },
+            { label: { fr: "Hébergement (9 nuits)", en: "Accommodation (9 nights)" }, amount: "300–450 €" },
+            { label: { fr: "Transports locaux + trains", en: "Local transport + trains" }, amount: "170–230 €" },
+            { label: { fr: "Nourriture + boissons", en: "Food + drinks" }, amount: "480–560 €" },
+            { label: { fr: "Activités + sorties", en: "Activities + outings" }, amount: "80–120 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "2 400 – 3 400 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Londres", amount: "120–200 €" },
-            { label: "Hébergement (9 nuits)", amount: "1 000–1 500 €" },
-            { label: "Transports locaux + trains", amount: "250–350 €" },
-            { label: "Nourriture + boissons", amount: "800–1 050 €" },
-            { label: "Activités + théâtre", amount: "200–300 €" },
+            { label: { fr: "Vol A/R Paris–Londres", en: "Return flight Paris–London" }, amount: "120–200 €" },
+            { label: { fr: "Hébergement (9 nuits)", en: "Accommodation (9 nights)" }, amount: "1 000–1 500 €" },
+            { label: { fr: "Transports locaux + trains", en: "Local transport + trains" }, amount: "250–350 €" },
+            { label: { fr: "Nourriture + boissons", en: "Food + drinks" }, amount: "800–1 050 €" },
+            { label: { fr: "Activités + théâtre", en: "Activities + theatre" }, amount: "200–300 €" },
           ],
         },
       ],
@@ -344,43 +364,46 @@ export const UK = {
   practicalities: [
     {
       icon: "✈️",
-      label: "Vol depuis Paris",
-      value: "Paris–Londres : 1h15 de vol. Aussi accessible en Eurostar (2h15) depuis Gare du Nord.",
+      label: { fr: "Vol depuis Paris", en: "Flight from Paris" },
+      value: { fr: "Paris–Londres : 1h15 de vol. Aussi accessible en Eurostar (2h15) depuis Gare du Nord.", en: "Paris–London: 1h15 flight. Also reachable by Eurostar (2h15) from Gare du Nord." },
     },
     {
       icon: "🪪",
-      label: "Visa",
-      value: "Depuis le Brexit, les citoyens UE ont besoin d'un passeport valide (la carte d'identité n'est plus acceptée). Depuis janvier 2024, une Autorisation de Voyage Électronique (ETA) est obligatoire avant l'entrée au Royaume-Uni. L'ETA coûte 10£ (~12€), est valable 2 ans ou jusqu'à expiration du passeport et autorise des entrées multiples. Ce n'est pas un visa mais une autorisation électronique à demander en ligne avant le départ. Séjour autorisé jusqu'à 6 mois.",
+      label: { fr: "Visa", en: "Visa" },
+      value: {
+        fr: "Depuis le Brexit, les citoyens UE ont besoin d'un passeport valide (la carte d'identité n'est plus acceptée). Depuis janvier 2024, une Autorisation de Voyage Électronique (ETA) est obligatoire avant l'entrée au Royaume-Uni. L'ETA coûte 10£ (~12€), est valable 2 ans ou jusqu'à expiration du passeport et autorise des entrées multiples. Ce n'est pas un visa mais une autorisation électronique à demander en ligne avant le départ. Séjour autorisé jusqu'à 6 mois.",
+        en: "Since Brexit, EU citizens need a valid passport (ID cards are no longer accepted). Since January 2024, an Electronic Travel Authorisation (ETA) is mandatory before entering the UK. The ETA costs £10 (~€12), is valid for 2 years or until the passport expires, and allows multiple entries. It is not a visa but an electronic authorisation to apply for online before departure. Stays of up to 6 months are allowed.",
+      },
     },
     {
       icon: "💰",
-      label: "Monnaie",
-      value: "Livre sterling (£). Les euros ne sont généralement pas acceptés. CB et paiement sans contact très répandus.",
+      label: { fr: "Monnaie", en: "Currency" },
+      value: { fr: "Livre sterling (£). Les euros ne sont généralement pas acceptés. CB et paiement sans contact très répandus.", en: "Pound Sterling (£). Euros are generally not accepted. Cards and contactless payment are widely used." },
     },
     {
       icon: "🗣️",
-      label: "Langue",
-      value: "Anglais. Gallois parlé au Pays de Galles, gaélique en Écosse. Excellente destination pour pratiquer l'anglais.",
+      label: { fr: "Langue", en: "Language" },
+      value: { fr: "Anglais. Gallois parlé au Pays de Galles, gaélique en Écosse. Excellente destination pour pratiquer l'anglais.", en: "English. Welsh spoken in Wales, Gaelic in Scotland. An excellent destination to practise English." },
     },
     {
       icon: "🔌",
-      label: "Prise électrique",
-      value: "Type G (3 broches rectangulaires). 230V / 50Hz. Adaptateur indispensable depuis la France.",
+      label: { fr: "Prise électrique", en: "Power outlet" },
+      value: { fr: "Type G (3 broches rectangulaires). 230V / 50Hz. Adaptateur indispensable depuis la France.", en: "Type G (3 rectangular pins). 230V / 50Hz. Adapter essential when coming from continental Europe." },
     },
     {
       icon: "💊",
-      label: "Santé",
-      value: "NHS (National Health Service) de qualité. La carte CEAM n'est plus valable post-Brexit. Assurance voyage recommandée.",
+      label: { fr: "Santé", en: "Health" },
+      value: { fr: "NHS (National Health Service) de qualité. La carte CEAM n'est plus valable post-Brexit. Assurance voyage recommandée.", en: "Quality NHS (National Health Service). The EHIC card is no longer valid post-Brexit. Travel insurance recommended." },
     },
     {
       icon: "🚗",
-      label: "Conduite",
-      value: "Conduite à gauche. Volant à droite. À éviter à Londres (péage urbain). Pratique pour les Cotswolds et les Highlands.",
+      label: { fr: "Conduite", en: "Driving" },
+      value: { fr: "Conduite à gauche. Volant à droite. À éviter à Londres (péage urbain). Pratique pour les Cotswolds et les Highlands.", en: "Drive on the left. Right-hand drive. Best avoided in London (congestion charge). Handy for the Cotswolds and Highlands." },
     },
     {
       icon: "🌧️",
-      label: "Météo",
-      value: "Toujours prévoir un imperméable, même en été. Le temps est changeant toute l'année.",
+      label: { fr: "Météo", en: "Weather" },
+      value: { fr: "Toujours prévoir un imperméable, même en été. Le temps est changeant toute l'année.", en: "Always pack a raincoat, even in summer. The weather is changeable all year round." },
     },
   ],
 };

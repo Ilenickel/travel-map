@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BADGE_COLORS } from '../utils/badges';
 
 export default function BadgeUnlockAnimation({ upgrade, onDismiss }) {
+  const { t } = useTranslation('app');
   const [step, setStep] = useState(0);
   // step 0: card entre, ancien badge centré visible
   // step 1: ancien sort, nouveau entre centré
@@ -22,7 +24,7 @@ export default function BadgeUnlockAnimation({ upgrade, onDismiss }) {
       <div className="bua-card" onClick={(e) => e.stopPropagation()} style={{ '--badge-color': color, '--badge-bg': bg }}>
 
         <div className="bua-pill">{label}</div>
-        <div className="bua-headline">Nouveau niveau débloqué !</div>
+        <div className="bua-headline">{t('badgeAnim.newLevelUnlocked')}</div>
 
         <div className="bua-stage">
           {step === 0 && (
@@ -50,7 +52,7 @@ export default function BadgeUnlockAnimation({ upgrade, onDismiss }) {
         </div>
 
         <button className={`bua-btn ${step >= 2 ? 'bua-btn--show' : ''}`} onClick={onDismiss}>
-          Continuer →
+          {t('badgeAnim.continueButton')}
         </button>
       </div>
     </div>

@@ -1,42 +1,48 @@
+import i18n from '../i18n';
+
+function badgeLevel(level, icon, threshold, category, key) {
+  return { level, icon, threshold, get name() { return i18n.t(`badges.${category}.${key}`, { ns: 'app' }); } };
+}
+
 // ── Couleurs par catégorie ────────────────────────────────────
 export const BADGE_COLORS = {
-  explorateur: { color: '#38bdf8', bg: 'rgba(56,189,248,0.12)',  label: 'Explorateur' },
-  decouverte:  { color: '#f59e0b', bg: 'rgba(245,158,11,0.12)',  label: 'Découverte'  },
-  communaute:  { color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', label: 'Communauté'  },
+  explorateur: { color: '#38bdf8', bg: 'rgba(56,189,248,0.12)',  get label() { return i18n.t('badges.categories.explorateur', { ns: 'app' }); } },
+  decouverte:  { color: '#f59e0b', bg: 'rgba(245,158,11,0.12)',  get label() { return i18n.t('badges.categories.decouverte', { ns: 'app' }); } },
+  communaute:  { color: '#a78bfa', bg: 'rgba(167,139,250,0.12)', get label() { return i18n.t('badges.categories.communaute', { ns: 'app' }); } },
 };
 
 // ── Définitions ───────────────────────────────────────────────
 
 export const BADGE_EXPLORATEUR = [
-  { level: 0, icon: '🌱', name: 'Curieux',          threshold: 0  },
-  { level: 1, icon: '🧭', name: 'Voyageur novice',  threshold: 2  },
-  { level: 2, icon: '🎒', name: 'Aventurier',        threshold: 4  },
-  { level: 3, icon: '🗺️', name: 'Explorateur',       threshold: 7  },
-  { level: 4, icon: '✈️', name: 'Grand voyageur',    threshold: 10 },
-  { level: 5, icon: '🌍', name: 'Globe-trotteur',    threshold: 15 },
-  { level: 6, icon: '🧳', name: 'Nomade',            threshold: 20 },
-  { level: 7, icon: '👑', name: 'Légende du voyage', threshold: 25 },
+  badgeLevel(0, '🌱', 0,  'explorateur', 'curious'),
+  badgeLevel(1, '🧭', 2,  'explorateur', 'novice'),
+  badgeLevel(2, '🎒', 4,  'explorateur', 'adventurer'),
+  badgeLevel(3, '🗺️', 7,  'explorateur', 'explorer'),
+  badgeLevel(4, '✈️', 10, 'explorateur', 'greatTraveler'),
+  badgeLevel(5, '🌍', 15, 'explorateur', 'globetrotter'),
+  badgeLevel(6, '🧳', 20, 'explorateur', 'nomad'),
+  badgeLevel(7, '👑', 25, 'explorateur', 'legend'),
 ];
 
 export const BADGE_DECOUVERTE = [
-  { level: 0, icon: '💭', name: 'Inspiré',                threshold: 0  },
-  { level: 1, icon: '📋', name: 'Premier itinéraire',     threshold: 2  },
-  { level: 2, icon: '🗓️', name: 'Voyageur préparé',       threshold: 4  },
-  { level: 3, icon: '🔭', name: 'Planificateur avisé',    threshold: 7  },
-  { level: 4, icon: '🧠', name: 'Stratège globe-trotter', threshold: 10 },
-  { level: 5, icon: '🏅', name: 'Architecte de voyages',  threshold: 15 },
-  { level: 6, icon: '🏆', name: 'Maître des itinéraires', threshold: 25 },
+  badgeLevel(0, '💭', 0,  'decouverte', 'inspired'),
+  badgeLevel(1, '📋', 2,  'decouverte', 'firstItinerary'),
+  badgeLevel(2, '🗓️', 4,  'decouverte', 'preparedTraveler'),
+  badgeLevel(3, '🔭', 7,  'decouverte', 'savvyPlanner'),
+  badgeLevel(4, '🧠', 10, 'decouverte', 'strategist'),
+  badgeLevel(5, '🏅', 15, 'decouverte', 'architect'),
+  badgeLevel(6, '🏆', 25, 'decouverte', 'master'),
 ];
 
 export const BADGE_COMMUNAUTE = [
-  { level: 0, icon: '🌐', name: 'Nouveau voyageur',  threshold: 0    },
-  { level: 1, icon: '✍️', name: 'Contributeur',       threshold: 40   },
-  { level: 2, icon: '📖', name: 'Guide local',        threshold: 120  },
-  { level: 3, icon: '🎯', name: 'Guide confirmé',     threshold: 300  },
-  { level: 4, icon: '⭐', name: 'Expert voyage',      threshold: 600  },
-  { level: 5, icon: '🎓', name: 'Mentor',             threshold: 1000 },
-  { level: 6, icon: '🤝', name: 'Ambassadeur',        threshold: 1700 },
-  { level: 7, icon: '🌎', name: 'Référence mondiale', threshold: 2500 },
+  badgeLevel(0, '🌐', 0,    'communaute', 'newTraveler'),
+  badgeLevel(1, '✍️', 40,   'communaute', 'contributor'),
+  badgeLevel(2, '📖', 120,  'communaute', 'localGuide'),
+  badgeLevel(3, '🎯', 300,  'communaute', 'confirmedGuide'),
+  badgeLevel(4, '⭐', 600,  'communaute', 'expert'),
+  badgeLevel(5, '🎓', 1000, 'communaute', 'mentor'),
+  badgeLevel(6, '🤝', 1700, 'communaute', 'ambassador'),
+  badgeLevel(7, '🌎', 2500, 'communaute', 'worldReference'),
 ];
 
 // ── Fonctions de calcul ───────────────────────────────────────
@@ -75,15 +81,15 @@ export function computeCommunauteLevel(score) {
 export function badgeProgress(defs, currentLevel, currentValue) {
   const cur = defs[currentLevel];
   const next = defs[currentLevel + 1];
-  if (!cur || !next) return { pct: 100, label: 'Niveau maximum atteint', nextName: null, remaining: 0 };
+  if (!cur || !next) return { pct: 100, label: i18n.t('badges.maxLevelReached', { ns: 'app' }), nextName: null, remaining: 0 };
   const pct = Math.max(0, Math.min(100, Math.round((currentValue / next.threshold) * 100)));
   return { pct, label: `${currentValue} / ${next.threshold}`, nextName: next.name, nextIcon: next.icon, remaining: next.threshold - currentValue };
 }
 
 export const BADGE_HOW_TO = {
-  explorateur: "Marquez des pays comme visités en cliquant sur ✈️ dans la fiche d'un pays.",
-  decouverte:  'Fonctionnalité de planification de voyages bientôt disponible !',
-  communaute:  'Laissez des avis sur les pays et ajoutez des destinations avec des lieux.',
+  get explorateur() { return i18n.t('badges.howTo.explorateur', { ns: 'app' }); },
+  get decouverte() { return i18n.t('badges.howTo.decouverte', { ns: 'app' }); },
+  get communaute() { return i18n.t('badges.howTo.communaute', { ns: 'app' }); },
 };
 
 export const ALL_BADGE_DEFS = {

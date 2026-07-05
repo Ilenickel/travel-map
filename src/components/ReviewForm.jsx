@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { callModeration } from '../lib/moderation';
@@ -7,6 +8,7 @@ import { useBadge } from '../context/BadgeContext';
 import { validateImageFile } from '../lib/imageValidation';
 
 export default function ReviewForm({ countryCode, destinationId, destinationName, existingReview, onSuccess, onCancel }) {
+  const { t } = useTranslation('app');
   const { user } = useAuth();
   const { triggerCheck } = useBadge();
   const [rating, setRating] = useState(existingReview?.rating ?? 0);
@@ -37,7 +39,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
       if (validateImageFile(file)) rejected = true;
       else validFiles.push(file);
     }
-    if (rejected) setError('Certains fichiers ont été ignorés (format non accepté : JPG, PNG, WEBP ou GIF uniquement).');
+    if (rejected) setError(t('reviewForm.rejectedFiles'));
     if (!validFiles.length) return;
     setCompressing(true);
     const newPhotos = await Promise.all(validFiles.map(async (file) => {
@@ -78,7 +80,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
         }
       } catch (err) {
         console.error('[ReviewForm] upload:', err);
-        setError("Une erreur est survenue lors de l'envoi des photos.");
+        setError(t('reviewForm.photoUploadError'));
         setSubmitting(false);
         setUploadProgress(null);
         return;
@@ -95,7 +97,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
       });
 
       if (!result.ok) {
-        setError(result.reason || "La publication n'a pas pu être vérifiée. Réessayez.");
+        setError(result.reason || t('reviewForm.publicationFailed'));
         setSubmitting(false);
         return;
       }
@@ -182,14 +184,17 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
       onSuccess();
     } catch (err) {
       console.error('[ReviewForm] handleSubmit unexpected error:', err);
-      setError("Une erreur inattendue est survenue. Réessayez.");
+      setError(t('reviewForm.unexpectedError'));
       setSubmitting(false);
       setUploadProgress(null);
     }
   }
 
   const displayRating = hovered || rating;
-  const RATING_LABELS = { 0: 'Sélectionnez une note', 1: 'Décevant', 2: 'Moyen', 3: 'Correct', 4: 'Très bien', 5: 'Excellent !' };
+  const RATING_LABELS = {
+    0: t('reviewForm.ratingLabel0'), 1: t('reviewForm.ratingLabel1'), 2: t('reviewForm.ratingLabel2'),
+    3: t('reviewForm.ratingLabel3'), 4: t('reviewForm.ratingLabel4'), 5: t('reviewForm.ratingLabel5'),
+  };
 
   return (
     <div className="review-form-wrap">
@@ -211,7 +216,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
 
         <textarea
           className="review-textarea"
-          placeholder="Partagez votre expérience… (optionnel)"
+          placeholder={t('reviewForm.commentPlaceholder')}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={4}
@@ -225,9 +230,9 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
             </div>
           ))}
           {!submitting && !compressing && (
-            <label className="review-photo-add-btn" title="Ajouter une photo">
+            <label className="review-photo-add-btn" title={t('reviewForm.addPhotoTitle')}>
               <span className="review-photo-add-icon">+</span>
-              <span className="review-photo-add-text">Photo</span>
+              <span className="review-photo-add-text">{t('reviewForm.addPhotoText')}</span>
               <input type="file" accept="image/*" multiple style={{ display: 'none' }} onChange={handlePhotos} />
             </label>
           )}
@@ -247,7 +252,7 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
               />
             </div>
             <span className="review-upload-label">
-              Envoi des photos… {uploadProgress.done}/{uploadProgress.total}
+              {t('reviewForm.uploadingPhotos', { done: uploadProgress.done, total: uploadProgress.total })}
             </span>
           </div>
         )}
@@ -255,13 +260,13 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
         {error && <div className="review-error">{error}</div>}
 
         <div className="review-form-actions">
-          {onCancel && <button type="button" className="review-cancel-btn" onClick={onCancel}>Annuler</button>}
+          {onCancel && <button type="button" className="review-cancel-btn" onClick={onCancel}>{t('common:actions.cancel')}</button>}
           <button className="review-submit" type="submit" disabled={rating === 0 || submitting || compressing}>
             {uploadProgress
-              ? `Photos… ${uploadProgress.done}/${uploadProgress.total}`
+              ? t('reviewForm.photosProgress', { done: uploadProgress.done, total: uploadProgress.total })
               : submitting
-                ? 'Publication…'
-                : existingReview ? 'Mettre à jour' : 'Publier'}
+                ? t('reviewForm.publishing')
+                : existingReview ? t('reviewForm.updateButton') : t('reviewForm.publishButton')}
           </button>
         </div>
       </form>

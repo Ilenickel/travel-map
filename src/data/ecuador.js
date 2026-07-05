@@ -1,11 +1,11 @@
 export const ECUADOR = {
   code: "ECU",
   numericId: 218,
-  name: "Équateur",
+  name: { fr: "Équateur", en: "Ecuador" },
   emoji: "🇪🇨",
-  capital: "Quito",
-  language: "Espagnol",
-  currency: "Dollar américain (USD)",
+  capital: { fr: "Quito", en: "Quito" },
+  language: { fr: "Espagnol", en: "Spanish" },
+  currency: { fr: "Dollar américain (USD)", en: "US Dollar (USD)" },
   timezone: "UTC-5 (continent) / UTC-6 (Galápagos)",
   filter: {
     budgetMin: 30,
@@ -13,24 +13,30 @@ export const ECUADOR = {
     tripMin: 1500,
     tripMid: 2800,
   },
-  description:
-    "L'Équateur est un concentré de merveilles naturelles : les Galápagos (sanctuaire de la faune unique), la cordillère des Andes avec ses volcans géants, l'Amazonie primaire et la côte Pacifique. Quito, capitale coloniale UNESCO, est l'une des plus belles d'Amérique latine.",
+  description: {
+    fr: "L'Équateur est un concentré de merveilles naturelles : les Galápagos (sanctuaire de la faune unique), la cordillère des Andes avec ses volcans géants, l'Amazonie primaire et la côte Pacifique. Quito, capitale coloniale UNESCO, est l'une des plus belles d'Amérique latine.",
+    en: "Ecuador is a compact showcase of natural wonders: the Galápagos (a sanctuary for unique wildlife), the Andes with their giant volcanoes, pristine Amazon rainforest and the Pacific coast. Quito, a UNESCO-listed colonial capital, is one of the most beautiful cities in Latin America.",
+  },
 
   bestPeriods: [
     {
-      months: "Juin – Septembre",
-      label: "Saison sèche (Highlands & Galápagos)",
+      months: { fr: "Juin – Septembre", en: "June – September" },
+      label: { fr: "Saison sèche (Highlands & Galápagos)", en: "Dry season (Highlands & Galápagos)" },
       color: "#fbbf24",
-      description:
-        "Meilleure période pour Quito et les Andes : ciel dégagé, volcans visibles. Galápagos fraiches mais idéales pour les manchots et otaries.",
+      description: {
+        fr: "Meilleure période pour Quito et les Andes : ciel dégagé, volcans visibles. Galápagos fraiches mais idéales pour les manchots et otaries.",
+        en: "Best time for Quito and the Andes: clear skies and visible volcanoes. The Galápagos are cooler but ideal for penguins and sea lions.",
+      },
       icon: "☀️",
     },
     {
-      months: "Décembre – Mai",
-      label: "Galápagos (saison chaude)",
+      months: { fr: "Décembre – Mai", en: "December – May" },
+      label: { fr: "Galápagos (saison chaude)", en: "Galápagos (warm season)" },
       color: "#38bdf8",
-      description:
-        "Eaux chaudes, bonne visibilité sous-marine, tortues et iguanes marins actifs. Quelques pluies mais courtes.",
+      description: {
+        fr: "Eaux chaudes, bonne visibilité sous-marine, tortues et iguanes marins actifs. Quelques pluies mais courtes.",
+        en: "Warm waters, good underwater visibility, and active turtles and marine iguanas. There is some rain, but showers are usually brief.",
+      },
       icon: "🐢",
     },
   ],
@@ -39,7 +45,7 @@ export const ECUADOR = {
     {
       id: "quito",
       name: "Quito",
-      region: "Andes (2 850 m)",
+      region: { fr: "Andes (2 850 m)", en: "Andes (2,850 m)" },
       data: [
         { month: "Jan", temp: 15, rain: 105, icon: "⛅" },
         { month: "Fév", temp: 15, rain: 135, icon: "⛅" },
@@ -58,7 +64,7 @@ export const ECUADOR = {
     {
       id: "galapagos",
       name: "Galápagos (Santa Cruz)",
-      region: "Archipel des Galápagos",
+      region: { fr: "Archipel des Galápagos", en: "Galápagos Archipelago" },
       data: [
         { month: "Jan", temp: 26, rain: 35, icon: "☀️" },
         { month: "Fév", temp: 27, rain: 45, icon: "⛅" },
@@ -77,7 +83,7 @@ export const ECUADOR = {
     {
       id: "cuenca",
       name: "Cuenca",
-      region: "Andes méridionales",
+      region: { fr: "Andes méridionales", en: "Southern Andes" },
       data: [
         { month: "Jan", temp: 15, rain: 80, icon: "⛅" },
         { month: "Fév", temp: 15, rain: 90, icon: "⛅" },
@@ -99,27 +105,31 @@ export const ECUADOR = {
     {
       id: 1,
       name: "Galápagos",
-      region: "Archipel du Pacifique",
-      description:
-        "Les îles Galápagos sont un laboratoire naturel unique qui inspira Darwin. Iguanes marins, tortues géantes, otaries, manchots équatoriaux et fous à pieds bleus vivent ici sans craindre l'homme. La plongée et le snorkeling y sont parmi les meilleurs au monde.",
+      region: { fr: "Archipel du Pacifique", en: "Pacific archipelago" },
+      description: {
+        fr: "Les îles Galápagos sont un laboratoire naturel unique qui inspira Darwin. Iguanes marins, tortues géantes, otaries, manchots équatoriaux et fous à pieds bleus vivent ici sans craindre l'homme. La plongée et le snorkeling y sont parmi les meilleurs au monde.",
+        en: "The Galápagos Islands are a unique natural laboratory that inspired Darwin. Marine iguanas, giant tortoises, sea lions, equatorial penguins and blue-footed boobies live here with little fear of humans. Diving and snorkelling are among the best in the world.",
+      },
       wikipedia: "File:Lobo_marino_(Zalophus_californianus_wollebaeki),_Punta_Pitt,_isla_de_San_Cristóbal,_islas_Galápagos,_Ecuador,_2015-07-24,_DD_11.JPG",
       tags: ["Faune", "Plongée", "Darwin", "UNESCO", "Safari", "Plage", "Nature"],
       mustSee: [
         { name: "Isla Santa Cruz", wikipedia: "File:Costa_de_isla_Santa_Cruz,_islas_Galápagos,_Ecuador,_2015-07-26,_DD_48.JPG" },
-        { name: "Isla Española (fous à pieds bleus)", wikipedia: "File:Isla Espanola - Punta Suarez - panoramio.jpg" },
-        { name: "Isla Fernandina (iguanes)", wikipedia: "File:View at Fernandina Island.jpg" },
+        { name: { fr: "Isla Española (fous à pieds bleus)", en: "Española Island (blue-footed boobies)" }, wikipedia: "File:Isla Espanola - Punta Suarez - panoramio.jpg" },
+        { name: { fr: "Isla Fernandina (iguanes)", en: "Fernandina Island (iguanas)" }, wikipedia: "File:View at Fernandina Island.jpg" },
       ],
     },
     {
       id: 2,
-      name: "Quito & Centre Historique",
-      region: "Andes",
-      description:
-        "Quito est la plus haute capitale du monde (2 850 m) avec un centre historique remarquablement préservé, premier site inscrit au patrimoine UNESCO en 1978. Les iglesias dorées et les places coloniales sont saisissantes.",
+      name: { fr: "Quito & Centre Historique", en: "Quito & Historic Center" },
+      region: { fr: "Andes", en: "Andes" },
+      description: {
+        fr: "Quito est la plus haute capitale du monde (2 850 m) avec un centre historique remarquablement préservé, premier site inscrit au patrimoine UNESCO en 1978. Les iglesias dorées et les places coloniales sont saisissantes.",
+        en: "Quito is the world's highest capital city (2,850 m), with a remarkably well-preserved historic centre that became the first UNESCO World Heritage Site in 1978. Its gilded churches and colonial plazas are striking.",
+      },
       wikipedia: "Quito",
       tags: ["Colonial", "UNESCO", "Architecture", "Altitude", "Ville", "Gastronomie"],
       mustSee: [
-        { name: "Basilique du Vœu National", wikipedia: "File:Basilica of the National Vow, Quito, Ecuador.JPG" },
+        { name: { fr: "Basilique du Vœu National", en: "Basilica of the National Vow" }, wikipedia: "File:Basilica of the National Vow, Quito, Ecuador.JPG" },
         { name: "La Compañía de Jesús", wikipedia: "File:Iglesia_de_La_Compañía,_Quito,_Ecuador,_2015-07-22,_DD_149-151_HDR.JPG" },
         { name: "Mitad del Mundo", wikipedia: "Ciudad_Mitad_del_Mundo" },
         { name: "Teleferico Quito", wikipedia: "File:Teleferico de quito23.JPG" },
@@ -127,126 +137,132 @@ export const ECUADOR = {
     },
     {
       id: 3,
-      name: "Amazonie équatorienne",
-      region: "Oriente",
-      description:
-        "La selva équatorienne est l'une des plus riches en biodiversité au monde. Depuis Tena ou Coca, des lodges écolodge permettent d'explorer la forêt primaire, de rencontrer des communautés kichwa et d'observer une faune extraordinaire.",
+      name: { fr: "Amazonie équatorienne", en: "Ecuadorian Amazon" },
+      region: { fr: "Oriente", en: "Oriente" },
+      description: {
+        fr: "La selva équatorienne est l'une des plus riches en biodiversité au monde. Depuis Tena ou Coca, des lodges écolodge permettent d'explorer la forêt primaire, de rencontrer des communautés kichwa et d'observer une faune extraordinaire.",
+        en: "Ecuador's rainforest is one of the most biodiverse places on Earth. From Tena or Coca, eco-lodges make it possible to explore primary forest, meet Kichwa communities and observe extraordinary wildlife.",
+      },
       wikipedia: "File:The Amazon Basin, Brazil.jpg",
       tags: ["Jungle", "Faune", "Culture", "Nature", "Randonnée"],
       mustSee: [
-        { name: "Parc national Yasuní", wikipedia: "File:Estacion_Cientifica_Yasuni_(ECY)_Yasuni_Research_Station.jpg" },
-        { name: "Tena (kayak)", wikipedia: "File:Capuchin monkeys in Tena, Ecuador.JPG" },
+        { name: { fr: "Parc national Yasuní", en: "Yasuní National Park" }, wikipedia: "File:Estacion_Cientifica_Yasuni_(ECY)_Yasuni_Research_Station.jpg" },
+        { name: { fr: "Tena (kayak)", en: "Tena (kayaking)" }, wikipedia: "File:Capuchin monkeys in Tena, Ecuador.JPG" },
         { name: "Cuyabeno Wildlife Reserve", wikipedia: "File:Laguna, parque nacional de Cuyabeno, Ecuador.jpg" },
       ],
     },
     {
       id: 4,
-      name: "Avenue des Volcans",
-      region: "Andes centrales",
-      description:
-        "L'Avenue des Volcans est une rangée de sommets andins dont le Cotopaxi (5 897 m) et le Chimborazo (6 268 m, point le plus proche du soleil). Randonnées, ascensions et paysages grandioses au programme.",
+      name: { fr: "Avenue des Volcans", en: "Avenue of the Volcanoes" },
+      region: { fr: "Andes centrales", en: "Central Andes" },
+      description: {
+        fr: "L'Avenue des Volcans est une rangée de sommets andins dont le Cotopaxi (5 897 m) et le Chimborazo (6 268 m, point le plus proche du soleil). Randonnées, ascensions et paysages grandioses au programme.",
+        en: "The Avenue of the Volcanoes is a chain of Andean peaks including Cotopaxi (5,897 m) and Chimborazo (6,268 m, the point on Earth closest to the sun). Expect hiking, climbs and spectacular scenery.",
+      },
       wikipedia: "File:Cotopaxi (37399959476).jpg",
       tags: ["Volcans", "Randonnée", "Andes", "Aventure"],
       mustSee: [
         { name: "Cotopaxi", wikipedia: "Cotopaxi" },
         { name: "Chimborazo", wikipedia: "Chimborazo" },
-        { name: "Quilotoa (lac de cratère)", wikipedia: "Quilotoa" },
+        { name: { fr: "Quilotoa (lac de cratère)", en: "Quilotoa (crater lake)" }, wikipedia: "Quilotoa" },
         { name: "Baños de Agua Santa", wikipedia: "File:Baños de agua santa.jpg" },
       ],
     },
   ],
 
   costOfLiving: {
-    intro:
-      "L'Équateur utilise le dollar américain, ce qui facilite les calculs. Les prix sont modérés sur le continent ; les Galápagos sont bien plus chères.",
+    intro: {
+      fr: "L'Équateur utilise le dollar américain, ce qui facilite les calculs. Les prix sont modérés sur le continent ; les Galápagos sont bien plus chères.",
+      en: "Ecuador uses the US dollar, which makes budgeting easy. Prices are moderate on the mainland, while the Galápagos are much more expensive.",
+    },
     currency: "Dollar américain (USD)",
     exchangeRate: "1€ ≈ 1,05–1,10 USD",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
-          { label: "Dortoir auberge de jeunesse", price: "8–15 €", detail: "Quito, Cuenca, très bon réseau" },
-          { label: "Chambre double hôtel 3★", price: "30–60 €", detail: "Confort correct, petit-déj souvent inclus" },
-          { label: "Lodge Galápagos (milieu de gamme)", price: "100–250 €", detail: "Îles, croisière possible en supplément" },
+          { label: { fr: "Dortoir auberge de jeunesse", en: "Hostel dorm" }, price: "8–15 €", detail: { fr: "Quito, Cuenca, très bon réseau", en: "Quito, Cuenca, very good network" } },
+          { label: { fr: "Chambre double hôtel 3★", en: "3★ hotel double room" }, price: "30–60 €", detail: { fr: "Confort correct, petit-déj souvent inclus", en: "Decent comfort, breakfast often included" } },
+          { label: { fr: "Lodge Galápagos (milieu de gamme)", en: "Galápagos lodge (mid-range)" }, price: "100–250 €", detail: { fr: "Îles, croisière possible en supplément", en: "On the islands, with cruises available at extra cost" } },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
-          { label: "Almuerzo (menu local)", price: "2–4 €", detail: "Sopa + segundo + jugo, très copieux" },
-          { label: "Ceviche de camarones", price: "4–8 €", detail: "Plat national, frais et délicieux" },
-          { label: "Restaurant mid-range Quito", price: "10–20 €", detail: "Cuisine andine ou internationale" },
+          { label: { fr: "Almuerzo (menu local)", en: "Almuerzo (local set menu)" }, price: "2–4 €", detail: { fr: "Sopa + segundo + jugo, très copieux", en: "Soup + main course + juice, very filling" } },
+          { label: { fr: "Ceviche de camarones", en: "Shrimp ceviche" }, price: "4–8 €", detail: { fr: "Plat national, frais et délicieux", en: "A national staple, fresh and delicious" } },
+          { label: { fr: "Restaurant mid-range Quito", en: "Mid-range restaurant in Quito" }, price: "10–20 €", detail: { fr: "Cuisine andine ou internationale", en: "Andean or international cuisine" } },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
-          { label: "Bus intercités", price: "3–8 €", detail: "Ex: Quito–Baños (3h), très pratique" },
-          { label: "Vol Quito–Galápagos", price: "200–350 €", detail: "A/R, TAME ou Avianca, obligatoire" },
+          { label: { fr: "Bus intercités", en: "Intercity bus" }, price: "3–8 €", detail: { fr: "Ex: Quito–Baños (3h), très pratique", en: "E.g. Quito–Baños (3h), very convenient" } },
+          { label: { fr: "Vol Quito–Galápagos", en: "Quito–Galápagos flight" }, price: "200–350 €", detail: { fr: "A/R, TAME ou Avianca, obligatoire", en: "Return, with TAME or Avianca, essential" } },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités & Culture",
+        label: { fr: "Activités & Culture", en: "Activities & Culture" },
         items: [
-          { label: "Entrée Parc Galápagos + taxe", price: "200 €", detail: "Obligatoire, à régler à l'arrivée" },
-          { label: "Croisière Galápagos (3–4 jours)", price: "600–1 500 €", detail: "Tout compris, meilleure façon de visiter" },
+          { label: { fr: "Entrée Parc Galápagos + taxe", en: "Galápagos park entry + tax" }, price: "200 €", detail: { fr: "Obligatoire, à régler à l'arrivée", en: "Mandatory, payable on arrival" } },
+          { label: { fr: "Croisière Galápagos (3–4 jours)", en: "Galápagos cruise (3–4 days)" }, price: "600–1 500 €", detail: { fr: "Tout compris, meilleure façon de visiter", en: "All-inclusive, the best way to explore" } },
         ],
       },
     ],
     budgetSummary: [
-      { type: "Routard", daily: "30–50 €/j", desc: "Auberge, almuerzo, bus, sans Galápagos", color: "#22c55e" },
-      { type: "Confort", daily: "65–120 €/j", desc: "Hôtel 3★, restaurants, excursions guidées", color: "#3b82f6" },
-      { type: "Luxe", daily: "200 €+/j", desc: "Lodge luxe, croisière Galápagos, privé", color: "#f59e0b" },
+      { type: { fr: "Routard", en: "Backpacker" }, daily: "30–50 €/j", desc: { fr: "Auberge, almuerzo, bus, sans Galápagos", en: "Hostel, almuerzo, buses, without the Galápagos" }, color: "#22c55e" },
+      { type: { fr: "Confort", en: "Comfort" }, daily: "65–120 €/j", desc: { fr: "Hôtel 3★, restaurants, excursions guidées", en: "3★ hotel, restaurants, guided excursions" }, color: "#3b82f6" },
+      { type: { fr: "Luxe", en: "Luxury" }, daily: "200 €+/j", desc: { fr: "Lodge luxe, croisière Galápagos, privé", en: "Luxury lodge, Galápagos cruise, private services" }, color: "#f59e0b" },
     ],
     tripEstimate: {
-      duration: "2 semaines",
-      route: "Quito – Galápagos – Amazonie – Cuenca",
+      duration: { fr: "2 semaines", en: "2 weeks" },
+      route: { fr: "Quito – Galápagos – Amazonie – Cuenca", en: "Quito – Galápagos – Amazon – Cuenca" },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "1 500 – 2 000 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Quito", amount: "600–850 €" },
-            { label: "Hébergement (14 nuits)", amount: "200–350 €" },
-            { label: "Nourriture", amount: "200–300 €" },
-            { label: "Transport local + vol Galápagos", amount: "300–450 €" },
-            { label: "Taxe & activités Galápagos", amount: "250–350 €" },
+            { label: { fr: "Vol A/R Paris–Quito", en: "Return flight Paris–Quito" }, amount: "600–850 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "200–350 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "200–300 €" },
+            { label: { fr: "Transport local + vol Galápagos", en: "Local transport + Galápagos flight" }, amount: "300–450 €" },
+            { label: { fr: "Taxe & activités Galápagos", en: "Galápagos tax & activities" }, amount: "250–350 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "2 800 – 3 800 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Quito", amount: "800–1 100 €" },
-            { label: "Hébergement (14 nuits)", amount: "500–700 €" },
-            { label: "Nourriture", amount: "400–600 €" },
-            { label: "Transport + vols intérieurs", amount: "450–650 €" },
-            { label: "Activités & Galápagos", amount: "500–800 €" },
+            { label: { fr: "Vol A/R Paris–Quito", en: "Return flight Paris–Quito" }, amount: "800–1 100 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "500–700 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "400–600 €" },
+            { label: { fr: "Transport + vols intérieurs", en: "Transport + domestic flights" }, amount: "450–650 €" },
+            { label: { fr: "Activités & Galápagos", en: "Activities & Galápagos" }, amount: "500–800 €" },
           ],
         },
         {
-          type: "Luxe",
+          type: { fr: "Luxe", en: "Luxury" },
           color: "#f59e0b",
           total: "7 000 €+",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Quito (Business)", amount: "2 500–3 500 €" },
-            { label: "Hébergement (14 nuits)", amount: "1 500–2 200 €" },
-            { label: "Croisière Galápagos premium", amount: "1 500–2 500 €" },
-            { label: "Transport & excursions privées", amount: "500–800 €" },
-            { label: "Activités premium", amount: "300–500 €" },
+            { label: { fr: "Vol A/R Paris–Quito (Business)", en: "Return flight Paris–Quito (business)" }, amount: "2 500–3 500 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "1 500–2 200 €" },
+            { label: { fr: "Croisière Galápagos premium", en: "Premium Galápagos cruise" }, amount: "1 500–2 500 €" },
+            { label: { fr: "Transport & excursions privées", en: "Transport & private excursions" }, amount: "500–800 €" },
+            { label: { fr: "Activités premium", en: "Premium activities" }, amount: "300–500 €" },
           ],
         },
       ],
@@ -254,13 +270,13 @@ export const ECUADOR = {
   },
 
   practicalities: [
-    { icon: "✈️", label: "Vol depuis Paris", value: "~12–14h avec escale (Bogotá, Lima ou Madrid)" },
-    { icon: "🪪", label: "Visa", value: "Sans visa pour les Français (90 jours)" },
-    { icon: "💰", label: "Monnaie", value: "Dollar américain (1€ ≈ 1,05–1,10 USD)" },
-    { icon: "🗣️", label: "Langue", value: "Espagnol (quechua dans certaines communautés)" },
-    { icon: "🔌", label: "Prise électrique", value: "Type A/B – 120 V (adaptateur nécessaire)" },
-    { icon: "📱", label: "Réseau", value: "4G dans les villes, limité en Amazonie et Galápagos" },
-    { icon: "🚰", label: "Eau du robinet", value: "Non potable, eau en bouteille partout" },
-    { icon: "💊", label: "Santé", value: "Vaccin fièvre jaune obligatoire pour l'Amazonie" },
+    { icon: "✈️", label: { fr: "Vol depuis Paris", en: "Flight from Paris" }, value: { fr: "~12–14h avec escale (Bogotá, Lima ou Madrid)", en: "~12–14h with a layover (Bogotá, Lima or Madrid)" } },
+    { icon: "🪪", label: { fr: "Visa", en: "Visa" }, value: { fr: "Sans visa pour les Français (90 jours)", en: "No visa required for French citizens (90 days)" } },
+    { icon: "💰", label: { fr: "Monnaie", en: "Currency" }, value: { fr: "Dollar américain (1€ ≈ 1,05–1,10 USD)", en: "US dollar (€1 ≈ 1.05–1.10 USD)" } },
+    { icon: "🗣️", label: { fr: "Langue", en: "Language" }, value: { fr: "Espagnol (quechua dans certaines communautés)", en: "Spanish (Quechua in some communities)" } },
+    { icon: "🔌", label: { fr: "Prise électrique", en: "Power outlet" }, value: { fr: "Type A/B – 120 V (adaptateur nécessaire)", en: "Type A/B – 120 V (adapter needed)" } },
+    { icon: "📱", label: { fr: "Réseau", en: "Network" }, value: { fr: "4G dans les villes, limité en Amazonie et Galápagos", en: "4G in cities, limited in the Amazon and Galápagos" } },
+    { icon: "🚰", label: { fr: "Eau du robinet", en: "Tap water" }, value: { fr: "Non potable, eau en bouteille partout", en: "Not drinkable, bottled water is available everywhere" } },
+    { icon: "💊", label: { fr: "Santé", en: "Health" }, value: { fr: "Vaccin fièvre jaune obligatoire pour l'Amazonie", en: "Yellow fever vaccine required for the Amazon" } },
   ],
 };

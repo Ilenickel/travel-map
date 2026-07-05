@@ -1,5 +1,7 @@
 import { useRef, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
+import { localizeField } from "../lib/localizeCountry";
 
 function getFlagUrl(emoji) {
   const code = [...emoji]
@@ -10,6 +12,7 @@ function getFlagUrl(emoji) {
 }
 
 export default function FavoritesPanel({ favorites, visited, onSelect, onRemove, onRemoveVisited, onClose, user, onLinkToAccount, linkStatus }) {
+  const { t, i18n } = useTranslation("app");
   const ref = useRef(null);
   const [activeTab, setActiveTab] = useState("favorites");
 
@@ -33,17 +36,17 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
   })();
 
   const linkBtnLabel = (() => {
-    if (linkStatus === 'syncing') return '⟳ Synchronisation…';
-    if (linkStatus === 'done')    return '✓ Carnet lié au compte !';
-    if (linkStatus === 'error')   return '✗ Erreur — réessayez';
-    return '☁️ Lier au compte';
+    if (linkStatus === 'syncing') return t('favorites.syncing');
+    if (linkStatus === 'done')    return t('favorites.linkedSuccess');
+    if (linkStatus === 'error')   return t('favorites.linkError');
+    return t('favorites.linkToAccount');
   })();
 
   const linkBtnClass = ['favpanel-link-btn', linkStatus === 'done' ? 'done' : '', linkStatus === 'error' ? 'error' : ''].filter(Boolean).join(' ');
 
   const emptyMsg = activeTab === "favorites"
-    ? { icon: "🗺", lines: ["Aucun favori pour l'instant.", "Cliquez sur ★ dans une fiche pays pour en ajouter."] }
-    : { icon: "✈️", lines: ["Aucun pays visité pour l'instant.", "Cliquez sur ✈️ dans une fiche pays pour en ajouter."] };
+    ? { icon: "🗺", lines: [t('favorites.emptyFavoritesLine1'), t('favorites.emptyFavoritesLine2')] }
+    : { icon: "✈️", lines: [t('favorites.emptyVisitedLine1'), t('favorites.emptyVisitedLine2')] };
 
   return (
     <>
@@ -53,14 +56,14 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
             className={`favpanel-tab${activeTab === "favorites" ? " active" : ""}`}
             onClick={() => setActiveTab("favorites")}
           >
-            ⭐ Favoris
+            {t('favorites.favoritesTab')}
             {favorites.length > 0 && <span className="favpanel-tab-count">{favorites.length}</span>}
           </button>
           <button
             className={`favpanel-tab${activeTab === "visited" ? " active" : ""}`}
             onClick={() => setActiveTab("visited")}
           >
-            ✈️ Visités
+            {t('favorites.visitedTab')}
             {visited.length > 0 && <span className="favpanel-tab-count">{visited.length}</span>}
           </button>
         </div>
@@ -73,8 +76,9 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
         ) : (
           <ul className="favorites-list">
             {list.map((code) => {
-              const data = COUNTRIES[code];
-              if (!data) return null;
+              const rawData = COUNTRIES[code];
+              if (!rawData) return null;
+              const data = { ...rawData, name: localizeField(rawData.name, i18n.language) };
               return (
                 <li key={code} className={`favorites-item${activeTab === "visited" ? " visited-item" : ""}`}>
                   <button
@@ -93,7 +97,7 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
                   <button
                     className="favorites-item-remove"
                     onClick={() => onRemoveItem(code)}
-                    aria-label={`Retirer ${data.name}`}
+                    aria-label={t('favorites.removeAriaLabel', { name: data.name })}
                   >
                     ✕
                   </button>
@@ -114,7 +118,7 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
                 {linkBtnLabel}
               </button>
             ) : (favorites.length > 0 || visited.length > 0) && !linkStatus ? (
-              <span className="favpanel-sync-hint">Données sauvegardées dans votre compte</span>
+              <span className="favpanel-sync-hint">{t('favorites.syncedHint')}</span>
             ) : linkStatus && (
               <button className={linkBtnClass} disabled>
                 {linkBtnLabel}

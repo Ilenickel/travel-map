@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import WorldMap from "./components/WorldMap";
 import CountryPanel from "./components/CountryPanel";
 import SearchBar from "./components/SearchBar";
@@ -20,6 +21,7 @@ import { useAdminAlerts } from "./hooks/useAdminAlerts";
 import { checkBadgeUpgrades } from "./utils/checkBadgeUpgrades";
 import { supabase as supabaseClient } from "./lib/supabase";
 import { COUNTRIES } from "./data/index";
+import { localizeField } from "./lib/localizeCountry";
 import { computeHighlights } from "./utils/filter";
 import { useFavorites } from "./hooks/useFavorites";
 import { useVisited } from "./hooks/useVisited";
@@ -43,6 +45,7 @@ function prep(name) {
 }
 
 function TopbarAvatar({ user, onClick, refreshKey }) {
+  const { t } = useTranslation("app");
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [displayName, setDisplayName] = useState(null);
   const name = displayName || user?.user_metadata?.display_name || user?.email || '?';
@@ -59,7 +62,7 @@ function TopbarAvatar({ user, onClick, refreshKey }) {
   }, [user, refreshKey]);
 
   return (
-    <button className="topbar-profile-btn" onClick={onClick} title="Mon profil">
+    <button className="topbar-profile-btn" onClick={onClick} title={t("topbar.myProfile")}>
       {avatarUrl
         ? <img src={avatarUrl} alt={name} className="topbar-profile-avatar-img" />
         : <div className="topbar-profile-avatar-initials" style={{ background: color }}>{initials}</div>
@@ -69,6 +72,7 @@ function TopbarAvatar({ user, onClick, refreshKey }) {
 }
 
 function AppInner() {
+  const { t, i18n } = useTranslation("app");
   const { user, isAdmin, authModalOpen, setAuthModalOpen, signOut } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const [avatarRefreshKey, setAvatarRefreshKey] = useState(0);
@@ -164,15 +168,24 @@ function AppInner() {
       url.searchParams.set("country", selectedCountry);
       // Remettre l'URL sur / si on vient d'une page /pays/[slug]
       if (url.pathname.startsWith("/pays/")) url.pathname = "/";
-      const name = COUNTRIES[selectedCountry]?.name;
-      if (name) document.title = `Partir ${prep(name)} ${name} — météo, quand partir, que faire | Triply`;
+      const rawName = COUNTRIES[selectedCountry]?.name;
+      // prep() encode une règle de grammaire française (en/au/aux) qui n'a pas
+      // d'équivalent dans les autres langues — on ne l'utilise donc que pour le
+      // titre français, les autres langues suivent un gabarit sans préposition
+      // à accorder ("Travel to {{name}}").
+      if (rawName) {
+        const name = localizeField(rawName, i18n.language);
+        document.title = i18n.language === "fr"
+          ? `Partir ${prep(localizeField(rawName, "fr"))} ${name} — météo, quand partir, que faire | Triply`
+          : t("seo.countryTitle", { name });
+      }
     } else {
       url.searchParams.delete("country");
       if (url.pathname.startsWith("/pays/")) url.pathname = "/";
-      document.title = "Triply — Où partir en vacances ? Idées de voyage & météo par pays";
+      document.title = t("seo.homeTitle");
     }
     history.replaceState(null, "", url);
-  }, [selectedCountry]);
+  }, [selectedCountry, i18n.language, t]);
   const searchContainerRef = useRef(null);
 
   const openCountry = useCallback((code, tab = null, extra = null) => {
@@ -195,11 +208,12 @@ function AppInner() {
   const searchResults = useMemo(() => {
     if (!searchActive) return [];
     const q = normalize(searchQuery.trim());
+    const lang = i18n.language;
     return Object.entries(COUNTRIES)
-      .filter(([, data]) => normalize(data.name).startsWith(q))
-      .map(([code, data]) => ({ code, data }))
-      .sort((a, b) => a.data.name.localeCompare(b.data.name, "fr"));
-  }, [searchQuery, searchActive]);
+      .map(([code, data]) => ({ code, data: { ...data, name: localizeField(data.name, lang) } }))
+      .filter(({ data }) => normalize(data.name).startsWith(q))
+      .sort((a, b) => a.data.name.localeCompare(b.data.name, lang));
+  }, [searchQuery, searchActive, i18n.language]);
 
   const searchHighlightMap = useMemo(() => {
     if (!searchActive) return null;
@@ -239,7 +253,7 @@ function AppInner() {
             <input
               type="text"
               className="topbar-search-input"
-              placeholder="Rechercher un pays…"
+              placeholder={t("topbar.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setDropdownOpen(false); }}
             />
@@ -254,7 +268,7 @@ function AppInner() {
                 className="topbar-search-count"
                 onClick={() => setDropdownOpen((o) => !o)}
               >
-                {matchCount} résultat{matchCount !== 1 ? "s" : ""}
+                {t("topbar.resultsCount", { count: matchCount })}
               </button>
             )}
           </div>
@@ -274,10 +288,10 @@ function AppInner() {
             <button
               className={`topbar-fav-btn${favPanelOpen ? " active" : ""}`}
               onClick={() => setFavPanelOpen((o) => !o)}
-              aria-label="Carnet de voyage"
+              aria-label={t("topbar.travelbookAriaLabel")}
             >
               <span>📖</span>
-              <span className="topbar-fav-label">Carnet</span>
+              <span className="topbar-fav-label">{t("topbar.travelbookLabel")}</span>
               {(favorites.length > 0 || visited.length > 0) && (
                 <span className="fav-count-badge">{favorites.length + visited.length}</span>
               )}
@@ -300,7 +314,7 @@ function AppInner() {
           <button
             className={`topbar-filter-btn${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
             onClick={() => handleFilterOpen(!filterOpen)}
-            aria-label="Filtres"
+            aria-label={t("topbar.filtersAriaLabel")}
           >
             <span>⚙️</span>
             {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>}
@@ -311,24 +325,24 @@ function AppInner() {
           <button
             className={`topbar-view-btn${listOpen ? " active" : ""}`}
             onClick={() => handleListOpen(!listOpen)}
-            aria-label="Vue liste"
+            aria-label={t("topbar.listViewAriaLabel")}
           >
             <span>📋</span>
-            <span className="topbar-view-label">Liste</span>
+            <span className="topbar-view-label">{t("topbar.listLabel")}</span>
           </button>
 
-          <Link to="/planifier" className="topbar-plan-btn" aria-label="Planifier un voyage">
+          <Link to="/planifier" className="topbar-plan-btn" aria-label={t("topbar.planTripAriaLabel")}>
             <span className="topbar-plan-icon">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
               </svg>
             </span>
-            <span className="topbar-plan-label">Planifier</span>
+            <span className="topbar-plan-label">{t("topbar.planLabel")}</span>
           </Link>
 
           <div className="topbar-badge">
             <span className="badge-dot" />
-            {countryCount} destination{countryCount > 1 ? "s" : ""} disponible{countryCount > 1 ? "s" : ""}
+            {t("topbar.destinationsAvailable", { count: countryCount })}
           </div>
 
           {user && (
@@ -336,7 +350,7 @@ function AppInner() {
               <button
                 className={`topbar-notif-btn${notifOpen ? ' active' : ''}`}
                 onClick={() => setNotifOpen((o) => !o)}
-                aria-label="Notifications"
+                aria-label={t("topbar.notificationsAriaLabel")}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6V11c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
@@ -352,8 +366,8 @@ function AppInner() {
               <button
                 className={`topbar-notif-btn topbar-admin-btn${adminPanelOpen ? ' active' : ''}`}
                 onClick={() => setAdminPanelOpen((o) => !o)}
-                aria-label="Alertes de modération"
-                title="Alertes de modération"
+                aria-label={t("topbar.moderationAlertsLabel")}
+                title={t("topbar.moderationAlertsLabel")}
               >
                 🚨
                 {alerts.length > 0 && (
@@ -364,7 +378,7 @@ function AppInner() {
           )}
           {user
             ? <TopbarAvatar user={user} onClick={() => setProfileOpen(true)} refreshKey={avatarRefreshKey} />
-            : <button className="topbar-login-btn" onClick={() => setAuthModalOpen(true)}>Connexion</button>
+            : <button className="topbar-login-btn" onClick={() => setAuthModalOpen(true)}>{t("topbar.loginButton")}</button>
           }
         </div>
       </header>
@@ -373,7 +387,7 @@ function AppInner() {
       <button
         className={`mobile-filter-fab${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
         onClick={() => handleFilterOpen(!filterOpen)}
-        aria-label="Filtres"
+        aria-label={t("topbar.filtersAriaLabel")}
       >
         <span>⚙️</span>
         {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>}

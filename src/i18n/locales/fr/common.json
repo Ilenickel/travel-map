@@ -11,5 +11,7 @@
     "close": "Fermer"
   },
   "none": "Aucun",
-  "loading": "Chargement…"
+  "loading": "Chargement…",
+  "yes": "Oui",
+  "no": "Non"
 }

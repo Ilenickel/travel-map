@@ -1,11 +1,11 @@
 export const COLOMBIA = {
   code: "COL",
   numericId: 170,
-  name: "Colombie",
+  name: { fr: "Colombie", en: "Colombia" },
   emoji: "🇨🇴",
-  capital: "Bogotá",
-  language: "Espagnol",
-  currency: "Peso colombien (COP)",
+  capital: { fr: "Bogotá", en: "Bogotá" },
+  language: { fr: "Espagnol", en: "Spanish" },
+  currency: { fr: "Peso colombien (COP)", en: "Colombian peso (COP)" },
   timezone: "UTC-5",
   filter: {
     budgetMin: 30,
@@ -13,24 +13,30 @@ export const COLOMBIA = {
     tripMin: 1400,
     tripMid: 2600,
   },
-  description:
-    "La Colombie est l'une des destinations les plus en vogue d'Amérique latine, mêlant Caraïbes turquoise, Amazonie, Andes verdoyantes et villes colorées. De Cartagena coloniale à Medellín l'innovante, en passant par la Vallée de Cocora, le pays offre une incroyable diversité.",
+  description: {
+    fr: "La Colombie est l'une des destinations les plus en vogue d'Amérique latine, mêlant Caraïbes turquoise, Amazonie, Andes verdoyantes et villes colorées. De Cartagena coloniale à Medellín l'innovante, en passant par la Vallée de Cocora, le pays offre une incroyable diversité.",
+    en: "Colombia is one of Latin America's trendiest destinations, blending turquoise Caribbean shores, the Amazon, lush Andes and colourful cities. From colonial Cartagena to innovative Medellín, via the Cocora Valley, the country offers remarkable diversity.",
+  },
 
   bestPeriods: [
     {
-      months: "Décembre – Mars",
-      label: "Saison sèche",
+      months: { fr: "Décembre – Mars", en: "December – March" },
+      label: { fr: "Saison sèche", en: "Dry season" },
       color: "#fbbf24",
-      description:
-        "Meilleure période pour Cartagena et la côte Caraïbes : soleil garanti, mer calme. Bogotá et Medellín sont agréables.",
+      description: {
+        fr: "Meilleure période pour Cartagena et la côte Caraïbes : soleil garanti, mer calme. Bogotá et Medellín sont agréables.",
+        en: "The best time for Cartagena and the Caribbean coast: guaranteed sunshine and calm seas. Bogotá and Medellín are also pleasant.",
+      },
       icon: "☀️",
     },
     {
-      months: "Juillet – Août",
-      label: "Été caraïbes",
+      months: { fr: "Juillet – Août", en: "July – August" },
+      label: { fr: "Été caraïbes", en: "Caribbean summer" },
       color: "#38bdf8",
-      description:
-        "Deuxième saison sèche, idéale pour les îles San Andrés et la côte Pacifique. Quelques pluies possibles dans les Andes.",
+      description: {
+        fr: "Deuxième saison sèche, idéale pour les îles San Andrés et la côte Pacifique. Quelques pluies possibles dans les Andes.",
+        en: "A second dry spell, ideal for the San Andrés Islands and the Pacific coast. Some rain is still possible in the Andes.",
+      },
       icon: "🏖️",
     },
   ],
@@ -39,7 +45,7 @@ export const COLOMBIA = {
     {
       id: "bogota",
       name: "Bogotá",
-      region: "Andes (2 600 m)",
+      region: { fr: "Andes (2 600 m)", en: "Andes (2,600 m)" },
       data: [
         { month: "Jan", temp: 14, rain: 45, icon: "⛅" },
         { month: "Fév", temp: 15, rain: 60, icon: "⛅" },
@@ -58,7 +64,7 @@ export const COLOMBIA = {
     {
       id: "cartagena",
       name: "Carthagène",
-      region: "Côte Caraïbes",
+      region: { fr: "Côte Caraïbes", en: "Caribbean Coast" },
       data: [
         { month: "Jan", temp: 28, rain: 20, icon: "☀️" },
         { month: "Fév", temp: 29, rain: 10, icon: "☀️" },
@@ -77,7 +83,7 @@ export const COLOMBIA = {
     {
       id: "medellin",
       name: "Medellín",
-      region: "Antioquia",
+      region: { fr: "Antioquia", en: "Antioquia" },
       data: [
         { month: "Jan", temp: 22, rain: 80, icon: "☀️" },
         { month: "Fév", temp: 22, rain: 80, icon: "☀️" },
@@ -99,156 +105,166 @@ export const COLOMBIA = {
     {
       id: 1,
       name: "Cartagena de Indias",
-      region: "Côte Caraïbes",
-      description:
-        "Ville coloniale inscrite au patrimoine UNESCO, Cartagena éblouit par ses rues colorées, ses fortifications imposantes et ses plages des îles du Rosario proches. L'ambiance caribéenne, la musique cumbia et la gastronomie côtière en font un incontournable.",
+      region: { fr: "Côte Caraïbes", en: "Caribbean Coast" },
+      description: {
+        fr: "Ville coloniale inscrite au patrimoine UNESCO, Cartagena éblouit par ses rues colorées, ses fortifications imposantes et ses plages des îles du Rosario proches. L'ambiance caribéenne, la musique cumbia et la gastronomie côtière en font un incontournable.",
+        en: "A colonial city listed as a UNESCO World Heritage Site, Cartagena dazzles with its colourful streets, imposing fortifications and nearby Rosario Islands beaches. Its Caribbean atmosphere, cumbia music and coastal cuisine make it unmissable.",
+      },
       wikipedia: "Cartagena,_Colombia",
       tags: ["Colonial", "Plage", "UNESCO", "Histoire", "Architecture"],
       mustSee: [
-        { name: "Ciudad Amurallada (vieille ville)", wikipedia: "File:City walls of Cartagena 01.jpg" },
+        { name: { fr: "Ciudad Amurallada (vieille ville)", en: "Ciudad Amurallada (old town)" }, wikipedia: "File:City walls of Cartagena 01.jpg" },
         { name: "Castillo de San Felipe", wikipedia: "Castillo_San_Felipe_de_Barajas" },
-        { name: "Îles du Rosario", wikipedia: "Rosario_Islands" },
+        { name: { fr: "Îles du Rosario", en: "Rosario Islands" }, wikipedia: "Rosario_Islands" },
         { name: "Convento de la Popa", wikipedia: "Convento_de_la_Popa" },
       ],
     },
     {
       id: 2,
       name: "Medellín",
-      region: "Antioquia",
-      description:
-        "Ancienne ville gangrenée par les cartels, Medellín est devenue un modèle d'innovation urbaine et de renaissance sociale. Le système de métrocâble, les escaliers mécaniques de la commune 13 et les parcs-bibliothèques en témoignent.",
+      region: { fr: "Antioquia", en: "Antioquia" },
+      description: {
+        fr: "Ancienne ville gangrenée par les cartels, Medellín est devenue un modèle d'innovation urbaine et de renaissance sociale. Le système de métrocâble, les escaliers mécaniques de la commune 13 et les parcs-bibliothèques en témoignent.",
+        en: "Once blighted by the cartels, Medellín has become a model of urban innovation and social renewal. Its metrocable system, the outdoor escalators in Comuna 13 and its library parks are clear proof of that transformation.",
+      },
       wikipedia: "File:Ball court - Comuna 13 - Medellín - Colombia 2024.jpg",
       tags: ["Ville", "Culture", "Transformation", "Art", "Architecture"],
       mustSee: [
         { name: "Comuna 13", wikipedia: "File:Ball court - Comuna 13 - Medellín - Colombia 2024.jpg" },
         { name: "Plaza Botero", wikipedia: "File:Medellín, Plaza Botero, 2023-07 CN-01.jpg" },
         { name: "Parque Arví", wikipedia: "File:MetrocableArví1.JPG" },
-        { name: "Musée d'Antioquia", wikipedia: "Museum_of_Antioquia" },
+        { name: { fr: "Musée d'Antioquia", en: "Museum of Antioquia" }, wikipedia: "Museum_of_Antioquia" },
       ],
     },
     {
       id: 3,
-      name: "Vallée de Cocora",
-      region: "Quindío (Zona Cafetera)",
-      description:
-        "La Vallée de Cocora abrite les palmiers de cire géants, arbres nationaux de Colombie, qui s'élèvent jusqu'à 60 m dans les nuages. La randonnée dans ce paysage unique est l'une des plus belles d'Amérique du Sud.",
+      name: { fr: "Vallée de Cocora", en: "Cocora Valley" },
+      region: { fr: "Quindío (Zona Cafetera)", en: "Quindío (Coffee Region)" },
+      description: {
+        fr: "La Vallée de Cocora abrite les palmiers de cire géants, arbres nationaux de Colombie, qui s'élèvent jusqu'à 60 m dans les nuages. La randonnée dans ce paysage unique est l'une des plus belles d'Amérique du Sud.",
+        en: "The Cocora Valley is home to giant wax palms, Colombia's national trees, which rise up to 60 metres into the clouds. Hiking through this unique landscape is one of the finest experiences in South America.",
+      },
       wikipedia: "Cocora_Valley",
       tags: ["Randonnée", "Nature", "Palmiers", "Café"],
       mustSee: [
-        { name: "Palmiers de cire", wikipedia: "File:Ceroxylon quindiuense cocora.jpg" },
+        { name: { fr: "Palmiers de cire", en: "Wax palms" }, wikipedia: "File:Ceroxylon quindiuense cocora.jpg" },
         { name: "Salento", wikipedia: "File:Campanile di Salento.jpg" },
-        { name: "Finca caféière", wikipedia: "File:Cafetales, en Colombia.jpg" },
-        { name: "Los Nevados (volcans)", wikipedia: "Los_Nevados_National_Natural_Park" },
+        { name: { fr: "Finca caféière", en: "Coffee farm" }, wikipedia: "File:Cafetales, en Colombia.jpg" },
+        { name: { fr: "Los Nevados (volcans)", en: "Los Nevados (volcanoes)" }, wikipedia: "Los_Nevados_National_Natural_Park" },
       ],
     },
     {
       id: 4,
       name: "Bogotá",
-      region: "Cundinamarca",
-      description:
-        "La haute capitale (2 600 m) est le cœur culturel de la Colombie avec ses musées de classe mondiale, le quartier historique de La Candelaria et le célèbre Musée de l'Or. Le marché de Paloquemao et la Ciclovía du dimanche sont des expériences locales authentiques.",
+      region: { fr: "Cundinamarca", en: "Cundinamarca" },
+      description: {
+        fr: "La haute capitale (2 600 m) est le cœur culturel de la Colombie avec ses musées de classe mondiale, le quartier historique de La Candelaria et le célèbre Musée de l'Or. Le marché de Paloquemao et la Ciclovía du dimanche sont des expériences locales authentiques.",
+        en: "The high-altitude capital (2,600 m) is Colombia's cultural heart, with world-class museums, the historic La Candelaria district and the famous Gold Museum. Paloquemao Market and the Sunday Ciclovía are authentic local experiences.",
+      },
       wikipedia: "File:Capitalio National de Colombia, Bogotá.jpg",
       tags: ["Ville", "Culture", "Musées", "Gastronomie"],
       mustSee: [
-        { name: "Musée de l'Or", wikipedia: "File:BOG Museo del Oro.JPG" },
+        { name: { fr: "Musée de l'Or", en: "Gold Museum" }, wikipedia: "File:BOG Museo del Oro.JPG" },
         { name: "Candelaria", wikipedia: "File:La Candelaria, Bogota, Colombia (5818105341).jpg" },
         { name: "Cerro Monserrate", wikipedia: "File:Cerro Monserrate - Bogotá.JPG" },
-        { name: "Marché Paloquemao", wikipedia: "File:Bogotá_plaza_de_Paloquemao.JPG" },
+        { name: { fr: "Marché Paloquemao", en: "Paloquemao Market" }, wikipedia: "File:Bogotá_plaza_de_Paloquemao.JPG" },
       ],
     },
   ],
 
   costOfLiving: {
-    intro:
-      "La Colombie est l'une des destinations les plus abordables d'Amérique latine. Les coûts sont très variables selon la région : Cartagena est plus chère que les villes andines.",
+    intro: {
+      fr: "La Colombie est l'une des destinations les plus abordables d'Amérique latine. Les coûts sont très variables selon la région : Cartagena est plus chère que les villes andines.",
+      en: "Colombia is one of the most affordable destinations in Latin America. Costs vary greatly by region: Cartagena is pricier than the Andean cities.",
+    },
     currency: "Peso colombien (COP)",
     exchangeRate: "1€ ≈ 4 300–4 500 COP",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
-          { label: "Dortoir auberge de jeunesse", price: "8–14 €", detail: "Bogotá, Medellín, très bon réseau" },
-          { label: "Chambre double hôtel 3★", price: "25–50 €", detail: "Confort correct, souvent piscine" },
-          { label: "Boutique hôtel Cartagena", price: "70–150 €", detail: "Maisons coloniales dans la vieille ville" },
+          { label: { fr: "Dortoir auberge de jeunesse", en: "Hostel dorm bed" }, price: "8–14 €", detail: { fr: "Bogotá, Medellín, très bon réseau", en: "Bogotá and Medellín have an excellent hostel network" } },
+          { label: { fr: "Chambre double hôtel 3★", en: "3★ hotel double room" }, price: "25–50 €", detail: { fr: "Confort correct, souvent piscine", en: "Good comfort, often with a pool" } },
+          { label: { fr: "Boutique hôtel Cartagena", en: "Boutique hotel in Cartagena" }, price: "70–150 €", detail: { fr: "Maisons coloniales dans la vieille ville", en: "Colonial houses in the old town" } },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
-          { label: "Almuerzo (menu du midi)", price: "3–5 €", detail: "Soupe + plat + boisson, très copieux" },
-          { label: "Bandeja paisa (plat national)", price: "5–8 €", detail: "Riz, haricots, chicharron, œuf, avocat" },
-          { label: "Restaurant mid-range", price: "10–20 €", detail: "Poisson ou viande avec verre de vin" },
+          { label: { fr: "Almuerzo (menu du midi)", en: "Almuerzo (set lunch)" }, price: "3–5 €", detail: { fr: "Soupe + plat + boisson, très copieux", en: "Soup + main course + drink, very filling" } },
+          { label: { fr: "Bandeja paisa (plat national)", en: "Bandeja paisa (national dish)" }, price: "5–8 €", detail: { fr: "Riz, haricots, chicharron, œuf, avocat", en: "Rice, beans, chicharrón, egg and avocado" } },
+          { label: { fr: "Restaurant mid-range", en: "Mid-range restaurant" }, price: "10–20 €", detail: { fr: "Poisson ou viande avec verre de vin", en: "Fish or meat with a glass of wine" } },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
-          { label: "Transmilenio Bogotá (BRT)", price: "0,50 €", detail: "Trajet unique, réseau étendu" },
-          { label: "Vol intérieur (ex: Bogotá–Cartagena)", price: "40–80 €", detail: "VivaAir, Avianca selon réservation" },
+          { label: { fr: "Transmilenio Bogotá (BRT)", en: "Bogotá TransMilenio (BRT)" }, price: "0,50 €", detail: { fr: "Trajet unique, réseau étendu", en: "Single ride, extensive network" } },
+          { label: { fr: "Vol intérieur (ex: Bogotá–Cartagena)", en: "Domestic flight (e.g. Bogotá–Cartagena)" }, price: "40–80 €", detail: { fr: "VivaAir, Avianca selon réservation", en: "VivaAir or Avianca depending on when you book" } },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités & Culture",
+        label: { fr: "Activités & Culture", en: "Activities & Culture" },
         items: [
-          { label: "Excursion Îles du Rosario (journée)", price: "25–40 €", detail: "Bateau + snorkeling" },
-          { label: "Tour à vélo Bogotá", price: "15–25 €", detail: "Visite des quartiers en petit groupe" },
+          { label: { fr: "Excursion Îles du Rosario (journée)", en: "Rosario Islands day trip" }, price: "25–40 €", detail: { fr: "Bateau + snorkeling", en: "Boat trip + snorkelling" } },
+          { label: { fr: "Tour à vélo Bogotá", en: "Bogotá bike tour" }, price: "15–25 €", detail: { fr: "Visite des quartiers en petit groupe", en: "Small-group neighbourhood tour" } },
         ],
       },
     ],
     budgetSummary: [
-      { type: "Routard", daily: "30–45 €/j", desc: "Auberge, almuerzo, transports locaux", color: "#22c55e" },
-      { type: "Confort", daily: "65–100 €/j", desc: "Hôtel 3★, restaurants mid-range, excursions", color: "#3b82f6" },
-      { type: "Luxe", daily: "180 €+/j", desc: "Hôtel colonial, gastronomie, voiture avec chauffeur", color: "#f59e0b" },
+      { type: { fr: "Routard", en: "Backpacker" }, daily: "30–45 €/j", desc: { fr: "Auberge, almuerzo, transports locaux", en: "Hostel, almuerzo and local transport" }, color: "#22c55e" },
+      { type: { fr: "Confort", en: "Comfort" }, daily: "65–100 €/j", desc: { fr: "Hôtel 3★, restaurants mid-range, excursions", en: "3★ hotel, mid-range restaurants and excursions" }, color: "#3b82f6" },
+      { type: { fr: "Luxe", en: "Luxury" }, daily: "180 €+/j", desc: { fr: "Hôtel colonial, gastronomie, voiture avec chauffeur", en: "Colonial hotel, fine dining and car with driver" }, color: "#f59e0b" },
     ],
     tripEstimate: {
-      duration: "2 semaines",
-      route: "Bogotá – Medellín – Zona Cafetera – Cartagena",
+      duration: { fr: "2 semaines", en: "2 weeks" },
+      route: { fr: "Bogotá – Medellín – Zona Cafetera – Cartagena", en: "Bogotá – Medellín – Coffee Region – Cartagena" },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "1 400 – 1 800 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Bogotá", amount: "600–800 €" },
-            { label: "Hébergement (14 nuits)", amount: "250–400 €" },
-            { label: "Nourriture", amount: "200–300 €" },
-            { label: "Transport local + vols intérieurs", amount: "150–250 €" },
-            { label: "Activités & imprévus", amount: "100–200 €" },
+            { label: { fr: "Vol A/R Paris–Bogotá", en: "Return flight Paris–Bogotá" }, amount: "600–800 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "250–400 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "200–300 €" },
+            { label: { fr: "Transport local + vols intérieurs", en: "Local transport + domestic flights" }, amount: "150–250 €" },
+            { label: { fr: "Activités & imprévus", en: "Activities & contingency" }, amount: "100–200 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "2 600 – 3 500 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Bogotá", amount: "800–1 000 €" },
-            { label: "Hébergement (14 nuits)", amount: "600–900 €" },
-            { label: "Nourriture", amount: "500–700 €" },
-            { label: "Transport + vols intérieurs", amount: "350–500 €" },
-            { label: "Activités & imprévus", amount: "300–450 €" },
+            { label: { fr: "Vol A/R Paris–Bogotá", en: "Return flight Paris–Bogotá" }, amount: "800–1 000 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "600–900 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "500–700 €" },
+            { label: { fr: "Transport + vols intérieurs", en: "Transport + domestic flights" }, amount: "350–500 €" },
+            { label: { fr: "Activités & imprévus", en: "Activities & contingency" }, amount: "300–450 €" },
           ],
         },
         {
-          type: "Luxe",
+          type: { fr: "Luxe", en: "Luxury" },
           color: "#f59e0b",
           total: "6 000 €+",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Bogotá (Business)", amount: "2 500–3 500 €" },
-            { label: "Hébergement (14 nuits)", amount: "1 500–2 200 €" },
-            { label: "Nourriture & restaurants", amount: "600–900 €" },
-            { label: "Transport & excursions privées", amount: "400–600 €" },
-            { label: "Activités premium", amount: "300–500 €" },
+            { label: { fr: "Vol A/R Paris–Bogotá (Business)", en: "Return flight Paris–Bogotá (business)" }, amount: "2 500–3 500 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "1 500–2 200 €" },
+            { label: { fr: "Nourriture & restaurants", en: "Food & restaurants" }, amount: "600–900 €" },
+            { label: { fr: "Transport & excursions privées", en: "Transport & private excursions" }, amount: "400–600 €" },
+            { label: { fr: "Activités premium", en: "Premium activities" }, amount: "300–500 €" },
           ],
         },
       ],
@@ -256,13 +272,13 @@ export const COLOMBIA = {
   },
 
   practicalities: [
-    { icon: "✈️", label: "Vol depuis Paris", value: "~11–12h (Air France, Iberia, KLM)" },
-    { icon: "🪪", label: "Visa", value: "Sans visa pour les Français (90 jours)" },
-    { icon: "💰", label: "Monnaie", value: "Peso colombien (1€ ≈ 4 300–4 500 COP)" },
-    { icon: "🗣️", label: "Langue", value: "Espagnol" },
-    { icon: "🔌", label: "Prise électrique", value: "Type A/B – 110 V (adaptateur nécessaire)" },
-    { icon: "📱", label: "Réseau", value: "4G dans les villes, SIM locale chez Claro ou Tigo" },
-    { icon: "🚰", label: "Eau du robinet", value: "Non potable partout, eau en bouteille recommandée" },
-    { icon: "💊", label: "Santé", value: "Vaccin fièvre jaune recommandé pour les zones forestières" },
+    { icon: "✈️", label: { fr: "Vol depuis Paris", en: "Flight from Paris" }, value: { fr: "~11–12h (Air France, Iberia, KLM)", en: "~11–12h (Air France, Iberia, KLM)" } },
+    { icon: "🪪", label: { fr: "Visa", en: "Visa" }, value: { fr: "Sans visa pour les Français (90 jours)", en: "No visa required for French citizens (90 days)" } },
+    { icon: "💰", label: { fr: "Monnaie", en: "Currency" }, value: { fr: "Peso colombien (1€ ≈ 4 300–4 500 COP)", en: "Colombian peso (1€ ≈ 4,300–4,500 COP)" } },
+    { icon: "🗣️", label: { fr: "Langue", en: "Language" }, value: { fr: "Espagnol", en: "Spanish" } },
+    { icon: "🔌", label: { fr: "Prise électrique", en: "Power outlet" }, value: { fr: "Type A/B – 110 V (adaptateur nécessaire)", en: "Type A/B – 110 V (adapter required)" } },
+    { icon: "📱", label: { fr: "Réseau", en: "Network" }, value: { fr: "4G dans les villes, SIM locale chez Claro ou Tigo", en: "4G in cities, local SIM from Claro or Tigo" } },
+    { icon: "🚰", label: { fr: "Eau du robinet", en: "Tap water" }, value: { fr: "Non potable partout, eau en bouteille recommandée", en: "Not drinkable everywhere, bottled water recommended" } },
+    { icon: "💊", label: { fr: "Santé", en: "Health" }, value: { fr: "Vaccin fièvre jaune recommandé pour les zones forestières", en: "Yellow fever vaccine recommended for forested areas" } },
   ],
 };

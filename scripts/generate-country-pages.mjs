@@ -21,9 +21,11 @@ const SRC_DATA = path.join(ROOT, "src", "data");
 function readCountry(file) {
   try {
     const content = fs.readFileSync(path.join(SRC_DATA, file), "utf-8");
-    const nameMatch = content.match(/name\s*:\s*["'`]([^"'`]+)["'`]/);
-    const descMatch = content.match(/description\s*:\s*["'`\n\s]+([\s\S]+?)["'`],?\s*\n/);
-    const capitalMatch = content.match(/capital\s*:\s*["'`]([^"'`]+)["'`]/);
+    // Champ top-level uniquement (name/capital en tête de fichier), en tolérant
+    // le format simple `name: "..."` ou bilingue `name: { fr: "...", en: "..." }`.
+    const nameMatch = content.match(/^\s*name\s*:\s*(?:\{[^}]*?fr\s*:\s*["'`]([^"'`]+)["'`]|["'`]([^"'`]+)["'`])/m);
+    const descMatch = content.match(/^\s*description\s*:\s*(?:\{\s*fr\s*:\s*["'`\n\s]+([\s\S]+?)["'`],\s*\n|["'`\n\s]+([\s\S]+?)["'`],?\s*\n)/m);
+    const capitalMatch = content.match(/^\s*capital\s*:\s*(?:\{[^}]*?fr\s*:\s*["'`]([^"'`]+)["'`]|["'`]([^"'`]+)["'`])/m);
     const emojiMatch = content.match(/emoji\s*:\s*["'`]([^"'`]+)["'`]/);
     const codeMatch = content.match(/code\s*:\s*["'`]([^"'`]+)["'`]/);
     const tagsMatch = content.match(/tags\s*:\s*\[([^\]]+)\]/s);
@@ -32,9 +34,9 @@ function readCountry(file) {
       : [];
     return {
       code: codeMatch?.[1] ?? null,
-      name: nameMatch?.[1] ?? null,
-      description: descMatch?.[1]?.replace(/\s+/g, " ").trim() ?? null,
-      capital: capitalMatch?.[1] ?? null,
+      name: (nameMatch?.[1] ?? nameMatch?.[2]) ?? null,
+      description: (descMatch?.[1] ?? descMatch?.[2])?.replace(/\s+/g, " ").trim() ?? null,
+      capital: (capitalMatch?.[1] ?? capitalMatch?.[2]) ?? null,
       emoji: emojiMatch?.[1] ?? null,
       tags,
     };

@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
+import { localizeCountry } from "../lib/localizeCountry";
 
 function parseDailyAvg(data) {
   const str = data.costOfLiving?.budgetSummary?.[0]?.daily ?? "";
@@ -9,6 +11,7 @@ function parseDailyAvg(data) {
 }
 
 export default function ListView({ onCountryClick, highlightMap, filterActive, favorites, visited = [], hideVisited = false, onCountryHover }) {
+  const { t, i18n } = useTranslation("app");
   const [sortBy, setSortBy] = useState("name");
   const [sortDir, setSortDir] = useState(1);
 
@@ -20,14 +23,14 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
   const entries = useMemo(() => {
     const list = Object.entries(COUNTRIES).map(([code, data]) => ({
       code,
-      data,
+      data: localizeCountry(data, i18n.language),
       matched: !filterActive || !!highlightMap?.[code],
       color: highlightMap?.[code] ?? null,
       isVisited: visited.includes(code),
     }));
 
     list.sort((a, b) => {
-      if (sortBy === "name") return sortDir * a.data.name.localeCompare(b.data.name, "fr");
+      if (sortBy === "name") return sortDir * a.data.name.localeCompare(b.data.name, i18n.language);
       if (sortBy === "budget") {
         return sortDir * (parseDailyAvg(a.data) - parseDailyAvg(b.data));
       }
@@ -39,7 +42,7 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
     }
 
     return hideVisited ? list.filter((e) => !e.isVisited) : list;
-  }, [sortBy, sortDir, highlightMap, filterActive, visited, hideVisited]);
+  }, [sortBy, sortDir, highlightMap, filterActive, visited, hideVisited, i18n.language]);
 
   const SortBtn = ({ field, label }) => (
     <button
@@ -55,13 +58,13 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
       <div className="list-view-toolbar">
         <span className="list-view-count">
           {filterActive
-            ? `${entries.filter((e) => e.matched).length} / ${entries.length} destinations`
-            : `${entries.length} destinations`}
+            ? t("listView.destinationsCountFiltered", { matched: entries.filter((e) => e.matched).length, total: entries.length })
+            : t("listView.destinationsCount", { count: entries.length })}
         </span>
         <div className="list-sort-group">
-          <span className="list-sort-label">Trier :</span>
-          <SortBtn field="name" label="Nom" />
-          <SortBtn field="budget" label="Budget" />
+          <span className="list-sort-label">{t("listView.sortLabel")}</span>
+          <SortBtn field="name" label={t("listView.sortByName")} />
+          <SortBtn field="budget" label={t("listView.sortByBudget")} />
         </div>
       </div>
 

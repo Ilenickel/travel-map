@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import ReviewItem from './ReviewItem';
 
 const PAGE_SIZE = 10;
 
 export default function ReviewList({ countryCode, destinationId, currentUserId, refreshKey, sortBy = 'date', excludeId, onEdit, onDelete, onOpenProfile, emptyMessage, highlightId, alertIds = new Map(), onAdminAction }) {
+  const { t } = useTranslation('app');
   const [myReview, setMyReview] = useState(null);
   const [highlightedReview, setHighlightedReview] = useState(null);
   const [otherReviews, setOtherReviews] = useState([]);
@@ -176,8 +178,8 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
     (!highlightedReview || highlightedReview.id === excludeId) &&
     sortedOthers.length === 0;
 
-  if (loading) return <div className="review-list-loading">Chargement des avis…</div>;
-  if (isEmpty) return <div className="review-list-empty">{emptyMessage || 'Aucun avis pour ce pays. Soyez le premier !'}</div>;
+  if (loading) return <div className="review-list-loading">{t('reviewList.loadingReviews')}</div>;
+  if (isEmpty) return <div className="review-list-empty">{emptyMessage || t('reviewList.defaultEmptyMessage')}</div>;
 
   const remaining = totalOtherCount - otherReviews.length;
 
@@ -185,7 +187,7 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
     <div className="review-list">
       {myReview && myReview.id !== excludeId && (
         <div className="review-mon-avis-block">
-          <span className="review-mon-avis-label">Mon avis</span>
+          <span className="review-mon-avis-label">{t('reviewList.myReviewLabel')}</span>
           <ReviewItem
             review={myReview}
             currentUserId={currentUserId}
@@ -235,10 +237,10 @@ export default function ReviewList({ countryCode, destinationId, currentUserId, 
       {hasMore && (
         <button className="review-load-more-btn" onClick={fetchMore} disabled={loadingMore}>
           {loadingMore
-            ? 'Chargement…'
+            ? t('common:loading')
             : remaining > 0
-              ? `Afficher plus (${remaining} restant${remaining > 1 ? 's' : ''})`
-              : 'Afficher plus'}
+              ? t('reviewList.showMoreWithRemaining', { count: remaining })
+              : t('reviewList.showMoreButton')}
         </button>
       )}
     </div>

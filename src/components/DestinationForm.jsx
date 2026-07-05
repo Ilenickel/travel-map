@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import imageCompression from "browser-image-compression";
 import { supabase } from "../lib/supabase";
 import { callModeration } from "../lib/moderation";
@@ -57,6 +58,7 @@ export default function DestinationForm({
   existingDestinations = [],
   onSuccess, onCancel,
 }) {
+  const { t } = useTranslation('app');
   const { user } = useAuth();
   const [name, setName] = useState(existingDestination?.name ?? '');
   const [description, setDescription] = useState(existingDestination?.description ?? '');
@@ -144,7 +146,7 @@ export default function DestinationForm({
 
     async function cleanupAndFail(msg) {
       if (uploadedPaths.length) await supabase.storage.from('destination-photos').remove(uploadedPaths);
-      setError(msg || "Une erreur est survenue. Vérifiez votre connexion et réessayez.");
+      setError(msg || t('destinationForm.genericError'));
       setSubmitting(false); setUploadProgress(null);
     }
 
@@ -163,7 +165,7 @@ export default function DestinationForm({
       if (destImage.file) {
         const path = `destinations/${user.id}/${countryCode}_dest_${Date.now()}_${Math.random().toString(36).slice(2)}`;
         const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, destImage.file);
-        if (upErr) { await cleanupAndFail("Impossible d'envoyer la photo de couverture. Vérifiez votre connexion et réessayez."); return; }
+        if (upErr) { await cleanupAndFail(t('destinationForm.coverUploadError')); return; }
         uploadedPaths.push(path); coverNewPath = path;
         finalDestUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
         setUploadProgress({ done: ++doneUploads, total: totalUploads });
@@ -175,7 +177,7 @@ export default function DestinationForm({
         if (place.file) {
           const path = `places/${user.id}/${countryCode}_place_${idx}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
           const { error: upErr } = await supabase.storage.from('destination-photos').upload(path, place.file);
-          if (upErr) { await cleanupAndFail(`Impossible d'envoyer la photo du lieu ${idx + 1}. Vérifiez votre connexion et réessayez.`); return; }
+          if (upErr) { await cleanupAndFail(t('destinationForm.placeUploadError', { index: idx + 1 })); return; }
           uploadedPaths.push(path); placeNewPath = path;
           finalUrl = supabase.storage.from('destination-photos').getPublicUrl(path).data.publicUrl;
           setUploadProgress({ done: ++doneUploads, total: totalUploads });
@@ -212,7 +214,7 @@ export default function DestinationForm({
         setSubmitting(false);
         return;
       }
-      setError(result.reason || "La publication n'a pas pu être vérifiée. Réessayez.");
+      setError(result.reason || t('destinationForm.verificationFailed'));
       setSubmitting(false);
       return;
     }
@@ -241,7 +243,7 @@ export default function DestinationForm({
     e.preventDefault();
     setTriedSubmit(true);
     if (!isValid) {
-      setError('Merci de renseigner le nom, la description, une photo de couverture et au moins un lieu avec photo.');
+      setError(t('destinationForm.missingFieldsError'));
       return;
     }
 
@@ -282,26 +284,26 @@ export default function DestinationForm({
     {duplicateFound && (
       <div className="dest-duplicate-overlay">
         <div className="dest-duplicate-box">
-          <div className="dest-duplicate-title">🔄 Destination similaire trouvée</div>
+          <div className="dest-duplicate-title">{t('destinationForm.duplicateFoundTitle')}</div>
           <p className="dest-duplicate-msg">
-            La destination <strong>{duplicateFound.matchedName}</strong> existe déjà dans ce pays.
+            {t('destinationForm.duplicateExistsPrefix')} <strong>{duplicateFound.matchedName}</strong> {t('destinationForm.duplicateExistsSuffix')}
             {canMerge
-              ? <><br />Voulez-vous y ajouter vos nouveaux lieux ?</>
-              : <><br />Vous pouvez retrouver cette destination dans la liste et y ajouter vos lieux manquants directement via le bouton <strong>Ajouter un lieu</strong>.</>
+              ? <><br />{t('destinationForm.duplicateMergeQuestion')}</>
+              : <><br />{t('destinationForm.duplicateAddManually')} <strong>{t('destinationForm.duplicateAddManuallyButton')}</strong>.</>
             }
           </p>
           {canMerge && (
             <p className="dest-duplicate-hint">
-              Les lieux au nom trop similaire à ceux déjà présents seront ignorés automatiquement.
+              {t('destinationForm.duplicateMergeHint')}
             </p>
           )}
           <div className="dest-duplicate-actions">
             <button type="button" className="dest-duplicate-btn--cancel" onClick={() => setDuplicateFound(null)}>
-              {canMerge ? 'Non, annuler' : 'OK'}
+              {canMerge ? t('destinationForm.cancelMergeButton') : t('destinationForm.okButton')}
             </button>
             {canMerge && (
               <button type="button" className="dest-duplicate-btn--merge" onClick={handleConfirmMerge} disabled={submitting}>
-                {submitting ? 'Fusion en cours…' : 'Oui, fusionner'}
+                {submitting ? t('destinationForm.mergingInProgress') : t('destinationForm.confirmMergeButton')}
               </button>
             )}
           </div>
@@ -312,7 +314,7 @@ export default function DestinationForm({
     <form className="dest-form" onSubmit={handleSubmit}>
       <div className="dest-form-header">
         <span className="dest-form-header-title">
-          {existingDestination ? 'Modifier la destination' : 'Nouvelle destination'}
+          {existingDestination ? t('destinationForm.editTitle') : t('destinationForm.newTitle')}
         </span>
         <button type="button" className="dest-form-header-close" onClick={onCancel}>✕</button>
       </div>
@@ -324,12 +326,12 @@ export default function DestinationForm({
             <div className="dest-form-cover-preview">
               <img src={destImage.preview} alt="Couverture" className="dest-form-cover-img dest-form-cover-img--clickable" onClick={() => setLightboxUrl(destImage.preview)} />
               {compressingSlot === 'dest' && (
-                <div className="dest-form-cover-loading"><div className="dest-form-spinner" /><span>Compression…</span></div>
+                <div className="dest-form-cover-loading"><div className="dest-form-spinner" /><span>{t('destinationForm.compressing')}</span></div>
               )}
               {!submitting && compressingSlot !== 'dest' && (
                 <>
                   <label className="dest-form-cover-change">
-                    📷 Changer
+                    {t('destinationForm.changePhoto')}
                     <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleDestImage} />
                   </label>
                   <button type="button" className="dest-form-cover-remove"
@@ -340,12 +342,12 @@ export default function DestinationForm({
           ) : (
             <label className={`dest-form-cover-empty${compressingSlot === 'dest' ? ' loading' : ''}`}>
               {compressingSlot === 'dest' ? (
-                <><div className="dest-form-spinner" /><span>Compression en cours…</span></>
+                <><div className="dest-form-spinner" /><span>{t('destinationForm.compressingInProgress')}</span></>
               ) : (
                 <>
                   <span className="dest-form-cover-icon">🖼</span>
-                  <span className="dest-form-cover-hint">Photo de couverture <span className="required">*</span></span>
-                  <span className="dest-form-cover-sub">Cliquez pour choisir une image</span>
+                  <span className="dest-form-cover-hint">{t('destinationForm.coverHint')} <span className="required">*</span></span>
+                  <span className="dest-form-cover-sub">{t('destinationForm.coverSub')}</span>
                 </>
               )}
               <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleDestImage} disabled={isCompressing} />
@@ -358,7 +360,7 @@ export default function DestinationForm({
             className="dest-form-name-input"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Nom de la destination *"
+            placeholder={t('destinationForm.namePlaceholder')}
             maxLength={100}
           />
           <div className="dest-form-desc-wrap">
@@ -366,7 +368,7 @@ export default function DestinationForm({
               className="dest-form-desc-input"
               value={description}
               onChange={e => setDescription(e.target.value)}
-              placeholder="Décrivez cette destination…"
+              placeholder={t('destinationForm.descriptionPlaceholder')}
               rows={4}
               maxLength={2000}
             />
@@ -376,8 +378,8 @@ export default function DestinationForm({
 
         <div className="dest-form-section">
           <div className="dest-form-section-label">
-            Tags
-            <span className="dest-form-section-hint">{tags.length === 0 ? '7 maximum' : `${tags.length} / 7 maximum`}</span>
+            {t('destinationForm.tagsLabel')}
+            <span className="dest-form-section-hint">{tags.length === 0 ? t('destinationForm.tagsMax') : t('destinationForm.tagsCount', { count: tags.length })}</span>
           </div>
           <div className="dest-form-tags-grid">
             {AVAILABLE_TAGS.map(tag => {
@@ -394,25 +396,25 @@ export default function DestinationForm({
 
         <div className="dest-form-section">
           <div className="dest-form-section-label">
-            Lieux à visiter <span className="required">*</span>
+            {t('destinationForm.placesLabel')} <span className="required">*</span>
             <span className="dest-form-section-hint">{places.length}/10</span>
           </div>
 
           {places.map((place, idx) => (
             <div key={idx} className="dest-form-place-block">
               <div className="dest-form-place-header">
-                <span className="dest-form-place-num">Lieu {idx + 1}</span>
+                <span className="dest-form-place-num">{t('destinationForm.placeNum', { num: idx + 1 })}</span>
                 <button type="button" className="dest-form-place-remove"
                   disabled={places.length === 1} onClick={() => removePlace(idx)}
-                  title={places.length === 1 ? "Au moins un lieu requis" : "Retirer ce lieu"}>✕</button>
+                  title={places.length === 1 ? t('destinationForm.placeAtLeastOne') : t('destinationForm.placeRemove')}>✕</button>
               </div>
-              <input className="dest-form-input" placeholder="Nom du lieu *" value={place.name} maxLength={100}
+              <input className="dest-form-input" placeholder={t('destinationForm.placeNamePlaceholder')} value={place.name} maxLength={100}
                 onChange={e => setPlaces(prev => prev.map((p, i) => i === idx ? { ...p, name: e.target.value } : p))}
               />
               <div className="dest-form-place-img-row">
                 {compressingSlot === idx ? (
                   <div className="dest-form-place-compressing">
-                    <div className="dest-form-spinner dest-form-spinner--small" /><span>Compression en cours…</span>
+                    <div className="dest-form-spinner dest-form-spinner--small" /><span>{t('destinationForm.compressingInProgress')}</span>
                   </div>
                 ) : place.preview ? (
                   <div className="dest-form-img-preview-wrap">
@@ -421,7 +423,7 @@ export default function DestinationForm({
                       <>
                         <button type="button" className="dest-form-img-remove"
                           onClick={() => setPlaces(prev => prev.map((p, i) => i === idx ? { ...p, file: null, preview: null, url: null } : p))}>✕</button>
-                        <label className="dest-form-place-img-change" title="Changer la photo">
+                        <label className="dest-form-place-img-change" title={t('destinationForm.changePhotoTitle')}>
                           📷
                           <input type="file" accept="image/*" style={{ display: 'none' }}
                             onChange={e => handlePlaceImage(e, idx)} disabled={isCompressing} />
@@ -431,7 +433,7 @@ export default function DestinationForm({
                   </div>
                 ) : (
                   <label className={`dest-form-img-btn dest-form-img-btn--small${isCompressing ? ' disabled' : ''}`}>
-                    📷 Ajouter une photo *
+                    {t('destinationForm.addPhotoButton')}
                     <input type="file" accept="image/*" style={{ display: 'none' }}
                       onChange={e => handlePlaceImage(e, idx)} disabled={isCompressing} />
                   </label>
@@ -443,7 +445,7 @@ export default function DestinationForm({
           <button type="button"
             className={`dest-form-add-place-btn${places.length >= 10 ? ' disabled' : ''}`}
             disabled={places.length >= 10} onClick={addPlace}>
-            ＋ Ajouter un lieu{places.length >= 10 ? ' (max atteint)' : ''}
+            {places.length >= 10 ? t('destinationForm.addPlaceButtonMax') : t('destinationForm.addPlaceButton')}
           </button>
         </div>
 
@@ -452,7 +454,7 @@ export default function DestinationForm({
             <div className="dest-form-progress-track">
               <div className="dest-form-progress-fill" style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }} />
             </div>
-            <span>Envoi… {uploadProgress.done}/{uploadProgress.total}</span>
+            <span>{t('destinationForm.uploading', { done: uploadProgress.done, total: uploadProgress.total })}</span>
           </div>
         )}
 
@@ -465,9 +467,9 @@ export default function DestinationForm({
       </div>
 
       <div className="dest-form-footer">
-        <button type="button" className="dest-form-cancel-btn" onClick={onCancel}>Annuler</button>
+        <button type="button" className="dest-form-cancel-btn" onClick={onCancel}>{t('destinationForm.cancelButton')}</button>
         <button type="submit" className="dest-form-submit-btn" disabled={!isValid || submitting || isCompressing}>
-          {submitting ? 'Publication…' : existingDestination ? 'Mettre à jour' : 'Publier →'}
+          {submitting ? t('destinationForm.publishing') : existingDestination ? t('destinationForm.updateButton') : t('destinationForm.publishButton')}
         </button>
       </div>
     </form>

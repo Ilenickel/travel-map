@@ -1,14 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { findCountry, COUNTRIES } from '../data/index';
+import { localizeField } from '../lib/localizeCountry';
+import i18n from '../i18n';
 
 function parseDestId(destId) {
   if (!destId) return { countryCode: null, localId: destId, countryMeta: null, dest: null };
   for (const code of Object.keys(COUNTRIES)) {
     if (destId.startsWith(code + '_')) {
       const localId = destId.slice(code.length + 1);
-      const dest = COUNTRIES[code].destinations?.find((d) => String(d.id) === localId);
+      const rawDest = COUNTRIES[code].destinations?.find((d) => String(d.id) === localId);
+      const dest = rawDest ? { ...rawDest, name: localizeField(rawDest.name, i18n.language) } : null;
       return { countryCode: code, localId, countryMeta: findCountry(code), dest };
     }
   }
@@ -16,16 +20,7 @@ function parseDestId(destId) {
 }
 import { HalfStars } from './ReviewItem';
 import BadgeSection from './BadgeSection';
-
-function relativeTime(dateStr) {
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
-  if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
-  if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-  if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-  if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
-  return rtf.format(-Math.floor(diff / 2592000), 'month');
-}
+import { relativeTime } from '../lib/relativeTime';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 function avatarColor(name) { return AVATAR_COLORS[(name || '?').charCodeAt(0) % AVATAR_COLORS.length]; }
@@ -49,6 +44,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function PublicProfileModal({ userId: initialUserId, onClose, onOpenCountry, onFollowChange }) {
+  const { t } = useTranslation('app');
   const { user } = useAuth();
   const [userId, setUserId] = useState(initialUserId);
   const [profile, setProfile] = useState(null);
@@ -98,7 +94,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
       supabase.from('follows').select('follower_id', { count: 'exact' }).eq('following_id', userId),
       supabase.from('user_destinations').select('country_code').eq('user_id', userId),
     ]).then(([{ data: prof }, { data: revs }, { data: dRevs }, { count: fCount }, { data: udData }]) => {
-      setProfile(prof || { display_name: 'Voyageur', avatar_url: null });
+      setProfile(prof || { display_name: t('review.travelerFallback'), avatar_url: null });
       setReviews(revs || []);
       const counts = {};
       (dRevs || []).forEach((r) => {
@@ -194,7 +190,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
     setLoadedAddedDestGroups(prev => ({ ...prev, [key]: data || [] }));
     setLoadingAddedDestGroups(prev => { const s = new Set(prev); s.delete(key); return s; });
   }
-  const name = profile?.display_name || 'Voyageur';
+  const name = profile?.display_name || t('review.travelerFallback');
   const totalReviews = reviews.length + totalDestReviews;
 
   function reviewPhotos(r) {
@@ -219,12 +215,12 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
             <div className="pub-profile-info">
               <div className="profile-modal-name-row">
                 <h2 className="pub-profile-name">{name}</h2>
-                {profile?.is_admin && <span className="admin-badge">🛡️ Admin</span>}
+                {profile?.is_admin && <span className="admin-badge">{t('profile.adminBadge')}</span>}
               </div>
               <div className="pub-profile-stats">
                 <div className="pub-profile-stat">
                   <span className="pub-profile-stat-value">{followerCount}</span>
-                  <span className="pub-profile-stat-label">abonné{followerCount !== 1 ? 's' : ''}</span>
+                  <span className="pub-profile-stat-label">{t('profile.followersLabel', { count: followerCount })}</span>
                 </div>
               </div>
             </div>
@@ -236,7 +232,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
                 onMouseEnter={() => setFollowHovered(true)}
                 onMouseLeave={() => setFollowHovered(false)}
               >
-                {followLoading ? '…' : isFollowing ? (followHovered ? 'Se désabonner' : 'Abonné ✓') : 'S\'abonner'}
+                {followLoading ? '…' : isFollowing ? (followHovered ? t('publicProfile.unfollowButton') : t('publicProfile.followingButton')) : t('publicProfile.followButton')}
               </button>
             )}
           </div>
@@ -252,21 +248,21 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
             className={`pub-profile-main-tab${mainTab === 'reviews' ? ' active' : ''}`}
             onClick={() => setMainTab('reviews')}
           >
-            Avis
+            {t('publicProfile.reviewsTab')}
             {totalReviews > 0 && <span className="profile-tab-count">{totalReviews}</span>}
           </button>
           <button
             className={`pub-profile-main-tab${mainTab === 'destinations' ? ' active' : ''}`}
             onClick={() => setMainTab('destinations')}
           >
-            Destinations
+            {t('publicProfile.destinationsTab')}
             {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
           </button>
           <button
             className={`pub-profile-main-tab${mainTab === 'visited' ? ' active' : ''}`}
             onClick={() => setMainTab('visited')}
           >
-            Pays visités
+            {t('publicProfile.visitedCountriesTab')}
             {showVisited && visitedCountries.length > 0 && <span className="profile-tab-count">{visitedCountries.length}</span>}
           </button>
         </div>
@@ -278,20 +274,20 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               className={`profile-reviews-subtab${reviewsSubTab === 'country' ? ' active' : ''}`}
               onClick={() => setReviewsSubTab('country')}
             >
-              Pays {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
+              {t('profile.countryReviewsTab')} {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
             </button>
             <button
               className={`profile-reviews-subtab${reviewsSubTab === 'dest' ? ' active' : ''}`}
               onClick={() => setReviewsSubTab('dest')}
             >
-              Destinations {totalDestReviews > 0 && <span className="profile-tab-count">{totalDestReviews}</span>}
+              {t('profile.destReviewsTab')} {totalDestReviews > 0 && <span className="profile-tab-count">{totalDestReviews}</span>}
             </button>
           </div>
         )}
 
         {/* Contenu */}
         <div className="profile-reviews-list">
-          {loading && <div className="review-list-loading">Chargement…</div>}
+          {loading && <div className="review-list-loading">{t('common:loading')}</div>}
 
           {/* Avis pays */}
           {!loading && mainTab === 'reviews' && reviewsSubTab === 'country' && (
@@ -299,7 +295,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               {reviews.length === 0 && (
                 <div className="profile-reviews-empty">
                   <span style={{ fontSize: 32 }}>⭐</span>
-                  <span>Cet utilisateur n'a pas encore laissé d'avis sur un pays.</span>
+                  <span>{t('publicProfile.noCountryReviewYet')}</span>
                 </div>
               )}
               {reviews.map((r) => {
@@ -341,7 +337,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               {totalDestReviews === 0 && (
                 <div className="profile-reviews-empty">
                   <span style={{ fontSize: 32 }}>📍</span>
-                  <span>Cet utilisateur n'a pas encore laissé d'avis sur une destination.</span>
+                  <span>{t('publicProfile.noDestReviewYet')}</span>
                 </div>
               )}
               {Object.entries(destGroupCounts).map(([key, count]) => {
@@ -354,12 +350,12 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
                     <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleDestGroup(key)}>
                       {countryMeta && <FlagImage country={countryMeta} code={key} />}
                       <span className="profile-dest-group-name">{countryMeta?.name || key}</span>
-                      <span className="profile-dest-group-count">{count} avis</span>
+                      <span className="profile-dest-group-count">{t('profile.reviewsCount', { count })}</span>
                       <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
                     </div>
                     {isExpanded && (
                       <>
-                        {isGroupLoading && <div className="review-list-loading profile-dest-group-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>Chargement des avis en cours…</div>}
+                        {isGroupLoading && <div className="review-list-loading profile-dest-group-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingReviewsInProgress')}</div>}
                         {!isGroupLoading && groupReviews.map((r) => {
                           const { dest, countryCode } = parseDestId(r.destination_id);
                           const photos = reviewPhotos(r);
@@ -401,7 +397,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               {totalAddedDests === 0 && (
                 <div className="profile-reviews-empty">
                   <span style={{ fontSize: 32 }}>📍</span>
-                  <span>Cet utilisateur n'a pas encore ajouté de destination.</span>
+                  <span>{t('publicProfile.noDestinationYet')}</span>
                 </div>
               )}
               {Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
@@ -414,12 +410,12 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
                     <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
                       {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
                       <span className="profile-dest-group-name">{countryMeta?.name || countryCode}</span>
-                      <span className="profile-dest-group-count">{count} destination{count > 1 ? 's' : ''}</span>
+                      <span className="profile-dest-group-count">{t('profile.destinationsCount', { count })}</span>
                       <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
                     </div>
                     {isExpanded && (
                       <>
-                        {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>Chargement des destinations…</div>}
+                        {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingDestinations')}</div>}
                         {!isGroupLoading && dests.map(dest => (
                           <div
                             key={dest.id}
@@ -452,19 +448,19 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               {!showVisited && (
                 <div className="profile-reviews-empty">
                   <span style={{ fontSize: 32 }}>🔒</span>
-                  <span>Cet utilisateur ne partage pas sa liste de pays visités.</span>
+                  <span>{t('publicProfile.visitedHidden')}</span>
                 </div>
               )}
               {showVisited && visitedCountries.length === 0 && (
                 <div className="profile-reviews-empty">
                   <span style={{ fontSize: 32 }}>🗺️</span>
-                  <span>Cet utilisateur n'a pas encore enregistré de pays visités.</span>
+                  <span>{t('publicProfile.noVisitedYet')}</span>
                 </div>
               )}
               {showVisited && visitedCountries.length > 0 && (
                 <div className="visited-countries-section">
                   <div className="visited-countries-header">
-                    <span className="visited-countries-count">{visitedCountries.length} pays explorés</span>
+                    <span className="visited-countries-count">{t('publicProfile.countriesExploredCount', { count: visitedCountries.length })}</span>
                   </div>
                   <div className="visited-countries-grid">
                     {visitedCountries.map((code) => {

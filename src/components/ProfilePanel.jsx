@@ -1,15 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { findCountry, COUNTRIES } from '../data/index';
+import { localizeField } from '../lib/localizeCountry';
+import i18n from '../i18n';
 
 function parseDestId(destId) {
   if (!destId) return { countryCode: null, localId: destId, countryMeta: null, dest: null };
   for (const code of Object.keys(COUNTRIES)) {
     if (destId.startsWith(code + '_')) {
       const localId = destId.slice(code.length + 1);
-      const dest = COUNTRIES[code].destinations?.find((d) => String(d.id) === localId);
+      const rawDest = COUNTRIES[code].destinations?.find((d) => String(d.id) === localId);
+      const dest = rawDest ? { ...rawDest, name: localizeField(rawDest.name, i18n.language) } : null;
       return { countryCode: code, localId, countryMeta: findCountry(code), dest };
     }
   }
@@ -19,16 +23,7 @@ import BadgeSection from './BadgeSection';
 import { useBadge } from '../context/BadgeContext';
 import FollowListModal from './FollowListModal';
 import PublicProfileModal from './PublicProfileModal';
-
-function relativeTime(dateStr) {
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
-  if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
-  if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-  if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-  if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
-  return rtf.format(-Math.floor(diff / 2592000), 'month');
-}
+import { relativeTime } from '../lib/relativeTime';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 function avatarColor(name) { return AVATAR_COLORS[(name || '?').charCodeAt(0) % AVATAR_COLORS.length]; }
@@ -58,6 +53,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
+  const { t } = useTranslation('app');
   const { user, isAdmin, signOut } = useAuth();
   const { triggerCheck } = useBadge();
   const [tab, setTab] = useState('profile');
@@ -154,7 +150,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
     setSaveError('');
 
     if (displayName.trim().length < 2) {
-      setSaveError('Le pseudo doit faire au moins 2 caractères.');
+      setSaveError(t('auth.pseudoTooShort'));
       setSaving(false);
       return;
     }
@@ -166,7 +162,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       .neq('id', user.id)
       .maybeSingle();
     if (existing) {
-      setSaveError('Ce pseudo est déjà utilisé par un autre compte.');
+      setSaveError(t('profile.pseudoTakenByOther'));
       setSaving(false);
       return;
     }
@@ -175,7 +171,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
     if (avatarFile) {
       if (avatarFile.size > 4 * 1024 * 1024) {
-        setSaveError("Fichier trop volumineux, veuillez choisir une image plus petite.");
+        setSaveError(t('profile.fileTooLarge'));
         setSaving(false);
         return;
       }
@@ -183,7 +179,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       const { error: uploadErr } = await supabase.storage.from('review-photos').upload(path, avatarFile, { upsert: true });
       if (uploadErr) {
         console.error('[ProfilePanel] upload avatar:', uploadErr);
-        setSaveError("Erreur lors de l'upload de la photo, veuillez réessayer.");
+        setSaveError(t('profile.avatarUploadError'));
         setSaving(false);
         return;
       }
@@ -205,7 +201,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
     if (upsertErr) {
       console.error('[ProfilePanel] upsert profile:', upsertErr);
-      setSaveError(`Erreur lors de la sauvegarde : ${upsertErr.message}. Veuillez réessayer.`);
+      setSaveError(t('profile.saveErrorGeneric', { message: upsertErr.message }));
       setSaving(false);
       return;
     }
@@ -213,7 +209,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
     // Vérification : relire depuis la base pour confirmer que les données ont bien été sauvegardées
     const { data: saved, error: readErr } = await supabase.from('profiles').select('display_name').eq('id', user.id).maybeSingle();
     if (!readErr && saved !== null && saved?.display_name !== displayName.trim()) {
-      setSaveError('La sauvegarde a échoué. Veuillez vérifier les droits d\'accès (RLS) dans Supabase et réessayer.');
+      setSaveError(t('profile.saveVerificationFailed'));
       setSaving(false);
       return;
     }
@@ -221,7 +217,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
     setAvatarUrl(newAvatarUrl);
     setAvatarPreview(newAvatarUrl);
     setAvatarFile(null);
-    setSaveMsg('Profil mis à jour !');
+    setSaveMsg(t('profile.saveSuccess'));
     setSaveError('');
     setSaving(false);
     setTimeout(() => setSaveMsg(''), 3000);
@@ -296,18 +292,18 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <div className="profile-modal-header-info">
             <div className="profile-modal-name-row">
               <span className="profile-modal-name">{displayName || user?.email}</span>
-              {isAdmin && <span className="admin-badge">🛡️ Admin</span>}
+              {isAdmin && <span className="admin-badge">{t('profile.adminBadge')}</span>}
             </div>
             <span className="profile-modal-email">{user?.email}</span>
             <div className="profile-follow-counts">
               <button className="profile-follow-count-btn" onClick={() => setFollowListOpen('followers')}>
                 <span className="profile-follow-count-num">{followerCount}</span>
-                <span className="profile-follow-count-label">abonné{followerCount !== 1 ? 's' : ''}</span>
+                <span className="profile-follow-count-label">{t('profile.followersLabel', { count: followerCount })}</span>
               </button>
               <span className="profile-follow-count-sep" />
               <button className="profile-follow-count-btn" onClick={() => setFollowListOpen('following')}>
                 <span className="profile-follow-count-num">{followingCount}</span>
-                <span className="profile-follow-count-label">abonnement{followingCount !== 1 ? 's' : ''}</span>
+                <span className="profile-follow-count-label">{t('profile.followingLabel', { count: followingCount })}</span>
               </button>
             </div>
           </div>
@@ -316,80 +312,80 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
         {/* Tabs */}
         <div className="profile-modal-tabs">
-          <button className={`profile-modal-tab${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>Profil</button>
+          <button className={`profile-modal-tab${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>{t('profile.profileTab')}</button>
           <button className={`profile-modal-tab${tab === 'reviews' ? ' active' : ''}`} onClick={() => setTab('reviews')}>
-            Mes avis <span className="profile-tab-count">{reviews.length + totalDestReviews}</span>
+            {t('profile.reviewsTab')} <span className="profile-tab-count">{reviews.length + totalDestReviews}</span>
           </button>
           <button className={`profile-modal-tab${tab === 'destinations' ? ' active' : ''}`} onClick={() => setTab('destinations')}>
-            Mes destinations {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
+            {t('profile.destinationsTab')} {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
           </button>
-          <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>🏅 Badges</button>
+          <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>{t('profile.badgesTab')}</button>
         </div>
 
         {/* Onglet Profil */}
         {tab === 'profile' && (
           <div className="profile-tab-content">
             <div className="auth-field">
-              <label className="auth-label">Pseudo</label>
-              <input className="auth-input" type="text" value={displayName} onChange={(e) => { setDisplayName(e.target.value); setSaveError(''); }} placeholder="Votre pseudo" />
+              <label className="auth-label">{t('auth.pseudoLabel')}</label>
+              <input className="auth-input" type="text" value={displayName} onChange={(e) => { setDisplayName(e.target.value); setSaveError(''); }} placeholder={t('profile.pseudoPlaceholder')} />
               {saveError && <div className="auth-error" style={{ marginTop: 6 }}>{saveError}</div>}
             </div>
             <div className="profile-notif-prefs">
-              <span className="profile-notif-prefs-title">Notifications du compte</span>
+              <span className="profile-notif-prefs-title">{t('profile.notifSectionTitle')}</span>
               <label className="profile-notif-pref-row">
                 <span className="profile-toggle">
                   <input type="checkbox" checked={notifCountryReviews} onChange={(e) => setNotifCountryReviews(e.target.checked)} />
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
-                <span>Recevoir une notification lorsqu'une personne suivie ajoute un avis sur un pays</span>
+                <span>{t('profile.notifCountryReview')}</span>
               </label>
               <label className="profile-notif-pref-row">
                 <span className="profile-toggle">
                   <input type="checkbox" checked={notifDestReviews} onChange={(e) => setNotifDestReviews(e.target.checked)} />
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
-                <span>Recevoir une notification lorsqu'une personne suivie ajoute un avis sur une destination spécifique</span>
+                <span>{t('profile.notifDestReview')}</span>
               </label>
               <label className="profile-notif-pref-row">
                 <span className="profile-toggle">
                   <input type="checkbox" checked={notifMyDestReviews} onChange={(e) => setNotifMyDestReviews(e.target.checked)} />
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
-                <span>Recevoir une notification lorsqu'une personne laisse un avis sur l'une de vos destinations</span>
+                <span>{t('profile.notifMyDestReview')}</span>
               </label>
               <label className="profile-notif-pref-row">
                 <span className="profile-toggle">
                   <input type="checkbox" checked={notifOwnershipTransfer} onChange={(e) => setNotifOwnershipTransfer(e.target.checked)} />
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
-                <span>Recevoir une notification lorsque vous devenez responsable d'une destination suite au retrait de son créateur</span>
+                <span>{t('profile.notifOwnershipTransfer')}</span>
               </label>
               <label className="profile-notif-pref-row">
                 <span className="profile-toggle">
                   <input type="checkbox" checked={notifNewFollowers} onChange={(e) => setNotifNewFollowers(e.target.checked)} />
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
-                <span>Recevoir une notification lorsqu'une personne s'abonne à votre compte</span>
+                <span>{t('profile.notifNewFollowers')}</span>
               </label>
             </div>
             <div className="profile-notif-prefs">
-              <span className="profile-notif-prefs-title">Confidentialité</span>
+              <span className="profile-notif-prefs-title">{t('profile.privacySectionTitle')}</span>
               <label className="profile-notif-pref-row">
                 <span className="profile-toggle">
                   <input type="checkbox" checked={showVisitedCountries} onChange={(e) => setShowVisitedCountries(e.target.checked)} />
                   <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
                 </span>
-                <span>Afficher ma liste de pays visités sur mon profil public</span>
+                <span>{t('profile.showVisitedCountries')}</span>
               </label>
             </div>
             {saveMsg && <div className="auth-success">{saveMsg}</div>}
 
             <div className="profile-tab-actions">
               <button className="auth-submit" onClick={handleSave} disabled={saving}>
-                {saving ? 'Enregistrement…' : 'Enregistrer'}
+                {saving ? t('profile.saving') : t('common:actions.save')}
               </button>
               <button className="profile-signout-btn" onClick={() => { signOut(); onClose(); }}>
-                Se déconnecter
+                {t('profile.signOutButton')}
               </button>
             </div>
           </div>
@@ -398,11 +394,11 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
         {/* Onglet Destinations ajoutées */}
         {tab === 'destinations' && (
           <div className="profile-reviews-list">
-            {reviewsLoading && <div className="review-list-loading">Chargement…</div>}
+            {reviewsLoading && <div className="review-list-loading">{t('common:loading')}</div>}
             {!reviewsLoading && totalAddedDests === 0 && (
               <div className="profile-reviews-empty">
                 <span style={{ fontSize: 32 }}>📍</span>
-                <span>Vous n'avez pas encore ajouté de destination.</span>
+                <span>{t('profile.noDestinationYet')}</span>
               </div>
             )}
             {!reviewsLoading && Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
@@ -415,12 +411,12 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
                     {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
                     <span className="profile-dest-group-name">{countryMeta?.name || countryCode}</span>
-                    <span className="profile-dest-group-count">{count} destination{count > 1 ? 's' : ''}</span>
+                    <span className="profile-dest-group-count">{t('profile.destinationsCount', { count })}</span>
                     <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
                   </div>
                   {isExpanded && (
                     <>
-                      {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>Chargement des destinations…</div>}
+                      {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingDestinations')}</div>}
                       {!isGroupLoading && dests.map(dest => (
                         <div
                           key={dest.id}
@@ -459,14 +455,14 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <>
             <div className="profile-reviews-subtabs">
               <button className={`profile-reviews-subtab${reviewsSubTab === 'country' ? ' active' : ''}`} onClick={() => setReviewsSubTab('country')}>
-                Pays {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
+                {t('profile.countryReviewsTab')} {reviews.length > 0 && <span className="profile-tab-count">{reviews.length}</span>}
               </button>
               <button className={`profile-reviews-subtab${reviewsSubTab === 'dest' ? ' active' : ''}`} onClick={() => setReviewsSubTab('dest')}>
-                Destinations {totalDestReviews > 0 && <span className="profile-tab-count">{totalDestReviews}</span>}
+                {t('profile.destReviewsTab')} {totalDestReviews > 0 && <span className="profile-tab-count">{totalDestReviews}</span>}
               </button>
             </div>
             <div className="profile-reviews-list">
-              {reviewsLoading && <div className="review-list-loading">Chargement…</div>}
+              {reviewsLoading && <div className="review-list-loading">{t('common:loading')}</div>}
 
               {/* Avis pays */}
               {!reviewsLoading && reviewsSubTab === 'country' && (
@@ -474,7 +470,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   {reviews.length === 0 && (
                     <div className="profile-reviews-empty">
                       <span style={{ fontSize: 32 }}>⭐</span>
-                      <span>Vous n'avez pas encore laissé d'avis sur un pays.</span>
+                      <span>{t('profile.noCountryReviewYet')}</span>
                     </div>
                   )}
                   {reviews.map((r) => {
@@ -489,10 +485,10 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                         {confirmDeleteId === r.id && (
                           <div className="profile-confirm-overlay">
                             <div className="profile-confirm-box">
-                              <p className="profile-confirm-msg">Supprimer cet avis ?</p>
+                              <p className="profile-confirm-msg">{t('profile.confirmDeleteReview')}</p>
                               <div className="profile-confirm-actions">
-                                <button className="profile-confirm-cancel" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}>Annuler</button>
-                                <button className="profile-confirm-delete" onClick={(e) => { e.stopPropagation(); handleDeleteReview(r.id); }}>Supprimer</button>
+                                <button className="profile-confirm-cancel" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}>{t('common:actions.cancel')}</button>
+                                <button className="profile-confirm-delete" onClick={(e) => { e.stopPropagation(); handleDeleteReview(r.id); }}>{t('common:actions.delete')}</button>
                               </div>
                             </div>
                           </div>
@@ -506,7 +502,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                             {[1,2,3,4,5].map((s) => <span key={s} className={s <= r.rating ? 'star-filled' : 'star-empty'}>★</span>)}
                           </span>
                           <span className="profile-review-date">{relativeTime(r.created_at)}</span>
-                          <button className="profile-review-delete-btn" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(r.id); }} title="Supprimer">🗑</button>
+                          <button className="profile-review-delete-btn" onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(r.id); }} title={t('common:actions.delete')}>🗑</button>
                         </div>
                         {r.comment && <p className="profile-review-comment">{r.comment}</p>}
                         {photos.length > 0 && (
@@ -528,7 +524,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   {totalDestReviews === 0 && (
                     <div className="profile-reviews-empty">
                       <span style={{ fontSize: 32 }}>📍</span>
-                      <span>Vous n'avez pas encore laissé d'avis sur une destination.</span>
+                      <span>{t('profile.noDestReviewYet')}</span>
                     </div>
                   )}
                   {Object.entries(destGroupCounts).map(([key, count]) => {
@@ -541,12 +537,12 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                         <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleDestGroup(key)}>
                           {countryMeta && <FlagImage country={countryMeta} code={key} />}
                           <span className="profile-dest-group-name">{countryMeta?.name || key}</span>
-                          <span className="profile-dest-group-count">{count} avis</span>
+                          <span className="profile-dest-group-count">{t('profile.reviewsCount', { count })}</span>
                           <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
                         </div>
                         {isExpanded && (
                           <>
-                            {isGroupLoading && <div className="review-list-loading profile-dest-group-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>Chargement des avis en cours…</div>}
+                            {isGroupLoading && <div className="review-list-loading profile-dest-group-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingReviewsInProgress')}</div>}
                             {!isGroupLoading && groupReviews.map((r) => {
                               const { dest, countryCode } = parseDestId(r.destination_id);
                               const photos = reviewPhotos(r);

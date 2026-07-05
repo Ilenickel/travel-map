@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
 
@@ -12,6 +13,7 @@ function UserAvatar({ url, name, size = 40 }) {
 }
 
 export default function FollowListModal({ userId, type, onClose, onOpenProfile, onFollowChange }) {
+  const { t } = useTranslation('app');
   // Liste abonnés/abonnements
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -121,8 +123,8 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
         {/* Header */}
         <div className="follow-list-header">
           {addMode
-            ? <button className="follow-list-back-btn" onClick={() => { setAddMode(false); setQuery(''); setSearchResults([]); }}>← Retour</button>
-            : <h3 className="follow-list-title">{type === 'followers' ? 'Abonnés' : 'Abonnements'}</h3>
+            ? <button className="follow-list-back-btn" onClick={() => { setAddMode(false); setQuery(''); setSearchResults([]); }}>{t('followList.backButton')}</button>
+            : <h3 className="follow-list-title">{type === 'followers' ? t('followList.followersTitle') : t('followList.followingTitle')}</h3>
           }
           <button className="auth-close" onClick={onClose}>✕</button>
         </div>
@@ -134,28 +136,28 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
               <input
                 className="follow-list-search"
                 type="text"
-                placeholder="Rechercher un utilisateur…"
+                placeholder={t('followList.searchUserPlaceholder')}
                 value={query}
                 onChange={e => setQuery(e.target.value)}
                 autoFocus
               />
             </div>
             <div className="follow-list-body">
-              {searchLoading && <div className="review-list-loading">Recherche…</div>}
+              {searchLoading && <div className="review-list-loading">{t('followList.searching')}</div>}
               {!searchLoading && query.trim().length === 0 && (
                 <div className="profile-reviews-empty" style={{ paddingTop: 32 }}>
                   <span style={{ fontSize: 28 }}>🔍</span>
-                  <span>Saisissez un pseudo pour rechercher.</span>
+                  <span>{t('followList.searchHint')}</span>
                 </div>
               )}
               {!searchLoading && query.trim().length > 0 && searchResults.length === 0 && (
                 <div className="profile-reviews-empty" style={{ paddingTop: 32 }}>
                   <span style={{ fontSize: 28 }}>😶</span>
-                  <span>Aucun utilisateur trouvé.</span>
+                  <span>{t('followList.noUserFound')}</span>
                 </div>
               )}
               {searchResults.map(u => {
-                const name = u.display_name || 'Voyageur';
+                const name = u.display_name || t('followList.travelerFallback');
                 const isFollowing = followingIds.has(u.id);
                 const isLoading = followLoadingId === u.id;
                 return (
@@ -167,7 +169,7 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
                       onClick={(e) => toggleFollow(u.id, e)}
                       disabled={isLoading}
                     >
-                      {isLoading ? '…' : isFollowing ? 'Abonné ✓' : 'S\'abonner'}
+                      {isLoading ? '…' : isFollowing ? t('followList.followingButton') : t('followList.followButton')}
                     </button>
                   </div>
                 );
@@ -180,7 +182,7 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
             {type === 'following' && (
               <div className="follow-list-add-wrap">
                 <button className="follow-list-add-btn" onClick={() => setAddMode(true)}>
-                  Ajouter un utilisateur
+                  {t('followList.addUserButton')}
                 </button>
               </div>
             )}
@@ -190,7 +192,7 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
               <input
                 className="follow-list-search"
                 type="text"
-                placeholder="Filtrer la liste…"
+                placeholder={t('followList.filterListPlaceholder')}
                 value={listSearch}
                 onChange={e => setListSearch(e.target.value)}
                 autoFocus={type !== 'following'}
@@ -198,22 +200,22 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
             </div>
 
             <div className="follow-list-body">
-              {loading && <div className="review-list-loading">Chargement…</div>}
+              {loading && <div className="review-list-loading">{t('followList.loading')}</div>}
               {!loading && filteredList.length === 0 && (
                 <div className="profile-reviews-empty">
                   <span style={{ fontSize: 28 }}>🔍</span>
                   <span>
                     {listSearch
-                      ? 'Aucun résultat.'
+                      ? t('followList.noResult')
                       : type === 'followers'
-                        ? 'Aucun abonné pour l\'instant.'
-                        : 'Aucun abonnement pour l\'instant.'
+                        ? t('followList.noFollowersYet')
+                        : t('followList.noFollowingYet')
                     }
                   </span>
                 </div>
               )}
               {!loading && filteredList.map(u => {
-                const name = u.display_name || 'Voyageur';
+                const name = u.display_name || t('followList.travelerFallback');
                 const isFollowing = followingIds.has(u.id);
                 const isLoading = followLoadingId === u.id;
                 return (
@@ -226,7 +228,7 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
                         onClick={(e) => toggleFollow(u.id, e)}
                         disabled={isLoading}
                       >
-                        {isLoading ? '…' : 'Abonné ✓'}
+                        {isLoading ? '…' : t('followList.followingButton')}
                       </button>
                     )}
                     {type === 'followers' && (
@@ -235,7 +237,7 @@ export default function FollowListModal({ userId, type, onClose, onOpenProfile, 
                         onClick={(e) => toggleFollow(u.id, e)}
                         disabled={isLoading}
                       >
-                        {isLoading ? '…' : isFollowing ? 'Abonné ✓' : 'S\'abonner'}
+                        {isLoading ? '…' : isFollowing ? t('followList.followingButton') : t('followList.followButton')}
                       </button>
                     )}
                   </div>

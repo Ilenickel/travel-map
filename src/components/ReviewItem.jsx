@@ -1,30 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { callAdminAction } from '../lib/admin';
+import { relativeTime } from '../lib/relativeTime';
 import ReportModal from './ReportModal';
-
-const REASON_LABEL = {
-  photo_obscene: 'Photo obscène',
-  photo_logo: 'Photo avec logo caché',
-  photo_wrongplace: 'Photo ne correspond pas',
-  insult: 'Insulte / propos offensant',
-  politics: 'Contenu politique',
-  spam: 'Spam',
-  wrong_info: 'Informations incorrectes',
-  other: 'Autre',
-};
-
-function relativeTime(dateStr) {
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  const rtf = new Intl.RelativeTimeFormat('fr', { numeric: 'auto' });
-  if (diff < 60) return rtf.format(-Math.floor(diff), 'second');
-  if (diff < 3600) return rtf.format(-Math.floor(diff / 60), 'minute');
-  if (diff < 86400) return rtf.format(-Math.floor(diff / 3600), 'hour');
-  if (diff < 2592000) return rtf.format(-Math.floor(diff / 86400), 'day');
-  if (diff < 31536000) return rtf.format(-Math.floor(diff / 2592000), 'month');
-  return rtf.format(-Math.floor(diff / 31536000), 'year');
-}
 
 function Avatar({ profile }) {
   const name = profile?.display_name || '?';
@@ -51,6 +31,7 @@ export function HalfStars({ rating, size = 16 }) {
 }
 
 export default function ReviewItem({ review, currentUserId, onDelete, onEdit, onVoteChange, onOpenProfile, isDestReview = false, hasAlert = false, alertData = null, onAdminAction }) {
+  const { t } = useTranslation('app');
   const voteTable = isDestReview ? 'destination_review_votes' : 'review_votes';
   const reviewTable = isDestReview ? 'destination_reviews' : 'reviews';
   const { user, isAdmin } = useAuth();
@@ -96,12 +77,12 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
           setProfile(data);
         } else if (user && user.id === review.user_id) {
           setProfile({
-            display_name: user.user_metadata?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || 'Voyageur',
+            display_name: user.user_metadata?.display_name || user.user_metadata?.full_name || user.email?.split('@')[0] || t('review.travelerFallback'),
             avatar_url: user.user_metadata?.avatar_url || data?.avatar_url || null,
           });
         } else {
           // Autre utilisateur sans profil connu
-          setProfile({ display_name: 'Voyageur', avatar_url: null });
+          setProfile({ display_name: t('review.travelerFallback'), avatar_url: null });
         }
       });
   }, [review.user_id, user]);
@@ -160,12 +141,12 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
           <div className="admin-alert-bandeau-top">
             <div className="admin-alert-bandeau-left">
               <span>🚨</span>
-              <span className="admin-alert-bandeau-title">Contenu signalé</span>
-              {alertData?.reason && <span className="admin-alert-bandeau-reason">{REASON_LABEL[alertData.reason] || alertData.reason}</span>}
+              <span className="admin-alert-bandeau-title">{t('review.reportedContentTitle')}</span>
+              {alertData?.reason && <span className="admin-alert-bandeau-reason">{t(`report.reasonsShort.${alertData.reason}`, { defaultValue: alertData.reason })}</span>}
             </div>
             <div className="admin-alert-bandeau-actions">
-              <button className="admin-inline-btn admin-inline-btn--dismiss" disabled={adminActing} onClick={() => handleAdminActionLocal('dismiss_report')}>Fausse alerte</button>
-              <button className="admin-inline-btn admin-inline-btn--delete" disabled={adminActing} onClick={() => handleAdminActionLocal('delete_content')}>Supprimer</button>
+              <button className="admin-inline-btn admin-inline-btn--dismiss" disabled={adminActing} onClick={() => handleAdminActionLocal('dismiss_report')}>{t('adminPanel.dismissButton')}</button>
+              <button className="admin-inline-btn admin-inline-btn--delete" disabled={adminActing} onClick={() => handleAdminActionLocal('delete_content')}>{t('adminPanel.deleteButton')}</button>
             </div>
           </div>
           {alertData?.detail && <div className="admin-alert-bandeau-detail">« {alertData.detail} »</div>}
@@ -185,16 +166,16 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
           {isOwn ? (
             confirmDelete ? (
               <div className="review-confirm-delete">
-                <span className="review-confirm-msg">Voulez-vous vraiment supprimer cet avis ?</span>
-                <button className="review-confirm-yes" onClick={handleDelete} disabled={deleting}>Oui</button>
-                <button className="review-confirm-no" onClick={() => setConfirmDelete(false)}>Non</button>
+                <span className="review-confirm-msg">{t('review.deleteConfirmMessage')}</span>
+                <button className="review-confirm-yes" onClick={handleDelete} disabled={deleting}>{t('common:yes')}</button>
+                <button className="review-confirm-no" onClick={() => setConfirmDelete(false)}>{t('common:no')}</button>
               </div>
             ) : (
               <>
-                <button className="review-action-btn review-action-btn--edit" onClick={onEdit} title="Modifier">
+                <button className="review-action-btn review-action-btn--edit" onClick={onEdit} title={t('review.editTitle')}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                 </button>
-                <button className="review-action-btn review-action-btn--delete" onClick={() => setConfirmDelete(true)} title="Supprimer">
+                <button className="review-action-btn review-action-btn--delete" onClick={() => setConfirmDelete(true)} title={t('common:actions.delete')}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6l1 1h4v2H4V4h4l1-1zM5 8h14l-1 13H6L5 8zm5 2v8h1v-8h-1zm3 0v8h1v-8h-1z"/></svg>
                 </button>
               </>
@@ -204,14 +185,14 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
               className={`review-report-btn${reported ? ' reported' : ''}`}
               onClick={() => !reported && setReportModalOpen(true)}
               disabled={reported}
-              title={reported ? 'Signalement envoyé' : 'Signaler ce contenu'}
+              title={reported ? t('review.reportSentTitle') : t('report.title')}
             >
-              {reported ? '🚩 Signalé' : (
+              {reported ? t('review.reportedBadge') : (
                 <>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
                   </svg>
-                  Signaler
+                  {t('review.reportButtonLabel')}
                 </>
               )}
             </button>
@@ -239,19 +220,19 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
         <button
           className={`review-vote-btn${votes.mine === 1 ? ' active' : ''}`}
           onClick={() => vote(1)}
-          title={user ? undefined : 'Connectez-vous pour voter'}
+          title={user ? undefined : t('review.loginToVote')}
         >
           👍
           <span className="review-vote-label">
             {votes.up > 0
-              ? `${votes.up} ${votes.up === 1 ? 'personne a' : 'personnes ont'} trouvé cela utile`
-              : 'Utile'}
+              ? t('review.helpfulCount', { count: votes.up })
+              : t('review.useful')}
           </span>
         </button>
         <button
           className={`review-vote-btn review-vote-down${votes.mine === -1 ? ' active' : ''}`}
           onClick={() => vote(-1)}
-          title={user ? 'Pas utile' : 'Connectez-vous pour voter'}
+          title={user ? t('review.notUseful') : t('review.loginToVote')}
         >
           👎{votes.down > 0 && <span className="review-vote-count">{votes.down}</span>}
         </button>

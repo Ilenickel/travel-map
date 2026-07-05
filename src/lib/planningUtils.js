@@ -1,10 +1,15 @@
 import { COUNTRIES } from '../data/index';
 import i18n from '../i18n';
+import { localizeField } from './localizeCountry';
 
-// ─── Country list (sorted, fr) ────────────────────────────────────
-export const ALL_COUNTRIES = Object.entries(COUNTRIES)
-  .map(([code, c]) => ({ code, name: c.name, emoji: c.emoji || '🌍' }))
-  .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+// ─── Country list (triée, langue courante) ────────────────────────
+// Fonction (pas une constante figée) car le nom du pays est bilingue depuis
+// l'i18n des données pays : doit être recalculé quand la langue change.
+export function getAllCountries(lang) {
+  return Object.entries(COUNTRIES)
+    .map(([code, c]) => ({ code, name: localizeField(c.name, lang), emoji: c.emoji || '🌍' }))
+    .sort((a, b) => a.name.localeCompare(b.name, lang));
+}
 
 // ─── Activity categories ──────────────────────────────────────────
 // `label` est un getter (relu à chaque accès) plutôt qu'une valeur figée : il

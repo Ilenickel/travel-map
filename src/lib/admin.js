@@ -1,5 +1,14 @@
 // Helper client pour les actions admin (signalement + modération manuelle).
 import { supabase } from './supabase';
+import i18n from '../i18n';
+
+// Source unique des codes de motif de signalement — les libellés (courts pour
+// un badge déjà choisi, longs pour le formulaire de choix) vivent dans
+// app.json (reasonsShort/reasonsLong), jamais recopiés ici.
+export const REPORT_REASON_CODES = [
+  'photo_obscene', 'photo_logo', 'photo_wrongplace',
+  'insult', 'politics', 'spam', 'wrong_info', 'other',
+];
 
 async function getAuthToken() {
   try {
@@ -12,7 +21,7 @@ async function getAuthToken() {
 // Utilise upsert avec onConflict pour garantir l'unicité (une seule alerte par contenu).
 export async function reportContent(contentType, contentId, reason = null, detail = null) {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { ok: false, reason: 'Vous devez être connecté pour signaler.' };
+  if (!user) return { ok: false, reason: i18n.t('admin.needLoginToReport', { ns: 'app' }) };
 
   const { error } = await supabase.from('reports').insert({
     reporter_id: user.id,
@@ -22,7 +31,7 @@ export async function reportContent(contentType, contentId, reason = null, detai
     ...(detail ? { detail } : {}),
   });
   // code 23505 = violation unique constraint (déjà signalé) → on ignore
-  if (error && error.code !== '23505') return { ok: false, reason: 'Erreur lors du signalement.' };
+  if (error && error.code !== '23505') return { ok: false, reason: i18n.t('admin.reportFailed', { ns: 'app' }) };
   return { ok: true };
 }
 
@@ -54,8 +63,8 @@ export async function callAdminAction(action, contentType, contentId) {
       body: JSON.stringify({ authToken, action, contentType, contentId }),
     });
   } catch {
-    return { ok: false, reason: 'Connexion au serveur impossible.' };
+    return { ok: false, reason: i18n.t('admin.connectionFailed', { ns: 'app' }) };
   }
   try { return await res.json(); }
-  catch { return { ok: false, reason: 'Réponse serveur invalide.' }; }
+  catch { return { ok: false, reason: i18n.t('admin.invalidServerResponse', { ns: 'app' }) }; }
 }

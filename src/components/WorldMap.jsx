@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import { COUNTRIES, NUMERIC_TO_CODE } from "../data/index";
+import { localizeField } from "../lib/localizeCountry";
+import i18n from "../i18n";
 
 const HOVER_COLORS = ["#e94560", "#ff9f43", "#a78bfa", "#22d3ee", "#4ade80"];
 function randomHoverColor() {
@@ -58,6 +61,7 @@ function isInteractive(numericId) {
 }
 
 export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive, hoveredCode, visitedSet, hideVisited }) {
+  const { t } = useTranslation("app");
   const svgRef     = useRef(null);
   const tooltipRef = useRef(null);
   const zoomRef    = useRef(null);
@@ -260,8 +264,8 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
               .style("opacity", 1)
               .html(
                 `<span class="tooltip-flag">${data.emoji}</span>` +
-                `<span>${data.name}</span>` +
-                `<span class="tooltip-hint">Cliquer pour explorer</span>`
+                `<span>${localizeField(data.name, i18n.language)}</span>` +
+                `<span class="tooltip-hint">${i18n.t("worldMap.clickToExplore", { ns: "app" })}</span>`
               );
           })
           .on("mousemove", function (event) {
@@ -308,7 +312,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
             .attr("letter-spacing", "0.08em")
             .attr("pointer-events", "none")
             .attr("opacity", 0)
-            .text(data.name.toUpperCase());
+            .text(localizeField(data.name, i18n.language).toUpperCase());
 
           labelG.append("circle")
             .attr("class", `country-dot dot-${code}`)
@@ -394,9 +398,9 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
       <svg ref={svgRef} className="world-svg" preserveAspectRatio="xMidYMid meet" />
       <div ref={tooltipRef} className="map-tooltip" />
       <div className="map-zoom-controls">
-        <button className="map-zoom-btn" onClick={handleZoomIn} title="Zoom +">+</button>
-        <button className="map-zoom-btn" onClick={handleZoomOut} title="Zoom −">−</button>
-        <button className="map-zoom-btn map-zoom-reset" onClick={handleZoomReset} title="Vue initiale">⌂</button>
+        <button className="map-zoom-btn" onClick={handleZoomIn} title={t("worldMap.zoomIn")}>+</button>
+        <button className="map-zoom-btn" onClick={handleZoomOut} title={t("worldMap.zoomOut")}>−</button>
+        <button className="map-zoom-btn map-zoom-reset" onClick={handleZoomReset} title={t("worldMap.resetView")}>⌂</button>
       </div>
     </div>
   );

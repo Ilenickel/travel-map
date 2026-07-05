@@ -1,11 +1,11 @@
 export const MALAYSIA = {
   code: "MYS",
   numericId: 458,
-  name: "Malaisie",
+  name: { fr: "Malaisie", en: "Malaysia" },
   emoji: "🇲🇾",
-  capital: "Kuala Lumpur",
-  language: "Malais (Bahasa Malaysia)",
-  currency: "Ringgit malaisien (MYR)",
+  capital: { fr: "Kuala Lumpur", en: "Kuala Lumpur" },
+  language: { fr: "Malais (Bahasa Malaysia)", en: "Malay (Bahasa Malaysia)" },
+  currency: { fr: "Ringgit malaisien (MYR)", en: "Malaysian Ringgit (MYR)" },
   timezone: "UTC+8",
   filter: {
     budgetMin: 30,
@@ -13,24 +13,30 @@ export const MALAYSIA = {
     tripMin: 1200,
     tripMid: 2200,
   },
-  description:
-    "La Malaisie est une mosaïque de cultures (malaises, chinoises, indiennes, dayak) au sein d'une nature luxuriante. Des tours Petronas de Kuala Lumpur aux forêts de Bornéo où vivent les orangs-outans, en passant par les plages de Langkawi et les collines de Cameron, le pays offre une diversité époustouflante.",
+  description: {
+    fr: "La Malaisie est une mosaïque de cultures (malaises, chinoises, indiennes, dayak) au sein d'une nature luxuriante. Des tours Petronas de Kuala Lumpur aux forêts de Bornéo où vivent les orangs-outans, en passant par les plages de Langkawi et les collines de Cameron, le pays offre une diversité époustouflante.",
+    en: "Malaysia is a mosaic of cultures (Malay, Chinese, Indian, Dayak) set within lush nature. From the Petronas Towers of Kuala Lumpur to the Bornean forests where orangutans live, by way of the beaches of Langkawi and the Cameron Highlands, the country offers breathtaking diversity.",
+  },
 
   bestPeriods: [
     {
-      months: "Novembre – Février",
-      label: "Côte Ouest (saison sèche)",
+      months: { fr: "Novembre – Février", en: "November – February" },
+      label: { fr: "Côte Ouest (saison sèche)", en: "West Coast (dry season)" },
       color: "#fbbf24",
-      description:
-        "Idéal pour Langkawi, Penang et la côte ouest : mer calme et soleil. KL agréable toute l'année.",
+      description: {
+        fr: "Idéal pour Langkawi, Penang et la côte ouest : mer calme et soleil. KL agréable toute l'année.",
+        en: "Ideal for Langkawi, Penang and the west coast: calm seas and sunshine. KL is pleasant year-round.",
+      },
       icon: "☀️",
     },
     {
-      months: "Mars – Octobre",
-      label: "Côte Est & Bornéo",
+      months: { fr: "Mars – Octobre", en: "March – October" },
+      label: { fr: "Côte Est & Bornéo", en: "East Coast & Borneo" },
       color: "#22c55e",
-      description:
-        "La côte est (Perhentian, Tioman) est accessible mars-octobre. Bornéo est idéale en mars-octobre pour les orangs-outans.",
+      description: {
+        fr: "La côte est (Perhentian, Tioman) est accessible mars-octobre. Bornéo est idéale en mars-octobre pour les orangs-outans.",
+        en: "The east coast (Perhentian, Tioman) is accessible from March to October. Borneo is ideal from March to October for orangutans.",
+      },
       icon: "🦧",
     },
   ],
@@ -39,7 +45,7 @@ export const MALAYSIA = {
     {
       id: "kuala-lumpur",
       name: "Kuala Lumpur",
-      region: "Klang Valley",
+      region: { fr: "Klang Valley", en: "Klang Valley" },
       data: [
         { month: "Jan", temp: 27, rain: 175, icon: "🌧️" },
         { month: "Fév", temp: 27, rain: 145, icon: "🌧️" },
@@ -58,7 +64,7 @@ export const MALAYSIA = {
     {
       id: "langkawi",
       name: "Langkawi",
-      region: "Kedah (îles)",
+      region: { fr: "Kedah (îles)", en: "Kedah (islands)" },
       data: [
         { month: "Jan", temp: 27, rain: 65, icon: "☀️" },
         { month: "Fév", temp: 28, rain: 40, icon: "☀️" },
@@ -77,7 +83,7 @@ export const MALAYSIA = {
     {
       id: "kota-kinabalu",
       name: "Kota Kinabalu",
-      region: "Sabah (Bornéo)",
+      region: { fr: "Sabah (Bornéo)", en: "Sabah (Borneo)" },
       data: [
         { month: "Jan", temp: 27, rain: 110, icon: "🌧️" },
         { month: "Fév", temp: 27, rain: 80, icon: "⛅" },
@@ -99,54 +105,62 @@ export const MALAYSIA = {
     {
       id: 1,
       name: "Kuala Lumpur",
-      region: "Centre",
-      description:
-        "La capitale malaisienne est dominée par les tours Petronas (452 m), les plus hautes du monde de 1998 à 2004. Le quartier indien de Brickfields, Chinatown et le quartier colonial de Merdeka Square coexistent dans une métropole vibrante et multiculturelle.",
+      region: { fr: "Centre", en: "Central" },
+      description: {
+        fr: "La capitale malaisienne est dominée par les tours Petronas (452 m), les plus hautes du monde de 1998 à 2004. Le quartier indien de Brickfields, Chinatown et le quartier colonial de Merdeka Square coexistent dans une métropole vibrante et multiculturelle.",
+        en: "The Malaysian capital is dominated by the Petronas Towers (452 m), the tallest buildings in the world from 1998 to 2004. The Indian district of Brickfields, Chinatown and the colonial Merdeka Square coexist in a vibrant, multicultural metropolis.",
+      },
       wikipedia: "Kuala_Lumpur",
       tags: ["Ville", "tours", "Culture", "Gastronomie", "Architecture"],
       mustSee: [
-        { name: "Tours Petronas", wikipedia: "File:Petronas Panorama II.jpg" },
+        { name: { fr: "Tours Petronas", en: "Petronas Towers" }, wikipedia: "File:Petronas Panorama II.jpg" },
         { name: "Batu Caves", wikipedia: "Batu_Caves" },
-        { name: "Jalan Alor (rue gastronomique)", wikipedia: "File:Jalan_Alor_in_Kuala_Lumpur_during_Corona_virus_lockdown.jpg" },
+        { name: { fr: "Jalan Alor (rue gastronomique)", en: "Jalan Alor (food street)" }, wikipedia: "File:Jalan_Alor_in_Kuala_Lumpur_during_Corona_virus_lockdown.jpg" },
         { name: "Menara KL Tower", wikipedia: "File:Kuala_Lumpur_Malaysia_Menara-Kuala-Lumpur-02.jpg" },
       ],
     },
     {
       id: 2,
       name: "Penang",
-      region: "Nord-Ouest",
-      description:
-        "L'île de Penang est la capitale gastronomique de la Malaisie. George Town, inscrite au patrimoine UNESCO, est célèbre pour ses street arts muraux, ses shophouses colorées et sa cuisine Nyonya (fusion malayo-chinoise). Les temples, mosquées et hawker centres s'y côtoient harmonieusement.",
+      region: { fr: "Nord-Ouest", en: "Northwest" },
+      description: {
+        fr: "L'île de Penang est la capitale gastronomique de la Malaisie. George Town, inscrite au patrimoine UNESCO, est célèbre pour ses street arts muraux, ses shophouses colorées et sa cuisine Nyonya (fusion malayo-chinoise). Les temples, mosquées et hawker centres s'y côtoient harmonieusement.",
+        en: "Penang Island is Malaysia's food capital. George Town, a UNESCO World Heritage site, is famous for its street art murals, colourful shophouses and Nyonya cuisine (Malay-Chinese fusion). Temples, mosques and hawker centres coexist harmoniously there.",
+      },
       wikipedia: "File:Skyline_of_George_Town,_Penang_at_dusk_May_2025.jpg",
       tags: ["Gastronomie", "Culture", "UNESCO", "art", "Histoire", "Architecture"],
       mustSee: [
-        { name: "George Town (vieille ville)", wikipedia: "File:Georgetown, Penang in 2023 01.jpg" },
+        { name: { fr: "George Town (vieille ville)", en: "George Town (old town)" }, wikipedia: "File:Georgetown, Penang in 2023 01.jpg" },
         { name: "Penang Hill (Bukit Bendera)", wikipedia: "File:Penang Hill in 2023 02.jpg" },
-        { name: "Street Art de George Town", wikipedia: "File:Street art at Penang.jpg" },
+        { name: { fr: "Street Art de George Town", en: "George Town Street Art" }, wikipedia: "File:Street art at Penang.jpg" },
         { name: "Kek Lok Si Temple", wikipedia: "Kek_Lok_Si" },
       ],
     },
     {
       id: 3,
-      name: "Bornéo malaisien (Sabah & Sarawak)",
-      region: "Bornéo",
-      description:
-        "Sabah et Sarawak abritent les forêts les plus riches d'Asie du Sud-Est. Orangs-outans de Sepilok, rhinocéros de Sabah, grottes de Niah et mont Kinabalu (4 095 m, point culminant d'Asie du Sud-Est) dans un cadre de jungle primaire extraordinaire.",
+      name: { fr: "Bornéo malaisien (Sabah & Sarawak)", en: "Malaysian Borneo (Sabah & Sarawak)" },
+      region: { fr: "Bornéo", en: "Borneo" },
+      description: {
+        fr: "Sabah et Sarawak abritent les forêts les plus riches d'Asie du Sud-Est. Orangs-outans de Sepilok, rhinocéros de Sabah, grottes de Niah et mont Kinabalu (4 095 m, point culminant d'Asie du Sud-Est) dans un cadre de jungle primaire extraordinaire.",
+        en: "Sabah and Sarawak are home to some of the richest rainforests in Southeast Asia. Sepilok orangutans, Sabah rhinos, Niah caves and Mount Kinabalu (4,095 m, the highest peak in Southeast Asia) set in extraordinary primary jungle.",
+      },
       wikipedia: "File:2014 Borneo Luyten-De-Hauwere-Child-01.jpg",
       tags: ["jungle", "orangs-outans", "Randonnée", "Faune"],
       mustSee: [
-        { name: "Centre de réhabilitation de Sepilok", wikipedia: "File:Sandakan_Sabah_Sepilok-Orangutan-Rehabilitation-Centre-02.jpg" },
-        { name: "Mont Kinabalu", wikipedia: "Mount_Kinabalu" },
-        { name: "Grottes de Niah", wikipedia: "File:The_main_entrance_to_the_Niah_Caves_at_sunset..jpg" },
-        { name: "Parc national de Mulu", wikipedia: "Gunung_Mulu_National_Park" },
+        { name: { fr: "Centre de réhabilitation de Sepilok", en: "Sepilok Rehabilitation Centre" }, wikipedia: "File:Sandakan_Sabah_Sepilok-Orangutan-Rehabilitation-Centre-02.jpg" },
+        { name: { fr: "Mont Kinabalu", en: "Mount Kinabalu" }, wikipedia: "Mount_Kinabalu" },
+        { name: { fr: "Grottes de Niah", en: "Niah Caves" }, wikipedia: "File:The_main_entrance_to_the_Niah_Caves_at_sunset..jpg" },
+        { name: { fr: "Parc national de Mulu", en: "Mulu National Park" }, wikipedia: "Gunung_Mulu_National_Park" },
       ],
     },
     {
       id: 4,
       name: "Langkawi",
-      region: "Kedah",
-      description:
-        "L'archipel de Langkawi (99 îles) est le paradis balnéaire de la Malaisie avec ses plages de sable blanc, ses mangroves et ses forêts de geopark. Duty-free, téléphérique et eau translucide pour une île détente.",
+      region: { fr: "Kedah", en: "Kedah" },
+      description: {
+        fr: "L'archipel de Langkawi (99 îles) est le paradis balnéaire de la Malaisie avec ses plages de sable blanc, ses mangroves et ses forêts de geopark. Duty-free, téléphérique et eau translucide pour une île détente.",
+        en: "The Langkawi archipelago (99 islands) is Malaysia's beach paradise, with white sand beaches, mangroves and geopark forests. Duty-free shopping, a cable car and clear water make it a relaxing island getaway.",
+      },
       wikipedia: "File:Langkawi 004.jpg",
       tags: ["Plage", "île", "Nature", "duty-free"],
       mustSee: [
@@ -159,96 +173,101 @@ export const MALAYSIA = {
   ],
 
   costOfLiving: {
-    intro:
-      "La Malaisie est très abordable pour un pays au développement avancé. La nourriture de rue (hawker) est excellente et peu chère. KL est abordable par rapport aux capitales asiatiques.",
-    currency: "Ringgit malaisien (MYR)",
+    intro: {
+      fr: "La Malaisie est très abordable pour un pays au développement avancé. La nourriture de rue (hawker) est excellente et peu chère. KL est abordable par rapport aux capitales asiatiques.",
+      en: "Malaysia is very affordable for a highly developed country. Street food (hawker fare) is excellent and cheap. KL is affordable compared to other Asian capitals.",
+    },
+    currency: "MYR",
     exchangeRate: "1€ ≈ 4,8–5,2 MYR",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
-          { label: "Dortoir auberge de jeunesse", price: "6–12 €", detail: "KL, Penang, très bon réseau" },
-          { label: "Chambre double hôtel 3★", price: "25–50 €", detail: "Bon confort, souvent avec piscine" },
-          { label: "Resort Langkawi 4★", price: "80–180 €", detail: "Bord de plage, souvent all-inclusive" },
+          { label: { fr: "Dortoir auberge de jeunesse", en: "Hostel dorm" }, price: "6–12 €", detail: { fr: "KL, Penang, très bon réseau", en: "KL, Penang, very good network" } },
+          { label: { fr: "Chambre double hôtel 3★", en: "3★ hotel double room" }, price: "25–50 €", detail: { fr: "Bon confort, souvent avec piscine", en: "Good comfort, often with a pool" } },
+          { label: { fr: "Resort Langkawi 4★", en: "4★ Langkawi resort" }, price: "80–180 €", detail: { fr: "Bord de plage, souvent all-inclusive", en: "Beachfront, often all-inclusive" } },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
-          { label: "Repas hawker centre", price: "2–4 €", detail: "Nasi lemak, Laksa, Char Kway Teow" },
-          { label: "Roti canai + teh tarik", price: "0,80–1,50 €", detail: "Petit-déjeuner malaisien classique" },
-          { label: "Restaurant mid-range", price: "8–18 €", detail: "Cuisine locale ou internationale" },
+          { label: { fr: "Repas hawker centre", en: "Hawker centre meal" }, price: "2–4 €", detail: { fr: "Nasi lemak, Laksa, Char Kway Teow", en: "Nasi lemak, Laksa, Char Kway Teow" } },
+          { label: { fr: "Roti canai + teh tarik", en: "Roti canai + teh tarik" }, price: "0,80–1,50 €", detail: { fr: "Petit-déjeuner malaisien classique", en: "Classic Malaysian breakfast" } },
+          { label: { fr: "Restaurant mid-range", en: "Mid-range restaurant" }, price: "8–18 €", detail: { fr: "Cuisine locale ou internationale", en: "Local or international cuisine" } },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
-          { label: "KL MRT/LRT trajet", price: "0,40–1,50 €", detail: "Réseau étendu, très pratique" },
-          { label: "Bus express KL–Penang (4h)", price: "8–15 €", detail: "Très confortable, AC" },
+          { label: { fr: "KL MRT/LRT trajet", en: "KL MRT/LRT ride" }, price: "0,40–1,50 €", detail: { fr: "Réseau étendu, très pratique", en: "Extensive, very convenient network" } },
+          { label: { fr: "Bus express KL–Penang (4h)", en: "Express bus KL–Penang (4h)" }, price: "8–15 €", detail: { fr: "Très confortable, AC", en: "Very comfortable, air-conditioned" } },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités & Culture",
+        label: { fr: "Activités & Culture", en: "Activities & Culture" },
         items: [
-          { label: "Visite Sepilok Orangs-outans", price: "15–25 €", detail: "Entrée réserve + centre" },
-          { label: "Trek Mont Kinabalu (2 jours)", price: "150–250 €", detail: "Permis + guide + refuge obligatoires" },
+          { label: { fr: "Visite Sepilok Orangs-outans", en: "Sepilok Orangutan visit" }, price: "15–25 €", detail: { fr: "Entrée réserve + centre", en: "Reserve + centre entry" } },
+          { label: { fr: "Trek Mont Kinabalu (2 jours)", en: "Mount Kinabalu trek (2 days)" }, price: "150–250 €", detail: { fr: "Permis + guide + refuge obligatoires", en: "Permit + guide + lodge mandatory" } },
         ],
       },
     ],
     budgetSummary: [
-      { type: "Routard", daily: "30–50 €/j", desc: "Auberge, hawker centres, transports en commun", color: "#22c55e" },
-      { type: "Confort", daily: "65–110 €/j", desc: "Hôtel 3★, restaurants mid-range, excursions", color: "#3b82f6" },
-      { type: "Luxe", daily: "200 €+/j", desc: "Resort 5★ Langkawi, gastronomie, privé", color: "#f59e0b" },
+      { type: { fr: "Routard", en: "Backpacker" }, daily: "30–50 €/j", desc: { fr: "Auberge, hawker centres, transports en commun", en: "Hostel, hawker centres, public transport" }, color: "#22c55e" },
+      { type: { fr: "Confort", en: "Comfort" }, daily: "65–110 €/j", desc: { fr: "Hôtel 3★, restaurants mid-range, excursions", en: "3★ hotel, mid-range restaurants, excursions" }, color: "#3b82f6" },
+      { type: { fr: "Luxe", en: "Luxury" }, daily: "200 €+/j", desc: { fr: "Resort 5★ Langkawi, gastronomie, privé", en: "5★ Langkawi resort, fine dining, private transport" }, color: "#f59e0b" },
     ],
     tripEstimate: {
-      duration: "2 semaines",
-      route: "Kuala Lumpur – Penang – Langkawi – Bornéo (Sabah)",
+      duration: { fr: "2 semaines", en: "2 weeks" },
+      route: {
+        fr: "Kuala Lumpur – Penang – Langkawi – Bornéo (Sabah)",
+        en: "Kuala Lumpur – Penang – Langkawi – Borneo (Sabah)",
+      },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "1 200 – 1 700 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Kuala Lumpur", amount: "500–750 €" },
-            { label: "Hébergement (14 nuits)", amount: "200–350 €" },
-            { label: "Nourriture", amount: "200–300 €" },
-            { label: "Transport local + vols intérieurs", amount: "150–250 €" },
-            { label: "Activités & imprévus", amount: "100–200 €" },
+            { label: { fr: "Vol A/R Paris–Kuala Lumpur", en: "Return flight Paris–Kuala Lumpur" }, amount: "500–750 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "200–350 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "200–300 €" },
+            { label: { fr: "Transport local + vols intérieurs", en: "Local transport + domestic flights" }, amount: "150–250 €" },
+            { label: { fr: "Activités & imprévus", en: "Activities & contingency" }, amount: "100–200 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "2 200 – 3 200 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Kuala Lumpur", amount: "700–1 000 €" },
-            { label: "Hébergement (14 nuits)", amount: "600–900 €" },
-            { label: "Nourriture", amount: "400–600 €" },
-            { label: "Transport + vols intérieurs", amount: "300–500 €" },
-            { label: "Activités & imprévus", amount: "250–400 €" },
+            { label: { fr: "Vol A/R Paris–Kuala Lumpur", en: "Return flight Paris–Kuala Lumpur" }, amount: "700–1 000 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "600–900 €" },
+            { label: { fr: "Nourriture", en: "Food" }, amount: "400–600 €" },
+            { label: { fr: "Transport + vols intérieurs", en: "Transport + domestic flights" }, amount: "300–500 €" },
+            { label: { fr: "Activités & imprévus", en: "Activities & contingency" }, amount: "250–400 €" },
           ],
         },
         {
-          type: "Luxe",
+          type: { fr: "Luxe", en: "Luxury" },
           color: "#f59e0b",
           total: "6 000 €+",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–KL (Business)", amount: "2 500–4 000 €" },
-            { label: "Hébergement (14 nuits)", amount: "1 800–2 500 €" },
-            { label: "Nourriture & restaurants", amount: "500–800 €" },
-            { label: "Transport & excursions privées", amount: "400–600 €" },
-            { label: "Activités premium", amount: "300–500 €" },
+            { label: { fr: "Vol A/R Paris–KL (Business)", en: "Return flight Paris–KL (Business)" }, amount: "2 500–4 000 €" },
+            { label: { fr: "Hébergement (14 nuits)", en: "Accommodation (14 nights)" }, amount: "1 800–2 500 €" },
+            { label: { fr: "Nourriture & restaurants", en: "Food & restaurants" }, amount: "500–800 €" },
+            { label: { fr: "Transport & excursions privées", en: "Transport & private excursions" }, amount: "400–600 €" },
+            { label: { fr: "Activités premium", en: "Premium activities" }, amount: "300–500 €" },
           ],
         },
       ],
@@ -256,13 +275,13 @@ export const MALAYSIA = {
   },
 
   practicalities: [
-    { icon: "✈️", label: "Vol depuis Paris", value: "~12–13h (Malaysia Airlines direct, Air France)" },
-    { icon: "🪪", label: "Visa", value: "Sans visa pour les Français (90 jours)" },
-    { icon: "💰", label: "Monnaie", value: "Ringgit malaisien (1€ ≈ 4,8–5,2 MYR)" },
-    { icon: "🗣️", label: "Langue", value: "Malais (Bahasa), anglais très répandu" },
-    { icon: "🔌", label: "Prise électrique", value: "Type G – 240 V (même qu'UK, adaptateur conseillé)" },
-    { icon: "📱", label: "Réseau", value: "4G dans les villes, SIM touristique à l'aéroport KLIA" },
-    { icon: "🚰", label: "Eau du robinet", value: "Non potable, eau en bouteille recommandée" },
-    { icon: "💊", label: "Santé", value: "Pas de vaccins obligatoires, antipaludéens conseillés à Bornéo profond" },
+    { icon: "✈️", label: { fr: "Vol depuis Paris", en: "Flight from Paris" }, value: { fr: "~12–13h (Malaysia Airlines direct, Air France)", en: "~12–13h (Malaysia Airlines direct, Air France)" } },
+    { icon: "🪪", label: { fr: "Visa", en: "Visa" }, value: { fr: "Sans visa pour les Français (90 jours)", en: "No visa required for French citizens (90 days)" } },
+    { icon: "💰", label: { fr: "Monnaie", en: "Currency" }, value: { fr: "Ringgit malaisien (1€ ≈ 4,8–5,2 MYR)", en: "Malaysian Ringgit (1€ ≈ 4.8–5.2 MYR)" } },
+    { icon: "🗣️", label: { fr: "Langue", en: "Language" }, value: { fr: "Malais (Bahasa), anglais très répandu", en: "Malay (Bahasa), English widely spoken" } },
+    { icon: "🔌", label: { fr: "Prise électrique", en: "Power outlet" }, value: { fr: "Type G – 240 V (même qu'UK, adaptateur conseillé)", en: "Type G – 240V (same as UK, adapter recommended)" } },
+    { icon: "📱", label: { fr: "Réseau", en: "Network" }, value: { fr: "4G dans les villes, SIM touristique à l'aéroport KLIA", en: "4G in cities, tourist SIM available at KLIA airport" } },
+    { icon: "🚰", label: { fr: "Eau du robinet", en: "Tap water" }, value: { fr: "Non potable, eau en bouteille recommandée", en: "Not drinkable, bottled water recommended" } },
+    { icon: "💊", label: { fr: "Santé", en: "Health" }, value: { fr: "Pas de vaccins obligatoires, antipaludéens conseillés à Bornéo profond", en: "No mandatory vaccines, antimalarials recommended for deep Borneo" } },
   ],
 };

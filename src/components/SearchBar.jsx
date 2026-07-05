@@ -1,22 +1,22 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { monthAbbrevList } from "../lib/monthAbbrev";
 
+// `value` reste en français : c'est la clé comparée aux tags des données pays
+// (non traduites tant que la Phase 3 - données pays - n'est pas faite). Seul le
+// libellé affiché (`t('search.tags.<key>')`) suit la langue active.
 const TAGS = [
-  { label: "UNESCO",        icon: "🏛️" },
-  { label: "Histoire",      icon: "📜" },
-  { label: "Nature",        icon: "🌿" },
-  { label: "Randonnée",     icon: "🥾" },
-  { label: "Plage",         icon: "🏖️" },
-  { label: "Gastronomie",   icon: "🍽️" },
-  { label: "Architecture",  icon: "🏰" },
-  { label: "Désert",        icon: "🏜️" },
-  { label: "Safari",        icon: "🦁" },
-  { label: "Ski",           icon: "⛷️" },
-  { label: "Ville",         icon: "🏙️" },
-];
-
-const MONTHS = [
-  "Jan", "Fév", "Mar", "Avr", "Mai", "Jun",
-  "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc",
+  { value: "UNESCO",        key: "unesco",       icon: "🏛️" },
+  { value: "Histoire",      key: "history",      icon: "📜" },
+  { value: "Nature",        key: "nature",       icon: "🌿" },
+  { value: "Randonnée",     key: "hiking",       icon: "🥾" },
+  { value: "Plage",         key: "beach",        icon: "🏖️" },
+  { value: "Gastronomie",   key: "food",         icon: "🍽️" },
+  { value: "Architecture",  key: "architecture", icon: "🏰" },
+  { value: "Désert",        key: "desert",       icon: "🏜️" },
+  { value: "Safari",        key: "safari",       icon: "🦁" },
+  { value: "Ski",           key: "ski",          icon: "⛷️" },
+  { value: "Ville",         key: "city",         icon: "🏙️" },
 ];
 
 const BUDGET_PRESETS = [
@@ -27,6 +27,7 @@ const BUDGET_PRESETS = [
 ];
 
 export default function SearchBar({ onFilterChange, open: openProp, onOpenChange, hideVisited, onHideVisitedChange, hasVisited }) {
+  const { t, i18n } = useTranslation("app");
   const [openInternal, setOpenInternal] = useState(false);
   const open = openProp !== undefined ? openProp : openInternal;
   const setOpen = (v) => { setOpenInternal(v); onOpenChange?.(v); };
@@ -91,7 +92,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
       <div className={`search-bar${open ? " open" : ""}`}>
       <button className="search-toggle" onClick={() => setOpen(!open)}>
         <span className="search-icon">⚙️</span>
-        <span>Filtres</span>
+        <span>{t("search.filtersLabel")}</span>
         {activeCount > 0 && <span className="filter-badge">{activeCount}</span>}
         <span className={`search-chevron${open ? " up" : ""}`} />
       </button>
@@ -104,7 +105,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
             <>
               <div className="filter-group filter-group-visited">
                 <div className="filter-group-header">
-                  <span className="filter-group-title">✈️ Masquer les pays déjà visités</span>
+                  <span className="filter-group-title">{t("search.hideVisitedLabel")}</span>
                   <button
                     className={`budget-toggle${hideVisited ? " on" : ""}`}
                     onClick={() => onHideVisitedChange?.(!hideVisited)}
@@ -121,7 +122,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
           {/* ── Budget ── */}
           <div className="filter-group">
             <div className="filter-group-header">
-              <span className="filter-group-title">💳 Budget / jour</span>
+              <span className="filter-group-title">{t("search.budgetPerDayLabel")}</span>
               <button
                 className={`budget-toggle${budgetEnabled ? " on" : ""}`}
                 onClick={handleBudgetToggle}
@@ -155,7 +156,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
                   className="budget-slider"
                 />
                 <span className="budget-value">
-                  {budgetEnabled ? `${tripBudget.toLocaleString("fr-FR")} €` : "—"}
+                  {budgetEnabled ? `${tripBudget.toLocaleString(i18n.language === "fr" ? "fr-FR" : "en-GB")} €` : "—"}
                 </span>
               </div>
             </div>
@@ -166,7 +167,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
           {/* ── Mois ── */}
           <div className="filter-group">
             <div className="filter-group-header">
-              <span className="filter-group-title">📅 Mois de voyage</span>
+              <span className="filter-group-title">{t("search.travelMonthLabel")}</span>
               {month !== null && (
                 <button className="clear-month-btn" onClick={() => { setMonth(null); emit(budgetEnabled, tripBudget, null, selectedTags); }}>
                   ✕
@@ -174,7 +175,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
               )}
             </div>
             <div className="month-grid">
-              {MONTHS.map((m, i) => (
+              {monthAbbrevList().map((m, i) => (
                 <button
                   key={m}
                   className={`month-btn${month === i ? " active" : ""}`}
@@ -191,7 +192,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
           {/* ── Tags ── */}
           <div className="filter-group">
             <div className="filter-group-header">
-              <span className="filter-group-title">🏷️ Type de destination</span>
+              <span className="filter-group-title">{t("search.destinationTypeLabel")}</span>
               {selectedTags.length > 0 && (
                 <button className="clear-month-btn" onClick={() => { setSelectedTags([]); emit(budgetEnabled, tripBudget, month, []); }}>
                   ✕
@@ -199,14 +200,14 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
               )}
             </div>
             <div className="tag-grid">
-              {TAGS.map(({ label, icon }) => (
+              {TAGS.map(({ value, key, icon }) => (
                 <button
-                  key={label}
-                  className={`tag-chip${selectedTags.includes(label) ? " active" : ""}`}
-                  onClick={() => handleTagClick(label)}
+                  key={value}
+                  className={`tag-chip${selectedTags.includes(value) ? " active" : ""}`}
+                  onClick={() => handleTagClick(value)}
                 >
                   <span>{icon}</span>
-                  <span>{label}</span>
+                  <span>{t(`search.tags.${key}`)}</span>
                 </button>
               ))}
             </div>
@@ -218,13 +219,13 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
               <div className="filter-divider" />
               <div className="filter-footer">
                 <div className="filter-legend">
-                  <span><span className="legend-chip good" />Idéal</span>
-                  <span><span className="legend-chip ok" />Correct</span>
-                  <span><span className="legend-chip tight" />Limite</span>
-                  <span><span className="legend-chip dim" />Hors critères</span>
+                  <span><span className="legend-chip good" />{t("search.legendIdeal")}</span>
+                  <span><span className="legend-chip ok" />{t("search.legendOk")}</span>
+                  <span><span className="legend-chip tight" />{t("search.legendTight")}</span>
+                  <span><span className="legend-chip dim" />{t("search.legendOutOfCriteria")}</span>
                 </div>
                 <button className="reset-btn" onClick={handleReset}>
-                  Réinitialiser
+                  {t("search.resetButton")}
                 </button>
               </div>
             </>

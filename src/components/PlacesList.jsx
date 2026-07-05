@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -18,6 +19,7 @@ async function uploadPlacePhoto(file, userId, prefix) {
 
 // ─── Formulaire d'ajout d'un lieu ────────────────────────────────────────────
 function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, countryName, destName, onAdded, onCancel }) {
+  const { t } = useTranslation('app');
   const { user } = useAuth();
   const [name, setName] = useState('');
   const [photo, setPhoto] = useState({ file: null, preview: null });
@@ -45,7 +47,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
       const { url, path } = await uploadPlacePhoto(photo.file, user.id, prefix);
       uploadedUrl = url; uploadedPath = path;
     } catch {
-      setError("Impossible d'envoyer la photo. Vérifiez votre connexion.");
+      setError(t('placesList.photoUploadError'));
       setSubmitting(false); return;
     }
 
@@ -70,11 +72,11 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
       });
       result = await res.json();
     } catch {
-      result = { ok: false, reason: 'Connexion au serveur impossible.' };
+      result = { ok: false, reason: t('placesList.connectionFailedError') };
     }
 
     if (!result.ok) {
-      setError(result.reason || 'La publication a échoué. Réessayez.');
+      setError(result.reason || t('placesList.publicationFailedError'));
       setSubmitting(false); return;
     }
 
@@ -95,7 +97,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
         className="add-place-name-input"
         value={name}
         onChange={e => setName(e.target.value)}
-        placeholder="Nom du lieu *"
+        placeholder={t('placesList.namePlaceholder')}
         maxLength={100}
         disabled={submitting}
       />
@@ -110,17 +112,17 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
           </div>
         ) : (
           <label className={`add-place-photo-btn${compressing ? ' loading' : ''}`}>
-            {compressing ? <><div className="dest-form-spinner dest-form-spinner--small" /> Compression…</> : '📷 Ajouter une photo *'}
+            {compressing ? <><div className="dest-form-spinner dest-form-spinner--small" /> {t('placesList.compressing')}</> : t('placesList.addPhotoButton')}
             <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handlePhoto} disabled={compressing || submitting} />
           </label>
         )}
       </div>
       {error && <div className="add-place-error">⚠ {error}</div>}
       <div className="add-place-actions">
-        <button type="button" className="add-place-cancel" onClick={onCancel} disabled={submitting}>Annuler</button>
+        <button type="button" className="add-place-cancel" onClick={onCancel} disabled={submitting}>{t('placesList.cancelButton')}</button>
         <button type="submit" className="add-place-submit"
           disabled={!name.trim() || !photo.file || submitting || compressing}>
-          {submitting ? 'Publication…' : 'Publier'}
+          {submitting ? t('placesList.publishing') : t('placesList.publishButton')}
         </button>
       </div>
     </form>
@@ -129,6 +131,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function PlacesList({ dest, countryCode, countryName, wikiImages = {} }) {
+  const { t } = useTranslation('app');
   const { user } = useAuth();
   const isUserDest = !!dest.isUserDest;
   const destType = isUserDest ? 'community' : 'static';
@@ -327,9 +330,9 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   return (
     <div className="places-list">
       <div className="places-list-header">
-        <h4 className="places-list-title">À ne pas manquer</h4>
+        <h4 className="places-list-title">{t('placesList.title')}</h4>
         {user && !showAddForm && (
-          <button className="places-add-btn" onClick={() => setShowAddForm(true)}>Ajouter un lieu</button>
+          <button className="places-add-btn" onClick={() => setShowAddForm(true)}>{t('placesList.addPlaceButton')}</button>
         )}
       </div>
 
@@ -360,9 +363,9 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
               <div className="must-item-actions">
                 {deletingId === place.id ? (
                   <div className="review-confirm-delete">
-                    <span className="review-confirm-msg">Voulez-vous vraiment supprimer ce lieu ?</span>
-                    <button className="review-confirm-yes" onClick={() => handleDelete(place)}>Oui</button>
-                    <button className="review-confirm-no" onClick={() => setDeletingId(null)}>Non</button>
+                    <span className="review-confirm-msg">{t('placesList.confirmDeleteMessage')}</span>
+                    <button className="review-confirm-yes" onClick={() => handleDelete(place)}>{t('placesList.yesButton')}</button>
+                    <button className="review-confirm-no" onClick={() => setDeletingId(null)}>{t('placesList.noButton')}</button>
                   </div>
                 ) : (
                   <>
@@ -370,7 +373,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
                       className={`must-vote-btn must-vote-btn--up${place._votes?.myVote === 'up' ? ' voted' : ''}${!user ? ' disabled' : ''}`}
                       disabled={!user || votingId === place.id}
                       onClick={() => handleVote(place, 'up')}
-                      title={user ? "J'aime ce lieu" : 'Connectez-vous pour voter'}
+                      title={user ? t('placesList.likeThisPlace') : t('placesList.loginToVote')}
                     >
                       ▲ {place._votes?.up ?? 0}
                     </button>
@@ -378,12 +381,12 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
                       className={`must-vote-btn must-vote-btn--down${place._votes?.myVote === 'down' ? ' voted-down' : ''}${!user ? ' disabled' : ''}`}
                       disabled={!user || votingId === place.id}
                       onClick={() => handleVote(place, 'down')}
-                      title={user ? "Je n'aime pas ce lieu" : 'Connectez-vous pour voter'}
+                      title={user ? t('placesList.dislikeThisPlace') : t('placesList.loginToVote')}
                     >
                       ▼ {place._votes?.down ?? 0}
                     </button>
                     {user?.id === place.user_id && (
-                      <button className="must-delete-btn" onClick={() => setDeletingId(place.id)} title="Supprimer">✕</button>
+                      <button className="must-delete-btn" onClick={() => setDeletingId(place.id)} title={t('placesList.deleteButton')}>✕</button>
                     )}
                   </>
                 )}
@@ -393,11 +396,11 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
         ))}
       </div>
 
-      {loading && <div className="places-loading">Chargement…</div>}
+      {loading && <div className="places-loading">{t('placesList.loading')}</div>}
 
       {hasMore && !loading && (
         <button className="places-load-more" onClick={loadMore}>
-          Voir plus de lieux
+          {t('placesList.seeMorePlaces')}
         </button>
       )}
     </div>

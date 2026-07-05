@@ -1,11 +1,11 @@
 export const AUSTRIA = {
   code: "AUT",
   numericId: 40,
-  name: "Autriche",
+  name: { fr: "Autriche", en: "Austria" },
   emoji: "🇦🇹",
-  capital: "Vienne",
-  language: "Allemand",
-  currency: "Euro (EUR)",
+  capital: { fr: "Vienne", en: "Vienna" },
+  language: { fr: "Allemand", en: "German" },
+  currency: { fr: "Euro (EUR)", en: "Euro (EUR)" },
   timezone: "UTC+1 (été UTC+2)",
   filter: {
     budgetMin: 70,
@@ -13,39 +13,49 @@ export const AUSTRIA = {
     tripMin: 950,
     tripMid: 1900,
   },
-  description:
-    "L'Autriche est un joyau au cœur de l'Europe, où la grandeur impériale des Habsbourg se mêle à des paysages alpins à couper le souffle. Vienne, ancienne capitale d'un immense empire, déborde de palais baroques, de cafés mythiques et d'une vie musicale inégalée — de Mozart à Beethoven, de Klimt à Schiele. Salzbourg, Innsbruck et les lacs du Salzkammergut complètent un tableau d'une extraordinaire richesse culturelle et naturelle.",
+  description: {
+    fr: "L'Autriche est un joyau au cœur de l'Europe, où la grandeur impériale des Habsbourg se mêle à des paysages alpins à couper le souffle. Vienne, ancienne capitale d'un immense empire, déborde de palais baroques, de cafés mythiques et d'une vie musicale inégalée — de Mozart à Beethoven, de Klimt à Schiele. Salzbourg, Innsbruck et les lacs du Salzkammergut complètent un tableau d'une extraordinaire richesse culturelle et naturelle.",
+    en: "Austria is a jewel at the heart of Europe, where the imperial grandeur of the Habsburgs blends with breathtaking Alpine landscapes. Vienna, the former capital of a vast empire, overflows with baroque palaces, legendary cafés and an unmatched musical heritage — from Mozart to Beethoven, from Klimt to Schiele. Salzburg, Innsbruck and the lakes of the Salzkammergut complete a picture of extraordinary cultural and natural richness.",
+  },
   bestPeriods: [
     {
-      months: "Avr – Jun",
-      label: "Idéal",
+      months: { fr: "Avr – Jun", en: "Apr – Jun" },
+      label: { fr: "Idéal", en: "Ideal" },
       color: "#22c55e",
-      description:
-        "Printemps doux, prairies fleuries, foules encore raisonnables. Parfait pour Vienne et les lacs.",
+      description: {
+        fr: "Printemps doux, prairies fleuries, foules encore raisonnables. Parfait pour Vienne et les lacs.",
+        en: "Mild spring, blooming meadows, crowds still reasonable. Perfect for Vienna and the lakes.",
+      },
       icon: "☀️",
     },
     {
-      months: "Sep – Oct",
-      label: "Très bien",
+      months: { fr: "Sep – Oct", en: "Sep – Oct" },
+      label: { fr: "Très bien", en: "Very good" },
       color: "#22c55e",
-      description:
-        "Automne doré, vendanges en Wachau, lumière magnifique sur les Alpes.",
+      description: {
+        fr: "Automne doré, vendanges en Wachau, lumière magnifique sur les Alpes.",
+        en: "Golden autumn, grape harvest in the Wachau, magnificent light over the Alps.",
+      },
       icon: "🍂",
     },
     {
-      months: "Déc – Mar",
-      label: "Ski & Noël",
+      months: { fr: "Déc – Mar", en: "Dec – Mar" },
+      label: { fr: "Ski & Noël", en: "Skiing & Christmas" },
       color: "#f59e0b",
-      description:
-        "Stations de ski world-class au Tyrol et à Salzbourg. Marchés de Noël somptueux à Vienne.",
+      description: {
+        fr: "Stations de ski world-class au Tyrol et à Salzbourg. Marchés de Noël somptueux à Vienne.",
+        en: "World-class ski resorts in Tyrol and around Salzburg. Sumptuous Christmas markets in Vienna.",
+      },
       icon: "⛷️",
     },
     {
-      months: "Jul – Aoû",
-      label: "Haute saison",
+      months: { fr: "Jul – Aoû", en: "Jul – Aug" },
+      label: { fr: "Haute saison", en: "High season" },
       color: "#f59e0b",
-      description:
-        "Beau temps mais foules importantes dans les sites touristiques et prix en hausse.",
+      description: {
+        fr: "Beau temps mais foules importantes dans les sites touristiques et prix en hausse.",
+        en: "Fine weather but large crowds at tourist sites and higher prices.",
+      },
       icon: "🌞",
     },
   ],
@@ -53,7 +63,7 @@ export const AUSTRIA = {
     {
       id: "vienna",
       name: "Vienne",
-      region: "Autriche orientale — climat continental tempéré",
+      region: { fr: "Autriche orientale — climat continental tempéré", en: "Eastern Austria — temperate continental climate" },
       data: [
         { month: "Jan", temp: 2, rain: 40, icon: "❄️" },
         { month: "Fév", temp: 3, rain: 40, icon: "❄️" },
@@ -72,7 +82,7 @@ export const AUSTRIA = {
     {
       id: "innsbruck",
       name: "Innsbruck",
-      region: "Tyrol — vallée alpine, plus de précipitations",
+      region: { fr: "Tyrol — vallée alpine, plus de précipitations", en: "Tyrol — alpine valley, higher rainfall" },
       data: [
         { month: "Jan", temp: 1, rain: 65, icon: "❄️" },
         { month: "Fév", temp: 3, rain: 55, icon: "❄️" },
@@ -93,26 +103,28 @@ export const AUSTRIA = {
     {
       id: 1,
       name: "Vienne",
-      region: "Basse-Autriche / Vienne",
-      description:
-        "Vienne est une ville impériale d'une élégance incomparable, dont les fastes baroques des Habsbourg sont préservés dans chaque rue du premier arrondissement. Le Kunsthistorisches Museum, l'Opéra d'État, le Palais de Schönbrunn et la Sécession viennoise illustrent la densité culturelle unique de la capitale. Les cafés viennois — Landtmann, Schwarzenberg, Central — sont à eux seuls une institution, inscrits au patrimoine culturel immatériel de l'UNESCO.",
+      region: { fr: "Basse-Autriche / Vienne", en: "Lower Austria / Vienna" },
+      description: {
+        fr: "Vienne est une ville impériale d'une élégance incomparable, dont les fastes baroques des Habsbourg sont préservés dans chaque rue du premier arrondissement. Le Kunsthistorisches Museum, l'Opéra d'État, le Palais de Schönbrunn et la Sécession viennoise illustrent la densité culturelle unique de la capitale. Les cafés viennois — Landtmann, Schwarzenberg, Central — sont à eux seuls une institution, inscrits au patrimoine culturel immatériel de l'UNESCO.",
+        en: "Vienna is an imperial city of incomparable elegance, whose baroque Habsburg splendour is preserved in every street of the first district. The Kunsthistorisches Museum, the State Opera, Schönbrunn Palace and the Vienna Secession illustrate the capital's unique cultural density. Viennese cafés — Landtmann, Schwarzenberg, Central — are an institution in themselves, inscribed on UNESCO's intangible cultural heritage list.",
+      },
       wikipedia: "Vienna",
       tags: ["Culture", "Musique", "Art", "Histoire", "Gastronomie", "Ville"],
       mustSee: [
         {
-          name: "Palais de Schönbrunn — résidence d'été des Habsbourg avec 1 441 pièces",
+          name: { fr: "Palais de Schönbrunn — résidence d'été des Habsbourg avec 1 441 pièces", en: "Schönbrunn Palace — Habsburg summer residence with 1,441 rooms" },
           wikipedia: "Schönbrunn_Palace",
         },
         {
-          name: "Kunsthistorisches Museum — l'une des plus grandes collections d'art au monde",
+          name: { fr: "Kunsthistorisches Museum — l'une des plus grandes collections d'art au monde", en: "Kunsthistorisches Museum — one of the largest art collections in the world" },
           wikipedia: "File:Kunsthistorisches Museum - Wien.jpg",
         },
         {
-          name: "Belvedere — palais baroque abritant Le Baiser de Klimt",
+          name: { fr: "Belvedere — palais baroque abritant Le Baiser de Klimt", en: "Belvedere — baroque palace housing Klimt's The Kiss" },
           wikipedia: "Belvedere,_Vienna",
         },
         {
-          name: "Opéra de Vienne — temple de la musique classique, visites et spectacles",
+          name: { fr: "Opéra de Vienne — temple de la musique classique, visites et spectacles", en: "Vienna State Opera — temple of classical music, tours and performances" },
           wikipedia: "Vienna_State_Opera",
         },
       ],
@@ -120,26 +132,28 @@ export const AUSTRIA = {
     {
       id: 2,
       name: "Salzbourg",
-      region: "Land de Salzbourg",
-      description:
-        "Ville natale de Mozart et décor des tournages de La Mélodie du Bonheur, Salzbourg est l'une des plus belles villes baroques d'Europe. Son centre historique, entièrement classé au patrimoine mondial de l'UNESCO, est dominé par la forteresse de Hohensalzburg surplombant l'Untersberg et la Salzach. Le Festival de Salzbourg, chaque été, est l'un des événements musicaux les plus prestigieux au monde.",
+      region: { fr: "Land de Salzbourg", en: "State of Salzburg" },
+      description: {
+        fr: "Ville natale de Mozart et décor des tournages de La Mélodie du Bonheur, Salzbourg est l'une des plus belles villes baroques d'Europe. Son centre historique, entièrement classé au patrimoine mondial de l'UNESCO, est dominé par la forteresse de Hohensalzburg surplombant l'Untersberg et la Salzach. Le Festival de Salzbourg, chaque été, est l'un des événements musicaux les plus prestigieux au monde.",
+        en: "Mozart's birthplace and the filming location of The Sound of Music, Salzburg is one of Europe's most beautiful baroque cities. Its historic centre, entirely listed as a UNESCO World Heritage site, is dominated by the Hohensalzburg Fortress overlooking the Untersberg and the Salzach river. The Salzburg Festival, held every summer, is one of the most prestigious musical events in the world.",
+      },
       wikipedia: "Salzburg",
       tags: ["UNESCO", "Musique", "Baroque", "Nature", "Culture", "Ville"],
       mustSee: [
         {
-          name: "Forteresse de Hohensalzburg — château médiéval le mieux conservé d'Europe centrale",
+          name: { fr: "Forteresse de Hohensalzburg — château médiéval le mieux conservé d'Europe centrale", en: "Hohensalzburg Fortress — the best-preserved medieval castle in Central Europe" },
           wikipedia: "File:Festung_Hohensalzburg_seen_from_the_West,_Salzburg,_Austria,_20260430_1638_0140.jpg",
         },
         {
-          name: "Maison natale de Mozart — musée dans la rue Getreidegasse",
+          name: { fr: "Maison natale de Mozart — musée dans la rue Getreidegasse", en: "Mozart's Birthplace — museum on Getreidegasse street" },
           wikipedia: "File:Salzburg, Getreidegasse 9, Mozarts Geburtshaus.jpg",
         },
         {
-          name: "Palais de Mirabell et ses jardins — avec vue sur la forteresse",
+          name: { fr: "Palais de Mirabell et ses jardins — avec vue sur la forteresse", en: "Mirabell Palace and its gardens — with a view of the fortress" },
           wikipedia: "Mirabell_Palace",
         },
         {
-          name: "Hallstatt — village lacustre de conte de fées dans les Alpes autrichiennes",
+          name: { fr: "Hallstatt — village lacustre de conte de fées dans les Alpes autrichiennes", en: "Hallstatt — fairy-tale lakeside village in the Austrian Alps" },
           wikipedia: "Hallstatt",
         },
       ],
@@ -147,195 +161,204 @@ export const AUSTRIA = {
     {
       id: 3,
       name: "Salzkammergut",
-      region: "Haute-Autriche / Salzbourg",
-      description:
-        "La région du Salzkammergut regroupe une soixantaine de lacs alpins d'un bleu vert spectaculaire, nichés entre des sommets calcaires. Hallstatt, village lacustre emblématique, est souvent qualifié de plus beau village du monde et a même inspiré un village entier en Chine. Randonnées, baignades, bateau à voile et mines de sel constituent les attraits de cette région classée au patrimoine mondial de l'UNESCO.",
+      region: { fr: "Haute-Autriche / Salzbourg", en: "Upper Austria / Salzburg" },
+      description: {
+        fr: "La région du Salzkammergut regroupe une soixantaine de lacs alpins d'un bleu vert spectaculaire, nichés entre des sommets calcaires. Hallstatt, village lacustre emblématique, est souvent qualifié de plus beau village du monde et a même inspiré un village entier en Chine. Randonnées, baignades, bateau à voile et mines de sel constituent les attraits de cette région classée au patrimoine mondial de l'UNESCO.",
+        en: "The Salzkammergut region is home to some sixty Alpine lakes of a spectacular blue-green colour, nestled among limestone peaks. Hallstatt, the emblematic lakeside village, is often called the most beautiful village in the world and even inspired an entire replica village in China. Hiking, swimming, sailing and salt mines are the highlights of this region listed as a UNESCO World Heritage site.",
+      },
       wikipedia: "Salzkammergut",
       tags: ["Nature", "UNESCO", "Randonnée", "Lac", "Villages"],
       mustSee: [
         {
-          name: "Hallstatt — village lacustre inscrit au patrimoine mondial",
+          name: { fr: "Hallstatt — village lacustre inscrit au patrimoine mondial", en: "Hallstatt — lakeside village listed as a World Heritage site" },
           wikipedia: "Hallstatt",
         },
         {
-          name: "Dachstein — massif calcaire avec grottes de glace et via ferrata",
+          name: { fr: "Dachstein — massif calcaire avec grottes de glace et via ferrata", en: "Dachstein — limestone massif with ice caves and via ferrata" },
           wikipedia: "File:Wagrain Grießenkareck N-Panorama 20160130.JPG",
         },
         {
-          name: "Wolfgangsee — lac aux eaux cristallines, bateaux à vapeur centenaires",
+          name: { fr: "Wolfgangsee — lac aux eaux cristallines, bateaux à vapeur centenaires", en: "Wolfgangsee — lake with crystal-clear waters, century-old steamboats" },
           wikipedia: "Lake_Wolfgang",
         },
         {
-          name: "Bad Ischl — ancienne résidence impériale de François-Joseph",
+          name: { fr: "Bad Ischl — ancienne résidence impériale de François-Joseph", en: "Bad Ischl — former imperial residence of Franz Joseph" },
           wikipedia: "Bad_Ischl",
         },
       ],
     },
     {
       id: 4,
-      name: "Tyrol & Innsbruck",
-      region: "Tyrol",
-      description:
-        "Innsbruck, capitale du Tyrol, est une ville alpine d'une beauté rare où les toits dorés et les façades colorées de l'Altstadt se détachent sur fond de sommets enneigés. C'est l'une des rares villes au monde où l'on peut skier le matin et visiter des musées l'après-midi. L'Ambras, le Toit d'Or, et les remontées mécaniques du Nordketten permettent d'apprécier toutes les facettes de cette destination alpine.",
+      name: { fr: "Tyrol & Innsbruck", en: "Tyrol & Innsbruck" },
+      region: { fr: "Tyrol", en: "Tyrol" },
+      description: {
+        fr: "Innsbruck, capitale du Tyrol, est une ville alpine d'une beauté rare où les toits dorés et les façades colorées de l'Altstadt se détachent sur fond de sommets enneigés. C'est l'une des rares villes au monde où l'on peut skier le matin et visiter des musées l'après-midi. L'Ambras, le Toit d'Or, et les remontées mécaniques du Nordketten permettent d'apprécier toutes les facettes de cette destination alpine.",
+        en: "Innsbruck, the capital of Tyrol, is an Alpine city of rare beauty where the golden roofs and colourful facades of the Altstadt stand out against a backdrop of snow-capped peaks. It is one of the few cities in the world where you can ski in the morning and visit museums in the afternoon. Ambras Castle, the Golden Roof, and the Nordkette cable cars let visitors enjoy every facet of this Alpine destination.",
+      },
       wikipedia: "Innsbruck",
       tags: ["Alpes", "Ski", "Culture", "Randonnée", "Histoire"],
       mustSee: [
         {
-          name: "Toit d'Or (Goldenes Dachl) — balcon couvert de 2 657 tuiles dorées du XVe siècle",
+          name: { fr: "Toit d'Or (Goldenes Dachl) — balcon couvert de 2 657 tuiles dorées du XVe siècle", en: "Golden Roof (Goldenes Dachl) — 15th-century balcony covered with 2,657 gilded tiles" },
           wikipedia: "Goldenes_Dachl",
         },
         {
-          name: "Nordkette — accès rapide en téléphérique aux sommets alpins depuis le centre-ville",
+          name: { fr: "Nordkette — accès rapide en téléphérique aux sommets alpins depuis le centre-ville", en: "Nordkette — quick cable car access to Alpine peaks from the city centre" },
           wikipedia: "Nordkette",
         },
         {
-          name: "Château d'Ambras — collection d'art Renaissance des Habsbourg du Tyrol",
+          name: { fr: "Château d'Ambras — collection d'art Renaissance des Habsbourg du Tyrol", en: "Ambras Castle — Renaissance art collection of the Tyrolean Habsburgs" },
           wikipedia: "Ambras_Castle",
         },
         {
-          name: "Swarovski Kristallwelten — univers de cristal spectaculaire près d'Innsbruck",
+          name: { fr: "Swarovski Kristallwelten — univers de cristal spectaculaire près d'Innsbruck", en: "Swarovski Kristallwelten — spectacular crystal world near Innsbruck" },
           wikipedia: "File:Swarovski Kristallwelten 20 Kristalldom.JPG",
         },
       ],
     },
   ],
   costOfLiving: {
-    intro:
-      "L'Autriche est légèrement moins chère que la Suisse mais comparable à l'Allemagne et à la France. Vienne reste accessible avec de bons hôtels en milieu de gamme. Les stations de ski du Tyrol sont plus coûteuses, surtout en haute saison.",
+    intro: {
+      fr: "L'Autriche est légèrement moins chère que la Suisse mais comparable à l'Allemagne et à la France. Vienne reste accessible avec de bons hôtels en milieu de gamme. Les stations de ski du Tyrol sont plus coûteuses, surtout en haute saison.",
+      en: "Austria is slightly cheaper than Switzerland but comparable to Germany and France. Vienna remains affordable with good mid-range hotels. Tyrol's ski resorts are more expensive, especially in high season.",
+    },
     currency: "EUR",
     exchangeRate: "1€ = 1€",
     categories: [
       {
         id: "accommodation",
         icon: "🏨",
-        label: "Hébergement / nuit",
+        label: { fr: "Hébergement / nuit", en: "Accommodation / night" },
         items: [
           {
-            label: "Auberge de jeunesse / Jugendherberge",
+            label: { fr: "Auberge de jeunesse / Jugendherberge", en: "Youth hostel / Jugendherberge" },
             price: "22–38 €",
-            detail: "Très propre et bien équipé dans les grandes villes",
+            detail: { fr: "Très propre et bien équipé dans les grandes villes", en: "Very clean and well equipped in major cities" },
           },
           {
-            label: "Hôtel 3 étoiles",
+            label: { fr: "Hôtel 3 étoiles", en: "3-star hotel" },
             price: "70–120 €",
-            detail: "Chambre double à Vienne ou Salzbourg",
+            detail: { fr: "Chambre double à Vienne ou Salzbourg", en: "Double room in Vienna or Salzburg" },
           },
           {
-            label: "Hôtel 4 étoiles",
+            label: { fr: "Hôtel 4 étoiles", en: "4-star hotel" },
             price: "130–220 €",
-            detail: "Hôtels de standing avec spa dans les stations alpines",
+            detail: { fr: "Hôtels de standing avec spa dans les stations alpines", en: "Upscale hotels with spa in Alpine resorts" },
           },
         ],
       },
       {
         id: "food",
         icon: "🍽️",
-        label: "Nourriture",
+        label: { fr: "Nourriture", en: "Food" },
         items: [
           {
-            label: "Würstelstand / boulangerie",
+            label: { fr: "Würstelstand / boulangerie", en: "Würstelstand / bakery" },
             price: "4–8 €",
-            detail: "Saucisses grillées et bretzels, street food typiquement autrichien",
+            detail: { fr: "Saucisses grillées et bretzels, street food typiquement autrichien", en: "Grilled sausages and pretzels, typically Austrian street food" },
           },
           {
-            label: "Déjeuner au restaurant (Mittagsmenü)",
+            label: { fr: "Déjeuner au restaurant (Mittagsmenü)", en: "Lunch at a restaurant (Mittagsmenü)" },
             price: "10–16 €",
-            detail: "Menu du midi très avantageux dans la plupart des restaurants",
+            detail: { fr: "Menu du midi très avantageux dans la plupart des restaurants", en: "Very good-value lunch menu in most restaurants" },
           },
           {
-            label: "Dîner + café viennois",
+            label: { fr: "Dîner + café viennois", en: "Dinner + Viennese coffee" },
             price: "20–40 €",
-            detail: "Wiener Schnitzel, Tafelspitz, Sachertorte au dessert",
+            detail: { fr: "Wiener Schnitzel, Tafelspitz, Sachertorte au dessert", en: "Wiener Schnitzel, Tafelspitz, Sachertorte for dessert" },
           },
         ],
       },
       {
         id: "transport",
         icon: "🚌",
-        label: "Transport",
+        label: { fr: "Transport", en: "Transport" },
         items: [
           {
-            label: "Métro / tram de Vienne (ticket unité)",
+            label: { fr: "Métro / tram de Vienne (ticket unité)", en: "Vienna metro / tram (single ticket)" },
             price: "2,40 €",
-            detail: "Pass 24h à 8 €, pass semaine à 17,10 €",
+            detail: { fr: "Pass 24h à 8 €, pass semaine à 17,10 €", en: "24h pass at 8 €, weekly pass at 17.10 €" },
           },
           {
-            label: "Train ÖBB Vienne–Salzbourg",
+            label: { fr: "Train ÖBB Vienne–Salzbourg", en: "ÖBB train Vienna–Salzburg" },
             price: "25–70 €",
-            detail: "En 2h30, Sparschiene dès 19 € si réservé tôt",
+            detail: { fr: "En 2h30, Sparschiene dès 19 € si réservé tôt", en: "2h30 journey, Sparschiene fares from 19 € if booked early" },
           },
           {
-            label: "OBB Nightjet (train de nuit)",
+            label: { fr: "OBB Nightjet (train de nuit)", en: "ÖBB Nightjet (night train)" },
             price: "30–80 €",
-            detail: "Réseau de trains de nuit international depuis Vienne",
+            detail: { fr: "Réseau de trains de nuit international depuis Vienne", en: "International night train network from Vienna" },
           },
         ],
       },
       {
         id: "activities",
         icon: "🎭",
-        label: "Activités",
+        label: { fr: "Activités", en: "Activities" },
         items: [
           {
-            label: "Musée à Vienne (KHM, Belvedere…)",
+            label: { fr: "Musée à Vienne (KHM, Belvedere…)", en: "Museum in Vienna (KHM, Belvedere…)" },
             price: "16–21 €",
-            detail: "Nombreux pass combinés disponibles",
+            detail: { fr: "Nombreux pass combinés disponibles", en: "Many combined passes available" },
           },
           {
-            label: "Opéra de Vienne (debout)",
+            label: { fr: "Opéra de Vienne (debout)", en: "Vienna Opera (standing room)" },
             price: "3–15 €",
-            detail: "Places debout vendues 80 min avant le spectacle",
+            detail: { fr: "Places debout vendues 80 min avant le spectacle", en: "Standing tickets sold 80 min before the show" },
           },
           {
-            label: "Téléphérique Nordkette Innsbruck",
+            label: { fr: "Téléphérique Nordkette Innsbruck", en: "Nordkette cable car, Innsbruck" },
             price: "35 €",
-            detail: "Aller-retour depuis le centre-ville jusqu'à 2 300 m",
+            detail: { fr: "Aller-retour depuis le centre-ville jusqu'à 2 300 m", en: "Return trip from the city centre up to 2,300 m" },
           },
         ],
       },
     ],
     budgetSummary: [
       {
-        type: "Routard",
+        type: { fr: "Routard", en: "Backpacker" },
         daily: "60–80 €/j",
-        desc: "Auberge, Mittagsmenü et street food, transports en commun",
+        desc: { fr: "Auberge, Mittagsmenü et street food, transports en commun", en: "Hostel, Mittagsmenü and street food, public transport" },
         color: "#22c55e",
       },
       {
-        type: "Confort",
+        type: { fr: "Confort", en: "Comfort" },
         daily: "130–180 €/j",
-        desc: "Hôtel 3 étoiles, restaurants le soir, opéra et musées",
+        desc: { fr: "Hôtel 3 étoiles, restaurants le soir, opéra et musées", en: "3-star hotel, evening restaurants, opera and museums" },
         color: "#3b82f6",
       },
     ],
     tripEstimate: {
-      duration: "10 jours",
-      route: "Vienne (4j) → Salzkammergut (2j) → Salzbourg (2j) → Innsbruck (2j)",
+      duration: { fr: "10 jours", en: "10 days" },
+      route: {
+        fr: "Vienne (4j) → Salzkammergut (2j) → Salzbourg (2j) → Innsbruck (2j)",
+        en: "Vienna (4d) → Salzkammergut (2d) → Salzburg (2d) → Innsbruck (2d)",
+      },
       budgets: [
         {
-          type: "Routard",
+          type: { fr: "Routard", en: "Backpacker" },
           color: "#22c55e",
           total: "950 – 1 200 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Vienne", amount: "80–160 €" },
-            { label: "Hébergement (9 nuits)", amount: "230–340 €" },
-            { label: "Transports locaux + trains", amount: "130–170 €" },
-            { label: "Nourriture + boissons", amount: "390–450 €" },
-            { label: "Activités + musées", amount: "80–120 €" },
+            { label: { fr: "Vol A/R Paris–Vienne", en: "Return flight Paris–Vienna" }, amount: "80–160 €" },
+            { label: { fr: "Hébergement (9 nuits)", en: "Accommodation (9 nights)" }, amount: "230–340 €" },
+            { label: { fr: "Transports locaux + trains", en: "Local transport + trains" }, amount: "130–170 €" },
+            { label: { fr: "Nourriture + boissons", en: "Food + drinks" }, amount: "390–450 €" },
+            { label: { fr: "Activités + musées", en: "Activities + museums" }, amount: "80–120 €" },
           ],
         },
         {
-          type: "Confort",
+          type: { fr: "Confort", en: "Comfort" },
           color: "#3b82f6",
           total: "1 900 – 2 600 €",
           includesFlights: true,
           breakdown: [
-            { label: "Vol A/R Paris–Vienne", amount: "100–200 €" },
-            { label: "Hébergement (9 nuits)", amount: "800–1 100 €" },
-            { label: "Transports locaux + trains", amount: "200–280 €" },
-            { label: "Nourriture + boissons", amount: "600–750 €" },
-            { label: "Activités + opéra", amount: "150–250 €" },
+            { label: { fr: "Vol A/R Paris–Vienne", en: "Return flight Paris–Vienna" }, amount: "100–200 €" },
+            { label: { fr: "Hébergement (9 nuits)", en: "Accommodation (9 nights)" }, amount: "800–1 100 €" },
+            { label: { fr: "Transports locaux + trains", en: "Local transport + trains" }, amount: "200–280 €" },
+            { label: { fr: "Nourriture + boissons", en: "Food + drinks" }, amount: "600–750 €" },
+            { label: { fr: "Activités + opéra", en: "Activities + opera" }, amount: "150–250 €" },
           ],
         },
       ],
@@ -344,43 +367,67 @@ export const AUSTRIA = {
   practicalities: [
     {
       icon: "✈️",
-      label: "Vol depuis Paris",
-      value: "Paris–Vienne : 2h de vol. Nombreuses liaisons directes (Air France, Austrian, easyJet). Aussi accessible en train de nuit.",
+      label: { fr: "Vol depuis Paris", en: "Flight from Paris" },
+      value: {
+        fr: "Paris–Vienne : 2h de vol. Nombreuses liaisons directes (Air France, Austrian, easyJet). Aussi accessible en train de nuit.",
+        en: "Paris–Vienna: 2h flight. Many direct connections (Air France, Austrian, easyJet). Also accessible by night train.",
+      },
     },
     {
       icon: "🪪",
-      label: "Visa",
-      value: "Pas de visa pour les citoyens UE/Schengen. Carte d'identité suffisante.",
+      label: { fr: "Visa", en: "Visa" },
+      value: {
+        fr: "Pas de visa pour les citoyens UE/Schengen. Carte d'identité suffisante.",
+        en: "No visa required for EU/Schengen citizens. An ID card is sufficient.",
+      },
     },
     {
       icon: "💰",
-      label: "Monnaie",
-      value: "Euro (€). CB acceptée dans la plupart des commerces. Avoir du liquide pour les marchés et petits villages.",
+      label: { fr: "Monnaie", en: "Currency" },
+      value: {
+        fr: "Euro (€). CB acceptée dans la plupart des commerces. Avoir du liquide pour les marchés et petits villages.",
+        en: "Euro (€). Cards accepted in most shops. Carry cash for markets and small villages.",
+      },
     },
     {
       icon: "🗣️",
-      label: "Langue",
-      value: "Allemand autrichien. Anglais très bien parlé à Vienne et dans les zones touristiques.",
+      label: { fr: "Langue", en: "Language" },
+      value: {
+        fr: "Allemand autrichien. Anglais très bien parlé à Vienne et dans les zones touristiques.",
+        en: "Austrian German. English is widely spoken in Vienna and tourist areas.",
+      },
     },
     {
       icon: "🔌",
-      label: "Prise électrique",
-      value: "Type F (Schuko, 2 broches rondes). 230V / 50Hz. Compatible avec les prises françaises.",
+      label: { fr: "Prise électrique", en: "Power outlet" },
+      value: {
+        fr: "Type F (Schuko, 2 broches rondes). 230V / 50Hz. Compatible avec les prises françaises.",
+        en: "Type F (Schuko, 2 round pins). 230V / 50Hz. Compatible with French plugs.",
+      },
     },
     {
       icon: "💊",
-      label: "Santé",
-      value: "Soins médicaux excellents. Carte Européenne d'Assurance Maladie valable pour les ressortissants UE.",
+      label: { fr: "Santé", en: "Health" },
+      value: {
+        fr: "Soins médicaux excellents. Carte Européenne d'Assurance Maladie valable pour les ressortissants UE.",
+        en: "Excellent healthcare. European Health Insurance Card valid for EU nationals.",
+      },
     },
     {
       icon: "☕",
-      label: "Café viennois",
-      value: "Le café viennois est inscrit au patrimoine immatériel de l'UNESCO. Un Melange (avec lait) ou un Einspänner (avec crème) s'impose.",
+      label: { fr: "Café viennois", en: "Viennese coffee" },
+      value: {
+        fr: "Le café viennois est inscrit au patrimoine immatériel de l'UNESCO. Un Melange (avec lait) ou un Einspänner (avec crème) s'impose.",
+        en: "Viennese coffee culture is listed on UNESCO's intangible heritage list. A Melange (with milk) or an Einspänner (with cream) is a must.",
+      },
     },
     {
       icon: "🎼",
-      label: "Musique classique",
-      value: "Réserver billets d'opéra et concerts en avance. Places debout disponibles le soir même pour un prix symbolique.",
+      label: { fr: "Musique classique", en: "Classical music" },
+      value: {
+        fr: "Réserver billets d'opéra et concerts en avance. Places debout disponibles le soir même pour un prix symbolique.",
+        en: "Book opera and concert tickets in advance. Standing-room tickets are available the same evening for a symbolic price.",
+      },
     },
   ],
 };
