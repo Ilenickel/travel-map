@@ -1129,6 +1129,11 @@
 .pp-place-suggestions-dropdown {
   margin-top: 6px;
   border: 1px solid rgba(20,184,166,0.25);
+  /* Resserré par rapport au max-height générique de .pp-search-dropdown
+     (320px, ~7 lignes) : au-delà de ~5 suggestions (destination avec
+     beaucoup de lieux communautaires), le défilement s'active plus tôt
+     pour ne pas pousser le reste de l'interface trop bas. */
+  max-height: 230px;
 }
 .pp-place-suggestions-item {
   display: flex;
