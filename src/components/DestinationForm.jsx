@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabase";
 import { callModeration } from "../lib/moderation";
 import { useAuth } from "../context/AuthContext";
 import { validateImageFile } from "../lib/imageValidation";
+import { isSimilar } from "../lib/similarity";
 
 const AVAILABLE_TAGS = [
   'Histoire', 'Culture', 'Nature', 'Architecture', 'Gastronomie',
@@ -14,41 +15,9 @@ const AVAILABLE_TAGS = [
   'Nightlife', 'Panorama', 'Rural', 'Ville',
 ];
 
-// ── Similarité de noms (même logique que le serveur) ─────────────────────────
-function normalizeName(str) {
-  return str.toLowerCase()
-    .normalize('NFD').replace(/\p{Mn}/gu, '')
-    .replace(/\b(le|la|les|l|de|du|des|un|une|the|a|an)\b\s*/g, '')
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-function levenshtein(a, b) {
-  if (!a.length) return b.length;
-  if (!b.length) return a.length;
-  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    let prev = i;
-    for (let j = 1; j <= b.length; j++) {
-      const next = a[i - 1] === b[j - 1] ? row[j - 1] : 1 + Math.min(prev, row[j], row[j - 1]);
-      row[j - 1] = prev; prev = next;
-    }
-    row[b.length] = prev;
-  }
-  return row[b.length];
-}
-function isSimilar(a, b) {
-  const na = normalizeName(a), nb = normalizeName(b);
-  if (!na || !nb) return false;
-  if (na === nb) return true;
-  if (na.includes(nb) || nb.includes(na)) return true;
-  const maxLen = Math.max(na.length, nb.length);
-  return maxLen > 0 && (1 - levenshtein(na, nb) / maxLen) >= 0.75;
-}
 function findDuplicate(name, destinations) {
   return destinations.find((d) => isSimilar(name, d.name)) ?? null;
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
 // staticDestinations = destinations des data files, existingDestinations = destinations communautaires
 export default function DestinationForm({
@@ -84,6 +53,10 @@ export default function DestinationForm({
 
   // duplicateFound : { matchedName, existingDestId (null = dest statique), savedUpload (null = pas encore uploadé) }
   const [duplicateFound, setDuplicateFound] = useState(null);
+  // mergeResult : { addedPlaces, mergedPlaces } — affiché seulement si au moins
+  // un lieu a été reconnu comme doublon (mergedPlaces > 0), sinon on ferme
+  // directement comme avant (rien de notable à signaler).
+  const [mergeResult, setMergeResult] = useState(null);
 
   const formBodyRef = useRef(null);
   const isCompressing = compressingSlot !== null;
@@ -219,7 +192,16 @@ export default function DestinationForm({
       return;
     }
 
-    if (mergeId) { onSuccess(null); return; }
+    if (mergeId) {
+      const mergedPlaces = result.mergedPlaces ?? 0;
+      if (mergedPlaces > 0) {
+        setMergeResult({ addedPlaces: result.addedPlaces ?? 0, mergedPlaces });
+        setSubmitting(false);
+      } else {
+        onSuccess(null);
+      }
+      return;
+    }
 
     const finalPlaces = placesPayload.map((p, i) => ({ name: p.name, image_url: p.url, sort_order: i }));
     if (!existingDestination) {
@@ -278,6 +260,25 @@ export default function DestinationForm({
       <div className="dest-lightbox" onClick={() => setLightboxUrl(null)}>
         <img src={lightboxUrl} className="dest-lightbox-img" alt="Aperçu" onClick={e => e.stopPropagation()} />
         <button className="dest-lightbox-close" onClick={() => setLightboxUrl(null)}>✕</button>
+      </div>
+    )}
+
+    {mergeResult && (
+      <div className="dest-duplicate-overlay">
+        <div className="dest-duplicate-box">
+          <div className="dest-duplicate-title">{t('destinationForm.mergeResultTitle')}</div>
+          <p className="dest-duplicate-msg">
+            {mergeResult.addedPlaces > 0 && (
+              <>{t('destinationForm.mergeAddedCount', { count: mergeResult.addedPlaces })}<br /></>
+            )}
+            {t('destinationForm.mergeVotedCount', { count: mergeResult.mergedPlaces })}
+          </p>
+          <div className="dest-duplicate-actions">
+            <button type="button" className="dest-duplicate-btn--merge" onClick={() => { setMergeResult(null); onSuccess(null); }}>
+              {t('destinationForm.okButton')}
+            </button>
+          </div>
+        </div>
       </div>
     )}
 

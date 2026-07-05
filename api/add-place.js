@@ -3,6 +3,7 @@
 // La modération IA (texte + image) est effectuée ici avant l'insertion.
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { moderateContent, checkPlaceCoherence, ModerationUnavailableError } from './_lib/moderation.js';
+import { findDuplicatePlace, registerAutoVote } from './_lib/placeDuplicates.js';
 
 const PHOTO_BUCKET = 'destination-photos';
 
@@ -68,6 +69,9 @@ export default async function handler(req, res) {
     placeName = '',
     imageUrl = '',
     imagePath = null,
+    // Variantes des noms de lieux éditoriaux figés (mustSee) de la destination
+    // statique, calculées côté client (voir PlacesList.jsx) : [{ name, matchName }]
+    editorialNames = [],
   } = body;
 
   const trimmedName = typeof placeName === 'string' ? placeName.trim() : '';
@@ -128,6 +132,29 @@ export default async function handler(req, res) {
       await cleanupPhoto(admin, imagePath);
       return res.status(200).json({ ok: false, reason: coherence.reason });
     }
+  }
+
+  // Doublon (lexical ou sémantique/traduction) avec un lieu déjà présent dans
+  // cette même destination — communautaire (en base) OU éditorial figé
+  // (mustSee, sans ligne DB donc `id: null`, pas de vote possible dessus) :
+  // pas de nouvelle ligne créée, le soumissionnaire est compté comme votant
+  // pour le lieu existant plutôt que de perdre silencieusement sa contribution.
+  const dbPlaces = destType === 'community'
+    ? (await admin.from('destination_places').select('id, name').eq('destination_id', destinationId)).data || []
+    : (await admin.from('static_destination_places').select('id, name').eq('country_code', countryCode).eq('static_dest_id', String(staticDestId))).data || [];
+  const editorialPlaces = (Array.isArray(editorialNames) ? editorialNames : [])
+    .filter((e) => e && typeof e.name === 'string' && e.name.trim())
+    .map((e) => ({ id: null, name: e.name, matchName: typeof e.matchName === 'string' ? e.matchName : e.name }));
+  const existingPlaces = [...dbPlaces, ...editorialPlaces];
+
+  const dup = await findDuplicatePlace(trimmedName, existingPlaces);
+  if (dup.duplicate) {
+    await cleanupPhoto(admin, imagePath);
+    // `matchedPlaceId` est null pour un doublon éditorial figé (mustSee, pas
+    // de ligne DB) : rien à voter dessus, contrairement à un doublon communautaire.
+    const voted = dup.matchedPlaceId != null;
+    if (voted) await registerAutoVote(admin, destType, dup.matchedPlaceId, user.id);
+    return res.status(200).json({ ok: true, merged: true, matchedName: dup.matchedName, placeId: dup.matchedPlaceId, voted });
   }
 
   if (destType === 'community') {

@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import WikiImage from './WikiImage';
 import { fetchTranslatedFields, translationKey } from '../lib/translateContent';
+import { COUNTRIES } from '../data/index';
+import { extractLabelVariants } from '../lib/labelVariants';
 
 const PAGE_SIZE = 10;
 const EMPTY_VOTES = { up: 0, down: 0, myVote: null };
@@ -19,7 +21,7 @@ async function uploadPlacePhoto(file, userId, prefix) {
 }
 
 // ─── Formulaire d'ajout d'un lieu ────────────────────────────────────────────
-function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, countryName, destName, onAdded, onCancel }) {
+function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, countryName, destName, editorialNames = [], onAdded, onMerged, onCancel }) {
   const { t } = useTranslation('app');
   const { user } = useAuth();
   const [name, setName] = useState('');
@@ -61,6 +63,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
       imageUrl: uploadedUrl,
       imagePath: uploadedPath,
       countryName, destName, countryCode,
+      editorialNames,
       ...(destType === 'community' ? { destinationId } : { staticDestId: String(staticDestId) }),
     };
 
@@ -79,6 +82,15 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
     if (!result.ok) {
       setError(result.reason || t('placesList.publicationFailedError'));
       setSubmitting(false); return;
+    }
+
+    // Doublon détecté côté serveur (même lieu déjà proposé, potentiellement
+    // dans une autre langue) : pas de nouveau lieu créé, notre vote a été
+    // ajouté à celui déjà existant — pas d'appel à onAdded, juste un message
+    // et un rechargement pour que ce vote apparaisse.
+    if (result.merged) {
+      onMerged(result.matchedName, result.voted);
+      return;
     }
 
     onAdded({
@@ -140,6 +152,26 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   const userId = user?.id ?? null;
   const translationContentType = isUserDest ? 'destination_place' : 'static_destination_place';
 
+  // Variantes des noms de lieux "à ne pas manquer" figés (mustSee), pour
+  // détecter côté serveur un doublon communautaire même si le libellé
+  // éditorial est composé ("Old town (Yu Garden)") ou dans l'autre langue —
+  // voir api/add-place.js. Chaque variante porte le libellé complet d'origine
+  // (matchName) pour l'affichage, même quand le texte comparé est un fragment.
+  const editorialNames = useMemo(() => {
+    if (isUserDest) return [];
+    const staticDest = COUNTRIES[countryCode]?.destinations?.find((d) => String(d.id) === staticDestId);
+    const out = [];
+    for (const m of staticDest?.mustSee || []) {
+      const labels = m?.name && typeof m.name === 'object' ? [m.name.fr, m.name.en] : [m?.name];
+      for (const label of labels.filter(Boolean)) {
+        for (const variant of extractLabelVariants(label)) {
+          out.push({ name: variant, matchName: label });
+        }
+      }
+    }
+    return out;
+  }, [isUserDest, countryCode, staticDestId]);
+
   const [places, setPlaces] = useState([]);
   // Noms traduits des lieux communautaires/statiques (pas les lieux "à ne pas
   // manquer" statiques du JSON, déjà bilingues via localizeCountry) — un objet
@@ -152,6 +184,11 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   const [showAddForm, setShowAddForm] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [votingId, setVotingId] = useState(null);
+  // Message transitoire affiché quand le lieu soumis s'avère être un doublon
+  // (même lieu déjà proposé, potentiellement dans une autre langue) : le
+  // serveur a alors ajouté notre vote au lieu existant plutôt que d'en créer un nouveau.
+  const [mergeNotice, setMergeNotice] = useState(null);
+  const mergeNoticeTimerRef = useRef(null);
 
   // Même pattern que ReviewList : charge TOUS les votes des lieux (pour compter up/down),
   // et repère celui de l'utilisateur courant via userId.
@@ -359,6 +396,16 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     setShowAddForm(false);
   }
 
+  function handleMerged(matchedName, voted) {
+    setShowAddForm(false);
+    setMergeNotice({ name: matchedName, voted });
+    if (voted) loadInitial(); // recharge lieux + votes pour que le vote ajouté apparaisse
+    // Annule un précédent minuteur en attente : sans ça, deux fusions rapprochées
+    // feraient disparaître le second message avant ses 6 secondes prévues.
+    clearTimeout(mergeNoticeTimerRef.current);
+    mergeNoticeTimerRef.current = setTimeout(() => setMergeNotice(null), 6000);
+  }
+
   return (
     <div className="places-list">
       <div className="places-list-header">
@@ -368,6 +415,12 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
         )}
       </div>
 
+      {mergeNotice && (
+        <div className="places-merge-notice">
+          {t(mergeNotice.voted ? 'placesList.duplicatePlaceMerged' : 'placesList.duplicatePlaceEditorial', { name: mergeNotice.name })}
+        </div>
+      )}
+
       {showAddForm && (
         <AddPlaceForm
           destType={destType}
@@ -376,7 +429,9 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
           countryCode={countryCode}
           countryName={countryName}
           destName={dest.name}
+          editorialNames={editorialNames}
           onAdded={handleAdded}
+          onMerged={handleMerged}
           onCancel={() => setShowAddForm(false)}
         />
       )}

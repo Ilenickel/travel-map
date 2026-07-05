@@ -4,7 +4,21 @@ import i18n from '../../i18n';
 import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { localizeField } from '../../lib/localizeCountry';
-import { normalizeStr, fetchPlaceSuggestions, countryAlpha2FromEmoji } from '../../lib/planningUtils';
+import { normalizeStr, countryAlpha2FromEmoji } from '../../lib/planningUtils';
+
+// Comparaison stricte (exacte ou sous-chaîne, pas de tolérance Levenshtein) —
+// utilisée pour le matching ville↔destination et la détection "déjà ajouté",
+// où une comparaison trop permissive risquerait de faux positifs entre deux
+// lieux réels différents mais orthographiquement proches (ex. "Grand Palace"
+// à Bangkok vs "Grand Place" à Bruxelles). La confiance de géocodage (plus
+// tolérante, avec repli IA) est gérée côté serveur — voir api/geocode-place.js
+// et api/_lib/geocodeConfidence.js.
+function namesMatch(a, b) {
+  const na = normalizeStr(a || '');
+  const nb = normalizeStr(b || '');
+  if (!na || !nb) return false;
+  return na === nb || na.includes(nb) || nb.includes(na);
+}
 
 // Bouton "X lieux conseillés" affiché après l'ajout d'une ville en planification.
 // Interroge les lieux communautaires + statiques déjà connus pour la
@@ -21,26 +35,6 @@ function staticDestNames(name) {
   return [name].filter(Boolean);
 }
 
-function namesMatch(a, b) {
-  const na = normalizeStr(a || '');
-  const nb = normalizeStr(b || '');
-  if (!na || !nb) return false;
-  return na === nb || na.includes(nb) || nb.includes(na);
-}
-
-// Les libellés éditoriaux (mustSee) sont parfois composés pour la lecture
-// humaine ("Pudong — Shanghai Tower", "Old town (Yu Garden)") plutôt qu'un nom
-// géocodable tel quel. On tente le libellé complet d'abord, puis les segments
-// après un tiret et entre parenthèses, qui portent souvent le nom réel du lieu.
-function geocodeCandidates(rawName) {
-  const candidates = [rawName];
-  const dashParts = rawName.split(/[—–-]/).map((s) => s.trim()).filter(Boolean);
-  if (dashParts.length > 1) candidates.push(dashParts[dashParts.length - 1]);
-  const parenMatch = rawName.match(/\(([^)]+)\)/);
-  if (parenMatch) candidates.push(parenMatch[1].trim());
-  return candidates;
-}
-
 // Matching des destinations statiques (src/data/<pays>.js) fait ici, côté
 // client, où ces ~186 fichiers sont déjà chargés : les importer depuis une
 // fonction serverless échouerait (imports sans extension non résolus par le
@@ -54,15 +48,30 @@ function matchingStaticDestinations(cityName, countryCode) {
 // Lieux éditoriaux (mustSee) des destinations statiques correspondantes : déjà
 // bilingues { fr, en } dans le JSON, donc simple localizeField — pas besoin de
 // passer par le cache de traduction Google (ni de coût associé).
+// `labelFr`/`labelEn` transmis tous les deux au serveur (voir api/geocode-place.js) :
+// Geoapify/OSM connaît souvent bien mieux un lieu sous son nom anglais que sa
+// traduction française (constaté empiriquement : "The Bund" trouve le lieu,
+// "Le Bund" renvoie un résultat sans rapport en Mongolie ; "Shanghai Tower"
+// trouve la tour, "tour de Shanghai" renvoie une école de langue). `labelFr`
+// reste la clé de cache stable (editorial_place_geocache), peu importe quelle
+// langue a fini par le géocoder avec succès.
 function editorialPlacesFor(matchedDests, countryCode, lang) {
   return matchedDests.flatMap((d) =>
-    (d.mustSee || []).map((m, idx) => ({
-      id: `editorial:${countryCode}:${d.id}:${idx}`,
-      type: 'editorial',
-      name: localizeField(m.name, lang),
-      lat: null,
-      lng: null,
-    }))
+    (d.mustSee || []).map((m, idx) => {
+      const bilingual = m?.name && typeof m.name === 'object';
+      const labelFr = bilingual ? m.name.fr : m?.name;
+      const labelEn = bilingual ? m.name.en : null;
+      return {
+        id: `editorial:${countryCode}:${d.id}:${idx}`,
+        type: 'editorial',
+        staticDestId: String(d.id),
+        labelFr: labelFr || labelEn,
+        labelEn: labelEn || labelFr,
+        name: localizeField(m.name, lang),
+        lat: null,
+        lng: null,
+      };
+    })
   );
 }
 
@@ -71,7 +80,6 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
   const [places, setPlaces] = useState(null); // null = pas encore chargé
   const [open, setOpen] = useState(false);
   const [addingId, setAddingId] = useState(null);
-  const [addedIds, setAddedIds] = useState(() => new Set());
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[countryCode]?.emoji);
 
   // Chargement discret dès le montage pour connaître le nombre de suggestions
@@ -101,39 +109,29 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
     let lat = place.lat;
     let lng = place.lng;
     if (lat == null || lng == null) {
-      if (place.type === 'editorial') {
-        // Pas de ligne DB pour un lieu éditorial : résolution directe via
-        // Geoapify (même fonction que la recherche manuelle de lieu), sans
-        // mise en cache — volume négligeable, liste figée et restreinte.
-        // Plusieurs candidats essayés dans l'ordre (libellé complet, puis
-        // segments après tiret / entre parenthèses) car ces libellés sont
-        // parfois composés pour l'affichage plutôt que géocodables tels quels.
-        for (const candidate of geocodeCandidates(place.name)) {
-          const results = await fetchPlaceSuggestions(candidate, cityName, countryAlpha2);
-          const best = results.find((r) => namesMatch(r.name, candidate));
-          if (best) { lat = best.lat; lng = best.lng; break; }
-        }
-      } else {
-        const geo = await callModeration('geocode-place', {
-          placeType: place.type,
-          placeId: place.id,
-          staticCountryCode: place.type === 'static' ? countryCode : undefined,
-          name: place.name,
-          cityName,
-          countryName,
-          countryAlpha2,
-        });
-        if (geo.ok && geo.geocoded) { lat = geo.lat; lng = geo.lng; }
-      }
+      // Géocodage + vérification (lexicale, repli IA) entièrement côté serveur
+      // (voir api/geocode-place.js) — y compris pour les lieux éditoriaux
+      // (mustSee), mis en cache dans editorial_place_geocache pour ne payer
+      // Geoapify/l'IA qu'une seule fois par lieu, jamais deux.
+      const geo = await callModeration('geocode-place', {
+        placeType: place.type,
+        placeId: place.type === 'editorial' ? undefined : place.id,
+        staticCountryCode: place.type === 'static' ? countryCode : undefined,
+        countryCode: place.type === 'editorial' ? countryCode : undefined,
+        staticDestId: place.type === 'editorial' ? place.staticDestId : undefined,
+        labelFr: place.type === 'editorial' ? place.labelFr : undefined,
+        labelEn: place.type === 'editorial' ? place.labelEn : undefined,
+        cityName,
+        countryName,
+        countryAlpha2,
+        lang: i18n.language,
+      });
+      if (geo.ok && geo.geocoded) { lat = geo.lat; lng = geo.lng; }
     }
-    const created = await onAddActivity(tripId, cityId, place.name, {
+    await onAddActivity(tripId, cityId, place.name, {
       place_lat: lat ?? null,
       place_lng: lng ?? null,
     });
-    // Ne marque "Ajouté" que si l'insertion a réellement réussi (addActivity
-    // renvoie null en cas d'échec) — sinon le bouton affichait "Ajouté" alors
-    // que rien n'avait été créé en base.
-    if (created) setAddedIds((prev) => new Set(prev).add(place.id));
     setAddingId(null);
   };
 
@@ -151,11 +149,11 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
       {open && (
         <ul className="pp-search-dropdown pp-place-suggestions-dropdown">
           {places.map((place) => {
-            // Source de vérité = les activités réellement présentes dans la ville
-            // (persiste après un remontage du composant, contrairement à
-            // addedIds seul) : évite de recréer un doublon en base si l'utilisateur
-            // reclique après que le composant se soit remonté (ville repliée/dépliée…).
-            const added = addedIds.has(place.id) || existingActivityNames.some((n) => namesMatch(n, place.name));
+            // Source de vérité unique = les activités réellement présentes dans
+            // la ville (persiste après un remontage du composant, et redevient
+            // ajoutable si l'activité est supprimée ensuite — contrairement à un
+            // état local qui resterait bloqué sur "Ajouté" indéfiniment).
+            const added = existingActivityNames.some((n) => namesMatch(n, place.name));
             return (
               <li key={place.id} className="pp-search-item pp-place-suggestions-item">
                 <div className="pp-search-item-text">
@@ -166,7 +164,13 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
                   disabled={added || addingId === place.id}
                   onClick={() => handleAdd(place)}
                 >
-                  {added ? t('placeSuggestions.added') : t('placeSuggestions.addButton')}
+                  {addingId === place.id ? (
+                    <span className="pp-search-busy" />
+                  ) : added ? (
+                    t('placeSuggestions.added')
+                  ) : (
+                    t('placeSuggestions.addButton')
+                  )}
                 </button>
               </li>
             );

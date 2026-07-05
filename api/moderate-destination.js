@@ -5,43 +5,7 @@
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { moderateContent, checkSemanticDuplicate, ModerationUnavailableError } from './_lib/moderation.js';
 import { invalidateTranslations } from './_lib/translation.js';
-
-// ── Similarité de noms (miroir de la logique client) ─────────────────────────
-function normalizeName(str) {
-  return str.toLowerCase()
-    .normalize('NFD').replace(/\p{Mn}/gu, '')
-    .replace(/\b(le|la|les|l|de|du|des|un|une|the|a|an)\b\s*/g, '')
-    .replace(/[^a-z0-9\s]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function levenshtein(a, b) {
-  if (!a.length) return b.length;
-  if (!b.length) return a.length;
-  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    let prev = i;
-    for (let j = 1; j <= b.length; j++) {
-      const next = a[i - 1] === b[j - 1] ? row[j - 1] : 1 + Math.min(prev, row[j], row[j - 1]);
-      row[j - 1] = prev;
-      prev = next;
-    }
-    row[b.length] = prev;
-  }
-  return row[b.length];
-}
-
-function isSimilar(a, b) {
-  const na = normalizeName(a);
-  const nb = normalizeName(b);
-  if (!na || !nb) return false;
-  if (na === nb) return true;
-  if (na.includes(nb) || nb.includes(na)) return true;
-  const maxLen = Math.max(na.length, nb.length);
-  return maxLen > 0 && (1 - levenshtein(na, nb) / maxLen) >= 0.75;
-}
-// ─────────────────────────────────────────────────────────────────────────────
+import { findDuplicatePlace, registerAutoVote } from './_lib/placeDuplicates.js';
 
 const PHOTO_BUCKET = 'destination-photos';
 
@@ -197,21 +161,37 @@ export default async function handler(req, res) {
       return res.status(404).json({ ok: false, reason: 'Destination cible introuvable.' });
     }
 
-    const existingPlaceNames = (targetDest.destination_places || []).map((p) => p.name);
-    const maxOrder = (targetDest.destination_places || []).reduce((m, p) => Math.max(m, p.sort_order ?? 0), -1);
+    const existingPlaces = targetDest.destination_places || [];
+    const maxOrder = existingPlaces.reduce((m, p) => Math.max(m, p.sort_order ?? 0), -1);
 
     const toAdd = [];
     const toClean = cover?.path ? [cover.path] : [];
+    let mergedPlaces = 0;
 
-    for (const p of places) {
-      const cleanName = typeof p?.name === 'string' ? p.name.trim() : '';
-      if (!cleanName || !p.url) continue;
-      if (existingPlaceNames.some((en) => isSimilar(en, cleanName))) {
+    // Vérifications de doublon (chacune peut déclencher un appel IA) lancées
+    // EN PARALLÈLE plutôt qu'en série : une destination peut avoir jusqu'à 10
+    // lieux, et des appels IA séquentiels risqueraient de dépasser le délai
+    // maximal d'une fonction Vercel (10s par défaut sur le plan Hobby). Chaque
+    // vérification est indépendante (comparée à la liste fixe existingPlaces,
+    // pas aux autres lieux du même lot), donc paralléliser ne change rien au résultat.
+    const cleanPlaces = places
+      .map((p) => ({ p, cleanName: typeof p?.name === 'string' ? p.name.trim() : '' }))
+      .filter(({ p, cleanName }) => cleanName && p.url);
+    const dups = await Promise.all(cleanPlaces.map(({ cleanName }) => findDuplicatePlace(cleanName, existingPlaces)));
+
+    await Promise.all(
+      dups.filter((dup) => dup.duplicate).map((dup) => registerAutoVote(admin, 'community', dup.matchedPlaceId, user.id))
+    );
+
+    cleanPlaces.forEach(({ p, cleanName }, i) => {
+      const dup = dups[i];
+      if (dup.duplicate) {
         if (p.path) toClean.push(p.path);
+        mergedPlaces++;
       } else {
         toAdd.push({ name: cleanName, image_url: p.url, image_path: p.path ?? null });
       }
-    }
+    });
 
     await cleanupPhotos(admin, toClean);
 
@@ -221,7 +201,7 @@ export default async function handler(req, res) {
       );
     }
 
-    return res.status(200).json({ ok: true, destinationId: mergeIntoId, merged: true, addedPlaces: toAdd.length });
+    return res.status(200).json({ ok: true, destinationId: mergeIntoId, merged: true, addedPlaces: toAdd.length, mergedPlaces });
   }
   // ───────────────────────────────────────────────────────────────────────────
 
