@@ -162,7 +162,7 @@ export const CHINA = {
         { name: { fr: "Cité Interdite", en: "Forbidden City" }, wikipedia: "Forbidden_City" },
         { name: { fr: "Grande Muraille de Chine — Mutianyu", en: "Great Wall of China — Mutianyu" }, wikipedia: "Mutianyu" },
         { name: { fr: "Temple du Ciel", en: "Temple of Heaven" }, wikipedia: "Temple_of_Heaven" },
-        { name: { fr: "Place Tiananmen", en: "Tiananmen Square" }, wikipedia: "Tiananmen_Square" },
+        { name: { fr: "Place Tienanmen", en: "Tienanmen Square" }, wikipedia: "Tiananmen_Square" },
       ],
     },
     {
