@@ -95,11 +95,6 @@ html, body, #root { height: 100%; }
   z-index: 201; /* au-dessus de la recherche centrÃ©e */
 }
 
-/* â”€â”€â”€ Petits Ã©crans desktop (rÃ©duit la recherche pour Ã©viter le chevauchement) â”€â”€â”€ */
-@media (min-width: 769px) and (max-width: 1100px) {
-  .topbar-search-container { width: 260px; }
-}
-
 .brand-icon {
   width: 56px;
   height: 56px;
@@ -2779,8 +2774,11 @@ html, body, #root { height: 100%; }
   .map-area { flex: 1; min-height: 0; }
 }
 
-/* â”€â”€â”€ Desktop intermÃ©diaire : search absolute â†’ flex pour Ã©viter le chevauchement â”€â”€â”€ */
-@media (min-width: 769px) and (max-width: 1200px) {
+/* â”€â”€â”€ Desktop intermÃ©diaire : search absolute â†’ flex pour Ã©viter le chevauchement â”€â”€â”€
+   Mesure empirique (Playwright) : le chevauchement avec la recherche centrÃ©e sur
+   tout le topbar survient de 1201px jusqu'Ã  ~1800-1820px (portables 13-15"
+   typiques), pas seulement jusqu'Ã  1200px comme le supposait l'ancien seuil. */
+@media (min-width: 769px) and (max-width: 1850px) {
   .topbar { padding: 0 14px; gap: 6px; }
   .topbar-search-container {
     position: static;
@@ -2789,9 +2787,38 @@ html, body, #root { height: 100%; }
     flex: 1 1 0;
     min-width: 0;
   }
-  .topbar-controls { margin-left: 0; flex-shrink: 0; }
+  /* margin-left: 0 retiré : la recherche est maintenant plafonnée à 260px
+     (règle plus bas dans ce fichier) au lieu de remplir l'espace via
+     flex: 1 1 0 — sans le margin-left: auto par défaut de .topbar-controls,
+     l'espace libéré restait coincé entre la recherche et les boutons,
+     collant tout au centre au lieu de pousser les boutons à droite. */
+  .topbar-controls { flex-shrink: 0; }
   .topbar-right { flex-shrink: 0; }
   .topbar-badge { display: none; }
+}
+
+/* â”€â”€â”€ Petit Ã©cran desktop (769-1100px) : recherche compacte, poussÃ©e Ã  droite â”€â”€â”€
+   Placé après le bloc 769-1850px ci-dessus pour gagner la cascade à spécificité
+   égale sur la plage qu'il chevauche : sans cet ordre, le max-width ci-dessous
+   n'aurait aucun effet, la déclaration la plus tardive dans le fichier
+   l'emportant indépendamment de la condition media. Pas assez de place ici
+   pour centrer joliment la recherche (cf. la plage 1101-1850px ci-dessous) :
+   elle reste alignée avec la marque, comme sur mobile. */
+@media (min-width: 769px) and (max-width: 1100px) {
+  /* flex-basis (via le raccourci `flex`), pas juste `width` : sur un flex item
+     dont le flex-basis n'est pas `auto`, `width` seul n'a aucun effet sur le
+     dimensionnement le long de l'axe principal. */
+  .topbar-search-container { flex: 1 1 260px; max-width: 260px; }
+}
+
+/* â”€â”€â”€ Desktop intermÃ©diaire (1101-1850px) : recherche compacte mais centrÃ©e â”€â”€â”€
+   Assez de place ici pour centrer la recherche comme sur grand écran (marges
+   auto de chaque côté), sans reprendre le positionnement absolute d'origine
+   qui provoquait le chevauchement mesuré plus haut (1201-1820px). flex:0 0 260px
+   (pas de grow) : les marges auto absorbent tout l'espace libre, une largeur
+   flexible entrerait en compétition avec elles pour ce même espace. */
+@media (min-width: 1101px) and (max-width: 1850px) {
+  .topbar-search-container { flex: 0 0 260px; max-width: 260px; margin: 0 auto; }
 }
 
 @media (min-width: 769px) and (max-width: 950px) {

@@ -18,7 +18,7 @@ export default function TripSidebar({ trips, selectedId, userId, onSelect, onCre
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
           </svg>
-          {t('sidebar.newButton')}
+          <span className="pp-sidebar-new-label">{t('sidebar.newButton')}</span>
         </button>
       </div>
 

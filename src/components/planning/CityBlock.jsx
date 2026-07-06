@@ -150,7 +150,8 @@ export default function CityBlock({
               />
             ) : (
               <span className="pp-city-name" onDoubleClick={() => setEditing(true)}>
-                <span className="pp-city-eyebrow">{t('city.eyebrow')}</span> {city.name}
+                <span className="pp-city-eyebrow">{t('city.eyebrow')}</span>
+                <span className="pp-city-name-text">{city.name}</span>
               </span>
             )}
 

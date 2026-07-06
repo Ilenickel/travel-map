@@ -30,6 +30,7 @@ export function localizeCountry(country, lang) {
     })),
     weatherCities: (country.weatherCities || []).map((c) => ({
       ...c,
+      name: pick(c.name, lang),
       region: pick(c.region, lang),
     })),
     destinations: (country.destinations || []).map((d) => ({
