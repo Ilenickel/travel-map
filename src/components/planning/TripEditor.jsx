@@ -41,7 +41,7 @@ export default function TripEditor({
   useEffect(() => {
     if (!trip?.auto_share_template) return;
     // Signature limitée aux champs réellement copiés dans un modèle (voir
-    // api/share-trip-templates.js) : sans elle, cocher "fait" ou éditer un
+    // api/trip-templates.js) : sans elle, cocher "fait" ou éditer un
     // coût/une note — jamais partagés — re-déclenchait quand même un
     // re-partage complet de toutes les villes du voyage à chaque frappe.
     const signature = JSON.stringify({

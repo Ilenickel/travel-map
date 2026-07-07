@@ -7,7 +7,7 @@ import { countryAlpha2FromEmoji } from '../../lib/planningUtils';
 // 3 créneaux seulement — alignés sur les 3 créneaux réels du calendrier
 // (DayView.jsx SLOTS : matin/apres-midi/soir, 0-12/12-18/18-24), pas 4 : un
 // "nuit" séparé ici ferait mentir l'aperçu par rapport à où l'activité
-// atterrit réellement une fois importée (voir api/import-trip-template.js).
+// atterrit réellement une fois importée (voir api/trip-templates.js).
 const SLOT_ICON = { matin: '🌅', 'apres-midi': '☀️', soir: '🌆' };
 const SLOT_ORDER = ['matin', 'apres-midi', 'soir'];
 
@@ -23,7 +23,7 @@ function groupBySlot(activities) {
 
 // Bouton "Suggestion de planning" (planning-modèle communautaire, branche
 // planModel) : propose jusqu'à 5 plannings importés d'autres utilisateurs
-// pour cette ville et ce nombre de jours (voir api/suggest-trip-templates.js),
+// pour cette ville et ce nombre de jours (voir api/trip-templates.js),
 // triés par popularité. Invisible tant que le nombre de jours de la ville
 // n'est pas renseigné, ou si aucun modèle ne correspond.
 export default function TripPlanSuggestionsButton({
@@ -40,8 +40,8 @@ export default function TripPlanSuggestionsButton({
 
   const fetchTemplates = async () => {
     if (!plannedDays) { setTemplates(null); return; }
-    const result = await callModeration('suggest-trip-templates', {
-      countryCode, cityName, countryAlpha2, plannedDays,
+    const result = await callModeration('trip-templates', {
+      action: 'suggest', countryCode, cityName, countryAlpha2, plannedDays,
     });
     setTemplates(result.ok ? (result.templates || []) : []);
     setIndex(0);
@@ -53,8 +53,8 @@ export default function TripPlanSuggestionsButton({
     let cancelled = false;
     (async () => {
       if (!plannedDays) { setTemplates(null); return; }
-      const result = await callModeration('suggest-trip-templates', {
-        countryCode, cityName, countryAlpha2, plannedDays,
+      const result = await callModeration('trip-templates', {
+        action: 'suggest', countryCode, cityName, countryAlpha2, plannedDays,
       });
       if (cancelled) return;
       setTemplates(result.ok ? (result.templates || []) : []);
@@ -80,7 +80,7 @@ export default function TripPlanSuggestionsButton({
 
   const runImport = async () => {
     setImporting(true);
-    const result = await callModeration('import-trip-template', { tripId, cityId, templateId: current.id });
+    const result = await callModeration('trip-templates', { action: 'import', tripId, cityId, templateId: current.id });
     setImporting(false);
     setConfirming(false);
     if (result.ok) {
