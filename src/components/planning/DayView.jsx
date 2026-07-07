@@ -493,6 +493,21 @@ export default function DayView({
   );
 }
 
+// Confort visuel : quelle(s) ville(s) correspondent à ce jour, déduit de
+// trip_cities.start_date + planned_days (planning-modèle, voir
+// supabase/planning_modele_v2.sql) — plusieurs villes possibles le même jour
+// (jour de transition entre deux villes, ou excursion à la journée).
+// Silencieux (tableau vide) tant que ces champs ne sont pas renseignés.
+function citiesForDay(cities, day) {
+  return (cities || [])
+    .filter(c => c.start_date && c.planned_days)
+    .filter(c => {
+      const end = addDaysToDateStr(c.start_date, c.planned_days - 1);
+      return day >= c.start_date && day <= end;
+    })
+    .map(c => c.name);
+}
+
 function DaySection({
   day, dayIdx, totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
@@ -503,6 +518,8 @@ function DaySection({
     groupId => onAssignGroupToDay(groupId, day, null),
     cityId => onAssignCityToDay(cityId, day, null),
   );
+
+  const dayCityLabels = citiesForDay(cities, day);
 
   const isSlotHighlighted = (slotIdx) => {
     if (!resize) return false;
@@ -521,6 +538,11 @@ function DaySection({
         <div className="pp-day-num">{t('day.short', { n: dayIdx + 1 })}</div>
         <div className="pp-day-info">
           <span className="pp-day-label">{formatDayLabel(day)}</span>
+          {dayCityLabels.length > 0 && (
+            <span className="pp-day-cities-badge" title={t('dayView.cityForDayTitle')}>
+              📍 {dayCityLabels.join(' · ')}
+            </span>
+          )}
           {totalDay > 0 && (
             <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={t('dayView.doneCountTitle', { done: doneDay, total: totalDay, count: doneDay })}>
               {doneDay}/{totalDay}

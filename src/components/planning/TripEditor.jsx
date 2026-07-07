@@ -14,6 +14,7 @@ import TripPrintView from './TripPrintView';
 import TripDayModeView from './TripDayModeView';
 import { getHoveredActivity } from '../../lib/hoverTracker';
 import { downloadTripIcs } from '../../lib/exportTrip';
+import { shareTripAsTemplates } from '../../lib/shareTripTemplate';
 
 export default function TripEditor({
   tripData, tripId,
@@ -23,11 +24,39 @@ export default function TripEditor({
   onDuplicateActivity, onUndoLastDelete,
   onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignGroupToDay, onAssignCityToDay, onAssignActivitiesToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
-  onLeaveTrip,
+  onLeaveTrip, onReloadTripData,
 }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { trip, destinations, cities, activities, groups = [], lodgings = [] } = tripData;
+
+  // Partage automatique et continu (planning-modèle communautaire, branche
+  // planModel) : tant que le voyage a la case activée, on repartage (upsert,
+  // voir shareTripAsTemplates) quelques secondes après le dernier changement
+  // significatif — par n'importe quel membre d'un voyage à plusieurs, un seul
+  // et même modèle par ville est tenu à jour (contrainte d'unicité sur
+  // (source_trip_id, country_code, city_name), voir planning_modele_v3/v4.sql).
+  const autoShareTimerRef = useRef(null);
+  const autoShareSignatureRef = useRef(null);
+  useEffect(() => {
+    if (!trip?.auto_share_template) return;
+    // Signature limitée aux champs réellement copiés dans un modèle (voir
+    // api/share-trip-templates.js) : sans elle, cocher "fait" ou éditer un
+    // coût/une note — jamais partagés — re-déclenchait quand même un
+    // re-partage complet de toutes les villes du voyage à chaque frappe.
+    const signature = JSON.stringify({
+      cities: cities.map((c) => [c.id, c.name, c.planned_days, c.parent_city_id]),
+      activities: activities.map((a) => [a.city_id, a.name, a.description, a.visit_date, a.visit_time, a.category, a.place_lat, a.place_lng, a.place_address, a.position]),
+    });
+    if (signature === autoShareSignatureRef.current) return;
+    autoShareSignatureRef.current = signature;
+    clearTimeout(autoShareTimerRef.current);
+    autoShareTimerRef.current = setTimeout(() => {
+      shareTripAsTemplates(tripId, destinations);
+    }, 4000);
+    return () => clearTimeout(autoShareTimerRef.current);
+  }, [trip?.auto_share_template, cities, activities, destinations, tripId]);
+
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   // Affichage de la carte : "à côté" (colonne normale) ou "en superposition" (plein
@@ -376,6 +405,7 @@ export default function TripEditor({
           if (pagerActive()) { setPage(JOURJ_PAGE); return; }
           setDayModeActive(a => !a);
         }}
+        onToggleAutoShareTemplate={(checked) => onUpdateTrip(tripId, { auto_share_template: checked })}
       />
 
       {dayModeActive ? (
@@ -437,6 +467,7 @@ export default function TripEditor({
                     onAddLodging={onAddLodging}
                     onUpdateLodging={onUpdateLodging}
                     onRemoveLodging={onRemoveLodging}
+                    onReloadTripData={onReloadTripData}
                   />
                 ))
               )}

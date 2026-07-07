@@ -694,7 +694,7 @@ export function useTrips(userId) {
   }, [tripData]);
 
   return {
-    trips, loading, selectedTripId, setSelectedTripId, tripData,
+    trips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,

@@ -1198,6 +1198,389 @@
   gap: 10px;
 }
 
+/* Suggestions de planning (planning-modèle communautaire, branche planModel) :
+   même bouton "banner" que les suggestions de lieux (.pp-place-suggestions-btn),
+   mais ouvre une vraie modale (pp-modal-overlay/pp-modal) avec un carrousel de
+   plannings importés d'autres voyageurs, plutôt qu'une liste déroulante. */
+.pp-trip-suggestions {
+  position: relative;
+  margin: 4px 10px 8px;
+}
+
+.pp-trip-suggestions-modal {
+  max-width: 500px;
+}
+/* Un seul scroll (celui du corps de la modale, voir .pp-modal-body) plutôt
+   que deux imbriqués (carte + modale) : évite la double barre de défilement
+   qui rendait mal. Scrollbar fine plutôt que celle, épaisse, du navigateur. */
+.pp-trip-suggestions-modal .pp-modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+}
+.pp-trip-suggestions-modal .pp-modal-body::-webkit-scrollbar { width: 6px; }
+.pp-trip-suggestions-modal .pp-modal-body::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+.pp-trip-suggestions-disclaimer {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+  line-height: 1.4;
+}
+
+.pp-trip-suggestions-carousel {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.pp-trip-suggestions-nav {
+  flex-shrink: 0;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--surface2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pp-trip-suggestions-nav:hover:not(:disabled) {
+  background: var(--accent-subtle);
+  color: var(--accent2);
+  border-color: var(--accent);
+}
+.pp-trip-suggestions-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pp-trip-suggestions-card {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 16px 18px 18px;
+  /* Borne la hauteur d'un modèle à beaucoup de jours : sans ça, le contenu
+     pousse toute la modale (flèches du carrousel, points, boutons Annuler/
+     Importer) hors de l'écran plutôt que de rester atteignable. Un seul
+     scroll (celui de la carte, pas de la modale entière), avec une
+     scrollbar fine plutôt que celle, épaisse, du navigateur. */
+  max-height: min(50vh, 420px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+}
+.pp-trip-suggestions-card::-webkit-scrollbar { width: 6px; }
+.pp-trip-suggestions-card::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+.pp-trip-suggestions-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.pp-trip-suggestions-uses-badge {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #f59e0b;
+  background: rgba(245,158,11,0.12);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 20px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  margin-left: auto;
+}
+.pp-trip-suggestions-daytrips-badge {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent2);
+  background: var(--accent-subtle);
+  border: 1px solid rgba(129,140,248,0.3);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+/* Séparateur "Jour N" : ligne fine + pastille colorée, plutôt qu'un simple
+   texte en majuscules — marque mieux la coupure entre deux journées. */
+.pp-trip-suggestions-day-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 14px;
+}
+.pp-trip-suggestions-day:first-child .pp-trip-suggestions-day-divider {
+  margin-top: 2px;
+}
+.pp-trip-suggestions-day-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+}
+.pp-trip-suggestions-day-pill {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Timeline verticale des créneaux d'une journée : pastille + ligne de liaison
+   à gauche, contenu (créneau + activités) à droite — rend la structure de la
+   journée lisible d'un coup d'œil, plutôt qu'un empilement de blocs identiques. */
+.pp-trip-suggestions-timeline {
+  display: flex;
+  flex-direction: column;
+}
+.pp-trip-suggestions-slot-row {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 16px;
+}
+.pp-trip-suggestions-slot-row--last {
+  padding-bottom: 0;
+}
+.pp-trip-suggestions-slot-marker {
+  position: relative;
+  width: 30px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+.pp-trip-suggestions-slot-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface3);
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  z-index: 1;
+}
+.pp-trip-suggestions-slot-row:not(.pp-trip-suggestions-slot-row--last) .pp-trip-suggestions-slot-marker::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  bottom: -16px;
+  left: 50%;
+  width: 2px;
+  background: var(--border-light);
+  transform: translateX(-50%);
+}
+.pp-trip-suggestions-slot-content {
+  flex: 1;
+  min-width: 0;
+  padding-top: 5px;
+}
+.pp-trip-suggestions-slot-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.pp-trip-suggestions-slot-items {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.pp-trip-suggestions-item {
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.pp-trip-suggestions-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+.pp-trip-suggestions-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: var(--border-light);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.pp-trip-suggestions-dot:hover { background: var(--text-muted); }
+.pp-trip-suggestions-dot.active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+.pp-trip-suggestions-confirm p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 14px 0 0;
+}
+
+/* Formulaire affiché juste après avoir nommé une nouvelle ville/excursion :
+   jours prévus + date de début, facultatifs (planning-modèle, suggestion et
+   partage) — voir NewCityOptionsForm.jsx. Même carte que .pp-add-city-wrap. */
+.pp-new-city-options {
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 6px;
+}
+.pp-new-city-options-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.pp-new-city-options-fields {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pp-new-city-options-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+/* Stepper "jours prévus" (−/+) : boutons ronds séparés de la valeur, même
+   langage visuel que les flèches de navigation du carrousel de suggestions
+   (.pp-trip-suggestions-nav) — remplace un input[type=number] dont les
+   flèches natives rendaient mal (minuscules, collées). */
+.pp-days-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+}
+.pp-days-stepper-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--surface2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pp-days-stepper-btn:hover:not(:disabled) {
+  background: var(--accent-subtle);
+  color: var(--accent2);
+  border-color: var(--accent);
+}
+.pp-days-stepper-btn:disabled { opacity: 0.3; cursor: default; }
+.pp-days-stepper-value {
+  width: 34px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  text-align: center;
+  padding: 4px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.pp-days-stepper-value:focus { border-color: var(--accent); }
+
+/* Même hauteur que le stepper juste au-dessus (32px) : sans ça, le champ de
+   date (avec son icône native) rendait visiblement plus haut que le stepper
+   jours, cassant l'alignement des deux champs côte à côte. Portée limitée à
+   ces deux formulaires — ne touche pas .pp-date-input utilisé ailleurs
+   (dates du voyage, hébergements…). */
+.pp-new-city-options-field .pp-date-input,
+.pp-city-planning-popover .pp-date-input {
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.pp-new-city-options-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  opacity: 0.85;
+  margin-top: 8px;
+}
+.pp-new-city-options-actions {
+  margin-top: 10px;
+}
+
+/* Bouton discret + popover d'édition (jours/date de début) sur une ville ou
+   excursion déjà ajoutée — voir CityPlanningFieldsButton.jsx. Même gabarit
+   que .pp-group-day-dropdown pour rester cohérent avec les autres popovers
+   d'action de la page. */
+.pp-city-planning-popover-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.pp-city-planning-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 120;
+  padding: 12px 14px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Toggle "Partager automatiquement comme modèle" de l'en-tête voyage —
+   même composant visuel que les préférences de notification du profil
+   (.profile-toggle, voir App.css) pour rester cohérent avec le reste du site. */
+.pp-share-template-section {
+  margin: 8px 0;
+}
+.pp-share-template-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+}
+.pp-share-template-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
 /* "Ajouter une ville" — CTA la plus visible du bloc destination */
 .pp-add-city-btn {
   margin: 2px 0 0;
@@ -2509,6 +2892,13 @@
   text-transform: capitalize;
 }
 
+.pp-day-cities-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  opacity: 0.85;
+}
+
 .pp-day-count {
   font-size: 11px;
   font-weight: 600;
@@ -3591,6 +3981,20 @@
   flex: 1;
   overflow-y: auto;
   padding: 18px 22px 22px;
+}
+
+.pp-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.pp-end-trip-share-text {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin: 0 0 14px;
 }
 
 /* Members list */

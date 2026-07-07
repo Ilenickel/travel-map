@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useTrips } from '../hooks/useTrips';
 import { useInvitations } from '../hooks/useInvitations';
+import { useEndTripSharePrompt } from '../hooks/useEndTripSharePrompt';
 import AuthModal from '../components/AuthModal';
 import TripSidebar from '../components/planning/TripSidebar';
 import TripEditor from '../components/planning/TripEditor';
 import EmptyEditor from '../components/planning/EmptyEditor';
 import PlanningGate from '../components/planning/PlanningGate';
+import EndTripSharePrompt from '../components/planning/EndTripSharePrompt';
 import './PlanningPage.css';
 
 // ─── SEO ─────────────────────────────────────────────────────────
@@ -97,7 +99,7 @@ function PlanningMain() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const {
-    trips, loading, selectedTripId, setSelectedTripId, tripData,
+    trips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
@@ -108,6 +110,10 @@ function PlanningMain() {
   } = useTrips(user?.id);
 
   const { pending, accept: acceptInvite, decline: declineInvite } = useInvitations(user?.id);
+  // Même popup qu'à l'écran principal du site (App.jsx) : présente aux deux
+  // endroits pour forcer une réponse, chacune interroge la base indépendamment
+  // donc répondre d'un côté la fait disparaître de l'autre au prochain montage.
+  const { trip: pendingShareTrip, answer: answerSharePrompt } = useEndTripSharePrompt(user?.id);
 
   // Ouvre directement un voyage précis si on arrive via ?trip=<id> (ex : après avoir
   // accepté une invitation depuis le panneau de notifications général)
@@ -127,6 +133,10 @@ function PlanningMain() {
 
   return (
     <div className="pp-layout">
+      {pendingShareTrip && (
+        <EndTripSharePrompt trip={pendingShareTrip} onAnswer={answerSharePrompt} />
+      )}
+
       <TripSidebar
         trips={trips}
         selectedId={selectedTripId}
@@ -183,6 +193,7 @@ function PlanningMain() {
             onUpdateLodging={updateLodging}
             onRemoveLodging={removeLodging}
             onLeaveTrip={leaveTrip}
+            onReloadTripData={() => loadTripData(selectedTripId)}
           />
         ) : (
           <EmptyEditor onCreate={createTrip} />

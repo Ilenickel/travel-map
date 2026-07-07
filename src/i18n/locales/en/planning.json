@@ -94,6 +94,29 @@
     "addButton": "Add",
     "added": "Added"
   },
+  "tripSuggestions": {
+    "button_one": "{{count}} planning suggestion",
+    "button_other": "{{count}} planning suggestions",
+    "modalTitle": "Planning suggestions for {{city}}",
+    "disclaimer": "These plans come from other travelers — the most imported ones are shown first.",
+    "prevLabel": "Previous suggestion",
+    "nextLabel": "Next suggestion",
+    "goToLabel": "Go to suggestion {{count}}",
+    "usesCount_one": "Imported {{count}} time",
+    "usesCount_other": "Imported {{count}} times",
+    "includesDaytrips_one": "🧭 Includes daytrip: {{names}}",
+    "includesDaytrips_other": "🧭 Includes {{count}} daytrips: {{names}}",
+    "dayLabel_one": "Day {{count}}",
+    "dayLabel_other": "Day {{count}}",
+    "timeSlot": {
+      "matin": "Morning",
+      "apres-midi": "Afternoon",
+      "soir": "Evening"
+    },
+    "importButton": "Import this plan",
+    "confirmReplaceText": "You already have content added for this city: do you want to fully replace it with this imported plan?",
+    "confirmReplaceButton": "Replace and import"
+  },
   "trajetsSection": {
     "label": "Trips",
     "addButton": "Add a trip"
@@ -118,7 +141,12 @@
     "addPlaceOrActivityButton": "Add a place or activity",
     "addDaytripSearchPlaceholder": "Search for a daytrip city… (or Enter to add)",
     "addDaytripButton": "Add a daytrip",
-    "searchPlaceholderDefault": "Search for a city… (or Enter to add)"
+    "searchPlaceholderDefault": "Search for a city… (or Enter to add)",
+    "plannedDaysLabel": "Days planned",
+    "plannedDaysPlaceholder": "E.g. 3",
+    "startDateLabel": "Start date",
+    "optionalFieldsHint": "Optional — only used for planning suggestions and sharing.",
+    "planningFieldsTitle": "Days planned / start date (optional, for planning suggestions and sharing)"
   },
   "destination": {
     "eyebrow": "Country",
@@ -199,6 +227,7 @@
     "soir": "Evening"
   },
   "dayView": {
+    "cityForDayTitle": "City planned for this day (based on the city's start date and number of days)",
     "continuationTitle": "{{name}} — starts {{from}}",
     "continuationChip": "↳ continued ({{from}})",
     "cutHereTitle": "Stop the activity right before this slot (removes this one and all following)",
@@ -263,6 +292,14 @@
     "plannedCount_other": "{{count}} scheduled",
     "budgetTitle": "Total budget: {{activities}} for activities and trips + {{lodgings}} for accommodation",
     "notesPlaceholder": "General trip notes (hotel, budget, useful contacts…)"
+  },
+  "shareTemplate": {
+    "toggleLabel": "Automatically share this trip as a template",
+    "infoText": "Only places and their days/times are shared, and kept up to date automatically — never your attachments, notes, or accommodations.",
+    "endTripTitle": "Share this trip as a template?",
+    "endTripText": "Your trip \"{{title}}\" is over. Would you like to turn on automatic sharing of this trip as a planning template for other travelers?",
+    "declineButton": "No thanks",
+    "acceptButton": "Turn on sharing"
   },
   "sidebar": {
     "title": "My trips",

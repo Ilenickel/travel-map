@@ -5,10 +5,12 @@ import { COUNTRIES } from '../../data/index';
 import CityBlock from './CityBlock';
 import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
+import NewCityOptionsForm from './NewCityOptionsForm';
 
-export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging }) {
+export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData }) {
   const { t } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
+  const [pendingCityName, setPendingCityName] = useState(null);
 
   const destCities = cities
     .filter(c => c.destination_id === dest.id)
@@ -30,8 +32,14 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
   const flag = COUNTRIES[dest.country_code]?.emoji || '🌍';
 
   const handleCityAdd = (name) => {
-    onAddCity(tripId, dest.id, name);
     setAddingCity(false);
+    setPendingCityName(name);
+  };
+
+  const handleConfirmCityOptions = async ({ plannedDays, startDate }) => {
+    const city = await onAddCity(tripId, dest.id, pendingCityName);
+    if (city && plannedDays) onRenameCity(city.id, { planned_days: plannedDays, start_date: startDate });
+    setPendingCityName(null);
   };
 
   return (
@@ -100,6 +108,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
                   onAddLodging={onAddLodging}
                   onUpdateLodging={onUpdateLodging}
                   onRemoveLodging={onRemoveLodging}
+                  onReloadTripData={onReloadTripData}
                 />
               ))}
               {provided.placeholder}
@@ -107,7 +116,14 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           )}
         </Droppable>
 
-        {addingCity ? (
+        {pendingCityName ? (
+          <NewCityOptionsForm
+            cityName={pendingCityName}
+            tripStartDate={tripStartDate}
+            onConfirm={handleConfirmCityOptions}
+            onCancel={() => setPendingCityName(null)}
+          />
+        ) : addingCity ? (
           <div className="pp-add-city-wrap">
             <CitySearchInput
               onSelect={handleCityAdd}

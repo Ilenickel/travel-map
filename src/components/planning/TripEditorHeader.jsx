@@ -7,6 +7,7 @@ export default function TripEditorHeader({
   onUpdate, mapOpen, onToggleMap, onToggleShare,
   onExportPdf, onExportIcal,
   dayModeActive, onToggleDayMode,
+  onToggleAutoShareTemplate,
 }) {
   const { t } = useTranslation();
   const [editingTitle, setEditingTitle] = useState(false);
@@ -243,6 +244,26 @@ export default function TripEditorHeader({
             💰 {formatPrice(tripBudget)}
           </span>
         )}
+      </div>
+
+      <div className="pp-share-template-section">
+        <label className="pp-share-template-row">
+          <span className="profile-toggle">
+            <input
+              type="checkbox"
+              checked={!!trip?.auto_share_template}
+              onChange={(e) => onToggleAutoShareTemplate(e.target.checked)}
+            />
+            <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+          </span>
+          <span>{t('shareTemplate.toggleLabel')}</span>
+        </label>
+        <div className="pp-share-template-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+          {t('shareTemplate.infoText')}
+        </div>
       </div>
 
       {showNotes && (

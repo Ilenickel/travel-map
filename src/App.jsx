@@ -25,6 +25,8 @@ import { localizeField } from "./lib/localizeCountry";
 import { computeHighlights } from "./utils/filter";
 import { useFavorites } from "./hooks/useFavorites";
 import { useVisited } from "./hooks/useVisited";
+import { useEndTripSharePrompt } from "./hooks/useEndTripSharePrompt";
+import EndTripSharePrompt from "./components/planning/EndTripSharePrompt";
 import PlanningPage from "./pages/PlanningPage";
 import "./App.css";
 
@@ -104,6 +106,7 @@ function AppInner() {
   const [countryInitialTab, setCountryInitialTab] = useState(null);
   const [countryInitialExtra, setCountryInitialExtra] = useState(null);
   const { notifications, unreadCount, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne } = useNotifications(user?.id);
+  const { trip: pendingShareTrip, answer: answerSharePrompt } = useEndTripSharePrompt(user?.id);
   const { alerts, refresh: refreshAlerts } = useAdminAlerts(isAdmin);
   const alertsMap = useMemo(() => new Map(alerts.map((a) => [a.content_id, a])), [alerts]);
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -514,6 +517,10 @@ function AppInner() {
 
       {pendingUpgrades.length > 0 && (
         <BadgeUnlockAnimation upgrade={pendingUpgrades[0]} onDismiss={dismissCurrentUpgrade} />
+      )}
+
+      {pendingShareTrip && (
+        <EndTripSharePrompt trip={pendingShareTrip} onAnswer={answerSharePrompt} />
       )}
 
       {compareBase && (

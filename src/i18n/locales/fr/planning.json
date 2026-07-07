@@ -94,6 +94,29 @@
     "addButton": "Ajouter",
     "added": "Ajouté"
   },
+  "tripSuggestions": {
+    "button_one": "{{count}} suggestion de planning",
+    "button_other": "{{count}} suggestions de planning",
+    "modalTitle": "Suggestions de planning pour {{city}}",
+    "disclaimer": "Ces plannings viennent d'autres voyageurs — les plus importés sont proposés en premier.",
+    "prevLabel": "Suggestion précédente",
+    "nextLabel": "Suggestion suivante",
+    "goToLabel": "Aller à la suggestion {{count}}",
+    "usesCount_one": "Importé {{count}} fois",
+    "usesCount_other": "Importé {{count}} fois",
+    "includesDaytrips_one": "🧭 Inclut l'excursion : {{names}}",
+    "includesDaytrips_other": "🧭 Inclut {{count}} excursions : {{names}}",
+    "dayLabel_one": "Jour {{count}}",
+    "dayLabel_other": "Jour {{count}}",
+    "timeSlot": {
+      "matin": "Matin",
+      "apres-midi": "Après-midi",
+      "soir": "Soir"
+    },
+    "importButton": "Importer cette planif",
+    "confirmReplaceText": "Vous avez déjà du contenu ajouté pour cette ville : voulez-vous le remplacer entièrement par cette planif importée ?",
+    "confirmReplaceButton": "Remplacer et importer"
+  },
   "trajetsSection": {
     "label": "Trajets",
     "addButton": "Ajouter un trajet"
@@ -118,7 +141,12 @@
     "addPlaceOrActivityButton": "Ajouter un lieu ou activité",
     "addDaytripSearchPlaceholder": "Chercher une ville pour l'excursion… (ou Entrée pour ajouter)",
     "addDaytripButton": "Ajouter une excursion à la journée",
-    "searchPlaceholderDefault": "Chercher une ville… (ou Entrée pour ajouter)"
+    "searchPlaceholderDefault": "Chercher une ville… (ou Entrée pour ajouter)",
+    "plannedDaysLabel": "Jours prévus",
+    "plannedDaysPlaceholder": "Ex. 3",
+    "startDateLabel": "Date de début",
+    "optionalFieldsHint": "Facultatif — utilisé uniquement pour les suggestions et le partage de planning.",
+    "planningFieldsTitle": "Jours prévus / date de début (facultatif, pour les suggestions et le partage de planning)"
   },
   "destination": {
     "eyebrow": "Pays",
@@ -199,6 +227,7 @@
     "soir": "Soir"
   },
   "dayView": {
+    "cityForDayTitle": "Ville prévue ce jour-là (d'après la date de début et le nombre de jours renseignés sur la ville)",
     "continuationTitle": "{{name}} — débute {{from}}",
     "continuationChip": "↳ suite ({{from}})",
     "cutHereTitle": "Arrêter l'activité juste avant ce créneau (retire celui-ci et tous les suivants)",
@@ -263,6 +292,14 @@
     "plannedCount_other": "{{count}} planifiés",
     "budgetTitle": "Budget total : {{activities}} d'activités et trajets + {{lodgings}} d'hébergements",
     "notesPlaceholder": "Notes générales du voyage (hôtel, budget, contacts utiles…)"
+  },
+  "shareTemplate": {
+    "toggleLabel": "Partager automatiquement ce voyage comme modèle",
+    "infoText": "Seuls les lieux et leurs jours/horaires sont partagés, et tenus à jour automatiquement — jamais vos pièces jointes, notes ou hébergements.",
+    "endTripTitle": "Partager ce voyage comme modèle ?",
+    "endTripText": "Votre voyage « {{title}} » est terminé. Voulez-vous activer le partage automatique de ce voyage comme modèle de planning pour d'autres voyageurs ?",
+    "declineButton": "Non merci",
+    "acceptButton": "Activer le partage"
   },
   "sidebar": {
     "title": "Mes voyages",
