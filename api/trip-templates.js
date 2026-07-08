@@ -103,7 +103,7 @@ async function handleShare(admin, user, body, res) {
 
     const { data: activities } = await admin
       .from('trip_activities')
-      .select('name, description, visit_date, visit_time, category, place_lat, place_lng, place_address, position')
+      .select('name, description, visit_date, visit_time, category, place_lat, place_lng, place_address, position, duration_minutes')
       .eq('city_id', city.id)
       .order('position', { ascending: true });
 
@@ -158,6 +158,11 @@ async function handleShare(admin, user, body, res) {
           place_lng: a.place_lng,
           place_address: a.place_address,
           position: a.position,
+          // Durée d'une activité étirée sur plusieurs créneaux/jours (poignée
+          // de resize, voir DayView.jsx) : sans elle, le modèle perdait
+          // l'étirement et la ré-affichait comme une activité ponctuelle
+          // normale dans la suggestion et l'import.
+          duration_minutes: a.duration_minutes,
         })),
     }));
     const { error: contentError } = await admin.rpc('replace_template_content', { p_template_id: template.id, p_days: days });
@@ -212,7 +217,7 @@ async function fetchDaysByTemplate(admin, templateIds) {
   const { data: activities } = dayIds.length
     ? await admin
         .from('trip_template_activities')
-        .select('id, template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position')
+        .select('id, template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes')
         .in('template_day_id', dayIds)
         .order('position', { ascending: true })
     : { data: [] };
@@ -311,7 +316,7 @@ async function fetchTemplateDaysAndActivities(admin, templateId) {
   const { data: activities } = dayIds.length
     ? await admin
         .from('trip_template_activities')
-        .select('template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position')
+        .select('template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes')
         .in('template_day_id', dayIds)
         .order('position', { ascending: true })
     : { data: [] };
@@ -338,6 +343,10 @@ async function importActivitiesInto(admin, { tripId, cityId, activities, startDa
       place_lat: a.place_lat,
       place_lng: a.place_lng,
       place_address: a.place_address,
+      // Étirement sur plusieurs créneaux/jours (voir DayView.jsx) : restauré
+      // seulement si l'activité a une vraie date, comme pour visit_time —
+      // une activité "non planifiée" n'a pas de créneau de départ à étirer.
+      duration_minutes: visitDate ? a.duration_minutes : null,
     };
   });
   if (rows.length) await admin.from('trip_activities').insert(rows);

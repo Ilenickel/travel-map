@@ -38,24 +38,47 @@ export default function TripEditor({
   // (source_trip_id, country_code, city_name), voir planning_modele_v3/v4.sql).
   const autoShareTimerRef = useRef(null);
   const autoShareSignatureRef = useRef(null);
+  // Partage en attente (programmé mais pas encore envoyé) : si l'utilisateur
+  // quitte ce voyage avant la fin des 4s de débounce, le timeout ci-dessous
+  // est annulé par le cleanup de l'effet — sans ce ref, ce partage serait
+  // silencieusement perdu ("des fois ça ne s'enregistre pas"). Le second
+  // effet (deps figées, tout en bas) l'envoie immédiatement au démontage réel.
+  const pendingShareRef = useRef(null);
   useEffect(() => {
     if (!trip?.auto_share_template) return;
     // Signature limitée aux champs réellement copiés dans un modèle (voir
     // api/trip-templates.js) : sans elle, cocher "fait" ou éditer un
     // coût/une note — jamais partagés — re-déclenchait quand même un
     // re-partage complet de toutes les villes du voyage à chaque frappe.
+    // duration_minutes inclus : étirer une activité sur plusieurs créneaux
+    // change ce qui est partagé (voir planning_modele_v7.sql) même si aucun
+    // autre champ ne bouge.
     const signature = JSON.stringify({
       cities: cities.map((c) => [c.id, c.name, c.planned_days, c.parent_city_id]),
-      activities: activities.map((a) => [a.city_id, a.name, a.description, a.visit_date, a.visit_time, a.category, a.place_lat, a.place_lng, a.place_address, a.position]),
+      activities: activities.map((a) => [a.city_id, a.name, a.description, a.visit_date, a.visit_time, a.category, a.place_lat, a.place_lng, a.place_address, a.position, a.duration_minutes]),
     });
     if (signature === autoShareSignatureRef.current) return;
     autoShareSignatureRef.current = signature;
+    pendingShareRef.current = { tripId, destinations };
     clearTimeout(autoShareTimerRef.current);
     autoShareTimerRef.current = setTimeout(() => {
+      pendingShareRef.current = null;
       shareTripAsTemplates(tripId, destinations);
     }, 4000);
     return () => clearTimeout(autoShareTimerRef.current);
   }, [trip?.auto_share_template, cities, activities, destinations, tripId]);
+
+  // Démontage réel du composant (deps figées à [], contrairement à l'effet
+  // ci-dessus qui se ré-arme à chaque changement) : si un partage restait en
+  // attente (l'utilisateur a quitté ce voyage avant la fin du débounce), on
+  // l'envoie quand même plutôt que de le perdre.
+  useEffect(() => {
+    return () => {
+      if (pendingShareRef.current) {
+        shareTripAsTemplates(pendingShareRef.current.tripId, pendingShareRef.current.destinations);
+      }
+    };
+  }, []);
 
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);

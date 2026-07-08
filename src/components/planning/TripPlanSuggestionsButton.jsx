@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
-import { countryAlpha2FromEmoji } from '../../lib/planningUtils';
+import { countryAlpha2FromEmoji, formatDuration } from '../../lib/planningUtils';
 
 // 3 créneaux seulement — alignés sur les 3 créneaux réels du calendrier
 // (DayView.jsx SLOTS : matin/apres-midi/soir, 0-12/12-18/18-24), pas 4 : un
@@ -155,7 +155,14 @@ export default function TripPlanSuggestionsButton({
                               <div className="pp-trip-suggestions-slot-label">{t(`tripSuggestions.timeSlot.${slot}`)}</div>
                               <div className="pp-trip-suggestions-slot-items">
                                 {items.map((a) => (
-                                  <span key={a.id} className="pp-trip-suggestions-item">{a.name}</span>
+                                  <span key={a.id} className="pp-trip-suggestions-item">
+                                    {a.name}
+                                    {a.duration_minutes > 0 && (
+                                      <span className="pp-trip-suggestions-item-duration" title={t('tripSuggestions.durationTitle')}>
+                                        ⏱ {formatDuration(a.duration_minutes)}
+                                      </span>
+                                    )}
+                                  </span>
                                 ))}
                               </div>
                             </div>

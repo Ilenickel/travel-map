@@ -106,6 +106,7 @@
     "usesCount_other": "Importé {{count}} fois",
     "includesDaytrips_one": "🧭 Inclut l'excursion : {{names}}",
     "includesDaytrips_other": "🧭 Inclut {{count}} excursions : {{names}}",
+    "durationTitle": "Cette activité s'étend sur plusieurs créneaux/jours dans le voyage d'origine",
     "dayLabel_one": "Jour {{count}}",
     "dayLabel_other": "Jour {{count}}",
     "timeSlot": {
@@ -120,6 +121,17 @@
   "trajetsSection": {
     "label": "Trajets",
     "addButton": "Ajouter un trajet"
+  },
+  "addMenu": {
+    "button": "Ajouter",
+    "place": "Lieu ou activité",
+    "placeDesc": "Monument, musée, restaurant…",
+    "lodging": "Hébergement",
+    "lodgingDesc": "Hôtel, location, auberge…",
+    "daytrip": "Excursion à la journée",
+    "daytripDesc": "Escapade depuis cette ville",
+    "trajet": "Trajet",
+    "trajetDesc": "Train, avion, bus, voiture…"
   },
   "daytrip": {
     "badge": "Excursion",

@@ -5,6 +5,7 @@ import ActivityItem from './ActivityItem';
 import PlaceSearchInput from './PlaceSearchInput';
 import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
+import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
 import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
@@ -36,6 +37,7 @@ export default function DaytripCard({
 }) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
+  const [addingLodging, setAddingLodging] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
   const [collapsed, setCollapsed] = useState(false);
@@ -241,7 +243,7 @@ export default function DaytripCard({
             )}
           </Droppable>
 
-          {addingPlace ? (
+          {addingPlace && (
             <div className="pp-add-place-wrap">
               <PlaceSearchInput
                 cityHint={city.name}
@@ -252,22 +254,20 @@ export default function DaytripCard({
               />
               <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingPlace(false)}>{t('common:actions.cancel')}</button>
             </div>
-          ) : (
-            <button className="pp-add-item-btn" onClick={() => setAddingPlace(true)}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              {t('place.addButton')}
-            </button>
           )}
 
           {/* Hébergements de l'excursion : une excursion qui dure plusieurs jours
               (trek, île, ville-étape) a son propre logement — une excursion est
-              une ville en base (trip_cities), la section marche donc telle quelle */}
+              une ville en base (trip_cities), la section marche donc telle quelle.
+              L'ajout est piloté par le menu "+ Ajouter" en bas de carte. */}
           <LodgingSection
             city={city}
             lodgings={lodgings}
             tripId={tripId}
             tripStartDate={tripStartDate}
             tripEndDate={tripEndDate}
+            adding={addingLodging}
+            onCloseAdd={() => setAddingLodging(false)}
             onAddLodging={onAddLodging}
             onUpdateLodging={onUpdateLodging}
             onRemoveLodging={onRemoveLodging}
@@ -307,19 +307,56 @@ export default function DaytripCard({
             </div>
           )}
 
-          {addingTrajet ? (
+          {addingTrajet && (
             <TrajetAddInput
               onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
               onClose={() => setAddingTrajet(false)}
             />
-          ) : (
-            <button className="pp-add-item-btn pp-add-item-btn--secondary" onClick={() => setAddingTrajet(true)}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
-              </svg>
-              {t('trajetsSection.addButton')}
-            </button>
           )}
+
+          {/* Menu unique remplaçant les 3 boutons d'ajout empilés (lieu,
+              hébergement, trajet) — même mécanique que CityBlock, sans
+              l'option excursion (pas d'excursion dans une excursion) */}
+          <AddMenu
+            items={[
+              {
+                key: 'place',
+                tone: 'indigo',
+                icon: (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                ),
+                label: t('addMenu.place'),
+                desc: t('addMenu.placeDesc'),
+                onSelect: () => setAddingPlace(true),
+              },
+              {
+                key: 'lodging',
+                tone: 'emerald',
+                icon: (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
+                  </svg>
+                ),
+                label: t('addMenu.lodging'),
+                desc: t('addMenu.lodgingDesc'),
+                onSelect: () => setAddingLodging(true),
+              },
+              {
+                key: 'trajet',
+                tone: 'blue',
+                icon: (
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+                  </svg>
+                ),
+                label: t('addMenu.trajet'),
+                desc: t('addMenu.trajetDesc'),
+                onSelect: () => setAddingTrajet(true),
+              },
+            ]}
+          />
         </div>
       )}
     </div>

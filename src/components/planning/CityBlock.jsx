@@ -8,6 +8,7 @@ import CitySearchInput from './CitySearchInput';
 import DaytripCard from './DaytripCard';
 import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
+import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
 import TripPlanSuggestionsButton from './TripPlanSuggestionsButton';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
@@ -24,6 +25,7 @@ export default function CityBlock({
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);
+  const [addingLodging, setAddingLodging] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
   const [collapsed, setCollapsed] = useState(false);
@@ -152,7 +154,6 @@ export default function CityBlock({
               />
             ) : (
               <span className="pp-city-name" onDoubleClick={() => setEditing(true)}>
-                <span className="pp-city-eyebrow">{t('city.eyebrow')}</span>
                 <span className="pp-city-name-text">{city.name}</span>
               </span>
             )}
@@ -195,29 +196,32 @@ export default function CityBlock({
 
           {!collapsed && (
             <div className="pp-city-body">
-              {/* Distinct des boutons "+ Ajouter" ci-dessous : ceci ne fait que
-                  suggérer des lieux déjà connus pour cette ville, pas les ajouter
-                  directement — d'où sa place à part, en haut du bloc. */}
-              <PlaceSuggestionsButton
-                cityName={city.name}
-                countryCode={countryCode}
-                countryName={countryName}
-                tripId={tripId}
-                cityId={city.id}
-                existingActivityNames={cityActivities.map(a => a.name)}
-                onAddActivity={onAddActivity}
-              />
+              {/* Distinct du menu "+ Ajouter" en bas de bloc : ceci ne fait que
+                  suggérer des lieux ou plannings déjà connus pour cette ville,
+                  pas les ajouter directement — d'où leur place à part, en haut
+                  du bloc, regroupés sur une seule ligne pour rester discrets. */}
+              <div className="pp-suggest-row">
+                <PlaceSuggestionsButton
+                  cityName={city.name}
+                  countryCode={countryCode}
+                  countryName={countryName}
+                  tripId={tripId}
+                  cityId={city.id}
+                  existingActivityNames={cityActivities.map(a => a.name)}
+                  onAddActivity={onAddActivity}
+                />
 
-              <TripPlanSuggestionsButton
-                tripId={tripId}
-                cityId={city.id}
-                cityName={city.name}
-                countryCode={countryCode}
-                countryName={countryName}
-                plannedDays={city.planned_days}
-                hasExistingActivities={cityActivities.length > 0}
-                onImported={onReloadTripData}
-              />
+                <TripPlanSuggestionsButton
+                  tripId={tripId}
+                  cityId={city.id}
+                  cityName={city.name}
+                  countryCode={countryCode}
+                  countryName={countryName}
+                  plannedDays={city.planned_days}
+                  hasExistingActivities={cityActivities.length > 0}
+                  onImported={onReloadTripData}
+                />
+              </div>
 
               {selecting && validSelectedIds.length > 0 && (
                 <SelectionActionBar
@@ -263,7 +267,7 @@ export default function CityBlock({
                 )}
               </Droppable>
 
-              {addingPlace ? (
+              {addingPlace && (
                 <div className="pp-add-place-wrap">
                   <PlaceSearchInput
                     cityHint={city.name}
@@ -276,23 +280,19 @@ export default function CityBlock({
                     {t('common:actions.cancel')}
                   </button>
                 </div>
-              ) : (
-                <button className="pp-add-item-btn" onClick={() => setAddingPlace(true)}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                  </svg>
-                  {t('city.addPlaceOrActivityButton')}
-                </button>
               )}
 
               {/* Hébergements de la ville : entité à part (dates de séjour, prix,
-                  lien de réservation), pas une activité — voir LodgingSection */}
+                  lien de réservation), pas une activité — voir LodgingSection.
+                  L'ajout est piloté par le menu "+ Ajouter" en bas de bloc. */}
               <LodgingSection
                 city={city}
                 lodgings={lodgings}
                 tripId={tripId}
                 tripStartDate={tripStartDate}
                 tripEndDate={tripEndDate}
+                adding={addingLodging}
+                onCloseAdd={() => setAddingLodging(false)}
                 onAddLodging={onAddLodging}
                 onUpdateLodging={onUpdateLodging}
                 onRemoveLodging={onRemoveLodging}
@@ -330,7 +330,7 @@ export default function CityBlock({
                 </div>
               )}
 
-              {addingDaytrip ? (
+              {addingDaytrip && (
                 <div className="pp-add-city-wrap">
                   <CitySearchInput
                     onSelect={name => { onAddDaytrip(tripId, city.destination_id, city.id, name); setAddingDaytrip(false); }}
@@ -340,13 +340,6 @@ export default function CityBlock({
                   />
                   <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingDaytrip(false)}>{t('common:actions.cancel')}</button>
                 </div>
-              ) : (
-                <button className="pp-add-item-btn pp-add-daytrip-btn" onClick={() => setAddingDaytrip(true)}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
-                  </svg>
-                  {t('city.addDaytripButton')}
-                </button>
               )}
 
               {/* Trajets — section à part en bas, pour ne pas se mélanger aux lieux
@@ -385,19 +378,67 @@ export default function CityBlock({
                 </div>
               )}
 
-              {addingTrajet ? (
+              {addingTrajet && (
                 <TrajetAddInput
                   onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
                   onClose={() => setAddingTrajet(false)}
                 />
-              ) : (
-                <button className="pp-add-item-btn pp-add-item-btn--secondary" onClick={() => setAddingTrajet(true)}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
-                  </svg>
-                  {t('trajetsSection.addButton')}
-                </button>
               )}
+
+              {/* Menu unique remplaçant les 4 boutons d'ajout empilés (lieu,
+                  hébergement, excursion, trajet) qui alourdissaient chaque ville */}
+              <AddMenu
+                items={[
+                  {
+                    key: 'place',
+                    tone: 'indigo',
+                    icon: (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      </svg>
+                    ),
+                    label: t('addMenu.place'),
+                    desc: t('addMenu.placeDesc'),
+                    onSelect: () => setAddingPlace(true),
+                  },
+                  {
+                    key: 'lodging',
+                    tone: 'emerald',
+                    icon: (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
+                      </svg>
+                    ),
+                    label: t('addMenu.lodging'),
+                    desc: t('addMenu.lodgingDesc'),
+                    onSelect: () => setAddingLodging(true),
+                  },
+                  {
+                    key: 'daytrip',
+                    tone: 'amber',
+                    icon: (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
+                      </svg>
+                    ),
+                    label: t('addMenu.daytrip'),
+                    desc: t('addMenu.daytripDesc'),
+                    onSelect: () => setAddingDaytrip(true),
+                  },
+                  {
+                    key: 'trajet',
+                    tone: 'blue',
+                    icon: (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+                      </svg>
+                    ),
+                    label: t('addMenu.trajet'),
+                    desc: t('addMenu.trajetDesc'),
+                    onSelect: () => setAddingTrajet(true),
+                  },
+                ]}
+              />
             </div>
           )}
         </div>

@@ -375,10 +375,13 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 14px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, var(--surface2), var(--surface2)) padding-box,
+    linear-gradient(160deg, rgba(129,140,248,0.3), var(--border) 50%) border-box;
   border-radius: 14px;
   padding: 12px 16px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .pp-date-group {
@@ -462,10 +465,12 @@
 
 /* ─── Destination block ─── */
 .pp-destination {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: 18px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  background:
+    linear-gradient(180deg, var(--surface), var(--surface)) padding-box,
+    linear-gradient(165deg, rgba(129,140,248,0.35), var(--border) 30%, var(--border) 70%, rgba(168,85,247,0.2)) border-box;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.26);
   /* Pas d'overflow:hidden : ça casserait le scroll du panneau (les flex items
      perdent leur min-height auto) et ça clipperait les dropdowns de recherche
      qui doivent s'afficher par-dessus. Les coins sont arrondis "à la main" sur
@@ -545,11 +550,15 @@
 
 /* ─── City block ─── */
 .pp-city {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transition: border-color 0.15s, box-shadow 0.15s;
+  /* Même langage que le menu "+ Ajouter" : bordure dégradée 1px (padding-box/
+     border-box), le dégradé indigo s'estompe vers le bas de la carte. */
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, var(--surface2), var(--surface2)) padding-box,
+    linear-gradient(170deg, rgba(129,140,248,0.38), var(--border) 45%, var(--border)) border-box;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  transition: box-shadow 0.2s, background 0.2s;
   /* Container query (pas juste un @media) : le panneau villes peut être étroit
      (jusqu'à 260px, cf. .pp-city-panel min-width) alors que le viewport reste
      large, dès que les panneaux carte et/ou groupes sont ouverts à côté — un
@@ -558,7 +567,12 @@
   /* Pas d'overflow:hidden : les dropdowns de recherche doivent s'afficher par-dessus */
 }
 
-.pp-city:hover { border-color: var(--border-light); box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+.pp-city:hover {
+  background:
+    linear-gradient(180deg, var(--surface2), var(--surface2)) padding-box,
+    linear-gradient(170deg, rgba(129,140,248,0.6), rgba(129,140,248,0.14) 45%, rgba(168,85,247,0.25)) border-box;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.28), 0 0 30px rgba(99,102,241,0.08);
+}
 
 .pp-city-header {
   display: flex;
@@ -569,7 +583,7 @@
   background: linear-gradient(90deg, rgba(99,102,241,0.14), rgba(99,102,241,0.04) 70%);
   border-bottom: 1px solid var(--border);
   border-left: 4px solid var(--accent2);
-  border-radius: 14px 14px 0 0;
+  border-radius: 15px 15px 0 0;
 }
 
 .pp-city-eyebrow {
@@ -593,7 +607,7 @@
 /* Ville réduite (pas de pp-city-body dans le DOM) : l'en-tête est alors le seul
    enfant de la carte, il doit donc reprendre l'arrondi complet du bas aussi. */
 .pp-city-header:last-child {
-  border-radius: 14px;
+  border-radius: 15px;
   border-bottom: none;
 }
 
@@ -714,7 +728,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 9px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: transparent;
   border: 1px solid transparent;
   transition: border-color 0.15s, background 0.15s, transform 0.1s, box-shadow 0.15s, padding 0.15s;
@@ -722,9 +736,12 @@
 }
 .pp-activity:active { cursor: grabbing; }
 
+/* Survol : la carte s'éclaire et se teinte légèrement de la couleur de sa
+   catégorie/zone (--cat-color posée en inline par ActivityItem) */
 .pp-activity:hover {
-  border-color: var(--border);
-  background: rgba(255,255,255,0.03);
+  border-color: color-mix(in srgb, var(--cat-color, #6366f1) 35%, transparent);
+  background: color-mix(in srgb, var(--cat-color, #6366f1) 6%, rgba(255,255,255,0.02));
+  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
 }
 
 /* ─── Mode édition — carte clairement démarquée de la liste des lieux ─── */
@@ -1143,10 +1160,287 @@
 }
 .pp-add-item-btn--secondary:hover svg { background: rgba(0,0,0,0.15); }
 
+/* ─── Menu "+ Ajouter" unique (refonte) ───
+   Remplace la pile de boutons d'ajout colorés (lieu / hébergement / excursion /
+   trajet) en bas de chaque bloc ville et excursion : un seul bouton discret en
+   pointillés, qui déroule les options vers le haut. Les couleurs historiques
+   de chaque type d'ajout sont conservées sur les pastilles d'icône. */
+.pp-add-menu {
+  position: relative;
+  margin: 6px 10px 10px;
+}
+
+/* Bouton pilule à bordure dégradée (technique padding-box/border-box : le
+   fond sombre est peint dans la boîte de padding, le dégradé indigo→violet→
+   cyan dans la boîte de bordure — seule la bordure de 1px laisse voir le
+   dégradé). Le halo lumineux et la pastille "+" en dégradé donnent le relief. */
+.pp-add-menu-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 11px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #c7d2fe;
+  cursor: pointer;
+  font-family: inherit;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(38,41,66,0.95), rgba(24,26,44,0.95)) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.4), rgba(168,85,247,0.26) 45%, rgba(56,189,248,0.26)) border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 2px 8px rgba(0,0,0,0.22);
+  transition: color 0.15s, box-shadow 0.2s, transform 0.12s, background 0.2s;
+}
+
+.pp-add-menu-btn-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 2px 8px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: transform 0.2s;
+}
+
+.pp-add-menu-btn:hover,
+.pp-add-menu-btn--open {
+  color: #fff;
+  background:
+    linear-gradient(180deg, rgba(99,102,241,0.18), rgba(88,80,236,0.10)) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.75), rgba(168,85,247,0.55) 45%, rgba(56,189,248,0.55)) border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 3px 12px rgba(99,102,241,0.2);
+}
+
+.pp-add-menu-btn:hover .pp-add-menu-btn-plus { transform: rotate(90deg) scale(1.1); }
+.pp-add-menu-btn--open { transform: none; }
+.pp-add-menu-btn--open .pp-add-menu-btn-plus { transform: rotate(45deg); }
+
+.pp-add-menu-chevron {
+  transition: transform 0.15s;
+  opacity: 0.6;
+}
+
+/* Panneau du sous-menu : même bordure dégradée que le bouton, verre flouté,
+   double ombre (portée + halo indigo), apparition en fondu + glissement. */
+.pp-add-menu-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 10px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background:
+    linear-gradient(175deg, rgba(34,37,62,0.97), rgba(20,22,40,0.98)) padding-box,
+    linear-gradient(155deg, rgba(129,140,248,0.55), rgba(129,140,248,0.10) 35%, rgba(168,85,247,0.40)) border-box;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 50px rgba(99,102,241,0.14);
+  backdrop-filter: blur(14px);
+  z-index: 99; /* au-dessus du .pp-backdrop-overlay (98) qui ferme le menu */
+  animation: pp-add-menu-in 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+/* Petite pointe reliant le panneau au bouton */
+.pp-add-menu-dropdown::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+  background: rgba(22,24,42,0.98);
+  border-right: 1px solid rgba(129,140,248,0.35);
+  border-bottom: 1px solid rgba(129,140,248,0.35);
+  border-radius: 0 0 3px 0;
+}
+
+@keyframes pp-add-menu-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Chaque option est une carte riche : tuile d'icône en dégradé plein avec
+   halo de sa couleur, libellé + sous-titre descriptif, flèche qui apparaît
+   au survol. Les options entrent en cascade (délais nth-child). */
+.pp-add-menu-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 9px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  animation: pp-add-menu-opt-in 0.22s ease backwards;
+  transition: background 0.13s, border-color 0.13s, box-shadow 0.13s;
+}
+
+.pp-add-menu-opt:nth-child(1) { animation-delay: 0.02s; }
+.pp-add-menu-opt:nth-child(2) { animation-delay: 0.06s; }
+.pp-add-menu-opt:nth-child(3) { animation-delay: 0.10s; }
+.pp-add-menu-opt:nth-child(4) { animation-delay: 0.14s; }
+
+@keyframes pp-add-menu-opt-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.pp-add-menu-opt:hover {
+  background: var(--opt-bg-hover);
+  border-color: var(--opt-border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 0 20px var(--opt-glow-soft);
+}
+
+.pp-add-menu-opt:hover .pp-add-menu-opt-icon { transform: scale(1.1) rotate(-4deg); }
+
+.pp-add-menu-opt-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  flex-shrink: 0;
+  color: #fff;
+  background: var(--opt-grad);
+  box-shadow: 0 4px 12px var(--opt-glow), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: transform 0.15s;
+}
+
+/* Les svg arrivent en 13px des composants appelants : agrandis ici pour
+   remplir la tuile de 34px sans retoucher chaque icône en JSX. */
+.pp-add-menu-opt-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.pp-add-menu-opt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.pp-add-menu-opt-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.pp-add-menu-opt-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pp-add-menu-opt-arrow {
+  flex-shrink: 0;
+  color: var(--opt-color);
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.pp-add-menu-opt:hover .pp-add-menu-opt-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+.pp-add-menu-opt--indigo {
+  --opt-color: #a5b4fc;
+  --opt-grad: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --opt-glow: rgba(99,102,241,0.4);
+  --opt-glow-soft: rgba(99,102,241,0.07);
+  --opt-bg-hover: rgba(99,102,241,0.12);
+  --opt-border: rgba(129,140,248,0.35);
+}
+.pp-add-menu-opt--emerald {
+  --opt-color: #6ee7b7;
+  --opt-grad: linear-gradient(135deg, #10b981, #14b8a6);
+  --opt-glow: rgba(16,185,129,0.35);
+  --opt-glow-soft: rgba(16,185,129,0.06);
+  --opt-bg-hover: rgba(16,185,129,0.10);
+  --opt-border: rgba(52,211,153,0.35);
+}
+.pp-add-menu-opt--amber {
+  --opt-color: #fcd34d;
+  --opt-grad: linear-gradient(135deg, #f59e0b, #f97316);
+  --opt-glow: rgba(245,158,11,0.35);
+  --opt-glow-soft: rgba(245,158,11,0.06);
+  --opt-bg-hover: rgba(245,158,11,0.10);
+  --opt-border: rgba(251,191,36,0.35);
+}
+.pp-add-menu-opt--blue {
+  --opt-color: #7dd3fc;
+  --opt-grad: linear-gradient(135deg, #3b82f6, #06b6d4);
+  --opt-glow: rgba(59,130,246,0.35);
+  --opt-glow-soft: rgba(59,130,246,0.06);
+  --opt-bg-hover: rgba(59,130,246,0.10);
+  --opt-border: rgba(96,165,250,0.35);
+}
+
 /* Suggestions de lieux (bandeau de découverte) — volontairement distinct des
    .pp-add-item-btn : ce n'est pas une action d'ajout direct mais une liste à
    dérouler, donc thème teal + forme "banner" plutôt que bouton d'action, et
    placé en haut du bloc ville (pas mêlé aux CTA d'ajout du bas). */
+/* Ligne unique regroupant les deux bandeaux de suggestions (lieux conseillés +
+   suggestions de planning) côte à côte au lieu d'empilés : moitié moins de
+   hauteur en haut de chaque bloc ville. Chaque enfant peut être absent (les
+   boutons se masquent seuls) : l'autre reprend alors toute la largeur. */
+.pp-suggest-row {
+  display: flex;
+  gap: 8px;
+  margin: 4px 10px 8px;
+}
+.pp-suggest-row:empty { display: none; }
+.pp-suggest-row .pp-place-suggestions,
+.pp-suggest-row .pp-trip-suggestions {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.pp-suggest-row .pp-place-suggestions-btn {
+  white-space: nowrap;
+}
+.pp-suggest-row .pp-place-suggestions-btn span,
+.pp-suggest-row .pp-place-suggestions-btn {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bloc ville étroit (panneau réduit, laptop compact, mobile) : les deux
+   bandeaux côte à côte tronqueraient leur libellé — on ré-empile. Container
+   query sur .pp-city (container-type: inline-size), pas un @media : le panneau
+   villes peut être étroit alors que le viewport reste large. */
+@container (max-width: 400px) {
+  .pp-suggest-row { flex-direction: column; }
+}
+
 .pp-place-suggestions {
   /* position:relative requis : .pp-place-suggestions-dropdown (partage la classe
      .pp-search-dropdown) se positionne en absolute par rapport à ce conteneur,
@@ -1160,27 +1454,36 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  background: rgba(20,184,166,0.10);
-  border: 1px solid rgba(20,184,166,0.3);
-  border-radius: 10px;
-  padding: 9px 13px;
+  /* Bordure dégradée teal→cyan, même langage que le menu "+ Ajouter" */
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(19,38,42,0.85), rgba(14,28,34,0.85)) padding-box,
+    linear-gradient(120deg, rgba(20,184,166,0.55), rgba(20,184,166,0.15) 50%, rgba(56,189,248,0.4)) border-box;
+  padding: 8px 14px;
   font-size: 13px;
   font-weight: 600;
   color: #2dd4bf;
   cursor: pointer;
   font-family: inherit;
-  transition: border-color 0.15s, background 0.15s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  transition: color 0.15s, background 0.2s, box-shadow 0.2s, transform 0.12s;
 }
 .pp-place-suggestions-btn svg {
   flex-shrink: 0;
-  background: rgba(20,184,166,0.22);
+  color: #fff;
+  background: linear-gradient(135deg, #14b8a6, #0ea5e9);
   border-radius: 50%;
   padding: 3px;
   box-sizing: content-box;
+  box-shadow: 0 2px 8px rgba(20,184,166,0.35);
 }
 .pp-place-suggestions-btn:hover {
-  border-color: #14b8a6;
-  background: rgba(20,184,166,0.18);
+  color: #ccfbf1;
+  background:
+    linear-gradient(180deg, rgba(20,184,166,0.28), rgba(15,118,110,0.28)) padding-box,
+    linear-gradient(120deg, rgba(20,184,166,0.85), rgba(45,212,191,0.6) 50%, rgba(56,189,248,0.6)) border-box;
+  box-shadow: 0 3px 12px rgba(20,184,166,0.2);
 }
 .pp-place-suggestions-dropdown {
   margin-top: 6px;
@@ -1409,6 +1712,12 @@
   font-size: 13.5px;
   color: var(--text);
 }
+.pp-trip-suggestions-item-duration {
+  margin-left: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
 
 .pp-trip-suggestions-dots {
   display: flex;
@@ -1581,19 +1890,32 @@
   line-height: 1.4;
 }
 
-/* "Ajouter une ville" — CTA la plus visible du bloc destination */
+/* "Ajouter une ville" — CTA la plus visible du bloc destination, même pilule
+   à bordure dégradée que le menu "+ Ajouter" mais avec un fond plus affirmé */
 .pp-add-city-btn {
   margin: 2px 0 0;
   width: 100%;
-  background: linear-gradient(135deg, rgba(99,102,241,0.16), rgba(192,132,252,0.1));
-  border: 1px dashed rgba(129,140,248,0.4);
-  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(99,102,241,0.12), rgba(168,85,247,0.06)) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.45), rgba(168,85,247,0.3) 45%, rgba(56,189,248,0.3)) border-box;
+  padding: 12px 16px;
   font-size: 13.5px;
   justify-content: center;
+  color: #c7d2fe;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 8px rgba(0,0,0,0.16);
+}
+.pp-add-city-btn svg {
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 2px 8px rgba(99,102,241,0.4);
 }
 .pp-add-city-btn:hover {
-  background: linear-gradient(135deg, var(--accent), #a78bfa);
-  border-style: solid;
+  background:
+    linear-gradient(135deg, rgba(99,102,241,0.22), rgba(168,85,247,0.14)) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.75), rgba(168,85,247,0.55) 45%, rgba(56,189,248,0.55)) border-box;
+  box-shadow: 0 3px 12px rgba(99,102,241,0.22);
 }
 
 .pp-add-dest-btn {
@@ -2252,13 +2574,16 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, var(--surface2), var(--surface2)) padding-box,
+    linear-gradient(150deg, rgba(255,255,255,0.14), var(--border) 60%) border-box;
   border-radius: 20px;
-  padding: 4px 10px;
+  padding: 4px 11px;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .pp-stat-pill--accent {
@@ -2445,6 +2770,35 @@
   margin: 4px 0 6px;
   font-size: 12px;
   color: var(--text-dim);
+}
+
+/* ─── Infos repliées, révélées au survol (refonte) ───
+   Dans la liste classique comme dans la vue par jour, les détails d'un lieu
+   (durée/coût/pièces jointes, chips zone + date, note, ville de rattachement)
+   sont masqués par défaut : seule la ligne titre reste, la carte respire.
+   Survoler la carte déplie ses infos. Réservé aux appareils avec vraie souris
+   (hover:hover + pointer:fine) : au toucher, tout reste visible comme avant.
+   Scopé à .pp-activity-view / .pp-day-activity-view pour ne pas toucher les
+   cartes hébergement (qui partagent .pp-meta-line). */
+@media (hover: hover) and (pointer: fine) {
+  .pp-activity-view .pp-meta-line,
+  .pp-activity-view .pp-activity-chips,
+  .pp-activity-view .pp-activity-desc,
+  .pp-day-activity-view .pp-meta-line,
+  .pp-day-activity-view .pp-day-activity-location,
+  .pp-day-activity-view .pp-day-activity-note {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    overflow: hidden;
+    transition: max-height 0.18s ease, opacity 0.18s ease, margin 0.18s ease;
+  }
+  .pp-activity:hover .pp-activity-view .pp-meta-line { max-height: 80px; opacity: 1; margin: 4px 0 6px; }
+  .pp-activity:hover .pp-activity-view .pp-activity-chips { max-height: 120px; opacity: 1; margin-top: 4px; }
+  .pp-activity:hover .pp-activity-view .pp-activity-desc { max-height: 160px; opacity: 1; margin-top: 3px; }
+  .pp-day-activity:hover .pp-day-activity-view .pp-meta-line { max-height: 80px; opacity: 1; margin: 4px 0 6px; }
+  .pp-day-activity:hover .pp-day-activity-view .pp-day-activity-location { max-height: 40px; opacity: 1; margin-bottom: 2px; }
+  .pp-day-activity:hover .pp-day-activity-view .pp-day-activity-note { max-height: 160px; opacity: 1; margin-top: 3px; }
 }
 
 .pp-meta-item {
@@ -3023,10 +3377,10 @@
 }
 
 .pp-day-activity:hover {
-  border-color: var(--border-light);
-  background: var(--surface3);
+  border-color: color-mix(in srgb, var(--cat-color, #6366f1) 40%, var(--border-light));
+  background: color-mix(in srgb, var(--cat-color, #6366f1) 5%, var(--surface3));
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 16px rgba(0,0,0,0.24), 0 0 16px color-mix(in srgb, var(--cat-color, #6366f1) 10%, transparent);
 }
 .pp-day-activity:active { cursor: grabbing; }
 .pp-day-activity--dragging {
@@ -4619,36 +4973,48 @@
   user-select: none;
 }
 
+/* Tuile d'icône en dégradé plein avec halo, même langage que les options du
+   menu "+ Ajouter" */
 .pp-day-slot-icon {
   font-size: 12px;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 8px;
   flex-shrink: 0;
+  box-shadow: 0 3px 10px var(--slot-glow, transparent), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .pp-day-slot--matin .pp-day-slot-header {
   background: linear-gradient(90deg, rgba(129,140,248,0.14), transparent 80%);
   color: #a5b4fc;
 }
-.pp-day-slot--matin .pp-day-slot-icon { background: rgba(129,140,248,0.18); }
+.pp-day-slot--matin .pp-day-slot-icon {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  --slot-glow: rgba(99,102,241,0.35);
+}
 .pp-day-slot--matin { border-color: rgba(129,140,248,0.22); }
 
 .pp-day-slot--apres-midi .pp-day-slot-header {
   background: linear-gradient(90deg, rgba(245,158,11,0.16), transparent 80%);
   color: #fbbf24;
 }
-.pp-day-slot--apres-midi .pp-day-slot-icon { background: rgba(245,158,11,0.2); }
+.pp-day-slot--apres-midi .pp-day-slot-icon {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  --slot-glow: rgba(245,158,11,0.35);
+}
 .pp-day-slot--apres-midi { border-color: rgba(245,158,11,0.22); }
 
 .pp-day-slot--soir .pp-day-slot-header {
   background: linear-gradient(90deg, rgba(192,132,252,0.16), transparent 80%);
   color: #d8b4fe;
 }
-.pp-day-slot--soir .pp-day-slot-icon { background: rgba(192,132,252,0.2); }
+.pp-day-slot--soir .pp-day-slot-icon {
+  background: linear-gradient(135deg, #a855f7, #c084fc);
+  --slot-glow: rgba(168,85,247,0.35);
+}
 .pp-day-slot--soir { border-color: rgba(192,132,252,0.22); }
 
 .pp-day-slot-label { flex: 1; }
@@ -5139,10 +5505,24 @@
 }
 
 .pp-daytrip {
-  background: var(--surface3);
-  border: 1px solid rgba(245,158,11,0.18);
-  border-radius: 10px;
-  overflow: hidden;
+  /* Bordure dégradée ambre, même langage que .pp-city.
+     Pas d'overflow:hidden : le menu "+ Ajouter" (qui se déroule vers le haut)
+     et les dropdowns de recherche doivent pouvoir dépasser de la carte.
+     L'arrondi de l'en-tête est géré sur .pp-daytrip-header directement. */
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, var(--surface3), var(--surface3)) padding-box,
+    linear-gradient(170deg, rgba(245,158,11,0.40), rgba(245,158,11,0.12) 50%, var(--border)) border-box;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.pp-daytrip:hover {
+  background:
+    linear-gradient(180deg, var(--surface3), var(--surface3)) padding-box,
+    linear-gradient(170deg, rgba(245,158,11,0.6), rgba(245,158,11,0.18) 50%, rgba(249,115,22,0.25)) border-box;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22), 0 0 24px rgba(245,158,11,0.07);
 }
 
 /* ─── Trajets — section à part, même logique d'indentation en pointillés que
@@ -5198,8 +5578,12 @@
   padding: 10px 12px;
   background: linear-gradient(90deg, rgba(245,158,11,0.12), rgba(245,158,11,0.03) 70%);
   border-left: 3px solid var(--amber);
+  /* Arrondi porté par l'en-tête lui-même (plus d'overflow:hidden sur la carte) ;
+     carte réduite = en-tête seul enfant, il reprend l'arrondi complet. */
+  border-radius: 11px 11px 0 0;
   cursor: grab;
 }
+.pp-daytrip-header:last-child { border-radius: 11px; }
 .pp-daytrip-header:active { cursor: grabbing; }
 
 .pp-daytrip-icon {

@@ -106,6 +106,7 @@
     "usesCount_other": "Imported {{count}} times",
     "includesDaytrips_one": "🧭 Includes daytrip: {{names}}",
     "includesDaytrips_other": "🧭 Includes {{count}} daytrips: {{names}}",
+    "durationTitle": "This activity spans several time slots/days in the original trip",
     "dayLabel_one": "Day {{count}}",
     "dayLabel_other": "Day {{count}}",
     "timeSlot": {
@@ -120,6 +121,17 @@
   "trajetsSection": {
     "label": "Trips",
     "addButton": "Add a trip"
+  },
+  "addMenu": {
+    "button": "Add",
+    "place": "Place or activity",
+    "placeDesc": "Landmark, museum, restaurant…",
+    "lodging": "Accommodation",
+    "lodgingDesc": "Hotel, rental, hostel…",
+    "daytrip": "Daytrip",
+    "daytripDesc": "Getaway from this city",
+    "trajet": "Trip",
+    "trajetDesc": "Train, flight, bus, car…"
   },
   "daytrip": {
     "badge": "Daytrip",

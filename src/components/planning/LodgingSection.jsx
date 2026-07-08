@@ -254,21 +254,22 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
   );
 }
 
+// L'état "ajout en cours" est piloté par le parent (menu "+ Ajouter" de
+// CityBlock / DaytripCard) via `adding`/`onCloseAdd` : la section n'a plus de
+// bouton d'ajout propre, elle disparaît complètement quand elle est vide.
 export default function LodgingSection({
-  city, lodgings, tripId, tripStartDate, tripEndDate,
+  city, lodgings, tripId, tripStartDate, tripEndDate, adding = false, onCloseAdd,
   onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
   const { t } = useTranslation();
-  const [adding, setAdding] = useState(false);
   const cityLodgings = (lodgings || [])
     .filter(l => l.city_id === city.id)
     .sort((a, b) => (a.check_in || '9999').localeCompare(b.check_in || '9999') || a.position - b.position);
 
+  if (cityLodgings.length === 0 && !adding) return null;
+
   return (
-    // --empty : sans hébergement, la section se réduit au bouton d'ajout — le
-    // filet indenté (marge + bordure pointillée) n'encadrerait rien et
-    // décalerait ce bouton par rapport aux autres boutons d'ajout de la ville.
-    <div className={`pp-lodgings-section${cityLodgings.length === 0 && !adding ? ' pp-lodgings-section--empty' : ''}`}>
+    <div className="pp-lodgings-section">
       {cityLodgings.length > 0 && (
         <>
           <div className="pp-lodgings-section-label">
@@ -293,23 +294,16 @@ export default function LodgingSection({
         </>
       )}
 
-      {adding ? (
+      {adding && (
         <div className="pp-lodging-card pp-activity--editing">
           <LodgingForm
             cityName={city.name}
             tripStartDate={tripStartDate}
             tripEndDate={tripEndDate}
-            onSave={fields => { onAddLodging(tripId, city.id, fields); setAdding(false); }}
-            onCancel={() => setAdding(false)}
+            onSave={fields => { onAddLodging(tripId, city.id, fields); onCloseAdd(); }}
+            onCancel={onCloseAdd}
           />
         </div>
-      ) : (
-        <button className="pp-add-item-btn pp-add-lodging-btn" onClick={() => setAdding(true)}>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
-          </svg>
-          {t('lodging.addButton')}
-        </button>
       )}
     </div>
   );
