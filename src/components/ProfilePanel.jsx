@@ -310,13 +310,18 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           <button className="auth-close" onClick={onClose}>✕</button>
         </div>
 
-        {/* Tabs */}
+        {/* Tabs — barre segmentée avec icônes */}
         <div className="profile-modal-tabs">
-          <button className={`profile-modal-tab${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>{t('profile.profileTab')}</button>
+          <button className={`profile-modal-tab${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>
+            <span className="profile-modal-tab-icon" aria-hidden="true">👤</span>
+            {t('profile.profileTab')}
+          </button>
           <button className={`profile-modal-tab${tab === 'reviews' ? ' active' : ''}`} onClick={() => setTab('reviews')}>
+            <span className="profile-modal-tab-icon" aria-hidden="true">⭐</span>
             {t('profile.reviewsTab')} <span className="profile-tab-count">{reviews.length + totalDestReviews}</span>
           </button>
           <button className={`profile-modal-tab${tab === 'destinations' ? ' active' : ''}`} onClick={() => setTab('destinations')}>
+            <span className="profile-modal-tab-icon" aria-hidden="true">📍</span>
             {t('profile.destinationsTab')} {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
           </button>
           <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>{t('profile.badgesTab')}</button>

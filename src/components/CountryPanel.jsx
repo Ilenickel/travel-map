@@ -382,29 +382,35 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
           <div className="panel-header">
             <WikiImage src={img(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
             <div className="panel-header-overlay" />
-            <button
-              className="panel-compare-btn"
-              onClick={(e) => { e.stopPropagation(); onCompare?.(); }}
-              aria-label={t("countryPanel.compareAriaLabel")}
-            >
-              {t("countryPanel.compareButton")}
-            </button>
-            <button
-              className={`panel-visited-btn${isVisited ? " active" : ""}`}
-              onClick={(e) => { e.stopPropagation(); onToggleVisited(); }}
-              aria-label={isVisited ? t("countryPanel.removeFromVisited") : t("countryPanel.markAsVisited")}
-              title={isVisited ? t("countryPanel.removeFromVisited") : t("countryPanel.markAsVisited")}
-            >
-              ✈️
-            </button>
-            <button
-              className={`panel-fav-btn${isFavorite ? " active" : ""}`}
-              onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
-              aria-label={isFavorite ? t("countryPanel.removeFromFavorites") : t("countryPanel.addToFavorites")}
-            >
-              {isFavorite ? "⭐" : "☆"}
-            </button>
-            <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label={t("common:actions.close")}>✕</button>
+            {/* Barre d'actions unifiée : les 4 boutons flottants (comparer,
+                visité, favori, fermer) sont regroupés dans une seule pilule
+                verre en haut à droite — un seul endroit où chercher. */}
+            <div className="panel-actions">
+              <button
+                className="panel-compare-btn"
+                onClick={(e) => { e.stopPropagation(); onCompare?.(); }}
+                aria-label={t("countryPanel.compareAriaLabel")}
+              >
+                {t("countryPanel.compareButton")}
+              </button>
+              <button
+                className={`panel-visited-btn${isVisited ? " active" : ""}`}
+                onClick={(e) => { e.stopPropagation(); onToggleVisited(); }}
+                aria-label={isVisited ? t("countryPanel.removeFromVisited") : t("countryPanel.markAsVisited")}
+                title={isVisited ? t("countryPanel.removeFromVisited") : t("countryPanel.markAsVisited")}
+              >
+                ✈️
+              </button>
+              <button
+                className={`panel-fav-btn${isFavorite ? " active" : ""}`}
+                onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
+                aria-label={isFavorite ? t("countryPanel.removeFromFavorites") : t("countryPanel.addToFavorites")}
+              >
+                {isFavorite ? "⭐" : "☆"}
+              </button>
+              <span className="panel-actions-sep" />
+              <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label={t("common:actions.close")}>✕</button>
+            </div>
             <div className="panel-header-content">
               <span className="panel-emoji">{data.emoji}</span>
               <h1 className="panel-title">{data.name}</h1>

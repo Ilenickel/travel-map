@@ -51,6 +51,19 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
   return (
     <>
       <div className="favorites-panel" ref={ref}>
+        {/* En-tête du carnet : titre + compteur global, au-dessus des onglets */}
+        <div className="favpanel-hero">
+          <span className="favpanel-hero-icon">📔</span>
+          <div className="favpanel-hero-text">
+            <span className="favpanel-hero-title">{t('favorites.panelTitle')}</span>
+            <span className="favpanel-hero-sub">
+              {favorites.length + visited.length > 0
+                ? t('favorites.panelSubtitle', { count: new Set([...favorites, ...visited]).size })
+                : t('favorites.panelSubtitleEmpty')}
+            </span>
+          </div>
+        </div>
+
         <div className="favorites-panel-tabs">
           <button
             className={`favpanel-tab${activeTab === "favorites" ? " active" : ""}`}
@@ -78,21 +91,35 @@ export default function FavoritesPanel({ favorites, visited, onSelect, onRemove,
             {list.map((code) => {
               const rawData = COUNTRIES[code];
               if (!rawData) return null;
-              const data = { ...rawData, name: localizeField(rawData.name, i18n.language) };
+              // capital localisée aussi : brute, c'est un objet {fr, en} pour
+              // certains pays — le rendre tel quel fait planter React.
+              const data = {
+                ...rawData,
+                name: localizeField(rawData.name, i18n.language),
+                capital: localizeField(rawData.capital, i18n.language),
+              };
               return (
                 <li key={code} className={`favorites-item${activeTab === "visited" ? " visited-item" : ""}`}>
                   <button
                     className="favorites-item-main"
                     onClick={() => { onSelect(code); onClose(); }}
                   >
-                    <img
-                      src={getFlagUrl(data.emoji)}
-                      alt=""
-                      className="favorites-item-flag"
-                      width="28"
-                      height="20"
-                    />
-                    <span className="favorites-item-name">{data.name}</span>
+                    <span className="favorites-item-flag-tile">
+                      <img
+                        src={getFlagUrl(data.emoji)}
+                        alt=""
+                        className="favorites-item-flag"
+                        width="28"
+                        height="20"
+                      />
+                    </span>
+                    <span className="favorites-item-text">
+                      <span className="favorites-item-name">{data.name}</span>
+                      {data.capital && <span className="favorites-item-capital">{data.capital}</span>}
+                    </span>
+                    <svg className="favorites-item-arrow" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                    </svg>
                   </button>
                   <button
                     className="favorites-item-remove"

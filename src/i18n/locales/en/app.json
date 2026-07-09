@@ -234,6 +234,10 @@
     "linkedSuccess": "✓ Journal linked to your account!",
     "linkError": "✗ Error — try again",
     "linkToAccount": "☁️ Link to account",
+    "panelTitle": "My travel journal",
+    "panelSubtitle_one": "{{count}} country saved",
+    "panelSubtitle_other": "{{count}} countries saved",
+    "panelSubtitleEmpty": "Your favorite and visited countries",
     "favoritesTab": "⭐ Favorites",
     "visitedTab": "✈️ Visited",
     "emptyFavoritesLine1": "No favorites yet.",
@@ -257,6 +261,7 @@
     "tabPractical": "🧳 Practical",
     "tabReviews": "⭐ Reviews",
     "tabReviewsWithCount": "⭐ Reviews ({{count}})",
+
     "sectionWhenToGo": "When to go?",
     "topDestinations": "Top destinations",
     "monthlyOverviewByCity": "Monthly overview by city",

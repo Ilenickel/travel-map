@@ -234,6 +234,10 @@
     "linkedSuccess": "✓ Carnet lié au compte !",
     "linkError": "✗ Erreur — réessayez",
     "linkToAccount": "☁️ Lier au compte",
+    "panelTitle": "Mon carnet de voyage",
+    "panelSubtitle_one": "{{count}} pays enregistré",
+    "panelSubtitle_other": "{{count}} pays enregistrés",
+    "panelSubtitleEmpty": "Vos pays favoris et visités",
     "favoritesTab": "⭐ Favoris",
     "visitedTab": "✈️ Visités",
     "emptyFavoritesLine1": "Aucun favori pour l'instant.",
@@ -257,6 +261,7 @@
     "tabPractical": "🧳 Pratique",
     "tabReviews": "⭐ Avis",
     "tabReviewsWithCount": "⭐ Avis ({{count}})",
+
     "sectionWhenToGo": "Quand y aller ?",
     "topDestinations": "Destinations phares",
     "monthlyOverviewByCity": "Bilan mensuel par ville",

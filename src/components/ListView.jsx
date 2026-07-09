@@ -80,25 +80,31 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
               onMouseLeave={() => onCountryHover?.(null)}
               style={color ? { "--card-color": color } : {}}
             >
+              {/* Recomposition : drapeau dans une tuile, nom/capitale à côté,
+                  badges en haut à droite, puis un pied de carte dédié au
+                  budget et aux périodes — chaque info a sa place, plus rien
+                  ne se dispute la colonne de droite. */}
               <div className="list-card-top">
                 <span className="list-card-emoji">{data.emoji}</span>
                 <div className="list-card-meta">
                   <span className="list-card-name">{data.name}</span>
                   <span className="list-card-capital">{data.capital}</span>
-                  <span className="list-card-budget">
-                    {data.costOfLiving?.budgetSummary?.[0]?.daily ?? "—"}
-                  </span>
                 </div>
+                <div className="list-card-badges">
+                  {favorites.includes(code) && <span className="list-card-star">⭐</span>}
+                  {isVisited && <span className="list-card-visited-badge">✈️</span>}
+                </div>
+              </div>
+              <div className="list-card-foot">
+                <span className="list-card-budget">
+                  💶 {data.costOfLiving?.budgetSummary?.[0]?.daily ?? "—"}
+                </span>
                 <div className="list-card-periods">
                   {data.bestPeriods?.map((p) => (
                     <span key={p.months} className="list-card-period-chip" style={{ color: p.color }}>
                       {p.icon} <span className="list-card-period-months">{p.months}</span>
                     </span>
                   ))}
-                </div>
-                <div className="list-card-badges">
-                  {favorites.includes(code) && <span className="list-card-star">⭐</span>}
-                  {isVisited && <span className="list-card-visited-badge">✈️</span>}
                 </div>
               </div>
               {color && <div className="list-card-bar" style={{ background: color }} />}

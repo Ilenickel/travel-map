@@ -107,8 +107,13 @@ function OwnBadgeCard({ badgeKey, level: rawLevel, value, howTo }) {
         </div>
 
         <div className="badge-card-hero" onClick={() => setOpen(true)} title={t('badges.seeAllLevels')}>
-          <div className="badge-card-icon-circle">
-            <span className="badge-card-icon">{def.icon}</span>
+          {/* Anneau de progression conique : le tour du médaillon se remplit
+              de la couleur du badge à mesure qu'on approche du niveau suivant
+              (plein au niveau max) — la progression se voit avant de se lire */}
+          <div className="badge-card-ring" style={{ '--ring-pct': isMax ? 100 : progress.pct }}>
+            <div className="badge-card-icon-circle">
+              <span className="badge-card-icon">{def.icon}</span>
+            </div>
           </div>
           <div className="badge-card-identity">
             <span className="badge-card-name">{def.name}</span>
