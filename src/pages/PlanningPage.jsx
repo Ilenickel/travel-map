@@ -134,7 +134,7 @@ function PlanningMain() {
   return (
     <div className="pp-layout">
       {pendingShareTrip && (
-        <EndTripSharePrompt trip={pendingShareTrip} onAnswer={answerSharePrompt} />
+        <EndTripSharePrompt key={pendingShareTrip.id} trip={pendingShareTrip} onAnswer={answerSharePrompt} />
       )}
 
       <TripSidebar

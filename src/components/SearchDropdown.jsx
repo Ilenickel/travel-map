@@ -1,10 +1,11 @@
 import { useRef, useEffect } from "react";
 import { useWikipediaImages } from "../hooks/useWikipediaImages";
 import WikiImage from "./WikiImage";
+import CountryFlag from "./planning/CountryFlag";
 
 export default function SearchDropdown({ results, onSelect, onClose, containerRef }) {
   const slugs = results.map(({ data }) => data.destinations?.[0]?.wikipedia).filter(Boolean);
-  const images = useWikipediaImages(slugs);
+  const { images, meta } = useWikipediaImages(slugs);
 
   // Close on click outside the whole search container (passed from parent)
   useEffect(() => {
@@ -24,11 +25,12 @@ export default function SearchDropdown({ results, onSelect, onClose, containerRe
       {results.map(({ code, data }) => {
         const slug = data.destinations?.[0]?.wikipedia;
         const imgSrc = slug ? images[slug] : null;
+        const imgMeta = slug ? meta[slug] : undefined;
         return (
           <button key={code} className="search-dropdown-item" onClick={() => onSelect(code)}>
-            <WikiImage src={imgSrc} alt={data.name} className="search-dropdown-img" />
+            <WikiImage src={imgSrc} meta={imgMeta} alt={data.name} className="search-dropdown-img" />
             <span className="search-dropdown-name">{data.name}</span>
-            <span className="search-dropdown-code">{data.emoji} {code}</span>
+            <span className="search-dropdown-code"><CountryFlag emoji={data.emoji} size={16} /> {code}</span>
           </button>
         );
       })}

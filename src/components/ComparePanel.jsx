@@ -1,9 +1,12 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
 import { weatherRating } from "../utils/weather";
 import { localizeCountry, localizeField } from "../lib/localizeCountry";
 import { monthAbbrev } from "../lib/monthAbbrev";
+import { localizeAmountString } from "../lib/currency";
+import { useSettings } from "../context/SettingsContext";
+import CountryFlag from "./planning/CountryFlag";
 
 const TAB_DEFS = [
   { id: "resume", labelKey: "tabResume",       icon: "📊" },
@@ -43,7 +46,7 @@ function CountrySearch({ onSelect, exclude }) {
           {results.map(([code, data]) => (
             <li key={code}>
               <button className="compare-search-item" onClick={() => onSelect(code)}>
-                <span>{data.emoji}</span>
+                <CountryFlag emoji={data.emoji} size={18} />
                 <span>{data.name}</span>
               </button>
             </li>
@@ -78,7 +81,7 @@ function TabResume({ data }) {
           {data.costOfLiving.budgetSummary.map((b) => (
             <div key={b.type} className="compare-budget-row">
               <span className="compare-budget-type" style={{ color: b.color }}>{b.type}</span>
-              <span className="compare-budget-daily">{b.daily}</span>
+              <span className="compare-budget-daily">{localizeAmountString(b.daily)}</span>
             </div>
           ))}
         </div>
@@ -151,7 +154,7 @@ function Col({ code, onRemove, canRemove, activeTab, onOpen }) {
     <div className="compare-col">
       <div className="compare-col-header">
         <button className="compare-col-open" onClick={onOpen} title={t("compare.openTitle")}>
-          <span className="compare-col-emoji">{data.emoji}</span>
+          <span className="compare-col-emoji"><CountryFlag emoji={data.emoji} size={30} /></span>
           <div className="compare-col-info">
             <div className="compare-col-name">{data.name}</div>
             <div className="compare-col-capital">{data.capital} · {data.currency}</div>
@@ -179,6 +182,7 @@ function ColEmpty({ exclude, onAdd }) {
 
 /* ── Panel principal ── */
 export default function ComparePanel({ baseCode, initialCodes, onClose, onCountryClick }) {
+  useSettings(); // abonnement devise : les montants affichés sont convertis
   const { t } = useTranslation("app");
   const [codes, setCodes] = useState(() =>
     initialCodes && initialCodes.length >= 1 ? initialCodes : [baseCode]
@@ -186,6 +190,30 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
   const [activeTab, setActiveTab] = useState("resume");
   const [addingThird, setAddingThird] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Swipe mobile : le corps devient un carrousel scroll-snap (1 pays = 1 page)
+  const bodyRef = useRef(null);
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageCount = codes.length + (addingThird ? 1 : 0);
+
+  const handleBodyScroll = (e) => {
+    const el = e.currentTarget;
+    if (el.clientWidth === 0) return;
+    const idx = Math.round(el.scrollLeft / el.clientWidth);
+    setPageIndex(Math.max(0, Math.min(pageCount - 1, idx)));
+  };
+
+  const scrollToPage = (i) => {
+    const el = bodyRef.current;
+    if (el) el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+  };
+
+  // À l'ouverture de la colonne d'ajout, amener la page vide à l'écran (mobile)
+  useEffect(() => {
+    if (addingThird && bodyRef.current) {
+      bodyRef.current.scrollTo({ left: bodyRef.current.scrollWidth, behavior: "smooth" });
+    }
+  }, [addingThird]);
 
   // Sync URL quand les codes changent
   useEffect(() => {
@@ -243,7 +271,7 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
         </div>
 
         {/* Corps : colonnes */}
-        <div className="compare-body">
+        <div className="compare-body" ref={bodyRef} onScroll={handleBodyScroll}>
           {codes.map((code, i) => (
             <div key={code} className="compare-col-wrapper">
               {i > 0 && <div className="compare-divider" />}
@@ -264,6 +292,20 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
             </div>
           )}
         </div>
+
+        {/* Indicateur de pages (mobile uniquement, dès 2 pays) */}
+        {pageCount >= 2 && (
+          <div className="compare-dots">
+            {Array.from({ length: pageCount }, (_, i) => (
+              <button
+                key={i}
+                className={`compare-dot${Math.min(pageIndex, pageCount - 1) === i ? " active" : ""}`}
+                onClick={() => scrollToPage(i)}
+                aria-label={t("compare.pageIndicator", { page: i + 1, count: pageCount })}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Barre inférieure commune */}
         {showAddBtn && (

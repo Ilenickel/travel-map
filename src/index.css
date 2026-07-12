@@ -1,2 +1,4 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; background: #060d18; }
+/* Repli #060d18 : valeur d'avant premier rendu (les variables de thème sont
+   définies dans App.css et déclinées via data-theme, voir SettingsContext). */
+html, body { height: 100%; background: var(--bg, #060d18); }

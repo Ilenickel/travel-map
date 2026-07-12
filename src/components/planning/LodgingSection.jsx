@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PlaceSearchInput from './PlaceSearchInput';
 import { formatDateShort, lodgingNights, formatPrice } from '../../lib/planningUtils';
+import { CURRENCY_SYMBOLS, eurToInputValue, inputValueToEur } from '../../lib/currency';
+import { useSettings } from '../../context/SettingsContext';
 import { useAttachmentsCount } from '../../context/AttachmentsCountContext';
 import AttachmentsPanel from './AttachmentsPanel';
 
@@ -19,13 +21,16 @@ function sanitizeBookingUrl(raw) {
 
 function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, onCancel }) {
   const { t } = useTranslation();
+  // Prix stocké en EUR mais saisi dans la devise d'affichage choisie
+  // (voir src/lib/currency.js).
+  const { currency } = useSettings();
   const [name, setName] = useState(initial?.name || '');
   const [address, setAddress] = useState(initial?.address || '');
   const [placeLat, setPlaceLat] = useState(initial?.place_lat ?? null);
   const [placeLng, setPlaceLng] = useState(initial?.place_lng ?? null);
   const [checkIn, setCheckIn] = useState(initial?.check_in || '');
   const [checkOut, setCheckOut] = useState(initial?.check_out || '');
-  const [price, setPrice] = useState(initial?.price ?? '');
+  const [price, setPrice] = useState(eurToInputValue(initial?.price));
   const [bookingUrl, setBookingUrl] = useState(initial?.booking_url || '');
   const [notes, setNotes] = useState(initial?.notes || '');
   const [dateError, setDateError] = useState(false);
@@ -59,7 +64,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
     if (!trimmed) return;
     if (checkIn && checkOut && checkOut < checkIn) { setDateError(true); return; }
     // Prix : le min="0" de l'input ne bloque pas une saisie clavier négative
-    const parsedPrice = price === '' ? null : Math.max(0, parseFloat(price) || 0);
+    const parsedPrice = price === '' ? null : inputValueToEur(Math.max(0, parseFloat(price) || 0));
     onSave({
       name: trimmed,
       address: address.trim() || null,
@@ -142,7 +147,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
               value={price}
               onChange={e => setPrice(e.target.value)}
             />
-            <span>€</span>
+            <span>{CURRENCY_SYMBOLS[currency]}</span>
           </div>
         </div>
       </div>
@@ -176,6 +181,7 @@ function LodgingForm({ initial, cityName, tripStartDate, tripEndDate, onSave, on
 
 function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, onRemove }) {
   const { t } = useTranslation();
+  useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
   const [editing, setEditing] = useState(false);
   const nights = lodgingNights(lodging.check_in, lodging.check_out);
   const priceLabel = formatPrice(lodging.price);

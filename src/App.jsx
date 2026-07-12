@@ -12,8 +12,10 @@ import AuthModal from "./components/AuthModal";
 import ProfilePanel from "./components/ProfilePanel";
 import NotificationPanel from "./components/NotificationPanel";
 import AdminAlertsPanel from "./components/AdminAlertsPanel";
+import SettingsMenu from "./components/SettingsMenu";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import { LanguageProvider, useLanguage } from "./context/LanguageContext";
+import { LanguageProvider } from "./context/LanguageContext";
+import { SettingsProvider } from "./context/SettingsContext";
 import { BadgeProvider } from "./context/BadgeContext";
 import BadgeUnlockAnimation from "./components/BadgeUnlockAnimation";
 import { useNotifications } from "./hooks/useNotifications";
@@ -29,29 +31,6 @@ import { useEndTripSharePrompt } from "./hooks/useEndTripSharePrompt";
 import EndTripSharePrompt from "./components/planning/EndTripSharePrompt";
 import PlanningPage from "./pages/PlanningPage";
 import "./App.css";
-
-function LanguageSwitcher() {
-  const { t } = useTranslation();
-  const { language, changeLanguage } = useLanguage();
-  return (
-    <div className="topbar-lang-switcher" role="group" aria-label={t('languageSwitcher.label')}>
-      <button
-        type="button"
-        className={`topbar-lang-btn${language === 'fr' ? ' active' : ''}`}
-        onClick={() => changeLanguage('fr')}
-      >
-        FR
-      </button>
-      <button
-        type="button"
-        className={`topbar-lang-btn${language === 'en' ? ' active' : ''}`}
-        onClick={() => changeLanguage('en')}
-      >
-        EN
-      </button>
-    </div>
-  );
-}
 
 function normalize(str) {
   return str.normalize("NFD").replace(/\p{Mn}/gu, "").toLowerCase();
@@ -270,7 +249,7 @@ function AppInner() {
             <img src="/icon.png" alt="" className="brand-icon" />
             <span className="brand-name">Triply</span>
           </div>
-          <LanguageSwitcher />
+          <SettingsMenu />
         </div>
 
         {/* Centre : recherche */}
@@ -280,7 +259,7 @@ function AppInner() {
             <input
               type="text"
               className="topbar-search-input"
-              placeholder={t("topbar.searchPlaceholder")}
+              placeholder={window.innerWidth <= 768 ? t("topbar.searchPlaceholderShort") : t("topbar.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setDropdownOpen(false); }}
             />
@@ -410,15 +389,52 @@ function AppInner() {
         </div>
       </header>
 
-      {/* FAB filtre — visible uniquement sur mobile via CSS */}
-      <button
-        className={`mobile-filter-fab${filterOpen ? " active" : ""}${filterActive ? " has-filters" : ""}`}
-        onClick={() => handleFilterOpen(!filterOpen)}
-        aria-label={t("topbar.filtersAriaLabel")}
-      >
-        <span>⚙️</span>
-        {filterActive && <span className="filter-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>}
-      </button>
+      {/* Barre de navigation basse — visible uniquement sur mobile via CSS */}
+      <nav className="app-mobile-nav" aria-label={t("topbar.mobileNavLabel")}>
+        <button
+          className={`app-nav-btn${!listOpen && !filterOpen && !favPanelOpen ? " active" : ""}`}
+          onClick={() => { setListOpen(false); setFilterOpen(false); setFavPanelOpen(false); }}
+        >
+          <span className="app-nav-icon">🗺️</span>
+          {t("topbar.navMap")}
+        </button>
+        <button
+          className={`app-nav-btn${listOpen ? " active" : ""}`}
+          onClick={() => { setFavPanelOpen(false); handleListOpen(!listOpen); }}
+        >
+          <span className="app-nav-icon">📋</span>
+          {t("topbar.listLabel")}
+        </button>
+        {/* Planifier au centre, mis en évidence : c'est la feature principale */}
+        <Link to="/planifier" className="app-nav-btn app-nav-btn--primary" aria-label={t("topbar.planTripAriaLabel")}>
+          <span className="app-nav-primary-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z"/>
+            </svg>
+          </span>
+          {t("topbar.planLabel")}
+        </Link>
+        <button
+          className={`app-nav-btn${filterOpen ? " active" : ""}${!filterActive ? " filter-attract" : ""}`}
+          onClick={() => { setFavPanelOpen(false); handleFilterOpen(!filterOpen); }}
+        >
+          <span className="app-nav-icon">⚙️</span>
+          {t("topbar.navFilters")}
+          {filterActive && (
+            <span className="app-nav-badge">{(filters.tripBudget !== null ? 1 : 0) + (filters.month !== null ? 1 : 0) + filters.tags.length}</span>
+          )}
+        </button>
+        <button
+          className={`app-nav-btn${favPanelOpen ? " active" : ""}`}
+          onClick={() => { setListOpen(false); setFilterOpen(false); setFavPanelOpen((o) => !o); }}
+        >
+          <span className="app-nav-icon">📖</span>
+          {t("topbar.travelbookLabel")}
+          {(favorites.length > 0 || visited.length > 0) && (
+            <span className="app-nav-badge">{favorites.length + visited.length}</span>
+          )}
+        </button>
+      </nav>
 
       {favPanelOpen && (
         <div className="favorites-backdrop" onClick={() => setFavPanelOpen(false)} />
@@ -520,7 +536,7 @@ function AppInner() {
       )}
 
       {pendingShareTrip && (
-        <EndTripSharePrompt trip={pendingShareTrip} onAnswer={answerSharePrompt} />
+        <EndTripSharePrompt key={pendingShareTrip.id} trip={pendingShareTrip} onAnswer={answerSharePrompt} />
       )}
 
       {compareBase && (
@@ -549,10 +565,12 @@ export default function App() {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <Routes>
-          <Route path="/planifier" element={<PlanningPage />} />
-          <Route path="*" element={<AppInner />} />
-        </Routes>
+        <SettingsProvider>
+          <Routes>
+            <Route path="/planifier" element={<PlanningPage />} />
+            <Route path="*" element={<AppInner />} />
+          </Routes>
+        </SettingsProvider>
       </LanguageProvider>
     </AuthProvider>
   );

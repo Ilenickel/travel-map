@@ -30,7 +30,11 @@ export async function verifyUser(admin, authToken) {
 // bloquer silencieusement les membres invités sur des actions qu'ils ont par
 // ailleurs le droit de faire (partage/import de planning-modèle, etc.).
 export async function verifyTripAccess(admin, tripId, userId) {
-  const { data: trip } = await admin.from('trips').select('id, user_id').eq('id', tripId).maybeSingle();
+  // start_date et share_criteria inclus : utilisés par api/trip-templates.js
+  // (share recopie les critères sur les modèles, import-trip cale les dates
+  // des villes importées sur le début du voyage) — évite une relecture de la
+  // même ligne juste après.
+  const { data: trip } = await admin.from('trips').select('id, user_id, start_date, share_criteria').eq('id', tripId).maybeSingle();
   if (!trip) return null;
   if (trip.user_id === userId) return trip;
   const { data: membership } = await admin

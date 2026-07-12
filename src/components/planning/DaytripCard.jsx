@@ -9,6 +9,7 @@ import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
 import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
+import { useSettings } from '../../context/SettingsContext';
 
 function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
   const { t } = useTranslation();
@@ -46,6 +47,7 @@ export default function DaytripCard({
   const [selecting, setSelecting] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const { t } = useTranslation();
+  useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
 
   const dtActivities = activities
     .filter(a => a.city_id === city.id)

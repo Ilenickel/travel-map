@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { localizeField } from '../../lib/localizeCountry';
 import { normalizeStr, countryAlpha2FromEmoji } from '../../lib/planningUtils';
+import { useWikipediaImages } from '../../hooks/useWikipediaImages';
+import { formatWikiAttribution } from '../../lib/wikiAttribution';
 
 // Comparaison stricte (exacte ou sous-chaîne, pas de tolérance Levenshtein) —
 // utilisée pour le matching ville↔destination et la détection "déjà ajouté",
@@ -70,6 +73,9 @@ function editorialPlacesFor(matchedDests, countryCode, lang) {
         name: localizeField(m.name, lang),
         lat: null,
         lng: null,
+        // Slug Wikipédia/Commons du lieu éditorial (déjà utilisé pour les
+        // vignettes du panneau pays) : sert ici à l'aperçu photo au survol.
+        wikipedia: m.wikipedia || null,
       };
     })
   );
@@ -77,10 +83,29 @@ function editorialPlacesFor(matchedDests, countryCode, lang) {
 
 export default function PlaceSuggestionsButton({ cityName, countryCode, countryName, tripId, cityId, existingActivityNames = [], onAddActivity }) {
   const { t } = useTranslation();
+  const { t: tApp } = useTranslation('app'); // clés wikiCredit.* (voir lib/wikiAttribution.js)
   const [places, setPlaces] = useState(null); // null = pas encore chargé
   const [open, setOpen] = useState(false);
   const [addingId, setAddingId] = useState(null);
+  // Lieu survolé — aperçu photo grand format à côté de la liste.
+  const [hoveredId, setHoveredId] = useState(null);
+  // Réf de la liste déroulante : sert à positionner l'aperçu photo, rendu
+  // dans un portail vers <body> (voir plus bas).
+  const listRef = useRef(null);
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[countryCode]?.emoji);
+
+  // Photos des lieux éditoriaux via Wikipédia/Commons (même source que les
+  // vignettes du panneau pays, cache module partagé). Les lieux communautaires
+  // portent déjà leur photo uploadée (imageUrl, voir api/get-place-suggestions.js).
+  const wikiSlugs = (places || []).map((p) => p.wikipedia).filter(Boolean);
+  const { images: wikiImages, meta: wikiMeta } = useWikipediaImages(wikiSlugs);
+  const previewSrcFor = (place) =>
+    place.imageUrl || (place.wikipedia ? wikiImages[place.wikipedia] : null) || null;
+  // Attribution uniquement pour une photo Wikipédia/Commons — les photos
+  // communautaires (place.imageUrl) sont uploadées par les utilisateurs du
+  // site, aucune obligation d'attribution Wikimedia ne s'y applique.
+  const previewMetaFor = (place) =>
+    !place.imageUrl && place.wikipedia ? wikiMeta[place.wikipedia] : undefined;
 
   // Chargement discret dès le montage pour connaître le nombre de suggestions
   // (bouton masqué si aucune correspondance) sans attendre un clic préalable.
@@ -147,7 +172,11 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
         {t('placeSuggestions.button', { count: places.length })}
       </button>
       {open && (
-        <ul className="pp-search-dropdown pp-place-suggestions-dropdown">
+        <ul
+          ref={listRef}
+          className="pp-search-dropdown pp-place-suggestions-dropdown"
+          onMouseLeave={() => setHoveredId(null)}
+        >
           {places.map((place) => {
             // Source de vérité unique = les activités réellement présentes dans
             // la ville (persiste après un remontage du composant, et redevient
@@ -155,7 +184,21 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
             // état local qui resterait bloqué sur "Ajouté" indéfiniment).
             const added = existingActivityNames.some((n) => namesMatch(n, place.name));
             return (
-              <li key={place.id} className="pp-search-item pp-place-suggestions-item">
+              <li
+                key={place.id}
+                className="pp-search-item pp-place-suggestions-item"
+                onMouseEnter={() => setHoveredId(place.id)}
+              >
+                {/* Vignette tactile (masquée sur desktop via CSS, où l'aperçu
+                    grand format au survol prend le relais) */}
+                {previewSrcFor(place) && (
+                  <img
+                    className="pp-place-suggestions-thumb"
+                    src={previewSrcFor(place)}
+                    loading="lazy"
+                    alt=""
+                  />
+                )}
                 <div className="pp-search-item-text">
                   <span className="pp-search-item-name">{place.name}</span>
                 </div>
@@ -177,6 +220,43 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
           })}
         </ul>
       )}
+      {open && (() => {
+        // Aperçu photo grand format du lieu survolé, affiché à côté de la
+        // liste (rien si le lieu n'a ni photo communautaire ni image
+        // Wikipédia résolue — pas de cadre vide qui clignote). Rendu dans un
+        // portail vers <body> : la colonne voisine (Groupes d'activité...)
+        // crée son propre contexte d'empilement au-dessus de celui de la
+        // colonne des villes — aucun z-index posé ici ne peut passer devant,
+        // seul un portail sort l'aperçu de cette hiérarchie (même technique
+        // que les cartes en cours de drag, voir ActivityItem). Position fixed
+        // calculée depuis la liste, recalculée à chaque changement de survol.
+        const hoveredPlace = places.find((p) => p.id === hoveredId);
+        const previewSrc = hoveredPlace ? previewSrcFor(hoveredPlace) : null;
+        if (!previewSrc || !listRef.current) return null;
+        const rect = listRef.current.getBoundingClientRect();
+        const PREVIEW_WIDTH = 340;
+        // À droite de la liste par défaut ; bascule à gauche si le bord de
+        // l'écran est trop proche.
+        const fitsRight = rect.right + 12 + PREVIEW_WIDTH <= window.innerWidth;
+        const left = fitsRight ? rect.right + 12 : Math.max(8, rect.left - 12 - PREVIEW_WIDTH);
+        return createPortal(
+          <div
+            className="pp-place-suggestions-preview"
+            style={{ left, top: rect.top }}
+            aria-hidden="true"
+          >
+            <img
+              src={previewSrc}
+              alt={t('placeSuggestions.previewImageAlt', { name: hoveredPlace.name })}
+              className="pp-place-suggestions-preview-img"
+              decoding="async"
+              title={formatWikiAttribution(previewMetaFor(hoveredPlace), tApp)}
+            />
+            <span className="pp-place-suggestions-preview-name">{hoveredPlace.name}</span>
+          </div>,
+          document.body
+        );
+      })()}
     </div>
   );
 }

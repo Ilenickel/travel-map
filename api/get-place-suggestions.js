@@ -35,19 +35,19 @@ export default async function handler(req, res) {
   if (communityDestinationIds.length) {
     const { data } = await admin
       .from('destination_places')
-      .select('id, name, lat, lng')
+      .select('id, name, lat, lng, image_url')
       .in('destination_id', communityDestinationIds);
-    for (const p of data || []) places.push({ id: p.id, type: 'community', name: p.name, lat: p.lat, lng: p.lng });
+    for (const p of data || []) places.push({ id: p.id, type: 'community', name: p.name, lat: p.lat, lng: p.lng, imageUrl: p.image_url || null });
   }
 
   const cleanStaticDestIds = (Array.isArray(staticDestIds) ? staticDestIds : []).filter((id) => typeof id === 'string' && id);
   for (const staticDestId of cleanStaticDestIds) {
     const { data } = await admin
       .from('static_destination_places')
-      .select('id, name, lat, lng')
+      .select('id, name, lat, lng, image_url')
       .eq('country_code', countryCode)
       .eq('static_dest_id', staticDestId);
-    for (const p of data || []) places.push({ id: p.id, type: 'static', name: p.name, lat: p.lat, lng: p.lng });
+    for (const p of data || []) places.push({ id: p.id, type: 'static', name: p.name, lat: p.lat, lng: p.lng, imageUrl: p.image_url || null });
   }
 
   let translatedPlaces;

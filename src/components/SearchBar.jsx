@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { monthAbbrevList } from "../lib/monthAbbrev";
+import { useSettings } from "../context/SettingsContext";
+import { CURRENCY_SYMBOLS, convertFromEur } from "../lib/currency";
 
 // `value` reste en français : c'est la clé comparée aux tags des données pays
 // (non traduites tant que la Phase 3 - données pays - n'est pas faite). Seul le
@@ -19,15 +21,18 @@ const TAGS = [
   { value: "Ville",         key: "city",         icon: "🏙️" },
 ];
 
-const BUDGET_PRESETS = [
-  { label: "50€",  value: 50 },
-  { label: "100€", value: 100 },
-  { label: "200€", value: 200 },
-  { label: "400€", value: 400 },
-];
+// Valeurs en euros : c'est la valeur comparée aux budgets des données pays
+// (voir utils/filter.js, toujours en EUR). Seul le libellé affiché est
+// converti dans la devise choisie (taux fixe, voir src/lib/currency.js).
+const BUDGET_PRESETS = [50, 100, 200, 400];
 
 export default function SearchBar({ onFilterChange, open: openProp, onOpenChange, hideVisited, onHideVisitedChange, hasVisited }) {
   const { t, i18n } = useTranslation("app");
+  const { currency } = useSettings();
+  const formatBudgetLabel = (v) => {
+    const converted = Math.round(convertFromEur(v));
+    return currency === "USD" ? `$${converted}` : `${converted}€`;
+  };
   const [openInternal, setOpenInternal] = useState(false);
   const open = openProp !== undefined ? openProp : openInternal;
   const setOpen = (v) => { setOpenInternal(v); onOpenChange?.(v); };
@@ -90,7 +95,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
     <>
       {open && <div className="filter-backdrop" onClick={() => setOpen(false)} />}
       <div className={`search-bar${open ? " open" : ""}`}>
-      <button className="search-toggle" onClick={() => setOpen(!open)}>
+      <button className={`search-toggle${activeCount === 0 ? " filter-attract" : ""}`} onClick={() => setOpen(!open)}>
         <span className="search-icon">⚙️</span>
         <span>{t("search.filtersLabel")}</span>
         {activeCount > 0 && <span className="filter-badge">{activeCount}</span>}
@@ -134,13 +139,13 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
 
             <div className={`budget-control${budgetEnabled ? "" : " disabled"}`}>
               <div className="budget-presets">
-                {BUDGET_PRESETS.map((p) => (
+                {BUDGET_PRESETS.map((value) => (
                   <button
-                    key={p.value}
-                    className={`budget-preset-btn${tripBudget === p.value && budgetEnabled ? " active" : ""}`}
-                    onClick={() => handlePreset(p.value)}
+                    key={value}
+                    className={`budget-preset-btn${tripBudget === value && budgetEnabled ? " active" : ""}`}
+                    onClick={() => handlePreset(value)}
                   >
-                    {p.label}
+                    {formatBudgetLabel(value)}
                   </button>
                 ))}
               </div>
@@ -156,7 +161,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
                   className="budget-slider"
                 />
                 <span className="budget-value">
-                  {budgetEnabled ? `${tripBudget.toLocaleString(i18n.language === "fr" ? "fr-FR" : "en-GB")} €` : "—"}
+                  {budgetEnabled ? `${Math.round(convertFromEur(tripBudget)).toLocaleString(i18n.language === "fr" ? "fr-FR" : "en-GB")} ${CURRENCY_SYMBOLS[currency]}` : "—"}
                 </span>
               </div>
             </div>

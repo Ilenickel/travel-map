@@ -143,7 +143,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
 }
 
 // ─── Composant principal ──────────────────────────────────────────────────────
-export default function PlacesList({ dest, countryCode, countryName, wikiImages = {} }) {
+export default function PlacesList({ dest, countryCode, countryName, wikiImages = {}, wikiMeta = {} }) {
   const { t, i18n } = useTranslation('app');
   const { user } = useAuth();
   const isUserDest = !!dest.isUserDest;
@@ -442,7 +442,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
           return (
           <div key={place.id} className="must-item">
             {place.isJson ? (
-              <WikiImage src={wikiImages[place.wikipedia] ?? null} alt={displayName} className="must-item-img" />
+              <WikiImage src={wikiImages[place.wikipedia] ?? null} meta={wikiMeta[place.wikipedia]} alt={displayName} className="must-item-img" />
             ) : (
               <img src={place.image_url} alt={displayName} className="must-item-img" />
             )}

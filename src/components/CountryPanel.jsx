@@ -13,9 +13,13 @@ import { supabase } from "../lib/supabase";
 import PublicProfileModal from "./PublicProfileModal";
 import DestinationForm from "./DestinationForm";
 import PlacesList from "./PlacesList";
+import CountryRecommendations from "./CountryRecommendations";
 import { callAdminAction } from "../lib/admin";
 import ReportModal from "./ReportModal";
 import { monthAbbrev } from "../lib/monthAbbrev";
+import { localizeAmountString } from "../lib/currency";
+import { useSettings } from "../context/SettingsContext";
+import CountryFlag from "./planning/CountryFlag";
 import { fetchTranslatedFields, translationKey } from "../lib/translateContent";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
@@ -24,10 +28,12 @@ const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
 export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, onNavigateCountry, alertIds = new Map(), onAdminAction }) {
+  useSettings(); // abonnement devise : les montants affichés sont convertis
   const { t, i18n } = useTranslation("app");
   const data = useMemo(() => localizeCountry(COUNTRIES[countryCode], i18n.language), [countryCode, i18n.language]);
   const { user, isAdmin, setAuthModalOpen } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab || "overview");
+  const [recoCount, setRecoCount] = useState(0);
   const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
   const [avgRating, setAvgRating] = useState(null);
   const [reviewCount, setReviewCount] = useState(0);
@@ -93,6 +99,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setEditDest(null);
     setDeletingDestId(null);
     setDestSearch('');
+    setRecoCount(0);
   }, [countryCode, initialTab]);
 
   // Load community destinations
@@ -151,6 +158,20 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     const dest = translatedUserDestinations.find(d => d.id === initialExtra.commDestId);
     if (dest) setSelectedDest(dest);
   }, [initialExtra, translatedUserDestinations]);
+
+  // Compteur du libellé de l'onglet Recommandations, chargé dès l'ouverture
+  // de la fiche (comme le compteur d'avis) : le contenu de l'onglet, lui,
+  // reste chargé à la demande par CountryRecommendations (qui remet ce
+  // compteur à jour après un ajout/une suppression via onCountLoaded).
+  useEffect(() => {
+    let cancelled = false;
+    supabase
+      .from('country_recommendations')
+      .select('id', { count: 'exact', head: true })
+      .or(`source_country_code.eq.${countryCode},target_country_code.eq.${countryCode}`)
+      .then(({ count }) => { if (!cancelled) setRecoCount(count || 0); });
+    return () => { cancelled = true; };
+  }, [countryCode]);
 
   useEffect(() => {
     async function loadReviewStats() {
@@ -316,8 +337,9 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     return [...slugs];
   }, [data, visitedTabs, activeTab, selectedDest]);
 
-  const wikiImages = useWikipediaImages(allSlugs);
+  const { images: wikiImages, meta: wikiMeta } = useWikipediaImages(allSlugs);
   const img = (slug) => wikiImages[slug] ?? null;
+  const imgMeta = (slug) => wikiMeta[slug];
 
   if (!data) return null;
 
@@ -337,6 +359,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     { id: "destinations",  label: t("countryPanel.tabDestinations") },
     { id: "practical",     label: t("countryPanel.tabPractical") },
     { id: "reviews",       label: reviewCount > 0 ? t("countryPanel.tabReviewsWithCount", { count: reviewCount }) : t("countryPanel.tabReviews") },
+    { id: "recommendations", label: recoCount > 0 ? t("countryPanel.tabRecommendationsWithCount", { count: recoCount }) : t("countryPanel.tabRecommendations") },
   ];
 
   const cityData = data.weatherCities[activeCity];
@@ -380,7 +403,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
           {/* Header */}
           <div className="panel-header">
-            <WikiImage src={img(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
+            <WikiImage src={img(data.destinations[0].wikipedia)} meta={imgMeta(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
             <div className="panel-header-overlay" />
             {/* Barre d'actions unifiée : les 4 boutons flottants (comparer,
                 visité, favori, fermer) sont regroupés dans une seule pilule
@@ -391,7 +414,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 onClick={(e) => { e.stopPropagation(); onCompare?.(); }}
                 aria-label={t("countryPanel.compareAriaLabel")}
               >
-                {t("countryPanel.compareButton")}
+                <span aria-hidden="true">⚖</span>
+                <span className="panel-compare-label">{t("countryPanel.compareButton")}</span>
               </button>
               <button
                 className={`panel-visited-btn${isVisited ? " active" : ""}`}
@@ -412,7 +436,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
               <button className="panel-close" onClick={(e) => { e.stopPropagation(); onClose(); }} aria-label={t("common:actions.close")}>✕</button>
             </div>
             <div className="panel-header-content">
-              <span className="panel-emoji">{data.emoji}</span>
+              <span className="panel-emoji"><CountryFlag emoji={data.emoji} size={34} /></span>
               <h1 className="panel-title">{data.name}</h1>
               <div className="panel-meta">
                 <span className="panel-meta-chip">🏙 {data.capital}</span>
@@ -471,7 +495,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         setSelectedDest(dest);
                       }}
                     >
-                      <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-mini-img" />
+                      <WikiImage src={img(dest.wikipedia)} meta={imgMeta(dest.wikipedia)} alt={dest.name} className="dest-card-mini-img" />
                       <div className="dest-card-mini-info">
                         <span className="dest-card-mini-name">{dest.name}</span>
                         <span className="dest-card-mini-region">{dest.region}</span>
@@ -603,7 +627,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       {data.costOfLiving.budgetSummary.map((b) => (
                         <div key={b.type} className="budget-card" style={{ "--budget-color": b.color }}>
                           <div className="budget-type">{b.type}</div>
-                          <div className="budget-daily">{b.daily}</div>
+                          <div className="budget-daily">{localizeAmountString(b.daily)}</div>
                           <div className="budget-desc">{b.desc}</div>
                         </div>
                       ))}
@@ -635,13 +659,13 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     <div className="trip-budget-card" style={{ "--budget-color": tripBudget.color }}>
                       <div className="trip-total">
                         <span className="trip-total-label">{t("countryPanel.totalEstimated")}</span>
-                        <span className="trip-total-value">{tripBudget.total}</span>
+                        <span className="trip-total-value">{localizeAmountString(tripBudget.total)}</span>
                       </div>
                       <div className="trip-breakdown">
                         {tripBudget.breakdown.map((item) => (
                           <div key={item.label} className="trip-line">
                             <span className="trip-line-label">{item.label}</span>
-                            <span className="trip-line-amount">{item.amount}</span>
+                            <span className="trip-line-amount">{localizeAmountString(item.amount)}</span>
                           </div>
                         ))}
                       </div>
@@ -705,7 +729,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
                     {selectedDest.isUserDest
                       ? <img src={selectedDest.image_url} alt={selectedDest.name} className="dest-detail-img" style={{ objectFit: 'cover' }} />
-                      : <WikiImage src={img(selectedDest.wikipedia)} alt={selectedDest.name} className="dest-detail-img" />
+                      : <WikiImage src={img(selectedDest.wikipedia)} meta={imgMeta(selectedDest.wikipedia)} alt={selectedDest.name} className="dest-detail-img" />
                     }
                     <div className="dest-detail-title-row">
                       <div className="dest-detail-title-group">
@@ -779,7 +803,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       </div>
                     )}
 
-                    <PlacesList dest={selectedDest} countryCode={countryCode} countryName={data.name} wikiImages={wikiImages} />
+                    <PlacesList dest={selectedDest} countryCode={countryCode} countryName={data.name} wikiImages={wikiImages} wikiMeta={wikiMeta} />
 
                     {/* Section avis destination */}
                     <div ref={destReviewsRef} className="dest-reviews-section">
@@ -956,7 +980,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         </div>
                       ) : (
                         <div key={dest.id} className="dest-card" onClick={() => setSelectedDest(dest)}>
-                          <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-img" />
+                          <WikiImage src={img(dest.wikipedia)} meta={imgMeta(dest.wikipedia)} alt={dest.name} className="dest-card-img" />
                           <div className="dest-card-info">
                             <div className="dest-card-top">
                               <span className="dest-card-name">{dest.name}</span>
@@ -1061,7 +1085,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         return scoreB - scoreA;
                       }).map((dest) => dest._type === 'static' ? (
                         <div key={dest.id} className="dest-card" onClick={() => setSelectedDest(dest)}>
-                          <WikiImage src={img(dest.wikipedia)} alt={dest.name} className="dest-card-img" />
+                          <WikiImage src={img(dest.wikipedia)} meta={imgMeta(dest.wikipedia)} alt={dest.name} className="dest-card-img" />
                           <div className="dest-card-info">
                             <div className="dest-card-top">
                               <span className="dest-card-name">{dest.name}</span>
@@ -1219,6 +1243,17 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                   highlightId={!initialExtra?.destId ? initialExtra?.reviewId : null}
                   alertIds={alertIds}
                   onAdminAction={onAdminAction}
+                />
+              </div>
+            )}
+
+            {/* ── RECOMMENDATIONS ── */}
+            {activeTab === "recommendations" && (
+              <div className="tab-content">
+                <CountryRecommendations
+                  countryCode={countryCode}
+                  onNavigateCountry={onNavigateCountry}
+                  onCountLoaded={setRecoCount}
                 />
               </div>
             )}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { tripDurationDays, sumCosts, formatPrice } from '../../lib/planningUtils';
+import { tripDurationDays, sumCosts, formatPrice, TRIP_CRITERIA } from '../../lib/planningUtils';
+import { useSettings } from '../../context/SettingsContext';
 
 export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities, lodgings = [],
@@ -10,6 +11,7 @@ export default function TripEditorHeader({
   onToggleAutoShareTemplate,
 }) {
   const { t } = useTranslation();
+  useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
   // Mobile uniquement (le bouton et les règles CSS associées n'existent que sous
@@ -111,7 +113,7 @@ export default function TripEditorHeader({
               {t('header.notesButton')}
             </button>
             <button
-              className={`pp-toolbar-btn${mapOpen ? ' active' : ''}`}
+              className={`pp-toolbar-btn pp-toolbar-btn--map${mapOpen ? ' active' : ''}`}
               onClick={onToggleMap}
               title={mapOpen ? t('header.closeMapTitle') : t('header.showMapTitle')}
             >
@@ -121,7 +123,7 @@ export default function TripEditorHeader({
               {t('header.mapButton')}
             </button>
             <button
-              className={`pp-toolbar-btn${dayModeActive ? ' active' : ''}`}
+              className={`pp-toolbar-btn pp-toolbar-btn--dayj${dayModeActive ? ' active' : ''}`}
               onClick={onToggleDayMode}
               disabled={!trip?.start_date || !trip?.end_date}
               title={
@@ -246,8 +248,18 @@ export default function TripEditorHeader({
         )}
       </div>
 
-      <div className="pp-share-template-section">
+      <div className={`pp-share-template-section${trip?.auto_share_template ? ' pp-share-template-section--on' : ''}`}>
+        <div className="pp-share-template-icon" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+          </svg>
+        </div>
+        <div className="pp-share-template-content">
         <label className="pp-share-template-row">
+          <span className="pp-share-template-texts">
+            <span className="pp-share-template-title">{t('shareTemplate.sectionTitle')}</span>
+            <span className="pp-share-template-label">{t('shareTemplate.toggleLabel')}</span>
+          </span>
           <span className="profile-toggle">
             <input
               type="checkbox"
@@ -256,13 +268,45 @@ export default function TripEditorHeader({
             />
             <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
           </span>
-          <span>{t('shareTemplate.toggleLabel')}</span>
         </label>
+        {/* Critères du partage (avec enfants, en couple…) : modifiables à tout
+            moment tant que le partage est actif — un critère coché par erreur
+            dans la popup de fin de voyage ne doit pas rester figé à vie. Le
+            re-partage automatique (TripEditor) recopie la nouvelle valeur sur
+            les modèles. */}
+        {trip?.auto_share_template && (
+          <div className="pp-share-criteria-row">
+            <span className="pp-share-criteria-label">{t('shareTemplate.criteriaRowLabel')}</span>
+            <div className="pp-criteria-chips">
+              {Object.entries(TRIP_CRITERIA).map(([key, c]) => {
+                const active = (trip?.share_criteria || []).includes(key);
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    className={`pp-criteria-chip${active ? ' active' : ''}`}
+                    onClick={() => {
+                      const current = trip?.share_criteria || [];
+                      onUpdate(tripId, {
+                        share_criteria: active ? current.filter((k) => k !== key) : [...current, key],
+                      });
+                    }}
+                    aria-pressed={active}
+                  >
+                    <span aria-hidden="true">{c.icon}</span> {c.label}
+                    {active && <span className="pp-criteria-chip-check">✓</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <div className="pp-share-template-note">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
           </svg>
           {t('shareTemplate.infoText')}
+        </div>
         </div>
       </div>
 

@@ -340,6 +340,7 @@ html, body, #root { height: 100%; }
 }
 
 .tooltip-flag { font-size: 22px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
+.tooltip-flag-img { width: 24px; height: auto; border-radius: 3px; flex-shrink: 0; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
 .tooltip-hint { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-left: 4px; }
 
 /* â”€â”€â”€ Map Hint â”€â”€â”€ */
@@ -1778,6 +1779,28 @@ html, body, #root { height: 100%; }
   color: var(--text);
 }
 
+/* ── Halo d'incitation sur le bouton Filtres (tant qu'aucun critère actif) ── */
+@keyframes filterAttractPulse {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(129,140,248,0.5), 0 4px 16px rgba(0,0,0,0.3); }
+  50%      { box-shadow: 0 0 24px 9px rgba(129,140,248,0.75), 0 4px 16px rgba(0,0,0,0.3); }
+}
+@keyframes filterAttractPulseLight {
+  0%, 100% { box-shadow: 0 0 4px 1px rgba(217,119,6,0.5), 0 4px 14px rgba(43,38,32,0.1); }
+  50%      { box-shadow: 0 0 24px 9px rgba(217,119,6,0.8), 0 4px 14px rgba(43,38,32,0.1); }
+}
+.search-toggle.filter-attract,
+.app-nav-btn.filter-attract {
+  animation: filterAttractPulse 2s ease-in-out infinite;
+}
+[data-theme="light"] .search-toggle.filter-attract,
+[data-theme="light"] .app-nav-btn.filter-attract {
+  animation-name: filterAttractPulseLight;
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-toggle.filter-attract,
+  .app-nav-btn.filter-attract { animation: none; }
+}
+
 .search-icon { font-size: 14px; }
 
 .filter-badge {
@@ -2684,6 +2707,117 @@ html, body, #root { height: 100%; }
 .compare-search-item:last-child { border-bottom: none; }
 .compare-search-item:hover { background: var(--accent-subtle); color: var(--accent2); }
 
+/* Indicateur de pages du carrousel : n'existe visuellement que sur mobile */
+.compare-dots { display: none; }
+
+/* ─── Compare panel : version mobile — bottom sheet + carrousel swipe ───
+   Les colonnes ne tiennent pas côte à côte : chaque pays devient une page
+   pleine largeur, on balaie à gauche/droite (scroll-snap), les points
+   indiquent la page courante. ─── */
+@media (max-width: 768px) {
+  /* Bottom sheet pleine largeur, ancré en bas de l'écran */
+  .compare-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .compare-panel {
+    width: 100%;
+    height: 93dvh;
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+    animation: modalInMobile 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Poignée de glissement comme sur la fiche pays */
+  .compare-topbar { position: relative; padding: 18px 14px 10px; }
+  .compare-topbar::before {
+    content: '';
+    position: absolute;
+    top: 7px; left: 50%;
+    transform: translateX(-50%);
+    width: 36px; height: 4px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 2px;
+  }
+  .compare-title { font-size: 14px; }
+  .compare-share-btn { font-size: 11px; padding: 5px 10px; }
+
+  /* Onglets : 3 tiers égaux, jamais coupés (le libellé s'ellipse au besoin) */
+  .compare-tabs { padding: 8px 10px; gap: 6px; }
+  .compare-tab-btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    font-size: 11px;
+    padding: 7px 4px;
+    gap: 4px;
+  }
+  .compare-tab-btn span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Corps : carrousel horizontal, 1 pays = 1 page pleine largeur */
+  .compare-body {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .compare-body::-webkit-scrollbar { display: none; }
+  .compare-col-wrapper {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  .compare-divider { display: none; }
+
+  /* Colonne pays : pas de barre de défilement visible, contenu aéré */
+  .compare-col {
+    padding: 14px 16px 24px;
+    scrollbar-width: none;
+  }
+  .compare-col::-webkit-scrollbar { display: none; }
+
+  /* Points indicateurs de page */
+  .compare-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 0;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+    flex-shrink: 0;
+  }
+  .compare-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--border-light);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .compare-dot.active {
+    background: var(--accent2);
+    transform: scale(1.25);
+  }
+
+  .compare-footer { padding: 8px 14px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  /* Évite le double trait quand les points précèdent le footer */
+  .compare-dots + .compare-footer { border-top: none; padding-top: 0; }
+  .compare-add-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 12.5px;
+    padding: 10px;
+  }
+}
+
 /* â”€â”€â”€ Map zoom controls â”€â”€â”€ */
 .map-zoom-controls {
   position: absolute;
@@ -2730,7 +2864,7 @@ html, body, #root { height: 100%; }
 
 /* â”€â”€â”€ Responsive mobile â”€â”€â”€ */
 /* FAB filtre mobile â€” cachÃ© sur desktop */
-.mobile-filter-fab { display: none; }
+.app-mobile-nav { display: none; }
 
 @media (max-width: 768px) {
 
@@ -2744,86 +2878,117 @@ html, body, #root { height: 100%; }
 
   /* â”€â”€ Topbar mobile : search (max 50%) + fav + liste Ã  droite â”€â”€ */
   .topbar { padding: 0 10px; height: 52px; gap: 6px; }
+  /* Logo masqué : sur un petit écran chaque pixel va à la recherche.
+     La marque vit ailleurs (page planif, onglet navigateur). */
   .topbar-brand { display: none; }
   .topbar-badge { display: none; }
+  /* Réglages tout à droite (après l'avatar) : .topbar-left ne contient plus
+     que l'engrenage une fois le logo masqué, on l'envoie en fin de rangée. */
+  .topbar-left { order: 10; }
+  .topbar-settings { margin-left: 0; }
 
   /* Search : prend l'espace disponible jusqu'Ã  50% */
   .topbar-search-container {
     position: relative;
     left: auto; transform: none;
-    flex: 1; max-width: 50%;
+    flex: 1; max-width: none;
     min-width: 0; margin: 0;
   }
-  .topbar-search-wrapper { padding: 0 8px; height: 36px; }
-  .topbar-search-input { font-size: 12px; }
-  .topbar-search-icon { font-size: 12px; }
+  .topbar-search-wrapper { padding: 0 10px; height: 36px; }
+  .topbar-search-input { font-size: 13px; }
+  .topbar-search-icon { font-size: 13px; }
 
   /* topbar-controls : filtre cachÃ© sur mobile (remplacÃ© par FAB), fav visible */
   .topbar-controls { gap: 5px; }
   .topbar-controls .topbar-filter-btn { display: none; }
 
-  /* Favoris */
-  .topbar-fav-label { display: none; }
-  .topbar-fav-btn {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px;
-    padding: 0; border-radius: 10px; font-size: 16px;
-  }
-  .fav-count-badge {
-    position: absolute; top: -4px; right: -4px;
-    min-width: 16px; height: 16px; font-size: 9px;
+  /* Carnet / Liste / Planifier : partis dans la barre de navigation basse.
+     Seul le wrapper du carnet reste rendu (le panneau, en position fixed,
+     est monté dedans). */
+  .topbar-fav-btn { display: none; }
+  .topbar-view-btn { display: none; }
+  .topbar-plan-btn { display: none; }
+  .topbar-right { margin-left: 0; gap: 6px; }
+
+  /* ── Barre de navigation basse, façon appli (même langage que l'écran
+     planif) : Carte / Liste / Filtres / Carnet / Planifier ── */
+  .app-mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 95;
+    background: rgba(8, 12, 20, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
   }
 
-  /* Liste + Planifier — label caché, bouton icône */
-  .topbar-view-label { display: none; }
-  .topbar-plan-label { display: none; }
-  .topbar-view-btn {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px;
-    padding: 0; border-radius: 10px; font-size: 16px;
+  .app-nav-btn {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    padding: 4px 0 3px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
   }
-  .topbar-plan-btn { padding: 0; width: 36px; justify-content: center; }
-  .topbar-right { margin-left: 0; gap: 5px; }
-
-  /* â”€â”€ FAB filtre mobile â€” en bas Ã  gauche, ouvre le panneau vers le haut â”€â”€ */
-  .mobile-filter-fab {
+  .app-nav-btn.active {
+    color: var(--accent2);
+    background: var(--accent-subtle);
+  }
+  .app-nav-icon {
+    font-size: 17px;
+    line-height: 1.1;
+  }
+  /* Planifier : bouton central surélevé façon action principale */
+  .app-nav-btn--primary {
+    color: var(--accent2);
+    font-weight: 800;
+  }
+  .app-nav-primary-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    border: 1px solid var(--border-light);
-    background: rgba(15, 22, 35, 0.92);
-    backdrop-filter: blur(12px);
-    color: var(--text-dim);
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 100;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.5);
-    transition: background 0.15s, border-color 0.15s;
+    width: 44px;
+    height: 44px;
+    margin-top: -20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    border: 3px solid rgba(8, 12, 20, 0.96);
+    box-shadow: 0 6px 18px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
   }
-  .mobile-filter-fab.active {
-    background: var(--accent-subtle);
-    border-color: var(--accent);
-  }
-  .mobile-filter-fab .filter-badge {
+  .app-nav-badge {
     position: absolute;
-    top: -4px; right: -4px;
+    top: 0;
+    left: calc(50% + 8px);
+    min-width: 15px; height: 15px;
+    padding: 0 4px;
     background: var(--accent);
     color: #fff;
-    border-radius: 50%;
-    min-width: 16px; height: 16px;
+    border-radius: 20px;
     font-size: 9px;
+    font-weight: 700;
     display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
   }
 
   /* â”€â”€ Panneau filtre : s'ouvre vers le haut depuis le bas â”€â”€ */
   .search-bar {
-    bottom: 84px; top: auto;
+    bottom: calc(62px + env(safe-area-inset-bottom, 0px)); top: auto;
     left: 0; right: 0;
     align-items: stretch;
   }
@@ -2832,13 +2997,15 @@ html, body, #root { height: 100%; }
     width: 100%;
     border-radius: 20px 20px 0 0;
     margin-top: 0;
+    padding: 16px 14px 18px;
+    gap: 14px;
     max-height: calc(100dvh - 140px);
     overflow-y: auto;
   }
   .filter-backdrop {
     display: block;
     position: fixed;
-    inset: 0; bottom: 84px;
+    inset: 0; bottom: calc(62px + env(safe-area-inset-bottom, 0px));
     z-index: 49;
   }
 
@@ -2847,7 +3014,8 @@ html, body, #root { height: 100%; }
     position: fixed;
     top: 52px; left: 0; right: 0;
     width: 100%;
-    height: calc(100dvh - 52px);
+    height: auto;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px));
     border-left: none;
     border-top: 1px solid var(--border);
     box-shadow: none;
@@ -2880,6 +3048,10 @@ html, body, #root { height: 100%; }
     border-bottom: 1px solid var(--border-light);
     animation: modalInMobile 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  /* Contenu des onglets : marges réduites, les fiches respirent sur toute
+     la largeur au lieu d'être corsetées par les 22px du desktop. */
+  .tab-content { padding: 14px 12px 20px; gap: 16px; }
   @keyframes modalInMobile {
     from { transform: translateY(60px); opacity: 0; }
     to   { transform: translateY(0);    opacity: 1; }
@@ -2904,11 +3076,26 @@ html, body, #root { height: 100%; }
   }
   .panel-title { font-size: 20px; }
   .panel-emoji { font-size: 20px; }
+  /* En-tête : 3 chips max lisibles — les suivants passeraient en 2e ligne et
+     remonteraient sur le titre ; le reste est déjà dans les onglets. */
+  .panel-header { min-height: 140px; }
+  .panel-meta { gap: 5px; }
+  .panel-meta-chip { font-size: 11px; padding: 2px 8px; }
+  .panel-meta-chip:nth-child(n+4) { display: none; }
 
   /* Boutons âœ• et â˜† dans le header */
   .panel-close { width: 44px; height: 44px; font-size: 16px; top: 12px; right: 12px; z-index: 10; }
   .panel-fav-btn { width: 44px; height: 44px; font-size: 18px; top: 12px; right: 64px; z-index: 10; }
-  .panel-compare-btn { display: none; }
+  /* Comparer : version icône seule (⚖) dans la pilule, le libellé texte
+     prendrait trop de place à côté des 3 autres boutons */
+  .panel-actions .panel-compare-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 17px;
+    justify-content: center;
+  }
+  .panel-compare-label { display: none; }
 
   /* Onglets */
   .tab-btn { padding: 7px 10px; font-size: 12px; }
@@ -2969,7 +3156,8 @@ html, body, #root { height: 100%; }
   .favorites-panel {
     position: fixed; top: 52px; left: 0; right: 0;
     width: 100%; border-radius: 0 0 20px 20px;
-    max-height: calc(100dvh - 52px); overflow-y: auto;
+    max-height: calc(100dvh - 52px - 56px - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
   }
   .favorites-backdrop { top: 52px; }
 
@@ -6377,4 +6565,787 @@ html, body, #root { height: 100%; }
    ═══════════════════════════════════════════════════════════════ */
 @media (hover: none) and (pointer: coarse) {
   .notif-delete-btn { opacity: 1; }
+}
+
+/* ─── Panneau de paramètres (topbar) ─── */
+/* Remplace l'ancien sélecteur fr/en : un bouton engrenage qui déroule un
+   panneau regroupant langue, devise d'affichage et mode jour/nuit. */
+.topbar-settings {
+  position: relative;
+  margin-left: 20px;
+  flex-shrink: 0;
+}
+
+.topbar-settings-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.topbar-settings-btn:hover { color: var(--text-dim); border-color: var(--border-light); }
+.topbar-settings-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+}
+
+.settings-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1100;
+  width: 240px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  animation: panelIn 0.18s ease;
+}
+
+.settings-panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.settings-choice {
+  display: flex;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.settings-choice-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.settings-choice-btn:hover { color: var(--text-dim); background: var(--hover-overlay, rgba(255,255,255,0.05)); }
+.settings-choice-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+}
+
+/* Switch jour/nuit (réutilise .profile-toggle, voir ProfilePanel) avec un
+   symbole de chaque côté plutôt que deux boutons segmentés. */
+.settings-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.settings-theme-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ─── Mode jour ─── */
+/* Le site est nativement en mode nuit (variables de :root). Le mode jour se
+   déclenche via l'attribut data-theme="light" posé sur <html> par
+   SettingsContext. Direction artistique "atlas papier" : fond crème chaud,
+   surfaces papier presque blanches, océan bleu poudré, textes brun-noir —
+   pas un simple négatif du mode nuit. On redéfinit d'abord les variables
+   partagées (couvre la majorité des surfaces/textes/bordures des deux
+   écrans), puis on reprend un à un les éléments dont les couleurs sombres
+   sont écrites en dur (topbar, pilules verre, tooltips, zoom, filtres...). */
+:root[data-theme="light"] {
+  --bg: #f4f1ea;
+  --surface: #fbf9f4;
+  --surface2: #f0ece1;
+  --surface3: #e8e2d3;
+  --border: #e0d9c8;
+  --border-light: #cfc6b0;
+  --accent: #5b5bd6;
+  --accent2: #4f46e5;
+  --accent-glow: rgba(91, 91, 214, 0.16);
+  --accent-subtle: rgba(91, 91, 214, 0.08);
+  --text: #2b2620;
+  --text-muted: #94897a;
+  --text-dim: #5c5548;
+  --green: #178744;
+  --amber: #b45309;
+  --red: #c02626;
+  /* Voile de survol générique : sombre translucide sur fond clair (l'équivalent
+     du blanc translucide utilisé en mode nuit). */
+  --hover-overlay: rgba(43, 38, 32, 0.06);
+}
+
+/* ── Topbar : papier translucide, filet signature adouci ── */
+[data-theme="light"] .topbar {
+  background: rgba(251, 249, 244, 0.92);
+}
+[data-theme="light"] .topbar::after {
+  background: linear-gradient(90deg, transparent, rgba(91,91,214,0.35) 25%, rgba(147,51,234,0.22) 55%, rgba(14,116,144,0.22) 80%, transparent);
+}
+[data-theme="light"] .brand-name {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+[data-theme="light"] .brand-icon {
+  filter: drop-shadow(0 1px 6px rgba(99, 102, 241, 0.35));
+}
+
+/* Pilule de recherche : blanc chaud, liseré dégradé assourdi */
+[data-theme="light"] .topbar-search-wrapper {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,245,238,0.95)) padding-box,
+    linear-gradient(120deg, rgba(91,91,214,0.3), var(--border-light) 45%, rgba(14,116,144,0.2)) border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 4px rgba(43,38,32,0.06);
+}
+[data-theme="light"] .topbar-search-wrapper:focus-within {
+  background:
+    linear-gradient(180deg, #ffffff, #fbf8f2) padding-box,
+    linear-gradient(120deg, rgba(91,91,214,0.75), rgba(147,51,234,0.45) 50%, rgba(14,116,144,0.4)) border-box;
+  box-shadow: 0 0 0 3px var(--accent-glow), 0 4px 14px rgba(91,91,214,0.12);
+}
+[data-theme="light"] .topbar-search-clear { background: rgba(43,38,32,0.06); }
+
+[data-theme="light"] .search-dropdown {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.98), rgba(248,245,238,0.98)) padding-box,
+    linear-gradient(155deg, rgba(91,91,214,0.35), rgba(91,91,214,0.08) 40%, rgba(147,51,234,0.2)) border-box;
+  box-shadow: 0 16px 48px rgba(43,38,32,0.16), 0 0 36px rgba(91,91,214,0.06);
+}
+
+/* Boutons Carnet / Liste : carte papier plutôt que voile blanc (invisible sur clair) */
+[data-theme="light"] .topbar-view-btn,
+[data-theme="light"] .topbar-fav-btn {
+  background: rgba(255,255,255,0.7);
+}
+
+/* ── Carte du monde : océan bleu poudré (les couleurs des pays sont gérées
+   côté WorldMap.jsx — tons atlas : pays sans données beige papier, pays à
+   données bleu doux, visités turquoise) ── */
+[data-theme="light"] .world-svg { background: #dce9f4; }
+
+/* Labels et points posés au survol d'un pays : blancs en mode nuit (attribut
+   SVG), encre brune en mode jour — une règle CSS l'emporte toujours sur un
+   attribut de présentation SVG, pas besoin de toucher au JS. */
+[data-theme="light"] .country-label { fill: #2b2620; }
+[data-theme="light"] .country-dot { fill: #2b2620; }
+
+[data-theme="light"] .map-tooltip {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.97), rgba(248,245,238,0.98)) padding-box,
+    linear-gradient(130deg, rgba(91,91,214,0.5), rgba(91,91,214,0.12) 50%, rgba(147,51,234,0.3)) border-box;
+  box-shadow: 0 12px 32px rgba(43,38,32,0.18), 0 0 24px rgba(91,91,214,0.08);
+}
+[data-theme="light"] .tooltip-flag { filter: drop-shadow(0 1px 3px rgba(43,38,32,0.25)); }
+
+[data-theme="light"] .map-hint {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(247,243,235,0.92)) padding-box,
+    linear-gradient(120deg, rgba(91,91,214,0.35), rgba(91,91,214,0.1) 50%, rgba(14,116,144,0.25)) border-box;
+  box-shadow: 0 4px 18px rgba(43,38,32,0.12), 0 0 24px rgba(91,91,214,0.06);
+}
+
+[data-theme="light"] .map-zoom-btn {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(246,242,234,0.94)) padding-box,
+    linear-gradient(150deg, rgba(91,91,214,0.3), rgba(91,91,214,0.08) 60%) border-box;
+  box-shadow: 0 2px 8px rgba(43,38,32,0.12);
+}
+[data-theme="light"] .map-zoom-btn:hover {
+  color: #fff;
+  background:
+    linear-gradient(180deg, rgba(91,91,214,0.9), rgba(79,70,229,0.9)) padding-box,
+    linear-gradient(150deg, rgba(91,91,214,0.9), rgba(147,51,234,0.6)) border-box;
+  box-shadow: 0 4px 14px rgba(91,91,214,0.3);
+}
+
+/* ── Filtres (bouton + panneau) ── */
+[data-theme="light"] .search-toggle {
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 4px 14px rgba(43,38,32,0.1);
+}
+[data-theme="light"] .search-toggle:hover { background: #ffffff; }
+
+[data-theme="light"] .search-panel {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.97), rgba(248,244,236,0.98)) padding-box,
+    linear-gradient(155deg, rgba(91,91,214,0.35), rgba(91,91,214,0.1) 40%, rgba(147,51,234,0.2)) border-box;
+  box-shadow: 0 12px 36px rgba(43,38,32,0.14), 0 0 40px rgba(91,91,214,0.05);
+}
+
+[data-theme="light"] .app-mobile-nav {
+  background: rgba(255,255,255,0.94);
+  box-shadow: 0 -4px 14px rgba(43,38,32,0.08);
+}
+[data-theme="light"] .app-nav-primary-icon { border-color: rgba(255,255,255,0.94); }
+
+/* Survols génériques : blanc translucide (invisible sur fond clair) → voile sombre. */
+[data-theme="light"] .topbar-lang-btn:hover,
+[data-theme="light"] .topbar-search-clear:hover,
+[data-theme="light"] .settings-choice-btn:hover {
+  background: var(--hover-overlay);
+}
+
+[data-theme="light"] .legend-chip.dim { background: #ddd5c2; border-color: #cfc6b0; }
+
+/* ── Fiche pays : boutons et chips posés sur la photo du héros — verre blanc
+   translucide (lisible sur photo) au lieu du verre sombre du mode nuit ── */
+/* La photo du héros est assombrie à 30 % en nuit (texte blanc par-dessus) :
+   en jour on la laisse lumineuse, la lisibilité du titre est portée par le
+   dégradé crème du bas. */
+[data-theme="light"] .panel-header-bg {
+  filter: brightness(0.97) saturate(1.05);
+}
+[data-theme="light"] .panel-header-overlay {
+  background: linear-gradient(to top, #fbf9f4 0%, rgba(251,249,244,0.72) 40%, rgba(251,249,244,0.12) 75%, transparent 100%);
+}
+[data-theme="light"] .panel-emoji { filter: drop-shadow(0 1px 4px rgba(43,38,32,0.35)); }
+[data-theme="light"] .panel-actions {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(248,245,238,0.72)) padding-box,
+    linear-gradient(150deg, rgba(43,38,32,0.16), rgba(43,38,32,0.05) 60%) border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 16px rgba(43,38,32,0.18);
+}
+[data-theme="light"] .panel-close,
+[data-theme="light"] .panel-fav-btn,
+[data-theme="light"] .panel-visited-btn,
+[data-theme="light"] .panel-compare-btn {
+  background: rgba(255,255,255,0.75);
+  border-color: rgba(43,38,32,0.14);
+  color: #44403c;
+}
+[data-theme="light"] .panel-meta { color: rgba(43,38,32,0.72); }
+[data-theme="light"] .panel-meta-chip {
+  background: rgba(255,255,255,0.72);
+  border-color: rgba(43,38,32,0.12);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Dropdowns verre (carnet, notifications) : papier translucide */
+[data-theme="light"] .favorites-panel,
+[data-theme="light"] .notif-panel {
+  background:
+    linear-gradient(175deg, rgba(255,255,255,0.98), rgba(248,245,238,0.98)) padding-box,
+    linear-gradient(155deg, rgba(91,91,214,0.35), rgba(91,91,214,0.08) 40%, rgba(147,51,234,0.2)) border-box;
+  box-shadow: 0 16px 48px rgba(43,38,32,0.16), 0 0 36px rgba(91,91,214,0.06);
+}
+
+[data-theme="light"] .notif-info-tooltip {
+  background: #eef0ff;
+  color: #3730a3;
+  box-shadow: 0 4px 16px rgba(43,38,32,0.16);
+}
+
+[data-theme="light"] .admin-panel {
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: 0 12px 40px rgba(43,38,32,0.18);
+}
+
+[data-theme="light"] .report-modal { background: var(--surface); }
+
+[data-theme="light"] .dest-duplicate-overlay { background: rgba(87,83,78,0.45); }
+[data-theme="light"] .dest-duplicate-box {
+  background: var(--surface);
+  box-shadow: 0 8px 32px rgba(43,38,32,0.18);
+}
+
+/* Panneau de paramètres : ombre allégée sur fond clair. */
+[data-theme="light"] .settings-panel { box-shadow: 0 12px 40px rgba(43,38,32,0.16); }
+
+/* Formulaire d'avis : le textarea vit sur un voile blanc translucide (3 %),
+   invisible sur fond clair — champ blanc à bordure visible en jour. */
+[data-theme="light"] .review-textarea {
+  background: #ffffff;
+  border-color: var(--border);
+}
+[data-theme="light"] .review-textarea:hover { background: #ffffff; border-color: var(--border-light); }
+[data-theme="light"] .review-form-wrap { box-shadow: 0 8px 24px rgba(43,38,32,0.1); }
+
+/* ── Modales (profil, fiche pays plein écran...) : voile brun doux plutôt
+   que noir bleuté, ombres allégées ── */
+[data-theme="light"] .panel-overlay {
+  background: rgba(60, 52, 40, 0.4);
+}
+[data-theme="light"] .profile-modal {
+  box-shadow: 0 32px 80px rgba(43,38,32,0.3), 0 0 0 1px rgba(99,102,241,0.08);
+}
+
+/* Profil : le rail d'onglets était creusé dans du noir translucide —
+   invisible en nuit, gros bloc gris en jour. Rail papier discret. */
+[data-theme="light"] .profile-modal-tabs {
+  background: rgba(43,38,32,0.05);
+  box-shadow: inset 0 1px 3px rgba(43,38,32,0.08);
+}
+[data-theme="light"] .profile-modal-tab:hover:not(.active) {
+  background: rgba(43,38,32,0.05);
+}
+[data-theme="light"] .profile-modal-tab.active {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 2px 9px rgba(59,130,246,0.22);
+}
+
+/* ═══════════════ Onglet Recommandations (fiche pays) ═══════════════
+   "Si vous avez aimé X, vous aimerez Y" — cartes groupées par pays associé
+   (voir CountryRecommendations.jsx). Basé sur les variables du thème,
+   fonctionne donc en jour comme en nuit sans surcharge dédiée. */
+.reco-tab { display: flex; flex-direction: column; gap: 16px; }
+
+.reco-header {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.reco-intro { margin: 0; flex: 1 1 240px; color: var(--text-muted); font-size: 13.5px; line-height: 1.5; }
+.reco-add-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; border: none; border-radius: 20px;
+  padding: 9px 18px; font-size: 13px; font-weight: 600; font-family: inherit;
+  cursor: pointer; white-space: nowrap;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.reco-add-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 35%, transparent); }
+
+.reco-loading { color: var(--text-muted); font-size: 13px; }
+
+.reco-empty {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 36px 16px; text-align: center;
+  border: 1px dashed var(--border-light); border-radius: 16px;
+  color: var(--text-muted); font-size: 13.5px;
+}
+.reco-empty p { margin: 0; }
+.reco-empty-icon { font-size: 30px; }
+.reco-empty-sub { font-size: 12.5px; opacity: 0.8; }
+
+.reco-list { display: flex; flex-direction: column; gap: 12px; }
+
+.reco-card {
+  display: flex; flex-direction: column;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.reco-card:hover {
+  border-color: var(--border-light);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+  transform: translateY(-1px);
+}
+
+/* En-tête de carte : tuile drapeau + nom + compteur, lien fiche à droite */
+.reco-card-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 15px;
+  border-bottom: 1px solid var(--border);
+}
+.reco-card-flagtile {
+  flex: 0 0 auto;
+  width: 44px; height: 44px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(100,116,139,0.1);
+  border: 1px solid var(--border);
+}
+.reco-card-headinfo {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 3px; align-items: flex-start;
+}
+.reco-card-name { font-size: 15px; font-weight: 800; line-height: 1.2; letter-spacing: 0.01em; color: var(--text); }
+.reco-count-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 700; color: var(--text-muted);
+}
+.reco-count-badge svg { opacity: 0.7; }
+.reco-card-open {
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 1px solid var(--border-light); border-radius: 999px;
+  color: var(--text-muted); font-size: 12px; font-weight: 700; font-family: inherit;
+  padding: 6px 14px; cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.reco-card-open:hover { color: var(--text); border-color: var(--accent); background: rgba(100,116,139,0.08); }
+.reco-card-open svg { transition: transform 0.15s; }
+.reco-card-open:hover svg { transform: translateX(2px); }
+
+.reco-card-body {
+  padding: 12px 15px 14px;
+  display: flex; flex-direction: column; gap: 12px; align-items: flex-start;
+}
+
+/* Chaque recommandation individuelle : citation avec filet latéral + avatar */
+.reco-item {
+  display: flex; flex-direction: column; gap: 6px; width: 100%;
+  padding: 2px 0 2px 13px;
+  border-left: 3px solid var(--border-light);
+  border-radius: 2px;
+}
+.reco-direction-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  background: rgba(100,116,139,0.1); border: 1px solid var(--border);
+  border-radius: 999px; padding: 3px 10px;
+}
+.reco-direction-chip svg { opacity: 0.7; }
+.reco-item-desc { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--text); white-space: pre-wrap; }
+.reco-item-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; width: 100%; }
+.reco-item-avatar {
+  flex: 0 0 auto;
+  width: 20px; height: 20px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(100,116,139,0.18);
+  color: var(--text-muted);
+  font-size: 10.5px; font-weight: 800; line-height: 1;
+}
+.reco-item-author { font-size: 12px; color: var(--text-muted); font-style: italic; }
+.reco-item-actions { display: inline-flex; gap: 6px; margin-left: auto; }
+.reco-item-btn {
+  background: none; border: 1px solid var(--border-light); border-radius: 999px;
+  color: var(--text-muted); font-size: 11.5px; font-weight: 700; font-family: inherit;
+  padding: 4px 12px; cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.reco-item-btn:hover { color: var(--text); border-color: var(--accent); background: rgba(100,116,139,0.08); }
+.reco-item-btn--danger:hover { color: #ef4444; border-color: #ef4444; background: rgba(239,68,68,0.08); }
+
+.reco-expand-btn {
+  background: none; border: 1px solid var(--border); border-radius: 999px;
+  color: var(--accent2);
+  font-size: 12px; font-weight: 700; font-family: inherit;
+  cursor: pointer; padding: 5px 13px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.reco-expand-btn:hover { background: rgba(100,116,139,0.08); border-color: var(--accent); }
+
+/* ── Formulaire (modale) ── */
+.reco-form-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+[data-theme="light"] .reco-form-overlay { background: rgba(60,52,40,0.4); }
+.reco-form-modal {
+  width: min(560px, 100%); max-height: 90vh; overflow-y: auto;
+  background: var(--surface); border: 1px solid var(--border-light);
+  border-radius: 18px; padding: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.08);
+  display: flex; flex-direction: column; gap: 16px;
+  animation: modalIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.reco-form-header { display: flex; align-items: center; justify-content: space-between; }
+.reco-form-header h3 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: 0.01em; }
+.reco-form-close {
+  background: none; border: none; color: var(--text-muted);
+  font-size: 15px; cursor: pointer; padding: 4px 8px; border-radius: 8px;
+}
+.reco-form-close:hover { color: var(--text); background: rgba(100,116,139,0.15); }
+
+/* Phrase à trous — pièce maîtresse du formulaire : bloc sobre basé sur les
+   variables du thème, pays en pilules, la case manquante est un bouton
+   dashed qui renvoie au champ. */
+.reco-form-sentence {
+  display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  padding: 15px 16px; border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(100,116,139,0.07);
+  font-size: 14px; line-height: 1.5;
+}
+.reco-sentence-part { color: var(--text-muted); font-weight: 600; }
+.reco-sentence-country {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-weight: 800; color: var(--text);
+  background: var(--surface2); border: 1px solid var(--border-light);
+  border-radius: 999px; padding: 5px 13px; white-space: nowrap;
+}
+.reco-sentence-country--fixed { border-color: var(--accent); }
+.reco-sentence-slot {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 60%, transparent);
+  color: var(--accent2);
+  border-radius: 999px; padding: 5px 13px; white-space: nowrap;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  animation: recoSlotPulse 2.2s ease-in-out infinite;
+}
+.reco-sentence-slot:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); border-color: var(--accent); transform: translateY(-1px); animation: none; }
+.reco-sentence-slot-plus {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--accent);
+  color: #fff; font-size: 12px; font-weight: 800; line-height: 1;
+}
+@keyframes recoSlotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent); }
+  50% { box-shadow: 0 0 0 5px transparent; }
+}
+.reco-swap-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--surface2); border: 1px solid var(--border-light);
+  color: var(--accent2); border-radius: 50%; width: 32px; height: 32px;
+  cursor: pointer; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.reco-swap-btn:hover { transform: rotate(180deg); border-color: var(--accent); box-shadow: 0 3px 10px rgba(99,102,241,0.25); }
+
+.reco-form-field { display: flex; flex-direction: column; gap: 6px; position: relative; }
+.reco-form-field > label {
+  font-size: 11.5px; font-weight: 800; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.reco-form-hint { margin: -2px 0 0; font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+.reco-form-field input,
+.reco-form-field textarea {
+  background: var(--surface2); border: 1px solid var(--border-light);
+  border-radius: 13px; padding: 11px 13px; color: var(--text);
+  font-size: 13.5px; font-family: inherit; resize: vertical;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.reco-form-field input:focus,
+.reco-form-field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent); }
+.reco-char-count { align-self: flex-end; font-size: 11px; color: var(--text-muted); }
+
+.reco-selected-country {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent); border: 1px solid var(--accent);
+  border-radius: 999px; padding: 8px 8px 8px 15px; font-size: 13.5px; font-weight: 700;
+}
+.reco-country-search { display: flex; flex-direction: column; gap: 6px; }
+.reco-country-results {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border-light); border-radius: 13px;
+  background: var(--surface2); max-height: 220px; overflow-y: auto;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.2);
+}
+.reco-country-result {
+  display: flex; align-items: center; gap: 9px;
+  background: none; border: none; border-bottom: 1px solid var(--border);
+  color: var(--text); font-size: 13px; font-weight: 600; font-family: inherit;
+  padding: 10px 13px; cursor: pointer; text-align: left;
+  transition: background 0.12s;
+}
+.reco-country-result:last-child { border-bottom: none; }
+.reco-country-result:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.reco-country-noresult { margin: 4px 0 0; font-size: 12.5px; color: var(--text-muted); }
+
+.reco-form-error { margin: 0; font-size: 12.5px; color: #ef4444; }
+.reco-form-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.reco-btn-ghost {
+  background: none; border: 1px solid var(--border-light); border-radius: 20px;
+  color: var(--text-muted); font-size: 13px; font-weight: 600; font-family: inherit;
+  padding: 8px 18px; cursor: pointer;
+}
+.reco-btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+.reco-btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; border: none; border-radius: 999px;
+  padding: 9px 22px; font-size: 13px; font-weight: 700; font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--accent) 30%, transparent);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.reco-btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 40%, transparent); }
+.reco-btn-primary:disabled, .reco-btn-ghost:disabled { opacity: 0.6; cursor: default; }
+
+/* Petit écran : le bouton "Voir la fiche" passe sous le nom du pays. */
+@media (max-width: 560px) {
+  .reco-card-head { flex-wrap: wrap; }
+  .reco-card-open { margin-left: 56px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE — réglages, profils (placé en FIN de fichier : ces règles
+   doivent gagner la cascade sur les règles de base déclarées après
+   le grand bloc mobile du haut du fichier)
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* ── Réglages collé au groupe notif/avatar (la règle de base
+     margin-left: 20px est déclarée après le grand bloc mobile du haut de
+     fichier : l'override doit vivre ici pour gagner la cascade). ── */
+  .topbar-settings { margin-left: 0; }
+
+  /* ── Panneau réglages : ancré au bouton (désormais tout à droite) il
+     sortait de l'écran — en fixed pleine largeur sous la topbar, avec
+     défilement si l'écran est bas. ── */
+  .settings-panel {
+    position: fixed;
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
+  }
+
+  /* ── Profils (le mien + profil public) : quasi plein écran avec une fine
+     marge tout autour (préférence utilisateur : pas de vrai plein écran). ── */
+  .auth-overlay:has(.profile-modal) { padding: 10px; }
+  .profile-modal {
+    width: 100%;
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
+    border-radius: 16px;
+  }
+
+  /* En-têtes compactés */
+  .profile-modal-header { padding: 14px 12px 12px; gap: 12px; }
+  .profile-modal-avatar-img,
+  .profile-modal-avatar-initials { width: 48px; height: 48px; font-size: 18px; }
+  /* ── Héros compact (~64px) : avatar réduit, nom sur sa ligne (le chip
+     Admin passe dessous avec le compteur), bouton Abonné en petite pilule
+     à droite — l'ensemble héros+badges ne doit pas manger l'écran. ── */
+  .pub-profile-hero { padding: 10px 12px; gap: 10px; align-items: center; }
+  .pub-profile-avatar-img,
+  .pub-profile-avatar-initials { width: 40px; height: 40px; font-size: 16px; }
+  .pub-profile-name { font-size: 14.5px; }
+  .pub-profile-header { padding-right: 42px; }
+  .pub-profile-info { flex: 1 1 0; min-width: 0; gap: 3px; }
+  .pub-profile-stats { flex-wrap: wrap; gap: 4px 10px; }
+  .pub-profile-hero .follow-btn {
+    flex-shrink: 0;
+    padding: 6px 11px;
+    font-size: 11.5px;
+  }
+  .follow-btn { padding: 7px 12px; font-size: 12px; }
+  /* Ligne nom + chip Admin : gap resserré, chip compact, nom rétrécissable
+     (le chip passe à la ligne sous le nom si la place manque). */
+  .profile-modal-name-row { gap: 6px; min-width: 0; row-gap: 2px; }
+  .profile-modal-name-row .pub-profile-name { min-width: 0; }
+  .admin-badge { font-size: 0.6rem; padding: 1px 6px; flex-shrink: 0; }
+
+  /* Onglets : rangée défilante au lieu d'onglets écrasés/coupés */
+  .profile-modal-tabs,
+  .pub-profile-main-tabs {
+    margin: 10px 10px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .profile-modal-tabs::-webkit-scrollbar,
+  .pub-profile-main-tabs::-webkit-scrollbar { display: none; }
+  .profile-modal-tab,
+  .pub-profile-main-tab {
+    flex: 1 0 auto;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .profile-reviews-subtabs--nested { padding: 10px 12px; overflow-x: auto; scrollbar-width: none; }
+  .profile-reviews-subtabs--nested::-webkit-scrollbar { display: none; }
+  .profile-reviews-subtabs--nested .profile-reviews-subtab { flex-shrink: 0; white-space: nowrap; }
+
+  /* ── Topbar : un vrai écart entre la recherche et le groupe de boutons
+     (notif / avatar / réglages) rangés à droite. ── */
+  .topbar-search-container { margin-right: 8px; }
+
+  /* ── Badges du profil public : cartes "trophée" une par ligne, même
+     langage que les badges du profil propre — médaillon circulaire cerclé
+     et halo dans la couleur du badge, dégradé de fond, pourcentage en
+     pilule pleine à droite. ── */
+  .badge-section-public {
+    flex-wrap: nowrap;
+    gap: 5px;
+    padding: 8px 10px;
+  }
+  /* Mini-carte trophée verticale : les trois tiennent sur UNE rangée
+     (~80px de haut) au lieu d'empiler trois grandes lignes. */
+  .badge-chip-public {
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    /* Alignement strict entre les 3 cartes (étirées à la même hauteur par
+       le flex parent) : contenu calé en HAUT — icône, catégorie et nom à la
+       même hauteur partout, la pilule Top X% est ancrée en bas. */
+    justify-content: flex-start;
+    text-align: center;
+    gap: 4px;
+    padding: 7px 4px 6px;
+    border-radius: 14px;
+    /* Même langage que les cartes trophée du profil propre : halo radial de
+       la couleur du badge qui éclaire le haut de la carte, surface teintée. */
+    background:
+      radial-gradient(ellipse 130% 85% at 50% 0%, color-mix(in srgb, var(--badge-color) 20%, transparent), transparent 72%),
+      var(--surface2);
+    border: 1px solid color-mix(in srgb, var(--badge-color) 45%, transparent);
+    box-shadow:
+      0 4px 16px color-mix(in srgb, var(--badge-color) 14%, transparent),
+      inset 0 1px 0 rgba(255,255,255,0.09);
+  }
+  .badge-chip-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* Médaillon "disque" éclairé par le haut, cerclé de la couleur du badge */
+    background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--badge-color) 32%, var(--surface3)), var(--surface3) 80%);
+    border: 2px solid color-mix(in srgb, var(--badge-color) 60%, transparent);
+    box-shadow:
+      0 0 16px -2px var(--badge-color),
+      inset 0 1px 0 rgba(255,255,255,0.16);
+  }
+  .badge-chip-text { align-items: center; min-width: 0; max-width: 100%; }
+  /* La catégorie reste affichée en tout petit : sans elle, un niveau
+     communauté comme "Nouveau voyageur" semble contredire le nombre de
+     pays visités du badge Explorateur. */
+  .badge-chip-category { font-size: 7.5px; letter-spacing: 0.7px; }
+  .badge-chip-name {
+    font-size: 10.5px;
+    font-weight: 800;
+    max-width: 100%;
+    /* Deux lignes plutôt qu'une troncature en plein mot ("Grand voya…") */
+    white-space: normal;
+    line-height: 1.15;
+  }
+  .badge-chip-pct {
+    margin-left: 0;
+    margin-top: auto;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--badge-color) 22%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  /* ── Pays visités : une vraie liste, un pays par ligne — le mélange
+     1 ou 2 chips par ligne était inesthétique. ── */
+  .visited-countries-grid { flex-direction: column; gap: 6px; }
+  .visited-country-chip { width: 100%; border-radius: 12px; }
 }

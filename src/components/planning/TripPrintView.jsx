@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
+import { useSettings } from '../../context/SettingsContext';
 import {
   ACTIVITY_CATEGORIES, TRANSPORT_MODES,
   getDaysBetween, formatDayLabel, formatDate, formatTimeShort, formatDuration,
@@ -145,6 +146,7 @@ function TodayPrintSection({ trip, cities, activities, lodgings }) {
 
 export default function TripPrintView({ trip, destinations, cities, activities, lodgings = [], focusToday = false }) {
   const { t } = useTranslation();
+  useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
   const cityById = {};
   cities.forEach(c => { cityById[c.id] = c; });
 

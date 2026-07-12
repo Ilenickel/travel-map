@@ -32,10 +32,15 @@ export function useEndTripSharePrompt(userId) {
 
   useEffect(() => { load(); }, [load]);
 
-  const answer = useCallback(async (share) => {
+  const answer = useCallback(async (share, criteria = []) => {
     if (!trip) return;
+    // `criteria` : critères cochés à la 2e étape de la popup (avec enfants,
+    // en couple… voir TRIP_CRITERIA) — enregistrés sur le voyage puis
+    // recopiés sur les modèles par le partage (api/trip-templates.js).
     await supabase.from('trips').update(
-      share ? { auto_share_template: true, share_prompt_answered: true } : { share_prompt_answered: true }
+      share
+        ? { auto_share_template: true, share_prompt_answered: true, share_criteria: criteria }
+        : { share_prompt_answered: true }
     ).eq('id', trip.id);
     // Partage immédiat en plus d'activer le partage automatique continu :
     // sans ça, un utilisateur qui répond "oui" depuis l'écran principal (pas

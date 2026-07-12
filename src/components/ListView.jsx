@@ -2,6 +2,9 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
 import { localizeCountry } from "../lib/localizeCountry";
+import { localizeAmountString } from "../lib/currency";
+import { useSettings } from "../context/SettingsContext";
+import CountryFlag from "./planning/CountryFlag";
 
 function parseDailyAvg(data) {
   const str = data.costOfLiving?.budgetSummary?.[0]?.daily ?? "";
@@ -12,6 +15,7 @@ function parseDailyAvg(data) {
 
 export default function ListView({ onCountryClick, highlightMap, filterActive, favorites, visited = [], hideVisited = false, onCountryHover }) {
   const { t, i18n } = useTranslation("app");
+  useSettings(); // abonnement devise : les budgets affichés sont convertis
   const [sortBy, setSortBy] = useState("name");
   const [sortDir, setSortDir] = useState(1);
 
@@ -85,7 +89,7 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
                   budget et aux périodes — chaque info a sa place, plus rien
                   ne se dispute la colonne de droite. */}
               <div className="list-card-top">
-                <span className="list-card-emoji">{data.emoji}</span>
+                <span className="list-card-emoji"><CountryFlag emoji={data.emoji} size={26} /></span>
                 <div className="list-card-meta">
                   <span className="list-card-name">{data.name}</span>
                   <span className="list-card-capital">{data.capital}</span>
@@ -97,7 +101,7 @@ export default function ListView({ onCountryClick, highlightMap, filterActive, f
               </div>
               <div className="list-card-foot">
                 <span className="list-card-budget">
-                  💶 {data.costOfLiving?.budgetSummary?.[0]?.daily ?? "—"}
+                  💶 {localizeAmountString(data.costOfLiving?.budgetSummary?.[0]?.daily) ?? "—"}
                 </span>
                 <div className="list-card-periods">
                   {data.bestPeriods?.map((p) => (

@@ -13,6 +13,7 @@ import SelectionActionBar from './SelectionActionBar';
 import TripPlanSuggestionsButton from './TripPlanSuggestionsButton';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 import { sumCosts, formatPrice } from '../../lib/planningUtils';
+import { useSettings } from '../../context/SettingsContext';
 
 export default function CityBlock({
   city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [],
@@ -22,6 +23,7 @@ export default function CityBlock({
   onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData,
 }) {
   const { t } = useTranslation();
+  useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
   const [addingDaytrip, setAddingDaytrip] = useState(false);

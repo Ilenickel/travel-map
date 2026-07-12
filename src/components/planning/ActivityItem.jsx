@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 import { Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration, formatPrice } from '../../lib/planningUtils';
+import { CURRENCY_SYMBOLS, eurToInputValue, inputValueToEur } from '../../lib/currency';
+import { useSettings } from '../../context/SettingsContext';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import { setHoveredActivity, clearHoveredActivity } from '../../lib/hoverTracker';
@@ -19,7 +21,13 @@ export default function ActivityItem({
   selectable = false, selected = false, onToggleSelect,
 }) {
   const { t } = useTranslation();
+  // Abonnement à la devise d'affichage : le coût est stocké en EUR mais saisi
+  // et affiché dans la devise choisie (voir src/lib/currency.js).
+  const { currency } = useSettings();
   const [editing, setEditing] = useState(false);
+  // Tactile uniquement (voir CSS hover:none) : les détails repliés du desktop
+  // se déplient au tap sur le bouton ⓘ au lieu du survol.
+  const [infoOpen, setInfoOpen] = useState(false);
   const [name, setName] = useState(act.name);
   const [note, setNote] = useState(act.description || '');
   const [date, setDate] = useState(act.visit_date || '');
@@ -35,8 +43,9 @@ export default function ActivityItem({
   const [durationM, setDurationM] = useState(act.duration_minutes ? act.duration_minutes % 60 : '');
   // `?? ''` et non `|| ''` : un coût de 0 € (activité gratuite notée
   // volontairement) doit réapparaître dans le champ, pas être confondu
-  // avec "pas de coût renseigné".
-  const [cost, setCost] = useState(act.cost ?? '');
+  // avec "pas de coût renseigné". La valeur du champ est exprimée dans la
+  // devise d'affichage (conversion depuis l'EUR stocké).
+  const [cost, setCost] = useState(eurToInputValue(act.cost));
   const [groupId, setGroupId] = useState(act.group_id || null);
   const [showGroupPicker, setShowGroupPicker] = useState(false);
   // Le champ date s'ouvre pré-rempli à la date de début du voyage (pour éviter à
@@ -62,10 +71,10 @@ export default function ActivityItem({
       setTransportMode(act.transport_mode || 'voiture');
       setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
       setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
-      setCost(act.cost ?? '');
+      setCost(eurToInputValue(act.cost));
       setGroupId(act.group_id || null);
     }
-  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, act.group_id, editing]);
+  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, act.group_id, editing, currency]);
 
   const toggleAllDay = () => {
     setAllDay(a => {
@@ -95,7 +104,9 @@ export default function ActivityItem({
     const totalMinutes = clampedH * 60 + clampedM;
     // Même règle que le prix des hébergements (LodgingForm) : min="0" ne bloque
     // pas une saisie clavier négative, on reclampe donc à l'enregistrement.
-    const parsedCost = cost === '' ? null : Math.max(0, parseFloat(cost) || 0);
+    // Le champ est saisi dans la devise d'affichage : reconversion en EUR
+    // (devise de stockage) avant enregistrement.
+    const parsedCost = cost === '' ? null : inputValueToEur(Math.max(0, parseFloat(cost) || 0));
     onUpdate(act.id, {
       name: name.trim(),
       description: note.trim() || null,
@@ -122,7 +133,7 @@ export default function ActivityItem({
     setTransportMode(act.transport_mode || 'voiture');
     setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
     setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
-    setCost(act.cost ?? '');
+    setCost(eurToInputValue(act.cost));
     setGroupId(act.group_id || null);
     setEditing(false);
   };
@@ -179,6 +190,24 @@ export default function ActivityItem({
   // déjà réglé via `dragDisabled`.
   const effectiveDragDisabled = dragDisabled || selectable;
 
+  // Bouton ⓘ tactile (masqué sur desktop via CSS) : déplie les détails que le
+  // desktop révèle au survol. Rendu seulement s'il y a quelque chose à déplier.
+  const hasCollapsedInfo = !!(durationLabel || costLabel || attachmentCount > 0 || act.description
+    || (variant === 'day' ? (city || dest) : (group || act.visit_date || act.visit_time)));
+  const infoToggle = hasCollapsedInfo && !editing ? (
+    <button
+      type="button"
+      className="pp-info-toggle"
+      onClick={e => { e.stopPropagation(); setInfoOpen(o => !o); }}
+      aria-expanded={infoOpen}
+      title={t('activity.infoToggleTitle')}
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ transform: infoOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+        <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+      </svg>
+    </button>
+  ) : null;
+
   return (
     <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={effectiveDragDisabled}>
       {(provided, snapshot) => {
@@ -191,8 +220,8 @@ export default function ActivityItem({
           onMouseLeave={() => clearHoveredActivity(act.id)}
           className={
             variant === 'day'
-              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}${act.is_done ? ' pp-day-activity--done' : ''}`
-              : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${act.is_done ? ' pp-activity--done' : ''}`
+              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}${act.is_done ? ' pp-day-activity--done' : ''}${infoOpen ? ' pp-activity--info-open' : ''}`
+              : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${act.is_done ? ' pp-activity--done' : ''}${infoOpen ? ' pp-activity--info-open' : ''}`
           }
           style={{
             ...provided.draggableProps.style,
@@ -309,7 +338,7 @@ export default function ActivityItem({
                       onChange={e => setCost(e.target.value)}
                       title={t('activity.costInputTitle')}
                     />
-                    <span>€</span>
+                    <span>{CURRENCY_SYMBOLS[currency]}</span>
                   </div>
                 </div>
               </div>
@@ -365,6 +394,7 @@ export default function ActivityItem({
                   {group && (
                     <span className="pp-day-activity-group-chip" style={{ color: group.color }}>● {group.name}</span>
                   )}
+                  {infoToggle}
                 </div>
                 {(durationLabel || costLabel || attachmentCount > 0) && (
                   <div className="pp-meta-line">
@@ -453,6 +483,7 @@ export default function ActivityItem({
                 <div className="pp-activity-main">
                   <span className="pp-activity-cat-icon">{displayIcon}</span>
                   <span className="pp-activity-name">{act.name}</span>
+                  {infoToggle}
                 </div>
                 {(durationLabel || costLabel || attachmentCount > 0) && (
                   <div className="pp-meta-line">

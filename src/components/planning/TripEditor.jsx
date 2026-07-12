@@ -38,13 +38,28 @@ export default function TripEditor({
   // (source_trip_id, country_code, city_name), voir planning_modele_v3/v4.sql).
   const autoShareTimerRef = useRef(null);
   const autoShareSignatureRef = useRef(null);
-  // Partage en attente (programmé mais pas encore envoyé) : si l'utilisateur
-  // quitte ce voyage avant la fin des 4s de débounce, le timeout ci-dessous
-  // est annulé par le cleanup de l'effet — sans ce ref, ce partage serait
-  // silencieusement perdu ("des fois ça ne s'enregistre pas"). Le second
-  // effet (deps figées, tout en bas) l'envoie immédiatement au démontage réel.
+  // Partage programmé mais pas encore envoyé — persiste TEL QUEL entre les
+  // rendus (contrairement à un état local) pour que l'effet puisse comparer,
+  // à sa prochaine exécution, le voyage qu'il concernait à celui affiché
+  // maintenant. C'est ce qui permet de détecter un changement de voyage
+  // ci-dessous, pas seulement un vrai démontage.
   const pendingShareRef = useRef(null);
   useEffect(() => {
+    // Un partage restait programmé pour un AUTRE voyage que celui affiché
+    // maintenant : l'utilisateur a changé de voyage dans la sidebar moins de
+    // 4s après une modif. TripEditor n'est JAMAIS démonté entre deux voyages
+    // (voir PlanningPage.jsx, pas de `key={tripId}`), donc le filet de
+    // sécurité de démontage plus bas ne se déclenche pas ici — sans ce
+    // rattrapage, le `clearTimeout` + la ré-écriture de `pendingShareRef.current`
+    // juste en dessous perdaient silencieusement ce partage ("des fois ça ne
+    // s'enregistre pas"). On l'envoie immédiatement avant de continuer.
+    if (pendingShareRef.current && pendingShareRef.current.tripId !== tripId) {
+      const stale = pendingShareRef.current;
+      pendingShareRef.current = null;
+      clearTimeout(autoShareTimerRef.current);
+      shareTripAsTemplates(stale.tripId, stale.destinations);
+    }
+
     if (!trip?.auto_share_template) return;
     // Signature limitée aux champs réellement copiés dans un modèle (voir
     // api/trip-templates.js) : sans elle, cocher "fait" ou éditer un
@@ -53,7 +68,11 @@ export default function TripEditor({
     // duration_minutes inclus : étirer une activité sur plusieurs créneaux
     // change ce qui est partagé (voir planning_modele_v7.sql) même si aucun
     // autre champ ne bouge.
+    // share_criteria inclus : les critères du voyage (avec enfants, en
+    // couple…) sont recopiés sur les modèles au partage (planning_modele_v8),
+    // les modifier depuis l'en-tête doit donc re-déclencher un re-partage.
     const signature = JSON.stringify({
+      criteria: trip?.share_criteria || [],
       cities: cities.map((c) => [c.id, c.name, c.planned_days, c.parent_city_id]),
       activities: activities.map((a) => [a.city_id, a.name, a.description, a.visit_date, a.visit_time, a.category, a.place_lat, a.place_lng, a.place_address, a.position, a.duration_minutes]),
     });
@@ -66,12 +85,14 @@ export default function TripEditor({
       shareTripAsTemplates(tripId, destinations);
     }, 4000);
     return () => clearTimeout(autoShareTimerRef.current);
-  }, [trip?.auto_share_template, cities, activities, destinations, tripId]);
+  }, [trip?.auto_share_template, trip?.share_criteria, cities, activities, destinations, tripId]);
 
   // Démontage réel du composant (deps figées à [], contrairement à l'effet
   // ci-dessus qui se ré-arme à chaque changement) : si un partage restait en
-  // attente (l'utilisateur a quitté ce voyage avant la fin du débounce), on
-  // l'envoie quand même plutôt que de le perdre.
+  // attente pour le voyage encore affiché (l'utilisateur a quitté l'écran de
+  // planification avant la fin du débounce), on l'envoie quand même plutôt
+  // que de le perdre. Le cas "changement de voyage" est géré plus haut, dans
+  // l'effet lui-même.
   useEffect(() => {
     return () => {
       if (pendingShareRef.current) {

@@ -1,6 +1,7 @@
 import { COUNTRIES } from '../data/index';
 import i18n from '../i18n';
 import { localizeField } from './localizeCountry';
+import { getCurrency, convertFromEur } from './currency';
 
 // ─── Country list (triée, langue courante) ────────────────────────
 // Fonction (pas une constante figée) car le nom du pays est bilingue depuis
@@ -43,6 +44,25 @@ export const TRANSPORT_MODES = {
   bateau:  transportMode('bateau', '⛴️'),
   velo:    transportMode('velo', '🚲'),
   marche:  transportMode('marche', '🚶'),
+};
+
+// ─── Critères de voyage (planning-modèle communautaire) ───────────
+// Liste FERMÉE de clés stockées telles quelles en base (trips.share_criteria,
+// trip_templates.criteria, trip_template_groups.criteria — voir
+// supabase/planning_modele_v8.sql), libellés via i18n comme les catégories
+// ci-dessus. Servent à la fois de widgets à cocher au moment d'activer le
+// partage d'un voyage, et de filtres au-dessus des suggestions.
+function tripCriterion(key, icon) {
+  return { icon, get label() { return i18n.t(`tripCriteria.${key}`, { ns: 'planning' }); } };
+}
+export const TRIP_CRITERIA = {
+  with_kids:  tripCriterion('with_kids', '👶'),
+  couple:     tripCriterion('couple', '💑'),
+  friends:    tripCriterion('friends', '🎉'),
+  solo:       tripCriterion('solo', '🎒'),
+  low_budget: tripCriterion('low_budget', '💸'),
+  nature:     tripCriterion('nature', '🌿'),
+  city:       tripCriterion('city', '🏙️'),
 };
 
 export function formatDuration(minutes) {
@@ -235,12 +255,15 @@ export function lodgingsForNight(lodgings, day) {
   );
 }
 
-// Prix affiché "1 234,50 €" (ou "€1,234.50" en anglais) — devise EUR fixe pour
-// l'instant (multi-devise hors scope, voir la note i18n), seule la locale
-// d'affichage suit la langue active.
+// Prix affiché "1 234,50 €" (ou "$1,234.50" en anglais) — le montant reçu est
+// TOUJOURS en euros (devise canonique de stockage, voir src/lib/currency.js) :
+// il est converti au taux fixe puis formaté dans la devise d'affichage choisie
+// dans les paramètres. La locale d'affichage suit la langue active. Les
+// composants appelants s'abonnent à useSettings() pour re-rendre au changement
+// de devise.
 export function formatPrice(n) {
   if (n == null || n === '' || isNaN(Number(n))) return '';
-  return new Intl.NumberFormat(currentLocale(), { style: 'currency', currency: 'EUR' }).format(Number(n));
+  return new Intl.NumberFormat(currentLocale(), { style: 'currency', currency: getCurrency() }).format(convertFromEur(Number(n)));
 }
 
 // Somme des coûts d'une liste (activités via `cost`, hébergements via `price`).

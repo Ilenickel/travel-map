@@ -4,7 +4,9 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import { COUNTRIES, NUMERIC_TO_CODE } from "../data/index";
 import { localizeField } from "../lib/localizeCountry";
+import { twemojiUrl } from "./planning/CountryFlag";
 import i18n from "../i18n";
+import { useSettings } from "../context/SettingsContext";
 
 const HOVER_COLORS = ["#e94560", "#ff9f43", "#a78bfa", "#22d3ee", "#4ade80"];
 function randomHoverColor() {
@@ -23,29 +25,64 @@ function largestPolygonFeature(feature) {
   return best ? { ...feature, geometry: { type: "Polygon", coordinates: best } } : feature;
 }
 
-const VISITED_FILL   = "#215878";
-const VISITED_STROKE = "#2896c0";
+// Couleurs de la carte déclinées par thème (le fond d'océan, lui, est en CSS :
+// .world-svg + [data-theme="light"] .world-svg). Lues au moment du rendu via
+// mapColors() : le composant re-colore les tracés quand le thème change (voir
+// l'effet dépendant de `theme` plus bas).
+const MAP_THEME_COLORS = {
+  dark: {
+    noData: "#09131f", dimmed: "#07101c", base: "#1c3a55",
+    noDataStroke: "#0b1828", baseStroke: "#0d1e30", borders: "#0d1e30",
+    visitedFill: "#215878", visitedStroke: "#2896c0",
+  },
+  // Jour : monochromie bleue (même sémantique que le mode nuit — un pays
+  // visité est un bleu plus saturé que la base, pas une couleur étrangère)
+  // + beige papier pour les pays hors catalogue. Une seule famille froide
+  // sur fond crème : aucun conflit chromatique.
+  light: {
+    noData: "#eae4d6", dimmed: "#f0ede5", base: "#b9d1e8",
+    noDataStroke: "#dbd3c1", baseStroke: "#93b5d5", borders: "#8aa8c6",
+    visitedFill: "#5e97cf", visitedStroke: "#3672ad",
+  },
+};
+
+// Thème actif lu par mapColors(). Synchronisé depuis la valeur du contexte
+// (voir l'effet de repeinture du composant) et NON depuis l'attribut
+// data-theme de <html> : cet attribut est posé par l'effet de
+// SettingsProvider, qui s'exécute APRÈS ceux de ses enfants (ordre React
+// enfant → parent) — le lire ici donnait des couleurs en retard d'un
+// basculement, d'où une carte "inversée" après un aller-retour jour/nuit.
+let activeMapTheme = typeof document !== "undefined" && document.documentElement.dataset.theme === "light" ? "light" : "dark";
+
+function mapColors() {
+  return MAP_THEME_COLORS[activeMapTheme];
+}
 
 function getBaseFill(numericId, filterActive, highlightMap, visitedSet, hideVisited, isMobile) {
+  const c = mapColors();
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
-  if (!hasData) return filterActive ? "#07101c" : "#09131f";
+  if (!hasData) return filterActive ? c.dimmed : c.noData;
   const isVisited = visitedSet?.has(code);
-  if (hideVisited && isVisited) return "#07101c";
-  if (!filterActive) return isVisited ? VISITED_FILL : "#1c3a55";
+  if (hideVisited && isVisited) return c.dimmed;
+  if (!filterActive) return isVisited ? c.visitedFill : c.base;
   const color = highlightMap?.[code];
-  if (!color) return "#07101c";
+  if (!color) return c.dimmed;
+  // Alpha plus soutenu en mode jour : à 16% (28), les couleurs de filtre se
+  // fondent dans l'océan clair au lieu de ressortir comme sur fond nuit.
+  if (activeMapTheme === "light") return color + (isMobile ? "77" : "59");
   return color + (isMobile ? "55" : "28");
 }
 
 function getBaseStroke(numericId, filterActive, highlightMap, visitedSet, hideVisited, isMobile) {
+  const c = mapColors();
   const code = NUMERIC_TO_CODE[numericId];
   const hasData = code && COUNTRIES[code];
-  if (!hasData) return "#0b1828";
+  if (!hasData) return c.noDataStroke;
   const isVisited = visitedSet?.has(code);
-  if (hideVisited && isVisited) return "#0b1828";
-  if (!filterActive) return isVisited ? VISITED_STROKE : "#0d1e30";
-  return highlightMap?.[code] ?? "#0d1e30";
+  if (hideVisited && isVisited) return c.noDataStroke;
+  if (!filterActive) return isVisited ? c.visitedStroke : c.baseStroke;
+  return highlightMap?.[code] ?? c.baseStroke;
 }
 
 function getBaseStrokeWidth(numericId, filterActive, highlightMap) {
@@ -62,6 +99,9 @@ function isInteractive(numericId) {
 
 export default function WorldMap({ onCountryClick, highlightMap, filterActive, searchActive, hoveredCode, visitedSet, hideVisited }) {
   const { t } = useTranslation("app");
+  // Thème actif : re-colore les tracés (pays, frontières) au basculement
+  // jour/nuit — les couleurs sont lues via mapColors() au moment du rendu.
+  const { theme } = useSettings();
   const svgRef     = useRef(null);
   const tooltipRef = useRef(null);
   const zoomRef    = useRef(null);
@@ -75,6 +115,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   const isMobileRef        = useRef(window.innerWidth <= 768);
   const onCountryClickRef  = useRef(onCountryClick);
   const pathsSelRef        = useRef(null);
+  const borderSelRef       = useRef(null);
   const mapReadyRef        = useRef(false);
   const hoverGRef          = useRef(null);
   const labelGRef          = useRef(null);
@@ -137,13 +178,18 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   }, [hoveredCode]);
 
   useEffect(() => {
+    // Synchronisation AVANT la repeinture : la valeur du contexte fait foi
+    // (l'attribut data-theme de <html> n'est pas encore à jour à ce stade,
+    // voir le commentaire de activeMapTheme).
+    activeMapTheme = theme === "light" ? "light" : "dark";
     if (!mapReadyRef.current || !pathsSelRef.current) return;
     pathsSelRef.current
       .attr("fill",         (d) => getBaseFill(+d.id, filterActive, highlightMap, visitedSet, hideVisited, isMobileRef.current))
       .attr("stroke",       (d) => getBaseStroke(+d.id, filterActive, highlightMap, visitedSet, hideVisited, isMobileRef.current))
       .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActive, highlightMap))
       .style("cursor",      (d) => isInteractive(+d.id) ? "pointer" : "default");
-  }, [highlightMap, filterActive, visitedSet, hideVisited]);
+    if (borderSelRef.current) borderSelRef.current.attr("stroke", mapColors().borders);
+  }, [highlightMap, filterActive, visitedSet, hideVisited, theme]);
 
   useEffect(() => {
     const init = () => {
@@ -260,10 +306,13 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
             labelG.select(`.dot-${alpha3}`).interrupt().transition().duration(150).attr("opacity", 1);
 
             const data = COUNTRIES[alpha3];
+            // Drapeau servi en image Twemoji : Windows ne rend pas les emojis
+            // drapeaux (affiche "CN" au lieu de 🇨🇳) — repli sur l'emoji brut
+            // si l'image ne charge pas (même approche que CountryFlag).
             d3.select(tooltipRef.current)
               .style("opacity", 1)
               .html(
-                `<span class="tooltip-flag">${data.emoji}</span>` +
+                `<img class="tooltip-flag-img" src="${twemojiUrl(data.emoji)}" alt="" onerror="this.outerHTML='<span class=&quot;tooltip-flag&quot;>${data.emoji}</span>'" />` +
                 `<span>${localizeField(data.name, i18n.language)}</span>` +
                 `<span class="tooltip-hint">${i18n.t("worldMap.clickToExplore", { ns: "app" })}</span>`
               );
@@ -288,11 +337,11 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
             onCountryClickRef.current(alpha3);
           });
 
-        borderG.append("path")
+        borderSelRef.current = borderG.append("path")
           .datum(borders)
           .attr("d", path)
           .attr("fill", "none")
-          .attr("stroke", "#0d1e30")
+          .attr("stroke", mapColors().borders)
           .attr("stroke-width", 0.5)
           .attr("opacity", 0.8);
 
