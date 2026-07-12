@@ -2,6 +2,13 @@
   "languageSwitcher": {
     "label": "Language"
   },
+  "settings": {
+    "buttonLabel": "Settings",
+    "panelTitle": "Settings",
+    "languageLabel": "Language",
+    "currencyLabel": "Currency",
+    "themeLabel": "Display"
+  },
   "activityCategories": {
     "visit": "Sightseeing",
     "food": "Dining",
@@ -22,6 +29,56 @@
     "bateau": "Boat",
     "velo": "Bike",
     "marche": "Walking"
+  },
+  "tripCriteria": {
+    "with_kids": "With kids",
+    "couple": "As a couple",
+    "friends": "With friends",
+    "solo": "Solo",
+    "low_budget": "Low budget",
+    "nature": "Nature",
+    "city": "City break",
+    "filterLabel": "My criteria:",
+    "indicator": {
+      "met": "This trip matches the \"{{label}}\" criterion",
+      "unmet": "This trip does not match the \"{{label}}\" criterion",
+      "unknown": "Criteria not provided by the original traveler for \"{{label}}\""
+    }
+  },
+  "fullTripSuggestions": {
+    "panelTitle": "Find the trip that suits you",
+    "panelSubtitle": "Tell us what you're looking for: we'll search the trips shared by the community.",
+    "mustCityHint": "Optional — prioritizes trips that go through this city.",
+    "nbDaysLabel": "Desired duration (days)",
+    "flexLabel": "Allow one day more or less",
+    "mustCityLabel": "Must-visit city:",
+    "addMustCityButton": "+ Add a city",
+    "clearMustCityTitle": "Remove this condition",
+    "needDaysTitle": "Please set a duration first",
+    "searchButton": "Search for trips",
+    "emptyText": "No shared trip matches a duration of {{days}} days in this country yet.",
+    "mustCityNotFound": "The city \"{{city}}\" could not be located — the condition was not applied.",
+    "noneWithMustCity": "No trip goes through {{city}} for this duration — here are the other matching trips.",
+    "totalDays_one": "{{count}} day",
+    "totalDays_other": "{{count}} days",
+    "containsCity": "Goes through {{city}}",
+    "cityDays_one": "{{count}}d",
+    "cityDays_other": "{{count}}d",
+    "showDetail": "Show day-by-day detail",
+    "hideDetail": "Hide detail",
+    "fromDay": "starting on day {{day}}",
+    "confirmAppendText_one": "This country already contains {{count}} city: the imported trip will be added after it, without deleting anything. Continue?",
+    "confirmAppendText_other": "This country already contains {{count}} cities: the imported trip will be added after them, without deleting anything. Continue?",
+    "confirmMoreDaysText_one": "This trip is {{count}} day longer than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
+    "confirmMoreDaysText_other": "This trip is {{count}} days longer than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
+    "confirmFewerDaysText_one": "This trip is {{count}} day shorter than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
+    "confirmFewerDaysText_other": "This trip is {{count}} days shorter than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
+    "confirmAppendButton": "Add and import",
+    "importButton": "Import this trip",
+    "summaryDays_one": "{{count}} day",
+    "summaryDays_other": "{{count}} days",
+    "editSearchButton": "Edit",
+    "loadMoreButton": "Show more suggestions"
   },
   "carriedOver": {
     "yesterday": "Since yesterday",
@@ -48,6 +105,7 @@
     "allDayChip": "All day",
     "costInputTitle": "Activity price (ticket, entry, meal…) — leave empty if unknown",
     "priceTitle": "Activity price",
+    "infoToggleTitle": "Show/hide details",
     "groupLabel": "Group",
     "notePlaceholder": "Note (times, info, address…)",
     "attachmentCount_one": "{{count}} attachment",
@@ -92,13 +150,14 @@
     "button_one": "{{count}} suggested place",
     "button_other": "{{count}} suggested places",
     "addButton": "Add",
-    "added": "Added"
+    "added": "Added",
+    "previewImageAlt": "Photo of {{name}}"
   },
   "tripSuggestions": {
     "button_one": "{{count}} planning suggestion",
     "button_other": "{{count}} planning suggestions",
     "modalTitle": "Planning suggestions for {{city}}",
-    "disclaimer": "These plans come from other travelers — the most imported ones are shown first.",
+    "disclaimer": "These plans come from other travelers — the closest matches to your criteria are shown first.",
     "prevLabel": "Previous suggestion",
     "nextLabel": "Next suggestion",
     "goToLabel": "Go to suggestion {{count}}",
@@ -116,7 +175,9 @@
     },
     "importButton": "Import this plan",
     "confirmReplaceText": "You already have content added for this city: do you want to fully replace it with this imported plan?",
-    "confirmReplaceButton": "Replace and import"
+    "confirmReplaceButton": "Replace and import",
+    "filteredEmptyText": "None of the suggestions for this city match the selected criteria.",
+    "clearFiltersButton": "Clear criteria"
   },
   "trajetsSection": {
     "label": "Trips",
@@ -162,6 +223,11 @@
   },
   "destination": {
     "eyebrow": "Country",
+    "modeLabel": "Planning mode",
+    "modeManual": "Manual planning",
+    "modeManualDesc": "Build your itinerary city by city, at your own pace.",
+    "modeSuggestions": "Trip suggestions",
+    "modeSuggestionsDesc": "Import a complete trip shared by other travelers.",
     "citiesCount_one": "{{count}} city",
     "citiesCount_other": "{{count}} cities",
     "removeTitle": "Remove this country from the trip",
@@ -306,12 +372,18 @@
     "notesPlaceholder": "General trip notes (hotel, budget, useful contacts…)"
   },
   "shareTemplate": {
+    "sectionTitle": "Community sharing",
     "toggleLabel": "Automatically share this trip as a template",
     "infoText": "Only places and their days/times are shared, and kept up to date automatically — never your attachments, notes, or accommodations.",
     "endTripTitle": "Share this trip as a template?",
     "endTripText": "Your trip \"{{title}}\" is over. Would you like to turn on automatic sharing of this trip as a planning template for other travelers?",
     "declineButton": "No thanks",
-    "acceptButton": "Turn on sharing"
+    "acceptButton": "Turn on sharing",
+    "criteriaTitle": "How would you describe this trip?",
+    "criteriaText": "Select the criteria that match this trip (optional): they will help other travelers find suggestions suited to their situation.",
+    "criteriaHint": "You can change these criteria at any time from the trip header.",
+    "criteriaValidateButton": "Confirm and turn on sharing",
+    "criteriaRowLabel": "Criteria of this trip:"
   },
   "sidebar": {
     "title": "My trips",

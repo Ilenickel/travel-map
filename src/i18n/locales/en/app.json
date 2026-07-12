@@ -92,6 +92,7 @@
   "topbar": {
     "myProfile": "My profile",
     "searchPlaceholder": "Search for a country…",
+    "searchPlaceholderShort": "Search…",
     "resultsCount_one": "{{count}} result",
     "resultsCount_other": "{{count}} results",
     "travelbookAriaLabel": "Travel journal",
@@ -105,7 +106,10 @@
     "destinationsAvailable_other": "{{count}} destinations available",
     "notificationsAriaLabel": "Notifications",
     "moderationAlertsLabel": "Moderation alerts",
-    "loginButton": "Log in"
+    "loginButton": "Log in",
+    "mobileNavLabel": "Navigation",
+    "navMap": "Map",
+    "navFilters": "Filters"
   },
   "auth": {
     "loginTab": "Log in",
@@ -227,7 +231,8 @@
     "tabResume": "Summary",
     "tabWeather": "Weather",
     "tabCostOfLiving": "Cost of living",
-    "addCountryButton": "Add a country to compare"
+    "addCountryButton": "Add a country to compare",
+    "pageIndicator": "Page {{page}} of {{count}}"
   },
   "favorites": {
     "syncing": "⟳ Syncing…",
@@ -249,7 +254,7 @@
   },
   "countryPanel": {
     "compareAriaLabel": "Compare",
-    "compareButton": "⚖ Compare",
+    "compareButton": "Compare",
     "removeFromVisited": "Remove from visited",
     "markAsVisited": "Mark as visited",
     "removeFromFavorites": "Remove from favorites",
@@ -261,6 +266,8 @@
     "tabPractical": "🧳 Practical",
     "tabReviews": "⭐ Reviews",
     "tabReviewsWithCount": "⭐ Reviews ({{count}})",
+    "tabRecommendations": "🧭 Recommendations",
+    "tabRecommendationsWithCount": "🧭 Recommendations ({{count}})",
 
     "sectionWhenToGo": "When to go?",
     "topDestinations": "Top destinations",
@@ -300,6 +307,50 @@
     "visaDisclaimerSuffix": "before traveling.",
     "overallRating": "Overall rating",
     "fromTriplyTravelers": "from Triply travelers"
+  },
+  "recommendations": {
+    "intro": "Travelers recommend here countries similar to {{name}} — and the other way around.",
+    "addButton": "Recommend a country",
+    "loginToAdd": "Log in to recommend",
+    "loading": "Loading recommendations…",
+    "emptyLine1": "No recommendations for {{name}} yet.",
+    "emptyLine2": "Be the first to recommend a similar country!",
+    "recommendersCount_one": "{{count}} person recommends",
+    "recommendersCount_other": "{{count}} people recommend",
+    "countTitle": "Number of people who recommended this country pairing",
+    "openCountryTitle": "Open the {{name}} page",
+    "openCountryShort": "View country",
+    "byAuthor": "by {{name}}",
+    "travelerFallback": "Traveler",
+    "showMore_one": "Read the recommendation by {{count}} more person",
+    "showMore_other": "Read recommendations by {{count}} more people",
+    "showLess": "Show less",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "confirmDelete": "Confirm deletion",
+    "cancelDelete": "Cancel",
+    "formTitleNew": "Recommend a country",
+    "formTitleEdit": "Edit my recommendation",
+    "closeForm": "Close",
+    "sentenceIfLiked": "If you liked",
+    "sentenceYouWillLike": "you'll probably like",
+    "swapTitle": "Swap the two countries",
+    "pickCountrySlot": "Choose a country",
+    "otherCountryLabel": "Other country",
+    "otherCountryHint": "The selected country automatically fills the blank in the sentence above.",
+    "changeCountry": "Change",
+    "searchCountryPlaceholder": "Search for a country…",
+    "noCountryFound": "No country found.",
+    "descriptionLabel": "Why are they similar?",
+    "descriptionPlaceholder": "Describe what makes these two countries similar (landscapes, vibe, culture, budget…)",
+    "errNoCountry": "Please choose the other country of the recommendation.",
+    "errNoDescription": "Please describe why these two countries are similar.",
+    "errDuplicatePair": "You already have a recommendation for this country pair in this direction.",
+    "errGeneric": "An error occurred. Check your connection and try again.",
+    "cancelButton": "Cancel",
+    "publishButton": "Publish",
+    "updateButton": "Update",
+    "submitting": "Publishing…"
   },
   "worldMap": {
     "clickToExplore": "Click to explore",
@@ -481,6 +532,12 @@
     "noResult": "No results.",
     "noFollowersYet": "No followers yet.",
     "noFollowingYet": "Not following anyone yet."
+  },
+  "wikiCredit": {
+    "full": "Photo: {{author}} — {{license}} (Wikimedia Commons)",
+    "authorOnly": "Photo: {{author}} (Wikimedia Commons)",
+    "licenseOnly": "Photo under {{license}} license (Wikimedia Commons)",
+    "sourceOnly": "Photo: Wikimedia Commons"
   },
   "imageValidation": {
     "noFileSelected": "No file selected.",

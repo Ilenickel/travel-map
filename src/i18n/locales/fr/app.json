@@ -92,6 +92,7 @@
   "topbar": {
     "myProfile": "Mon profil",
     "searchPlaceholder": "Rechercher un pays…",
+    "searchPlaceholderShort": "Rechercher…",
     "resultsCount_one": "{{count}} résultat",
     "resultsCount_other": "{{count}} résultats",
     "travelbookAriaLabel": "Carnet de voyage",
@@ -105,7 +106,10 @@
     "destinationsAvailable_other": "{{count}} destinations disponibles",
     "notificationsAriaLabel": "Notifications",
     "moderationAlertsLabel": "Alertes de modération",
-    "loginButton": "Connexion"
+    "loginButton": "Connexion",
+    "mobileNavLabel": "Navigation",
+    "navMap": "Carte",
+    "navFilters": "Filtres"
   },
   "auth": {
     "loginTab": "Connexion",
@@ -227,7 +231,8 @@
     "tabResume": "Résumé",
     "tabWeather": "Météo",
     "tabCostOfLiving": "Coût de la vie",
-    "addCountryButton": "Ajouter un pays à comparer"
+    "addCountryButton": "Ajouter un pays à comparer",
+    "pageIndicator": "Page {{page}} sur {{count}}"
   },
   "favorites": {
     "syncing": "⟳ Synchronisation…",
@@ -249,7 +254,7 @@
   },
   "countryPanel": {
     "compareAriaLabel": "Comparer",
-    "compareButton": "⚖ Comparer",
+    "compareButton": "Comparer",
     "removeFromVisited": "Retirer des visités",
     "markAsVisited": "Marquer comme visité",
     "removeFromFavorites": "Retirer des favoris",
@@ -261,6 +266,8 @@
     "tabPractical": "🧳 Pratique",
     "tabReviews": "⭐ Avis",
     "tabReviewsWithCount": "⭐ Avis ({{count}})",
+    "tabRecommendations": "🧭 Recommandations",
+    "tabRecommendationsWithCount": "🧭 Recommandations ({{count}})",
 
     "sectionWhenToGo": "Quand y aller ?",
     "topDestinations": "Destinations phares",
@@ -300,6 +307,50 @@
     "visaDisclaimerSuffix": "avant de voyager.",
     "overallRating": "Note globale",
     "fromTriplyTravelers": "des voyageurs Triply"
+  },
+  "recommendations": {
+    "intro": "Des voyageurs recommandent ici des pays similaires à {{name}} — et inversement.",
+    "addButton": "Recommander un pays",
+    "loginToAdd": "Connectez-vous pour recommander",
+    "loading": "Chargement des recommandations…",
+    "emptyLine1": "Aucune recommandation pour {{name}} pour l'instant.",
+    "emptyLine2": "Soyez la première personne à recommander un pays similaire !",
+    "recommendersCount_one": "{{count}} personne recommande",
+    "recommendersCount_other": "{{count}} personnes recommandent",
+    "countTitle": "Nombre de personnes ayant recommandé cette association de pays",
+    "openCountryTitle": "Ouvrir la fiche de {{name}}",
+    "openCountryShort": "Voir la fiche",
+    "byAuthor": "par {{name}}",
+    "travelerFallback": "Voyageur",
+    "showMore_one": "Voir la recommandation de {{count}} autre personne",
+    "showMore_other": "Voir les recommandations de {{count}} autres personnes",
+    "showLess": "Réduire",
+    "editButton": "Modifier",
+    "deleteButton": "Supprimer",
+    "confirmDelete": "Confirmer la suppression",
+    "cancelDelete": "Annuler",
+    "formTitleNew": "Recommander un pays",
+    "formTitleEdit": "Modifier ma recommandation",
+    "closeForm": "Fermer",
+    "sentenceIfLiked": "Si vous avez aimé",
+    "sentenceYouWillLike": "vous aimerez sûrement",
+    "swapTitle": "Échanger les deux pays",
+    "pickCountrySlot": "Choisir un pays",
+    "otherCountryLabel": "Autre pays",
+    "otherCountryHint": "Le pays choisi complètera automatiquement la case manquante de la phrase ci-dessus.",
+    "changeCountry": "Changer",
+    "searchCountryPlaceholder": "Rechercher un pays…",
+    "noCountryFound": "Aucun pays trouvé.",
+    "descriptionLabel": "Pourquoi cette ressemblance ?",
+    "descriptionPlaceholder": "Décrivez ce qui rend ces deux pays similaires (paysages, ambiance, culture, budget…)",
+    "errNoCountry": "Veuillez choisir l'autre pays de la recommandation.",
+    "errNoDescription": "Veuillez décrire pourquoi ces deux pays se ressemblent.",
+    "errDuplicatePair": "Vous avez déjà une recommandation pour cette paire de pays dans ce sens.",
+    "errGeneric": "Une erreur est survenue. Vérifiez votre connexion et réessayez.",
+    "cancelButton": "Annuler",
+    "publishButton": "Publier",
+    "updateButton": "Mettre à jour",
+    "submitting": "Publication…"
   },
   "worldMap": {
     "clickToExplore": "Cliquer pour explorer",
@@ -481,6 +532,12 @@
     "noResult": "Aucun résultat.",
     "noFollowersYet": "Aucun abonné pour l'instant.",
     "noFollowingYet": "Aucun abonnement pour l'instant."
+  },
+  "wikiCredit": {
+    "full": "Photo : {{author}} — {{license}} (Wikimedia Commons)",
+    "authorOnly": "Photo : {{author}} (Wikimedia Commons)",
+    "licenseOnly": "Photo sous licence {{license}} (Wikimedia Commons)",
+    "sourceOnly": "Photo : Wikimedia Commons"
   },
   "imageValidation": {
     "noFileSelected": "Aucun fichier sélectionné.",

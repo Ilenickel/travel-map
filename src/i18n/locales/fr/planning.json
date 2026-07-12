@@ -2,6 +2,13 @@
   "languageSwitcher": {
     "label": "Langue"
   },
+  "settings": {
+    "buttonLabel": "Paramètres",
+    "panelTitle": "Paramètres",
+    "languageLabel": "Langue",
+    "currencyLabel": "Devise",
+    "themeLabel": "Affichage"
+  },
   "activityCategories": {
     "visit": "Visite",
     "food": "Restauration",
@@ -22,6 +29,56 @@
     "bateau": "Bateau",
     "velo": "Vélo",
     "marche": "Marche"
+  },
+  "tripCriteria": {
+    "with_kids": "Avec enfants",
+    "couple": "En couple",
+    "friends": "Entre amis",
+    "solo": "En solo",
+    "low_budget": "Petit budget",
+    "nature": "Nature",
+    "city": "Urbain",
+    "filterLabel": "Mes critères :",
+    "indicator": {
+      "met": "Ce voyage correspond au critère « {{label}} »",
+      "unmet": "Ce voyage ne correspond pas au critère « {{label}} »",
+      "unknown": "Critères non renseignés par le voyageur d'origine pour « {{label}} »"
+    }
+  },
+  "fullTripSuggestions": {
+    "panelTitle": "Trouvez le voyage qui vous ressemble",
+    "panelSubtitle": "Indiquez vos envies : nous cherchons parmi les voyages partagés par la communauté.",
+    "mustCityHint": "Facultatif — n'affiche en priorité que les voyages passant par cette ville.",
+    "nbDaysLabel": "Durée souhaitée (jours)",
+    "flexLabel": "Autoriser 1 jour de plus ou de moins",
+    "mustCityLabel": "Ville à ne pas manquer :",
+    "addMustCityButton": "+ Ajouter une ville",
+    "clearMustCityTitle": "Retirer cette condition",
+    "needDaysTitle": "Renseignez d'abord une durée",
+    "searchButton": "Rechercher des voyages",
+    "emptyText": "Aucun voyage partagé ne correspond à une durée de {{days}} jours dans ce pays pour l'instant.",
+    "mustCityNotFound": "La ville « {{city}} » n'a pas pu être localisée — la condition n'a pas été appliquée.",
+    "noneWithMustCity": "Aucun voyage ne passe par {{city}} pour cette durée — voici les autres voyages correspondants.",
+    "totalDays_one": "{{count}} jour",
+    "totalDays_other": "{{count}} jours",
+    "containsCity": "Passe par {{city}}",
+    "cityDays_one": "{{count}}j",
+    "cityDays_other": "{{count}}j",
+    "showDetail": "Voir le détail jour par jour",
+    "hideDetail": "Masquer le détail",
+    "fromDay": "à partir du jour {{day}}",
+    "confirmAppendText_one": "Ce pays contient déjà {{count}} ville : le voyage importé sera ajouté à la suite, sans rien supprimer. Continuer ?",
+    "confirmAppendText_other": "Ce pays contient déjà {{count}} villes : le voyage importé sera ajouté à la suite, sans rien supprimer. Continuer ?",
+    "confirmMoreDaysText_one": "Ce voyage dure {{count}} jour de plus que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
+    "confirmMoreDaysText_other": "Ce voyage dure {{count}} jours de plus que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
+    "confirmFewerDaysText_one": "Ce voyage dure {{count}} jour de moins que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
+    "confirmFewerDaysText_other": "Ce voyage dure {{count}} jours de moins que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
+    "confirmAppendButton": "Ajouter et importer",
+    "importButton": "Importer ce voyage",
+    "summaryDays_one": "{{count}} jour",
+    "summaryDays_other": "{{count}} jours",
+    "editSearchButton": "Modifier",
+    "loadMoreButton": "Voir plus de suggestions"
   },
   "carriedOver": {
     "yesterday": "Depuis hier",
@@ -48,6 +105,7 @@
     "allDayChip": "Toute la journée",
     "costInputTitle": "Prix de l'activité (billet, entrée, repas…) — laissez vide si inconnu",
     "priceTitle": "Prix de l'activité",
+    "infoToggleTitle": "Afficher/masquer les détails",
     "groupLabel": "Groupe",
     "notePlaceholder": "Note (horaires, infos, adresse…)",
     "attachmentCount_one": "{{count}} pièce jointe",
@@ -92,13 +150,14 @@
     "button_one": "{{count}} lieu conseillé",
     "button_other": "{{count}} lieux conseillés",
     "addButton": "Ajouter",
-    "added": "Ajouté"
+    "added": "Ajouté",
+    "previewImageAlt": "Photo de {{name}}"
   },
   "tripSuggestions": {
     "button_one": "{{count}} suggestion de planning",
     "button_other": "{{count}} suggestions de planning",
     "modalTitle": "Suggestions de planning pour {{city}}",
-    "disclaimer": "Ces plannings viennent d'autres voyageurs — les plus importés sont proposés en premier.",
+    "disclaimer": "Ces plannings viennent d'autres voyageurs — les plus proches de vos critères sont proposés en premier.",
     "prevLabel": "Suggestion précédente",
     "nextLabel": "Suggestion suivante",
     "goToLabel": "Aller à la suggestion {{count}}",
@@ -116,7 +175,9 @@
     },
     "importButton": "Importer cette planif",
     "confirmReplaceText": "Vous avez déjà du contenu ajouté pour cette ville : voulez-vous le remplacer entièrement par cette planif importée ?",
-    "confirmReplaceButton": "Remplacer et importer"
+    "confirmReplaceButton": "Remplacer et importer",
+    "filteredEmptyText": "Aucune des suggestions pour cette ville ne correspond aux critères sélectionnés.",
+    "clearFiltersButton": "Réinitialiser les critères"
   },
   "trajetsSection": {
     "label": "Trajets",
@@ -162,6 +223,11 @@
   },
   "destination": {
     "eyebrow": "Pays",
+    "modeLabel": "Mode de planification",
+    "modeManual": "Planification manuelle",
+    "modeManualDesc": "Construisez votre itinéraire ville par ville, à votre rythme.",
+    "modeSuggestions": "Suggestions de voyages",
+    "modeSuggestionsDesc": "Importez un voyage complet partagé par d'autres voyageurs.",
     "citiesCount_one": "{{count}} ville",
     "citiesCount_other": "{{count}} villes",
     "removeTitle": "Retirer ce pays du voyage",
@@ -306,12 +372,18 @@
     "notesPlaceholder": "Notes générales du voyage (hôtel, budget, contacts utiles…)"
   },
   "shareTemplate": {
+    "sectionTitle": "Partage communautaire",
     "toggleLabel": "Partager automatiquement ce voyage comme modèle",
     "infoText": "Seuls les lieux et leurs jours/horaires sont partagés, et tenus à jour automatiquement — jamais vos pièces jointes, notes ou hébergements.",
     "endTripTitle": "Partager ce voyage comme modèle ?",
     "endTripText": "Votre voyage « {{title}} » est terminé. Voulez-vous activer le partage automatique de ce voyage comme modèle de planning pour d'autres voyageurs ?",
     "declineButton": "Non merci",
-    "acceptButton": "Activer le partage"
+    "acceptButton": "Activer le partage",
+    "criteriaTitle": "Comment décririez-vous ce voyage ?",
+    "criteriaText": "Sélectionnez les critères qui correspondent à ce voyage (facultatif) : ils aideront les autres voyageurs à trouver des suggestions adaptées à leur situation.",
+    "criteriaHint": "Vous pourrez modifier ces critères à tout moment depuis l'en-tête du voyage.",
+    "criteriaValidateButton": "Valider et activer le partage",
+    "criteriaRowLabel": "Critères de ce voyage :"
   },
   "sidebar": {
     "title": "Mes voyages",
