@@ -14,7 +14,7 @@ const GOOGLE_TRANSLATE_URL = 'https://translation.googleapis.com/language/transl
 // langues de Google Translate comme cible, ce qui multiplie les cache miss
 // (donc les vrais appels facturés) pour un même contenu — chaque nouvelle
 // langue ajoutée à l'app doit être ajoutée ICI aussi.
-export const SUPPORTED_TARGET_LANGUAGES = ['fr', 'en'];
+export const SUPPORTED_TARGET_LANGUAGES = ['fr', 'en', 'es'];
 
 export class TranslationUnavailableError extends Error {
   constructor(message) {

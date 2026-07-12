@@ -21,6 +21,7 @@ import { localizeAmountString } from "../lib/currency";
 import { useSettings } from "../context/SettingsContext";
 import CountryFlag from "./planning/CountryFlag";
 import { fetchTranslatedFields, translationKey } from "../lib/translateContent";
+import { translateTag } from "../lib/tagTranslations";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 
@@ -771,12 +772,12 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     {selectedDest.isUserDest ? (
                       selectedDest.tags?.length > 0 && (
                         <div className="dest-tags">
-                          {selectedDest.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                          {selectedDest.tags.map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                         </div>
                       )
                     ) : (
                       <div className="dest-tags">
-                        {selectedDest.tags.map((t) => <span key={t} className="tag">{t}</span>)}
+                        {selectedDest.tags.map((tag) => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                       </div>
                     )}
 
@@ -964,7 +965,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                 <p className="dest-card-desc">{dest.description.length > 90 ? dest.description.slice(0, 90) + '…' : dest.description}</p>
                                 {dest.tags?.length > 0 && (
                                   <div className="dest-tags">
-                                    {dest.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                                    {dest.tags.map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                                   </div>
                                 )}
                                 {destStats[`${countryCode}_${dest.id}`] && (
@@ -988,7 +989,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                             </div>
                             <p className="dest-card-desc">{dest.description.length > 90 ? dest.description.slice(0, 90) + '…' : dest.description}</p>
                             <div className="dest-tags">
-                              {dest.tags?.map((t) => <span key={t} className="tag">{t}</span>)}
+                              {dest.tags?.map((tag) => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                             </div>
                             {destStats[`${countryCode}_${dest.id}`] && (
                               <div className="dest-card-rating">
@@ -1052,7 +1053,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                                     </p>
                                     {dest.tags?.length > 0 && (
                                       <div className="dest-tags">
-                                        {dest.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                                        {dest.tags.map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                                       </div>
                                     )}
                                     {destStats[`${countryCode}_${dest.id}`] && (
@@ -1095,7 +1096,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                               {dest.description.length > 90 ? dest.description.slice(0, 90) + '…' : dest.description}
                             </p>
                             <div className="dest-tags">
-                              {dest.tags.map((t) => <span key={t} className="tag">{t}</span>)}
+                              {dest.tags.map((tag) => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                             </div>
                             {destStats[`${countryCode}_${dest.id}`] && (
                               <div className="dest-card-rating">
@@ -1138,7 +1139,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                             </p>
                             {dest.tags?.length > 0 && (
                               <div className="dest-tags">
-                                {dest.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                                {dest.tags.map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                               </div>
                             )}
                             {destStats[`${countryCode}_${dest.id}`] && (

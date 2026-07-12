@@ -208,7 +208,24 @@
       "desert": "Desert",
       "safari": "Safari",
       "ski": "Ski",
-      "city": "City"
+      "city": "City",
+      "culture": "Culture",
+      "shopping": "Shopping",
+      "art": "Art",
+      "mountain": "Mountain",
+      "temples": "Temples",
+      "tradition": "Tradition",
+      "modernity": "Modernity",
+      "adventure": "Adventure",
+      "relaxation": "Relaxation",
+      "spirituality": "Spirituality",
+      "museums": "Museums",
+      "family": "Family",
+      "luxury": "Luxury",
+      "ruins": "Ruins",
+      "nightlife": "Nightlife",
+      "panorama": "Panorama",
+      "rural": "Rural"
     }
   },
   "listView": {

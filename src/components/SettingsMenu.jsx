@@ -5,6 +5,73 @@ import { useSettings } from '../context/SettingsContext';
 import { SUPPORTED_CURRENCIES, CURRENCY_SYMBOLS } from '../lib/currency';
 import { SUPPORTED_LANGUAGES } from '../i18n';
 
+// Noms complets pour le libellé (les codes courts seuls ne suffisent plus à
+// distinguer clairement les langues une fois au nombre de trois) ; l'icône,
+// elle, reste le code à 2 lettres — un drapeau (UK vs US pour l'anglais ?)
+// serait ambigu, et ne s'affiche de toute façon pas sur tous les systèmes.
+const LANGUAGE_META = {
+  fr: { label: 'Français' },
+  en: { label: 'English' },
+  es: { label: 'Español' },
+};
+
+const CURRENCY_LABELS = { EUR: 'Euro', USD: 'Dollar' };
+
+const CHEVRON = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const CHECK = (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+// Sélecteur repliable générique (langue, devise) : n'affiche que la valeur
+// active tant qu'on ne clique pas dessus — indispensable dès qu'on dépasse
+// deux ou trois options (ex. futures langues supplémentaires).
+function SettingsSelect({ label, options, value, onChange, isOpen, onToggle }) {
+  return (
+    <div className="settings-group">
+      <span className="settings-group-label">{label}</span>
+      <div className="settings-select">
+        <button
+          type="button"
+          className={`settings-select-trigger${isOpen ? ' open' : ''}`}
+          onClick={onToggle}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+        >
+          <span className="settings-select-icon">{options.find((o) => o.value === value)?.icon}</span>
+          <span className="settings-select-value">{options.find((o) => o.value === value)?.label}</span>
+          <span className={`settings-select-chevron${isOpen ? ' flipped' : ''}`}>{CHEVRON}</span>
+        </button>
+
+        {isOpen && (
+          <div className="settings-select-dropdown" role="listbox" aria-label={label}>
+            {options.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                role="option"
+                aria-selected={value === opt.value}
+                className={`settings-select-option${value === opt.value ? ' active' : ''}`}
+                onClick={() => onChange(opt.value)}
+              >
+                <span className="settings-select-option-icon">{opt.icon}</span>
+                <span className="settings-select-option-label">{opt.label}</span>
+                {value === opt.value && <span className="settings-select-option-check">{CHECK}</span>}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Bouton de paramétrage (engrenage) de la topbar : remplace l'ancien
 // sélecteur fr/en et regroupe langue, devise d'affichage et mode jour/nuit
 // dans un même panneau déroulant.
@@ -13,6 +80,7 @@ export default function SettingsMenu() {
   const { language, changeLanguage } = useLanguage();
   const { currency, changeCurrency, theme, changeTheme } = useSettings();
   const [open, setOpen] = useState(false);
+  const [openSelect, setOpenSelect] = useState(null); // 'language' | 'currency' | null
   const wrapperRef = useRef(null);
 
   // Fermeture au clic hors du panneau ou à Échap.
@@ -29,6 +97,20 @@ export default function SettingsMenu() {
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [open]);
+
+  useEffect(() => { if (!open) setOpenSelect(null); }, [open]);
+
+  const languageOptions = SUPPORTED_LANGUAGES.map((lang) => ({
+    value: lang,
+    label: LANGUAGE_META[lang]?.label ?? lang.toUpperCase(),
+    icon: lang.toUpperCase(),
+  }));
+
+  const currencyOptions = SUPPORTED_CURRENCIES.map((c) => ({
+    value: c,
+    label: `${CURRENCY_LABELS[c] ?? c} (${CURRENCY_SYMBOLS[c]})`,
+    icon: CURRENCY_SYMBOLS[c],
+  }));
 
   return (
     <div className="topbar-settings" ref={wrapperRef}>
@@ -49,37 +131,23 @@ export default function SettingsMenu() {
         <div className="settings-panel" role="menu" aria-label={t('settings.panelTitle')}>
           <div className="settings-panel-title">{t('settings.panelTitle')}</div>
 
-          <div className="settings-group">
-            <span className="settings-group-label">{t('settings.languageLabel')}</span>
-            <div className="settings-choice" role="group" aria-label={t('settings.languageLabel')}>
-              {SUPPORTED_LANGUAGES.map((lang) => (
-                <button
-                  key={lang}
-                  type="button"
-                  className={`settings-choice-btn${language === lang ? ' active' : ''}`}
-                  onClick={() => changeLanguage(lang)}
-                >
-                  {lang.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
+          <SettingsSelect
+            label={t('settings.languageLabel')}
+            options={languageOptions}
+            value={language}
+            onChange={(lang) => { changeLanguage(lang); setOpenSelect(null); }}
+            isOpen={openSelect === 'language'}
+            onToggle={() => setOpenSelect((s) => (s === 'language' ? null : 'language'))}
+          />
 
-          <div className="settings-group">
-            <span className="settings-group-label">{t('settings.currencyLabel')}</span>
-            <div className="settings-choice" role="group" aria-label={t('settings.currencyLabel')}>
-              {SUPPORTED_CURRENCIES.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  className={`settings-choice-btn${currency === c ? ' active' : ''}`}
-                  onClick={() => changeCurrency(c)}
-                >
-                  {c} {CURRENCY_SYMBOLS[c]}
-                </button>
-              ))}
-            </div>
-          </div>
+          <SettingsSelect
+            label={t('settings.currencyLabel')}
+            options={currencyOptions}
+            value={currency}
+            onChange={(c) => { changeCurrency(c); setOpenSelect(null); }}
+            isOpen={openSelect === 'currency'}
+            onToggle={() => setOpenSelect((s) => (s === 'currency' ? null : 'currency'))}
+          />
 
           <div className="settings-group">
             <span className="settings-group-label">{t('settings.themeLabel')}</span>

@@ -6604,7 +6604,9 @@ html, body, #root { height: 100%; }
   left: 0;
   z-index: 1100;
   width: 240px;
-  background: var(--surface);
+  /* Léger dégradé plutôt qu'un aplat : fait paraître les pilules langue/devise
+     comme un prolongement naturel du panneau plutôt qu'un widget rapporté. */
+  background: linear-gradient(160deg, var(--surface), color-mix(in srgb, var(--accent) 5%, var(--surface)));
   border: 1px solid var(--border-light);
   border-radius: 14px;
   padding: 14px;
@@ -6621,6 +6623,8 @@ html, body, #root { height: 100%; }
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
 }
 
 .settings-group {
@@ -6667,6 +6671,149 @@ html, body, #root { height: 100%; }
   background: var(--accent);
   color: #fff;
   box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+}
+
+/* Sélecteur repliable (langue, devise) : bouton "pilule" qui n'affiche que la
+   valeur active et déroule ses options en carte flottante au clic —
+   indispensable pour rester compact même si la liste de langues s'allonge un
+   jour. Volontairement plus sobre que les CTA planning dont il reprend la
+   forme (pilule + badge circulaire dégradé) : ici le badge coloré suffit à
+   signaler "interactif", pas besoin d'une bordure arc-en-ciel qui jurerait
+   avec le reste du panneau de réglages. */
+.settings-select { position: relative; }
+
+.settings-select-trigger {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface2);
+  padding: 6px 10px 6px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+.settings-select-trigger:hover,
+.settings-select-trigger.open {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface2));
+}
+
+.settings-select-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.settings-select-value {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-select-chevron {
+  flex-shrink: 0;
+  display: flex;
+  color: var(--text-muted);
+  transition: transform 0.2s, color 0.2s;
+}
+.settings-select-trigger.open .settings-select-chevron,
+.settings-select-trigger:hover .settings-select-chevron { color: var(--accent2); }
+.settings-select-chevron.flipped { transform: rotate(180deg); }
+
+.settings-select-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 5px;
+  border-radius: 14px;
+  border: 1px solid var(--border-light);
+  background: var(--surface);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  animation: settingsSelectIn 0.14s ease;
+}
+@keyframes settingsSelectIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.settings-select-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 9px;
+  padding: 7px 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+.settings-select-option:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--text-dim); }
+.settings-select-option.active {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--text);
+}
+
+.settings-select-option-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface3, rgba(255,255,255,0.06));
+  border: 1px solid var(--border);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  transition: border-color 0.15s, background 0.15s;
+}
+.settings-select-option.active .settings-select-option-icon {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-color: transparent;
+  color: #fff;
+}
+
+.settings-select-option-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.settings-select-option.active .settings-select-option-label { font-weight: 700; }
+
+.settings-select-option-check {
+  flex-shrink: 0;
+  display: flex;
+  color: #a855f7;
 }
 
 /* Switch jour/nuit (réutilise .profile-toggle, voir ProfilePanel) avec un

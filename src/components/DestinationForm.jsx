@@ -6,14 +6,11 @@ import { callModeration } from "../lib/moderation";
 import { useAuth } from "../context/AuthContext";
 import { validateImageFile } from "../lib/imageValidation";
 import { isSimilar } from "../lib/similarity";
+import { CANONICAL_TAGS, translateTag } from "../lib/tagTranslations";
 
-const AVAILABLE_TAGS = [
-  'Histoire', 'Culture', 'Nature', 'Architecture', 'Gastronomie',
-  'Shopping', 'Art', 'Plage', 'Montagne', 'Temples', 'UNESCO',
-  'Tradition', 'Modernité', 'Aventure', 'Randonnée', 'Détente',
-  'Spiritualité', 'Musées', 'Famille', 'Luxe', 'Ruines',
-  'Nightlife', 'Panorama', 'Rural', 'Ville',
-];
+// Valeurs stockées en français (comparées aux tags des données pays et de
+// user_destinations) ; seul le libellé du bouton suit la langue active (translateTag).
+const AVAILABLE_TAGS = CANONICAL_TAGS;
 
 function findDuplicate(name, destinations) {
   return destinations.find((d) => isSimilar(name, d.name)) ?? null;
@@ -389,7 +386,7 @@ export default function DestinationForm({
               return (
                 <button key={tag} type="button"
                   className={`dest-form-tag-pill${selected ? ' selected' : ''}${maxed ? ' maxed' : ''}`}
-                  onClick={() => toggleTag(tag)} disabled={maxed}>{tag}</button>
+                  onClick={() => toggleTag(tag)} disabled={maxed}>{translateTag(tag, t)}</button>
               );
             })}
           </div>

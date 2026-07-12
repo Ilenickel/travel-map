@@ -23,6 +23,7 @@ const SOURCE_TABLES = {
   static_destination_place_name: { table: 'static_destination_places', column: 'name' },
   review_comment: { table: 'reviews', column: 'comment' },
   destination_review_comment: { table: 'destination_reviews', column: 'comment' },
+  country_recommendation_description: { table: 'country_recommendations', column: 'description' },
 };
 
 async function fetchRealSourceText(admin, contentType, contentId, field) {

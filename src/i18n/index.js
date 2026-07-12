@@ -6,9 +6,12 @@ import planningFr from './locales/fr/planning.json';
 import planningEn from './locales/en/planning.json';
 import appFr from './locales/fr/app.json';
 import appEn from './locales/en/app.json';
+import commonEs from './locales/es/common.json';
+import planningEs from './locales/es/planning.json';
+import appEs from './locales/es/app.json';
 
 export const STORAGE_KEY = 'triply_language';
-export const SUPPORTED_LANGUAGES = ['fr', 'en'];
+export const SUPPORTED_LANGUAGES = ['fr', 'en', 'es'];
 
 function getInitialLanguage() {
   if (typeof window === 'undefined') return 'fr';
@@ -20,6 +23,7 @@ i18n.use(initReactI18next).init({
   resources: {
     fr: { common: commonFr, planning: planningFr, app: appFr },
     en: { common: commonEn, planning: planningEn, app: appEn },
+    es: { common: commonEs, planning: planningEs, app: appEs },
   },
   lng: getInitialLanguage(),
   fallbackLng: 'fr',

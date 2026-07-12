@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { findCountry, COUNTRIES } from '../data/index';
 import { localizeField } from '../lib/localizeCountry';
+import { translateTag } from '../lib/tagTranslations';
 import i18n from '../i18n';
 
 function parseDestId(destId) {
@@ -427,7 +428,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
                               <span className="profile-added-dest-name">📍 {dest.name}</span>
                               {dest.tags?.length > 0 && (
                                 <div className="profile-added-dest-tags">
-                                  {dest.tags.slice(0, 3).map(t => <span key={t} className="tag">{t}</span>)}
+                                  {dest.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
                                 </div>
                               )}
                               <span className="profile-review-date">{relativeTime(dest.created_at)}</span>
