@@ -24,6 +24,7 @@ const SOURCE_TABLES = {
   review_comment: { table: 'reviews', column: 'comment' },
   destination_review_comment: { table: 'destination_reviews', column: 'comment' },
   country_recommendation_description: { table: 'country_recommendations', column: 'description' },
+  trip_template_activity_name: { table: 'trip_template_activities', column: 'name' },
 };
 
 async function fetchRealSourceText(admin, contentType, contentId, field) {

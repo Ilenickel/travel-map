@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { countryAlpha2FromEmoji, TRIP_CRITERIA } from '../../lib/planningUtils';
+import { useActivityNameTranslations } from '../../lib/translateContent';
 import DaysStepper from './DaysStepper';
 import CitySearchInput from './CitySearchInput';
 
@@ -80,7 +81,7 @@ function groupBySlot(activities) {
 // soir) — factorisé pour être réutilisé identiquement par une ville de base
 // ET par ses excursions (voir daytrips ci-dessous), plutôt que de dupliquer
 // le rendu de la timeline une 2e fois.
-function DayTimelineBlock({ day, dayNumber }) {
+function DayTimelineBlock({ day, dayNumber, getActivityName }) {
   const { t } = useTranslation();
   return (
     <div className="pp-trip-suggestions-day">
@@ -97,7 +98,7 @@ function DayTimelineBlock({ day, dayNumber }) {
               <div className="pp-trip-suggestions-slot-label">{t(`tripSuggestions.timeSlot.${slot}`)}</div>
               <div className="pp-trip-suggestions-slot-items">
                 {items.map((a) => (
-                  <span key={a.id} className="pp-trip-suggestions-item">{a.name}</span>
+                  <span key={a.id} className="pp-trip-suggestions-item">{getActivityName(a)}</span>
                 ))}
               </div>
             </div>
@@ -106,6 +107,17 @@ function DayTimelineBlock({ day, dayNumber }) {
       </div>
     </div>
   );
+}
+
+// Toutes les activités d'un groupe (villes + excursions), pour traduction en
+// lot — seul le groupe DÉPLIÉ est traduit (voir expandedId), pas les 5
+// groupes de la liste, pour ne pas multiplier les appels sur des détails
+// jamais consultés.
+function collectGroupActivities(group) {
+  return (group?.cities || []).flatMap((city) => [
+    ...city.days.flatMap((d) => d.activities),
+    ...city.daytrips.flatMap((dt) => dt.days.flatMap((d) => d.activities)),
+  ]);
 }
 
 // Fusionne les jours de la ville de base ET de ses excursions en UNE SEULE
@@ -150,7 +162,7 @@ function buildCityTimeline(city) {
 export default function TripFullSuggestions({
   dest, tripId, baseCitiesCount, defaultNbDays, onClose, onImported,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[dest.country_code]?.emoji);
 
   const [nbDays, setNbDays] = useState(defaultNbDays ?? null);
@@ -191,6 +203,9 @@ export default function TripFullSuggestions({
   // résultats collés au bord bas. "Modifier" le rouvre sans perdre les
   // filtres déjà choisis.
   const [formCollapsed, setFormCollapsed] = useState(false);
+
+  const expandedGroup = (groups || []).find((g) => g.id === expandedId) || null;
+  const getActivityName = useActivityNameTranslations(collectGroupActivities(expandedGroup), i18n.language);
 
   const toggleCriterion = (key) => {
     setCriteria((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);
@@ -451,6 +466,10 @@ export default function TripFullSuggestions({
 
                 <CriteriaIndicators templateCriteria={group.criteria} selectedCriteria={criteria} />
 
+                {group.isEditorial && (
+                  <p className="pp-fulltrip-notice">✏️ {t('tripSuggestions.editorialNotice')}</p>
+                )}
+
                 {/* Chaîne des villes du voyage, dans l'ordre */}
                 <div className="pp-fulltrip-cities">
                   {group.cities.map((city, i) => (
@@ -505,13 +524,13 @@ export default function TripFullSuggestions({
                                 <span className="pp-fulltrip-daytrip-tag">{t('daytrip.badge')}</span>
                               </div>
                               {dayGroup.entries.map((e) => (
-                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} />
+                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} getActivityName={getActivityName} />
                               ))}
                             </div>
                           ) : (
                             <Fragment key={`base-${gi}`}>
                               {dayGroup.entries.map((e) => (
-                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} />
+                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} getActivityName={getActivityName} />
                               ))}
                             </Fragment>
                           )

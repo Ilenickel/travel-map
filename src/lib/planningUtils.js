@@ -502,6 +502,44 @@ export function kMeansActivities(points, k) {
   });
 }
 
+// Estime le nombre de zones géographiquement distinctes parmi des points,
+// pour la détection automatique de zones (GroupManager) — un plafond fixe
+// (ex. toujours 3 zones) fusionnait de force des villes éloignées dès qu'un
+// voyage en couvrait davantage (ex. 7 villes sur tout le Japon). Approche :
+// part du nombre de zones maximal possible, puis fusionne tant que deux
+// centroïdes du k-means résultant sont plus proches que `minSeparationKm` —
+// jamais l'inverse (pas de fusion forcée de villes éloignées). Les
+// excursions (Nara/Kyoto, Miyajima/Hiroshima…) ne dépendent PAS de ce seuil :
+// GroupManager les rattache toujours à leur ville mère de façon structurelle
+// (cities.parent_city_id), avant même d'appeler cette fonction — le seuil ne
+// sert donc qu'à décider si deux villes DISTINCTES doivent partager une zone,
+// jamais à recoller une excursion à sa ville. D'où une valeur volontairement
+// basse (des villes à 40 km+ l'une de l'autre, ex. Kyoto/Osaka, doivent
+// rester deux zones séparées).
+export function estimateGeoClusterCount(points, { minSeparationKm = 20, maxK = 8 } = {}) {
+  if (points.length < 2) return 1;
+  for (let k = Math.min(maxK, points.length); k > 1; k--) {
+    const clustered = kMeansActivities(points, k);
+    const centroids = Array.from({ length: k }, (_, ci) => {
+      const pts = clustered.filter((p) => p.cluster === ci);
+      if (!pts.length) return null;
+      return { lat: pts.reduce((s, p) => s + p.lat, 0) / pts.length, lng: pts.reduce((s, p) => s + p.lng, 0) / pts.length };
+    }).filter(Boolean);
+
+    let tooClose = false;
+    for (let i = 0; i < centroids.length && !tooClose; i++) {
+      for (let j = i + 1; j < centroids.length; j++) {
+        if (haversineKm(centroids[i].lat, centroids[i].lng, centroids[j].lat, centroids[j].lng) < minSeparationKm) {
+          tooClose = true;
+          break;
+        }
+      }
+    }
+    if (!tooClose) return centroids.length;
+  }
+  return 1;
+}
+
 // ─── Export trip as plain text ────────────────────────────────────
 export function exportTripAsText({ trip, destinations, cities, activities }) {
   const lines = [];

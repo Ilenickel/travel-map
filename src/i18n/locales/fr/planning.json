@@ -158,6 +158,7 @@
     "button_other": "{{count}} suggestions de planning",
     "modalTitle": "Suggestions de planning pour {{city}}",
     "disclaimer": "Ces plannings viennent d'autres voyageurs — les plus proches de vos critères sont proposés en premier.",
+    "editorialNotice": "Itinéraire proposé par Triply, pas issu d'un voyage réel — il peut être moins précis que les suggestions de la communauté.",
     "prevLabel": "Suggestion précédente",
     "nextLabel": "Suggestion suivante",
     "goToLabel": "Aller à la suggestion {{count}}",

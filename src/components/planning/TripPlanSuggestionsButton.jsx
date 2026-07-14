@@ -4,6 +4,7 @@ import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { countryAlpha2FromEmoji, formatDuration } from '../../lib/planningUtils';
 import { CriteriaFilterChips, CriteriaIndicators } from './TripFullSuggestions';
+import { useActivityNameTranslations } from '../../lib/translateContent';
 
 // 3 créneaux seulement — alignés sur les 3 créneaux réels du calendrier
 // (DayView.jsx SLOTS : matin/apres-midi/soir, 0-12/12-18/18-24), pas 4 : un
@@ -26,7 +27,7 @@ function groupBySlot(activities) {
 // factorisé pour être réutilisé identiquement par la ville suggérée ET par
 // ses excursions (voir daytrips ci-dessous), plutôt que de dupliquer le
 // rendu de la timeline une 2e fois.
-function DayTimelineBlock({ day, dayNumber, t }) {
+function DayTimelineBlock({ day, dayNumber, t, getActivityName }) {
   return (
     <div className="pp-trip-suggestions-day">
       <div className="pp-trip-suggestions-day-divider">
@@ -43,7 +44,7 @@ function DayTimelineBlock({ day, dayNumber, t }) {
               <div className="pp-trip-suggestions-slot-items">
                 {items.map((a) => (
                   <span key={a.id} className="pp-trip-suggestions-item">
-                    {a.name}
+                    {getActivityName(a)}
                     {a.duration_minutes > 0 && (
                       <span className="pp-trip-suggestions-item-duration" title={t('tripSuggestions.durationTitle')}>
                         ⏱ {formatDuration(a.duration_minutes)}
@@ -58,6 +59,17 @@ function DayTimelineBlock({ day, dayNumber, t }) {
       </div>
     </div>
   );
+}
+
+// Toutes les activités du template affiché (ville + excursions), pour
+// traduction en lot — même raisonnement que TripFullSuggestions : seul le
+// template COURANT du carrousel est traduit, pas les autres pages chargées.
+function collectTemplateActivities(template) {
+  if (!template) return [];
+  return [
+    ...template.days.flatMap((d) => d.activities),
+    ...template.daytrips.flatMap((dt) => dt.days.flatMap((d) => d.activities)),
+  ];
 }
 
 // Fusionne les jours de la ville suggérée ET de ses excursions en UNE SEULE
@@ -98,7 +110,7 @@ export default function TripPlanSuggestionsButton({
   tripId, cityId, cityName, countryCode, countryName, plannedDays,
   hasExistingActivities, onImported,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [templates, setTemplates] = useState(null); // null = pas encore chargé — résultats COURANTS (filtrés par criteria)
   // Nombre de suggestions SANS filtre, figé au montage (et au changement de
   // ville/pays/durée) : décide seul si le bouton doit exister. Sans cette
@@ -218,9 +230,10 @@ export default function TripPlanSuggestionsButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cityName, countryCode, plannedDays]);
 
-  if (!plannedDays || baselineCount === 0) return null;
-
   const current = templates && templates.length > 0 ? templates[index] : null;
+  const getActivityName = useActivityNameTranslations(collectTemplateActivities(current), i18n.language);
+
+  if (!plannedDays || baselineCount === 0) return null;
 
   // Recharge à chaque OUVERTURE de la popup (pas seulement au montage du
   // bouton) : sans ça, un partage/import survenu après le premier chargement
@@ -314,6 +327,9 @@ export default function TripPlanSuggestionsButton({
                           🔥 {t('tripSuggestions.usesCount', { count: current.usesCount })}
                         </span>
                       </div>
+                      {current.isEditorial && (
+                        <p className="pp-fulltrip-notice">✏️ {t('tripSuggestions.editorialNotice')}</p>
+                      )}
                       <CriteriaIndicators templateCriteria={current.criteria} selectedCriteria={criteria} />
                       {/* Fusionné avec les excursions (buildCityTimeline) et trié par jour
                           absolu : une excursion tombant AVANT le dernier jour de la ville
@@ -332,13 +348,13 @@ export default function TripPlanSuggestionsButton({
                               <span className="pp-fulltrip-daytrip-tag">{t('daytrip.badge')}</span>
                             </div>
                             {group.entries.map((e) => (
-                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} />
+                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} getActivityName={getActivityName} />
                             ))}
                           </div>
                         ) : (
                           <Fragment key={`base-${gi}`}>
                             {group.entries.map((e) => (
-                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} />
+                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} getActivityName={getActivityName} />
                             ))}
                           </Fragment>
                         )

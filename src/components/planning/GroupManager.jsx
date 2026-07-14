@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
-import { getDaysBetween, formatDateShort, kMeansActivities, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
+import { getDaysBetween, formatDateShort, kMeansActivities, estimateGeoClusterCount, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
 import { NATIVE_GROUP_DRAG_TYPE } from './DayView';
 
 const GROUP_COLORS = [
@@ -190,7 +190,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
   );
 }
 
-export default function GroupManager({ tripId, groups, activities, trip, onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignGroupToDay, onAssignActivityToGroup }) {
+export default function GroupManager({ tripId, groups, activities, cities, trip, onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignGroupToDay, onAssignActivityToGroup }) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -206,22 +206,64 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
     setCreating(false);
   };
 
-  const handleAutoDetect = async (k = 3) => {
+  // Ancre de clustering = ville de BASE (cities.parent_city_id vide), jamais
+  // une excursion : une excursion (Nara/Kyoto, Miyajima/Hiroshima…) suit
+  // TOUJOURS la zone de sa ville mère, quelle que soit la distance qui les
+  // sépare — regrouper au niveau ville (au lieu de chaque activité) évite
+  // aussi qu'une ville proche d'une autre par le nombre d'activités (donc de
+  // points sur la carte) finisse fusionnée à tort avec elle par le k-means.
+  const handleAutoDetect = async () => {
     const geoActs = activities.filter(a => a.place_lat && a.place_lng);
     if (geoActs.length < 2) return;
+
+    const cityList = cities || [];
+    const baseCityIdFor = {};
+    for (const c of cityList) baseCityIdFor[c.id] = c.parent_city_id || c.id;
+
+    const baseCities = cityList.filter(c => !c.parent_city_id);
+    const cityPoints = baseCities
+      .map(c => {
+        const acts = geoActs.filter(a => baseCityIdFor[a.city_id] === c.id);
+        if (!acts.length) return null;
+        return {
+          id: c.id,
+          lat: acts.reduce((s, a) => s + a.place_lat, 0) / acts.length,
+          lng: acts.reduce((s, a) => s + a.place_lng, 0) / acts.length,
+        };
+      })
+      .filter(Boolean);
+
     setDetecting(true);
     // Remplace les groupes issus d'une détection précédente plutôt que d'en empiler de nouveaux
     await onClearAutoGroups(tripId);
-    const clustered = kMeansActivities(geoActs.map(a => ({ id: a.id, lat: a.place_lat, lng: a.place_lng })), k);
+
+    let activityIdToCluster;
+    if (cityPoints.length >= 2) {
+      const k = estimateGeoClusterCount(cityPoints, { maxK: Math.min(GROUP_COLORS.length, cityPoints.length) });
+      const clusteredCities = kMeansActivities(cityPoints, k);
+      const cityIdToCluster = Object.fromEntries(clusteredCities.map(c => [c.id, c.cluster]));
+      activityIdToCluster = Object.fromEntries(geoActs.map(a => [a.id, cityIdToCluster[baseCityIdFor[a.city_id]]]));
+    } else {
+      // Repli si les villes ne sont pas connues (voyage sans `cities`
+      // renseignées) : clustering par activité comme avant.
+      const k = estimateGeoClusterCount(
+        geoActs.map(a => ({ lat: a.place_lat, lng: a.place_lng })),
+        { maxK: Math.min(GROUP_COLORS.length, Math.floor(geoActs.length / 2) || 1) }
+      );
+      const clustered = kMeansActivities(geoActs.map(a => ({ id: a.id, lat: a.place_lat, lng: a.place_lng })), k);
+      activityIdToCluster = Object.fromEntries(clustered.map(p => [p.id, p.cluster]));
+    }
+
+    const k = Math.max(...Object.values(activityIdToCluster)) + 1;
     const clusterColors = GROUP_COLORS.slice(0, k);
     let created = 0;
     for (let ci = 0; ci < k; ci++) {
-      const pts = clustered.filter(p => p.cluster === ci);
-      if (!pts.length) continue;
+      const actIds = geoActs.filter(a => activityIdToCluster[a.id] === ci).map(a => a.id);
+      if (!actIds.length) continue;
       const g = await onAddGroup(tripId, t('group.autoZoneName', { n: created + 1 }), clusterColors[ci], { isAuto: true });
       if (g) {
         created += 1;
-        await Promise.all(pts.map(p => onAssignActivityToGroup(p.id, g.id)));
+        await Promise.all(actIds.map(id => onAssignActivityToGroup(id, g.id)));
       }
     }
     setDetecting(false);
@@ -307,7 +349,7 @@ export default function GroupManager({ tripId, groups, activities, trip, onAddGr
             {geoActsCount >= 3 && (
               <button
                 className="pp-btn pp-btn--ghost pp-btn--xs pp-btn--autodetect"
-                onClick={() => handleAutoDetect(Math.min(3, Math.floor(geoActsCount / 2)))}
+                onClick={() => handleAutoDetect()}
                 disabled={detecting}
                 title={t('group.autoDetectTitle', { count: geoActsCount })}
                 style={{ marginTop: 4 }}

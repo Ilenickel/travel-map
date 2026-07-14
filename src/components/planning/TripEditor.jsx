@@ -541,6 +541,7 @@ export default function TripEditor({
               tripId={tripId}
               groups={groups}
               activities={activities}
+              cities={cities}
               trip={trip}
               onAddGroup={onAddGroup}
               onClearAutoGroups={onClearAutoGroups}

@@ -357,7 +357,7 @@ async function handleSuggest(admin, body, res) {
   // que la durée déclarée par le voyageur d'origine.
   const { data: candidates } = await admin
     .from('trip_templates')
-    .select('id, city_name, city_lat, city_lng, nb_days, uses_count, likes_count, criteria')
+    .select('id, city_name, city_lat, city_lng, nb_days, uses_count, likes_count, criteria, is_editorial')
     .eq('country_code', countryCode)
     .eq('is_public', true)
     .gte('nb_days', plannedDays - 1)
@@ -407,6 +407,7 @@ async function handleSuggest(admin, body, res) {
     usesCount: t.uses_count,
     likesCount: t.likes_count,
     criteria: t.criteria,
+    isEditorial: t.is_editorial,
     days: daysByTemplate[t.id] || [],
     daytrips: childrenByParent[t.id] || [],
   }));
@@ -439,7 +440,7 @@ async function handleSuggestTrip(admin, body, res) {
   const flex = nbDaysFlex ? 1 : 0;
   const { data: groups } = await admin
     .from('trip_template_groups')
-    .select('id, total_days, uses_count, criteria')
+    .select('id, total_days, uses_count, criteria, is_editorial')
     .eq('country_code', countryCode)
     .eq('is_public', true)
     .gte('total_days', nbDays - flex)
@@ -522,6 +523,7 @@ async function handleSuggestTrip(admin, body, res) {
     totalDays: g.total_days,
     usesCount: g.uses_count,
     criteria: g.criteria,
+    isEditorial: g.is_editorial,
     matchedMustCities: g.matchedMustCities,
     cities: (membersByGroup[g.id] || []).map((m) => ({
       templateId: m.id,
