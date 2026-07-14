@@ -554,7 +554,8 @@
     "full": "Foto: {{author}} — {{license}} (Wikimedia Commons)",
     "authorOnly": "Foto: {{author}} (Wikimedia Commons)",
     "licenseOnly": "Foto bajo licencia {{license}} (Wikimedia Commons)",
-    "sourceOnly": "Foto: Wikimedia Commons"
+    "sourceOnly": "Foto: Wikimedia Commons",
+    "showCredit": "Mostrar el crédito de la foto"
   },
   "imageValidation": {
     "noFileSelected": "No se ha seleccionado ningún archivo.",

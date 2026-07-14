@@ -1560,6 +1560,13 @@ button.pp-sidebar-toggle {
   height: 240px;
   object-fit: cover;
 }
+.pp-place-suggestions-preview-credit {
+  display: block;
+  padding: 0 12px 8px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
 .pp-place-suggestions-preview-name {
   display: block;
   padding: 8px 12px;
@@ -7374,4 +7381,21 @@ button.pp-sidebar-toggle {
   border-radius: 8px;
   object-fit: cover;
   flex-shrink: 0;
+}
+/* La vignette est désormais un wrapper WikiImage (badge crédit ⓘ) : dans
+   42px la bulle de crédit serait illisible si elle restait rognée par
+   l'overflow du wrapper — on la laisse déborder au-dessus de la liste, et
+   l'arrondi est reporté sur l'image interne. Badge réduit pour ce format. */
+.wiki-img-wrap.pp-place-suggestions-thumb { overflow: visible; }
+.pp-place-suggestions-thumb .wiki-img-inner { border-radius: 8px; }
+.pp-place-suggestions-thumb .wiki-credit-btn {
+  width: 14px; height: 14px;
+  right: 2px; bottom: 2px;
+  font-size: 9px;
+}
+.pp-place-suggestions-thumb .wiki-credit-bubble {
+  right: auto; left: 0;
+  bottom: 46px;
+  width: max-content;
+  max-width: 240px;
 }

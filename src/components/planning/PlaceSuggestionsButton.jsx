@@ -8,6 +8,7 @@ import { localizeField } from '../../lib/localizeCountry';
 import { normalizeStr, countryAlpha2FromEmoji } from '../../lib/planningUtils';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { formatWikiAttribution } from '../../lib/wikiAttribution';
+import WikiImage from '../WikiImage';
 
 // Comparaison stricte (exacte ou sous-chaîne, pas de tolérance Levenshtein) —
 // utilisée pour le matching ville↔destination et la détection "déjà ajouté",
@@ -192,11 +193,11 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
                 {/* Vignette tactile (masquée sur desktop via CSS, où l'aperçu
                     grand format au survol prend le relais) */}
                 {previewSrcFor(place) && (
-                  <img
+                  <WikiImage
                     className="pp-place-suggestions-thumb"
                     src={previewSrcFor(place)}
-                    loading="lazy"
                     alt=""
+                    meta={previewMetaFor(place)}
                   />
                 )}
                 <div className="pp-search-item-text">
@@ -245,14 +246,21 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
             style={{ left, top: rect.top }}
             aria-hidden="true"
           >
+            {/* L'aperçu disparaît dès que la souris quitte la liste : un badge
+                cliquable y serait inutilisable — le crédit est affiché en clair
+                sous le nom, visible tant que la photo l'est. */}
             <img
               src={previewSrc}
               alt={t('placeSuggestions.previewImageAlt', { name: hoveredPlace.name })}
               className="pp-place-suggestions-preview-img"
               decoding="async"
-              title={formatWikiAttribution(previewMetaFor(hoveredPlace), tApp)}
             />
             <span className="pp-place-suggestions-preview-name">{hoveredPlace.name}</span>
+            {formatWikiAttribution(previewMetaFor(hoveredPlace), tApp) && (
+              <span className="pp-place-suggestions-preview-credit">
+                {formatWikiAttribution(previewMetaFor(hoveredPlace), tApp)}
+              </span>
+            )}
           </div>,
           document.body
         );

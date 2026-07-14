@@ -7496,3 +7496,63 @@ html, body, #root { height: 100%; }
   .visited-countries-grid { flex-direction: column; gap: 6px; }
   .visited-country-chip { width: 100%; border-radius: 12px; }
 }
+
+/* ── Crédit photo Wikimedia : badge ⓘ tapable + bulle (WikiImage.jsx) ──
+   Le wrapper porte le className de mise en page à la place de l'<img>.
+   :where() = spécificité nulle : les classes existantes (ex. .panel-header-bg
+   en position absolute) gardent la priorité sur ces valeurs par défaut. */
+:where(.wiki-img-wrap) {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.wiki-img-wrap .wiki-img-inner {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* .dest-card-mini img (filter) matcherait aussi l'image interne alors que le
+   wrapper porte déjà le filtre via .dest-card-mini-img : on neutralise pour
+   éviter le double assombrissement, et on reporte le hover sur le wrapper. */
+.dest-card-mini .wiki-img-wrap .wiki-img-inner { filter: none; transition: none; }
+.dest-card-mini:hover .wiki-img-wrap.dest-card-mini-img { filter: brightness(0.85); }
+
+.wiki-credit-btn {
+  position: absolute;
+  right: 5px; bottom: 5px;
+  z-index: 3;
+  width: 17px; height: 17px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.9);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, serif;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.wiki-credit-btn:hover { background: rgba(0,0,0,0.75); }
+
+.wiki-credit-bubble {
+  position: absolute;
+  right: 5px; bottom: 27px;
+  z-index: 4;
+  max-width: calc(100% - 10px);
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(8, 12, 20, 0.92);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: left;
+}
+
+/* L'image d'en-tête de la fiche pays est un fond décoratif recouvert par
+   l'overlay et les actions : le badge y serait inaccessible, on le masque. */
+.panel-header-bg .wiki-credit-btn,
+.panel-header-bg .wiki-credit-bubble { display: none; }
