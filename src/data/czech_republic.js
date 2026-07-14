@@ -94,7 +94,7 @@ export const CZECH_REPUBLIC = {
         es: "Praga es la capital más bella de Europa Central: el Puente de Carlos (s. XIV) con sus 30 estatuas barrocas, el Castillo de Praga (el mayor complejo de castillo del mundo, UNESCO), la Ciudad Vieja con su reloj astronómico (1410) y sus fuentes, y el barrio judío de Josefov — el barrio judío medieval mejor conservado del mundo. Por la noche, la ciudad brilla con mil luces.",
       },
       wikipedia: "Prague",
-      tags: ["Médiéval", "UNESCO", "Château", "Pont Charles", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Pont Charles — statues baroques sur la Vltava (XIVe s.)", en: "Charles Bridge — Baroque statues above the Vltava (14th century)", es: "Puente de Carlos — estatuas barrocas sobre el Moldava (s. XIV)" }, wikipedia: "Charles_Bridge" },
         { name: { fr: "Château de Prague — complexe de cathédrale, palais, vignoble", en: "Prague Castle — cathedral, palace and vineyard complex", es: "Castillo de Praga — complejo de catedral, palacio y viñedo" }, wikipedia: "Prague_Castle" },
@@ -112,7 +112,7 @@ export const CZECH_REPUBLIC = {
         es: "Český Krumlov es un pueblo medieval y barroco intacto declarado UNESCO: su castillo del siglo XIII (el segundo más grande de Bohemia) domina un meandro del Moldava. El teatro barroco del castillo es uno de los mejor conservados del mundo, aún equipado con sus decorados originales. En verano, el festival de la Rosa de Cinco Pétalos revive la ciudad con trajes del siglo XVI.",
       },
       wikipedia: "Český_Krumlov",
-      tags: ["Château", "UNESCO", "Baroque", "Village", "Architecture"],
+      tags: ["Architecture", "UNESCO", "Rural"],
       mustSee: [
         { name: { fr: "Château de Český Krumlov — méandre de la Vltava, panorama", en: "Český Krumlov Castle — Vltava meander and panoramic views", es: "Castillo de Český Krumlov — meandro del Moldava, panorama" }, wikipedia: "Český_Krumlov_Castle" },
         { name: { fr: "Théâtre baroque du château — scène du XVIIe s. intacte", en: "Castle Baroque theatre — intact 17th-century stage", es: "Teatro barroco del castillo — escenario del s. XVII intacto" }, wikipedia: "File:Divadlo Krumlov.JPG" },
@@ -129,7 +129,7 @@ export const CZECH_REPUBLIC = {
         es: "Plzeň (Pilsen) es la capital mundial de la cerveza rubia: la Pilsner Urquell se inventó aquí en 1842 por Josef Groll, revolucionando la cervecería mundial. La fábrica de Pilsner Urquell está declarada patrimonio industrial: sus bodegas abovedadas, donde aún madura la cerveza sin filtrar (tankovna), se pueden visitar con degustación. La ciudad también tiene una hermosa catedral gótica.",
       },
       wikipedia: "File:Plzeň - Chvojová 03.jpg",
-      tags: ["Bière", "Brasserie", "Pilsner", "Caves"],
+      tags: ["Gastronomie"],
       mustSee: [
         { name: { fr: "Brasserie Pilsner Urquell — caves et dégustation de bière non-filtrée", en: "Pilsner Urquell Brewery — cellars and unfiltered beer tasting", es: "Fábrica Pilsner Urquell — bodegas y degustación de cerveza sin filtrar" }, wikipedia: "File:Pilsner Urquell mug.jpg" },
         { name: { fr: "Musée de la bière de Bohême (Pivovarské muzeum)", en: "Bohemian Beer Museum (Pivovarské muzeum)", es: "Museo de la cerveza de Bohemia (Pivovarské muzeum)" }, wikipedia: "File:Pivovar Kostelec nad Černými lesy (01).jpg" },
@@ -147,7 +147,7 @@ export const CZECH_REPUBLIC = {
         es: "Brno, segunda ciudad de la República Checa, es una ciudad universitaria y cultural con el castillo Špilberk (antigua prisión estatal de los Habsburgo) y la villa Tugendhat (obra maestra de Mies van der Rohe, UNESCO). Moravia produce el 95% de los vinos checos: los pueblos de Velké Pavlovice, Mikulov y Znojmo ofrecen una ruta del vino similar a la de Alsacia.",
       },
       wikipedia: "File:Brno, Škoda 13T č. 1902.jpg",
-      tags: ["Vin", "Modernisme", "UNESCO", "Université", "Ville"],
+      tags: ["Gastronomie", "Modernité", "UNESCO", "Ville"],
       mustSee: [
         { name: { fr: "Villa Tugendhat Brno (UNESCO) — chef-d'œuvre de Mies van der Rohe", en: "Villa Tugendhat in Brno (UNESCO) — a Mies van der Rohe masterpiece", es: "Villa Tugendhat de Brno (UNESCO) — obra maestra de Mies van der Rohe" }, wikipedia: "Villa_Tugendhat" },
         { name: { fr: "Château Špilberk — prison habsbourgeoise et vue sur Brno", en: "Špilberk Castle — Habsburg prison and views over Brno", es: "Castillo Špilberk — prisión habsbúrgica y vistas sobre Brno" }, wikipedia: "Špilberk_Castle" },

@@ -94,7 +94,7 @@ export const NIGERIA = {
         es: "Lagos es la ciudad más grande de África, una megalópolis de más de 20 millones de habitantes que rebosa energía, cultura y contrastes. El mercado de Lekki, la playa de Bar Beach, el Museo Nacional y la escena musical afrobeats la convierten en un destino único en el mundo.",
       },
       wikipedia: "Lagos",
-      tags: ["Ville", "Culture", "Marché", "Musique", "Plage", "Gastronomie"],
+      tags: ["Ville", "Culture", "Shopping", "Plage", "Gastronomie"],
       mustSee: [
         { name: { fr: "Marché de Lekki — artisanat et tissus", en: "Lekki Market — crafts and fabrics", es: "Mercado de Lekki — artesanía y telas" }, wikipedia: "File:Shopping District - Lagos Nigeria.jpg" },
         { name: { fr: "Nike Art Gallery — art contemporain nigérian", en: "Nike Art Gallery — contemporary Nigerian art", es: "Nike Art Gallery — arte contemporáneo nigeriano" }, wikipedia: "Nike_Art_Gallery" },
@@ -112,7 +112,7 @@ export const NIGERIA = {
         es: "Abuya, capital federal planificada desde la década de 1980, impresiona por su arquitectura moderna y sus monumentos grandiosos. La mezquita nacional, la catedral nacional y la roca de Aso Rock ofrecen un rostro muy distinto de Nigeria.",
       },
       wikipedia: "Abuja",
-      tags: ["Ville", "Architecture", "Monuments", "Politique"],
+      tags: ["Ville", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Aso Rock — rocher monolithique emblématique", en: "Aso Rock — iconic monolithic outcrop", es: "Aso Rock — roca monolítica emblemática" }, wikipedia: "Aso_Rock" },
         { name: { fr: "Mosquée nationale du Nigéria", en: "National Mosque of Nigeria", es: "Mezquita Nacional de Nigeria" }, wikipedia: "File:AbujaNationalMosque.jpg" },
@@ -130,7 +130,7 @@ export const NIGERIA = {
         es: "El parque nacional de Yankari es la mayor reserva natural de Nigeria. Aquí se pueden observar elefantes, leones, búfalos y babuinos, con el añadido de las fuentes termales naturales de Wikki Spring, auténticas piscinas naturales en la sabana.",
       },
       wikipedia: "File:Wikki warm spring, YANKARI Game Reserve, Bauchi.jpg",
-      tags: ["Safari", "Nature", "Faune", "Sources chaudes"],
+      tags: ["Safari", "Nature", "Détente"],
       mustSee: [
         { name: { fr: "Wikki Spring — sources chaudes cristallines", en: "Wikki Spring — crystal-clear hot springs", es: "Wikki Spring — fuentes termales cristalinas" }, wikipedia: "File:Wikki Warm Spring Lake.jpg" },
         { name: { fr: "Éléphants de savane du parc", en: "The park's savannah elephants", es: "Elefantes de sabana del parque" }, wikipedia: "File:Elephants in yankari 2.jpg" },
@@ -147,7 +147,7 @@ export const NIGERIA = {
         es: "Benin City es la cuna de uno de los reinos más sofisticados de la África precolonial, célebre por sus bronces y marfiles saqueados por los británicos en 1897. El Museo Nacional de Benín expone este patrimonio excepcional, y algunas piezas empiezan a ser repatriadas.",
       },
       wikipedia: "File:Areal view of the ancient city of Benin.jpg",
-      tags: ["Histoire", "Art", "Royaume", "Bronzes", "UNESCO", "Architecture"],
+      tags: ["Histoire", "Art", "Musées", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Musée national de Bénin — bronzes et ivoires", en: "Benin National Museum — bronzes and ivories", es: "Museo Nacional de Benín — bronces y marfiles" }, wikipedia: "File:Nat Museum, Benin.jpg" },
         { name: { fr: "Palais royal d'Oba — siège de la monarchie", en: "Oba's Royal Palace — seat of the monarchy", es: "Palacio real del Oba — sede de la monarquía" }, wikipedia: "File:Royal_Palace_of_the_Oba_of_Benin_cropped.jpg" },

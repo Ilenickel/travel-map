@@ -75,7 +75,7 @@ export const MAURITANIA = {
         es: "Chinguetti, declarada Patrimonio de la Humanidad por la UNESCO, es una de las siete ciudades santas del islam y un importante centro del comercio caravanero transahariano. Sus bibliotecas de manuscritos antiguos y sus casas de barro se hunden en las dunas del erg del Sahara.",
       },
       wikipedia: "Chinguetti",
-      tags: ["UNESCO", "Désert", "Histoire", "Islam"],
+      tags: ["UNESCO", "Désert", "Histoire", "Spiritualité"],
       mustSee: [
         { name: { fr: "Mosquée de Chinguetti — minaret en pierre", en: "Chinguetti Mosque — stone minaret", es: "Mezquita de Chinguetti — minarete de piedra" }, wikipedia: "Chinguetti_Mosque" },
         { name: { fr: "Dunes de l'Erg de Chinguetti — coucher de soleil", en: "Chinguetti Erg dunes — sunset", es: "Dunas del erg de Chinguetti — atardecer" }, wikipedia: "File:Erg Chebbi.jpeg" },
@@ -92,7 +92,7 @@ export const MAURITANIA = {
         es: "El banco de Arguin es uno de los santuarios ornitológicos más importantes del mundo, declarado Patrimonio de la Humanidad por la UNESCO. Millones de aves migratorias se detienen aquí entre Europa y el África subsahariana. Los pescadores imraguen todavía utilizan piraguas de vela para pescar en esta laguna única.",
       },
       wikipedia: "File:ISS058-E-7710 - View of Mauritania.jpg",
-      tags: ["UNESCO", "Oiseaux", "Nature", "Pêche traditionnelle"],
+      tags: ["UNESCO", "Safari", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Pêcheurs imraguen en pirogue à voile", en: "Imraguen fishermen in sailing canoes", es: "Pescadores imraguen en piragua de vela" }, wikipedia: "File:Banc-dArguin-byRundvald.jpg" },
         { name: { fr: "Plages désertes du parc", en: "The park's deserted beaches", es: "Playas desiertas del parque" }, wikipedia: "File:PNBA 43.JPG" },
@@ -109,7 +109,7 @@ export const MAURITANIA = {
         es: "Ouadane, otra ciudad caravanera declarada Patrimonio de la Humanidad por la UNESCO, domina un desfiladero espectacular en el corazón de la meseta del Adrar. Los paisajes de roca roja, palmerales y ruinas medievales crean una atmósfera intemporal para los amantes de la aventura sahariana.",
       },
       wikipedia: "Ouadane",
-      tags: ["UNESCO", "Désert", "Gorges", "Histoire"],
+      tags: ["UNESCO", "Désert", "Nature", "Histoire"],
       mustSee: [
         { name: { fr: "Ancienne ville médiévale de Ouadane", en: "Ouadane's old medieval town", es: "Antigua ciudad medieval de Ouadane" }, wikipedia: "Ouadane" },
         { name: { fr: "Peintures rupestres de l'Adrar", en: "Adrar rock paintings", es: "Pinturas rupestres del Adrar" }, wikipedia: "File:Adrar-Peintures rupestres (4).JPG" },
@@ -126,7 +126,7 @@ export const MAURITANIA = {
         es: "Nuakchot, capital nacida del desierto en 1960, es una ciudad fascinante por sus contrastes: dunas que avanzan hacia el mar, el mercado de pescado del Puerto de Pesca Artesanal donde cada mañana las piraguas descargan toneladas de pescado, y barrios de caravanas.",
       },
       wikipedia: "Nouakchott",
-      tags: ["Ville", "Marché", "Pêche", "Culture"],
+      tags: ["Ville", "Shopping", "Plage", "Culture"],
       mustSee: [
         { name: { fr: "Port de Pêche Artisanale — marché au poisson", en: "Port de Pêche Artisanale — fish market", es: "Puerto de Pesca Artesanal — mercado de pescado" }, wikipedia: "File:Nouakchott beach - fishing boat.jpg" },
         { name: { fr: "Musée national de Mauritanie", en: "National Museum of Mauritania", es: "Museo Nacional de Mauritania" }, wikipedia: "File:NouakchottNationalMuseum1.jpg" },

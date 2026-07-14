@@ -94,7 +94,7 @@ export const KENYA = {
         es: "La Reserva Nacional del Masai Mara es el escenario de la Gran Migración: entre julio y octubre, 1,5 millones de ñus y cebras cruzan el río Mara, bajo la vigilancia de cocodrilos del Nilo y leones. Un espectáculo sin igual en el mundo.",
       },
       wikipedia: "Maasai_Mara",
-      tags: ["Safari", "Grande Migration", "Big Five", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Grande Migration (juil.–sept.)", en: "Great Migration (Jul.–Sep.)", es: "Gran Migración (jul.–sept.)" }, wikipedia: "File:Wildebeests migration crossing.jpg" },
         { name: { fr: "Traversée de la Mara River", en: "Mara River crossing", es: "Cruce del río Mara" }, wikipedia: "Mara_River" },
@@ -112,7 +112,7 @@ export const KENYA = {
         es: "El parque nacional de Amboseli ofrece la imagen icónica de África: elefantes caminando bajo la silueta nevada del Kilimanjaro. Uno de los mejores parques para fotografiar elefantes en grandes manadas.",
       },
       wikipedia: "File:Kilimanjaro_from_Amboseli.jpg",
-      tags: ["Éléphants", "Kilimandjaro", "Safari", "Photographie", "Randonnée"],
+      tags: ["Safari", "Montagne", "Culture", "Randonnée"],
       mustSee: [
         { name: { fr: "Éléphants devant le Kilimandjaro", en: "Elephants before Kilimanjaro", es: "Elefantes ante el Kilimanjaro" }, wikipedia: "African_bush_elephant" },
         { name: { fr: "Lac Amboseli (flamants)", en: "Lake Amboseli (flamingos)", es: "Lago Amboseli (flamencos)" }, wikipedia: "Flamingo" },
@@ -129,7 +129,7 @@ export const KENYA = {
         es: "La única capital del mundo con un parque nacional en sus afueras: el Parque Nacional de Nairobi, donde leones y jirafas se mueven con el skyline de fondo. La ciudad es también el centro gastronómico de África Oriental.",
       },
       wikipedia: "Nairobi",
-      tags: ["Ville", "Faune", "Culture", "Gastronomie"],
+      tags: ["Ville", "Safari", "Culture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Nairobi National Park (lions & skyline)", en: "Nairobi National Park (lions & skyline)", es: "Parque Nacional de Nairobi (leones y skyline)" }, wikipedia: "Nairobi_National_Park" },
         { name: { fr: "Centre des girafes de Nairobi", en: "Nairobi Giraffe Centre", es: "Centro de las jirafas de Nairobi" }, wikipedia: "Rothschild's_giraffe" },
@@ -147,7 +147,7 @@ export const KENYA = {
         es: "La costa keniana ofrece playas paradisíacas de aguas turquesa, ciudades suajilis históricas (Lamu, Patrimonio UNESCO) y una cultura mestiza árabe-africana única.",
       },
       wikipedia: "Mombasa",
-      tags: ["Plage", "Histoire", "Culture", "Plongée", "UNESCO", "Architecture"],
+      tags: ["Plage", "Histoire", "Culture", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Fort Jésus de Mombasa (UNESCO)", en: "Fort Jesus in Mombasa (UNESCO)", es: "Fuerte Jesús de Mombasa (UNESCO)" }, wikipedia: "Fort_Jesus" },
         { name: { fr: "Lamu — vieille ville (UNESCO)", en: "Lamu — old town (UNESCO)", es: "Lamu — casco antiguo (UNESCO)" }, wikipedia: "Lamu" },

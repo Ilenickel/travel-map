@@ -69,7 +69,7 @@ export const VANUATU = {
         es: "El Yasur es uno de los volcanes más accesibles y activos del planeta, en erupción casi continua desde hace al menos 800 años. Se puede llegar caminando hasta el borde del cráter para presenciar impresionantes explosiones de lava, sobre todo al atardecer. La isla de Tanna es también el bastión del movimiento John Frum, un fascinante culto cargo melanesio, y alberga pueblos kastom donde los habitantes mantienen un modo de vida tradicional.",
       },
       wikipedia: "Mount_Yasur",
-      tags: ["Volcan", "Aventure", "Nature", "Culture"],
+      tags: ["Nature", "Aventure", "Culture"],
       mustSee: [
         { name: { fr: "Cratère du Yasur — bord du volcan actif au coucher du soleil (expérience unique)", en: "Yasur crater — the active volcano's rim at sunset (a unique experience)", es: "Cráter del Yasur — borde del volcán activo al atardecer (experiencia única)" }, wikipedia: "Mount_Yasur" },
         { name: { fr: "Village kastom de Yakel — communauté vivant selon les traditions ancestrales", en: "Yakel kastom village — community living by ancestral traditions", es: "Pueblo kastom de Yakel — comunidad que vive según tradiciones ancestrales" }, wikipedia: "File:Tanna Island 2010 IMG 4808 (16635432558).jpg" },
@@ -87,7 +87,7 @@ export const VANUATU = {
         es: "El salto de gaul (naghol en bislama) es una ceremonia ancestral que se practica cada año entre abril y junio en la isla de Pentecostés. Los hombres saltan desde torres de madera de 30 metros de altura, con los pies atados con lianas flexibles, para celebrar la cosecha de ñame. Esta práctica, ancestro documentado del puenting, es un momento de valentía y de vínculo espiritual con la tierra, que solo debe fotografiarse con respeto.",
       },
       wikipedia: "Land_diving",
-      tags: ["Culturel", "Cérémoniel", "Aventure", "Ancestral"],
+      tags: ["Culture", "Tradition", "Aventure"],
       mustSee: [
         { name: { fr: "Saut de Gaul de Pentecôte — cérémonie du saut en liane (avril–juin uniquement)", en: "Pentecost land diving — vine-jump ceremony (April–June only)", es: "Salto de Gaul de Pentecostés — ceremonia del salto con liana (solo abril–junio)" }, wikipedia: "Land_diving" },
         { name: { fr: "Village de Lonorore — artisanat local et accueil en homestay", en: "Lonorore village — local crafts and homestay welcome", es: "Pueblo de Lonorore — artesanía local y alojamiento en casas de familia" }, wikipedia: "File:Pentecost Island Houses.jpg" },
@@ -105,7 +105,7 @@ export const VANUATU = {
         es: "El Dominio del Jefe Roi Mata es el primer sitio melanesio inscrito en el Patrimonio de la Humanidad de la UNESCO, en 2008. Comprende tres emplazamientos vinculados al gran jefe Roi Mata, que unificó a los pueblos de Éfate a principios del siglo XVII: su residencia en la isla principal, el lugar de su muerte en Fels Cave y su lugar de sepultura en la isla de Retoka. Esta sepultura colectiva de 50 personas, enterradas vivas para acompañar a su jefe, es un testimonio excepcional de la cultura melanesia.",
       },
       wikipedia: "File:A_stream_on_Efate,_Vanuatu.jpg",
-      tags: ["UNESCO", "Histoire", "Culturel", "Archéologie", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Île de Retoka — sépulture collective de Roi Mata (site UNESCO)", en: "Retoka Island — Roi Mata's collective burial site (UNESCO site)", es: "Isla de Retoka — sepultura colectiva de Roi Mata (sitio UNESCO)" }, wikipedia: "File:Eretoka-2008-11-02.jpg" },
         { name: { fr: "Fels Cave — grotte où le chef Roi Mata rendit son dernier souffle", en: "Fels Cave — cave where Chief Roi Mata took his last breath", es: "Fels Cave — cueva donde el jefe Roi Mata exhaló su último aliento" }, wikipedia: "File:Fele's Cave.jpg" },
@@ -121,7 +121,7 @@ export const VANUATU = {
         es: "Los blue holes de Vanuatu son pozas de agua dulce de tonos azules sobrenaturales, formadas en calizas kársticas bajo la selva tropical. El blue hole de Riri y el de Nanda son accesibles desde Port Vila y ofrecen buceo o baño en un agua de pureza y frescor notables. En alta mar, el SS Coolidge es uno de los pecios de guerra más grandes y accesibles del mundo.",
       },
       wikipedia: "SS_President_Coolidge",
-      tags: ["Plongée", "Snorkeling", "Épave WWII", "Nature", "Ville"],
+      tags: ["Plage", "Histoire", "Nature", "Ville"],
       mustSee: [
         { name: { fr: "Épave du SS President Coolidge — paquebot de luxe reconverti en transport de troupes, coulé en 1942", en: "SS President Coolidge wreck — luxury liner converted into a troopship, sunk in 1942", es: "Pecio del SS President Coolidge — transatlántico de lujo reconvertido en transporte de tropas, hundido en 1942" }, wikipedia: "SS_President_Coolidge" },
         { name: { fr: "Blue Hole de Nanda — bassin d'eau douce cristalline dans la forêt de Malekula", en: "Nanda Blue Hole — crystal-clear freshwater pool in Malekula's forest", es: "Blue Hole de Nanda — poza de agua dulce cristalina en el bosque de Malekula" }, wikipedia: "File:Nanda Blue Hole Santo (29282050925).jpg" },

@@ -94,7 +94,7 @@ export const MALAWI = {
         es: "El lago Malaui (UNESCO) es un acuario gigante: 1.000 especies endémicas de cíclidos (coloridos peces tropicales), más que en cualquier otro lago u océano del mundo. El esnórquel desde los lodges de Cape Maclear o la isla de Likoma ofrece una experiencia comparable a las Maldivas — sin las multitudes. Las zonas arenosas del norte del lago están además libres de riesgo de bilharziosis.",
       },
       wikipedia: "Lake_Malawi",
-      tags: ["Snorkeling", "Poissons", "UNESCO", "Lac"],
+      tags: ["Plage", "UNESCO", "Nature"],
       mustSee: [
         { name: { fr: "Snorkeling Cape Maclear — cichlidés multicolores", en: "Snorkelling at Cape Maclear — multicoloured cichlids", es: "Esnórquel en Cape Maclear — cíclidos multicolores" }, wikipedia: "Cape_Maclear" },
         { name: { fr: "Likoma Island — cathédrale anglicane en brousse + plage", en: "Likoma Island — Anglican cathedral in the bush + beach", es: "Isla de Likoma — catedral anglicana en el monte + playa" }, wikipedia: "Likoma_Island" },
@@ -112,7 +112,7 @@ export const MALAWI = {
         es: "Liwonde es el mejor parque de fauna de Malaui: cocodrilos e hipopótamos en el río Shire, elefantes, búfalos, y desde 2017 rinocerontes negros y leones reintroducidos por African Parks. El safari en barco por el Shire es una de las experiencias de fauna más impresionantes del África austral — sin las multitudes de Kenia o Sudáfrica.",
       },
       wikipedia: "File:Liwonde Park - view of Shire River.jpg",
-      tags: ["Safari", "Éléphants", "Rivière", "Rhinos"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Safari en bateau sur la rivière Shire — crocos et éléphants", en: "Boat safari on the Shire River — crocodiles and elephants", es: "Safari en barco por el río Shire — cocodrilos y elefantes" }, wikipedia: "File:Shire fluss liwonde.jpg" },
         { name: { fr: "Rhinocéros noirs réintroduits (programme African Parks)", en: "Reintroduced black rhinos (African Parks programme)", es: "Rinocerontes negros reintroducidos (programa African Parks)" }, wikipedia: "File:Ngorongoro Spitzmaulnashorn.jpg" },
@@ -129,7 +129,7 @@ export const MALAWI = {
         es: "El macizo de Mulanje (3.002m, punto más alto de Malaui) es un inselberg granítico que se eleva espectacularmente 2.000m sobre las llanuras de té circundantes. Los senderos atraviesan bosques endémicos de cedros, cascadas y praderas alpinas. La travesía de 3-5 días con porteadores es uno de los mejores treks de África central.",
       },
       wikipedia: "File:Mount Mulanje.jpg",
-      tags: ["Randonnée", "Montagne", "Cèdres", "Cascade"],
+      tags: ["Randonnée", "Montagne", "Nature"],
       mustSee: [
         { name: { fr: "Sommet Sapitwa (3 002m) — point le plus haut du Malawi", en: "Sapitwa Peak (3,002m) — Malawi's highest point", es: "Pico Sapitwa (3.002m) — punto más alto de Malaui" }, wikipedia: "File:Mulanje Massif, Sapitwa Peak.jpg" },
         { name: { fr: "Forêts de cèdres de Mulanje (espèce endémique)", en: "Mulanje cedar forests (endemic species)", es: "Bosques de cedros de Mulanje (especie endémica)" }, wikipedia: "File:Mount Mulanje (15073634244).jpg" },
@@ -146,7 +146,7 @@ export const MALAWI = {
         es: "Nyika es el mayor parque nacional de Malaui: una vasta meseta cubierta de hierba a 2.000-2.500m de altitud con orquídeas endémicas, cebras, elands, leopardos y los únicos safaris a caballo de Malaui. Las praderas onduladas evocan las Highlands escocesas trasplantadas a África. Vistas impresionantes al lago Malaui en días despejados.",
       },
       wikipedia: "Nyika_National_Park",
-      tags: ["Safari", "Cheval", "Orchidées", "Plateau"],
+      tags: ["Safari", "Aventure", "Nature", "Montagne"],
       mustSee: [
         { name: { fr: "Safari à cheval sur le plateau de Nyika (unique au Malawi)", en: "Horseback safari on the Nyika Plateau (unique in Malawi)", es: "Safari a caballo en la meseta de Nyika (único en Malaui)" }, wikipedia: "Nyika_National_Park" },
         { name: { fr: "Orchidées sauvages (200+ espèces) en saison des pluies", en: "Wild orchids (200+ species) in the rainy season", es: "Orquídeas silvestres (más de 200 especies) en temporada de lluvias" }, wikipedia: "File:Flower Quartz Nyika National Park Malawi.jpg" },

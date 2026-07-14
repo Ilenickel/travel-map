@@ -85,7 +85,7 @@ export const TURKMENISTAN = {
         en: "Ashgabat is an open-air museum capital, entirely clad in white marble — holder of the world record for the greatest number of white marble buildings according to the Guinness Book of Records. Rebuilt after a devastating 1948 earthquake that killed two-thirds of its population, the city has been transformed by successive presidents into a showcase of national grandeur, with gilded palaces, monumental fountains and monuments glorifying Turkmenistan. A surreal, one-of-a-kind experience.", es: "Asjabad es una capital-museo al aire libre, revestida por completo de mármol blanco —posee el récord mundial al mayor número de edificios de mármol blanco según el Libro Guinness. Reconstruida tras un devastador terremoto en 1948 que mató a dos tercios de su población, la ciudad ha sido transformada por los sucesivos presidentes en un escaparate de la grandeza nacional, con sus palacios dorados, sus fuentes monumentales y sus monumentos a la gloria de Turkmenistán. Una experiencia surrealista y única en el mundo.",
       },
       wikipedia: "Ashgabat",
-      tags: ["Ville", "Architecture", "Surréaliste", "Marbres"],
+      tags: ["Ville", "Architecture", "Art"],
       mustSee: [
         { name: { fr: "Monument de la Neutralité — tripode de 95 m couronné d'une étoile rotative", en: "Neutrality Monument — 95 m tripod topped with a rotating star", es: "Monumento de la Neutralidad — trípode de 95 m coronado por una estrella giratoria" }, wikipedia: "Neutrality_Monument" },
         { name: { fr: "Palais Présidentiel Oguzhan — complexe de palais en marbre blanc", en: "Oguzhan Presidential Palace — white marble palace complex", es: "Palacio Presidencial Oguzkhan — complejo de palacios de mármol blanco" }, wikipedia: "Ashgabat" },
@@ -101,7 +101,7 @@ export const TURKMENISTAN = {
         en: "The Darvaza gas crater, nicknamed the 'Gate to Hell' or 'Door to Hell', is a one-of-a-kind phenomenon: a chasm 69 metres in diameter and 30 metres deep in the Karakum desert, which has burned non-stop since 1971 when Soviet engineers set it alight to prevent methane leaks. The crater's orange glow, visible for kilometres in the desert night, is one of the most striking sights in Central Asia.", es: "El cráter de gas de Darvaza, apodado la 'Puerta del Infierno' o 'Boca del diablo', es un fenómeno único en el mundo: una sima de 69 metros de diámetro y 30 metros de profundidad en el desierto de Karakum, que arde sin interrupción desde 1971, cuando unos ingenieros soviéticos le prendieron fuego para evitar fugas de metano. El resplandor anaranjado del cráter, visible a kilómetros de distancia en la noche del desierto, es una de las imágenes más impactantes de Asia Central.",
       },
       wikipedia: "Darvaza_gas_crater",
-      tags: ["Géologie", "Désert", "Spectacle", "Unique"],
+      tags: ["Nature", "Désert", "Culture"],
       mustSee: [
         { name: { fr: "Cratère principal de Darvaza — la 'Porte de l'Enfer' au cœur du Karakoum", en: "Main Darvaza crater — the 'Gate to Hell' in the heart of the Karakum", es: "Cráter principal de Darvaza — la 'Puerta del Infierno' en el corazón del Karakum" }, wikipedia: "Darvaza_gas_crater" },
         { name: { fr: "Campement de nuit sous les étoiles — expérience unique face aux flammes", en: "Overnight camping under the stars — a unique experience facing the flames", es: "Campamento nocturno bajo las estrellas — experiencia única frente a las llamas" }, wikipedia: "File:Darvaza Gas Crater at Dawn (42435085262).jpg" },
@@ -118,7 +118,7 @@ export const TURKMENISTAN = {
         en: "Ancient Merv, inscribed on the UNESCO World Heritage List, was one of the greatest cities of the medieval world and one of the most important nodes on the Silk Road. In the 12th century, under the Seljuks, it may have had over a million inhabitants and was a major centre of science, theology and art. Razed by Genghis Khan's Mongols in 1221, it never regained its former splendour. Its remains — citadels, caravanserais and mausoleums — stretch across dozens of kilometres of plain.", es: "La antigua Merv, declarada Patrimonio de la Humanidad por la UNESCO, fue una de las ciudades más grandes del mundo medieval y uno de los nudos más importantes de la Ruta de la Seda. En el siglo XII, bajo los selyúcidas, quizá superó el millón de habitantes y fue un centro destacado de ciencia, teología y arte. Arrasada por los mongoles de Gengis Kan en 1221, nunca recuperó su esplendor. Sus vestigios —ciudadelas, caravasares y mausoleos— se extienden a lo largo de decenas de kilómetros en la llanura.",
       },
       wikipedia: "Merv",
-      tags: ["UNESCO", "Route de la Soie", "Archéologie", "Islam"],
+      tags: ["UNESCO", "Histoire", "Spiritualité"],
       mustSee: [
         { name: { fr: "Mausolée Sultan Sanjar — chef-d'œuvre seldjoukide du XIIe siècle", en: "Sultan Sanjar Mausoleum — 12th-century Seljuk masterpiece", es: "Mausoleo de Sultán Sanjar — obra maestra selyúcida del siglo XII" }, wikipedia: "File:Sultan Sanjar mausoleum.jpg" },
         { name: { fr: "Citadelle d'Erk Kala — la plus ancienne, bâtie au IVe s. av. J.-C.", en: "Erk Kala citadel — the oldest, built in the 4th century BC", es: "Ciudadela de Erk Kala — la más antigua, construida en el siglo IV a. C." }, wikipedia: "File:Erk Kala (1) (31597776268).jpg" },
@@ -134,7 +134,7 @@ export const TURKMENISTAN = {
         en: "Konye-Urgench (ancient Urgench), also UNESCO-listed, was the capital of the powerful Khorezm empire in the 12th–13th centuries before being razed by Genghis Khan's armies in 1221. Its monuments — minarets, mausoleums and mud-brick caravanserais — testify to the architectural sophistication of pre-Islamic and Islamic Central Asia. The 60-metre Kutlug Timur Minaret is the tallest minaret in Central Asia.", es: "Konye-Urgench (antigua Urgench), también declarada Patrimonio de la Humanidad por la UNESCO, fue la capital del poderoso imperio de Corasmia en los siglos XII–XIII antes de ser arrasada por los ejércitos de Gengis Kan en 1221. Sus monumentos —minaretes, mausoleos y caravasares de adobe— dan testimonio de la sofisticación arquitectónica del Asia Central preislámica e islámica. El minarete de Kutlug Timur, de 60 metros de altura, es el más alto de Asia Central.",
       },
       wikipedia: "Konye-Urgench",
-      tags: ["UNESCO", "Khorezm", "Islam", "Archéologie"],
+      tags: ["UNESCO", "Histoire", "Spiritualité"],
       mustSee: [
         { name: { fr: "Minaret de Kutlug Timur — le plus haut minaret d'Asie centrale (60 m)", en: "Kutlug Timur Minaret — the tallest minaret in Central Asia (60 m)", es: "Minarete de Kutlug Timur — el más alto de Asia Central (60 m)" }, wikipedia: "Kutlug_Timur_Minaret" },
         { name: { fr: "Mausolée de Tekesh — sépulcre du sultan khorezm du XIIe siècle", en: "Tekesh Mausoleum — tomb of the 12th-century Khorezm sultan", es: "Mausoleo de Tekesh — sepulcro del sultán corasmio del siglo XII" }, wikipedia: "File:Tekesh Mausoleum.JPG" },

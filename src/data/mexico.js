@@ -123,7 +123,7 @@ export const MEXICO = {
         es: "Playas de arena blanca y mar Caribe turquesa, misteriosos cenotes (cuevas inundadas), ruinas mayas de Tulum y Cobá. Estación balnearia internacional y naturaleza preservada.",
       },
       wikipedia: "File:Hotel Zone in Cancun, Mexico.jpg",
-      tags: ["Plage", "Mer", "Nature", "Plongée"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Ruines mayas de Tulum", en: "Maya ruins of Tulum", es: "Ruinas mayas de Tulum" }, wikipedia: "Tulum" },
         { name: { fr: "Cenotes (Gran Cenote, Ik Kil)", en: "Cenotes (Gran Cenote, Ik Kil)", es: "Cenotes (Gran Cenote, Ik Kil)" }, wikipedia: "Cenote" },
@@ -141,7 +141,7 @@ export const MEXICO = {
         es: "Capital gastronómica de México, con sus moles, tlayudas y mezcal artesanal. Ruinas zapotecas de Monte Albán y extraordinarios mercados de textiles indígenas.",
       },
       wikipedia: "Oaxaca",
-      tags: ["Gastronomie", "Culture", "Histoire", "Artisanat"],
+      tags: ["Gastronomie", "Culture", "Histoire", "Shopping"],
       mustSee: [
         { name: { fr: "Monte Albán — cité zapotèque", en: "Monte Albán — Zapotec city", es: "Monte Albán — ciudad zapoteca" }, wikipedia: "Monte_Albán" },
         { name: { fr: "Marché de Tlacolula", en: "Tlacolula Market", es: "Mercado de Tlacolula" }, wikipedia: "Tlacolula_de_Matamoros" },
@@ -158,7 +158,7 @@ export const MEXICO = {
         es: "La pirámide de El Castillo en Chichén Itzá es una de las Nuevas Siete Maravillas del Mundo. La península de Yucatán rebosa de sitios mayas, cenotes y ciudades coloniales.",
       },
       wikipedia: "Chichen_Itza",
-      tags: ["Histoire", "UNESCO", "Archéologie", "Nature"],
+      tags: ["Histoire", "UNESCO", "Nature"],
       mustSee: [
         { name: { fr: "Chichén Itzá — El Castillo", en: "Chichén Itzá — El Castillo", es: "Chichén Itzá — El Castillo" }, wikipedia: "Chichen_Itza" },
         { name: { fr: "Uxmal — site maya", en: "Uxmal — Maya site", es: "Uxmal — sitio maya" }, wikipedia: "Uxmal" },

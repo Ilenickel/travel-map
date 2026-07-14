@@ -94,7 +94,7 @@ export const COTE_DIVOIRE = {
         es: "Abiyán es la capital económica del África Occidental francófona: el barrio de Plateau con sus rascacielos frente a la laguna Ébrié, Cocody con sus embajadas, Treichville y su animado mercado nocturno, y la lujosa Cité d'Ivoire. Una ciudad de contrastes fascinante, con una notable escena musical (coupé-décalé) y gastronómica.",
       },
       wikipedia: "Abidjan",
-      tags: ["Ville", "Métropole", "Gastronomie", "Musique"],
+      tags: ["Ville", "Gastronomie", "Culture"],
       mustSee: [
         { name: { fr: "Cathédrale Saint-Paul du Plateau — architecture audacieuse de Aldo Spirito", en: "Saint Paul's Cathedral in Plateau — Aldo Spirito's bold architecture", es: "Catedral Saint-Paul de Plateau — audaz arquitectura de Aldo Spirito" }, wikipedia: "File:La cathédrale Saint-Paul Abidjan 03.jpg" },
         { name: { fr: "Marché de Treichville — artisanat et ambiance nocturne", en: "Treichville Market — crafts and nightlife atmosphere", es: "Mercado de Treichville — artesanía y ambiente nocturno" }, wikipedia: "Treichville" },
@@ -112,7 +112,7 @@ export const COTE_DIVOIRE = {
         es: "Yamusukro, capital oficial, alberga Nuestra Señora de la Paz — la basílica cristiana más grande del mundo (158 m de altura, 7.000 asientos), financiada por Félix Houphouët-Boigny y consagrada por Juan Pablo II en 1990. El contraste con los pueblos circundantes es impactante. También destacan los caimanes sagrados del palacio presidencial.",
       },
       wikipedia: "Basilica_of_Our_Lady_of_Peace",
-      tags: ["Architecture", "Religion", "Unique", "Ville"],
+      tags: ["Architecture", "Spiritualité", "Ville"],
       mustSee: [
         { name: { fr: "Basilique Notre-Dame de la Paix — la plus grande du monde (UNESCO)", en: "Basilica of Our Lady of Peace — the largest in the world (UNESCO)", es: "Basílica de Nuestra Señora de la Paz — la más grande del mundo (UNESCO)" }, wikipedia: "Basilica_of_Our_Lady_of_Peace" },
         { name: { fr: "Caïmans sacrés du lac du palais présidentiel", en: "Sacred caimans in the presidential palace lake", es: "Caimanes sagrados del lago del palacio presidencial" }, wikipedia: "File:Crocodile de Yamoussoukro.jpg" },
@@ -130,7 +130,7 @@ export const COTE_DIVOIRE = {
         es: "El Parque nacional de Taï (UNESCO) es uno de los últimos grandes bosques primarios de África Occidental: 3300 km² de selva densa con chimpancés (estudiados desde hace 50 años), leopardos, hipopótamos pigmeos (especie en peligro crítico) y una biodiversidad excepcional. Un viaje al corazón del África profunda.",
       },
       wikipedia: "Taï_National_Park",
-      tags: ["Forêt", "UNESCO", "Chimpanzés", "Nature"],
+      tags: ["Nature", "UNESCO", "Safari"],
       mustSee: [
         { name: { fr: "Observation chimpanzés de Bossou (habituées aux humains)", en: "Bossou chimpanzee viewing (habituated to humans)", es: "Observación de chimpancés de Bossou (habituados a los humanos)" }, wikipedia: "File:Schimpansen im Nationalpark Tai.jpg" },
         { name: { fr: "Hippopotame pygmée (espèce en danger critique)", en: "Pygmy hippo (critically endangered species)", es: "Hipopótamo pigmeo (especie en peligro crítico)" }, wikipedia: "Pygmy_hippopotamus" },
@@ -148,7 +148,7 @@ export const COTE_DIVOIRE = {
         es: "Grand-Bassam, antigua capital colonial francesa (UNESCO), está a 40 km de Abiyán: sus mansiones coloniales en ruinas junto a la laguna, sus playas de arena blanca y el barrio Francia con sus casas de factorías comerciales del siglo XIX. Estación balnearia y patrimonio entremezclados.",
       },
       wikipedia: "Grand-Bassam",
-      tags: ["Coloniale", "UNESCO", "Plage", "Histoire"],
+      tags: ["Histoire", "UNESCO", "Plage"],
       mustSee: [
         { name: { fr: "Quartier France — maisons coloniales classées UNESCO", en: "France district — UNESCO-listed colonial houses", es: "Barrio Francia — casas coloniales declaradas UNESCO" }, wikipedia: "File:Mairie de Grand-Bassam façade avant.jpg" },
         { name: { fr: "Musée National du Costume", en: "National Costume Museum", es: "Museo Nacional del Traje" }, wikipedia: "File:Mairie de Grand-Bassam portail.jpg" },

@@ -94,7 +94,7 @@ export const MONTENEGRO = {
         es: "La bahía de Kotor (UNESCO) es el único fiordo del Mediterráneo: paredes de 1.800 m que caen sobre aguas verde-azuladas, con el casco antiguo veneciano de Kotor (siglos XII-XVI) al pie de las murallas. La subida a las murallas (1.350 escalones) ofrece un panorama impresionante. La isla de Nuestra Señora de las Rocas (construida a mano por pescadores desde el siglo XV) es accesible en barca.",
       },
       wikipedia: "Bay_of_Kotor",
-      tags: ["Fjord", "UNESCO", "Vénitien", "Remparts", "Ville", "Histoire", "Architecture"],
+      tags: ["Nature", "UNESCO", "Architecture", "Ville", "Histoire"],
       mustSee: [
         { name: { fr: "Vieille ville de Kotor et ses remparts vénitiens (UNESCO)", en: "Kotor's old town and its Venetian ramparts (UNESCO)", es: "Casco antiguo de Kotor y sus murallas venecianas (UNESCO)" }, wikipedia: "Kotor" },
         { name: { fr: "Montée aux remparts (1 350 marches) — panorama sur le fjord", en: "Climb up the ramparts (1,350 steps) — panorama over the fjord", es: "Subida a las murallas (1.350 escalones) — panorámica del fiordo" }, wikipedia: "File:Castillo_de_San_Juan,_Kotor,_Bahía_de_Kotor,_Montenegro,_2014-04-19,_DD_16.JPG" },
@@ -112,7 +112,7 @@ export const MONTENEGRO = {
         es: "Budva es la capital costera de Montenegro: un casco antiguo veneciano sobre un promontorio rocoso rodeado de playas de guijarros y arena. Sveti Stefan es una antigua isla-pueblo de pescadores convertida en el hotel de lujo Aman: su silueta sobre el mar es la imagen más icónica del país. La playa pública frente a la isla es gratuita y espectacular.",
       },
       wikipedia: "Budva",
-      tags: ["Plage", "Vénitien", "Riviera", "Luxe", "Ville"],
+      tags: ["Plage", "Architecture", "Luxe", "Ville"],
       mustSee: [
         { name: { fr: "Vieille ville de Budva — remparts et ruelles vénitiennes", en: "Budva's old town — Venetian ramparts and alleyways", es: "Casco antiguo de Budva — murallas y callejuelas venecianas" }, wikipedia: "File:Budva old town 1.jpg" },
         { name: { fr: "Vue sur Sveti Stefan depuis la route (l'image du Monténégro)", en: "View of Sveti Stefan from the road (the image of Montenegro)", es: "Vista de Sveti Stefan desde la carretera (la imagen de Montenegro)" }, wikipedia: "Sveti_Stefan" },
@@ -130,7 +130,7 @@ export const MONTENEGRO = {
         es: "Durmitor (UNESCO) es el parque nacional más salvaje de los Balcanes occidentales: el cañón del Tara (1.300 m de profundidad, el más profundo de Europa después del Gran Cañón) con rafting de clase mundial, el Lago Negro (Crno Jezero) al pie de picos de 2.500 m, y 18 glaciaciones que esculpieron 48 lagos de montaña.",
       },
       wikipedia: "Durmitor",
-      tags: ["Canyon", "UNESCO", "Rafting", "Lacs", "Randonnée", "Ski", "Nature"],
+      tags: ["Nature", "UNESCO", "Aventure", "Randonnée", "Ski"],
       mustSee: [
         { name: { fr: "Rafting dans le canyon de Tara (35km, niveau débutant possible)", en: "Rafting in the Tara Canyon (35km, beginner-friendly)", es: "Rafting en el cañón del Tara (35 km, apto para principiantes)" }, wikipedia: "Tara_River_Canyon" },
         { name: { fr: "Canyon de Tara depuis le pont Đurđevića (150m au-dessus)", en: "Tara Canyon from Đurđevića Bridge (150m above)", es: "Cañón del Tara desde el puente Đurđevića (150 m de altura)" }, wikipedia: "Đurđevića_Tara_Bridge" },
@@ -148,7 +148,7 @@ export const MONTENEGRO = {
         es: "El monasterio de Ostrog está incrustado en un acantilado vertical a 900 m de altitud: uno de los lugares de peregrinación más visitados de los Balcanes, sin distinción de religión (cristianos y musulmanes). Fundado en el siglo XVII por San Basilio de Ostrog, sus frescos del siglo XVII tallados en la roca caliza y su intensa atmósfera espiritual lo convierten en un lugar único.",
       },
       wikipedia: "Ostrog_Monastery",
-      tags: ["Monastère", "Falaise", "Pèlerinage", "Spirituel", "Histoire", "Architecture"],
+      tags: ["Spiritualité", "Nature", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Monastère supérieur d'Ostrog — dans la falaise à 900m", en: "Upper Ostrog Monastery — carved into the cliff at 900m", es: "Monasterio superior de Ostrog — en el acantilado a 900 m" }, wikipedia: "File:Pogled na Ostrog izdaleka 2019.jpg" },
         { name: { fr: "Reliques de Saint Basile — vénérées par toutes religions", en: "Relics of Saint Basil — venerated across all faiths", es: "Reliquias de San Basilio — veneradas por todas las religiones" }, wikipedia: "File:Ostrog Monastery, Montenegro.jpg" },

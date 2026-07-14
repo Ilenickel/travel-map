@@ -94,7 +94,7 @@ export const RWANDA = {
         es: "El parque nacional de los Volcanes es uno de los pocos lugares del mundo donde se pueden observar gorilas de montaña en libertad. Estos primates, parientes cercanos del ser humano, viven en familias en los bosques brumosos de los Virunga. Un permiso (1.500$) da acceso a una hora inolvidable.",
       },
       wikipedia: "Volcanoes_National_Park",
-      tags: ["Gorilles", "Nature", "Unique", "UNESCO", "Safari", "Randonnée"],
+      tags: ["Safari", "Nature", "UNESCO", "Randonnée"],
       mustSee: [
         { name: { fr: "Trekking gorilles de montagne", en: "Mountain gorilla trekking", es: "Trekking con gorilas de montaña" }, wikipedia: "Mountain_gorilla" },
         { name: { fr: "Volcan Karisimbi (4 507 m)", en: "Mount Karisimbi (4,507 m)", es: "Volcán Karisimbi (4.507 m)" }, wikipedia: "Mount_Karisimbi" },
@@ -112,7 +112,7 @@ export const RWANDA = {
         es: "Kigali es la capital más limpia y moderna del África subsahariana: prohibición de las bolsas de plástico desde 2008, calles impecables, gastronomía dinámica. El Memorial del Genocidio es una visita esencial para comprender la historia ruandesa.",
       },
       wikipedia: "Kigali",
-      tags: ["Ville", "Moderne", "Mémoire", "Gastronomie", "Histoire", "Architecture"],
+      tags: ["Ville", "Modernité", "Histoire", "Gastronomie", "Architecture"],
       mustSee: [
         { name: { fr: "Mémorial du Génocide de Kigali", en: "Kigali Genocide Memorial", es: "Memorial del Genocidio de Kigali" }, wikipedia: "Kigali_Genocide_Memorial" },
         { name: { fr: "Quartier Kimironko — marché des artisans", en: "Kimironko district — craft market", es: "Barrio de Kimironko — mercado de artesanos" }, wikipedia: "File:Paintings Images.jpg" },
@@ -129,7 +129,7 @@ export const RWANDA = {
         es: "Nyungwe es uno de los bosques tropicales mejor conservados de África: 1.000 km² de bosque de montaña que alberga chimpancés, colobos angoleños (más de 500), cientos de especies de aves y un dosel arbóreo accesible mediante una pasarela colgante a 50 m de altura.",
       },
       wikipedia: "File:NYUNGWE.jpg",
-      tags: ["Forêt", "Chimpanzés", "Oiseaux", "Canopée", "Randonnée", "Nature", "Safari"],
+      tags: ["Nature", "Safari", "Randonnée"],
       mustSee: [
         { name: { fr: "Trek chimpanzés de Nyungwe", en: "Nyungwe chimpanzee trek", es: "Trekking con chimpancés en Nyungwe" }, wikipedia: "Chimpanzee" },
         { name: { fr: "Canopy Walk — passerelle à 50 m", en: "Canopy Walk — 50m suspended walkway", es: "Canopy Walk — pasarela a 50 m" }, wikipedia: "File:Nyungwe canopy walk.jpg" },
@@ -147,7 +147,7 @@ export const RWANDA = {
         es: "El lago Kivu, compartido con la RDC, es uno de los lagos más bellos de África: aguas azules entre colinas verdes, islas tropicales para explorar en kayak, las playas de Gisenyi y Kibuye, y cultivo de café de especialidad en sus orillas.",
       },
       wikipedia: "File:Along Lake Kivu.jpg",
-      tags: ["Lac", "Détente", "Kayak", "Paysages"],
+      tags: ["Nature", "Détente", "Aventure"],
       mustSee: [
         { name: { fr: "Gisenyi — bord du lac, plages", en: "Gisenyi — lakeside, beaches", es: "Gisenyi — orilla del lago, playas" }, wikipedia: "File:Beach in Gisenyi (Rwanda).JPG" },
         { name: { fr: "Îles Amahoro & Nkombo (kayak)", en: "Amahoro & Nkombo islands (kayaking)", es: "Islas Amahoro y Nkombo (kayak)" }, wikipedia: "File:Amahoro_Island_in_Kivu.jpg" },

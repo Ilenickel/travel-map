@@ -94,7 +94,7 @@ export const NICARAGUA = {
         es: "Granada es la primera ciudad colonial española del continente americano (1524), con sus calles empedradas, sus iglesias amarillas y blancas, y sus fachadas coloridas enmarcando el lago Nicaragua. Las Isletas de Granada (365 pequeñas islas en el lago) se visitan en barco desde la orilla.",
       },
       wikipedia: "Granada,_Nicaragua",
-      tags: ["Colonial", "Histoire", "Lac", "Archipel"],
+      tags: ["Histoire", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Îlots de Granada (365 îles en bateau)", en: "Isletas de Granada (365 islands by boat)", es: "Isletas de Granada (365 islas en barco)" }, wikipedia: "File:Calle_Hermanos_Jorge_Marrero_by_the_coast_of_Las_Palmas_de_Gran_Canaria,_La_Isleta,_Gran_Canaria,_2023_May.jpg" },
         { name: { fr: "Iglesia de La Merced (vue depuis le clocher)", en: "Iglesia de La Merced (view from the bell tower)", es: "Iglesia de La Merced (vista desde el campanario)" }, wikipedia: "File:La Merced Church-Granada, Nicaragua.jpg" },
@@ -112,7 +112,7 @@ export const NICARAGUA = {
         es: "León es la capital intelectual y revolucionaria de Nicaragua: su catedral, declarada Patrimonio de la Humanidad, es la más grande de Centroamérica, sus muros están cubiertos de murales sandinistas, y el vecino volcán Cerro Negro es el lugar de sandboarding más famoso del mundo.",
       },
       wikipedia: "File:Calvario 2575.jpg",
-      tags: ["UNESCO", "Révolution", "Volcans", "Surf des sables"],
+      tags: ["UNESCO", "Histoire", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Cathédrale de León (UNESCO) — toit panoramique", en: "León Cathedral (UNESCO) — panoramic rooftop", es: "Catedral de León (UNESCO) — azotea panorámica" }, wikipedia: "León_Cathedral" },
         { name: { fr: "Sandboarding Cerro Negro (volcan actif)", en: "Sandboarding Cerro Negro (active volcano)", es: "Sandboarding en el Cerro Negro (volcán activo)" }, wikipedia: "Cerro_Negro" },
@@ -129,7 +129,7 @@ export const NICARAGUA = {
         es: "Ometepe es una isla única formada por dos volcanes gemelos —Concepción y Maderas— emergidos del lago Nicaragua, el más grande de Centroamérica. Petroglifos precolombinos, monos aulladores y aguas termales jalonan sus laderas verdes.",
       },
       wikipedia: "File:Ometepe banner.jpg",
-      tags: ["Volcans", "Nature", "Île", "Randonnée"],
+      tags: ["Nature", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Ascension Volcan Concepción (1 610 m)", en: "Concepción Volcano ascent (1,610 m)", es: "Ascensión al volcán Concepción (1.610 m)" }, wikipedia: "Concepción_(volcano)" },
         { name: { fr: "Randonnée Volcan Maderas & cratère-lagune", en: "Maderas Volcano hike & crater lagoon", es: "Ruta al volcán Maderas y laguna del cráter" }, wikipedia: "File:Looking down onto Maderas (192935764).jpg" },
@@ -147,7 +147,7 @@ export const NICARAGUA = {
         es: "Las Corn Islands son las joyas caribeñas desconocidas de Nicaragua: Little Corn Island es un paraíso sin coches, con arrecifes de coral inmaculados y aguas turquesas. Langosta fresca, hamacas y playas salvajes componen la mayor parte del programa.",
       },
       wikipedia: "Corn_Islands",
-      tags: ["Île", "Caraïbes", "Snorkel", "Détente"],
+      tags: ["Plage", "Détente"],
       mustSee: [
         { name: { fr: "Little Corn — snorkel récifs (sans voitures)", en: "Little Corn — reef snorkelling (no cars)", es: "Little Corn — buceo de superficie en los arrecifes (sin coches)" }, wikipedia: "File:Big Corn Island aka Great Corn island, Nicaragua 14.jpg" },
         { name: { fr: "Bioluminescence la nuit dans la baie", en: "Bioluminescence at night in the bay", es: "Bioluminiscencia nocturna en la bahía" }, wikipedia: "Bioluminescence" },

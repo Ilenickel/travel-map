@@ -94,7 +94,7 @@ export const GUATEMALA = {
         es: "Antigua es una de las ciudades coloniales españolas mejor conservadas de Centroamérica, declarada Patrimonio UNESCO. Calles empedradas, arcos barrocos, ruinas de conventos y volcanes de fondo: Agua, Fuego y Acatenango. Su Semana Santa es la más impresionante del mundo hispano.",
       },
       wikipedia: "Antigua_Guatemala",
-      tags: ["UNESCO", "Colonial", "Volcans", "Culture", "Architecture", "Gastronomie"],
+      tags: ["UNESCO", "Histoire", "Nature", "Culture", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Arc de Santa Catalina & vue volcans", en: "Santa Catalina Arch & volcano views", es: "Arco de Santa Catalina y vistas a los volcanes" }, wikipedia: "Arco_de_Santa_Catalina" },
         { name: { fr: "Ruines Cathédrale Santiago", en: "Santiago Cathedral ruins", es: "Ruinas de la catedral de Santiago" }, wikipedia: "File:Antigua Guatemala 1979 - Colonial ruins.jpg" },
@@ -112,7 +112,7 @@ export const GUATEMALA = {
         es: "Tikal es el mayor sitio maya del mundo: una ciudad precolombina enterrada en la selva tropical del Petén. Los templos I y IV sobresalen del dosel forestal, ofreciendo vistas sobrecogedoras sobre la jungla infinita. Tucanes, monos aulladores y coatíes pueblan las ruinas.",
       },
       wikipedia: "Tikal",
-      tags: ["UNESCO", "Mayas", "Jungle", "Archéologie", "Randonnée", "Nature", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Nature", "Randonnée", "Architecture"],
       mustSee: [
         { name: { fr: "Temple I — Gran Jaguar (70 m)", en: "Temple I — Great Jaguar (70 m)", es: "Templo I — Gran Jaguar (70 m)" }, wikipedia: "File:Tikal Temple I 02.jpg" },
         { name: { fr: "Temple IV — vue au-dessus de la canopée", en: "Temple IV — views above the canopy", es: "Templo IV — vistas sobre el dosel forestal" }, wikipedia: "File:Tikal Temple IV, 2022 02.jpg" },
@@ -130,7 +130,7 @@ export const GUATEMALA = {
         es: "El lago Atitlán, a 1.562 m de altitud, está rodeado de tres volcanes y pueblos mayas todavía vivos. Aldous Huxley lo describió como «el lago más bello del mundo». Cada pueblo ribereño tiene su propia identidad cultural y su mercado tradicional.",
       },
       wikipedia: "Lake_Atitlán",
-      tags: ["Nature", "Culture Maya", "Lac", "Volcans", "Randonnée"],
+      tags: ["Nature", "Histoire", "Randonnée"],
       mustSee: [
         { name: { fr: "Village San Juan La Laguna (artisans mayas)", en: "San Juan La Laguna village (Maya artisans)", es: "Pueblo de San Juan La Laguna (artesanos mayas)" }, wikipedia: "San_Juan_La_Laguna" },
         { name: { fr: "Ascension Volcan San Pedro (3 020 m)", en: "San Pedro Volcano hike (3,020 m)", es: "Ascensión al volcán San Pedro (3.020 m)" }, wikipedia: "File:Volcán San Pedro, Chile, 2016-02-09, DD 18.JPG" },
@@ -148,7 +148,7 @@ export const GUATEMALA = {
         es: "Chichicastenango alberga el mercado indígena más grande de Centroamérica, los jueves y domingos. Los mayas k'iche' venden allí textiles, máscaras, cerámica y copal, entre el humo del incienso frente a la iglesia de Santo Tomás.",
       },
       wikipedia: "Chichicastenango",
-      tags: ["Marché", "Culture Maya", "Artisanat", "Traditions"],
+      tags: ["Shopping", "Histoire", "Tradition"],
       mustSee: [
         { name: { fr: "Marché maya (jeu & dim) — textiles & copal", en: "Maya market (Thu & Sun) — textiles & copal", es: "Mercado maya (jue y dom) — textiles y copal" }, wikipedia: "File:Chichicastenango market.jpg" },
         { name: { fr: "Église Santo Tomás — syncrétisme maya-catholique", en: "Santo Tomás Church — Maya-Catholic syncretism", es: "Iglesia de Santo Tomás — sincretismo maya-católico" }, wikipedia: "File:Chichicastenango Guatemala, March 2020 - Santo Tomas.jpg" },

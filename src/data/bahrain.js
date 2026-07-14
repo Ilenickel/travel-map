@@ -80,7 +80,7 @@ export const BAHRAIN = {
         es: "El Fuerte de Baréin, inscrito en el Patrimonio Mundial de la UNESCO, es un tell artificial de 12 hectáreas formado por las capas sucesivas de las civilizaciones que ocuparon el sitio durante 5.000 años. En él se distinguen los restos de la ciudad de Qal'at al-Bahrain, antigua capital de la civilización Dilmún, superpuestos a niveles fenicios, griegos, sasánidas e islámicos. El museo del sitio ofrece una síntesis extraordinaria de esta estratigrafía excepcional.",
       },
       wikipedia: "Qal'at_al-Bahrain",
-      tags: ["UNESCO", "Archéologie", "Dilmun", "Histoire", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         {
           name: {
@@ -126,7 +126,7 @@ export const BAHRAIN = {
         es: "El Museo Nacional de Baréin, inaugurado en 1988, es uno de los más ricos y mejor concebidos del golfo Pérsico. Sus colecciones recorren la historia del archipiélago desde la prehistoria hasta la época contemporánea, con especial atención a la civilización Dilmún y a la tradición ancestral de la pesca de perlas. La sala dedicada a las tradiciones del buceo de perlas, patrimonio inmaterial de la humanidad reconocido por la UNESCO, resulta especialmente conmovedora.",
       },
       wikipedia: "Bahrain_National_Museum",
-      tags: ["Musée", "Histoire", "Dilmun", "Perles"],
+      tags: ["Musées", "Histoire", "Plage"],
       mustSee: [
         {
           name: {
@@ -164,7 +164,7 @@ export const BAHRAIN = {
         es: "El Árbol de la Vida es un mezquite solitario de unos 400 años que crece en medio del árido desierto de Baréin, sin fuente de agua aparente en kilómetros a la redonda. Este misterioso fenómeno natural, cuyas raíces parecen encontrar agua a decenas de metros de profundidad, se ha convertido en un símbolo nacional y un popular lugar de peregrinación. Los alrededores del desierto central ofrecen paseos entre las tumbas del período Dilmún, la mayor necrópolis de la Antigüedad.",
       },
       wikipedia: "Tree_of_Life_(Bahrain)",
-      tags: ["Nature", "Mystère", "Désert", "Archéologie"],
+      tags: ["Nature", "Histoire", "Désert"],
       mustSee: [
         {
           name: {
@@ -202,7 +202,7 @@ export const BAHRAIN = {
         es: "Baréin fue el primer país de Oriente Medio en acoger un Gran Premio de Fórmula 1, en 2004, y su circuito de Sakhir sigue siendo una de las citas más populares del calendario mundial. Manama, capital modernizada, ofrece una mezcla fascinante entre el distrito financiero de torres de cristal y el zoco tradicional donde aún se comercia con oro, especias y textiles. El barrio de Muharraq, catalogado por la UNESCO como ruta de la perla, merece un largo paseo.",
       },
       wikipedia: "File:Bahrain_International_Circuit,_November_2,_2017_SkySat_(cropped).jpg",
-      tags: ["Sport", "Modernité", "Culture", "Shopping", "Ville", "Gastronomie"],
+      tags: ["Modernité", "Culture", "Shopping", "Ville", "Gastronomie"],
       mustSee: [
         {
           name: {

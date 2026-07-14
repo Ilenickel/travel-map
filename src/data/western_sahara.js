@@ -94,7 +94,7 @@ export const WESTERN_SAHARA = {
         es: "Dakhla es una península de 40 km de largo que encierra una laguna protegida de aguas turquesas, convertida en la meca mundial del kitesurf y el windsurf gracias a sus alisios regulares y su laguna poco profunda. Decenas de centros de deportes acuáticos ofrecen clases y alquiler de material para todos los niveles. Más allá de los deportes náuticos, las playas de arena blanca, la pesca de gambas gigantes y los atardeceres sobre el Atlántico la convierten en un destino de playa poco conocido.",
       },
       wikipedia: "File:Sand dunes, Remote view of Dakhla Oasis 2, Egypt.jpg",
-      tags: ["Kitesurf", "Planche à voile", "Lagune", "Plage"],
+      tags: ["Plage"],
       mustSee: [
         { name: { fr: "Lagune de Dakhla — eaux turquoise et vents constants, paradis du kite", en: "Dakhla Lagoon — turquoise waters and constant winds, a kiting paradise", es: "Laguna de Dakhla — aguas turquesas y vientos constantes, paraíso del kite" }, wikipedia: "File:Dakhla - panoramio.jpg" },
         { name: { fr: "Plage Blanche — immense plage de sable vierge au nord de Dakhla", en: "White Beach — vast pristine sand beach north of Dakhla", es: "Playa Blanca — inmensa playa de arena virgen al norte de Dakhla" }, wikipedia: "File:Plage PK25 Dakhla.jpg" },
@@ -110,7 +110,7 @@ export const WESTERN_SAHARA = {
         es: "El Aaiún es la principal ciudad del Sahara Occidental, construida por España en el siglo XX y hoy ampliamente desarrollada por Marruecos. Pese a su estatus político particular, es una ciudad moderna con amplios bulevares, mezquitas imponentes y un mercado animado donde conviven población saharaui y marroquí. La ciudad es el punto de partida para explorar los paisajes desérticos circundantes y la costa atlántica.",
       },
       wikipedia: "File:Aerial photograph of Laayoune 04.jpg",
-      tags: ["Ville", "Sahara", "Culture", "Étape"],
+      tags: ["Ville", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Grande Mosquée de Laâyoune — architecture hispano-marocaine", en: "Grand Mosque of Laayoune — Spanish-Moroccan architecture", es: "Gran Mezquita de El Aaiún — arquitectura hispano-marroquí" }, wikipedia: "File:Mosque moulay abd el aziz laayoune.jpg" },
         { name: { fr: "Place du Mechouar — cœur de la vie urbaine", en: "Mechouar Square — heart of city life", es: "Plaza del Mechouar — corazón de la vida urbana" }, wikipedia: "File:Looking Across Place Mechouar.jpg" },
@@ -127,7 +127,7 @@ export const WESTERN_SAHARA = {
         es: "La carretera costera que bordea el Atlántico desde Tan-Tan (Marruecos) hasta Dakhla es uno de los road trips más salvajes del norte de África. Cientos de kilómetros de dunas de arena que se precipitan en un Atlántico azul verdoso, pueblos de pescadores saharauis que viven del mar abundante, flamencos en las lagunas costeras y cielos estrellados de una pureza absoluta. La pesca es excepcional en toda la costa.",
       },
       wikipedia: "File:Atlantic Ocean in Western Sahara.jpg",
-      tags: ["Road trip", "Côte", "Pêche", "Nature"],
+      tags: ["Aventure", "Plage", "Nature"],
       mustSee: [
         { name: { fr: "Plage de Tarfaya — ancienne escale de l'Aéropostale (Saint-Exupéry)", en: "Tarfaya Beach — former Aéropostale stopover (Saint-Exupéry)", es: "Playa de Tarfaya — antigua escala de la Aéropostale (Saint-Exupéry)" }, wikipedia: "File:Tarfaya - طرفاية 7.jpg" },
         { name: { fr: "Lagunes à flamants roses — en hiver, milliers d'oiseaux migrateurs", en: "Flamingo lagoons — thousands of migratory birds in winter", es: "Lagunas de flamencos rosados — en invierno, miles de aves migratorias" }, wikipedia: "File:Greater flamingos (Phoenicopterus roseus) resting.jpg" },

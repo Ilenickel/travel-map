@@ -71,7 +71,7 @@ export const REPUBLIC_OF_CONGO = {
         es: "Odzala-Kokoua es uno de los parques nacionales más antiguos y valiosos de África, en el corazón de una de las mayores selvas tropicales del mundo. Alberga una de las densidades más altas de gorilas de llanura occidental y elefantes de bosque del continente. Los bais (claros pantanosos) son lugares únicos para la observación de fauna salvaje.",
       },
       wikipedia: "File:Loxodonta cyclotis 3970030.jpg",
-      tags: ["Gorilles", "Éléphants", "Forêt", "Safari"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Bai de Mboko — observation gorilles et éléphants aux clairières", en: "Mboko Bai — gorilla and elephant viewing at the clearings", es: "Bai de Mboko — observación de gorilas y elefantes en los claros" }, wikipedia: "File:Loxodonta_cyclotis,_Odzala-Kokoua_National_Park,_Republic_of_the_Congo_53146541.jpg" },
         { name: { fr: "Trekking gorilles des plaines occidentales", en: "Western lowland gorilla trekking", es: "Trekking con gorilas de llanura occidental" }, wikipedia: "Western_lowland_gorilla" },
@@ -89,7 +89,7 @@ export const REPUBLIC_OF_CONGO = {
         es: "Brazzaville es una capital tranquila y verde frente a Kinshasa, ambas ciudades separadas por tan solo 4 km del río Congo. La ciudad conserva un ambiente colonial francés con sus edificios históricos y su catedral. Es un excelente punto de partida para explorar el país y admirar el espectáculo del Pool Malebo.",
       },
       wikipedia: "Brazzaville",
-      tags: ["Culture", "Histoire", "Fleuve", "Architecture"],
+      tags: ["Culture", "Histoire", "Nature", "Architecture"],
       mustSee: [
         { name: { fr: "Basilique Sainte-Anne — cathédrale néo-gothique emblématique", en: "Basilica of Sainte-Anne — iconic neo-Gothic cathedral", es: "Basílica de Santa Ana — catedral neogótica emblemática" }, wikipedia: "File:Brazzaville - Basilique Sainte-Anne-du-Congo.jpg" },
         { name: { fr: "Corniche du fleuve — vue sur Kinshasa et le Pool Malebo", en: "River corniche — view over Kinshasa and the Pool Malebo", es: "Malecón del río — vista sobre Kinshasa y el Pool Malebo" }, wikipedia: "File:Congo_River_with_upstream_half_of_Pool_Malebo_and_Mbamu.jpg" },
@@ -107,7 +107,7 @@ export const REPUBLIC_OF_CONGO = {
         es: "Pointe-Noire es la capital económica del Congo y su principal ciudad costera, con hermosas playas en el océano Atlántico. También es una puerta de entrada al santuario de chimpancés de Tchimpounga y a los gorilas de la reserva de Conkouati-Douli. La ciudad petrolera ofrece una vida nocturna animada y una cocina de marisco reputada.",
       },
       wikipedia: "File:Pointe-Noire downtown.jpg",
-      tags: ["Plage", "Mer", "Culture", "Nature"],
+      tags: ["Plage", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Plage de la Côte Sauvage — surf et pêche artisanale", en: "Côte Sauvage beach — surfing and artisanal fishing", es: "Playa de la Côte Sauvage — surf y pesca artesanal" }, wikipedia: "File:Pointe-Noire Beach.jpg" },
         { name: { fr: "Sanctuaire de chimpanzés de Tchimpounga", en: "Tchimpounga chimpanzee sanctuary", es: "Santuario de chimpancés de Tchimpounga" }, wikipedia: "File:2006-12-09 Chipanzees D Bruyere.JPG" },
@@ -125,7 +125,7 @@ export const REPUBLIC_OF_CONGO = {
         es: "La travesía en ferry entre Brazzaville y Kinshasa es una experiencia única en el mundo: dos capitales de países distintos separadas por un simple brazo de río. El trayecto de 30 minutos por el río Congo ofrece vistas espectaculares de ambas metrópolis y de la inmensidad del Pool Malebo. Es también un lugar de intenso intercambio cultural entre los dos Congos.",
       },
       wikipedia: "File:A_view_of_Congo_River_from_Kinshasa,_Democratic_Republic_of_the_Congo_(DRC).jpg",
-      tags: ["Aventure", "Fleuve", "Culture", "Frontière"],
+      tags: ["Aventure", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Ferry Brazzaville–Kinshasa — traversée du fleuve Congo", en: "Brazzaville–Kinshasa ferry — crossing the Congo River", es: "Ferry Brazzaville–Kinshasa — travesía del río Congo" }, wikipedia: "File:A_view_of_Congo_River_from_Kinshasa,_Democratic_Republic_of_the_Congo_(DRC).jpg" },
         { name: { fr: "Port Beach de Brazzaville — pêcheurs et pirogues traditionnelles", en: "Port Beach in Brazzaville — fishermen and traditional canoes", es: "Port Beach en Brazzaville — pescadores y piraguas tradicionales" }, wikipedia: "File:Fishermen of the Congo Basin 3.jpg" },

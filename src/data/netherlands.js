@@ -96,7 +96,7 @@ export const NETHERLANDS = {
         es: "Ámsterdam es una capital única, construida sobre una red de 165 canales bordeados de casas con frontones típicas del Siglo de Oro neerlandés. Los museos Van Gogh, Rijksmuseum y Ana Frank están entre los más visitados del mundo, pero la ciudad seduce sobre todo por su atmósfera de libertad, sus mercadillos y sus innumerables cafés marrones. Desplazarse en bicicleta como sus 900.000 habitantes es la mejor manera de sumergirse en la cultura local.",
       },
       wikipedia: "Amsterdam",
-      tags: ["Culture", "Musées", "Canaux", "Vélo", "Art"],
+      tags: ["Culture", "Musées", "Ville", "Aventure", "Art"],
       mustSee: [
         {
           name: { fr: "Rijksmuseum — chef-d'œuvre de Rembrandt, Vermeer et Hals", en: "Rijksmuseum — masterpieces by Rembrandt, Vermeer and Hals", es: "Rijksmuseum — obras maestras de Rembrandt, Vermeer y Hals" },
@@ -126,7 +126,7 @@ export const NETHERLANDS = {
         es: "Keukenhof, abierto solo de mediados de marzo a mediados de mayo, es el mayor jardín floral del mundo con 7 millones de bulbos en flor en 32 hectáreas. Alrededor, los campos de tulipanes multicolores se extienden hasta donde alcanza la vista entre Lisse y Haarlem, creando un espectáculo único en el mundo. Alquilar una bicicleta para recorrer estos paisajes florales es una experiencia inolvidable y económica.",
       },
       wikipedia: "Keukenhof",
-      tags: ["Nature", "Tulipes", "Vélo", "Printemps", "Photographie"],
+      tags: ["Nature", "Aventure", "Culture"],
       mustSee: [
         {
           name: { fr: "Keukenhof — 800 variétés de tulipes, narcisses et jacinthes en fleurs", en: "Keukenhof — 800 varieties of tulips, daffodils and hyacinths in bloom", es: "Keukenhof — 800 variedades de tulipanes, narcisos y jacintos en flor" },
@@ -152,7 +152,7 @@ export const NETHERLANDS = {
         es: "Estas tres ciudades de Holanda Meridional ofrecen tres caras contrastadas de los Países Bajos. La Haya es la ciudad de las instituciones internacionales y del Mauritshuis (La joven de la perla). Delft, con sus canales en miniatura y su legendaria loza azul, parece congelada en la serenidad del siglo XVII. Róterdam, destruida en 1940 y reconstruida, se ha convertido en una de las ciudades de arquitectura contemporánea más audaces de Europa.",
       },
       wikipedia: "File:00 0781 Canal in Delft (NL).jpg",
-      tags: ["Histoire", "Architecture", "Art", "Gastronomie", "Design"],
+      tags: ["Histoire", "Architecture", "Art", "Gastronomie"],
       mustSee: [
         {
           name: { fr: "Mauritshuis à La Haye", en: "Mauritshuis in The Hague", es: "Mauritshuis en La Haya" },
@@ -182,7 +182,7 @@ export const NETHERLANDS = {
         es: "Kinderdijk alberga el mayor conjunto de molinos de viento preservados del mundo, con 19 molinos alineados a lo largo de pólderes del siglo XVIII, declarados Patrimonio de la Humanidad por la UNESCO. Zaanse Schans, a pocos kilómetros de Ámsterdam, es un pueblo-museo vivo donde molinos en funcionamiento, queserías y talleres de zuecos recrean la vida neerlandesa de antaño. Ambos lugares condensan la esencia de la identidad neerlandesa en paisajes icónicos.",
       },
       wikipedia: "Kinderdijk",
-      tags: ["UNESCO", "Moulins", "Nature", "Traditions", "Paysage"],
+      tags: ["UNESCO", "Architecture", "Nature", "Tradition"],
       mustSee: [
         {
           name: { fr: "Kinderdijk — 19 moulins à vent alignés sur les polders, classés UNESCO", en: "Kinderdijk — 19 windmills lined up on the polders, UNESCO-listed", es: "Kinderdijk — 19 molinos de viento alineados en los pólderes, Patrimonio UNESCO" },

@@ -52,7 +52,7 @@ export const SOUTH_SUDAN = {
         es: "El parque nacional de Boma alberga una de las mayores migraciones de antílopes del mundo: millones de tiang, cobos de Nilo y gacelas atraviesan estas sabanas en un espectáculo comparable a las grandes migraciones del Serengueti tanzano. Totalmente aislado y sin infraestructura turística, este parque solo es accesible en avioneta chárter desde Yuba. Es una de las experiencias naturales más crudas y auténticas de África.",
       },
       wikipedia: "File:Boma_cathedral.jpg",
-      tags: ["Migration", "Savane", "Faune", "Aventure"],
+      tags: ["Safari", "Nature", "Aventure"],
       mustSee: [
         { name: { fr: "Lions et guépards — prédateurs de la grande savane", en: "Lions and cheetahs — predators of the great savanna", es: "Leones y guepardos — depredadores de la gran sabana" }, wikipedia: "File:Lion waiting in Namibia.jpg" },
         { name: { fr: "Girafes de Rothschild et éléphants des savanes", en: "Rothschild's giraffes and savanna elephants", es: "Jirafas de Rothschild y elefantes de sabana" }, wikipedia: "Rothschild's_giraffe" },
@@ -69,7 +69,7 @@ export const SOUTH_SUDAN = {
         es: "El Sudd es uno de los mayores humedales de agua dulce del mundo, que cubre más de 30.000 km² en la estación de lluvias en la cuenca del Nilo Blanco. Este laberinto de papiros, canales y pantanos es un paraíso para las aves migratorias y alberga hipopótamos, cocodrilos y especies únicas como el picozapato. Accesible solo en piragua o avión, permanece casi virgen de todo turismo.",
       },
       wikipedia: "File:Fishing_in_Sudd_wetland_-_by_CPWF_Basin_Focal_Project.jpg",
-      tags: ["Zones humides", "Oiseaux", "Nil", "Nature"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Observation du shoebill (bec-en-sabot-du-roi) endémique", en: "Spotting the endemic shoebill", es: "Observación del picozapato endémico" }, wikipedia: "Shoebill" },
         { name: { fr: "Navigation en pirogue dans les canaux de papyrus", en: "Canoeing through the papyrus channels", es: "Navegación en piragua por los canales de papiro" }, wikipedia: "File:Fishing_in_Sudd_wetland_-_by_CPWF_Basin_Focal_Project.jpg" },
@@ -87,7 +87,7 @@ export const SOUTH_SUDAN = {
         es: "Yuba es la capital del país más joven del mundo y una ciudad en construcción permanente a orillas del Nilo Blanco. A pesar de su infraestructura todavía muy limitada, ofrece una visión fascinante de una nación en gestación, con mercados animados, una mezcla cultural de decenas de etnias y una energía humana palpable. El Nilo Blanco que la atraviesa es navegable en barco hasta Uganda.",
       },
       wikipedia: "File:Juba City.jpg",
-      tags: ["Ville", "Nil", "Culture", "Histoire"],
+      tags: ["Ville", "Nature", "Culture", "Histoire"],
       mustSee: [
         { name: { fr: "Rives du Nil Blanc — pirogues et vie au bord du fleuve", en: "White Nile banks — canoes and riverside life", es: "Orillas del Nilo Blanco — piraguas y vida ribereña" }, wikipedia: "White_Nile" },
         { name: { fr: "Mausolée de John Garang — fondateur de l'indépendance", en: "John Garang Mausoleum — founder of independence", es: "Mausoleo de John Garang — fundador de la independencia" }, wikipedia: "John_Garang" },
@@ -104,7 +104,7 @@ export const SOUTH_SUDAN = {
         es: "El parque nacional de Nimule es el más accesible de Sudán del Sur, situado en la frontera con Uganda a orillas del Nilo. Aunque pequeño, alberga hipopótamos, cocodrilos, elefantes y búfalos en un entorno de sabana ribereña. Suele ser el primer y único destino de safari accesible para los viajeros que entran por carretera desde Kampala.",
       },
       wikipedia: "File:The_view_of_River_Nile_from_REI_residential_areas_in_nimule_Game_Park.jpg",
-      tags: ["Safari", "Nil", "Hippopotames", "Frontière"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Hippopotames du Nil — observation depuis les berges", en: "Nile hippos — viewing from the riverbanks", es: "Hipopótamos del Nilo — observación desde las orillas" }, wikipedia: "File:Hippo pod edit.jpg" },
         { name: { fr: "Éléphants et buffles de savane", en: "Savanna elephants and buffalo", es: "Elefantes y búfalos de sabana" }, wikipedia: "File:Sri_Lankan_elephant_(Elephas_maximus_maximus)_female_and_young_6.jpg" },

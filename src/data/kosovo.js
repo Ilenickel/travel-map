@@ -52,7 +52,7 @@ export const KOSOVO = {
         es: "Pristina es una capital joven y dinámica donde la independencia proclamada en 2008 se percibe por todas partes: en el monumento Newborn repintado cada año, en el bulevar Bill Clinton o frente a la estatua de George W. Bush. La ciudad combina arquitectura otomana, edificios yugoslavos y construcciones modernas en una atmósfera vibrante y cálida. Sus cafés abarrotados, mercados y escena artística emergente la convierten en una parada entrañable.",
       },
       wikipedia: "Pristina",
-      tags: ["Ville", "Modernité", "Culture", "Balkans", "Gastronomie"],
+      tags: ["Ville", "Modernité", "Culture", "Histoire", "Gastronomie"],
       mustSee: [
         { name: { fr: "Monument Newborn — sculpture emblématique de l'indépendance de 2008", en: "Newborn monument — iconic sculpture marking 2008 independence", es: "Monumento Newborn — escultura emblemática de la independencia de 2008" }, wikipedia: "Newborn_monument" },
         { name: { fr: "Boulevard Bill Clinton — avenue principale avec statue du 42e président américain", en: "Bill Clinton Boulevard — main avenue with a statue of the 42nd US president", es: "Bulevar Bill Clinton — avenida principal con estatua del 42º presidente de EE. UU." }, wikipedia: "Bill_Clinton_Boulevard" },
@@ -70,7 +70,7 @@ export const KOSOVO = {
         es: "Prizren es la perla otomana de Kosovo, una ciudad histórica cuyas calles empedradas, puentes de piedra y mezquitas del siglo XVI evocan directamente Estambul o Sarajevo. Enclavada al pie de las montañas Sharr y atravesada por el río Bistrica, la ciudad es una joya arquitectónica bien conservada. El festival internacional de cine (DokuFest) la convierte cada verano en un animado destino cultural.",
       },
       wikipedia: "Prizren",
-      tags: ["Ottoman", "Patrimoine", "Architecture", "Culture", "Histoire"],
+      tags: ["Histoire", "Architecture", "Culture"],
       mustSee: [
         { name: { fr: "Forteresse de Prizren — citadelle médiévale dominant la ville", en: "Prizren Fortress — medieval citadel overlooking the town", es: "Fortaleza de Prizren — ciudadela medieval que domina la ciudad" }, wikipedia: "Prizren_Fortress" },
         { name: { fr: "Pont de pierre ottoman — pont du XVIe siècle sur la Bistrica", en: "Ottoman stone bridge — 16th-century bridge over the Bistrica", es: "Puente de piedra otomano — puente del siglo XVI sobre el Bistrica" }, wikipedia: "File:PrizrenStoneBridge.jpg" },
@@ -88,7 +88,7 @@ export const KOSOVO = {
         es: "El cañón de Rugova, cerca de Peja, es uno de los enclaves naturales más espectaculares de los Balcanes, con sus vertiginosas paredes calizas que alcanzan los 1.000 metros de altura. El desfiladero atraviesa los Alpes Dináricos y ofrece rutas excepcionales de senderismo y escalada. A la entrada del cañón se encuentra el monasterio del Patriarcado de Peć, uno de los sitios religiosos ortodoxos más sagrados de la región.",
       },
       wikipedia: "Rugova_Canyon",
-      tags: ["Nature", "Randonnée", "Montagne", "Canyon", "Ski"],
+      tags: ["Nature", "Randonnée", "Montagne", "Ski"],
       mustSee: [
         { name: { fr: "Canyon de Rugova — gorge calcaire de 25 km dans les Alpes dinariques", en: "Rugova Canyon — 25 km limestone gorge in the Dinaric Alps", es: "Cañón de Rugova — garganta caliza de 25 km en los Alpes Dináricos" }, wikipedia: "Rugova_Canyon" },
         { name: { fr: "Monastère des Patriarches de Peć — ensemble monastique médiéval", en: "Patriarchate of Peć — medieval monastic complex", es: "Patriarcado de Peć — conjunto monástico medieval" }, wikipedia: "File:Patriarchate_of_Peć_2010.JPG" },
@@ -106,7 +106,7 @@ export const KOSOVO = {
         es: "El monasterio de Visoki Dečani, declarado Patrimonio de la Humanidad UNESCO, es una obra maestra de la arquitectura medieval serbia del siglo XIV, construido por el rey Stefan Dečanski. Su iglesia abacial conserva frescos bizantinos entre los más bellos y mejor conservados de los Balcanes. Este monasterio, aún activo, está protegido por la KFOR debido a las tensiones interétnicas.",
       },
       wikipedia: "Visoki_Dečani",
-      tags: ["UNESCO", "Orthodoxe", "Fresques", "Médiéval"],
+      tags: ["UNESCO", "Spiritualité", "Culture", "Histoire"],
       mustSee: [
         { name: { fr: "Église abbatiale — chef-d'œuvre roman-byzantin du XIVe siècle", en: "Abbey church — 14th-century Romanesque-Byzantine masterpiece", es: "Iglesia abacial — obra maestra románico-bizantina del siglo XIV" }, wikipedia: "Visoki_Dečani" },
         { name: { fr: "Fresques intérieures — cycle de peintures byzantines parmi les mieux conservées", en: "Interior frescoes — cycle of Byzantine paintings among the best preserved", es: "Frescos interiores — ciclo de pinturas bizantinas entre las mejor conservadas" }, wikipedia: "File:Baptism of the Eunuch, Visoki Dečani.jpg" },

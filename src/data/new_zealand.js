@@ -106,7 +106,7 @@ export const NEW_ZEALAND = {
         es: "Fiordland es una de las regiones más salvajes y espectaculares del mundo, un parque nacional declarado Patrimonio de la Humanidad por la UNESCO, dominado por fiordos vertiginosos tallados por los glaciares de la era del hielo. Milford Sound, considerado la octava maravilla del mundo por Rudyard Kipling, impresiona con acantilados que caen directamente sobre aguas oscuras y cascadas permanentes que descienden 200 metros. El Milford Track (54 km, 4 días), una de las Great Walks, es una de las rutas de senderismo más legendarias del planeta.",
       },
       wikipedia: "Fiordland_National_Park",
-      tags: ["UNESCO", "Fjord", "Randonnée", "Nature", "Plage"],
+      tags: ["UNESCO", "Nature", "Randonnée", "Plage"],
       mustSee: [
         { name: { fr: "Milford Sound — croisière dans le fjord entre falaises et cascades", en: "Milford Sound — fjord cruise between cliffs and waterfalls", es: "Milford Sound — crucero por el fiordo entre acantilados y cascadas" }, wikipedia: "Milford_Sound" },
         { name: { fr: "Milford Track — 4 jours de randonnée entre lacs et montagnes", en: "Milford Track — 4-day hike between lakes and mountains", es: "Milford Track — 4 días de senderismo entre lagos y montañas" }, wikipedia: "Milford_Track" },
@@ -124,7 +124,7 @@ export const NEW_ZEALAND = {
         es: "Rotorua es el corazón de la cultura maorí en Nueva Zelanda y el principal sitio geotérmico del país, donde el omnipresente olor a azufre recuerda que la ciudad se asienta sobre una caldera volcánica activa. Los géiseres del parque Wai-O-Tapu, los barrizales burbujeantes de Waiotapu y las piscinas termales de Polynesian Spa ofrecen un espectáculo geológico único. Los espectáculos de haka, los hāngī (banquetes cocidos bajo tierra) y los marae (poblados fortificados maoríes) hacen de Rotorua el lugar ideal para descubrir la cultura de los primeros habitantes de Nueva Zelanda.",
       },
       wikipedia: "Rotorua",
-      tags: ["Géothermie", "Culture maorie", "Geysers", "Volcans", "Gastronomie"],
+      tags: ["Nature", "Culture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Wai-O-Tapu — parc géothermique aux couleurs fluo spectaculaires", en: "Wai-O-Tapu — geothermal park with spectacular fluorescent colours", es: "Wai-O-Tapu — parque geotérmico de colores fluorescentes espectaculares" }, wikipedia: "File:ChampagnePool-Wai-O-Tapu rotated MC.jpg" },
         { name: { fr: "Te Puia — géysers, sculpture sur bois et spectacle maori", en: "Te Puia — geysers, wood carving and Māori performance", es: "Te Puia — géiseres, talla en madera y espectáculo maorí" }, wikipedia: "File:Te Puia, Rotorua - panoramio (11).jpg" },
@@ -142,7 +142,7 @@ export const NEW_ZEALAND = {
         es: "Queenstown es la capital mundial de los deportes de aventura, encaramada a orillas del lago Wakatipu entre montañas espectaculares que recuerdan a los paisajes de El Señor de los Anillos. Puenting, paracaidismo, rafting en aguas bravas, jet-boat por los desfiladeros: Queenstown inventó o popularizó la mayoría de las actividades de aventura extrema modernas. En invierno, las estaciones de esquí de Coronet Peak y The Remarkables hacen de la ciudad uno de los destinos de esquí más codiciados del hemisferio sur.",
       },
       wikipedia: "Queenstown,_New_Zealand",
-      tags: ["Aventure", "Montagne", "Ski", "Lac", "Ville"],
+      tags: ["Aventure", "Montagne", "Ski", "Nature", "Ville"],
       mustSee: [
         { name: { fr: "Saut à l'élastique du Kawarau Bridge — premier au monde, 43 m", en: "Kawarau Bridge bungy jump — the world's first, 43 m", es: "Puenting en el puente de Kawarau — el primero del mundo, 43 m" }, wikipedia: "Kawarau_Gorge_Suspension_Bridge" },
         { name: { fr: "Skyline Gondola — téléphérique et luge panoramique sur la ville", en: "Skyline Gondola — cable car and panoramic luge over the town", es: "Skyline Gondola — teleférico y luge panorámico sobre la ciudad" }, wikipedia: "File:Skyline Queenstown New Zealand - panoramio.jpg" },
@@ -160,7 +160,7 @@ export const NEW_ZEALAND = {
         es: "Tongariro es el parque nacional más antiguo de Nueva Zelanda y uno de los primeros del mundo cedido al Estado por los jefes maoríes, que consideran sus volcanes como ancestros sagrados. El Tongariro Alpine Crossing (19 km, 6–8 horas) está considerado una de las mejores rutas de senderismo de un día del mundo, atravesando paisajes lunares de lava, lagos esmeralda y cráteres humeantes. Los volcanes Ruapehu, Ngauruhoe (el Monte del Destino en El Señor de los Anillos) y Tongariro componen un paisaje de una belleza sobrecogedora.",
       },
       wikipedia: "Tongariro_National_Park",
-      tags: ["Volcan", "Randonnée", "UNESCO", "Seigneur des Anneaux"],
+      tags: ["Nature", "Randonnée", "UNESCO", "Culture"],
       mustSee: [
         { name: { fr: "Tongariro Alpine Crossing — randonnée légendaire entre cratères et lacs", en: "Tongariro Alpine Crossing — legendary hike between craters and lakes", es: "Tongariro Alpine Crossing — ruta legendaria entre cráteres y lagos" }, wikipedia: "File:Tongariro_alpine_crossing_Ngauruhoe_behind_volcanic_mouth.JPG" },
         { name: { fr: "Lacs Émeraude — trous de cratère aux eaux d'un vert surnaturel", en: "Emerald Lakes — crater pools with an otherworldly green colour", es: "Lagos Esmeralda — pozos de cráter de un verde sobrenatural" }, wikipedia: "Emerald_Lakes" },

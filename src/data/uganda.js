@@ -94,7 +94,7 @@ export const UGANDA = {
         es: "El Bosque Impenetrable de Bwindi (UNESCO) es el santuario más importante de los gorilas de montaña: alberga más de la mitad de la población mundial (unos 500 individuos). Un permiso (700$) da acceso a una hora mágica con una familia de gorilas en la selva tropical.",
       },
       wikipedia: "Bwindi_Impenetrable_National_Park",
-      tags: ["UNESCO", "Gorilles", "Forêt", "Unique"],
+      tags: ["UNESCO", "Safari", "Nature"],
       mustSee: [
         { name: { fr: "Trekking gorilles de montagne (permis 700$)", en: "Mountain gorilla trekking ($700 permit)", es: "Trekking de gorilas de montaña (permiso 700$)" }, wikipedia: "Mountain_gorilla" },
         { name: { fr: "Visite communautés Batwa (peuple pygmée)", en: "Batwa community visit (pygmy people)", es: "Visita a comunidades batwa (pueblo pigmeo)" }, wikipedia: "File:Twa dancers.jpg" },
@@ -111,7 +111,7 @@ export const UGANDA = {
         es: "Queen Elizabeth es el parque más visitado de Uganda: los leones trepadores de Ishasha (que duermen en las higueras, un fenómeno rarísimo), los chimpancés del cañón de Kyambura, el canal Kazinga (una de las concentraciones de hipopótamos y búfalos más bellas del mundo) y los flamencos del lago Eduardo.",
       },
       wikipedia: "File:Crater lake in Queen Elizabeth National Park.jpg",
-      tags: ["Lions grimpeurs", "Chimpanzés", "Safari bateau", "Big Five"],
+      tags: ["Safari"],
       mustSee: [
         { name: { fr: "Lions grimpeurs d'Ishasha (uniquement ici et Tanzanie)", en: "Ishasha tree-climbing lions (found only here and in Tanzania)", es: "Leones trepadores de Ishasha (solo aquí y en Tanzania)" }, wikipedia: "File:Tree-climbing lions (Panthera leo).jpg" },
         { name: { fr: "Safari bateau canal Kazinga — hippos & buffles", en: "Kazinga Channel boat safari — hippos & buffalo", es: "Safari en barco por el canal Kazinga — hipopótamos y búfalos" }, wikipedia: "Kazinga_Channel" },
@@ -129,7 +129,7 @@ export const UGANDA = {
         es: "Murchison Falls es el parque nacional más grande de Uganda: las cataratas Murchison, donde todo el Nilo Blanco se precipita por una grieta de 7 m de ancho para caer 43 m más abajo, están entre las más espectaculares de África. El safari en barco hasta las cataratas revela cocodrilos del Nilo, hipopótamos y jirafas.",
       },
       wikipedia: "Murchison_Falls",
-      tags: ["Chutes", "Nil", "Safari bateau", "Girafes"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Chutes Murchison (Nil dans une fissure de 7m)", en: "Murchison Falls (the Nile through a 7 m gap)", es: "Cataratas Murchison (el Nilo en una grieta de 7 m)" }, wikipedia: "Murchison_Falls_National_Park" },
         { name: { fr: "Safari bateau Nil — crocodiles, hippos, oiseaux", en: "Nile boat safari — crocodiles, hippos, birds", es: "Safari en barco por el Nilo — cocodrilos, hipopótamos, aves" }, wikipedia: "Nile_crocodile" },
@@ -147,7 +147,7 @@ export const UGANDA = {
         es: "Jinja es la ciudad donde el Nilo Blanco nace del lago Victoria: el lugar más simbólico del Nilo, identificado por John Hanning Speke en 1862. También es la capital de los deportes extremos de África Oriental: rafting de clase V, kayak, puenting sobre el Nilo y stand-up paddle.",
       },
       wikipedia: "Jinja,_Uganda",
-      tags: ["Source du Nil", "Rafting", "Aventure", "Histoire"],
+      tags: ["Nature", "Aventure", "Histoire"],
       mustSee: [
         { name: { fr: "Source du Nil Blanc — monument Speke", en: "Source of the White Nile — Speke Monument", es: "Fuente del Nilo Blanco — monumento a Speke" }, wikipedia: "File:White_Nile_Fishermen_(18156464842).jpg" },
         { name: { fr: "Rafting classe V sur le Nil (adrénaline max)", en: "Class V rafting on the Nile (maximum adrenaline)", es: "Rafting de clase V en el Nilo (adrenalina máxima)" }, wikipedia: "File:Fun Rafting Elo River Magelang.jpg" },

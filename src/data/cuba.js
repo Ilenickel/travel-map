@@ -94,7 +94,7 @@ export const CUBA = {
         es: "La Habana es una de las capitales más carismáticas del mundo: su Malecón frente al mar, sus relucientes coches americanos de los años 50, su Habana Vieja declarada Patrimonio de la UNESCO, sus legendarios bares de mojitos (La Bodeguita del Medio) y su música omnipresente. Una ciudad que vive intensamente pese a todo.",
       },
       wikipedia: "Havana",
-      tags: ["UNESCO", "Musique", "Architecture", "Emblématique"],
+      tags: ["UNESCO", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Malecón au coucher du soleil", en: "Malecón at sunset", es: "El Malecón al atardecer" }, wikipedia: "Malecón,_Havana" },
         { name: { fr: "Capitolio Nacional", en: "El Capitolio", es: "Capitolio Nacional" }, wikipedia: "File:CapitolioNacionalDeColombia2004-7.jpg" },
@@ -111,7 +111,7 @@ export const CUBA = {
         es: "Trinidad es la ciudad colonial mejor conservada de Cuba, declarada Patrimonio de la UNESCO: su centro histórico de adoquines rosados y casas ocre-anaranjadas enmarca la Plaza Mayor. Por la noche, las escaleras de la Casa de la Música y los bares de la calle resuenan con son cubano hasta el amanecer.",
       },
       wikipedia: "Trinidad,_Cuba",
-      tags: ["UNESCO", "Colonial", "Musique", "Salsa"],
+      tags: ["UNESCO", "Histoire", "Culture"],
       mustSee: [
         { name: { fr: "Plaza Mayor & Église de la Santísima Trinidad", en: "Plaza Mayor & Church of the Holy Trinity", es: "Plaza Mayor e Iglesia de la Santísima Trinidad" }, wikipedia: "File:Trinidad_(Kuba)_03.jpg" },
         { name: { fr: "Salsa sur les escaliers de la Casa de la Música", en: "Salsa on the Casa de la Música steps", es: "Salsa en las escaleras de la Casa de la Música" }, wikipedia: "Trinidad,_Cuba" },
@@ -129,7 +129,7 @@ export const CUBA = {
         es: "El valle de Viñales, declarado Patrimonio de la UNESCO, es el paisaje más icónico de Cuba: formaciones calizas en forma de pan de azúcar (mogotes) se alzan sobre plantaciones de tabaco rojo, el mejor tabaco del mundo. Las «vegas» (fincas de tabaco) se visitan a caballo o en bicicleta.",
       },
       wikipedia: "Viñales_Valley",
-      tags: ["UNESCO", "Nature", "Tabac", "Randonnée"],
+      tags: ["UNESCO", "Nature", "Gastronomie", "Randonnée"],
       mustSee: [
         { name: { fr: "Mogotes — formations karstiques géantes", en: "Mogotes — giant karst formations", es: "Mogotes — formaciones kársticas gigantes" }, wikipedia: "File:Vallée_de_Viñales-Mogote_(1).jpg" },
         { name: { fr: "Cueva del Indio — grotte en barque", en: "Cueva del Indio — cave boat ride", es: "Cueva del Indio — recorrido en barca por la cueva" }, wikipedia: "File:CUBA_-_panoramio_(59).jpg" },
@@ -146,7 +146,7 @@ export const CUBA = {
         es: "Varadero ofrece 23 km de playa de arena blanca, una de las más largas del Caribe. Los cayos (Cayo Coco, Cayo Santa María) son islotes salvajes de aguas turquesas, poco frecuentados, accesibles desde Ciego de Ávila.",
       },
       wikipedia: "Varadero",
-      tags: ["Plage", "Caraïbes", "All-inclusive", "Snorkel"],
+      tags: ["Plage", "Luxe"],
       mustSee: [
         { name: { fr: "Plage de Varadero (23 km de sable blanc)", en: "Varadero Beach (23 km of white sand)", es: "Playa de Varadero (23 km de arena blanca)" }, wikipedia: "File:Plage_de_Varadero.JPG" },
         { name: { fr: "Cayo Coco — plage sauvage & flamants roses", en: "Cayo Coco — wild beach & flamingos", es: "Cayo Coco — playa salvaje y flamencos rosados" }, wikipedia: "Cayo_Coco" },

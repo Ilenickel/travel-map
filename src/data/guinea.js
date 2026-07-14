@@ -75,7 +75,7 @@ export const GUINEA = {
         es: "El Fouta Djalon es una meseta montañosa de una belleza grandiosa, surcada por profundos desfiladeros, cascadas majestuosas y pueblos peules encaramados en altura. La catarata de Kinkon, los desfiladeros de Ditinn y los acantilados de Doucki ofrecen algunos de los paisajes de senderismo más bellos de África Occidental.",
       },
       wikipedia: "File:Fouta Djallon (14582291826).jpg",
-      tags: ["Nature", "Randonnée", "Cascades", "Culture peule"],
+      tags: ["Nature", "Randonnée", "Culture"],
       mustSee: [
         { name: { fr: "Cascade de Kinkon — 90 mètres de hauteur", en: "Kinkon Falls — 90 metres high", es: "Catarata de Kinkon — 90 metros de altura" }, wikipedia: "File:Chute de Ditinn à Dalaba.jpg" },
         { name: { fr: "Gorges de Ditinn et villages peuls", en: "Ditinn Gorges and Fulani villages", es: "Desfiladeros de Ditinn y pueblos peules" }, wikipedia: "File:Fouta Djallon (14418743529).jpg" },
@@ -93,7 +93,7 @@ export const GUINEA = {
         es: "Los montes Nimba, compartidos entre Guinea, Costa de Marfil y Liberia, son un sitio del Patrimonio Mundial de la UNESCO por su excepcional biodiversidad. Allí se encuentran chimpancés que utilizan herramientas, hipopótamos pigmeos y cientos de especies endémicas en este bosque denso y brumoso.",
       },
       wikipedia: "Mount_Nimba_Strict_Nature_Reserve",
-      tags: ["UNESCO", "Nature", "Chimpanzés", "Forêt"],
+      tags: ["UNESCO", "Nature", "Safari"],
       mustSee: [
         { name: { fr: "Hippopotames pygmées dans les rivières", en: "Pygmy hippos in the rivers", es: "Hipopótamos pigmeos en los ríos" }, wikipedia: "Pygmy_hippopotamus" },
         { name: { fr: "Sommet du mont Nimba (1752 m)", en: "Summit of Mount Nimba (1752 m)", es: "Cima del monte Nimba (1752 m)" }, wikipedia: "File:Mount Nimba Strict Nature Reserve-123989.jpg" },
@@ -110,7 +110,7 @@ export const GUINEA = {
         es: "Conakri, capital construida sobre una península, es una ciudad animada y musical. Guinea es la cuna del djembé y el balafón, y las veladas de música mandinga son célebres en todo el continente. El mercado de Madina, el museo nacional y las islas de Los, accesibles en piragua, completan la visita.",
       },
       wikipedia: "Conakry",
-      tags: ["Ville", "Musique", "Marché", "Îles"],
+      tags: ["Ville", "Culture", "Shopping", "Plage"],
       mustSee: [
         { name: { fr: "Musée national de Guinée", en: "National Museum of Guinea", es: "Museo Nacional de Guinea" }, wikipedia: "File:Musée National de Guinée 27042022 005.jpg" },
         { name: { fr: "Marché Madina — le plus grand d'Afrique de l'Ouest", en: "Madina Market — the largest in West Africa", es: "Mercado de Madina — el más grande de África Occidental" }, wikipedia: "File:Madina 2.jpg" },
@@ -127,7 +127,7 @@ export const GUINEA = {
         es: "El pueblo de Bossou alberga una comunidad de chimpancés estudiada desde los años 1970, célebre por su uso de herramientas de piedra para romper nueces. El bosque de Ziama, reserva de biosfera de la UNESCO, es uno de los últimos grandes macizos forestales de África Occidental.",
       },
       wikipedia: "File:Marché de Bossou.jpg",
-      tags: ["Chimpanzés", "Science", "Forêt", "UNESCO"],
+      tags: ["Safari", "Musées", "Nature", "UNESCO"],
       mustSee: [
         { name: { fr: "Chimpanzés de Bossou et leur utilisation d'outils", en: "Bossou chimpanzees and their tool use", es: "Chimpancés de Bossou y su uso de herramientas" }, wikipedia: "File:Chimpanzé de Bossou 29.jpg" },
         { name: { fr: "Réserve de biosphère de Ziama", en: "Ziama Biosphere Reserve", es: "Reserva de biosfera de Ziama" }, wikipedia: "Ziama_Massif" },

@@ -94,7 +94,7 @@ export const LIBYA = {
         es: "Leptis Magna (UNESCO) es uno de los sitios romanos mejor conservados del mundo: foros, termas, arcos de triunfo, un anfiteatro y un teatro prácticamente intactos bajo la arena libia. Ciudad natal del emperador Septimio Severo, que la transformó en una ciudad de mármol en el siglo II. Un espectáculo arqueológico sin igual.",
       },
       wikipedia: "Leptis_Magna",
-      tags: ["UNESCO", "Romain", "Antique", "Spectaculaire"],
+      tags: ["UNESCO", "Histoire"],
       mustSee: [
         { name: { fr: "Forum de Septime Sévère et arc de triomphe", en: "Forum of Septimius Severus and triumphal arch", es: "Foro de Septimio Severo y arco de triunfo" }, wikipedia: "File:00IMGL4379.jpg" },
         { name: { fr: "Théâtre romain de Leptis Magna (IIe s.)", en: "Roman theatre of Leptis Magna (2nd c.)", es: "Teatro romano de Leptis Magna (s. II)" }, wikipedia: "File:Leptis_Magna_Theatre.jpg" },
@@ -111,7 +111,7 @@ export const LIBYA = {
         es: "Sabratha (UNESCO) es una antigua ciudad fenicia y romana cuyo teatro, con su fachada de columnas de tres niveles frente al Mediterráneo, es uno de los más bellos del mundo antiguo. Un funduk central con mosaicos y foro conservados.",
       },
       wikipedia: "Sabratha",
-      tags: ["UNESCO", "Romain", "Théâtre", "Méditerranée"],
+      tags: ["UNESCO", "Histoire", "Culture", "Plage"],
       mustSee: [
         { name: { fr: "Théâtre de Sabratha (IIe s.) — façade à 3 étages sur la mer", en: "Theatre of Sabratha (2nd c.) — three-tiered façade facing the sea", es: "Teatro de Sabratha (s. II) — fachada de 3 niveles frente al mar" }, wikipedia: "File:Theatre of Sabratha, Libya.jpg" },
         { name: { fr: "Temple de Liber Pater et mosaïques", en: "Temple of Liber Pater and mosaics", es: "Templo de Liber Pater y mosaicos" }, wikipedia: "File:Triumph of liber pater2.JPG" },
@@ -129,7 +129,7 @@ export const LIBYA = {
         es: "Ghadamés (UNESCO) es un oasis del Sáhara libio en la frontera con Argelia y Túnez: sus casas blancas interconectadas por pasajes cubiertos permiten circular por la ciudad al abrigo del sol, sus centenarias calles laberínticas y su artesanía en cuero y marroquinería. La «perla del desierto» bereber.",
       },
       wikipedia: "Ghadames",
-      tags: ["UNESCO", "Désert", "Oasis", "Berbère"],
+      tags: ["UNESCO", "Désert", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Vieille ville de Ghadamès (UNESCO) — passages couverts", en: "Old town of Ghadamès (UNESCO) — covered passageways", es: "Casco antiguo de Ghadamés (UNESCO) — pasajes cubiertos" }, wikipedia: "File:Ghadames, 2006.jpg" },
         { name: { fr: "Palmiers et jardins de l'oasis", en: "Palm trees and gardens of the oasis", es: "Palmeras y jardines del oasis" }, wikipedia: "File:Ghadames - Altstadt-Palmenhain.jpg" },
@@ -146,7 +146,7 @@ export const LIBYA = {
         es: "Cirene (UNESCO) es una colonia griega del siglo VII a. C., capital de Cirenaica: su templo de Apolo (el más grande de la África antigua), la necrópolis griega excavada en la roca y el ágora helenística conservada en un entorno montañoso espectacular en las estribaciones del Djebel Akhdar.",
       },
       wikipedia: "Cyrene,_Libya",
-      tags: ["UNESCO", "Grec", "Antique", "Montagne"],
+      tags: ["UNESCO", "Histoire", "Montagne"],
       mustSee: [
         { name: { fr: "Temple d'Apollon de Cyrène (VIe s. av. J.-C.)", en: "Temple of Apollo at Cyrene (6th c. BC)", es: "Templo de Apolo de Cirene (s. VI a. C.)" }, wikipedia: "File:CireneTempioApollo.jpg" },
         { name: { fr: "Nécropole grecque taillée dans la roche", en: "Rock-cut Greek necropolis", es: "Necrópolis griega excavada en la roca" }, wikipedia: "File:Exedra of Apollo Karneios, Cyrene (50144977036).jpg" },

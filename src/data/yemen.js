@@ -80,7 +80,7 @@ export const YEMEN = {
         es: "La ciudad vieja de Saná, declarada Patrimonio de la Humanidad por la UNESCO, es una obra maestra de la arquitectura sudarábiga con sus torres de barro adornadas con frisos de estuco blanco. Sus mezquitas milenarias, sus mercados cubiertos y sus casas-torre con ventanas de vidrieras policromadas la convierten en uno de los conjuntos urbanos más notables del mundo islámico. El conflicto en curso amenaza este patrimonio irremplazable.",
       },
       wikipedia: "File:San'a03 flickr.jpg",
-      tags: ["UNESCO", "Architecture", "Histoire", "Islam"],
+      tags: ["UNESCO", "Architecture", "Histoire", "Spiritualité"],
       mustSee: [
         { name: { fr: "Grande Mosquée de Sanaa — l'une des plus anciennes du monde islamique", en: "Great Mosque of Sanaa — one of the oldest in the Islamic world", es: "Gran Mezquita de Saná — una de las más antiguas del mundo islámico" }, wikipedia: "File:Sana'a3.JPG" },
         { name: { fr: "Bab al-Yemen — porte monumentale de la vieille ville", en: "Bab al-Yemen — monumental gate of the old city", es: "Bab al-Yemen — puerta monumental de la ciudad vieja" }, wikipedia: "File:Bab Al Yemen in Sana'a.JPG" },
@@ -97,7 +97,7 @@ export const YEMEN = {
         es: "Socotra, apodada las «Galápagos del océano Índico», es una isla de biodiversidad extraordinaria declarada Patrimonio de la Humanidad por la UNESCO. Alberga el célebre árbol de sangre de dragón de Socotra, de formas extraterrestres con tronco robusto y follaje en forma de sombrilla, así como cientos de especies endémicas de plantas, aves e insectos. Su aislamiento geográfico la ha convertido en un laboratorio natural de evolución único en el mundo.",
       },
       wikipedia: "File:Dragonblood tree in Socotra 1.jpg",
-      tags: ["UNESCO", "Nature", "Biodiversité", "Île"],
+      tags: ["UNESCO", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Dragonnier de Socotra — arbre emblématique à la sève rouge sang", en: "Socotra dragon tree — iconic tree with blood-red sap", es: "Árbol de sangre de dragón de Socotra — árbol emblemático de savia roja sangre" }, wikipedia: "Dracaena_cinnabari" },
         { name: { fr: "Plateau du Dixam — forêt de dragonniers spectaculaire", en: "Diksam Plateau — spectacular dragon tree forest", es: "Meseta de Diksam — espectacular bosque de árboles de sangre de dragón" }, wikipedia: "Diksam_Plateau" },
@@ -133,7 +133,7 @@ export const YEMEN = {
         es: "Marib es la antigua capital del reino de Saba, ciudad legendaria mencionada en la Biblia y el Corán como el reino de la reina de Saba. Sus ruinas antiguas dan testimonio de una civilización sudarábiga avanzada que dominaba el riego gracias a la célebre Gran Presa de Marib, una de las mayores obras hidráulicas de la Antigüedad. La región sigue siendo hoy un importante punto estratégico del conflicto yemení.",
       },
       wikipedia: "Marib",
-      tags: ["Antiquité", "Histoire", "Archéologie", "Désert"],
+      tags: ["Histoire", "Désert"],
       mustSee: [
         { name: { fr: "Grand Barrage de Marib — chef-d'œuvre hydraulique antique", en: "Great Dam of Marib — ancient hydraulic masterpiece", es: "Gran Presa de Marib — obra maestra hidráulica de la Antigüedad" }, wikipedia: "Marib_Dam" },
         { name: { fr: "Temple d'Awwam — sanctuaire sudarabique dit « Trône de Bilqis »", en: "Awwam Temple — South Arabian sanctuary known as the \"Throne of Bilqis\"", es: "Templo de Awwam — santuario sudarábigo llamado «Trono de Bilqis»" }, wikipedia: "File:Awwam Temple.jpg" },

@@ -87,7 +87,7 @@ export const SYRIA = {
         es: "El casco antiguo de Damasco, una de las ciudades continuamente habitadas más antiguas del mundo, es Patrimonio de la Humanidad desde 1979. Sus callejuelas enredadas albergan la majestuosa mezquita de los Omeyas, uno de los monumentos más antiguos y grandes del islam, así como khanes, hammams y casas de patio interior de una belleza sorprendente. El zoco al-Hamidiyya, con su techo de chapa aún perforado por las balas de la Primera Guerra Mundial, conduce directamente al corazón histórico.",
       },
       wikipedia: "Old_city_of_Damascus",
-      tags: ["UNESCO", "Islam", "Architecture", "Histoire", "Ville", "Gastronomie"],
+      tags: ["UNESCO", "Spiritualité", "Architecture", "Histoire", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Mosquée des Omeyyades — l'une des quatre grandes mosquées de l'islam", en: "Umayyad Mosque — one of the four great mosques of Islam", es: "Mezquita de los Omeyas — una de las cuatro grandes mezquitas del islam" }, wikipedia: "Umayyad_Mosque" },
         { name: { fr: "Souk al-Hamidiyya — marché couvert historique menant à la mosquée", en: "Al-Hamidiyya souk — historic covered market leading to the mosque", es: "Zoco al-Hamidiyya — mercado cubierto histórico que conduce a la mezquita" }, wikipedia: "File:Al-Hamidiyah Souq 02.jpg" },
@@ -105,7 +105,7 @@ export const SYRIA = {
         es: "Alepo, una de las ciudades más grandes y antiguas del mundo árabe, poseía antes de la guerra uno de los centros históricos más notables de Oriente Medio, declarado Patrimonio de la Humanidad. Su ciudadela medieval, sus zocos cubiertos a lo largo de varios kilómetros y sus caravasares daban fe de una riqueza comercial milenaria. El casco antiguo sufrió graves destrucciones durante los combates de 2012-2016, y hay esfuerzos de reconstrucción en curso.",
       },
       wikipedia: "Aleppo",
-      tags: ["UNESCO", "Histoire", "Reconstruction", "Architecture", "Ville", "Gastronomie"],
+      tags: ["UNESCO", "Histoire", "Architecture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Citadelle d'Alep — forteresse médiévale dominant la ville, en cours de restauration", en: "Citadel of Aleppo — medieval fortress overlooking the city, under restoration", es: "Ciudadela de Alepo — fortaleza medieval que domina la ciudad, en restauración" }, wikipedia: "Citadel_of_Aleppo" },
         { name: { fr: "Grands Souks couverts — le plus long réseau de souks couverts du monde arabe", en: "Great Covered Souks — the longest network of covered souks in the Arab world", es: "Grandes zocos cubiertos — la red de zocos cubiertos más larga del mundo árabe" }, wikipedia: "File:Suq al-Dira in Aleppo al-Madina Souq.jpg" },
@@ -123,7 +123,7 @@ export const SYRIA = {
         es: "Palmira fue una de las ciudades antiguas más notables del mundo romano, un oasis en el corazón del desierto sirio que prosperó gracias al comercio caravanero entre Roma y Persia. Su yacimiento arqueológico, Patrimonio de la Humanidad, era un vasto conjunto de templos, columnatas y necrópolis de una belleza sobrecogedora. En 2015, el Estado Islámico destruyó parte de sus monumentos más preciados, entre ellos el Templo de Bel, infligiendo una pérdida irreparable al patrimonio mundial.",
       },
       wikipedia: "Palmyra",
-      tags: ["UNESCO", "Antiquité", "Archéologie", "Désert", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Désert", "Architecture"],
       mustSee: [
         { name: { fr: "Grande Colonnade — avenue à portiques de 1 100 mètres de long", en: "Great Colonnade — a 1,100-metre colonnaded avenue", es: "Gran Columnata — avenida porticada de 1.100 metros de longitud" }, wikipedia: "File:Palmyra, Syria, The Great Colonnade, Columns.jpg" },
         { name: { fr: "Temple de Baal-Shamin — partiellement détruit par Daesh en 2015", en: "Temple of Baalshamin — partially destroyed by ISIS in 2015", es: "Templo de Baal-Shamin — parcialmente destruido por Daesh en 2015" }, wikipedia: "Temple_of_Baalshamin" },
@@ -141,7 +141,7 @@ export const SYRIA = {
         es: "El Krak de los Caballeros está considerado uno de los castillos medievales mejor conservados del mundo, Patrimonio de la Humanidad desde 2006. Esta fortaleza cruzada, construida por los hospitalarios en el siglo XII, domina espectacularmente la llanura costera siria desde su espolón rocoso a 650 metros de altitud. El castillo sufrió algunos daños durante la guerra civil pero se mantiene en un estado de conservación notable.",
       },
       wikipedia: "Krak_des_Chevaliers",
-      tags: ["UNESCO", "Croisades", "Château", "Médiéval", "Architecture", "Histoire"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Tour maîtresse — donjon central massif aux murs épais de plusieurs mètres", en: "Keep — the massive central tower with walls several metres thick", es: "Torre del homenaje — torreón central macizo de muros de varios metros de espesor" }, wikipedia: "File:Krak des Chevaliers 31-South Tower.jpg" },
         { name: { fr: "Chapelle romane — église transformée en mosquée puis reconvertie", en: "Romanesque chapel — a church turned mosque and later reconverted", es: "Capilla románica — iglesia transformada en mezquita y luego reconvertida" }, wikipedia: "File:Krak des Chevaliers chapel 1155.jpg" },

@@ -251,7 +251,7 @@ export const FRANCE = {
         es: "Apodado el «jardín de Francia», el valle del Loira alberga más de 300 castillos renacentistas declarados Patrimonio de la Humanidad por la UNESCO. Chambord, Chenonceau y Amboise dan testimonio del esplendor real de los siglos XV y XVI. Los viñedos circundantes producen vinos de renombre como el Vouvray, el Sancerre y el Muscadet.",
       },
       wikipedia: "Loire_Valley",
-      tags: ["Histoire", "Châteaux", "Vin", "Vélo", "UNESCO", "Architecture"],
+      tags: ["Histoire", "Architecture", "Gastronomie", "Aventure", "UNESCO"],
       mustSee: [
         {
           name: { fr: "Château de Chambord — joyau Renaissance aux 440 pièces et double escalier", en: "Château de Chambord — Renaissance jewel with 440 rooms and a double staircase", es: "Castillo de Chambord — joya renacentista de 440 habitaciones y escalera doble" },
@@ -281,7 +281,7 @@ export const FRANCE = {
         es: "El Mont-Saint-Michel, abadía medieval que emerge del mar en marea alta, es uno de los lugares más fotografiados de Francia. La cercana costa bretona ofrece paisajes salvajes de landas y acantilados, pintorescos pueblos de pescadores y una cultura celta muy viva. Crêpes, galettes, sidra y marisco completan esta experiencia auténticamente bretona.",
       },
       wikipedia: "Mont-Saint-Michel",
-      tags: ["UNESCO", "Nature", "Gastronomie", "Histoire", "Mer", "Randonnée"],
+      tags: ["UNESCO", "Nature", "Gastronomie", "Histoire", "Plage", "Randonnée"],
       mustSee: [
         {
           name: { fr: "Abbaye du Mont-Saint-Michel — merveille médiévale sur son îlot rocheux", en: "Mont-Saint-Michel Abbey — medieval wonder on its rocky islet", es: "Abadía del Mont-Saint-Michel — maravilla medieval sobre su islote rocoso" },
@@ -348,7 +348,7 @@ export const FRANCE = {
         es: "Alsacia es una región en la frontera franco-alemana con una identidad cultural única: casas de entramado de madera adornadas con flores, viñedos de la Ruta del Vino, chucrut y kouglof. Estrasburgo alberga el Parlamento Europeo y una catedral gótica excepcional. Su mercado navideño, el más antiguo y famoso de Europa, atrae cada año a millones de visitantes.",
       },
       wikipedia: "Alsace",
-      tags: ["Culture", "Gastronomie", "Architecture", "UNESCO", "Vin", "Histoire", "Randonnée"],
+      tags: ["Culture", "Gastronomie", "Architecture", "UNESCO", "Histoire", "Randonnée"],
       mustSee: [
         { name: { fr: "Cathédrale Notre-Dame de Strasbourg — flèche gothique de 142 m", en: "Strasbourg Cathedral — 142 m Gothic spire", es: "Catedral de Notre-Dame de Estrasburgo — aguja gótica de 142 m" }, wikipedia: "Strasbourg_Cathedral" },
         { name: { fr: "La Petite France — quartier de tanneurs aux maisons à colombages", en: "La Petite France — former tanners' district with half-timbered houses", es: "La Petite France — antiguo barrio de curtidores con casas de entramado" }, wikipedia: "File:Straßburg (Frankreich), Petite France -- 2011 -- 1759.jpg" },
@@ -365,7 +365,7 @@ export const FRANCE = {
         es: "Provenza es una sinfonía de lavanda, cigarras y arte de vivir bajo el sol del sur. Aviñón y su Palacio de los Papas, el romano Pont du Gard, el pueblo colgado de Les Baux-de-Provence, los coloridos mercados de Aix y los campos de lavanda del Luberon forman una de las regiones más fotografiadas del mundo. Vino rosado, tapenade y pastis incluidos.",
       },
       wikipedia: "Provence",
-      tags: ["Nature", "Histoire", "UNESCO", "Gastronomie", "Vin", "Paysage", "Randonnée"],
+      tags: ["Nature", "Histoire", "UNESCO", "Gastronomie", "Randonnée"],
       mustSee: [
         { name: { fr: "Palais des Papes d'Avignon — plus grand palais gothique médiéval du monde", en: "Avignon's Papal Palace — the world's largest medieval Gothic palace", es: "Palacio de los Papas de Aviñón — el mayor palacio gótico medieval del mundo" }, wikipedia: "File:Avignon,_Palais_des_Papes_by_JM_Rosier.jpg" },
         { name: { fr: "Pont du Gard — aqueduc romain à 3 niveaux classé UNESCO", en: "Pont du Gard — UNESCO-listed 3-tier Roman aqueduct", es: "Pont du Gard — acueducto romano de 3 niveles, Patrimonio UNESCO" }, wikipedia: "Pont_du_Gard" },
@@ -383,7 +383,7 @@ export const FRANCE = {
         es: "Burdeos es la capital mundial del vino y una ciudad declarada Patrimonio UNESCO por su excepcional conjunto arquitectónico del siglo XVIII. La Cité du Vin es un espectacular museo inmersivo, la Place de la Bourse se refleja en el gigantesco espejo de agua, y el Médoc, Saint-Émilion y Sauternes están a un paseo en bicicleta. Desde la llegada del TGV en 2017 (2h desde París), la ciudad se ha convertido en una de las más de moda de Francia.",
       },
       wikipedia: "Bordeaux",
-      tags: ["Vin", "Architecture", "UNESCO", "Gastronomie", "Culture", "Histoire", "Vélo"],
+      tags: ["Gastronomie", "Architecture", "UNESCO", "Culture", "Histoire", "Aventure"],
       mustSee: [
         { name: { fr: "Cité du Vin — musée immersif dédié aux civilisations du vin", en: "Cité du Vin — immersive museum dedicated to wine civilisations", es: "Cité du Vin — museo inmersivo dedicado a las civilizaciones del vino" }, wikipedia: "Cité_du_Vin" },
         { name: { fr: "Place de la Bourse & Miroir d'Eau — reflet monumental sur l'eau", en: "Place de la Bourse & Water Mirror — monumental reflection on water", es: "Place de la Bourse y el Espejo de Agua — reflejo monumental sobre el agua" }, wikipedia: "Place_de_la_Bourse,_Bordeaux" },

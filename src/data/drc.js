@@ -95,7 +95,7 @@ export const DRC = {
         es: "El Parque Nacional de Virunga es el parque nacional más antiguo de África, declarado Patrimonio de la Humanidad por la UNESCO. Alberga gorilas de montaña en peligro de extinción, así como el volcán Nyiragongo, célebre por su lago de lava en fusión. Es una de las experiencias naturales más espectaculares del continente africano.",
       },
       wikipedia: "Virunga_National_Park",
-      tags: ["Nature", "Gorilles", "Volcan", "UNESCO"],
+      tags: ["Nature", "Safari", "UNESCO"],
       mustSee: [
         {
           name: { fr: "Volcan Nyiragongo — cratère avec lac de lave en fusion", en: "Mount Nyiragongo — crater with a molten lava lake", es: "Volcán Nyiragongo — cráter con lago de lava en fusión" },
@@ -121,7 +121,7 @@ export const DRC = {
         es: "Lola ya Bonobo es el único santuario de bonobos del mundo, situado en las afueras de Kinshasa. Este refugio acoge a bonobos huérfanos y heridos en un entorno forestal natural de 30 hectáreas. Una visita imprescindible para observar a estos fascinantes grandes simios, los parientes más cercanos del ser humano junto con los chimpancés.",
       },
       wikipedia: "Lola_ya_Bonobo",
-      tags: ["Bonobos", "Sanctuaire", "Nature", "Conservation"],
+      tags: ["Safari", "Spiritualité", "Nature"],
       mustSee: [
         { name: { fr: "Observation des bonobos en liberté dans la forêt", en: "Watching bonobos roam freely in the forest", es: "Observación de bonobos en libertad en el bosque" }, wikipedia: "Bonobo" },
         { name: { fr: "Centre de réhabilitation des jeunes bonobos", en: "Young bonobo rehabilitation centre", es: "Centro de rehabilitación de bonobos jóvenes" }, wikipedia: "Lola_ya_Bonobo" },
@@ -139,7 +139,7 @@ export const DRC = {
         es: "Kinshasa es una de las mayores metrópolis de África, con más de 15 millones de habitantes, rebosante de energía y cultura. La escena musical congoleña, cuna del soukous y la rumba africana, cobra vida en los numerosos bares y conciertos de la ciudad. Frente a Brazzaville, ofrece una vista única de las dos capitales más cercanas del mundo, separadas por el río Congo.",
       },
       wikipedia: "Kinshasa",
-      tags: ["Culture", "Musique", "Ville", "Gastronomie"],
+      tags: ["Culture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Marché de la Liberté — artisanat et vie locale", en: "Marché de la Liberté — crafts and local life", es: "Marché de la Liberté — artesanía y vida local" }, wikipedia: "Kinshasa" },
         { name: { fr: "Académie des Beaux-Arts de Kinshasa", en: "Kinshasa Academy of Fine Arts", es: "Academia de Bellas Artes de Kinshasa" }, wikipedia: "File:Académie_Beaux_Arts_Kinshasa_2.JPG" },
@@ -157,7 +157,7 @@ export const DRC = {
         es: "El río Congo es el segundo río más caudaloso del mundo tras el Amazonas, formando una espectacular frontera natural con la República del Congo. El Pool Malebo es un ensanchamiento del río que crea un lago natural de 30 km de ancho, con paisajes impresionantes. Los rápidos de Livingstone aguas abajo de Kinshasa están entre los más potentes del planeta.",
       },
       wikipedia: "Congo_River",
-      tags: ["Fleuve", "Nature", "Aventure", "Paysage"],
+      tags: ["Nature", "Aventure"],
       mustSee: [
         {
           name: { fr: "Pool Malebo — panorama sur le plus grand élargissement du fleuve", en: "Pool Malebo — views over the river's widest expansion", es: "Pool Malebo — panorama sobre el mayor ensanchamiento del río" },

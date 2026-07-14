@@ -99,7 +99,7 @@ export const AFGHANISTAN = {
         es: "El valle de Bamiyán era uno de los yacimientos arqueológicos más conmovedores del mundo, con sus dos budas colosales tallados en el acantilado en el siglo VI, destruidos con dinamita por los talibanes en 2001. Los nichos vacíos en el acantilado ocre siguen dando testimonio de esa pérdida cultural irreparable. Alrededor, cientos de cuevas budistas decoradas con frescos y los restos de una ciudad próspera en la Ruta de la Seda hacen de este un sitio de la UNESCO de un valor excepcional.",
       },
       wikipedia: "File:Black_Hawk_flying_over_a_valley_in_Bamyan.jpg",
-      tags: ["UNESCO", "Bouddhisme", "Archéologie", "Route de la Soie"],
+      tags: ["UNESCO", "Spiritualité", "Histoire"],
       mustSee: [
         { name: { fr: "Niches des bouddhas de Bamiyan — mémorial des colosses détruits", en: "Bamiyan Buddha niches — memorial to the destroyed colossi", es: "Nichos de los budas de Bamiyán — memorial de los colosos destruidos" }, wikipedia: "File:Buddha of Bamiyan.jpg" },
         { name: { fr: "Grottes de Bamiyan — monastères rupestres bouddhistes", en: "Bamiyan caves — Buddhist rock-cut monasteries", es: "Cuevas de Bamiyán — monasterios rupestres budistas" }, wikipedia: "File:Bamiyan Valley2.jpg" },
@@ -117,7 +117,7 @@ export const AFGHANISTAN = {
         es: "Los lagos de Band-e Amir, apodados los «diamantes de Afganistán», forman una serie de seis lagos de aguas azules de una transparencia irreal, separados por presas naturales de travertino blanco. Situados a 2.900 metros de altitud en las montañas del Hindu Kush, constituyen uno de los paisajes naturales más espectaculares de Asia Central y fueron declarados primer parque nacional de Afganistán en 2009.",
       },
       wikipedia: "Band-e_Amir_National_Park",
-      tags: ["Nature", "Lacs", "Randonnée", "Parc national"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Lac Band-e Haibat — le plus grand et le plus sacré", en: "Band-e Haibat Lake — the largest and most sacred", es: "Lago Band-e Haibat — el más grande y sagrado" }, wikipedia: "Band-e_Amir_National_Park" },
         { name: { fr: "Lac Band-e Zulfiqar — eaux turquoise entre falaises de travertin", en: "Band-e Zulfiqar Lake — turquoise water between travertine cliffs", es: "Lago Band-e Zulfiqar — aguas turquesa entre acantilados de travertino" }, wikipedia: "File:Band-e-Amir National Park-9.jpg" },
@@ -135,7 +135,7 @@ export const AFGHANISTAN = {
         es: "Antigua capital cultural del imperio timúrida en el siglo XV, Herat era apodada «la Florencia de Oriente» por su brillo artístico e intelectual. La Gran Mezquita del Casco Antiguo, sus minaretes esculpidos y su ciudadela reconstruida evocan un esplendor hoy eclipsado por los conflictos. La ciudad sigue siendo la tercera más grande de Afganistán y un centro económico cercano a la frontera iraní.",
       },
       wikipedia: "Herat",
-      tags: ["Histoire", "Architecture", "Timourides", "Islam"],
+      tags: ["Histoire", "Architecture", "Spiritualité"],
       mustSee: [
         { name: { fr: "Grande Mosquée de Hérat — joyau de l'architecture islamique", en: "Great Mosque of Herat — a jewel of Islamic architecture", es: "Gran Mezquita de Herat — joya de la arquitectura islámica" }, wikipedia: "File:Herat Masjidi Jami courtyard.jpg" },
         { name: { fr: "Minarets de Musalla — vestiges d'un complexe timouride du XVe s.", en: "Musalla minarets — remains of a 15th-century Timurid complex", es: "Minaretes de Musalla — restos de un complejo timúrida del siglo XV" }, wikipedia: "File:Musalla Complex in 2009.jpg" },
@@ -153,7 +153,7 @@ export const AFGHANISTAN = {
         es: "Kabul, enclavada en una cuenca a 1.800 metros de altitud entre montañas áridas, fue durante mucho tiempo una ciudad cosmopolita en el cruce de las culturas persa, turca e indobudista. Su museo nacional, saqueado pero parcialmente restaurado, conserva tesoros invaluables del arte bactriano y grecobudista. El casco antiguo, el bazar de Mandawi y los jardines de Babur —último refugio de la tumba del fundador del imperio mogol— dan testimonio de una historia milenaria.",
       },
       wikipedia: "Kabul",
-      tags: ["Ville", "Musée", "Histoire", "Art bactrien"],
+      tags: ["Ville", "Musées", "Histoire", "Art"],
       mustSee: [
         { name: { fr: "Musée national d'Afghanistan — art bactrien et gréco-bouddhiste", en: "National Museum of Afghanistan — Bactrian and Greco-Buddhist art", es: "Museo Nacional de Afganistán — arte bactriano y grecobudista" }, wikipedia: "National_Museum_of_Afghanistan" },
         { name: { fr: "Jardins de Babur — mausolée du fondateur de l'empire moghol", en: "Gardens of Babur — mausoleum of the founder of the Mughal Empire", es: "Jardines de Babur — mausoleo del fundador del imperio mogol" }, wikipedia: "File:Babur Gardens.jpg" },

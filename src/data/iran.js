@@ -129,7 +129,7 @@ export const IRAN = {
         es: "Apodada «Nesf-e Jahan» (la mitad del mundo), Isfahán es la capital cultural de Irán y una de las ciudades islámicas más bellas del mundo. La plaza del Imán, un vasto rectángulo bordeado de monumentos safávidas de color turquesa, figura entre las plazas más grandes del mundo. El bazar real, las mezquitas y los puentes cubiertos sobre el río Zayandeh forman un conjunto arquitectónico de una coherencia absoluta.",
       },
       wikipedia: "Isfahan",
-      tags: ["Architecture", "Culture", "Mosquées", "UNESCO", "Gastronomie", "Ville"],
+      tags: ["Architecture", "Culture", "UNESCO", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Place de l'Imam — chef-d'œuvre safavide du XVIIe siècle", en: "Imam Square — a 17th-century Safavid masterpiece", es: "Plaza del Imán — obra maestra safávida del siglo XVII" }, wikipedia: "Naqsh-e_Jahan_Square" },
         { name: { fr: "Mosquée de l'Imam — dôme turquoise emblématique", en: "Imam Mosque — iconic turquoise dome", es: "Mezquita del Imán — emblemática cúpula turquesa" }, wikipedia: "File:Mezquita Shah, Teherán, Irán, 2016-09-17, DD 48.jpg" },
@@ -147,7 +147,7 @@ export const IRAN = {
         es: "Fundada por Darío I hacia el 518 a. C., Persépolis fue la capital ceremonial del Imperio aqueménida, una de las civilizaciones más poderosas de la Antigüedad. Las inmensas terrazas, escaleras esculpidas y bajorrelieves que representan a las delegaciones de todos los pueblos del imperio constituyen un testimonio único de una organización política y artística excepcional. Declarada Patrimonio Mundial de la UNESCO, sigue siendo uno de los yacimientos arqueológicos más impresionantes del mundo.",
       },
       wikipedia: "File:Persépolis, Irán, 2016-09-24, DD 56.jpg",
-      tags: ["Archéologie", "UNESCO", "Antiquité", "Achéménides", "Architecture", "Désert"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Désert"],
       mustSee: [
         { name: { fr: "Porte de Xerxès — propylées monumentaux aux taureaux ailés", en: "Gate of Xerxes — monumental gateway with winged bulls", es: "Puerta de Jerjes — propileos monumentales con toros alados" }, wikipedia: "Gate_of_All_Nations" },
         { name: { fr: "Apadana — grande salle d'audience aux 72 colonnes", en: "Apadana — grand audience hall with 72 columns", es: "Apadana — gran sala de audiencias con 72 columnas" }, wikipedia: "Apadana" },
@@ -165,7 +165,7 @@ export const IRAN = {
         es: "Ciudad de los poetas, de las rosas y del vino en su versión preislámica, Shiraz es el alma romántica de Irán. Alberga los mausoleos de Hafez y Saadi, dos de los más grandes poetas de la literatura persa, aún venerados por millones de iraníes. La mezquita Nasir ol-Molk, con sus vidrieras que proyectan arcoíris de luz de colores, es una de las más fotografiadas de Irán.",
       },
       wikipedia: "Shiraz",
-      tags: ["Poésie", "Jardins", "Mosquées", "Culture"],
+      tags: ["Culture", "Nature", "Architecture"],
       mustSee: [
         { name: { fr: "Mosquée Nasir ol-Molk — la mosquée aux mille couleurs", en: "Nasir ol-Molk Mosque — the mosque of a thousand colours", es: "Mezquita Nasir ol-Molk — la mezquita de los mil colores" }, wikipedia: "File:Nasir al- mulk mosque, Shiraz.jpg" },
         { name: { fr: "Mausolée de Hafez — lieu de pèlerinage poétique", en: "Hafez's tomb — a poetic place of pilgrimage", es: "Mausoleo de Hafez — lugar de peregrinación poética" }, wikipedia: "Tomb_of_Hafez" },
@@ -183,7 +183,7 @@ export const IRAN = {
         es: "Megalópolis de 15 millones de habitantes encajada entre el Alborz nevado y el desierto, Teherán es una capital sorprendentemente animada y contradictoria. Sus museos albergan tesoros excepcionales: el Museo Nacional de Irán, el museo de las Joyas de la Corona con las gemas qajar, y el Museo de Arte Contemporáneo con una sorprendente colección de obras occidentales. La ciudad es también la puerta de entrada a las estaciones de esquí y los pueblos aferrados a las laderas del Alborz.",
       },
       wikipedia: "Tehran",
-      tags: ["Musées", "Gastronomie", "Moderne", "Ville", "Architecture", "Ski"],
+      tags: ["Musées", "Gastronomie", "Modernité", "Ville", "Architecture", "Ski"],
       mustSee: [
         { name: { fr: "Musée des Joyaux de la Couronne — diamants et pierreries impériaux", en: "Treasury of National Jewels — imperial diamonds and gemstones", es: "Museo de las Joyas de la Corona — diamantes y piedras preciosas imperiales" }, wikipedia: "File:Musée des Oudayas interior courtyard.jpg" },
         { name: { fr: "Palais du Golestan — résidence royale qajar classée UNESCO", en: "Golestan Palace — UNESCO-listed Qajar royal residence", es: "Palacio de Golestán — residencia real qajar declarada Patrimonio de la UNESCO" }, wikipedia: "Golestan_Palace" },

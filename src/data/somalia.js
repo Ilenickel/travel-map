@@ -94,7 +94,7 @@ export const SOMALIA = {
         es: "Laas Geel es uno de los yacimientos de arte rupestre mejor conservados del mundo entero. Descubiertas por una misión francesa en 2002, estas pinturas de entre 5.000 y 11.000 años de antigüedad representan bovinos de cuernos decorados, pastores y animales salvajes con colores de una frescura sorprendente. El sitio, situado a 50 km de Hargeisa, es visitable en un día y constituye la principal razón para visitar Somalilandia.",
       },
       wikipedia: "Laas_Geel",
-      tags: ["Art rupestre", "Préhistoire", "UNESCO candidat", "Archéologie"],
+      tags: ["Histoire", "UNESCO"],
       mustSee: [
         { name: { fr: "Grottes principales — panneaux de peintures aux couleurs vives", en: "Main caves — vividly coloured painting panels", es: "Cuevas principales — paneles de pinturas de colores vivos" }, wikipedia: "File:Laas Geel.jpg" },
         { name: { fr: "Bovins néolithiques peints — représentations uniques au monde", en: "Painted Neolithic cattle — depictions unique in the world", es: "Bovinos neolíticos pintados — representaciones únicas en el mundo" }, wikipedia: "File:Laas Geel single cow.jpg" },
@@ -112,7 +112,7 @@ export const SOMALIA = {
         es: "Berbera es el principal puerto de Somalilandia y una ciudad de gran valor histórico, antiguo enclave caravanero en la ruta del incienso y de los esclavos. Sus playas de arena blanca bordeadas de palmeras y sus aguas translúcidas del golfo de Adén la convierten en una localidad costera discreta y auténtica. Las ruinas otomanas, las antiguas casas de coral y el animado mercado dan fe de su pasado comercial.",
       },
       wikipedia: "Berbera",
-      tags: ["Plage", "Histoire", "Port", "Plongée"],
+      tags: ["Plage", "Histoire"],
       mustSee: [
         { name: { fr: "Plage de Berbera — plages immaculées sur le golfe d'Aden", en: "Berbera beach — pristine beaches on the Gulf of Aden", es: "Playa de Berbera — playas inmaculadas en el golfo de Adén" }, wikipedia: "File:Clean of berbera beach.jpg" },
         { name: { fr: "Vieux quartier colonial", en: "Old colonial quarter", es: "Antiguo barrio colonial" }, wikipedia: "File:Berbera Somaliland view northeast.JPG" },
@@ -130,7 +130,7 @@ export const SOMALIA = {
         es: "Hargeisa es la capital de Somalilandia, región autónoma autoproclamada desde 1991 que funciona como un estado independiente de facto con sus propias instituciones, moneda y pasaporte. La ciudad es relativamente segura y animada, con un colorido mercado central, mezquitas históricas y el monumento del avión de guerra convertido en símbolo de resistencia. Es la puerta de entrada para todo viajero que desee explorar Somalilandia.",
       },
       wikipedia: "Hargeisa",
-      tags: ["Ville", "Culture", "Marché", "Politique"],
+      tags: ["Ville", "Culture", "Shopping", "Histoire"],
       mustSee: [
         { name: { fr: "Avion-monument de la guerre civile — symbole de la résistance du Somaliland", en: "Civil war plane monument — symbol of Somaliland's resistance", es: "Avión-monumento de la guerra civil — símbolo de la resistencia de Somalilandia" }, wikipedia: "File:New rebuilt of Hargeisa War Memorial.jpg" },
         { name: { fr: "Marché central — épices, tissus et vie locale", en: "Central market — spices, textiles and local life", es: "Mercado central — especias, telas y vida local" }, wikipedia: "File:Street Market Hargeisa, Somaliland (29322262370).jpg" },
@@ -146,7 +146,7 @@ export const SOMALIA = {
         es: "Mogadiscio, una de las ciudades más antiguas del Cuerno de África, se reconstruye progresivamente tras décadas de guerra civil. Su casco antiguo (Hamarweyne), con sus casas árabes y mezquitas medievales, vuelve a la vida, y algunos hoteles de lujo acogen a los visitantes con seguridad privada reforzada. La visita sigue reservada a viajeros experimentados con guía y seguridad privada, debido al riesgo de atentados.",
       },
       wikipedia: "Mogadishu",
-      tags: ["Histoire", "Architecture", "Urbanisme", "Précaution"],
+      tags: ["Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Cathédrale de Mogadiscio — édifice colonial en ruines partielles", en: "Mogadishu Cathedral — partially ruined colonial building", es: "Catedral de Mogadiscio — edificio colonial parcialmente en ruinas" }, wikipedia: "Mogadishu_Cathedral" },
         { name: { fr: "Plage de Lido — front de mer qui renaît peu à peu", en: "Lido Beach — a seafront gradually coming back to life", es: "Playa de Lido — paseo marítimo que renace poco a poco" }, wikipedia: "Mogadishu" },

@@ -94,7 +94,7 @@ export const TOGO = {
         es: "El Gran Mercado de los Fetiches de Lomé (Akodessewa) es el mercado vudú más grande del mundo: miles de cráneos de animales, pieles, plantas medicinales y fetiches utilizados por los curanderos tradicionales. Un espectáculo impactante que no existe en ningún otro lugar. El paseo marítimo de Lomé, la única capital africana directamente sobre el Atlántico, completa la visita.",
       },
       wikipedia: "Lomé",
-      tags: ["Vaudou", "Marché", "Unique", "Ville"],
+      tags: ["Spiritualité", "Shopping", "Ville"],
       mustSee: [
         { name: { fr: "Marché des Fétiches d'Akodessewa — le plus grand marché vaudou du monde", en: "Akodessewa Fetish Market — the world's largest voodoo market", es: "Mercado de los Fetiches de Akodessewa — el mercado vudú más grande del mundo" }, wikipedia: "File:Akodessawa Fetish Market 2016.jpg" },
         { name: { fr: "Front de mer de Lomé — la seule capitale africaine sur l'Atlantique", en: "Lomé seafront — the only African capital on the Atlantic", es: "Paseo marítimo de Lomé — la única capital africana sobre el Atlántico" }, wikipedia: "File:Lome Beach Togo 1.jpg" },
@@ -112,7 +112,7 @@ export const TOGO = {
         es: "El país tamberma (UNESCO) en el norte de Togo está salpicado de tata — casas-castillo de barro de dos plantas, construidas como fortalezas con torres de vigilancia y graneros de mijo. Esta arquitectura única, de varios siglos de antigüedad, refleja la resistencia de los tamberma a las razias esclavistas. Un paisaje extraordinario y habitado.",
       },
       wikipedia: "Koutammakou",
-      tags: ["UNESCO", "Architecture", "Culture", "Unique"],
+      tags: ["UNESCO", "Architecture", "Culture"],
       mustSee: [
         { name: { fr: "Village de Nadoba — tatas Tamberma les mieux conservés", en: "Nadoba village — the best-preserved Tamberma tatas", es: "Pueblo de Nadoba — los tatas tamberma mejor conservados" }, wikipedia: "File:Les Tata de koutammakou 03.jpg" },
         { name: { fr: "Paysage de la plaine Tamberma au coucher de soleil", en: "Tamberma plain landscape at sunset", es: "Paisaje de la llanura tamberma al atardecer" }, wikipedia: "File:Paysage tata 01.jpg" },
@@ -128,7 +128,7 @@ export const TOGO = {
         es: "Kpalimé y su región constituyen el pulmón verde de Togo: selva tropical densa, cascadas de Kpimé y de Wome, granjas de mariposas, plantaciones de café y cacao. Allí se encuentra el monte Agou (986 m, punto más alto de Togo). Una región fresca y verde, ideal para el senderismo.",
       },
       wikipedia: "Kpalimé",
-      tags: ["Nature", "Randonnée", "Cascades", "Forêt"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Cascades de Kpimé (1h de Kpalimé)", en: "Kpimé Falls (1h from Kpalimé)", es: "Cascadas de Kpimé (1h de Kpalimé)" }, wikipedia: "File:Vue de la cascade de Kpimé, Kpalimé 01.jpg" },
         { name: { fr: "Mont Agou (986m) — point culminant du Togo", en: "Mount Agou (986m) — Togo's highest point", es: "Monte Agou (986 m) — punto más alto de Togo" }, wikipedia: "Mount_Agou" },

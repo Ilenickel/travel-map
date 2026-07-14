@@ -75,7 +75,7 @@ export const COMOROS = {
         es: "El Karthala (2.361 m) es uno de los volcanes activos más grandes del mundo en superficie de caldera (3 × 4 km). La ascensión de 2 días atraviesa selva tropical y páramos de brezo gigante antes de llegar a un cráter humeante de dimensiones espectaculares. La última gran erupción fue en 2007. Un trekking poco señalizado para aventureros.",
       },
       wikipedia: "File:Karthala volcano-Comoros.jpg",
-      tags: ["Volcan", "Randonnée", "Aventure", "Unique"],
+      tags: ["Nature", "Randonnée", "Aventure"],
       mustSee: [
         { name: { fr: "Ascension Karthala (2 jours, guide obligatoire)", en: "Karthala ascent (2 days, guide required)", es: "Ascensión al Karthala (2 días, guía obligatorio)" }, wikipedia: "File:Karthala volcano-Comoros.jpg" },
         { name: { fr: "Forêt tropicale humide du flanc du Karthala", en: "Humid tropical forest on Karthala's slopes", es: "Selva tropical húmeda en las laderas del Karthala" }, wikipedia: "File:Hiking to Karthala crater.jpg" },
@@ -91,7 +91,7 @@ export const COMOROS = {
         es: "Mohéli es la más pequeña y menos poblada de las principales islas comoranas: su Parque Marino (el único de las Comoras) protege las largas playas donde anidan las tortugas verdes (de mayo a septiembre), los delfines, los dugongos y las ballenas jorobadas (julio–septiembre). Una isla casi virgen, accesible en avioneta desde Moroni.",
       },
       wikipedia: "File:Mohéli-Beach.jpg",
-      tags: ["Tortues", "Parc Marin", "Baleines", "Vierge"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Ponte des tortues vertes (mai–septembre, nuit)", en: "Green turtle nesting (May–September, at night)", es: "Desove de tortugas verdes (mayo–septiembre, de noche)" }, wikipedia: "File:Green sea turtle (Chelonia mydas) Moorea.jpg" },
         { name: { fr: "Baleines à bosse (juillet–septembre)", en: "Humpback whales (July–September)", es: "Ballenas jorobadas (julio–septiembre)" }, wikipedia: "File:Baleine à bosse et son baleineau 2.jpg" },
@@ -109,7 +109,7 @@ export const COMOROS = {
         es: "Anjouan, la más perfumada de las islas, es la isla de las flores de ylang-ylang, cuya esencia forma parte de la composición del Chanel N.º 5. Alberga también el bosque de Moya, uno de los últimos refugios de la paloma azul de las Comoras, en peligro crítico. Los acantilados de Dzialandzé y el casco antiguo de Mutsamudu (de arquitectura suajili-árabe) son otros atractivos.",
       },
       wikipedia: "File:Anjouan.jpg",
-      tags: ["Parfum", "Forêt", "Architecture", "Ylang-ylang"],
+      tags: ["Shopping", "Nature", "Architecture"],
       mustSee: [
         { name: { fr: "Distilleries d'ylang-ylang — Chanel N°5 dans sa source", en: "Ylang-ylang distilleries — Chanel No. 5 at the source", es: "Destilerías de ylang-ylang — el Chanel N.º 5 en su origen" }, wikipedia: "File:Cananga odorata 02.JPG" },
         { name: { fr: "Forêt de Moya — réserve naturelle rare", en: "Moya Forest — a rare nature reserve", es: "Bosque de Moya — una reserva natural excepcional" }, wikipedia: "File:Anjouan banner.jpg" },
@@ -126,7 +126,7 @@ export const COMOROS = {
         es: "Moroni, capital de las Comoras, es una pequeña ciudad de ambiente suajili-árabe: su medina de Badjanani con sus callejuelas blancas, sus mezquitas de minaretes característicos, el puerto de dhows (dhow = velero árabe tradicional) y el animado mercado de Volo-Volo. Una mezcla de África, Arabia y tradiciones malgaches.",
       },
       wikipedia: "Moroni,_Comoros",
-      tags: ["Médina", "Swahili", "Port", "Culture"],
+      tags: ["Architecture", "Culture", "Plage"],
       mustSee: [
         { name: { fr: "Médina de Badjanani — ruelles blanches et mosquées", en: "Badjanani medina — white lanes and mosques", es: "Medina de Badjanani — callejuelas blancas y mezquitas" }, wikipedia: "File:Ancienne Mosquee du Vendredi (10886895544).jpg" },
         { name: { fr: "Port des boutres — voiliers arabes traditionnels", en: "Dhow harbour — traditional Arab sailing vessels", es: "Puerto de los dhows — veleros árabes tradicionales" }, wikipedia: "File:Moroni Friday Mosque Comoros.jpg" },

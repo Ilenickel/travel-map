@@ -94,7 +94,7 @@ export const BENIN = {
         es: "Los palacios reales de Abomey (UNESCO) son testimonio del poderoso reino de Dahomey (s. XVII–XIX): bajorrelieves de arcilla que narran las hazañas guerreras de los reyes, un museo real con tronos adornados con cráneos de enemigos, y la historia de las Amazonas de Dahomey — un ejército de mujeres guerreras. Uno de los sitios históricos más fascinantes de África.",
       },
       wikipedia: "Abomey",
-      tags: ["UNESCO", "Histoire", "Royauté", "Amazones"],
+      tags: ["UNESCO", "Histoire", "Nature"],
       mustSee: [
         { name: { fr: "Palais royal d'Abomey (UNESCO) — bas-reliefs et musée", en: "Royal Palace of Abomey (UNESCO) — bas-reliefs and museum", es: "Palacio real de Abomey (UNESCO) — bajorrelieves y museo" }, wikipedia: "Royal_Palaces_of_Abomey" },
         { name: { fr: "Histoire des Amazones du Dahomey (Agojie)", en: "History of the Dahomey Amazons (Agojie)", es: "Historia de las Amazonas de Dahomey (Agojie)" }, wikipedia: "Dahomey_Amazons" },
@@ -112,7 +112,7 @@ export const BENIN = {
         es: "Ouidah fue el mayor puerto de la trata de esclavos de África Occidental: la Ruta de los Esclavos (3 km) va desde el centro de la ciudad hasta la playa de la Door of No Return, un conmovedor memorial erigido en el lugar donde millones de africanos embarcaron hacia las Américas. Ouidah es también la capital mundial del vudú — ceremonias, templos de pitones y curanderos.",
       },
       wikipedia: "File:The city of Ouidah.jpg",
-      tags: ["Histoire", "Vaudou", "Mémorial", "Traite"],
+      tags: ["Histoire", "Spiritualité"],
       mustSee: [
         { name: { fr: "Door of No Return — mémorial de la traite négrière", en: "Door of No Return — memorial to the slave trade", es: "Door of No Return — memorial a la trata de esclavos" }, wikipedia: "File:Door of No Return Sign Ouidah (218406275).jpg" },
         { name: { fr: "Temple des Pythons — pythons sacrés en liberté", en: "Temple of Pythons — sacred free-roaming pythons", es: "Templo de las Pitones — pitones sagradas en libertad" }, wikipedia: "File:Entrée du Temple des Pythons (Ouidah).jpg" },
@@ -130,7 +130,7 @@ export const BENIN = {
         es: "Ganvié es una ciudad lacustre de 50 000 habitantes construida sobre pilotes en medio del lago Nokoué, fundada en el siglo XVII por los tofinu para huir de las incursiones de los guerreros de Dahomey (que no podían cruzar el agua). Mercado flotante, pescadores en piragua, casas sobre pilotes — un modo de vida acuático único en el mundo.",
       },
       wikipedia: "File:The village of Ganvié on Lake Nokoué.jpg",
-      tags: ["Lacustre", "Unique", "Pirogue", "Culture"],
+      tags: ["Nature", "Aventure", "Culture"],
       mustSee: [
         { name: { fr: "Tour en pirogue du village lacustre", en: "Pirogue tour of the stilt village", es: "Paseo en piragua por el pueblo lacustre" }, wikipedia: "File:The village of Ganvié on Lake Nokoué.jpg" },
         { name: { fr: "Marché flottant de Ganvié — commerce sur l'eau", en: "Ganvié floating market — trade on the water", es: "Mercado flotante de Ganvié — comercio sobre el agua" }, wikipedia: "File:Benin village on water Ganvié.jpg" },
@@ -146,7 +146,7 @@ export const BENIN = {
         es: "La reserva de biosfera de Pendjari es uno de los pocos lugares de África Occidental donde observar leones, elefantes, hipopótamos, búfalos y guepardos en su entorno natural. Gestionado junto con African Parks, el parque ha visto crecer notablemente sus poblaciones animales en los últimos años. Base en Natitingou.",
       },
       wikipedia: "Pendjari_National_Park",
-      tags: ["Safari", "Lions", "Éléphants", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Safari jeep — lions, éléphants, guépards", en: "Jeep safari — lions, elephants, cheetahs", es: "Safari en jeep — leones, elefantes, guepardos" }, wikipedia: "File:Pendjari kuhantilopen.JPG" },
         { name: { fr: "Cascades de Tanougou", en: "Tanougou Falls", es: "Cascadas de Tanougou" }, wikipedia: "File:Pendjari Fluss.JPG" },

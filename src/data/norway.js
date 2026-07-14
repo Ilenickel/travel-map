@@ -105,7 +105,7 @@ export const NORWAY = {
         es: "Los fiordos del oeste de Noruega están declarados Patrimonio de la Humanidad: el Geirangerfjord con sus cascadas de las Siete Hermanas, y el Nærøyfjord (el más estrecho del mundo, 250 m) son los más fotografiados de Escandinavia. El ferry panorámico, el kayak en aguas turquesas entre paredes de 1.400 m, y los pueblos de montaña conforman la experiencia noruega por excelencia.",
       },
       wikipedia: "Geirangerfjord",
-      tags: ["Fjords", "UNESCO", "Kayak", "Panoramique", "Nature"],
+      tags: ["Nature", "UNESCO", "Aventure"],
       mustSee: [
         { name: { fr: "Croisière Geirangerfjord — Cascades des Sept Sœurs", en: "Geirangerfjord cruise — Seven Sisters waterfalls", es: "Crucero por el Geirangerfjord — cascadas de las Siete Hermanas" }, wikipedia: "Geirangerfjord" },
         { name: { fr: "Kayak dans le Nærøyfjord (journée)", en: "Kayaking in the Nærøyfjord (day trip)", es: "Kayak en el Nærøyfjord (día)" }, wikipedia: "Nærøyfjord" },
@@ -123,7 +123,7 @@ export const NORWAY = {
         es: "Las Lofoten son un archipiélago de picos graníticos que emergen del Atlántico Norte: pueblos de pescadores rojos sobre pilotes (rorbuer), playas de arena blanca en un entorno ártico, auroras boreales en invierno y sol de medianoche en verano. Es el lugar más fotografiado de Noruega, y uno de los más bellos de Europa.",
       },
       wikipedia: "File:Vågakallen_from_Storvågan,_Austvågøya,_Lofoten,_Norway,_2015_April.jpg",
-      tags: ["Archipel", "Aurores", "Pêche", "Spectaculaire", "Nature", "Plage"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Village de Reine — le plus photographié de Norvège", en: "Reine village — the most photographed in Norway", es: "Pueblo de Reine — el más fotografiado de Noruega" }, wikipedia: "File:Houses_of_Reine_by_Gravdalsbukta,_Moskenes,_Nordland,_Norway,_2022_June.jpg" },
         { name: { fr: "Aurores boréales sur les rorbuer (oct–mars)", en: "Northern lights over the rorbuer (Oct–Mar)", es: "Auroras boreales sobre las rorbuer (oct–mar)" }, wikipedia: "File:Lofoten, Norway (Unsplash).jpg" },
@@ -140,7 +140,7 @@ export const NORWAY = {
         es: "Trolltunga ('la lengua del troll') es una roca suspendida a 700 m sobre el lago Ringedalsvatnet, una de las rutas más populares (y exigentes) de Europa. Preikestolen ('la Roca del Púlpito') ofrece una caída vertical de 604 m sobre el Lysefjord con una vista icónica. Ambas rutas se pueden hacer por libre o con guía.",
       },
       wikipedia: "Trolltunga",
-      tags: ["Randonnée", "Vertige", "Panoramique", "Incontournable"],
+      tags: ["Randonnée", "Aventure", "Nature"],
       mustSee: [
         { name: { fr: "Trolltunga (23km A/R, 1 100m dénivelé) — 2 jours reco.", en: "Trolltunga (23km round trip, 1,100m elevation) — 2 days recommended", es: "Trolltunga (23 km ida y vuelta, 1.100 m de desnivel) — se recomiendan 2 días" }, wikipedia: "Trolltunga" },
         { name: { fr: "Preikestolen — 3 800m A/R, vue sur le Lysefjord", en: "Preikestolen — 3,800m round trip, view over the Lysefjord", es: "Preikestolen — 3.800 m ida y vuelta, vista sobre el Lysefjord" }, wikipedia: "Preikestolen" },
@@ -158,7 +158,7 @@ export const NORWAY = {
         es: "Oslo es una capital dinámica en un entorno natural excepcional: el Museo de los Barcos Vikingos (tres drakkars originales del siglo IX), el barrio de Bygdøy con sus museos, la ópera moderna a orillas del fiordo (se puede subir al tejado), y el parque Vigeland con sus 200 esculturas de granito. Una ciudad que combina naturaleza y cultura, ideal en bicicleta.",
       },
       wikipedia: "Oslo",
-      tags: ["Ville", "Vikings", "Musées", "Opéra", "Histoire", "Gastronomie", "Architecture"],
+      tags: ["Ville", "Histoire", "Musées", "Culture", "Gastronomie", "Architecture"],
       mustSee: [
         { name: { fr: "Musée des Bateaux Vikings (Vikingskipshuset) — drakkars originaux", en: "Viking Ship Museum (Vikingskipshuset) — original longships", es: "Museo de los Barcos Vikingos (Vikingskipshuset) — drakkars originales" }, wikipedia: "File:Vikingskipshuset november 2016.jpg" },
         { name: { fr: "Opéra d'Oslo — marcher sur le toit de marbre blanc", en: "Oslo Opera House — walk on the white marble roof", es: "Ópera de Oslo — caminar sobre el tejado de mármol blanco" }, wikipedia: "File:Oslo Opera house (2015)(2).jpg" },

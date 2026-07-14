@@ -104,7 +104,7 @@ export const ARMENIA = {
         es: "El monasterio de Geghard (s. XIII), tallado en parte en la roca de un desfiladero, es uno de los más impresionantes del Cáucaso. A 20 km, el templo griego de Garni (s. I d. C.) es único en su género.",
       },
       wikipedia: "Geghard",
-      tags: ["Histoire", "UNESCO", "Archéologie", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Monastère de Geghard (UNESCO)", en: "Geghard Monastery (UNESCO)", es: "Monasterio de Geghard (UNESCO)" }, wikipedia: "Geghard" },
         { name: { fr: "Temple grec de Garni", en: "Garni Greek Temple", es: "Templo griego de Garni" }, wikipedia: "Garni_Temple" },

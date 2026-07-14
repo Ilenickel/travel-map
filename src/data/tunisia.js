@@ -90,7 +90,7 @@ export const TUNISIA = {
         en: "The medina of Tunis (UNESCO) is an enchanting maze of souks, mosques and palaces. 15 km away, the ruins of Carthage (UNESCO) and the white and blue village of Sidi Bou Saïd round out an unforgettable day.", es: "La medina de Túnez (UNESCO) es un laberinto cautivador de zocos, mezquitas y palacios. A 15 km, las ruinas de Cartago (UNESCO) y el pueblo blanco y azul de Sidi Bou Said completan una jornada inolvidable.",
       },
       wikipedia: "Tunis",
-      tags: ["Histoire", "UNESCO", "Médina", "Archéologie"],
+      tags: ["Histoire", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Médina de Tunis (UNESCO)", en: "Medina of Tunis (UNESCO)", es: "Medina de Túnez (UNESCO)" }, wikipedia: "Medina_of_Tunis" },
         { name: { fr: "Ruines de Carthage (UNESCO)", en: "Ruins of Carthage (UNESCO)", es: "Ruinas de Cartago (UNESCO)" }, wikipedia: "File:Tunisie Carthage Ruines 08.JPG" },
@@ -107,7 +107,7 @@ export const TUNISIA = {
         en: "The deserts of southern Tunisia offer grandiose landscapes: the dunes of the Erg Oriental in Douz, the oasis of Tozeur, the chott (salt lakes) and the Star Wars filming locations in otherworldly settings.", es: "Los desiertos del sur de Túnez ofrecen paisajes grandiosos: dunas del Erg Oriental en Douz, el oasis de Tozeur, los chotts (lagos salados) y los decorados extraterrestres donde se rodó Star Wars.",
       },
       wikipedia: "File:Sahara autour de Jbil.jpg",
-      tags: ["Désert", "Dunes", "4x4", "Star Wars"],
+      tags: ["Désert", "Nature", "Aventure", "Culture"],
       mustSee: [
         { name: { fr: "Dunes de Douz (porte du Sahara)", en: "Douz dunes (gateway to the Sahara)", es: "Dunas de Douz (puerta del Sahara)" }, wikipedia: "File:Douz Tunisia.jpg" },
         { name: { fr: "Chott el-Jérid (lac de sel)", en: "Chott el-Jerid (salt lake)", es: "Chott el Jerid (lago de sal)" }, wikipedia: "File:Chott-El-Jerid-Sunrise.JPG" },
@@ -124,7 +124,7 @@ export const TUNISIA = {
         en: "Djerba Island is Tunisia's main beach destination: golden beaches, turquoise waters, the old town of Houmt Souk and the La Ghriba synagogue, one of the oldest in the world.", es: "La isla de Yerba es el principal destino de playa de Túnez: playas doradas, aguas turquesas, el casco antiguo de Houmt Souk y la sinagoga de La Ghriba, una de las más antiguas del mundo.",
       },
       wikipedia: "File:Djerba harbor.jpg",
-      tags: ["Plage", "Détente", "Culture", "Balnéaire"],
+      tags: ["Plage", "Détente", "Culture"],
       mustSee: [
         { name: { fr: "Plage de Sidi Mahrez", en: "Sidi Mahrez Beach", es: "Playa de Sidi Mahrez" }, wikipedia: "File:Djerba el mouradi menzel hotel beach-3.jpg" },
         { name: { fr: "Synagogue de La Ghriba (IIIe s. av. J.-C.)", en: "La Ghriba Synagogue (3rd century BC)", es: "Sinagoga de La Ghriba (siglo III a. C.)" }, wikipedia: "File:Synagogue de la Ghriba Djerba 11.jpg" },
@@ -141,7 +141,7 @@ export const TUNISIA = {
         en: "Dougga is the best-preserved Roman site in North Africa (UNESCO): theatre, temples, forum and triumphal arch in a preserved rural setting. Sbeitla and El-Djem round out an exceptional archaeological tour.", es: "Dougga es el yacimiento romano mejor conservado del norte de África (UNESCO): teatro, templos, foro y arco de triunfo en un entorno rural preservado. Sbeitla y El Djem completan un circuito arqueológico excepcional.",
       },
       wikipedia: "Dougga",
-      tags: ["Archéologie", "Romain", "UNESCO", "Histoire"],
+      tags: ["Histoire", "UNESCO"],
       mustSee: [
         { name: { fr: "Site romain de Dougga (UNESCO)", en: "Roman site of Dougga (UNESCO)", es: "Yacimiento romano de Dougga (UNESCO)" }, wikipedia: "Dougga" },
         { name: { fr: "Amphithéâtre d'El-Djem (UNESCO)", en: "Amphitheatre of El-Djem (UNESCO)", es: "Anfiteatro de El Djem (UNESCO)" }, wikipedia: "Amphitheatre_of_El_Jem" },

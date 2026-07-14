@@ -65,7 +65,7 @@ export const TRINIDAD_TOBAGO = {
         en: "Port of Spain comes alive every year for Trinidad Carnival, one of the largest and most colourful in the world, celebrated two days before Ash Wednesday. The city is also the birthplace of the steelpan, the national instrument invented in the 1930s, which can be heard at Sunday evening panorama competitions. Queen's Park Savannah, the Botanical Garden and downtown's lively markets round out a visit to this cosmopolitan capital.", es: "Puerto España cobra vida cada año durante el Carnaval de Trinidad, uno de los más grandes y coloridos del mundo, celebrado dos días antes del Miércoles de Ceniza. La ciudad es también la cuna del steelpan, instrumento nacional inventado en los años 1930, que se puede escuchar en las competiciones musicales de panorama de los domingos por la noche. El Queen's Park Savannah, el jardín botánico y los animados mercados del centro completan la visita a esta cosmopolita capital.",
       },
       wikipedia: "Port_of_Spain",
-      tags: ["Culture", "Carnaval", "Musique", "Gastronomie"],
+      tags: ["Culture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Carnaval de Trinidad — fête de rue mondiale (fév/mars)", en: "Trinidad Carnival — world-famous street festival (Feb/Mar)", es: "Carnaval de Trinidad — fiesta callejera de fama mundial (feb/mar)" }, wikipedia: "Trinidad_and_Tobago_Carnival" },
         { name: { fr: "Queen's Park Savannah — parc central et architecture coloniale", en: "Queen's Park Savannah — central park and colonial architecture", es: "Queen's Park Savannah — parque central y arquitectura colonial" }, wikipedia: "Queen's_Park_Savannah" },
@@ -81,7 +81,7 @@ export const TRINIDAD_TOBAGO = {
         en: "The Asa Wright Nature Centre is one of the most renowned bird sanctuaries in the Caribbean, tucked into the wooded foothills of northern Trinidad. Over 400 bird species have been recorded in the reserve, including the rare oilbird (cave bird), visible in its unique cave with controlled access. The lodge's terrace offers close-up views of hummingbirds, tanagers and manakins just a few metres away.", es: "El Asa Wright Nature Centre es uno de los santuarios ornitológicos más reconocidos del Caribe, enclavado en las boscosas estribaciones del norte de Trinidad. Se han registrado más de 400 especies de aves en la reserva, incluido el raro guácharo (ave de las cavernas), visible en su cueva única de acceso controlado. La terraza del lodge permite observar colibríes, tangaras y saltarines a escasos metros de distancia.",
       },
       wikipedia: "Asa_Wright_Nature_Centre",
-      tags: ["Nature", "Ornithologie", "Forêt", "Écotourisme"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Terrasse d'observation — colibris et tangaras à portée de main", en: "Viewing terrace — hummingbirds and tanagers within arm's reach", es: "Terraza de observación — colibríes y tangaras al alcance de la mano" }, wikipedia: "Asa_Wright_Nature_Centre" },
         { name: { fr: "Grotte aux guácharos — oiseaux nocturnes rares", en: "Oilbird cave — rare nocturnal birds", es: "Cueva de los guácharos — aves nocturnas poco comunes" }, wikipedia: "Oilbird" },
@@ -98,7 +98,7 @@ export const TRINIDAD_TOBAGO = {
         en: "Speyside, a fishing village nestled in a bay on Tobago's east coast, is the island's diving capital, home to some of the best-preserved coral reefs in the Caribbean. Little Tobago, an islet reachable by boat, is a protected bird sanctuary where frigatebirds and masked boobies nest. The Blue Waters Inn and the secluded beaches nearby offer a paradise setting far from the crowds.", es: "Speyside, un pueblo de pescadores enclavado en una bahía de la costa este de Tobago, es la capital del buceo de la isla, con algunos de los arrecifes de coral mejor conservados del Caribe. Little Tobago, un islote accesible en barco, es un santuario ornitológico protegido donde anidan fragatas y piqueros enmascarados. El Blue Waters Inn y las playas aisladas de los alrededores ofrecen un entorno paradisíaco lejos de las multitudes.",
       },
       wikipedia: "File:Speyside - August 2013 (40).JPG",
-      tags: ["Plongée", "Plage", "Nature", "Tortues marines"],
+      tags: ["Plage", "Nature", "Safari"],
       mustSee: [
         { name: { fr: "Speyside — plongée sur les récifs coralliens intacts", en: "Speyside — diving on pristine coral reefs", es: "Speyside — buceo en arrecifes de coral intactos" }, wikipedia: "File:Speyside - August 2013 (20).JPG" },
         { name: { fr: "Little Tobago — île-sanctuaire ornithologique", en: "Little Tobago — bird sanctuary island", es: "Little Tobago — isla santuario de aves" }, wikipedia: "Little_Tobago" },
@@ -115,7 +115,7 @@ export const TRINIDAD_TOBAGO = {
         en: "Crown Point, Tobago's gateway, is home to the island's most famous beaches, including Pigeon Point with its iconic thatched-roof jetty stretching over shallow turquoise waters. The area is ideal for beginner snorkellers and kayakers, as well as the island's laid-back nightlife. Nearby Store Bay is known for its curried crab and dumplings vendors, Tobago's signature dish.", es: "Crown Point, puerta de entrada a Tobago, alberga las playas más famosas de la isla, entre ellas Pigeon Point, con su célebre embarcadero de techo de paja que se adentra en aguas turquesas y poco profundas. La zona es ideal para principiantes en snorkel y kayak, además de contar con una vida nocturna relajada. Store Bay, cerca de allí, es conocida por sus puestos de curried crab and dumplings, plato emblemático tobagonio.",
       },
       wikipedia: "Crown_Point,_Tobago",
-      tags: ["Plage", "Snorkeling", "Gastronomie", "Vie nocturne"],
+      tags: ["Plage", "Gastronomie", "Nightlife"],
       mustSee: [
         { name: { fr: "Pigeon Point Heritage Park — plage iconique aux eaux turquoise", en: "Pigeon Point Heritage Park — iconic beach with turquoise waters", es: "Pigeon Point Heritage Park — playa icónica de aguas turquesas" }, wikipedia: "Pigeon_Point,_Tobago" },
         { name: { fr: "Kayak et snorkeling — récifs peu profonds accessibles à tous", en: "Kayaking and snorkelling — shallow reefs suitable for everyone", es: "Kayak y snorkel — arrecifes poco profundos aptos para todos" }, wikipedia: "Crown_Point,_Tobago" },

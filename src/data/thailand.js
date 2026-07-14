@@ -142,7 +142,7 @@ export const THAILAND = {
         es: "Capital cultural del norte, rodeada de montañas y bosques. Conocida por sus templos, sus santuarios éticos de elefantes y sus mercados artesanales.",
       },
       wikipedia: "Chiang_Mai",
-      tags: ["Culture", "Nature", "Temples", "Artisanat", "Randonnée"],
+      tags: ["Culture", "Nature", "Temples", "Shopping", "Randonnée"],
       mustSee: [
         { name: "Wat Doi Suthep", wikipedia: "Wat_Phra_That_Doi_Suthep" },
         { name: { fr: "Vieille ville — les 300 temples", en: "Old town — the 300 temples", es: "Casco antiguo — los 300 templos" }, wikipedia: "File:Wat_Chiang_Man_(I).jpg" },
@@ -160,7 +160,7 @@ export const THAILAND = {
         es: "Archipiélago paradisíaco con playas de arena blanca, aguas cristalinas y una animada vida nocturna en Koh Phangan.",
       },
       wikipedia: "Ko_Samui",
-      tags: ["Plage", "Mer", "Détente", "Fête"],
+      tags: ["Plage", "Détente", "Culture"],
       mustSee: [
         { name: { fr: "Plage de Chaweng — Koh Samui", en: "Chaweng Beach — Koh Samui", es: "Playa de Chaweng — Koh Samui" }, wikipedia: "Ko_Samui" },
         { name: { fr: "Full Moon Party — Koh Phangan", en: "Full Moon Party — Koh Phangan", es: "Full Moon Party — Koh Phangan" }, wikipedia: "Full_Moon_Party" },
@@ -177,7 +177,7 @@ export const THAILAND = {
         es: "Espectaculares acantilados calizos que caen sobre el mar turquesa, playas secretas y un esnórquel excepcional alrededor de Koh Lanta y las islas Phi Phi.",
       },
       wikipedia: "File:Maya_Bay,_Thailand_by_Mike_Clegg_Photography.jpg",
-      tags: ["Plage", "Escalade", "Snorkeling", "Paysage"],
+      tags: ["Plage", "Aventure", "Nature"],
       mustSee: [
         { name: "Railay Beach", wikipedia: "Railay_Beach" },
         { name: { fr: "Îles Phi Phi", en: "Phi Phi Islands", es: "Islas Phi Phi" }, wikipedia: "Phi_Phi_Islands" },
@@ -212,7 +212,7 @@ export const THAILAND = {
         es: "Phuket es la isla más grande de Tailandia y uno de los destinos de playa más visitados de Asia. Patong y Kata ofrecen playas animadas, mientras que las cercanas islas Phi Phi revelan aguas turquesas irreales. La bahía de Phang Nga y sus karsts calizos, inmortalizada en James Bond, completa este impresionante cuadro tropical.",
       },
       wikipedia: "File:Phuket Aerial.jpg",
-      tags: ["Plage", "Mer", "Snorkeling", "Nature", "Paysage", "Nuit"],
+      tags: ["Plage", "Nature", "Nightlife"],
       mustSee: [
         { name: { fr: "Îles Phi Phi — Maya Bay aux eaux turquoise", en: "Phi Phi Islands — Maya Bay's turquoise waters", es: "Islas Phi Phi — aguas turquesas de Maya Bay" }, wikipedia: "Phi_Phi_Islands" },
         { name: { fr: "Baie de Phang Nga — karsts calcaires de James Bond", en: "Phang Nga Bay — the James Bond limestone karsts", es: "Bahía de Phang Nga — karsts calizos de James Bond" }, wikipedia: "Phang_Nga_Bay" },

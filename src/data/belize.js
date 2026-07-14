@@ -94,7 +94,7 @@ export const BELIZE = {
         es: "El Great Blue Hole, cráter submarino de 300 m de diámetro y 125 m de profundidad, es una de las maravillas naturales del mundo inscritas en la UNESCO. Rodeado por el Lighthouse Reef, ofrece una de las inmersiones más míticas del planeta, con estalactitas gigantes y tiburones.",
       },
       wikipedia: "Great_Blue_Hole",
-      tags: ["UNESCO", "Plongée", "Snorkel", "Nature"],
+      tags: ["UNESCO", "Plage", "Nature"],
       mustSee: [
         { name: { fr: "Plongée dans le Great Blue Hole (−40 m)", en: "Dive in the Great Blue Hole (−40 m)", es: "Inmersión en el Great Blue Hole (−40 m)" }, wikipedia: "Lighthouse_Reef" },
         { name: { fr: "Half Moon Caye — fous à pieds rouges", en: "Half Moon Caye — red-footed boobies", es: "Half Moon Caye — piqueros de patas rojas" }, wikipedia: "Half_Moon_Caye" },
@@ -112,7 +112,7 @@ export const BELIZE = {
         es: "Ambergris Caye es la isla más grande y popular de Belice: San Pedro, animado pueblo de playa, la reserva marina Hol Chan y Shark Ray Alley, donde se puede nadar con rayas y tiburones nodriza con total seguridad.",
       },
       wikipedia: "Ambergris_Caye",
-      tags: ["Île", "Plage", "Snorkel", "Vie nocturne"],
+      tags: ["Plage", "Nightlife"],
       mustSee: [
         { name: { fr: "Hol Chan Marine Reserve — snorkel coraux", en: "Hol Chan Marine Reserve — coral snorkelling", es: "Hol Chan Marine Reserve — esnórquel entre corales" }, wikipedia: "Hol_Chan_Marine_Reserve" },
         { name: { fr: "Shark Ray Alley — nage avec raies & requins", en: "Shark Ray Alley — swim with rays & sharks", es: "Shark Ray Alley — nado con rayas y tiburones" }, wikipedia: "File:Nurse Shark (Ginglymostoma cirratum) (36552532791).jpg" },
@@ -130,7 +130,7 @@ export const BELIZE = {
         es: "Caracol es la mayor ciudad maya de Belice, escondida en los bosques de la reserva de Chiquibul. Su pirámide Caana (Sky Palace, 43 m) supera en altura a Belmopán. Jaguares, tapires y monos aulladores conviven con los arqueólogos.",
       },
       wikipedia: "File:Caana, top view, Caracol, Chiquibul Forest Reserve, Belize.jpg",
-      tags: ["Mayas", "Jungle", "Archéologie", "Faune"],
+      tags: ["Histoire", "Nature", "Safari"],
       mustSee: [
         { name: { fr: "Pyramide Caana (Sky Palace) — panorama jungle", en: "Caana Pyramid (Sky Palace) — jungle panorama", es: "Pirámide Caana (Sky Palace) — panorama de la jungla" }, wikipedia: "File:Caracol-Temple.jpg" },
         { name: { fr: "Stèles et autels mayas sculptés", en: "Carved Maya stelae and altars", es: "Estelas y altares mayas esculpidos" }, wikipedia: "File:Stone Stela, Caana, Caracol, Belize.jpg" },
@@ -148,7 +148,7 @@ export const BELIZE = {
         es: "El distrito de Cayo es el corazón de la aventura en Belice: las cuevas ATM (Actun Tunichil Muknal), santuario maya lleno de esqueletos y cerámicas sagradas, las cascadas cerca de San Ignacio y el bosque primario de Mountain Pine Ridge.",
       },
       wikipedia: "File:Belize mountians, Cayo district Laslovarga002.JPG",
-      tags: ["Grottes", "Aventure", "Nature", "Mayas"],
+      tags: ["Nature", "Aventure", "Histoire"],
       mustSee: [
         { name: { fr: "Grottes ATM — squelettes mayas in situ", en: "ATM caves — Maya skeletons in situ", es: "Cuevas ATM — esqueletos mayas in situ" }, wikipedia: "Actun_Tunichil_Muknal" },
         { name: { fr: "Mountain Pine Ridge — chutes & piscines", en: "Mountain Pine Ridge — waterfalls & pools", es: "Mountain Pine Ridge — cascadas y piscinas naturales" }, wikipedia: "Mountain_Pine_Ridge_Forest_Reserve" },

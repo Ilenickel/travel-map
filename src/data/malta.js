@@ -73,7 +73,7 @@ export const MALTA = {
         es: "La Valeta es la capital más pequeña de la Unión Europea y una de las ciudades más fortificadas de Europa, declarada Patrimonio de la Humanidad por la UNESCO. Construida por los Caballeros de la Orden de San Juan en el siglo XVI, alberga una concentración excepcional de monumentos históricos. La concatedral de San Juan, con sus interiores barrocos dorados y dos cuadros de Caravaggio, es una obra maestra absoluta.",
       },
       wikipedia: "Valletta",
-      tags: ["UNESCO", "Ville", "Baroque", "Chevaliers de Malte", "Architecture", "Gastronomie"],
+      tags: ["UNESCO", "Ville", "Architecture", "Histoire", "Gastronomie"],
       mustSee: [
         { name: { fr: "Co-cathédrale Saint-Jean — baroque maltais et Caravage (La Décollation)", en: "St John's Co-Cathedral — Maltese baroque and Caravaggio (The Beheading)", es: "Concatedral de San Juan — barroco maltés y Caravaggio (La Decapitación)" }, wikipedia: "File:Concatedral_de_San_Juan,_La_Valeta,_isla_de_Malta,_Malta,_2021-08-25,_DD_246-248_HDR.jpg" },
         { name: { fr: "Palais du Grand Maître — résidence officielle du Président de Malte", en: "Grandmaster's Palace — official residence of the President of Malta", es: "Palacio del Gran Maestre — residencia oficial del Presidente de Malta" }, wikipedia: "Grandmaster's_Palace,_Valletta" },
@@ -91,7 +91,7 @@ export const MALTA = {
         es: "Apodada la 'Ciudad del Silencio', Mdina es una antigua capital fortificada medieval encaramada en una colina en el centro de la isla de Malta. Con menos de 300 habitantes permanentes, sus callejuelas desiertas al caer la noche crean una atmósfera casi mágica. Sirvió de escenario para Desembarco del Rey en la primera temporada de Juego de Tronos.",
       },
       wikipedia: "Mdina",
-      tags: ["Médiéval", "Fortifié", "Histoire", "Game of Thrones", "Architecture"],
+      tags: ["Histoire", "Architecture", "Culture"],
       mustSee: [
         { name: { fr: "Remparts de Mdina — vues panoramiques sur toute l'île de Malte", en: "Mdina ramparts — panoramic views over the whole island of Malta", es: "Murallas de Mdina — vistas panorámicas de toda la isla de Malta" }, wikipedia: "Mdina" },
         { name: { fr: "Cathédrale Saint-Paul — baroque du XVIIIe siècle sur un tremblement de terre", en: "St Paul's Cathedral — 18th-century baroque rebuilt after an earthquake", es: "Catedral de San Pablo — barroco del siglo XVIII reconstruida tras un terremoto" }, wikipedia: "File:Catedral_de_San_Pablo,_Mdina,_isla_de_Malta,_Malta,_2021-08-25,_DD_150-152_HDR.jpg" },
@@ -109,7 +109,7 @@ export const MALTA = {
         es: "La Laguna Azul de la isla de Comino tiene una de las aguas más cristalinas de todo el Mediterráneo, con tonos turquesa y azul de una belleza irreal. La isla de Comino, casi deshabitada, alberga un único hotel. La Laguna Azul es ideal para nadar, hacer snorkel y bucear. En temporada baja adquiere un carácter paradisíaco.",
       },
       wikipedia: "File:Blue_Lagoon_and_Cominotto.JPG",
-      tags: ["Plage", "Snorkeling", "Île", "Méditerranée", "Nature"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Lagune Bleue — eaux turquoise spectaculaires, snorkeling exceptionnel", en: "Blue Lagoon — spectacular turquoise waters, outstanding snorkelling", es: "Laguna Azul — aguas turquesas espectaculares, snorkel excepcional" }, wikipedia: "File:Blue_Lagoon_and_Cominotto.JPG" },
         { name: { fr: "Tour Santa Marija — tour défensive du XVIIe siècle sur l'île", en: "Santa Marija Tower — 17th-century defensive tower on the island", es: "Torre de Santa Marija — torre defensiva del siglo XVII en la isla" }, wikipedia: "File:Comino_St_Mary’s_Tower.JPG" },
@@ -127,7 +127,7 @@ export const MALTA = {
         es: "Los templos megalíticos de Malta son las estructuras arquitectónicas autoportantes más antiguas del mundo, datadas entre el 3600 y el 2500 a.C. Los templos de Ħaġar Qim y Mnajdra, frente al mar, y los de Tarxien, todos declarados Patrimonio de la Humanidad por la UNESCO, dan testimonio de una civilización prehistórica misteriosa y avanzada. El Museo Arqueológico Nacional de La Valeta conserva las preciadas 'Venus de Malta'.",
       },
       wikipedia: "Megalithic_Temples_of_Malta",
-      tags: ["UNESCO", "Préhistoire", "Archéologie", "Mégalithes"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Temples de Ħaġar Qim et Mnajdra — mégalithes face à la mer, classés UNESCO", en: "Ħaġar Qim and Mnajdra temples — UNESCO-listed megaliths facing the sea", es: "Templos de Ħaġar Qim y Mnajdra — megalitos frente al mar, Patrimonio de la Humanidad" }, wikipedia: "Ħaġar_Qim" },
         { name: { fr: "Hypogée de Ħal Saflieni — temple souterrain préhistorique unique au monde", en: "Ħal Saflieni Hypogeum — a unique underground prehistoric temple", es: "Hipogeo de Ħal Saflieni — templo subterráneo prehistórico único en el mundo" }, wikipedia: "Ħal_Saflieni_Hypogeum" },

@@ -96,7 +96,7 @@ export const LAOS = {
         es: "Antigua capital real declarada Patrimonio UNESCO, Luang Prabang es una de las ciudades más bellas del sudeste asiático. Cada mañana, la procesión de monjes con túnicas naranjas (tak bat) por las calles coloniales es una experiencia espiritual inolvidable.",
       },
       wikipedia: "Luang_Prabang",
-      tags: ["UNESCO", "Temples", "Culture", "Monastères", "Architecture", "Gastronomie"],
+      tags: ["UNESCO", "Temples", "Culture", "Spiritualité", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Tak Bat (procession des moines)", en: "Tak Bat (monks' procession)", es: "Tak Bat (procesión de los monjes)" }, wikipedia: "File:Praying_bhikkhus_inside_Wat_Sensoukharam_in_Luang_Prabang_Laos.jpg" },
         { name: { fr: "Chutes de Kuang Si", en: "Kuang Si Falls", es: "Cascadas de Kuang Si" }, wikipedia: "File:Kuang_Si_Falls_and_a_turquoise_water_pool_in_Luang_Prabang_province_Laos.jpg" },
@@ -114,7 +114,7 @@ export const LAOS = {
         es: "Rodeada de espectaculares formaciones kársticas y del río Nam Song, Vang Vieng ofrece paseos en kayak, exploración de cuevas y vistas panorámicas desde globos aerostáticos. La ciudad ha mejorado considerablemente su imagen en los últimos años.",
       },
       wikipedia: "Vang_Vieng",
-      tags: ["Karst", "Kayak", "Montgolfière", "Randonnée"],
+      tags: ["Histoire", "Aventure", "Randonnée"],
       mustSee: [
         { name: { fr: "Blue Lagoon (Vang Vieng)", en: "Blue Lagoon (Vang Vieng)", es: "Blue Lagoon (Vang Vieng)" }, wikipedia: "File:Blue Lagoon at Vang Vieng - panoramio.jpg" },
         { name: { fr: "Grotte de Tham Chang", en: "Tham Chang Cave", es: "Cueva de Tham Chang" }, wikipedia: "File:Wat_Tham_Khao_Rup_Chang_-_180_Stalagtites_(14478487438).jpg" },
@@ -132,7 +132,7 @@ export const LAOS = {
         es: "La capital más pequeña y apacible del sudeste asiático conserva un encanto colonial franco-laosiano. El Pha That Luang (estupa nacional), el Patuxai (arco del triunfo laosiano) y el Buddha Park son sus emblemas.",
       },
       wikipedia: "Vientiane",
-      tags: ["Ville", "Temples", "Histoire", "Détendu", "Architecture", "Gastronomie"],
+      tags: ["Ville", "Temples", "Histoire", "Détente", "Architecture", "Gastronomie"],
       mustSee: [
         { name: "Pha That Luang", wikipedia: "Pha_That_Luang" },
         { name: "Patuxai", wikipedia: "Patuxai" },
@@ -150,7 +150,7 @@ export const LAOS = {
         es: "La meseta de Bolaven es una región de tierras altas exuberantes con plantaciones de café, cascadas espectaculares y pueblos de minorías étnicas. La cascada de Tad Fane es una de las más bellas del país.",
       },
       wikipedia: "Bolaven_Plateau",
-      tags: ["Café", "Cascades", "Culture", "Nature"],
+      tags: ["Gastronomie", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Tad Fane (double cascade)", en: "Tad Fane (twin waterfall)", es: "Tad Fane (cascada doble)" }, wikipedia: "Bolaven_Plateau" },
         { name: "Tad Lo", wikipedia: "File:Tad_Hang_waterfalls_at_sunset,_Tad_Lo_village,_Bolaven_Plateau,_Laos.jpg" },

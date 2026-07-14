@@ -126,7 +126,7 @@ export const CHILE = {
         es: "El parque nacional Torres del Paine es uno de los más bellos del mundo, con sus tres torres graníticas, sus glaciares y su fauna salvaje (guanacos, cóndores, pumas). El trekking en W o en O es una aventura de referencia.",
       },
       wikipedia: "File:Towers of Paine - Torres del Paine National Park 13.jpg",
-      tags: ["Randonnée", "Glaciers", "Faune", "Nature"],
+      tags: ["Randonnée", "Nature", "Safari"],
       mustSee: [
         { name: { fr: "Mirador Las Torres", en: "Mirador Las Torres", es: "Mirador Las Torres" }, wikipedia: "File:Mirador las Torres.jpg" },
         { name: { fr: "Glacier Grey", en: "Grey Glacier", es: "Glaciar Grey" }, wikipedia: "Grey_Glacier" },
@@ -144,7 +144,7 @@ export const CHILE = {
         es: "El desierto de Atacama es el más árido del mundo y ofrece paisajes marcianos sobrecogedores: los géiseres del Tatio a 4.500 m, el Valle de la Luna, lagunas de colores y uno de los cielos estrellados más despejados del mundo.",
       },
       wikipedia: "File:Paisaje cerca de Calama, Chile, 2016-02-01, DD 83.JPG",
-      tags: ["Désert", "Astronomie", "Geysers", "Paysages", "Nature"],
+      tags: ["Désert", "Nature"],
       mustSee: [
         { name: { fr: "Geysers del Tatio", en: "El Tatio Geysers", es: "Géiseres del Tatio" }, wikipedia: "El_Tatio" },
         { name: { fr: "Valle de la Luna", en: "Moon Valley", es: "Valle de la Luna" }, wikipedia: "Valle_de_la_Luna_(Chile)" },
@@ -162,7 +162,7 @@ export const CHILE = {
         es: "Santiago es una capital moderna con los Andes como telón de fondo. A 1h30, Valparaíso es una ciudad-puerto bohemia con funiculares y coloridos murales, declarada Patrimonio de la Humanidad por la UNESCO.",
       },
       wikipedia: "File:Edificios en Santiago de Chile II.jpg",
-      tags: ["Ville", "Art", "UNESCO", "Vin", "Architecture", "Gastronomie", "Ski"],
+      tags: ["Ville", "Art", "UNESCO", "Gastronomie", "Architecture", "Ski"],
       mustSee: [
         { name: { fr: "Valparaíso (cerros)", en: "Valparaíso (hills)", es: "Valparaíso (cerros)" }, wikipedia: "File:Templeman y Almirante Montt, Valparaíso.jpg" },
         { name: { fr: "Museo Chileno de Arte Precolombino", en: "Chilean Museum of Pre-Columbian Art", es: "Museo Chileno de Arte Precolombino" }, wikipedia: "File:Museo Chileno de Arte Precolombino - 2020 - 10.jpg" },
@@ -180,7 +180,7 @@ export const CHILE = {
         es: "Isla mítica del Pacífico a 3.700 km de la costa chilena, Rapa Nui es célebre por sus moáis, esas estatuas monumentales erigidas por los antiguos polinesios. Un fascinante misterio arqueológico en un entorno volcánico.",
       },
       wikipedia: "Easter_Island",
-      tags: ["Île", "Archéologie", "Mystère", "Volcans", "Plage", "UNESCO"],
+      tags: ["Plage", "Histoire", "Nature", "UNESCO"],
       mustSee: [
         { name: { fr: "Ahu Tongariki (15 moaïs)", en: "Ahu Tongariki (15 moai)", es: "Ahu Tongariki (15 moáis)" }, wikipedia: "Ahu_Tongariki" },
         { name: { fr: "Rano Raraku (carrière)", en: "Rano Raraku (quarry)", es: "Rano Raraku (cantera)" }, wikipedia: "Rano_Raraku" },

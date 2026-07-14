@@ -96,7 +96,7 @@ export const VENEZUELA = {
         es: "La catarata más alta del mundo (979 m, 15 veces el Niágara) se precipita desde la cima del tepuy Auyán desde hace milenios. Accesible en avión o en piragua desde Ciudad Bolívar o Canaima, es una de las maravillas naturales absolutas del planeta.",
       },
       wikipedia: "File:Salto del Angel-Canaima-Venezuela03.JPG",
-      tags: ["Cascade", "Unique", "Nature", "Tepuy", "UNESCO"],
+      tags: ["Nature", "UNESCO"],
       mustSee: [
         { name: "Tepuy Auyán-tepui", wikipedia: "File:Auyan Tepui 01.JPG" },
         { name: { fr: "Lagune de Canaima", en: "Canaima Lagoon", es: "Laguna de Canaima" }, wikipedia: "File:Canaima 34.JPG" },
@@ -114,7 +114,7 @@ export const VENEZUELA = {
         es: "La Gran Sabana es una meseta mística de sabanas y tepuyes (montañas tabulares) en la frontera brasileña. El tepuy Roraima, cuya cima perdida entre las nubes inspiró a Conan Doyle para El Mundo Perdido, se recorre en un trekking de 6 días desde San Francisco de Yuruaní.",
       },
       wikipedia: "Gran_Sabana",
-      tags: ["Tepuys", "Randonnée", "Nature", "Mystique"],
+      tags: ["Nature", "Randonnée", "Spiritualité"],
       mustSee: [
         { name: "Mount Roraima", wikipedia: "Mount_Roraima" },
         { name: "Salto Kama", wikipedia: "File:Kamá Falls - Salto Kama (23495860840).jpg" },
@@ -132,7 +132,7 @@ export const VENEZUELA = {
         es: "Los Llanos venezolanos son uno de los mejores lugares del mundo para observar fauna silvestre: anacondas, caimanes, capibaras, jaguares y más de 400 especies de aves. Los hatos (ranchos) ofrecen safaris a caballo o en 4x4.",
       },
       wikipedia: "File:Los_Llanos_Colombia_by_David.png",
-      tags: ["Safari", "Faune", "Jaguar", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: "Hato El Cedral", wikipedia: "Capybara" },
         { name: "Hato Piñero", wikipedia: "File:Hato Piñero 2002 001.jpg" },
@@ -150,7 +150,7 @@ export const VENEZUELA = {
         es: "El archipiélago de Los Roques es un parque nacional marino de aguas turquesas y playas de arena blanca a 160 km al norte de Caracas. Pesca con mosca, buceo y vela en un entorno caribeño preservado.",
       },
       wikipedia: "File:CayoCareneroLosRoquesVenezuelapic1.jpg",
-      tags: ["Plage", "Plongée", "Île", "Caraïbes", "Nature"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: "Cayo de Agua", wikipedia: "File:Cayo de Agua in Los Roques.jpg" },
         { name: "Francisquí", wikipedia: "File:Cayo Francisqui apacible.JPG" },

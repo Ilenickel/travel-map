@@ -110,7 +110,7 @@ export const PALESTINE = {
         es: "Belén es una de las ciudades más veneradas por los cristianos de todo el mundo, lugar de nacimiento de Jesús según los Evangelios. La Iglesia de la Natividad, inscrita en la lista de Patrimonio de la Humanidad de la UNESCO en 2012, está construida sobre la gruta tradicionalmente asociada al nacimiento de Cristo y es una de las basílicas cristianas más antiguas todavía en uso. El casco antiguo de Belén, con sus artesanos del nácar, sus vendedores de recuerdos y sus animados cafés, merece una larga exploración.",
       },
       wikipedia: "File:Bethlehem_skyline,_West_Bank.jpg",
-      tags: ["UNESCO", "Christianisme", "Pèlerinage", "Histoire"],
+      tags: ["UNESCO", "Spiritualité", "Histoire"],
       mustSee: [
         { name: { fr: "Église de la Nativité — basilique du IVe siècle sur le lieu de naissance du Christ", en: "Church of the Nativity — 4th-century basilica on the site of Christ's birth", es: "Iglesia de la Natividad — basílica del siglo IV en el lugar de nacimiento de Cristo" }, wikipedia: "Church_of_the_Nativity" },
         { name: { fr: "Grotte de la Nativité — crypte abritant l'étoile d'argent marquant le lieu de naissance", en: "Grotto of the Nativity — crypt holding the silver star marking the birthplace", es: "Gruta de la Natividad — cripta que alberga la estrella de plata que marca el lugar de nacimiento" }, wikipedia: "Church_of_the_Nativity" },
@@ -128,7 +128,7 @@ export const PALESTINE = {
         es: "Jericó está considerada una de las ciudades habitadas continuamente más antiguas del mundo, con rastros de ocupación que se remontan a 11.000 años antes de nuestra era. Situada a 258 metros bajo el nivel del mar en el valle del Jordán, es también la ciudad más baja del mundo. El yacimiento arqueológico de Tel es-Sultan, el monasterio de la Tentación en el acantilado y el cercano Mar Muerto la convierten en una parada imprescindible de cualquier viaje a Palestina.",
       },
       wikipedia: "Jericho",
-      tags: ["Archéologie", "Histoire", "Mer Morte", "Religion"],
+      tags: ["Histoire", "Plage", "Spiritualité"],
       mustSee: [
         { name: { fr: "Tel es-Sultan — site archéologique de la « plus ancienne ville du monde »", en: "Tel es-Sultan — archaeological site of the \"oldest city in the world\"", es: "Tel es-Sultan — yacimiento arqueológico de la «ciudad más antigua del mundo»" }, wikipedia: "File:Tell es-Sultan, Jericho, Palestine2.jpg" },
         { name: { fr: "Monastère de la Tentation — monastère orthodoxe accroché à la falaise", en: "Monastery of the Temptation — Orthodox monastery clinging to the cliff", es: "Monasterio de la Tentación — monasterio ortodoxo aferrado al acantilado" }, wikipedia: "Monastery_of_the_Temptation" },
@@ -146,7 +146,7 @@ export const PALESTINE = {
         es: "Ramala es la capital administrativa de facto de la Autoridad Palestina y la ciudad más moderna y cosmopolita de Cisjordania. Su centro animado, sus cafés, sus galerías de arte y sus restaurantes de moda reflejan una vida cultural palestina dinámica a pesar del difícil contexto político. La ciudad también alberga numerosas organizaciones culturales y ONG internacionales, y su zoco sigue muy animado.",
       },
       wikipedia: "Ramallah",
-      tags: ["Ville", "Culture", "Modernité", "Arts"],
+      tags: ["Ville", "Culture", "Modernité", "Art"],
       mustSee: [
         { name: { fr: "Manara Square — cœur animé de Ramallah avec sa fontaine aux lions", en: "Manara Square — Ramallah's lively heart, with its lion fountain", es: "Plaza Manara — corazón animado de Ramala con su fuente de leones" }, wikipedia: "Al-Manara_Square" },
         { name: { fr: "Musée Mahmoud Darwich — hommage au poète national palestinien", en: "Mahmoud Darwish Museum — tribute to the Palestinian national poet", es: "Museo Mahmoud Darwish — homenaje al poeta nacional palestino" }, wikipedia: "File:Mahmoud Darwish Museum IMG 4086.jpg" },
@@ -164,7 +164,7 @@ export const PALESTINE = {
         es: "Hebrón es una de las ciudades más antiguas y sagradas del mundo, venerada por las tres religiones abrahámicas por albergar la Tumba de los Patriarcas, lugar de sepultura presunto de Abraham, Isaac y Jacob. El casco antiguo de Hebrón, inscrito en la lista UNESCO en 2017, es un ejemplo conmovedor de convivencia forzada: su centro histórico está parcialmente ocupado por colonos israelíes bajo protección militar, creando una situación única y tensa. Los zocos tradicionales de vidrio soplado y cerámica azul y blanca son especialmente destacables.",
       },
       wikipedia: "Hebron",
-      tags: ["UNESCO", "Religion", "Abrahamique", "Histoire"],
+      tags: ["UNESCO", "Spiritualité", "Histoire"],
       mustSee: [
         { name: { fr: "Tombeau des Patriarches (Cave of Machpelah) — site saint partagé entre mosquée et synagogue", en: "Tomb of the Patriarchs (Cave of Machpelah) — holy site shared between mosque and synagogue", es: "Tumba de los Patriarcas (Cueva de Macpela) — lugar sagrado compartido entre mezquita y sinagoga" }, wikipedia: "File:Hebron Cave of the Patriarchs.jpg" },
         { name: { fr: "Vieille ville d'Hébron — ruelles médiévales classées à l'UNESCO", en: "Old City of Hebron — medieval lanes on the UNESCO list", es: "Casco antiguo de Hebrón — callejuelas medievales declaradas Patrimonio UNESCO" }, wikipedia: "Old_City_of_Hebron" },

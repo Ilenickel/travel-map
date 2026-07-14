@@ -113,7 +113,7 @@ export const IRAQ = {
         es: "Erbil es la capital de la región autónoma del Kurdistán iraquí y una de las ciudades habitadas ininterrumpidamente más antiguas del mundo. Su ciudadela, encaramada en un montículo artificial de 30 metros de altura y declarada Patrimonio de la Humanidad UNESCO, domina una ciudad moderna y dinámica de bazares y restaurantes animados. El Kurdistán iraquí es el destino más accesible y seguro de Irak para viajeros extranjeros.",
       },
       wikipedia: "Erbil",
-      tags: ["UNESCO", "Histoire", "Kurdistan", "Culture", "Ville", "Architecture", "Gastronomie"],
+      tags: ["UNESCO", "Histoire", "Culture", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Citadelle d'Erbil — forteresse millénaire classée à l'UNESCO", en: "Erbil Citadel — a UNESCO-listed millennium-old fortress", es: "Ciudadela de Erbil — fortaleza milenaria Patrimonio UNESCO" }, wikipedia: "File:Citadel (old city) of Hewlêr (Erbil).jpg" },
         { name: { fr: "Grand Bazar d'Erbil — marché couvert traditionnel", en: "Erbil Grand Bazaar — a traditional covered market", es: "Gran Bazar de Erbil — mercado cubierto tradicional" }, wikipedia: "File:Kurdistan - Erbil - Qaysari Market.jpg" },
@@ -149,7 +149,7 @@ export const IRAQ = {
         es: "Babilonia, una de las ciudades más legendarias de la Antigüedad, fue la capital del primer imperio babilonio y sede del célebre Código de Hammurabi. Aunque el sitio ha sido parcialmente reconstruido y dañado, sus imponentes ruinas —incluidos los restos de la Puerta de Ishtar y vestigios del palacio de Nabucodonosor— siguen siendo una peregrinación imprescindible para los amantes de la historia. El sitio es ahora Patrimonio de la Humanidad UNESCO.",
       },
       wikipedia: "Babylon",
-      tags: ["UNESCO", "Antiquité", "Archéologie", "Mésopotamie", "Architecture", "Désert"],
+      tags: ["UNESCO", "Histoire", "Architecture", "Désert"],
       mustSee: [
         { name: { fr: "Porte d'Ishtar — reconstruction de la célèbre porte ornée de céramiques bleues", en: "Ishtar Gate — a reconstruction of the famous blue-glazed gate", es: "Puerta de Ishtar — reconstrucción de la célebre puerta de cerámica azul" }, wikipedia: "Ishtar_Gate" },
         { name: { fr: "Palais de Nabuchodonosor — ruines du palais royal babylonien", en: "Nebuchadnezzar's palace — ruins of the Babylonian royal palace", es: "Palacio de Nabucodonosor — ruinas del palacio real babilonio" }, wikipedia: "Nebuchadnezzar_II" },
@@ -167,7 +167,7 @@ export const IRAQ = {
         es: "Ur es una de las ciudades sumerias más antiguas e importantes, mencionada en la Biblia como la patria de Abraham. Su gigantesco zigurat, erigido hacia el 2100 a. C. y notablemente bien conservado, es una de las estructuras más impresionantes del antiguo Cercano Oriente. El cementerio real de Ur, con sus tumbas reales y tesoros expuestos en el Museo Británico, revolucionó la comprensión de la civilización sumeria.",
       },
       wikipedia: "File:Ur-Nassiriyah.jpg",
-      tags: ["Antiquité", "Archéologie", "Mésopotamie", "Religion", "Désert"],
+      tags: ["Histoire", "Spiritualité", "Désert"],
       mustSee: [
         { name: { fr: "Ziggurat d'Ur — temple à degrés sumérien du IIIe millénaire av. J.-C.", en: "Ziggurat of Ur — a Sumerian stepped temple from the 3rd millennium BCE", es: "Zigurat de Ur — templo escalonado sumerio del III milenio a. C." }, wikipedia: "File:Ancient ziggurat at Ali Air Base Iraq 2005.jpg" },
         { name: { fr: "Tombes royales d'Ur — nécropole royale sumérienne", en: "Royal Tombs of Ur — the Sumerian royal necropolis", es: "Tumbas reales de Ur — necrópolis real sumeria" }, wikipedia: "File:Ziggurat of Ur.jpg" },

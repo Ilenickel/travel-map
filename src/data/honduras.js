@@ -94,7 +94,7 @@ export const HONDURAS = {
         es: "Copán es una de las ciudades mayas más elaboradas artísticamente: sus estelas esculpidas, su Escalinata Jeroglífica (la inscripción maya más larga del mundo) y sus plazas ceremoniales rivalizan con Tikal. Las guacamayas rojas vuelan libremente sobre el sitio.",
       },
       wikipedia: "Copán",
-      tags: ["UNESCO", "Mayas", "Archéologie", "Art"],
+      tags: ["UNESCO", "Histoire", "Art"],
       mustSee: [
         { name: { fr: "Escalier Hiéroglyphique (2 200 glyphes)", en: "Hieroglyphic Stairway (2,200 glyphs)", es: "Escalinata Jeroglífica (2200 glifos)" }, wikipedia: "File:Stela_M_and_the_Hieroglyphic_Stairway_on_the_archeological_site_of_Copán,_a_mayan_city.jpg" },
         { name: { fr: "Acropole et temples sculptés", en: "Acropolis and carved temples", es: "Acrópolis y templos esculpidos" }, wikipedia: "Copán_Ruinas" },
@@ -112,7 +112,7 @@ export const HONDURAS = {
         es: "Roatán es la isla principal de las Islas de la Bahía, asentada sobre la barrera de coral mesoamericana. West Bay Beach figura entre las playas más bellas del Caribe, y sus arrecifes ofrecen un buceo excepcional, accesible con esnórquel desde la orilla.",
       },
       wikipedia: "Roatán",
-      tags: ["Plage", "Plongée", "Récifs", "Île"],
+      tags: ["Plage"],
       mustSee: [
         { name: { fr: "West Bay Beach — plongée depuis la plage", en: "West Bay Beach — shore diving from the beach", es: "West Bay Beach — buceo desde la playa" }, wikipedia: "West_Bay,_Roatán" },
         { name: { fr: "Barrière corallienne mésoaméricaine", en: "Mesoamerican Barrier Reef", es: "Barrera de coral mesoamericana" }, wikipedia: "Mesoamerican_Barrier_Reef_System" },
@@ -130,7 +130,7 @@ export const HONDURAS = {
         es: "Utila es célebre en el mundo entero por dos razones: es el lugar más barato para aprender a bucear (PADI), y uno de los pocos sitios del planeta donde se pueden observar tiburones ballena desde la costa (marzo–junio). Una isla bohemia y accesible.",
       },
       wikipedia: "File:Utila, Islas de la Bahía.jpg",
-      tags: ["Plongée", "Requins-baleines", "Bon plan", "Île"],
+      tags: ["Plage", "Safari"],
       mustSee: [
         { name: { fr: "Requins-baleines (mars–juin, depuis Utila)", en: "Whale sharks (March–June, from Utila)", es: "Tiburones ballena (marzo–junio, desde Utila)" }, wikipedia: "Whale_shark" },
         { name: { fr: "Certification PADI Open Water (~200€)", en: "PADI Open Water certification (~200€)", es: "Certificación PADI Open Water (~200 €)" }, wikipedia: "File:Discover Scuba Diving -- St. Croix, US Virgin Islands.jpg" },
@@ -148,7 +148,7 @@ export const HONDURAS = {
         es: "El Lago de Yojoa es el mayor lago natural de Honduras: un paraíso para la observación de aves (más de 400 especies), rodeado de bosque nuboso, con las impresionantes cataratas de Pulhapanzak y la sorprendente microcervecería D&D en pleno trópico.",
       },
       wikipedia: "Lake_Yojoa",
-      tags: ["Nature", "Oiseaux", "Randonnée", "Insolite"],
+      tags: ["Nature", "Safari", "Randonnée"],
       mustSee: [
         { name: { fr: "Birdwatching (400+ espèces, dont toucans)", en: "Birdwatching (400+ species, including toucans)", es: "Observación de aves (más de 400 especies, incluidos tucanes)" }, wikipedia: "Keel-billed_toucan" },
         { name: { fr: "Chutes de Pulhapanzak (43 m)", en: "Pulhapanzak Falls (43 m)", es: "Cataratas de Pulhapanzak (43 m)" }, wikipedia: "File:Cataratas de Pulhapanzak (III).JPG" },

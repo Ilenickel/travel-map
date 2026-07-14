@@ -141,7 +141,7 @@ export const SOUTH_KOREA = {
         es: "Segunda ciudad de Corea, puerto dinámico con playas urbanas, el mercado de pescado de Jagalchi y el colorido pueblo de Gamcheon.",
       },
       wikipedia: "Busan",
-      tags: ["Plage", "Mer", "Gastronomie", "Ville"],
+      tags: ["Plage", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Village culturel de Gamcheon", en: "Gamcheon Culture Village", es: "Aldea cultural de Gamcheon" }, wikipedia: "Gamcheon_Culture_Village" },
         { name: { fr: "Marché Jagalchi — fruits de mer", en: "Jagalchi Market — seafood", es: "Mercado de Jagalchi — marisco" }, wikipedia: "Jagalchi_Market" },
@@ -159,7 +159,7 @@ export const SOUTH_KOREA = {
         es: "Isla volcánica frente a la costa sur, con el volcán Hallasan (el pico más alto de Corea), acantilados de lava y playas de arena negra o blanca.",
       },
       wikipedia: "File:Hallasan_2.jpg",
-      tags: ["Nature", "Volcan", "Plage", "Randonnée"],
+      tags: ["Nature", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Volcan Hallasan", en: "Mount Hallasan", es: "Volcán Hallasan" }, wikipedia: "Hallasan" },
         { name: { fr: "Chutes Cheonjiyeon", en: "Cheonjiyeon Falls", es: "Cascadas de Cheonjiyeon" }, wikipedia: "File:Korea-Jeju-Cheonjiyeon_Waterfall-01.jpg" },

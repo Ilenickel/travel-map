@@ -91,7 +91,7 @@ export const BELGIUM = {
         es: "Apodada la 'Venecia del Norte', Brujas es una ciudad medieval excepcionalmente bien conservada, declarada Patrimonio de la Humanidad por la UNESCO. Sus canales, sus campanarios y sus callejuelas empedradas atraen a millones de visitantes cada año. La ciudad es también un paraíso para el chocolate belga y el encaje artesanal.",
       },
       wikipedia: "Bruges",
-      tags: ["UNESCO", "Médiéval", "Canaux", "Chocolat"],
+      tags: ["UNESCO", "Histoire", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Beffroi de Bruges — 366 marches pour une vue imprenable", en: "Belfry of Bruges — 366 steps for a breathtaking view", es: "Campanario de Brujas — 366 escalones para una vista impresionante" }, wikipedia: "Belfry_of_Bruges" },
         { name: { fr: "Markt — place centrale avec maisons à pignons", en: "Markt — central square with gabled houses", es: "Markt — plaza central con casas de fachadas escalonadas" }, wikipedia: "Markt,_Bruges" },
@@ -109,7 +109,7 @@ export const BELGIUM = {
         es: "Gante es una ciudad universitaria dinámica que combina el patrimonio medieval con una vida cultural contemporánea. El castillo de los Condes, el Graslei y la catedral de San Bavón, que alberga el célebre Cordero Místico de Van Eyck, la convierten en un destino imprescindible. La ciudad también es célebre por su mercado de flores y su escena musical.",
       },
       wikipedia: "Ghent",
-      tags: ["Art", "Médiéval", "Culture", "Université"],
+      tags: ["Art", "Histoire", "Culture", "Ville"],
       mustSee: [
         { name: { fr: "Gravensteen — château médiéval des Comtes de Flandre", en: "Gravensteen — medieval castle of the Counts of Flanders", es: "Gravensteen — castillo medieval de los Condes de Flandes" }, wikipedia: "Gravensteen" },
         { name: { fr: "Cathédrale Saint-Bavon — L'Agneau mystique de Van Eyck", en: "Saint Bavo's Cathedral — Van Eyck's Mystic Lamb", es: "Catedral de San Bavón — El Cordero Místico de Van Eyck" }, wikipedia: "Saint_Bavo's_Cathedral,_Ghent" },
@@ -127,7 +127,7 @@ export const BELGIUM = {
         es: "Las Ardenas belgas ofrecen un paisaje de bosques densos, valles encajonados y pueblos de piedra. Ideales para el senderismo, el kayak y el ciclismo, la región también alberga los memoriales de la Batalla de las Ardenas de la Segunda Guerra Mundial. Dinant, La Roche-en-Ardenne y Bouillon son las joyas de esta región natural.",
       },
       wikipedia: "Ardennes",
-      tags: ["Nature", "Randonnée", "Histoire", "Kayak"],
+      tags: ["Nature", "Randonnée", "Histoire", "Aventure"],
       mustSee: [
         { name: { fr: "Citadelle de Dinant — forteresse surplombant la Meuse", en: "Citadel of Dinant — fortress overlooking the Meuse", es: "Ciudadela de Dinant — fortaleza que domina el Mosa" }, wikipedia: "File:Dinant reflected.jpg" },
         { name: { fr: "Château de Bouillon — forteresse médiévale de Godefroy", en: "Bouillon Castle — Godfrey's medieval fortress", es: "Castillo de Bouillon — fortaleza medieval de Godofredo" }, wikipedia: "File:Bouillon - Château-fort et cité (1).jpg" },

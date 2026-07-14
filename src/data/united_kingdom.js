@@ -145,7 +145,7 @@ export const UK = {
         es: "Edimburgo es una de las capitales más bellas de Europa, dominada por su castillo medieval y dividida entre el histórico Old Town y el georgiano New Town. Las cercanas Tierras Altas escocesas despliegan paisajes espectaculares de páramos violetas, lagos misteriosos y castillos en ruinas. La cultura escocesa, de las faldas escocesas a los whiskies de malta, es todo un descubrimiento.",
       },
       wikipedia: "Edinburgh",
-      tags: ["Histoire", "Nature", "Whisky", "Châteaux", "Randonnée", "Ville", "Ski"],
+      tags: ["Histoire", "Nature", "Gastronomie", "Architecture", "Randonnée", "Ville", "Ski"],
       mustSee: [
         {
           name: { fr: "Château d'Édimbourg — forteresse volcanique surplombant le Royal Mile", en: "Edinburgh Castle — volcanic fortress overlooking the Royal Mile", es: "Castillo de Edimburgo — fortaleza volcánica que domina la Royal Mile" },
@@ -175,7 +175,7 @@ export const UK = {
         es: "Los Cotswolds encarnan la Inglaterra de postal con sus pueblos de casitas de piedra color miel, sus jardines floridos y sus senderos verdes. Muy cerca, Bath es una ciudad excepcional con sus termas romanas y su arquitectura georgiana declarada Patrimonio de la Humanidad por la UNESCO. Jane Austen vivió allí, y la elegante atmósfera de la ciudad recuerda aquella época romántica.",
       },
       wikipedia: "Cotswolds",
-      tags: ["Nature", "UNESCO", "Architecture", "Randonnée", "Charme"],
+      tags: ["Nature", "UNESCO", "Architecture", "Randonnée"],
       mustSee: [
         {
           name: { fr: "Bourton-on-the-Water — surnommée la Venise des Cotswolds", en: "Bourton-on-the-Water — nicknamed the Venice of the Cotswolds", es: "Bourton-on-the-Water — apodada la Venecia de los Cotswolds" },
@@ -205,7 +205,7 @@ export const UK = {
         es: "Gales es una pequeña nación con una gran personalidad, con los paisajes montañosos del Parque Nacional de Snowdonia, sus imponentes castillos medievales y su lengua celta todavía viva. Cardiff, su vibrante capital, es una animada ciudad universitaria con un castillo en pleno centro. El litoral galés alterna acantilados espectaculares y playas de arena fina muy bien conservadas.",
       },
       wikipedia: "File:At_Wales_2008_27.jpg",
-      tags: ["Nature", "Châteaux", "Randonnée", "Mer", "Culture celtique"],
+      tags: ["Nature", "Architecture", "Randonnée", "Plage", "Culture"],
       mustSee: [
         {
           name: { fr: "Château de Caernarfon — forteresse édouardienne classée au patrimoine UNESCO", en: "Caernarfon Castle — Edwardian fortress listed as UNESCO World Heritage", es: "Castillo de Caernarfon — fortaleza eduardiana declarada Patrimonio UNESCO" },

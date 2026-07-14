@@ -94,7 +94,7 @@ export const SERBIA = {
         es: "Belgrado es la capital más animada de los Balcanes: la fortaleza de Kalemegdan (siglo II, reconstruida por romanos, bizantinos, otomanos y austriacos) domina la confluencia Sava-Danubio, mientras que la calle Skadarlija (barrio bohemio del siglo XIX) está llena de kafanas al son de orquestas gitanas. Los splavovi (clubes flotantes) en el Sava forjaron la leyenda nocturna de la ciudad.",
       },
       wikipedia: "Belgrade",
-      tags: ["Forteresse", "Vie nocturne", "Bohème", "Danube", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Architecture", "Nightlife", "Culture", "Nature", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Forteresse de Kalemegdan — 2 000 ans d'histoire au-dessus du Danube", en: "Kalemegdan Fortress — 2,000 years of history above the Danube", es: "Fortaleza de Kalemegdan — 2.000 años de historia sobre el Danubio" }, wikipedia: "Belgrade_Fortress" },
         { name: { fr: "Skadarlija — rue bohème aux kafanas et orchestres tziganes", en: "Skadarlija — bohemian street of kafanas and Gypsy orchestras", es: "Skadarlija — calle bohemia de kafanas y orquestas gitanas" }, wikipedia: "Skadarlija" },
@@ -112,7 +112,7 @@ export const SERBIA = {
         es: "Novi Sad, Capital Europea de la Cultura 2022, es una ciudad universitaria y multicultural: la fortaleza de Petrovaradin (siglo XVIII), que domina el Danubio, acoge cada julio el festival EXIT (150.000 personas, uno de los mejores festivales de música de Europa). Su centro austrohúngaro y el barrio de artistas de Štrand junto al Danubio la convierten en una ciudad muy agradable.",
       },
       wikipedia: "Novi_Sad",
-      tags: ["Festival", "Culture", "Forteresse", "Danube", "Ville", "Architecture"],
+      tags: ["Culture", "Architecture", "Nature", "Ville"],
       mustSee: [
         { name: { fr: "Forteresse de Petrovaradin — 'Gibraltar sur le Danube'", en: "Petrovaradin Fortress — the 'Gibraltar on the Danube'", es: "Fortaleza de Petrovaradin — el 'Gibraltar del Danubio'" }, wikipedia: "Petrovaradin_Fortress" },
         { name: { fr: "Festival EXIT (juillet) — électro, rock, world music sous la forteresse", en: "EXIT Festival (July) — electro, rock, world music under the fortress", es: "Festival EXIT (julio) — electro, rock, world music bajo la fortaleza" }, wikipedia: "File:Exit festival, 2021.jpg" },
@@ -130,7 +130,7 @@ export const SERBIA = {
         es: "Las Puertas de Hierro (Đerdap) son el desfiladero más espectacular del Danubio: 100 km de acantilados calizos de 300 m de altura esculpidos por el río en la frontera serbo-rumana. La escultura rupestre de Decébalo (una de las más grandes de Europa, 55 m de altura) y los restos romanos de Trajano (Tabula Traiana) son visibles desde el barco. Patrimonio natural e histórico excepcional.",
       },
       wikipedia: "Iron_Gates",
-      tags: ["Gorges", "Danube", "Romain", "Nature"],
+      tags: ["Nature", "Histoire"],
       mustSee: [
         { name: { fr: "Gorges du Đerdap depuis un bateau — falaises de 300m", en: "Đerdap gorge from a boat — 300m cliffs", es: "Desfiladero del Đerdap desde un barco — acantilados de 300 m" }, wikipedia: "Đerdap_National_Park" },
         { name: { fr: "Tête de Decebal sculptée dans la falaise (55m, la plus grande d'Europe)", en: "Decebalus's head carved into the cliff (55m, the largest in Europe)", es: "Cabeza de Decébalo esculpida en el acantilado (55 m, la más grande de Europa)" }, wikipedia: "File:Rock Sculpture of Decebalus (26845769043).jpg" },
@@ -148,7 +148,7 @@ export const SERBIA = {
         es: "Serbia cuenta con más de 200 monasterios ortodoxos medievales, varios de ellos candidatos a la UNESCO. Žiča (siglo XIII, rojo sangre, lugar de coronación de los reyes serbios), Studenica (siglo XII, mármoles blancos, escuela medieval de pintura), y Mileševa (siglo XIII, fresco del Ángel Blanco, transmitido en 1969 por el primer satélite de comunicaciones europeo), son los más destacables.",
       },
       wikipedia: "File:Studenica monastery (Manastir Studenica) - by Pudelek.jpg",
-      tags: ["Monastères", "Orthodoxe", "Médiéval", "Fresque", "UNESCO", "Architecture", "Histoire"],
+      tags: ["Spiritualité", "Histoire", "Culture", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Monastère de Studenica (UNESCO) — marbres blancs XIIe siècle", en: "Studenica Monastery (UNESCO) — 12th-century white marble", es: "Monasterio de Studenica (UNESCO) — mármoles blancos del siglo XII" }, wikipedia: "File:Studenica monastery, 09.jpg" },
         { name: { fr: "Monastère de Žiča — rouge sang, couronnement des rois serbes", en: "Žiča Monastery — blood-red, coronation site of Serbian kings", es: "Monasterio de Žiča — rojo sangre, lugar de coronación de los reyes serbios" }, wikipedia: "File:Manastir Žiča (by Pudelek).JPG" },

@@ -99,7 +99,7 @@ export const PAKISTAN = {
         es: "El valle de Hunza suele describirse como uno de los más bellos del mundo: una cinta verde suspendida entre picos de más de 7.000 metros, dominada por el majestuoso Rakaposhi. Los pueblos de Altit y Baltit, con sus fuertes encaramados en espolones rocosos, dan fe de una historia milenaria vinculada a la Ruta de la Seda. En primavera, los huertos de albaricoqueros en flor ofrecen un espectáculo de gran belleza sobre un fondo de picos nevados.",
       },
       wikipedia: "Hunza_Valley",
-      tags: ["Montagne", "Route de la Soie", "Randonnée", "K2", "Nature", "Ski"],
+      tags: ["Montagne", "Histoire", "Randonnée", "Nature", "Ski"],
       mustSee: [
         { name: { fr: "Fort de Baltit — résidence des mirs de Hunza depuis 900 ans", en: "Baltit Fort — residence of the Mirs of Hunza for 900 years", es: "Fuerte de Baltit — residencia de los mires de Hunza durante 900 años" }, wikipedia: "Baltit_Fort" },
         { name: { fr: "Fort d'Altit — plus ancien fort du Gilgit-Baltistan (XIe s.)", en: "Altit Fort — oldest fort in Gilgit-Baltistan (11th century)", es: "Fuerte de Altit — el más antiguo de Gilgit-Baltistán (siglo XI)" }, wikipedia: "Altit_Fort" },
@@ -117,7 +117,7 @@ export const PAKISTAN = {
         es: "Lahore es el alma cultural e histórica de Pakistán, una metrópolis de 13 millones de habitantes que fue la segunda capital del imperio mogol. El casco antiguo, candidato potencial a Patrimonio de la Humanidad, rebosa mezquitas, mausoleos y jardines de un esplendor incomparable. La mezquita Badshahi, una de las más grandes del mundo, y el fuerte de Lahore, Patrimonio de la Humanidad UNESCO, forman uno de los conjuntos monumentales más impresionantes del sur de Asia.",
       },
       wikipedia: "Lahore",
-      tags: ["Moghols", "UNESCO", "Histoire", "Gastronomie", "Ville", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Gastronomie", "Ville", "Architecture"],
       mustSee: [
         { name: { fr: "Mosquée Badshahi — l'une des plus grandes mosquées du monde (XVIIe s.)", en: "Badshahi Mosque — one of the largest mosques in the world (17th century)", es: "Mezquita Badshahi — una de las más grandes del mundo (siglo XVII)" }, wikipedia: "Badshahi_Mosque" },
         { name: { fr: "Fort de Lahore — palais moghol inscrit à l'UNESCO", en: "Lahore Fort — Mughal palace, UNESCO World Heritage site", es: "Fuerte de Lahore — palacio mogol, Patrimonio de la Humanidad UNESCO" }, wikipedia: "Lahore_Fort" },
@@ -135,7 +135,7 @@ export const PAKISTAN = {
         es: "Mohenjo-daro es uno de los sitios arqueológicos más importantes del mundo, vestigio de la civilización del valle del Indo que floreció hace más de 4.000 años. Esta ciudad, planificada con una precisión asombrosa —calles ortogonales, sofisticado sistema de alcantarillado, baños públicos—, da fe de una organización social y técnica notable para su época. Declarada Patrimonio de la Humanidad por la UNESCO, sigue siendo uno de los grandes enigmas de la arqueología mundial, ya que su escritura aún no ha sido descifrada.",
       },
       wikipedia: "Mohenjo-daro",
-      tags: ["UNESCO", "Archéologie", "Indus", "Antiquité", "Architecture", "Désert"],
+      tags: ["UNESCO", "Histoire", "Architecture", "Désert"],
       mustSee: [
         { name: { fr: "Grand bain de Mohenjo-daro — piscine publique vieille de 4 500 ans", en: "Great Bath of Mohenjo-daro — a 4,500-year-old public pool", es: "Gran Baño de Mohenjo-daro — piscina pública de 4.500 años de antigüedad" }, wikipedia: "File:Mohenjo-daro.jpg" },
         { name: { fr: "Citadelle de Mohenjo-daro — acropole administrative de la cité", en: "Mohenjo-daro Citadel — the city's administrative acropolis", es: "Ciudadela de Mohenjo-daro — acrópolis administrativa de la ciudad" }, wikipedia: "File:Buddhist stupa, Mohenjo-daro.JPG" },
@@ -152,7 +152,7 @@ export const PAKISTAN = {
         es: "La Autopista del Karakórum (KKH), apodada la 'octava maravilla del mundo', une Islamabad con Kashgar en China a lo largo de más de 1.300 kilómetros a través de los paisajes más grandiosos de Asia Central. Construida entre 1959 y 1978 por ingenieros pakistaníes y chinos al precio de más de 900 vidas, atraviesa el punto de encuentro de las tres mayores cadenas montañosas del mundo: el Karakórum, el Himalaya y el Hindu Kush.",
       },
       wikipedia: "File:Rakaposhi_as_seen_from_the_Karakoram_Highway_near_Nagar,_Gilgit.jpg",
-      tags: ["Route", "Montagne", "K2", "Aventure", "Désert", "Nature"],
+      tags: ["Montagne", "Aventure", "Désert", "Nature"],
       mustSee: [
         { name: { fr: "Défilé de Khunjerab — col frontalier à 4 693 m, point le plus haut de la KKH", en: "Khunjerab Pass — border pass at 4,693 m, the highest point of the KKH", es: "Paso de Khunjerab — paso fronterizo a 4.693 m, el punto más alto de la KKH" }, wikipedia: "Khunjerab_Pass" },
         { name: { fr: "Gorges de Nanga Parbat — vue sur la neuvième montagne du monde", en: "Nanga Parbat gorges — view of the ninth-highest mountain in the world", es: "Desfiladeros del Nanga Parbat — vista de la novena montaña más alta del mundo" }, wikipedia: "Nanga_Parbat" },

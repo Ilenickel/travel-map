@@ -96,7 +96,7 @@ export const PARAGUAY = {
         es: "Las ruinas de las misiones jesuíticas del siglo XVII se encuentran entre las más impresionantes de Sudamérica. La Santísima Trinidad de Paraná y Jesús de Tavarangue, ambas Patrimonio de la Humanidad por la UNESCO, dan testimonio de una utopía social única.",
       },
       wikipedia: "File:San_Ignacio_Miní_Jesuit-Guarani_mission_1.jpg",
-      tags: ["Histoire", "UNESCO", "Jésuites", "Ruines", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Spiritualité", "Ruines", "Architecture"],
       mustSee: [
         { name: { fr: "Trinidad (mission)", en: "Trinidad (mission)", es: "Trinidad (misión)" }, wikipedia: "File:ParaguayTrinidadReduction.jpg" },
         { name: "Jesús de Tavarangüé", wikipedia: "File:Jesús de Tavarangue - Church ruins 02.jpg" },
@@ -114,7 +114,7 @@ export const PARAGUAY = {
         es: "La capital es una de las más antiguas de Sudamérica (fundada en 1537). Su Casco Histórico combina arquitectura colonial con edificios del siglo XIX. El Mercado 4 y los Bañados (humedales urbanos) ofrecen un cambio de aires total.",
       },
       wikipedia: "File:Downtown Asuncion 091253.jpg",
-      tags: ["Ville", "Histoire", "Culture", "Marchés", "Gastronomie"],
+      tags: ["Ville", "Histoire", "Culture", "Shopping", "Gastronomie"],
       mustSee: [
         { name: "Palacio de López", wikipedia: "File:00 3819 Asunción - Paraguay (Südamerika).jpg" },
         { name: "Catedral Metropolitana", wikipedia: "File:Catedral_Nuestra_Señora_de_la_Asunción_-_Baracoa_-_01.jpg" },
@@ -132,7 +132,7 @@ export const PARAGUAY = {
         es: "La parte paraguaya del Pantanal (el mayor humedal del mundo) es casi virgen y poco visitada. Caimanes, jaguares, capibaras y aves extraordinarias en un entorno inmaculado.",
       },
       wikipedia: "Pantanal",
-      tags: ["Nature", "Faune", "Jaguar", "Zones Humides"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: "Bahía Negra (Alto Paraguay)", wikipedia: "Pantanal" },
         { name: "Parque Nacional Médanos del Chaco", wikipedia: "File:Chaco_Boreal_Paraguay.jpg" },
@@ -149,7 +149,7 @@ export const PARAGUAY = {
         es: "El Gran Chaco es un bosque seco inmenso y poco conocido, el segundo más grande de Sudamérica después de la Amazonia. Pueblos indígenas, colonias menonitas y fauna única (armadillos gigantes, tapires) en paisajes desérticos cautivadores.",
       },
       wikipedia: "Gran_Chaco",
-      tags: ["Nature", "Faune", "Cultures", "Aventure", "Désert", "Safari"],
+      tags: ["Nature", "Safari", "Culture", "Aventure", "Désert"],
       mustSee: [
         { name: "Parque Nacional Defensores del Chaco", wikipedia: "File:Chaco Boreal Paraguay.jpg" },
         { name: { fr: "Filadelfia (colonie mennonite)", en: "Filadelfia (Mennonite colony)", es: "Filadelfia (colonia menonita)" }, wikipedia: "File:Filadelfia Paraguay.jpg" },

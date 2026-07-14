@@ -142,7 +142,7 @@ export const GREECE = {
         es: "La isla más fotografiada del mundo, con sus casas blancas de cúpulas azules aferradas a la caldera de un volcán. Atardeceres legendarios en Oia.",
       },
       wikipedia: "File:Thira (Santorini) - Ia-01.jpg",
-      tags: ["Paysage", "Romantisme", "Mer", "Volcan", "Plage", "Randonnée"],
+      tags: ["Nature", "Culture", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Village d'Oia au coucher du soleil", en: "Oia village at sunset", es: "Pueblo de Oia al atardecer" }, wikipedia: "File:Οία 1121.jpg" },
         { name: { fr: "Fira — la capitale de l'île", en: "Fira — the island's capital", es: "Fira — la capital de la isla" }, wikipedia: "Fira" },
@@ -196,7 +196,7 @@ export const GREECE = {
         es: "Míconos es la reina de las Cícladas: callejuelas blancas de puertas azules, molinos de viento icónicos, playas animadas (Paradise, Super Paradise) y una de las vidas nocturnas más intensas del Mediterráneo. A pocas horas en barco, Paros, Naxos e Ios ofrecen un ambiente más auténtico para explorar el archipiélago de las Cícladas.",
       },
       wikipedia: "File:Mykonos 7.jpg",
-      tags: ["Plage", "Fête", "Nuit", "Paysage", "Mer", "Architecture", "UNESCO"],
+      tags: ["Plage", "Culture", "Nightlife", "Nature", "Architecture", "UNESCO"],
       mustSee: [
         { name: { fr: "Moulins à vent de Kato Mili — symbole de Mykonos", en: "Kato Mili windmills — the symbol of Mykonos", es: "Molinos de viento de Kato Mili — símbolo de Míconos" }, wikipedia: "File:Mykonos Windmills.jpg" },
         { name: { fr: "Little Venice — maisons sur l'eau dans la vieille ville", en: "Little Venice — houses on the water in the old town", es: "Pequeña Venecia — casas sobre el agua en el casco antiguo" }, wikipedia: "File:Sunset of Mykonos.jpg" },

@@ -75,7 +75,7 @@ export const MAYOTTE = {
         es: "La laguna de Mayotte es una de las más bellas del mundo: 1.100 km² de aguas turquesa rodeadas de una doble barrera de coral, donde nadan delfines giradores (todo el año), tortugas verdes (anidan en las playas de abril a agosto), dugongos y mantarrayas. La visibilidad submarina supera regularmente los 30 metros.",
       },
       wikipedia: "File:Le lagon de Mayotte (34707734326).jpg",
-      tags: ["Lagon", "Plongée", "Dauphins", "Tortues"],
+      tags: ["Plage", "Safari"],
       mustSee: [
         { name: { fr: "Nage avec les dauphins-toupies dans le lagon", en: "Swimming with spinner dolphins in the lagoon", es: "Nado con delfines giradores en la laguna" }, wikipedia: "File:Eilat Dolphin Reef (3).jpg" },
         { name: { fr: "Snorkeling Petite-Terre — tortues et poissons perroquets", en: "Snorkelling at Petite-Terre — turtles and parrotfish", es: "Esnórquel en Petite-Terre — tortugas y peces loro" }, wikipedia: "File:Mayotte, Petite Terre (2850837100).jpg" },
@@ -92,7 +92,7 @@ export const MAYOTTE = {
         es: "El sur de Mayotte concentra las playas y bahías más bellas de la isla: la bahía de Bouéni con sus aguas turquesa y sus manglares, la playa de Moya (la más larga de la isla, con tortugas en temporada), y los pueblos tradicionales suajilis de mezquitas blancas. Un mzungu (extranjero) que se aleje de los caminos trillados a menudo estará completamente solo.",
       },
       wikipedia: "File:Riffs before SW Mayotte (30592452163).jpg",
-      tags: ["Plage", "Mangroves", "Tortues", "Authentique"],
+      tags: ["Plage", "Nature", "Safari"],
       mustSee: [
         { name: { fr: "Plage de Moya — la plus longue de Mayotte + tortues", en: "Moya Beach — Mayotte's longest, with turtles", es: "Playa de Moya — la más larga de Mayotte + tortugas" }, wikipedia: "File:Plage de Grand Moya .jpg" },
         { name: { fr: "Baie de Bouéni — kayak en mangroves", en: "Bouéni Bay — kayaking through the mangroves", es: "Bahía de Bouéni — kayak en los manglares" }, wikipedia: "File:Riffs before SW Mayotte (30592452163).jpg" },
@@ -108,7 +108,7 @@ export const MAYOTTE = {
         es: "Petite-Terre es la pequeña isla donde se encuentran las instituciones (prefectura), el barrio de Dzaoudzi y el mercado de Mamoudzou. El paseo marítimo, los tejados coloridos de Dzaoudzi y la playa de Sables-Blancs son los principales atractivos de esta mini isla, unida a Grande-Terre por ferry.",
       },
       wikipedia: "File:Phare de Petite Terre.jpg",
-      tags: ["Ville", "Marché", "Bac", "Plage"],
+      tags: ["Ville", "Shopping", "Plage"],
       mustSee: [
         { name: { fr: "Marché de Mamoudzou — épices et artisanat mahorais", en: "Mamoudzou market — Mahoran spices and crafts", es: "Mercado de Mamoudzou — especias y artesanía mahorese" }, wikipedia: "Mamoudzou" },
         { name: { fr: "Traversée en bac Grande-Terre / Petite-Terre", en: "Ferry crossing between Grande-Terre and Petite-Terre", es: "Travesía en ferry Grande-Terre / Petite-Terre" }, wikipedia: "File:Mayotte, Petite Terre (2850837100).jpg" },

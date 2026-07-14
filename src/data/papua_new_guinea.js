@@ -61,7 +61,7 @@ export const PAPUA_NEW_GUINEA = {
         es: "El territorio de los Huli Wigmen es una de las experiencias culturales más impactantes de Papúa. Estos guerreros llevan pelucas hechas con su propio cabello, adornadas con plumas de ave del paraíso y flores. La región de Tari ofrece una ventana única a tradiciones milenarias aún vivas, con jefaturas y espectaculares ceremonias sing-sing.",
       },
       wikipedia: "Huli_people",
-      tags: ["Culture", "Highlands", "Ethnique", "Aventure"],
+      tags: ["Culture", "Montagne", "Aventure"],
       mustSee: [
         { name: { fr: "Guerriers Huli Wigmen — perruques rituelles et parures traditionnelles", en: "Huli Wigmen warriors — ritual wigs and traditional adornments", es: "Guerreros Huli Wigmen — pelucas rituales y adornos tradicionales" }, wikipedia: "Huli_people" },
         { name: { fr: "Marché de Tari — échanges locaux et artisanat des highlands", en: "Tari Market — local trade and highland crafts", es: "Mercado de Tari — comercio local y artesanía de las tierras altas" }, wikipedia: "File:Huli huli (8084262832).jpg" },
@@ -79,7 +79,7 @@ export const PAPUA_NEW_GUINEA = {
         es: "El Sepik es uno de los grandes ríos de Melanesia y un gran centro del arte tribal mundial. Los pueblos instalados a lo largo de sus orillas producen desde hace siglos esculturas, máscaras ceremoniales y casas de los espíritus (haus tambaran) de una fuerza artística extraordinaria. Navegar por el Sepik en piragua y visitar los pueblos es una experiencia fuera del tiempo.",
       },
       wikipedia: "File:Sepik_0057.jpg",
-      tags: ["Art tribal", "Nature", "Fleuve", "Culturel"],
+      tags: ["Art", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Haus Tambaran d'Angoram — maison des esprits ancestrale de 20 m de haut", en: "Angoram Haus Tambaran — a 20m-tall ancestral spirit house", es: "Haus Tambaran de Angoram — casa de los espíritus ancestral de 20 m de altura" }, wikipedia: "Spirit_house" },
         { name: { fr: "Village de Palimbei — sculpture sur bois et crocodiles sacrés", en: "Palimbei Village — wood carving and sacred crocodiles", es: "Pueblo de Palimbei — talla en madera y cocodrilos sagrados" }, wikipedia: "File:Milwaukee_Public_Museum_November_2022_141_(Oceania--Sepik_River_Art,_New_Guinea).jpg" },
@@ -96,7 +96,7 @@ export const PAPUA_NEW_GUINEA = {
         es: "La pista de Kokoda es un trekking histórico y físicamente exigente de 96 km a través de la jungla montañosa de Papúa. Conmemora la Campaña de Nueva Guinea de 1942, en la que soldados australianos y papúes frenaron el avance japonés en condiciones extremas. Este camino es hoy un lugar de peregrinación para los australianos y una experiencia de senderismo intensa.",
       },
       wikipedia: "File:Kokoda_track_Papua_New_Guinea.JPG",
-      tags: ["Histoire WWII", "Trek", "Aventure", "Mémorial"],
+      tags: ["Histoire", "Aventure"],
       mustSee: [
         { name: { fr: "Isurava Memorial — monument aux soldats morts lors de la bataille de 1942", en: "Isurava Memorial — monument to soldiers who died in the 1942 battle", es: "Isurava Memorial — monumento a los soldados caídos en la batalla de 1942" }, wikipedia: "File:Plaques_on_the_Kokoda_Track_Memorial_Walk,_Kings_Park,_Western_Australia,_January_2021_01.jpg" },
         { name: { fr: "Cols d'altitude — paysages de forêt nuageuse et vues panoramiques", en: "Mountain passes — cloud forest scenery and panoramic views", es: "Puertos de montaña — paisajes de bosque nuboso y vistas panorámicas" }, wikipedia: "File:Bush_Walk_Kokoda_044.jpg" },

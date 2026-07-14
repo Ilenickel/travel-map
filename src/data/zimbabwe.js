@@ -94,7 +94,7 @@ export const ZIMBABWE = {
         es: "Las cataratas Victoria, declaradas Patrimonio UNESCO y una de las 7 maravillas naturales, son la mayor catarata del mundo por volumen de agua: 1,7 km de ancho, 108 m de alto, un rugido audible a 40 km y una niebla permanente. El Devil's Pool permite nadar a 10 cm del precipicio entre septiembre y diciembre.",
       },
       wikipedia: "Victoria_Falls",
-      tags: ["UNESCO", "7e Merveille", "Cascade", "Aventure", "Nature", "Randonnée"],
+      tags: ["UNESCO", "Nature", "Aventure", "Randonnée"],
       mustSee: [
         { name: "Victoria Falls", wikipedia: "File:Victoria Falls, Zimbabwe 01.jpg" },
         { name: { fr: "Devil's Pool — nager au bord de la chute (sep–déc)", en: "Devil's Pool — swimming at the edge of the falls (Sep–Dec)", es: "Devil's Pool — nadar al borde de la catarata (sept–dic)" }, wikipedia: "File:Visitors at the Devil's Pool, Victoria Falls.jpg" },
@@ -112,7 +112,7 @@ export const ZIMBABWE = {
         es: "Hwange es el parque nacional más grande de Zimbabue: 14 651 km² que albergan 40 000 elefantes (la mayor población de Zimbabue), manadas de licaones pintados (especie amenazada), leones y rinocerontes negros. Los abrevaderos artificiales concentran la fauna en temporada seca.",
       },
       wikipedia: "Hwange_National_Park",
-      tags: ["Éléphants", "Safari", "Lycaons", "Big Five", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Troupeaux d'éléphants (40 000 dans le parc)", en: "Elephant herds (40,000 in the park)", es: "Manadas de elefantes (40 000 en el parque)" }, wikipedia: "African_bush_elephant" },
         { name: { fr: "Meutes de lycaons peints (painted dogs)", en: "African wild dog (painted dog) packs", es: "Manadas de licaones pintados (painted dogs)" }, wikipedia: "African_wild_dog" },
@@ -130,7 +130,7 @@ export const ZIMBABWE = {
         es: "El Gran Zimbabue, declarado Patrimonio UNESCO, es el conjunto de ruinas de piedra seca más grande del África subsahariana: una ciudad medieval (siglos XI–XV) que fue capital de un imperio comerciante de oro, cuyo tamaño y complejidad de muros desafió toda explicación durante mucho tiempo. Misterioso y grandioso.",
       },
       wikipedia: "Great_Zimbabwe",
-      tags: ["UNESCO", "Histoire", "Archéologie", "Mystère", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "La Grande Enceinte (mur de 250 m, 11 m de haut)", en: "The Great Enclosure (250 m wall, 11 m high)", es: "El Gran Recinto (muro de 250 m, 11 m de alto)" }, wikipedia: "File:Great-Zimbabwe.jpg" },
         { name: { fr: "Colline du Roi (acropole royale)", en: "Hill Complex (royal acropolis)", es: "Complejo de la Colina (acrópolis real)" }, wikipedia: "Great_Zimbabwe" },
@@ -147,7 +147,7 @@ export const ZIMBABWE = {
         es: "Las colinas de Matobo (UNESCO) son un paisaje de rocas gigantes en equilibrio (kopjes) salpicado de pinturas rupestres san entre las más bellas de África. Es también el único lugar del mundo donde se pueden rastrear rinocerontes blancos a pie, sin vallas, con guías.",
       },
       wikipedia: "File:Matobo Road and kopje.jpg",
-      tags: ["UNESCO", "Art rupestre", "Rhinos", "Randonnée", "Nature"],
+      tags: ["UNESCO", "Histoire", "Safari", "Randonnée", "Nature"],
       mustSee: [
         { name: { fr: "Tracking rhinos blancs à pied (sans barrière)", en: "Tracking white rhinos on foot (no barrier)", es: "Rastreo de rinocerontes blancos a pie (sin barrera)" }, wikipedia: "White_rhinoceros" },
         { name: { fr: "Peintures rupestres San (parmi les plus belles d'Afrique)", en: "San rock art (among the finest in Africa)", es: "Pinturas rupestres san (entre las más bellas de África)" }, wikipedia: "San_rock_art" },

@@ -69,7 +69,7 @@ export const BARBADOS = {
         es: "Bridgetown, capital de Barbados, y su histórico Garrison están declarados Patrimonio de la Humanidad por la UNESCO desde 2011 por su excepcional arquitectura militar y colonial británica. El Garrison Savannah, antiguo campo de desfiles militares convertido en hipódromo, está rodeado de fortificaciones del siglo XVII en excelente estado de conservación. El barrio de Cheapside con su animado mercado, la catedral de St. Michael y las casas coloniales de piedra coralina dan a Bridgetown un encanto único en el Caribe angloparlante.",
       },
       wikipedia: "Bridgetown",
-      tags: ["UNESCO", "Architecture coloniale", "Histoire", "Culture"],
+      tags: ["UNESCO", "Histoire", "Culture"],
       mustSee: [
         { name: { fr: "Garrison Savannah — hippodrome et fortifications UNESCO", en: "Garrison Savannah — racecourse and UNESCO fortifications", es: "Garrison Savannah — hipódromo y fortificaciones UNESCO" }, wikipedia: "File:Garrison Savannah stands2, Barbados.jpg" },
         { name: { fr: "Musée de la Barbade — histoire de l'île et de l'esclavage", en: "Barbados Museum — the island's history and slavery", es: "Museo de Barbados — historia de la isla y de la esclavitud" }, wikipedia: "File:Historic Bridgetown and its Garrison-115163.jpg" },
@@ -87,7 +87,7 @@ export const BARBADOS = {
         es: "Harrison's Cave es una de las maravillas naturales de Barbados: una red de cuevas calcáreas espectaculares con estalactitas gigantes, estalagmitas y ríos subterráneos, explorable en tranvía eléctrico. En el extremo norte de la isla, Animal Flower Cave es la única cueva costera accesible de Barbados, cuyo nombre proviene de las anémonas de mar (\"flores animales\") visibles en sus piscinas naturales con vistas al Atlántico salvaje.",
       },
       wikipedia: "Harrison's_Cave",
-      tags: ["Nature", "Grottes", "Géologie", "Famille"],
+      tags: ["Nature", "Famille"],
       mustSee: [
         { name: { fr: "Harrison's Cave — grottes calcaires en tramway souterrain", en: "Harrison's Cave — limestone caves by underground tram", es: "Harrison's Cave — cuevas calcáreas en tranvía subterráneo" }, wikipedia: "Harrison's_Cave" },
         { name: { fr: "Animal Flower Cave — grottes côtières avec piscines naturelles", en: "Animal Flower Cave — coastal caves with natural pools", es: "Animal Flower Cave — cuevas costeras con piscinas naturales" }, wikipedia: "Animal_Flower_Cave" },
@@ -105,7 +105,7 @@ export const BARBADOS = {
         es: "Barbados es la cuna mundial del ron: la destilería Mount Gay, fundada en 1703, es la destilería de ron más antigua aún en funcionamiento del mundo. La visita repasa la fascinante historia de la caña de azúcar, el comercio triangular y el arte de la destilación. St. Nicholas Abbey, una plantación del siglo XVII, es uno de los pocos ejemplos de arquitectura jacobina fuera de Europa y también produce su propio ron de finca.",
       },
       wikipedia: "Mount_Gay_Rum",
-      tags: ["Rhum", "Histoire", "Gastronomie", "Plantation"],
+      tags: ["Gastronomie", "Histoire", "Rural"],
       mustSee: [
         { name: { fr: "Distillerie Mount Gay — la plus ancienne du monde (1703)", en: "Mount Gay Distillery — the oldest in the world (1703)", es: "Destilería Mount Gay — la más antigua del mundo (1703)" }, wikipedia: "Mount_Gay_Rum" },
         { name: { fr: "St. Nicholas Abbey — plantation jacobéenne du XVIIe siècle", en: "St. Nicholas Abbey — 17th-century Jacobean plantation", es: "St. Nicholas Abbey — plantación jacobina del siglo XVII" }, wikipedia: "File:StNicholasAbbey.jpg" },
@@ -123,7 +123,7 @@ export const BARBADOS = {
         es: "Oistins es un pueblo de pescadores famoso por su célebre Fish Fry de los viernes por la noche, donde locales y visitantes se reúnen en torno a pescado a la parrilla, ron y música soca hasta bien entrada la noche. La costa sur de la isla está bordeada de tranquilas playas de arena blanca (Miami Beach, Dover Beach, Accra Beach) y bares de playa relajados. Hastings y Rockley acogen la mayoría de los hoteles asequibles y restaurantes frente al mar.",
       },
       wikipedia: "Oistins",
-      tags: ["Plage", "Gastronomie", "Vie nocturne", "Ambiance locale"],
+      tags: ["Plage", "Gastronomie", "Nightlife"],
       mustSee: [
         { name: { fr: "Fish Fry d'Oistins (vendredi soir) — grillades, rhum et soca", en: "Oistins Fish Fry (Friday night) — grilled food, rum and soca", es: "Fish Fry de Oistins (viernes noche) — parrillada, ron y soca" }, wikipedia: "Oistins" },
         { name: { fr: "Miami Beach & Accra Beach — plages familiales de la côte sud", en: "Miami Beach & Accra Beach — family-friendly south coast beaches", es: "Miami Beach y Accra Beach — playas familiares de la costa sur" }, wikipedia: "File:Borla Beach Accra.jpg" },

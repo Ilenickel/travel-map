@@ -75,7 +75,7 @@ export const MAURITIUS = {
         es: "La costa norte es la más animada de la isla: Trou aux Biches, una playa de postal con una laguna transparente, Grand Baie para las compras y la vida nocturna, y Tamarin, donde se nada con delfines salvajes por la mañana — una experiencia única en alta mar.",
       },
       wikipedia: "File:Grand Baie, La Cuvette Beach.jpg",
-      tags: ["Plage", "Dauphins", "Snorkel", "Animé"],
+      tags: ["Plage", "Safari"],
       mustSee: [
         { name: { fr: "Nager avec les dauphins sauvages (Tamarin)", en: "Swimming with wild dolphins (Tamarin)", es: "Nadar con delfines salvajes (Tamarin)" }, wikipedia: "Indo-Pacific_bottlenose_dolphin" },
         { name: { fr: "Trou aux Biches — lagon turquoise parfait", en: "Trou aux Biches — perfect turquoise lagoon", es: "Trou aux Biches — laguna turquesa perfecta" }, wikipedia: "File:Aerial_view_of_Trou-aux-Biches,_Mauritius_(53697980183).jpg" },
@@ -93,7 +93,7 @@ export const MAURITIUS = {
         es: "El suroeste concentra las bellezas naturales de la isla: el Parque Nacional Black River Gorges (bosque primario, cernícalo de Mauricio), la Tierra de los 7 colores de Chamarel (una formación de arena volcánica multicolor única en el mundo), y La Gaulette para el kitesurf.",
       },
       wikipedia: "Black_River_Gorges_National_Park",
-      tags: ["Nature", "Randonnée", "7 couleurs", "Kitesurf"],
+      tags: ["Nature", "Randonnée", "Plage"],
       mustSee: [
         { name: { fr: "Terre des 7 couleurs de Chamarel", en: "Chamarel Seven Coloured Earths", es: "Tierra de los 7 colores de Chamarel" }, wikipedia: "Chamarel" },
         { name: { fr: "Chutes de Chamarel (83 m)", en: "Chamarel Falls (83 m)", es: "Cascadas de Chamarel (83 m)" }, wikipedia: "File:2006-10-02 Chamarel Waterfalls.jpg" },
@@ -111,7 +111,7 @@ export const MAURITIUS = {
         es: "Rodrigues es la isla hermana de Mauricio, a 560 km al este: una laguna cuatro veces más grande que la isla misma, fondos marinos vírgenes y una calma absoluta. Sin hoteles de cadena, solo guesthouses familiares, pesca artesanal y la lentitud caribeña en pleno océano Índico.",
       },
       wikipedia: "File:Rodrigues (21238823983).jpg",
-      tags: ["Île", "Lagon", "Authentique", "Calme"],
+      tags: ["Plage", "Détente"],
       mustSee: [
         { name: { fr: "Lagon turquoise — snorkel & kitesurf", en: "Turquoise lagoon — snorkelling & kitesurfing", es: "Laguna turquesa — snorkel y kitesurf" }, wikipedia: "File:Aerial view of Rodrigues, Mauritius.jpg" },
         { name: { fr: "Île aux Cocos — pique-nique désert", en: "Île aux Cocos — deserted island picnic", es: "Île aux Cocos — picnic en isla desierta" }, wikipedia: "File:Île aux Cocos, Rodrigues.jpg" },
@@ -127,7 +127,7 @@ export const MAURITIUS = {
         es: "Blue Bay Marine Park está declarado Patrimonio de la Humanidad por la UNESCO: la playa más bella de Mauricio, un arrecife de coral impresionante para hacer snorkel (coral cerebro, peces loro, rayas), e islotes accesibles en barco — Île aux Cerfs, la laguna más grande de Mauricio.",
       },
       wikipedia: "Blue_Bay_Marine_Park",
-      tags: ["UNESCO", "Snorkel", "Récif", "Lagon"],
+      tags: ["UNESCO", "Plage"],
       mustSee: [
         { name: { fr: "Snorkel Blue Bay Marine Park (UNESCO)", en: "Snorkelling at Blue Bay Marine Park (UNESCO)", es: "Snorkel en Blue Bay Marine Park (UNESCO)" }, wikipedia: "Blue_Bay_Marine_Park" },
         { name: { fr: "Île aux Cerfs — lagon géant & excursion bateau", en: "Île aux Cerfs — giant lagoon & boat excursion", es: "Île aux Cerfs — laguna gigante y excursión en barco" }, wikipedia: "Île_aux_Cerfs" },

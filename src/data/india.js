@@ -142,7 +142,7 @@ export const INDIA = {
         es: "La ciudad más sagrada del hinduismo, a orillas del Ganges. Las ceremonias Ganga Aarti al atardecer, los animados ghats y la filosofía del ciclo vida-muerte conforman una experiencia espiritual única.",
       },
       wikipedia: "Varanasi",
-      tags: ["Spiritualité", "Culture", "Histoire", "Unique", "Ville"],
+      tags: ["Spiritualité", "Culture", "Histoire", "Ville"],
       mustSee: [
         { name: { fr: "Ghats du Gange — cérémonie Aarti", en: "Ganges ghats — Aarti ceremony", es: "Ghats del Ganges — ceremonia Aarti" }, wikipedia: "Dashashwamedh_Ghat" },
         { name: { fr: "Temple Kashi Vishwanath", en: "Kashi Vishwanath Temple", es: "Templo de Kashi Vishwanath" }, wikipedia: "Kashi_Vishwanath_Temple" },
@@ -160,7 +160,7 @@ export const INDIA = {
         es: "Antigua colonia portuguesa, Goa combina playas tropicales, arquitectura barroca, cocina de marisco y un ambiente relajado. Lo mejor de la India costera.",
       },
       wikipedia: "Goa",
-      tags: ["Plage", "Mer", "Culture", "Fête", "Architecture"],
+      tags: ["Plage", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Vieux Goa — basilique Bom Jesus", en: "Old Goa — Basilica of Bom Jesus", es: "Vieja Goa — basílica de Bom Jesus" }, wikipedia: "Basilica_of_Bom_Jesus" },
         { name: { fr: "Plage de Palolem", en: "Palolem Beach", es: "Playa de Palolem" }, wikipedia: "Palolem_Beach" },
@@ -177,7 +177,7 @@ export const INDIA = {
         es: "Una red de canales, lagos y lagunas a lo largo de la costa de Malabar. Un crucero en houseboat al atardecer por los backwaters es la experiencia definitiva de Kerala.",
       },
       wikipedia: "Kerala_backwaters",
-      tags: ["Nature", "Détente", "Culture", "Bateau"],
+      tags: ["Nature", "Détente", "Culture", "Plage"],
       mustSee: [
         { name: { fr: "Croisière en houseboat (Alleppey)", en: "Houseboat cruise (Alleppey)", es: "Crucero en houseboat (Alleppey)" }, wikipedia: "Alappuzha" },
         { name: { fr: "Munnar — plantations de thé", en: "Munnar — tea plantations", es: "Munnar — plantaciones de té" }, wikipedia: "Munnar" },
@@ -195,7 +195,7 @@ export const INDIA = {
         es: "La Ciudad Azul de Jodhpur con el inexpugnable fuerte de Mehrangarh, y Jaisalmer, la Ciudad Dorada en pleno desierto de Thar con sus dunas y noches estrelladas.",
       },
       wikipedia: "Jodhpur",
-      tags: ["Histoire", "Désert", "Culture", "Paysage", "UNESCO", "Architecture"],
+      tags: ["Histoire", "Désert", "Culture", "Nature", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Fort de Mehrangarh — Jodhpur", en: "Mehrangarh Fort — Jodhpur", es: "Fuerte de Mehrangarh — Jodhpur" }, wikipedia: "Mehrangarh" },
         { name: { fr: "Fort de Jaisalmer en grès doré", en: "Jaisalmer Fort in golden sandstone", es: "Fuerte de Jaisalmer en arenisca dorada" }, wikipedia: "Jaisalmer_Fort" },

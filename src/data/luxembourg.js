@@ -73,7 +73,7 @@ export const LUXEMBOURG = {
         es: "La capital del Gran Ducado es una ciudad fascinante construida sobre acantilados, cuyas fortificaciones medievales están declaradas Patrimonio de la Humanidad por la UNESCO. El Chemin de la Corniche ofrece una vista panorámica sobre las casamatas y el casco antiguo. El Grund, barrio situado en el fondo de los valles del Alzette y del Pétrusse, es ideal para pasear al anochecer.",
       },
       wikipedia: "Luxembourg_City",
-      tags: ["UNESCO", "Ville", "Fortifications", "Institutions européennes", "Architecture", "Histoire"],
+      tags: ["UNESCO", "Ville", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Casemates du Bock — galeries souterraines dans la roche sur 23 km", en: "Bock Casemates — 23 km of underground galleries carved into the rock", es: "Casamatas del Bock — 23 km de galerías subterráneas excavadas en la roca" }, wikipedia: "File:The Bock Casemates 1.jpg" },
         { name: { fr: "Chemin de la Corniche — 'le plus beau balcon d'Europe'", en: "Chemin de la Corniche — 'Europe's most beautiful balcony'", es: "Chemin de la Corniche — 'el balcón más bello de Europa'" }, wikipedia: "File:Corniche_and_rear_view_of_Breedewee_Luxembourg_City_2012-04.JPG" },
@@ -91,7 +91,7 @@ export const LUXEMBOURG = {
         es: "Vianden es un pueblo de cuento enclavado en el valle del Our, dominado por uno de los castillos medievales más bellos de Europa. Victor Hugo vivió aquí en el exilio en 1871 y redactó parte de su obra. El telesilla ofrece una vista impresionante sobre el castillo y el valle boscoso.",
       },
       wikipedia: "Vianden",
-      tags: ["Château", "Médiéval", "Victor Hugo", "Ardennes"],
+      tags: ["Architecture", "Histoire", "Culture", "Montagne"],
       mustSee: [
         { name: { fr: "Château de Vianden — forteresse romano-gothique restaurée", en: "Vianden Castle — restored Romanesque-Gothic fortress", es: "Castillo de Vianden — fortaleza románico-gótica restaurada" }, wikipedia: "Vianden_Castle" },
         { name: { fr: "Maison de Victor Hugo — musée dédié au séjour de l'écrivain", en: "Victor Hugo House — museum dedicated to the writer's stay", es: "Casa de Victor Hugo — museo dedicado a la estancia del escritor" }, wikipedia: "File:Victor Hugo Museum Vianden.jpg" },
@@ -109,7 +109,7 @@ export const LUXEMBOURG = {
         es: "Apodado la 'Pequeña Suiza luxemburguesa', el Mullerthal es una región de gargantas boscosas, rocas esculpidas por la erosión y senderos espectaculares. Echternach, la ciudad más antigua de Luxemburgo, es el punto de partida ideal. El Mullerthal Trail (112 km) atraviesa paisajes de arenisca salvajes y encantadores.",
       },
       wikipedia: "File:Mullerthal 02.jpg",
-      tags: ["Randonnée", "Nature", "Gorges", "Grès"],
+      tags: ["Randonnée", "Nature"],
       mustSee: [
         { name: { fr: "Sentier Mullerthal Trail — 112 km de randonnée dans les gorges boisées", en: "Mullerthal Trail — 112 km of hiking through wooded gorges", es: "Mullerthal Trail — 112 km de senderismo por gargantas boscosas" }, wikipedia: "File:Mullerthal 02.jpg" },
         { name: { fr: "Gorge du Loup — canyon étroit aux formations rocheuses spectaculaires", en: "Gorge du Loup — narrow canyon with spectacular rock formations", es: "Gorge du Loup — cañón estrecho con espectaculares formaciones rocosas" }, wikipedia: "File:Neubeuern Wolfsschlucht.jpg" },
@@ -127,7 +127,7 @@ export const LUXEMBOURG = {
         es: "El Mosela luxemburgués es una región vinícola pintoresca que bordea el río que separa Luxemburgo de Alemania. Se producen aquí Riesling, Pinot Gris y Crémant de Luxemburgo. Pueblos vinateros como Remich, Ehnen y Grevenmacher ofrecen bodegas para visitar y terrazas con vistas a los viñedos en terrazas.",
       },
       wikipedia: "File:Luxembourg Moselle Vinyards Machtum.JPG",
-      tags: ["Vins", "Vignobles", "Gastronomie", "Fleuve"],
+      tags: ["Gastronomie", "Nature"],
       mustSee: [
         { name: { fr: "Cave viticole Bernard-Massard à Grevenmacher — Crémant de Luxembourg", en: "Bernard-Massard winery in Grevenmacher — Luxembourg Crémant", es: "Bodega Bernard-Massard en Grevenmacher — Crémant de Luxemburgo" }, wikipedia: "File:GrevenmacherMarktplatz.JPG" },
         { name: { fr: "Remich — capitale de la Moselle luxembourgeoise", en: "Remich — capital of the Luxembourg Moselle", es: "Remich — capital del Mosela luxemburgués" }, wikipedia: "Remich" },

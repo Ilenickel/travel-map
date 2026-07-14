@@ -115,7 +115,7 @@ export const PHILIPPINES = {
         es: "Palawan es elegida con regularidad como la isla más bella del mundo. El Nido y Coron ofrecen lagunas esmeralda rodeadas de acantilados kársticos, playas secretas y una vida submarina excepcional. El río subterráneo de Puerto Princesa está declarado Patrimonio de la Humanidad por la UNESCO.",
       },
       wikipedia: "Palawan",
-      tags: ["lagons", "plongée", "île", "UNESCO", "Plage", "Nature", "Randonnée"],
+      tags: ["Plage", "UNESCO", "Nature", "Randonnée"],
       mustSee: [
         { name: "El Nido (Bacuit Archipelago)", wikipedia: "El_Nido,_Palawan" },
         { name: { fr: "Coron (épaves)", en: "Coron (shipwrecks)", es: "Coron (pecios)" }, wikipedia: "Coron,_Palawan" },
@@ -133,7 +133,7 @@ export const PHILIPPINES = {
         es: "La playa White Beach de Boracay es una de las más bellas de Asia: arena blanca y fina, aguas turquesa y ambiente festivo. Tras su cierre para limpieza en 2018, la isla volvió más bonita y mejor regulada.",
       },
       wikipedia: "Boracay",
-      tags: ["Plage", "nightlife", "sports nautiques", "soleil"],
+      tags: ["Plage", "Nightlife"],
       mustSee: [
         { name: "White Beach", wikipedia: "Boracay" },
         { name: "Puka Shell Beach", wikipedia: "File:Puka Beach Boracay - panoramio.jpg" },
@@ -151,7 +151,7 @@ export const PHILIPPINES = {
         es: "Las terrazas de arroz de las Cordilleras de Luzón, esculpidas hace 2.000 años por los ancestros del pueblo ifugao, son Patrimonio de la Humanidad por la UNESCO. Un paisaje agrícola extraordinario a 1.200 m de altitud.",
       },
       wikipedia: "File:Pana_Banaue_Rice_Terraces_(Cropped).jpg",
-      tags: ["UNESCO", "Culture", "Randonnée", "paysages", "Nature"],
+      tags: ["UNESCO", "Culture", "Randonnée", "Nature"],
       mustSee: [
         { name: { fr: "Batad (terrasses)", en: "Batad (terraces)", es: "Batad (terrazas)" }, wikipedia: "File:Batad Rice Terraces 4.jpg" },
         { name: "Banaue viewpoint", wikipedia: "File:Pana_Banaue_Rice_Terraces_(Cropped).jpg" },
@@ -169,7 +169,7 @@ export const PHILIPPINES = {
         es: "Siargao es la capital filipina del surf gracias a la ola Cloud 9, una de las mejores de Asia. La isla conserva un ambiente relajado con sus manglares, sus lagunas secretas y su excepcional fauna marina.",
       },
       wikipedia: "File:Siargao Island.jpg",
-      tags: ["surf", "île", "plongée", "Nature"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Cloud 9 (vague surf)", en: "Cloud 9 (surf wave)", es: "Cloud 9 (ola de surf)" }, wikipedia: "File:Catching the Wave.jpg" },
         { name: "Sugba Lagoon", wikipedia: "File:SUGBA LAGOON (MAY 2019).jpg" },

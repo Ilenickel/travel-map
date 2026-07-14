@@ -141,7 +141,7 @@ export const INDONESIA = {
         es: "Los dragones de Komodo, los lagartos más grandes del mundo, habitan este parque nacional declarado Patrimonio de la Humanidad. Playas rosas únicas (Pantai Merah) y un snorkel excepcional.",
       },
       wikipedia: "Komodo_National_Park",
-      tags: ["Nature", "UNESCO", "Plongée", "Aventure"],
+      tags: ["Nature", "UNESCO", "Plage", "Aventure"],
       mustSee: [
         { name: { fr: "Dragon de Komodo", en: "Komodo dragon", es: "Dragón de Komodo" }, wikipedia: "Komodo_dragon" },
         { name: { fr: "Plage rose de Pantai Merah", en: "Pantai Merah pink beach", es: "Playa rosa de Pantai Merah" }, wikipedia: "File:Pantai_Pulau_Merah_Banyuwangi.jpg" },
@@ -159,7 +159,7 @@ export const INDONESIA = {
         es: "Uno de los mejores lugares de buceo y snorkel del mundo. El 75 % de las especies de coral del planeta vive en estas aguas cristalinas rodeadas de islas kársticas exuberantes.",
       },
       wikipedia: "Raja_Ampat_Islands",
-      tags: ["Plongée", "Snorkeling", "Nature", "Paysage"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Wayag — vue aérienne sur les îles karstiques", en: "Wayag — aerial view over the karst islands", es: "Wayag — vista aérea de las islas kársticas" }, wikipedia: "File:Wayag_Island,_Raja_Ampat_(14280693998).jpg" },
         { name: { fr: "Pianemo — belvédère iconique", en: "Pianemo — iconic viewpoint", es: "Pianemo — mirador icónico" }, wikipedia: "File:Raja Ampat, West Papua, Indonesia.jpg" },
@@ -177,7 +177,7 @@ export const INDONESIA = {
         es: "Lombok, menos turística que Bali, con el majestuoso volcán Rinjani y las islas Gili, un paraíso sin coches para el buceo, el snorkel y la fiesta.",
       },
       wikipedia: "Lombok",
-      tags: ["Plage", "Volcan", "Plongée", "Randonnée"],
+      tags: ["Plage", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Trekking au Volcan Rinjani (3 726 m)", en: "Trekking Mount Rinjani (3,726 m)", es: "Trekking al volcán Rinjani (3726 m)" }, wikipedia: "Mount_Rinjani" },
         { name: { fr: "Gili Trawangan — plage & fête", en: "Gili Trawangan — beach & nightlife", es: "Gili Trawangan — playa y fiesta" }, wikipedia: "File:Gili Trawangan (island), Beach restaurant at night, Indonesia.jpg" },

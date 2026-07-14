@@ -94,7 +94,7 @@ export const CROATIA = {
         es: "Dubrovnik (UNESCO) es una de las ciudades más bellas del mundo: sus murallas medievales del siglo XV (2 km de recorrido completo sobre el mar) dominan un casco antiguo de mármol blanco perfectamente conservado. La Stradun (calle principal), los palacios góticos, las fuentes renacentistas y la vista de las islas Elafitas desde las murallas son inolvidables. Escenario de Juego de Tronos.",
       },
       wikipedia: "Dubrovnik",
-      tags: ["Remparts", "UNESCO", "Adriatique", "Game of Thrones", "Ville", "Histoire", "Architecture"],
+      tags: ["Architecture", "UNESCO", "Plage", "Culture", "Ville", "Histoire"],
       mustSee: [
         { name: { fr: "Tour des remparts médiévaux (2km) vue sur l'Adriatique", en: "Walk the medieval walls (2 km) with views over the Adriatic", es: "Recorrido por las murallas medievales (2 km) con vistas al Adriático" }, wikipedia: "Walls_of_Dubrovnik" },
         { name: { fr: "Stradun — rue de marbre principal de la Vieille Ville", en: "Stradun — the Old Town's main marble street", es: "Stradun — la calle de mármol principal del casco antiguo" }, wikipedia: "File:Stradun rano ujutro.jpg" },
@@ -112,7 +112,7 @@ export const CROATIA = {
         es: "El parque nacional de los lagos de Plitvice (UNESCO) es una de las maravillas naturales de Croacia: 16 lagos escalonados conectados por 90 cascadas en un bosque de hayas y abetos. El agua tiene un turquesa casi irreal gracias a los depósitos de travertino. Las pasarelas de madera sobre las cascadas y la Gran Cascada (78 m) crean un espectáculo único.",
       },
       wikipedia: "Plitvice_Lakes_National_Park",
-      tags: ["Cascades", "UNESCO", "Turquoise", "Forêt", "Nature", "Randonnée"],
+      tags: ["Nature", "UNESCO", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Grande Cascade (Veliki Slap, 78m) — la plus haute de Croatie", en: "Great Waterfall (Veliki Slap, 78 m) — the highest in Croatia", es: "Gran Cascada (Veliki Slap, 78 m) — la más alta de Croacia" }, wikipedia: "File:Plitvice Lakes1.jpg" },
         { name: { fr: "Passerelles en bois entre les lacs du niveau inférieur", en: "Wooden boardwalks between the lower lakes", es: "Pasarelas de madera entre los lagos del nivel inferior" }, wikipedia: "File:A bridge in Plitvice lakes national park, Croatia.jpg" },
@@ -130,7 +130,7 @@ export const CROATIA = {
         es: "Split es una ciudad única en el mundo: su centro histórico (UNESCO) ES el palacio del emperador Diocleciano (305 d.C.) — 3.000 personas siguen viviendo dentro de sus muros antiguos. Las bodegas del palacio, el mausoleo convertido en catedral y las animadas callejuelas llenas de bares y restaurantes hacen de Split una de las ciudades más vivas del Adriático.",
       },
       wikipedia: "Split,_Croatia",
-      tags: ["Palais romain", "UNESCO", "Vivant", "Dioclétien", "Ville", "Histoire", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Ville", "Architecture"],
       mustSee: [
         { name: { fr: "Caves du palais de Dioclétien (IVe s.) — sous la ville", en: "Diocletian's Palace cellars (4th century) — beneath the city", es: "Bodegas del palacio de Diocleciano (siglo IV) — bajo la ciudad" }, wikipedia: "Diocletian's_Palace" },
         { name: { fr: "Cathédrale Saint-Domnius — mausolée impérial transformé en église", en: "Saint Domnius Cathedral — an imperial mausoleum turned church", es: "Catedral de San Domnio — mausoleo imperial convertido en iglesia" }, wikipedia: "Cathedral_of_Saint_Domnius" },
@@ -148,7 +148,7 @@ export const CROATIA = {
         es: "Hvar es la isla más larga (68 km) y la más soleada de Croacia (2.724 horas de sol al año, entre las más altas de Europa). Su fortaleza española domina el casco antiguo blanco y su teatro del siglo XVI, uno de los más antiguos de Europa. El interior está cubierto de lavanda (julio) y de viñedos que producen el Plavac Mali, uno de los mejores vinos tintos de Croacia.",
       },
       wikipedia: "Hvar",
-      tags: ["Île", "Lavande", "Forteresse", "Vin", "Plage", "Nature"],
+      tags: ["Plage", "Nature", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Forteresse espagnole Španjola — vue panoramique sur l'archipel", en: "Španjola Fortress — panoramic views over the archipelago", es: "Fortaleza española de Španjola — vista panorámica del archipiélago" }, wikipedia: "File:Spanjola.JPG" },
         { name: { fr: "Champs de lavande de Brusje (juillet — floraison)", en: "Brusje lavender fields (July — bloom season)", es: "Campos de lavanda de Brusje (julio — floración)" }, wikipedia: "File:Brusje_-_panoramio_(1).jpg" },

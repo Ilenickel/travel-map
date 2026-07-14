@@ -128,7 +128,7 @@ export const KAZAKHSTAN = {
         es: "Astaná (antigua Nur-Sultán, hoy de nuevo Astaná), capital desde 1997, es una de las ciudades más futuristas y sorprendentes de Asia: una metrópolis ultramoderna que emerge de la estepa kazaja, construida desde cero mediante una voluntad política y arquitectónica sin precedentes. Los arquitectos más famosos del mundo —Norman Foster, Kisho Kurokawa— han dejado su huella en un paisaje urbano de vidrio, acero y formas esféricas que contrasta radicalmente con las tradiciones nómadas circundantes.",
       },
       wikipedia: "Astana",
-      tags: ["Architecture", "Moderne", "Ville", "Futuriste"],
+      tags: ["Architecture", "Modernité", "Ville"],
       mustSee: [
         { name: { fr: "Baiterek — tour emblématique de 97 m symbole de la nouvelle capitale", en: "Baiterek — iconic 97 m tower, symbol of the new capital", es: "Baiterek — icónica torre de 97 m, símbolo de la nueva capital" }, wikipedia: "File:Night at Esil District, Astana (P1190721).jpg" },
         { name: { fr: "Palais de la Paix et de la Réconciliation — pyramide de Norman Foster", en: "Palace of Peace and Reconciliation — Norman Foster's pyramid", es: "Palacio de la Paz y la Reconciliación — la pirámide de Norman Foster" }, wikipedia: "Palace_of_Peace_and_Reconciliation" },
@@ -146,7 +146,7 @@ export const KAZAKHSTAN = {
         es: "Turquestán es la ciudad más sagrada de Asia Central kazaja, cuyo mausoleo de Khoja Ahmed Yasawi —obra maestra de la arquitectura timúrida encargada por Tamerlán a finales del siglo XIV— figura entre los monumentos islámicos más importantes de la región. Declarado Patrimonio de la Humanidad UNESCO, el mausoleo con su inmensa cúpula turquesa domina una ciudad que fue durante siglos uno de los principales polos espirituales y comerciales de la Ruta de la Seda.",
       },
       wikipedia: "File:Түркістан._Жаңа_құрылыстар.jpg",
-      tags: ["UNESCO", "Route de la Soie", "Islam", "Timourides", "Histoire", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Spiritualité", "Architecture"],
       mustSee: [
         { name: { fr: "Mausolée de Khoja Ahmed Yasawi — chef-d'œuvre timouride classé UNESCO", en: "Mausoleum of Khoja Ahmed Yasawi — UNESCO-listed Timurid masterpiece", es: "Mausoleo de Khoja Ahmed Yasawi — obra maestra timúrida Patrimonio UNESCO" }, wikipedia: "Mausoleum_of_Khoja_Ahmed_Yasawi" },
         { name: { fr: "Bain souterrain de Hilvet — hammam médiéval des XIIe–XIVe siècles", en: "Hilvet underground bathhouse — medieval hammam from the 12th–14th centuries", es: "Baño subterráneo de Hilvet — hammam medieval de los siglos XII–XIV" }, wikipedia: "File:Hilvet Mosque 01.jpg" },
@@ -164,7 +164,7 @@ export const KAZAKHSTAN = {
         es: "El cañón de Charyn, apodado el «Pequeño Gran Cañón», es uno de los paisajes naturales más espectaculares de Kazajistán: formaciones de arenisca roja y ocre esculpidas por el río Charyn a lo largo de 150 kilómetros, con paredes que se elevan hasta 300 metros de altura. El Valle de los Castillos, con sus formaciones rocosas de siluetas de torres y almenas, es especialmente fotogénico al atardecer.",
       },
       wikipedia: "Charyn_Canyon",
-      tags: ["Nature", "Canyon", "Géologie", "Randonnée", "Désert"],
+      tags: ["Nature", "Randonnée", "Désert"],
       mustSee: [
         { name: { fr: "Vallée des Châteaux — formations rocheuses aux allures de forteresses médiévales", en: "Valley of Castles — rock formations resembling medieval fortresses", es: "Valle de los Castillos — formaciones rocosas con aspecto de fortalezas medievales" }, wikipedia: "Charyn_Canyon" },
         { name: { fr: "Gorges de la rivière Charyn — descente en rafting entre les parois ocre", en: "Charyn river gorges — rafting between ochre cliffs", es: "Gargantas del río Charyn — descenso en rafting entre paredes ocres" }, wikipedia: "File:Charyn Canyon 01.jpg" },

@@ -142,7 +142,7 @@ export const AUSTRALIA = {
         es: "El mayor arrecife de coral del mundo, visible desde el espacio. Buceo y esnórquel excepcionales desde Cairns o las islas Whitsunday, con una fauna marina extraordinaria.",
       },
       wikipedia: "Great_Barrier_Reef",
-      tags: ["Plongée", "Nature", "UNESCO", "Mer"],
+      tags: ["Plage", "Nature", "UNESCO"],
       mustSee: [
         { name: { fr: "Plongée à la Grande Barrière", en: "Diving the Great Barrier Reef", es: "Buceo en la Gran Barrera" }, wikipedia: "Great_Barrier_Reef" },
         { name: { fr: "Îles Whitsunday & plage Whitehaven", en: "Whitsunday Islands & Whitehaven Beach", es: "Islas Whitsunday y playa Whitehaven" }, wikipedia: "File:06. Whiteheaven Beach.jpg" },
@@ -160,7 +160,7 @@ export const AUSTRALIA = {
         es: "Uluru, la roca sagrada del pueblo anangu, cambia de color al amanecer y al atardecer. El corazón espiritual rojo de Australia, rodeado por el inmenso Outback.",
       },
       wikipedia: "Uluru",
-      tags: ["Nature", "Culture aborigène", "UNESCO", "Paysage", "Désert"],
+      tags: ["Nature", "Culture", "UNESCO", "Désert"],
       mustSee: [
         { name: { fr: "Uluru (Ayers Rock) au lever du soleil", en: "Uluru (Ayers Rock) at sunrise", es: "Uluru (Ayers Rock) al amanecer" }, wikipedia: "Uluru" },
         { name: { fr: "Kata Tjuta (Les Olgas)", en: "Kata Tjuta (The Olgas)", es: "Kata Tjuta (Los Olgas)" }, wikipedia: "Kata_Tjuta" },
@@ -195,7 +195,7 @@ export const AUSTRALIA = {
         es: "La región más salvaje de Australia, con los cañones rojos de Purnululu (Bungle Bungle), las cataratas de Mitchell y una fauna endémica extraordinaria.",
       },
       wikipedia: "File:00 2000 Geikie Gorge - Kimberley Western Australia.jpg",
-      tags: ["Nature", "Aventure", "Paysage", "Randonnée"],
+      tags: ["Nature", "Aventure", "Randonnée"],
       mustSee: [
         { name: { fr: "Purnululu (Bungle Bungle) — Gorges dorées", en: "Purnululu (Bungle Bungle) — Golden gorges", es: "Purnululu (Bungle Bungle) — Cañones dorados" }, wikipedia: "Purnululu_National_Park" },
         { name: { fr: "Chutes de Mitchell", en: "Mitchell Falls", es: "Cataratas de Mitchell" }, wikipedia: "File:067 Mitchell Falls Mitchell River NP VIII-2013.jpg" },

@@ -68,7 +68,7 @@ export const QATAR = {
         es: "El zoco Waqif es el corazón auténtico de Doha, un mercado tradicional cuidadosamente restaurado que recrea el ambiente de un zoco catarí de principios del siglo XX. Sus callejones empedrados serpentean entre tiendas que venden especias, halcones, telas y perfumes, mientras que numerosos restaurantes ofrecen cocina tradicional catarí y levantina en un ambiente animado. El zoco también alberga a halconeros profesionales, ya que el halcón es el símbolo nacional de Catar.",
       },
       wikipedia: "Souq_Waqif",
-      tags: ["Culture", "Shopping", "Gastronomie", "Traditions", "Ville"],
+      tags: ["Culture", "Shopping", "Gastronomie", "Tradition", "Ville"],
       mustSee: [
         { name: { fr: "Marché aux faucons — tradition de fauconnerie patrimoine immatériel de l'UNESCO", en: "Falcon market — falconry tradition, UNESCO intangible heritage", es: "Mercado de halcones — tradición cetrera, patrimonio inmaterial de la UNESCO" }, wikipedia: "File:1 raróg.jpg" },
         { name: { fr: "Marché aux épices — parfums, encens et épices du Golfe", en: "Spice market — perfumes, incense and Gulf spices", es: "Mercado de especias — perfumes, incienso y especias del Golfo" }, wikipedia: "File:Souq Waqif, Doha, Catar, 2013-08-05, DD 82.JPG" },
@@ -85,7 +85,7 @@ export const QATAR = {
         es: "El Museo de Arte Islámico de Doha, diseñado por el arquitecto I.M. Pei e inaugurado en 2008, es uno de los museos más bellos del mundo en su especialidad. Situado en una isla artificial frente a la Corniche de Doha, este edificio de formas geométricas audaces alberga una de las colecciones más completas de arte islámico del mundo, que abarca catorce siglos y tres continentes. Cerámicas persas, manuscritos iluminados, textiles y marfiles conviven con joyas excepcionales en magistrales salas de exposición.",
       },
       wikipedia: "File:IslamicArtMuseumDohaSkyline.jpg",
-      tags: ["Musée", "Art islamique", "Architecture", "Culture"],
+      tags: ["Musées", "Spiritualité", "Architecture", "Culture"],
       mustSee: [
         { name: { fr: "Collection de céramiques — faïences persanes, iznik et chinoises", en: "Ceramics collection — Persian, Iznik and Chinese pottery", es: "Colección de cerámica — loza persa, iznik y china" }, wikipedia: "Museum_of_Islamic_Art,_Doha" },
         { name: { fr: "Manuscrits enluminés — corans rares et textes scientifiques médiévaux", en: "Illuminated manuscripts — rare Qurans and medieval scientific texts", es: "Manuscritos iluminados — coranes raros y textos científicos medievales" }, wikipedia: "File:Doha, museo d'arte islamica, interno, una sala 01.jpg" },
@@ -102,7 +102,7 @@ export const QATAR = {
         es: "Al Zubarah es el único sitio de Catar declarado Patrimonio de la Humanidad por la UNESCO. Esta ciudad mercantil y perlera fortificada, fundada en el siglo XVIII, fue uno de los puertos comerciales más importantes del Golfo antes de ser abandonada en el siglo XIX. Las excavaciones arqueológicas revelan un urbanismo sofisticado — calles trazadas a cordel, casas con patio, mezquitas y zocos — que da testimonio de la prosperidad de los comerciantes de perlas cataríes.",
       },
       wikipedia: "File:Ruins in Zubarah on a cloudy day.jpg",
-      tags: ["UNESCO", "Archéologie", "Histoire", "Pêche aux perles", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Fort d'Al Zubarah — forteresse du XIXe siècle abritant le centre d'interprétation", en: "Al Zubarah Fort — 19th-century fortress housing the visitor centre", es: "Fuerte de Al Zubarah — fortaleza del siglo XIX que alberga el centro de interpretación" }, wikipedia: "File:Zubara Fort.jpg" },
         { name: { fr: "Vestiges de la cité — ruines de la ville perlière du XVIIIe siècle", en: "City remains — ruins of the 18th-century pearling town", es: "Vestigios de la ciudad — ruinas de la ciudad perlera del siglo XVIII" }, wikipedia: "File:Archaelogical site of Al Zubarah 09.jpg" },

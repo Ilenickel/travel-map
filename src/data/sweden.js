@@ -94,7 +94,7 @@ export const SWEDEN = {
         es: "Estocolmo se extiende sobre 14 islas entre el lago Mälaren y el mar Báltico: Gamla Stan (casco antiguo medieval del siglo XIII), el museo Vasa (buque de guerra de 1628 intacto), el museo Skansen (primer museo al aire libre del mundo) y los barrios de moda de Södermalm y Östermalm. Una capital que combina historia, diseño y naturaleza a un paso en ferry.",
       },
       wikipedia: "Stockholm",
-      tags: ["Ville", "Musées", "Architecture", "Îles", "Gastronomie"],
+      tags: ["Ville", "Musées", "Architecture", "Plage", "Gastronomie"],
       mustSee: [
         { name: { fr: "Musée Vasa — navire de guerre du XVIIe siècle intact", en: "Vasa Museum — an intact 17th-century warship", es: "Museo Vasa — buque de guerra del siglo XVII intacto" }, wikipedia: "Vasa_(ship)" },
         { name: { fr: "Gamla Stan — vieille ville médiévale et Palais Royal", en: "Gamla Stan — medieval old town and Royal Palace", es: "Gamla Stan — casco antiguo medieval y Palacio Real" }, wikipedia: "File:Västerlånggatan,_Gamla_stan,_Stockholm.jpg" },
@@ -112,7 +112,7 @@ export const SWEDEN = {
         es: "La Laponia sueca alberga el parque nacional de Laponia (UNESCO), los pastores de renos sami, y Abisko — reputado por tener el cielo más despejado de Europa para las auroras boreales. El Ice Hotel de Jukkasjärvi es un hotel reconstruido enteramente en hielo cada año desde 1990. La ruta del Kungsleden (500 km) es el trek más emblemático de Escandinavia.",
       },
       wikipedia: "File:Oratunturi_central_summit_from_the_west_in_midnight,_Sodankylä,_Lapland,_Finland,_2019_June.jpg",
-      tags: ["Aurores", "Rennes", "Sami", "Arctique", "Nature", "Randonnée"],
+      tags: ["Nature", "Safari", "Culture", "Randonnée"],
       mustSee: [
         { name: { fr: "Ice Hotel Jukkasjärvi — chambre sculptée dans la glace", en: "Jukkasjärvi Ice Hotel — a room carved from ice", es: "Ice Hotel de Jukkasjärvi — habitación esculpida en hielo" }, wikipedia: "File:Icehotel-se-01.JPG" },
         { name: { fr: "Aurores boréales depuis la Aurora Sky Station d'Abisko", en: "Northern lights from Abisko's Aurora Sky Station", es: "Auroras boreales desde la Aurora Sky Station de Abisko" }, wikipedia: "File:Aurora in Abisko near Torneträsk.jpg" },
@@ -129,7 +129,7 @@ export const SWEDEN = {
         es: "Gotland es la isla más grande del Báltico: Visby, su capital medieval (UNESCO), está rodeada de murallas intactas del siglo XIII. Los campos de flores silvestres, los raukar (pilares calizos en las playas), las ruinas de iglesias románicas y el festival medieval anual de agosto hacen de Gotland un destino único en Europa.",
       },
       wikipedia: "File:Helgumannen (2) hq.JPG",
-      tags: ["Médiéval", "UNESCO", "Île", "Remparts"],
+      tags: ["Histoire", "UNESCO", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Visby — ville médiévale fortifiée UNESCO (XIIIe s.)", en: "Visby — UNESCO-listed fortified medieval town (13th century)", es: "Visby — ciudad medieval amurallada UNESCO (s. XIII)" }, wikipedia: "File:Visby domkyrka July 2019 07.jpg" },
         { name: { fr: "Raukar de Fårö — sculptures naturelles calcaires sur la plage", en: "Fårö raukar — natural limestone sculptures on the beach", es: "Raukar de Fårö — esculturas naturales calizas en la playa" }, wikipedia: "File:Gotland Fårö-Raukar Gamlehamn.jpg" },
@@ -147,7 +147,7 @@ export const SWEDEN = {
         es: "Gotemburgo es la segunda ciudad de Suecia, célebre por su marisco (las mejores cigalas y gambas de Escandinavia), sus canales de estilo neerlandés y Liseberg (uno de los parques de atracciones más queridos de Europa). La costa de Bohuslän al norte: pueblos de pescadores sobre rocas de granito pulidas por el mar, grabados rupestres de Tanum (UNESCO).",
       },
       wikipedia: "Gothenburg",
-      tags: ["Fruits de mer", "Côte", "UNESCO", "Design"],
+      tags: ["Gastronomie", "Plage", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Marché de Feskekorka — fruits de mer frais de Bohuslän", en: "Feskekôrka market — fresh Bohuslän seafood", es: "Mercado de Feskekôrka — marisco fresco de Bohuslän" }, wikipedia: "File:00 3022 Göteborg - Markthallen.jpg" },
         { name: { fr: "Gravures rupestres de Tanum — art de l'Âge du Bronze (UNESCO)", en: "Tanum rock carvings — Bronze Age art (UNESCO)", es: "Grabados rupestres de Tanum — arte de la Edad del Bronce (UNESCO)" }, wikipedia: "Rock_Carvings_in_Tanum" },

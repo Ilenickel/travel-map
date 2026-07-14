@@ -94,7 +94,7 @@ export const LESOTHO = {
         es: "El paso de Sani (2.874 m) es una de las rutas de montaña más espectaculares de África austral, accesible solo en 4x4 desde la provincia sudafricana de KwaZulu-Natal. El ascenso en zigzag revela panorámicas vertiginosas sobre los Drakensberg y las altas praderas de Lesoto. En la cima, un pub afirma ser el más alto de África, y los pastores basotho a caballo con sus coloridas mantas componen una estampa inolvidable.",
       },
       wikipedia: "Sani_Pass",
-      tags: ["Montagne", "4x4", "Panorama", "Aventure"],
+      tags: ["Montagne", "Aventure", "Panorama"],
       mustSee: [
         { name: { fr: "Route en lacets du Sani Pass — l'une des plus spectaculaires d'Afrique", en: "Sani Pass zigzag road — one of the most spectacular in Africa", es: "Carretera en zigzag del paso de Sani — una de las más espectaculares de África" }, wikipedia: "Sani_Pass" },
         { name: { fr: "Sani Mountain Lodge — pub le plus haut d'Afrique (2 874m)", en: "Sani Mountain Lodge — Africa's highest pub (2,874m)", es: "Sani Mountain Lodge — el pub más alto de África (2.874 m)" }, wikipedia: "File:Sani Pass cliff (Unsplash).jpg" },
@@ -112,7 +112,7 @@ export const LESOTHO = {
         es: "Las rutas a caballo basotho son la experiencia por excelencia de Lesoto. Los ponis basotho, robustos y de paso seguro, permiten cruzar paisajes de alta montaña de otro modo inaccesibles: valles profundos, aldeas de chozas redondas con techo de paja y ríos cristalinos. Se ofrecen circuitos de un día a varias semanas desde numerosos lodges, acompañados de guías basotho experimentados.",
       },
       wikipedia: "File:Basotho on Horses.jpg",
-      tags: ["Équitation", "Randonnée", "Hautes montagnes", "Tradition"],
+      tags: ["Aventure", "Randonnée", "Montagne", "Tradition"],
       mustSee: [
         { name: { fr: "Malealea Lodge — base classique pour les treks à poney", en: "Malealea Lodge — classic base for pony treks", es: "Malealea Lodge — base clásica para las rutas a caballo" }, wikipedia: "Malealea" },
         { name: { fr: "Gorges du Makhaleng — canyon accessible à cheval", en: "Makhaleng Gorges — canyon accessible on horseback", es: "Gargantas de Makhaleng — cañón accesible a caballo" }, wikipedia: "File:Lesotho Makhaleng.jpg" },
@@ -129,7 +129,7 @@ export const LESOTHO = {
         es: "Thaba Bosiu («la Montaña de la Noche») es el yacimiento histórico más importante de Lesoto: fue en esta meseta rocosa inexpugnable donde el rey Moshoeshoe I reunió y protegió a su pueblo frente a los ataques nguni y bóer en el siglo XIX, fundando así la nación basotho. El lugar alberga las ruinas de su kraal real, su tumba y un excelente museo que narra la historia de la resistencia basotho.",
       },
       wikipedia: "Thaba_Bosiu",
-      tags: ["Histoire", "Roi", "Culture", "Nation"],
+      tags: ["Histoire", "Culture"],
       mustSee: [
         { name: { fr: "Ruines du kraal royal de Moshoeshoe Ier", en: "Ruins of King Moshoeshoe I's royal kraal", es: "Ruinas del kraal real de Moshoeshoe I" }, wikipedia: "File:Thaba Bosiu - panoramio.jpg" },
         { name: { fr: "Tombe de Moshoeshoe Ier — fondateur de la nation basotho", en: "Tomb of Moshoeshoe I — founder of the Basotho nation", es: "Tumba de Moshoeshoe I — fundador de la nación basotho" }, wikipedia: "File:Grave of King Moshoeshoe I.jpg" },
@@ -146,7 +146,7 @@ export const LESOTHO = {
         es: "La presa de Katse es la segunda presa de arco más grande de África, una hazaña de ingeniería monumental en las montañas de Lesoto. Construida como parte del Highland Water Project para exportar agua a Sudáfrica, crea un embalse espectacular rodeado de montañas vertiginosas. Se ofrecen visitas guiadas a la infraestructura, y la carretera de acceso desde Maseru ya es en sí misma un viaje extraordinario.",
       },
       wikipedia: "Katse_Dam",
-      tags: ["Ingénierie", "Barrage", "Paysage", "Eau"],
+      tags: ["Architecture", "Nature"],
       mustSee: [
         { name: { fr: "Barrage de Katse — arche de 185m de haut dans un canyon de montagne", en: "Katse Dam — 185 m-high arch in a mountain canyon", es: "Presa de Katse — arco de 185 m de altura en un cañón de montaña" }, wikipedia: "Katse_Dam" },
         { name: { fr: "Lac de retenue — kayak et pêche à la truite", en: "Reservoir — kayaking and trout fishing", es: "Embalse — kayak y pesca de trucha" }, wikipedia: "File:Katse dam intake tower.jpg" },

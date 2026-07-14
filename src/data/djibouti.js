@@ -94,7 +94,7 @@ export const DJIBOUTI = {
         es: "De noviembre a enero, el golfo de Tadjourah alberga una de las concentraciones más densas de tiburones ballena del mundo — a veces se pueden ver hasta 50 ejemplares a la vez desde el barco. Nadar con el pez más grande del mundo en estas aguas cálidas y transparentes es una de las experiencias marinas más intensas del planeta.",
       },
       wikipedia: "Whale_shark",
-      tags: ["Requins baleines", "Plongée", "Nage", "Unique"],
+      tags: ["Safari", "Plage"],
       mustSee: [
         { name: { fr: "Nage avec les requins baleines (nov–janv, Arta Beach)", en: "Swimming with whale sharks (Nov–Jan, Arta Beach)", es: "Nado con tiburones ballena (nov–ene, Arta Beach)" }, wikipedia: "Whale_shark" },
         { name: { fr: "Plongée Ghoubbet — manta rays et topographie lunaire", en: "Ghoubbet diving — manta rays and lunar topography", es: "Buceo en Ghoubbet — mantarrayas y topografía lunar" }, wikipedia: "File:Okinawa Churaumi aquarium Manta hdsr Vlux5 01.jpg" },
@@ -112,7 +112,7 @@ export const DJIBOUTI = {
         es: "El lago Assal (153m bajo el nivel del mar) es el punto más bajo de África y uno de los lugares más áridos del planeta. Su salinidad (35%) es 10 veces mayor que la del mar — se flota sin esfuerzo. Los cristales de sal blanca sobre las orillas azules y los colores del paisaje volcánico circundante crean un panorama extraterrestre.",
       },
       wikipedia: "File:Lake Assal NASA (cropped).jpg",
-      tags: ["Paysage lunaire", "Sel", "Point le plus bas", "Volcanique"],
+      tags: ["Nature"],
       mustSee: [
         { name: { fr: "Bain flottant dans le lac Assal (eau ultra-salée)", en: "Floating swim in Lake Assal (ultra-salty water)", es: "Baño flotante en el lago Assal (agua ultrasalada)" }, wikipedia: "File:Lake Assal NASA (cropped).jpg" },
         { name: { fr: "Panorama sur les coulées de lave noire et le sel blanc", en: "View over the black lava flows and white salt", es: "Panorama sobre las coladas de lava negra y la sal blanca" }, wikipedia: "File:Assal Lake, 2024.jpg" },
@@ -130,7 +130,7 @@ export const DJIBOUTI = {
         es: "El lago Abbé es una de las visiones más surrealistas de África: cientos de chimeneas calizas de 50m de altura expulsan vapor en un paisaje volcánico desértico — Steven Spielberg estuvo a punto de rodar aquí una escena de Star Wars. Acampar de noche bajo las estrellas y ver el amanecer sobre las chimeneas son momentos inolvidables.",
       },
       wikipedia: "File:Lac Abbe-02.JPG",
-      tags: ["Cheminées", "Volcanique", "Star Wars", "Camping"],
+      tags: ["Nature", "Culture", "Aventure"],
       mustSee: [
         { name: { fr: "Cheminées de vapeur à l'aurore (paysage volcanique unique)", en: "Steam chimneys at dawn (a unique volcanic landscape)", es: "Chimeneas de vapor al amanecer (paisaje volcánico único)" }, wikipedia: "File:Abbe-3.jpg" },
         { name: { fr: "Camp de nuit sous les étoiles au bord du lac", en: "Overnight camp under the stars by the lake", es: "Campamento nocturno bajo las estrellas junto al lago" }, wikipedia: "File:Tukul Lake Abbe Djibouti.jpg" },
@@ -146,7 +146,7 @@ export const DJIBOUTI = {
         es: "Los montes Day albergan el único bosque de enebros de Yibuti — vestigio de una época en que el país era verde. A 1.700m de altitud, las temperaturas son radicalmente distintas a las de la costa abrasadora. El parque nacional del Day alberga el francolín de Yibuti (ave endémica en peligro crítico) y dik-diks (pequeñas antílopes).",
       },
       wikipedia: "File:Goda Mountains - National Park of Forêt du Day.jpg",
-      tags: ["Forêt", "Oiseaux", "Altitude", "Randonnée"],
+      tags: ["Nature", "Safari", "Montagne", "Randonnée"],
       mustSee: [
         { name: { fr: "Forêt de genévriers du Day — seule forêt de Djibouti", en: "Day juniper forest — Djibouti's only forest", es: "Bosque de enebros del Day — único bosque de Yibuti" }, wikipedia: "File:Goda Mountains - National Park of Forêt du Day.jpg" },
         { name: { fr: "Vue panoramique sur la cuvette de l'Afar", en: "Panoramic view over the Afar basin", es: "Vista panorámica sobre la cuenca del Afar" }, wikipedia: "File:Dracaena ombet Djibouti.jpg" },

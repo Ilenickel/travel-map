@@ -86,7 +86,7 @@ export const ICELAND = {
         es: "Ruta imprescindible desde Reikiavik: el géiser Strokkur, el parque nacional de Þingvellir (cuna de la democracia, falla tectónica) y las cataratas de Gullfoss.",
       },
       wikipedia: "Golden_Circle_(Iceland)",
-      tags: ["Nature", "Géologie", "Paysage", "Geyser", "UNESCO"],
+      tags: ["Nature", "UNESCO"],
       mustSee: [
         { name: { fr: "Geyser Strokkur", en: "Strokkur geyser", es: "Géiser Strokkur" }, wikipedia: "Strokkur" },
         { name: { fr: "Chutes de Gullfoss", en: "Gullfoss waterfalls", es: "Cataratas de Gullfoss" }, wikipedia: "Gullfoss" },
@@ -104,7 +104,7 @@ export const ICELAND = {
         es: "La ruta costera más espectacular de Islandia: las cascadas de Seljalandsfoss y Skógafoss, la playa de arena negra de Reynisfjara y la laguna glaciar de Jökulsárlón con sus icebergs.",
       },
       wikipedia: "Jökulsárlón",
-      tags: ["Nature", "Glacier", "Plage", "Paysage", "Randonnée"],
+      tags: ["Nature", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Jökulsárlón — lac des icebergs", en: "Jökulsárlón — iceberg lagoon", es: "Jökulsárlón — laguna de icebergs" }, wikipedia: "Jökulsárlón" },
         { name: { fr: "Plage de sable noir Reynisfjara", en: "Reynisfjara black-sand beach", es: "Playa de arena negra de Reynisfjara" }, wikipedia: "Reynisfjara" },
@@ -122,7 +122,7 @@ export const ICELAND = {
         es: "Península glaciar que inspiró a Julio Verne (Viaje al centro de la Tierra). Glaciar Snæfellsjökull, acantilados de basalto, pueblos de pescadores y auroras boreales.",
       },
       wikipedia: "File:View_from_Helgafell,_Snæfellsnes_peninsula,_Iceland,_20230505_1513_5245.jpg",
-      tags: ["Nature", "Glacier", "Paysage", "Aurores boréales", "Randonnée"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Glacier Snæfellsjökull", en: "Snæfellsjökull glacier", es: "Glaciar Snæfellsjökull" }, wikipedia: "Snæfellsjökull" },
         { name: { fr: "Falaises de Lóndrangar", en: "Lóndrangar cliffs", es: "Acantilados de Lóndrangar" }, wikipedia: "Lóndrangar" },
@@ -140,7 +140,7 @@ export const ICELAND = {
         es: "La capital más pequeña del mundo sorprende: arquitectura colorida, una escena cultural vibrante, restaurantes de nueva cocina nórdica y la Blue Lagoon a 40 minutos.",
       },
       wikipedia: "File:View of Reykjavík from Hallgrímskirkja, 20230507 1227 5715.jpg",
-      tags: ["Ville", "Culture", "Gastronomie", "Spa", "Histoire", "Architecture"],
+      tags: ["Ville", "Culture", "Gastronomie", "Détente", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Hallgrímskirkja — cathédrale emblématique", en: "Hallgrímskirkja — iconic cathedral", es: "Hallgrímskirkja — catedral emblemática" }, wikipedia: "Hallgrímskirkja" },
         { name: "Blue Lagoon", wikipedia: "Blue_Lagoon_(geothermal_spa)" },

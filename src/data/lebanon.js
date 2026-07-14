@@ -112,7 +112,7 @@ export const LEBANON = {
         es: "Baalbek alberga las ruinas más imponentes del Imperio romano, declaradas Patrimonio de la Humanidad UNESCO. El Templo de Júpiter, con sus columnas de 20 metros de altura y sus sillares de más de 1.000 toneladas, es una de las construcciones más grandiosas de la Antigüedad. El Festival de Baalbek, celebrado cada verano desde 1955 entre estas ruinas extraordinarias, es uno de los eventos culturales más prestigiosos del mundo árabe.",
       },
       wikipedia: "Baalbek",
-      tags: ["UNESCO", "Antiquité", "Rome", "Festival", "Architecture", "Histoire"],
+      tags: ["UNESCO", "Histoire", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Temple de Jupiter — colonnes de 20 m parmi les plus grandes de l'Antiquité", en: "Temple of Jupiter — 20 m columns among the tallest of antiquity", es: "Templo de Júpiter — columnas de 20 m entre las más altas de la Antigüedad" }, wikipedia: "File:Temple of Jupiter, Baalbek, Lebanon (5073942385).jpg" },
         { name: { fr: "Temple de Bacchus — le mieux conservé des temples romains au monde", en: "Temple of Bacchus — the best-preserved Roman temple in the world", es: "Templo de Baco — el templo romano mejor conservado del mundo" }, wikipedia: "Temple_of_Bacchus" },
@@ -130,7 +130,7 @@ export const LEBANON = {
         es: "Biblos es una de las ciudades habitadas ininterrumpidamente más antiguas del mundo, fundada hace más de 7.000 años por los fenicios, que inventaron allí el alfabeto. Declarado Patrimonio de la Humanidad UNESCO, su casco antiguo combina restos fenicios, un templo egipcio, fortificaciones romanas, una catedral cruzada y un puerto pesquero medieval en un conjunto único. Su pequeño puerto animado, sus restaurantes de marisco y su calle peatonal figuran entre los lugares más agradables del Líbano.",
       },
       wikipedia: "Byblos",
-      tags: ["UNESCO", "Phéniciens", "Histoire", "Port", "Architecture", "Plage"],
+      tags: ["UNESCO", "Histoire", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Ruines phéniciennes de Byblos — temples de 5 000 ans de fond de mer", en: "Phoenician ruins of Byblos — 5,000-year-old seaside temples", es: "Ruinas fenicias de Biblos — templos costeros de 5.000 años" }, wikipedia: "File:Byblos pine trees and ancient ruins, Byblos, Lebanon.jpg" },
         { name: { fr: "Château des Croisés — forteresse médiévale dominant la ville antique", en: "Crusader Castle — medieval fortress overlooking the ancient town", es: "Castillo de los Cruzados — fortaleza medieval que domina la ciudad antigua" }, wikipedia: "File:Byblos Castle 2009.jpg" },
@@ -148,7 +148,7 @@ export const LEBANON = {
         es: "La gruta de Jeita es uno de los sistemas de galerías subterráneas más bellos del mundo, con sus dos niveles de estalactitas y estalagmitas de reflejos multicolores, explorables a pie y en barca. No lejos de allí, el bosque de los Cedros del Líbano, emblema nacional del país cuya hoja adorna la bandera, es un vestigio sagrado de los bosques de cedros que antaño cubrían todo el Líbano. En invierno, las estaciones de esquí de la montaña libanesa (Faraya, Mzaar) ofrecen una experiencia insólita en un país de Oriente Medio.",
       },
       wikipedia: "Jeita_Grotto",
-      tags: ["Nature", "Grotte", "Forêt", "Ski", "Randonnée"],
+      tags: ["Nature", "Ski", "Randonnée"],
       mustSee: [
         { name: { fr: "Grotte de Jeita — spectacle de stalactites et balade en barque souterraine", en: "Jeita Grotto — stalactite spectacle and underground boat ride", es: "Gruta de Jeita — espectáculo de estalactitas y paseo en barca subterránea" }, wikipedia: "Jeita_Grotto" },
         { name: { fr: "Forêt des Cèdres de Bsharré — cèdres millénaires classés à l'UNESCO", en: "Cedars of Bsharré forest — millennia-old UNESCO-listed cedars", es: "Bosque de los Cedros de Bsharré — cedros milenarios Patrimonio UNESCO" }, wikipedia: "Cedars_of_God" },

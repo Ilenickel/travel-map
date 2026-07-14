@@ -94,7 +94,7 @@ export const NAMIBIA = {
         es: "Sossusvlei es el lugar más fotografiado de África: dunas de arena roja de 300 m que se elevan contra un cielo azul intenso. Deadvlei, con sus árboles muertos frente a las dunas anaranjadas, es la imagen más icónica de Namibia.",
       },
       wikipedia: "Sossusvlei",
-      tags: ["Désert", "Photo", "Dunes", "Icône", "UNESCO", "Nature"],
+      tags: ["Désert", "Culture", "Nature", "UNESCO"],
       mustSee: [
         { name: { fr: "Deadvlei — arbres morts & dunes rouges", en: "Deadvlei — dead trees & red dunes", es: "Deadvlei — árboles muertos y dunas rojas" }, wikipedia: "Deadvlei" },
         { name: { fr: "Dune Big Daddy (325 m)", en: "Big Daddy Dune (325 m)", es: "Duna Big Daddy (325 m)" }, wikipedia: "Sossusvlei" },
@@ -112,7 +112,7 @@ export const NAMIBIA = {
         es: "Etosha es uno de los mejores parques de África para el safari por cuenta propia: una inmensa extensión salina blanca (5.000 km²) atrae a cientos de animales hacia los puntos de agua permanentes. Leones, elefantes, rinocerontes negros, jirafas y órices.",
       },
       wikipedia: "Etosha_National_Park",
-      tags: ["Safari", "Big Five", "Auto-safari", "Faune", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Point d'eau Okaukuejo (nuit)", en: "Okaukuejo waterhole (night)", es: "Punto de agua de Okaukuejo (noche)" }, wikipedia: "Etosha_National_Park" },
         { name: { fr: "Rhinocéros noir (espèce menacée)", en: "Black rhinoceros (endangered species)", es: "Rinoceronte negro (especie amenazada)" }, wikipedia: "Black_rhinoceros" },
@@ -130,7 +130,7 @@ export const NAMIBIA = {
         es: "El cañón del Fish River es el segundo más grande del mundo después del Gran Cañón: 160 km de largo, 27 km de ancho y 550 m de profundidad. La caminata de 5 días (85 km) es una de las grandes rutas de senderismo de África.",
       },
       wikipedia: "Fish_River_Canyon",
-      tags: ["Canyon", "Randonnée", "Nature", "Record", "Désert"],
+      tags: ["Nature", "Randonnée", "Désert"],
       mustSee: [
         { name: { fr: "Belvédère — vue sur le canyon", en: "Viewpoint — canyon overlook", es: "Mirador — vista sobre el cañón" }, wikipedia: "File:Fish River Canyon Namibia.jpg" },
         { name: { fr: "Trek Fish River Canyon (5 jours)", en: "Fish River Canyon trek (5 days)", es: "Caminata del Fish River Canyon (5 días)" }, wikipedia: "Fish_River_Canyon" },
@@ -147,7 +147,7 @@ export const NAMIBIA = {
         es: "Swakopmund, una estación balnearia colonial alemana en el desierto, es la capital de la aventura namibia: sandboard, paracaidismo, excursiones al desierto. La Costa de los Esqueletos, al norte, es una de las costas más hostiles e impresionantes del mundo.",
       },
       wikipedia: "Swakopmund",
-      tags: ["Aventure", "Désert", "Colonial", "Côte", "Ville"],
+      tags: ["Aventure", "Désert", "Histoire", "Plage", "Ville"],
       mustSee: [
         { name: { fr: "Swakopmund — architecture coloniale allemande", en: "Swakopmund — German colonial architecture", es: "Swakopmund — arquitectura colonial alemana" }, wikipedia: "Swakopmund" },
         { name: { fr: "Skeleton Coast (phoques & naufrages)", en: "Skeleton Coast (seals & shipwrecks)", es: "Costa de los Esqueletos (focas y naufragios)" }, wikipedia: "File:Namibie Skeleton Coast 01.JPG" },

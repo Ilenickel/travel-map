@@ -112,7 +112,7 @@ export const ANGOLA = {
         es: "Las cataratas de Kalandula están entre las más grandes de África por volumen de agua, con una caída de 105 metros de altura y 400 metros de ancho. Rodeadas de una selva tropical exuberante, se accede a ellas desde Malanje por una carretera pintoresca a través de las colinas angoleñas. Son uno de los enclaves naturales más impresionantes del continente.",
       },
       wikipedia: "Kalandula_Falls",
-      tags: ["Nature", "Chutes", "Randonnée", "Photographie"],
+      tags: ["Nature", "Randonnée", "Culture"],
       mustSee: [
         { name: { fr: "Belvédère principal — vue panoramique sur les chutes", en: "Main viewpoint — panoramic view of the falls", es: "Mirador principal — vista panorámica de las cataratas" }, wikipedia: "Kalandula_Falls" },
         { name: { fr: "Piscines naturelles — baignade en aval des chutes", en: "Natural pools — swimming downstream of the falls", es: "Piscinas naturales — baño aguas abajo de las cataratas" }, wikipedia: "Kalandula_Falls" },
@@ -130,7 +130,7 @@ export const ANGOLA = {
         es: "El parque nacional de Kissama, a solo 70 km al sur de Luanda, es el parque de fauna más accesible de Angola. Alberga elefantes, búfalos, cebras y una rica avifauna gracias a un programa de reintroducción de posguerra apoyado por Zimbabue y Sudáfrica. El parque bordea el Atlántico, ofreciendo paisajes únicos de sabana costera.",
       },
       wikipedia: "Quiçama_National_Park",
-      tags: ["Safari", "Faune", "Nature", "Éléphants"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Zone des éléphants — troupeaux réintroduits", en: "Elephant zone — reintroduced herds", es: "Zona de los elefantes — manadas reintroducidas" }, wikipedia: "Quiçama_National_Park" },
         { name: { fr: "Rivière Kwanza — croisières et pêche", en: "Kwanza River — cruises and fishing", es: "Río Kwanza — cruceros y pesca" }, wikipedia: "Cuanza_River" },
@@ -148,7 +148,7 @@ export const ANGOLA = {
         es: "La grieta de Tunda Vala es un escarpe espectacular de 1000 metros de altura que domina las llanuras de Namibe, ofreciendo una de las panorámicas más impresionantes de Angola. Lubango, la ciudad vecina, tiene una réplica del Cristo Redentor de Río. Más al sur, el desierto de Namibe se une al desierto del Namib namibio, creando paisajes desérticos de gran belleza.",
       },
       wikipedia: "Tundavala_Gap",
-      tags: ["Panorama", "Désert", "Paysage", "Randonnée"],
+      tags: ["Panorama", "Désert", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Fissure de Tunda Vala — escarpement vertigineux de 1000m", en: "Tunda Vala Gap — dizzying 1,000m escarpment", es: "Grieta de Tunda Vala — vertiginoso escarpe de 1000 m" }, wikipedia: "Tundavala_Gap" },
         { name: { fr: "Cristo Rei de Lubango — réplique du monument de Rio", en: "Cristo Rei de Lubango — replica of Rio's monument", es: "Cristo Rei de Lubango — réplica del monumento de Río" }, wikipedia: "Lubango" },

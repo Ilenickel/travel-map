@@ -94,7 +94,7 @@ export const MONGOLIA = {
         es: "El Gobi es uno de los desiertos más grandes del mundo, que alterna estepas pedregosas y dunas de arena dorada. Los acantilados llameantes (Bayanzag), las dunas cantoras de Khongoryn Els y una fauna única (el camello bactriano salvaje) son impresionantes.",
       },
       wikipedia: "Gobi_Desert",
-      tags: ["Désert", "Nature", "Aventure", "Faune"],
+      tags: ["Désert", "Nature", "Aventure", "Safari"],
       mustSee: [
         { name: { fr: "Dunes de Khongoryn Els", en: "Khongoryn Els dunes", es: "Dunas de Khongoryn Els" }, wikipedia: "Khongoryn_Els" },
         { name: { fr: "Falaises flamboyantes de Bayanzag", en: "Bayanzag Flaming Cliffs", es: "Acantilados llameantes de Bayanzag" }, wikipedia: "Flaming_Cliffs" },
@@ -111,7 +111,7 @@ export const MONGOLIA = {
         es: "A solo 80 km de Ulán Bator, este parque ofrece una perfecta visión del modo de vida nómada, con yurtas, formaciones rocosas espectaculares y excelentes rutas a caballo.",
       },
       wikipedia: "Gorkhi-Terelj_National_Park",
-      tags: ["Nature", "Randonnée", "Culture nomade"],
+      tags: ["Nature", "Randonnée", "Rural"],
       mustSee: [
         { name: { fr: "Rocher de la Tortue (Melkhii Khad)", en: "Turtle Rock (Melkhii Khad)", es: "Roca de la Tortuga (Melkhii Khad)" }, wikipedia: "Gorkhi-Terelj_National_Park" },
         { name: { fr: "Statue de Gengis Khan (40m)", en: "Genghis Khan Statue (40m)", es: "Estatua de Gengis Kan (40 m)" }, wikipedia: "File:Genghis Khan Equestrian Statue.jpg" },
@@ -128,7 +128,7 @@ export const MONGOLIA = {
         es: "Capital de contrastes entre rascacielos modernos y barrios de yurtas, con monasterios budistas que sobrevivieron a la era soviética y una escena artística emergente.",
       },
       wikipedia: "Ulaanbaatar",
-      tags: ["Ville", "Culture", "Bouddhisme"],
+      tags: ["Ville", "Culture", "Spiritualité"],
       mustSee: [
         { name: { fr: "Monastère Gandantegchinlen", en: "Gandantegchinlen Monastery", es: "Monasterio Gandantegchinlen" }, wikipedia: "Gandantegchinlen_Monastery" },
         { name: { fr: "Place Sükhbaatar", en: "Sükhbaatar Square", es: "Plaza Sükhbaatar" }, wikipedia: "File:Panorama Ulan Bator 13.JPG" },
@@ -145,7 +145,7 @@ export const MONGOLIA = {
         es: "Reserva natural donde viven los últimos caballos de Przewalski salvajes del mundo (Takhi), reintroducidos tras su extinción en estado salvaje. Un espectáculo natural excepcional.",
       },
       wikipedia: "Hustai_National_Park",
-      tags: ["Nature", "Faune", "Randonnée"],
+      tags: ["Nature", "Safari", "Randonnée"],
       mustSee: [
         { name: { fr: "Chevaux de Przewalski (Takhi)", en: "Przewalski's horses (Takhi)", es: "Caballos de Przewalski (Takhi)" }, wikipedia: "Przewalski's_horse" },
         { name: { fr: "Steppes de la vallée Tuul", en: "Tuul Valley steppes", es: "Estepas del valle de Tuul" }, wikipedia: "Hustai_National_Park" },

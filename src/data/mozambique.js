@@ -94,7 +94,7 @@ export const MOZAMBIQUE = {
         es: "El archipiélago de Bazaruto reúne cinco islas barrera protegidas por un parque nacional marino (UNESCO): dunas de arena que alcanzan los 100 m, arrecifes de coral intactos, dugongos (una de las últimas poblaciones viables de África oriental), rayas manta y delfines. El acceso desde Vilanculos se hace en dhow o en lancha rápida.",
       },
       wikipedia: "Bazaruto_Archipelago",
-      tags: ["Plongée", "Dugongs", "Île", "UNESCO"],
+      tags: ["Plage", "Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Plongée Two-Mile Reef — raies manta et tortues", en: "Two-Mile Reef diving — manta rays and turtles", es: "Buceo en Two-Mile Reef — rayas manta y tortugas" }, wikipedia: "File:Nausicaa - raie manta 2.jpg" },
         { name: { fr: "Nage avec les dugongs (espèce menacée)", en: "Swimming with dugongs (endangered species)", es: "Nadar con dugongos (especie amenazada)" }, wikipedia: "Dugong" },
@@ -111,7 +111,7 @@ export const MOZAMBIQUE = {
         es: "Gorongosa era considerado el 'Jardín del Edén' africano antes de la guerra civil. Desde la vuelta de la paz, es objeto de un proyecto de restauración ecológica excepcional: leones, elefantes, hipopótamos y búfalos han sido reintroducidos con éxito. El monte Gorongosa (1.863 m) alberga un bosque tropical húmedo distinto de la sabana.",
       },
       wikipedia: "Gorongosa_National_Park",
-      tags: ["Safari", "Faune", "Restauration", "Nature"],
+      tags: ["Safari", "Architecture", "Nature"],
       mustSee: [
         { name: { fr: "Safari en 4x4 — lions et éléphants de Gorongosa", en: "4x4 safari — Gorongosa's lions and elephants", es: "Safari en 4x4 — leones y elefantes de Gorongosa" }, wikipedia: "Gorongosa_National_Park" },
         { name: { fr: "Lac Urema — hippos et oiseaux aquatiques", en: "Lake Urema — hippos and waterbirds", es: "Lago Urema — hipopótamos y aves acuáticas" }, wikipedia: "File:Mount_Gorongosa,_Gorongosa_National_Park,_Mozambique_(cropped).jpg" },
@@ -129,7 +129,7 @@ export const MOZAMBIQUE = {
         es: "Las Quirimbas son 32 islas coralinas frente al norte de Mozambique, entre ellas la isla de Ibo con sus fuertes portugueses del siglo XVI y sus artesanos plateros, clasificada como una de las ciudades mejor conservadas de África. Los arrecifes de las Quirimbas están entre los menos alterados del océano Índico. Atención a las restricciones de seguridad en la región desde 2017.",
       },
       wikipedia: "File:Medjumbe Island Pool Deck.jpg",
-      tags: ["Histoire", "Plongée", "Île", "Artisanat"],
+      tags: ["Histoire", "Plage", "Shopping"],
       mustSee: [
         { name: { fr: "Fort portugais d'Ibo (XVIe s.) et bijoutiers en argent", en: "Ibo's Portuguese fort (16th c.) and silversmiths", es: "Fuerte portugués de Ibo (siglo XVI) y plateros" }, wikipedia: "File:Ilha do Ibo - sunset-01.jpg" },
         { name: { fr: "Plongée récifs des Quirimbas — coraux intacts", en: "Quirimbas reef diving — pristine corals", es: "Buceo en los arrecifes de las Quirimbas — corales intactos" }, wikipedia: "File:Quilalea in Mozambique.JPG" },
@@ -146,7 +146,7 @@ export const MOZAMBIQUE = {
         es: "Maputo es una capital sorprendente: arquitectura art déco y modernista legada por Portugal, mercado central con artesanía y palosanto, restaurantes de marisco excepcionales (langostas y camarão fresco), y una escena cultural animada. La Fortaleza de Maputo (siglo XVIII) domina la bahía.",
       },
       wikipedia: "Maputo",
-      tags: ["Ville", "Art déco", "Gastronomie", "Marché"],
+      tags: ["Ville", "Architecture", "Gastronomie", "Shopping"],
       mustSee: [
         { name: { fr: "Marché central de Maputo — épices et sculptures", en: "Maputo Central Market — spices and carvings", es: "Mercado central de Maputo — especias y esculturas" }, wikipedia: "File:Mozambique, Maputo, Zimpeto Market, fruit sellers.jpg" },
         { name: { fr: "Fortaleza de Nossa Senhora da Conceição (XVIII s.)", en: "Fortaleza de Nossa Senhora da Conceição (18th c.)", es: "Fortaleza de Nossa Senhora da Conceição (siglo XVIII)" }, wikipedia: "File:Fortaleza_de_Nossa_Senhora_da_Conceição_(1946)_(4107930945).jpg" },

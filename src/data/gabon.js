@@ -105,7 +105,7 @@ export const GABON = {
         es: "Loango es uno de los parques más espectaculares de África: elefantes de bosque que se bañan en el océano Atlántico, hipopótamos que surfean entre las olas, ballenas jorobadas (julio–septiembre), gorilas de llanura en el bosque tras la playa. Un escenario donde la selva primaria se encuentra con el mar — único en el mundo.",
       },
       wikipedia: "File:Gabon Loango National Park Elephant with offspring.jpeg",
-      tags: ["Unique", "Éléphants", "Plage", "Baleines"],
+      tags: ["Safari", "Plage"],
       mustSee: [
         { name: { fr: "Éléphants de forêt sur la plage de Loango (déc–janv)", en: "Forest elephants on Loango beach (Dec–Jan)", es: "Elefantes de bosque en la playa de Loango (dic–ene)" }, wikipedia: "File:Gabon Loango National Park Elephant with offspring.jpeg" },
         { name: { fr: "Baleines à bosse (juillet–septembre) depuis la plage", en: "Humpback whales (July–September) seen from the beach", es: "Ballenas jorobadas (julio–septiembre) desde la playa" }, wikipedia: "File:Syncerus caffer nanus 153689273.jpg" },
@@ -123,7 +123,7 @@ export const GABON = {
         es: "La Lopé (UNESCO) es uno de los pocos lugares donde se pueden observar gorilas de llanura occidental y mandriles en grupos de varios cientos de individuos — la mayor colonia de mandriles del mundo. La Lopé también destaca por sus paisajes: praderas de altitud rodeadas de bosque primario y acantilados rocosos.",
       },
       wikipedia: "File:La-lopé-gabon.jpg",
-      tags: ["UNESCO", "Gorilles", "Mandrills", "Forêt"],
+      tags: ["UNESCO", "Safari", "Nature"],
       mustSee: [
         { name: { fr: "Observation gorilles des plaines (habitués aux humains)", en: "Western lowland gorilla tracking (habituated groups)", es: "Observación de gorilas de llanura (grupos habituados)" }, wikipedia: "File:La-lopé-gabon.jpg" },
         { name: { fr: "Colonie de mandrills — jusqu'à 1 300 individus", en: "Mandrill colony — up to 1,300 individuals", es: "Colonia de mandriles — hasta 1.300 individuos" }, wikipedia: "File:La-lopé-gabon.jpg" },

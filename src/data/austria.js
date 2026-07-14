@@ -115,7 +115,7 @@ export const AUSTRIA = {
         es: "Viena es una ciudad imperial de una elegancia incomparable, cuyo esplendor barroco de los Habsburgo se conserva en cada calle del primer distrito. El Kunsthistorisches Museum, la Ópera Estatal, el Palacio de Schönbrunn y la Secesión vienesa ilustran la densidad cultural única de la capital. Los cafés vieneses —Landtmann, Schwarzenberg, Central— son en sí mismos toda una institución, inscritos en el patrimonio cultural inmaterial de la UNESCO.",
       },
       wikipedia: "Vienna",
-      tags: ["Culture", "Musique", "Art", "Histoire", "Gastronomie", "Ville"],
+      tags: ["Culture", "Art", "Histoire", "Gastronomie", "Ville"],
       mustSee: [
         {
           name: { fr: "Palais de Schönbrunn — résidence d'été des Habsbourg avec 1 441 pièces", en: "Schönbrunn Palace — Habsburg summer residence with 1,441 rooms", es: "Palacio de Schönbrunn — residencia de verano de los Habsburgo con 1441 salas" },
@@ -145,7 +145,7 @@ export const AUSTRIA = {
         es: "Ciudad natal de Mozart y escenario de rodaje de Sonrisas y lágrimas, Salzburgo es una de las ciudades barrocas más bellas de Europa. Su centro histórico, íntegramente declarado Patrimonio Mundial por la UNESCO, está dominado por la fortaleza de Hohensalzburg, que domina el Untersberg y el río Salzach. El Festival de Salzburgo, cada verano, es uno de los eventos musicales más prestigiosos del mundo.",
       },
       wikipedia: "Salzburg",
-      tags: ["UNESCO", "Musique", "Baroque", "Nature", "Culture", "Ville"],
+      tags: ["UNESCO", "Culture", "Architecture", "Nature", "Ville"],
       mustSee: [
         {
           name: { fr: "Forteresse de Hohensalzburg — château médiéval le mieux conservé d'Europe centrale", en: "Hohensalzburg Fortress — the best-preserved medieval castle in Central Europe", es: "Fortaleza de Hohensalzburg — el castillo medieval mejor conservado de Europa Central" },
@@ -175,7 +175,7 @@ export const AUSTRIA = {
         es: "La región del Salzkammergut reúne una sesentena de lagos alpinos de un espectacular azul verdoso, enclavados entre picos calizos. Hallstatt, el emblemático pueblo lacustre, es a menudo calificado como el más bello del mundo, hasta el punto de inspirar una réplica entera en China. Senderismo, baños, vela y minas de sal son los atractivos de esta región declarada Patrimonio Mundial por la UNESCO.",
       },
       wikipedia: "Salzkammergut",
-      tags: ["Nature", "UNESCO", "Randonnée", "Lac", "Villages"],
+      tags: ["Nature", "UNESCO", "Randonnée", "Rural"],
       mustSee: [
         {
           name: { fr: "Hallstatt — village lacustre inscrit au patrimoine mondial", en: "Hallstatt — lakeside village listed as a World Heritage site", es: "Hallstatt — pueblo lacustre declarado Patrimonio Mundial" },
@@ -205,7 +205,7 @@ export const AUSTRIA = {
         es: "Innsbruck, capital del Tirol, es una ciudad alpina de rara belleza donde los tejados dorados y las fachadas coloridas del Altstadt destacan sobre un telón de fondo de picos nevados. Es una de las pocas ciudades del mundo donde se puede esquiar por la mañana y visitar museos por la tarde. El castillo de Ambras, el Tejado de Oro y los teleféricos del Nordkette permiten disfrutar de todas las facetas de este destino alpino.",
       },
       wikipedia: "Innsbruck",
-      tags: ["Alpes", "Ski", "Culture", "Randonnée", "Histoire"],
+      tags: ["Montagne", "Ski", "Culture", "Randonnée", "Histoire"],
       mustSee: [
         {
           name: { fr: "Toit d'Or (Goldenes Dachl) — balcon couvert de 2 657 tuiles dorées du XVe siècle", en: "Golden Roof (Goldenes Dachl) — 15th-century balcony covered with 2,657 gilded tiles", es: "Tejado de Oro (Goldenes Dachl) — balcón del siglo XV cubierto con 2657 tejas doradas" },

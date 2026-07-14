@@ -113,7 +113,7 @@ export const ETHIOPIA = {
         es: "Lalibela es una de las maravillas del mundo medieval: 11 iglesias monolíticas talladas directamente en la roca basáltica roja en el siglo XII, unidas por túneles y trincheras. El rey Lalibela quiso recrear la Jerusalén cristiana. Los monjes siguen oficiando allí cada día desde hace 800 años.",
       },
       wikipedia: "Lalibela",
-      tags: ["UNESCO", "Chrétienté", "Moyen Âge", "Unique", "Architecture", "Histoire"],
+      tags: ["UNESCO", "Spiritualité", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Bete Giyorgis — église monolithique cruciforme", en: "Bete Giyorgis — cross-shaped monolithic church", es: "Bete Giyorgis — iglesia monolítica en forma de cruz" }, wikipedia: "File:Lalibela, san giorgio, esterno 24.jpg" },
         { name: { fr: "Groupe Nord des 7 églises (Bete Medhane Alem)", en: "Northern group of 7 churches (Bete Medhane Alem)", es: "Grupo Norte de las 7 iglesias (Bete Medhane Alem)" }, wikipedia: "File:Lalibela, chiesa di bete medhane alem, esterno 01.jpg" },
@@ -131,7 +131,7 @@ export const ETHIOPIA = {
         es: "La Depresión de Danakil (−116 m, hasta +63 °C en verano) es el lugar habitado más caluroso de la Tierra. El volcán Erta Ale alberga un lago de lava permanente —uno de los pocos del mundo—. Las formaciones sulfurosas de Dallol, amarillas y verdes, parecen un planeta extraterrestre.",
       },
       wikipedia: "File:A Sulphur Pond, Danakil Depression, Ethiopia.jpg",
-      tags: ["Volcan", "Extrême", "Lava lake", "Unique", "Désert", "Nature"],
+      tags: ["Nature", "Aventure", "Désert"],
       mustSee: [
         { name: { fr: "Erta Ale — lac de lave permanente (descente la nuit)", en: "Erta Ale — permanent lava lake (descent at night)", es: "Erta Ale — lago de lava permanente (descenso nocturno)" }, wikipedia: "File:Erta Ale.jpg" },
         { name: { fr: "Dallol — formations sulfuriques multicolores", en: "Dallol — multicoloured sulphur formations", es: "Dallol — formaciones sulfurosas multicolores" }, wikipedia: "File:ET Afar asv2018-01 img48 Dallol.jpg" },
@@ -149,7 +149,7 @@ export const ETHIOPIA = {
         es: "Los Simien (UNESCO) son los «Alpes de África»: una meseta escarpada que culmina a 4550 m (Ras Dashen, el punto más alto de Etiopía), hogar de los gueladas —babuinos endémicos de pecho rojo—, los íbices walia (cabras montesas endémicas) y los lobos etíopes.",
       },
       wikipedia: "Simien_Mountains_National_Park",
-      tags: ["UNESCO", "Randonnée", "Géladas", "Altitude", "Nature"],
+      tags: ["UNESCO", "Randonnée", "Safari", "Montagne", "Nature"],
       mustSee: [
         { name: { fr: "Géladas (babouins aux poitrines rouges) à 2 m", en: "Geladas (red-chested baboons) just 2 m away", es: "Gueladas (babuinos de pecho rojo) a 2 m" }, wikipedia: "Gelada" },
         { name: { fr: "Trek Ras Dashen (4 550 m) — toit de l'Éthiopie", en: "Ras Dashen trek (4,550 m) — roof of Ethiopia", es: "Trekking al Ras Dashen (4550 m) — techo de Etiopía" }, wikipedia: "Ras_Dashen" },
@@ -167,7 +167,7 @@ export const ETHIOPIA = {
         es: "Axum, capital del imperio aksumita (declarada Patrimonio de la Humanidad), alberga gigantescas estelas obeliscas, el Arca de la Alianza (según la tradición ortodoxa) y las tumbas reales. Gondar, el «Camelot africano», posee un complejo de castillos medievales del siglo XVII sin igual en África.",
       },
       wikipedia: "Axum",
-      tags: ["UNESCO", "Stèles", "Châteaux", "Histoire", "Architecture"],
+      tags: ["UNESCO", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Stèles d'Axoum (obélisques de 24 m)", en: "Aksum stelae (24 m obelisks)", es: "Estelas de Axum (obeliscos de 24 m)" }, wikipedia: "Obelisk_of_Axum" },
         { name: { fr: "Complexe de châteaux de Gondar (Fasil Ghebbi)", en: "Gondar castle complex (Fasil Ghebbi)", es: "Complejo de castillos de Gondar (Fasil Ghebbi)" }, wikipedia: "Fasil_Ghebbi" },

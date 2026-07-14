@@ -199,7 +199,7 @@ export const USA = {
         es: "El Gran Cañón, uno de los mayores espectáculos naturales del mundo. El road trip Monument Valley–Zion–Bryce Canyon–Antelope Canyon es la experiencia de viaje americana por excelencia.",
       },
       wikipedia: "Grand_Canyon",
-      tags: ["Nature", "UNESCO", "Paysage", "Road Trip", "Randonnée", "Désert", "Ski"],
+      tags: ["Nature", "UNESCO", "Aventure", "Randonnée", "Désert", "Ski"],
       mustSee: [
         { name: { fr: "Grand Canyon — South Rim", en: "Grand Canyon — South Rim", es: "Gran Cañón — South Rim" }, wikipedia: "Grand_Canyon" },
         { name: "Monument Valley", wikipedia: "Monument_Valley" },
@@ -235,7 +235,7 @@ export const USA = {
         es: "El Art Déco de Miami Beach, playas de arena blanca, la trepidante vida nocturna de South Beach, los caimanes de los Everglades y los parques temáticos de Orlando (Disney World, Universal).",
       },
       wikipedia: "Miami",
-      tags: ["Plage", "Culture", "Nuit", "Nature"],
+      tags: ["Plage", "Culture", "Nightlife", "Nature"],
       mustSee: [
         { name: { fr: "South Beach — Ocean Drive Art Deco", en: "South Beach — Ocean Drive Art Deco", es: "South Beach — Ocean Drive Art Déco" }, wikipedia: "South_Beach" },
         { name: { fr: "Parc national des Everglades", en: "Everglades National Park", es: "Parque nacional de los Everglades" }, wikipedia: "Everglades_National_Park" },
@@ -253,7 +253,7 @@ export const USA = {
         es: "La ciudad del jazz, el Mardi Gras y la gastronomía cajún. El Barrio Francés, Bourbon Street y los clubes de jazz hacen de Nueva Orleans un destino único en América.",
       },
       wikipedia: "New_Orleans",
-      tags: ["Culture", "Musique", "Gastronomie", "Histoire", "Ville"],
+      tags: ["Culture", "Gastronomie", "Histoire", "Ville"],
       mustSee: [
         { name: { fr: "French Quarter — Bourbon Street", en: "French Quarter — Bourbon Street", es: "Barrio Francés — Bourbon Street" }, wikipedia: "French_Quarter" },
         { name: { fr: "Preservation Hall — Jazz live", en: "Preservation Hall — live jazz", es: "Preservation Hall — jazz en directo" }, wikipedia: "Preservation_Hall" },
@@ -270,7 +270,7 @@ export const USA = {
         es: "Tercera ciudad de Estados Unidos, Chicago es un museo de arquitectura al aire libre — desde el estilo Chicago hasta las torres de Mies van der Rohe. El Millennium Park, sus museos de renombre mundial (Art Institute, Field Museum) y su legendaria escena musical (blues, jazz) la convierten en un destino imprescindible. La orilla del lago Michigan ofrece un frente marítimo inesperado en pleno corazón del continente.",
       },
       wikipedia: "Chicago",
-      tags: ["Ville", "Architecture", "Culture", "Musique", "Gastronomie", "Histoire"],
+      tags: ["Ville", "Architecture", "Culture", "Gastronomie", "Histoire"],
       mustSee: [
         { name: { fr: "Millennium Park & Cloud Gate — le haricot géant en acier miroir", en: "Millennium Park & Cloud Gate — the giant mirrored-steel \"bean\"", es: "Millennium Park y Cloud Gate — el gigantesco «frijol» de acero espejado" }, wikipedia: "File:Chicago_Sky_gate_monument,_also_known_as_the_bean.jpg" },
         { name: { fr: "Art Institute of Chicago — l'un des plus grands musées au monde", en: "Art Institute of Chicago — one of the world's largest museums", es: "Art Institute of Chicago — uno de los museos más grandes del mundo" }, wikipedia: "File:Art_Institute_of_Chicago,_Illinois,_Estados_Unidos,_2012-10-20,_DD_01.jpg" },
@@ -288,7 +288,7 @@ export const USA = {
         es: "Archipiélago de 8 islas en medio del Pacífico, Hawái es el paraíso tropical americano. Oahu alberga Waikiki y Pearl Harbor; Maui ofrece la Carretera de Hana y sus playas negras; la Big Island alberga el volcán Kilauea en actividad. Surf, snorkel, senderismo volcánico y cultura polinesia esperan en este rincón único de América.",
       },
       wikipedia: "File:Hawaii beach, Sihanoukville.jpg",
-      tags: ["Plage", "Nature", "Volcan", "Surf", "Culture", "Randonnée"],
+      tags: ["Plage", "Nature", "Culture", "Randonnée"],
       mustSee: [
         { name: { fr: "Waikiki Beach — plage iconique face au Diamond Head (Oahu)", en: "Waikiki Beach — iconic beach facing Diamond Head (Oahu)", es: "Waikiki Beach — playa icónica frente al Diamond Head (Oahu)" }, wikipedia: "File:Waikiki-waikiki-beach-aerial-photography 2.jpg" },
         { name: "Pearl Harbor & USS Arizona Memorial", wikipedia: "File:USS_Arizona_Memorial_at_sunset_(012586a0-1dd8-b71b-0bd8-6dfeaa2fee1c).jpg" },
@@ -306,7 +306,7 @@ export const USA = {
         es: "Las Vegas es la capital mundial del entretenimiento: un Strip de 7 km iluminado por casinos gigantes, espectáculos, bufés legendarios y hoteles extravagantes (Bellagio, Caesars Palace, MGM Grand). Vegas también es la puerta de entrada ideal al Gran Cañón, Red Rock Canyon y el desierto de Mojave. Shows del Cirque du Soleil, gastronomía con estrellas y noches sin reloj.",
       },
       wikipedia: "Las_Vegas_Strip",
-      tags: ["Nuit", "Spectacle", "Désert", "Shopping", "Gastronomie", "Architecture", "Ville"],
+      tags: ["Nightlife", "Culture", "Désert", "Shopping", "Gastronomie", "Architecture", "Ville"],
       mustSee: [
         { name: { fr: "Las Vegas Strip — 7 km de casinos illuminés nuit et jour", en: "Las Vegas Strip — 7 km of casinos lit up day and night", es: "Las Vegas Strip — 7 km de casinos iluminados día y noche" }, wikipedia: "File:Las Vegas (Nevada, USA), The Strip -- 2012 -- 6232.jpg" },
         { name: { fr: "Bellagio Fountains — jets d'eau chorégraphiés sur 8 acres", en: "Bellagio Fountains — choreographed water jets across 8 acres", es: "Fuentes del Bellagio — chorros de agua coreografiados en 8 acres" }, wikipedia: "File:Bellagio Las Vegas.jpg" },

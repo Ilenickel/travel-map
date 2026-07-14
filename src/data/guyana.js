@@ -96,7 +96,7 @@ export const GUYANA = {
         es: "Las cataratas de Kaieteur son una de las más caudalosas del mundo: 226 m de altura y 100 m de ancho, con un caudal impresionante. Accesibles únicamente en avión desde Georgetown, están rodeadas de selva primaria que alberga la rana venenosa dorada, única en el mundo.",
       },
       wikipedia: "Kaieteur_Falls",
-      tags: ["Cascade", "Nature", "Unique", "Jungle"],
+      tags: ["Nature"],
       mustSee: [
         { name: { fr: "Kaieteur Falls (chute principale)", en: "Kaieteur Falls (main waterfall)", es: "Kaieteur Falls (catarata principal)" }, wikipedia: "Kaieteur_Falls" },
         { name: { fr: "Parc national Kaieteur", en: "Kaieteur National Park", es: "Parque nacional de Kaieteur" }, wikipedia: "File:Potato River (Kaieteur) 23 20 35 006000.jpeg" },
@@ -113,7 +113,7 @@ export const GUYANA = {
         es: "Las sabanas del Rupununi son una vasta llanura en la frontera con Brasil, un mosaico de pastizales, bosques de galería y humedales. Aquí viven las comunidades indígenas makushi y wapishana, junto con jaguares, nutrias gigantes y arapaimas gigantes.",
       },
       wikipedia: "File:Rupununi River.jpg",
-      tags: ["Safari", "Cultures Indigènes", "Faune", "Nature"],
+      tags: ["Safari", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Parc national Iwokrama", en: "Iwokrama National Park", es: "Parque nacional de Iwokrama" }, wikipedia: "File:Iwokrama Rainforest, Guyana (12179378186).jpg" },
         { name: "Canopy Walkway Iwokrama", wikipedia: "File:Canopy walkway in Kakum National Park 7.jpg" },
@@ -130,7 +130,7 @@ export const GUYANA = {
         es: "La capital es una mezcla única de culturas criolla, india, amerindia y neerlandesa. Sus casas victorianas de madera pintadas de colores vivos, el mercado de Stabroek y la catedral de San Jorge (la catedral de madera más alta del mundo) son extraordinarios.",
       },
       wikipedia: "Georgetown,_Guyana",
-      tags: ["Ville", "Colonial", "Multiculturel", "Architecture"],
+      tags: ["Ville", "Histoire", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Marché de Stabroek", en: "Stabroek Market", es: "Mercado de Stabroek" }, wikipedia: "Stabroek_Market" },
         { name: { fr: "Cathédrale Saint-George", en: "St George's Cathedral", es: "Catedral de San Jorge" }, wikipedia: "File:20191121 Guyana 0048 Georgetown sRGB (49295795336).jpg" },

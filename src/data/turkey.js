@@ -117,7 +117,7 @@ export const TURKEY = {
         en: "A moon-like landscape of fairy chimneys carved by erosion, with underground cities inhabited since antiquity. The sunrise hot-air balloons are one of the most beautiful travel experiences.", es: "Paisaje lunar de chimeneas de hadas esculpidas por la erosión, con ciudades subterráneas habitadas desde la Antigüedad. Los vuelos en globo aerostático al amanecer son una de las experiencias de viaje más bellas.",
       },
       wikipedia: "Cappadocia",
-      tags: ["Nature", "Paysage", "Histoire", "Montgolfière", "Randonnée"],
+      tags: ["Nature", "Histoire", "Aventure", "Randonnée"],
       mustSee: [
         { name: { fr: "Vol en montgolfière au lever du soleil", en: "Sunrise hot-air balloon flight", es: "Vuelo en globo aerostático al amanecer" }, wikipedia: "Cappadocia" },
         { name: { fr: "Vallée de Göreme", en: "Göreme Valley", es: "Valle de Göreme" }, wikipedia: "Göreme" },
@@ -134,7 +134,7 @@ export const TURKEY = {
         en: "The best-preserved ruins of Greco-Roman antiquity, with the Library of Celsus, alongside the beaches of Bodrum and Kuşadası.", es: "Las ruinas mejor conservadas de la Antigüedad grecorromana, con la Biblioteca de Celso, junto a las playas de Bodrum y Kuşadası.",
       },
       wikipedia: "Ephesus",
-      tags: ["Archéologie", "Histoire", "Plage", "UNESCO", "Architecture"],
+      tags: ["Histoire", "Plage", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Bibliothèque de Celsus — Éphèse", en: "Library of Celsus — Ephesus", es: "Biblioteca de Celso — Éfeso" }, wikipedia: "Library_of_Celsus" },
         { name: { fr: "Maison de la Vierge Marie", en: "House of the Virgin Mary", es: "Casa de la Virgen María" }, wikipedia: "House_of_the_Virgin_Mary" },
@@ -151,7 +151,7 @@ export const TURKEY = {
         en: "The Turkish Riviera with its pebble beaches, crystal-clear waters, the ruins of Perga and Side, and the Ottoman architecture of Antalya's old town.", es: "La Riviera turca con sus playas de guijarros, sus aguas cristalinas, las ruinas de Perge, Side y la arquitectura otomana del casco antiguo de Antalya.",
       },
       wikipedia: "Antalya",
-      tags: ["Plage", "Mer", "Histoire", "Détente"],
+      tags: ["Plage", "Histoire", "Détente"],
       mustSee: [
         { name: { fr: "Vieille ville (Kaleiçi)", en: "Old town (Kaleiçi)", es: "Casco antiguo (Kaleiçi)" }, wikipedia: "Kaleiçi" },
         { name: { fr: "Ruines de Side", en: "Ruins of Side", es: "Ruinas de Side" }, wikipedia: "File:2023-01-15_Side,_Turkey_16.jpg" },

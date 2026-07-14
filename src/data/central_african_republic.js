@@ -91,7 +91,7 @@ export const CENTRAL_AFRICAN_REPUBLIC = {
         es: "Dzanga-Sangha es uno de los últimos refugios de la densa selva tropical de África central, en el punto donde confluyen las fronteras de Camerún y Congo. La bai de Dzanga es un lugar excepcional donde decenas de elefantes de bosque se congregan a diario en un claro pantanoso. La reserva también permite la habituación de gorilas de llanura occidental y es hogar de los baka, pueblo cazador-recolector del bosque.",
       },
       wikipedia: "Dzanga-Sangha_Special_Reserve",
-      tags: ["Éléphants", "Gorilles", "Forêt", "Baka"],
+      tags: ["Safari", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Bai de Dzanga — rassemblement d'éléphants de forêt unique au monde", en: "Dzanga Bai — a one-of-a-kind gathering of forest elephants", es: "Bai de Dzanga — congregación de elefantes de bosque única en el mundo" }, wikipedia: "File:Dzanga-Ndoki_National_Park_(10.3897-zookeys.951.53814)_Figure_27.jpg" },
         { name: { fr: "Trekking gorilles des plaines occidentales habituées", en: "Trek to habituated western lowland gorillas", es: "Trekking a gorilas de llanura occidental habituados" }, wikipedia: "Western_lowland_gorilla" },
@@ -108,7 +108,7 @@ export const CENTRAL_AFRICAN_REPUBLIC = {
         es: "Bangui es la capital de la RCA, construida a orillas del Ubangi, que marca la frontera con la RDC. Pese al tenso contexto de seguridad, la ciudad tiene mercados animados, arquitectura colonial y una posición geográfica espectacular junto al río. La Place de la République y el mercado central Mamadou M'Baiki reflejan la vida cotidiana centroafricana.",
       },
       wikipedia: "File:Bangui City Centre.jpg",
-      tags: ["Ville", "Fleuve", "Culture", "Marché"],
+      tags: ["Ville", "Nature", "Culture", "Shopping"],
       mustSee: [
         { name: { fr: "Rives de l'Oubangui — vue sur la RDC et pirogues traditionnelles", en: "Banks of the Ubangi — views of the DRC and traditional canoes", es: "Orillas del Ubangi — vistas de la RDC y piraguas tradicionales" }, wikipedia: "Ubangi_River" },
         { name: { fr: "Cathédrale Notre-Dame de Bangui — architecture coloniale", en: "Notre-Dame Cathedral of Bangui — colonial architecture", es: "Catedral de Notre-Dame de Bangui — arquitectura colonial" }, wikipedia: "File:Une foule devant la Cathédrale de Bangui, le 7 mai 2018.jpg" },
@@ -124,7 +124,7 @@ export const CENTRAL_AFRICAN_REPUBLIC = {
         es: "Este parque nacional, declarado Patrimonio de la Humanidad por la UNESCO, es una de las mayores reservas de sabana de África central. Actualmente figura en la lista de patrimonio en peligro debido a la caza furtiva y los conflictos armados que han diezmado su fauna. En condiciones de seguridad favorables, sería uno de los destinos de safari más notables de África central.",
       },
       wikipedia: "Manovo-Gounda_St._Floris_National_Park",
-      tags: ["UNESCO", "Savane", "Faune", "Patrimoine"],
+      tags: ["UNESCO", "Nature", "Safari", "Histoire"],
       mustSee: [
         { name: { fr: "Plaine de Manovo — anciennes concentrations de faune sauvage", en: "Manovo Plain — former concentrations of wildlife", es: "Llanura de Manovo — antiguas concentraciones de fauna salvaje" }, wikipedia: "File:BlackRhino-USFWS.jpg" },
         { name: { fr: "Fleuve Bahr Aouk — crocodiles et hippopotames", en: "Bahr Aouk River — crocodiles and hippos", es: "Río Bahr Aouk — cocodrilos e hipopótamos" }, wikipedia: "Manovo-Gounda_St._Floris_National_Park" },

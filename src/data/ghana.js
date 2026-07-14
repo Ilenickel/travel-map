@@ -94,7 +94,7 @@ export const GHANA = {
         es: "El Castillo de Cape Coast y el Castillo de Elmina (ambos Patrimonio UNESCO) son los testigos más desgarradores de la trata atlántica: la «Puerta sin Retorno» por la que 12 millones de africanos embarcaron hacia la esclavitud. Una visita profundamente conmovedora y esencial para comprender la historia de África.",
       },
       wikipedia: "Cape_Coast_Castle",
-      tags: ["Histoire", "UNESCO", "Émouvant", "Côte", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Cape Coast Castle (UNESCO) — Door of No Return", en: "Cape Coast Castle (UNESCO) — Door of No Return", es: "Castillo de Cape Coast (UNESCO) — Puerta sin Retorno" }, wikipedia: "Cape_Coast_Castle" },
         { name: { fr: "Elmina Castle (UNESCO) — le plus ancien fort européen d'Afrique subsaharienne", en: "Elmina Castle (UNESCO) — the oldest European fort in sub-Saharan Africa", es: "Castillo de Elmina (UNESCO) — el fuerte europeo más antiguo del África subsahariana" }, wikipedia: "Elmina_Castle" },
@@ -112,7 +112,7 @@ export const GHANA = {
         es: "Kumasi es el corazón cultural de Ghana: el palacio del rey ashanti (Manhyia Palace), el gran mercado de Kejetia (el más grande de África Occidental), los talleres de tejido del kente (la vistosa tela real) y el Museo Nacional Ashanti. Una inmersión en la civilización ashanti, una de las más poderosas de África.",
       },
       wikipedia: "Kumasi",
-      tags: ["Culture", "Artisanat", "Marché", "Royauté", "Architecture", "Gastronomie"],
+      tags: ["Culture", "Shopping", "Histoire", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Grand marché Kejetia — le plus grand d'Afrique de l'Ouest", en: "Kejetia Market — the largest in West Africa", es: "Gran mercado de Kejetia — el más grande de África Occidental" }, wikipedia: "Kejetia_Market" },
         { name: { fr: "Tissage du kente à Bonwire", en: "Kente weaving in Bonwire", es: "Tejido del kente en Bonwire" }, wikipedia: "Kente_cloth" },
@@ -130,7 +130,7 @@ export const GHANA = {
         es: "Mole es el mayor parque nacional de Ghana (4.840 km²): elefantes en libertad que se pueden observar a pie desde el lodge encaramado en un escarpe sobre los abrevaderos. Búfalos, facóqueros, antílopes ruanos y cobos. Uno de los safaris a pie más accesibles de África.",
       },
       wikipedia: "Mole_National_Park",
-      tags: ["Safari", "Éléphants", "Nature", "Savane"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Safari pédestre avec guide — éléphants au point d'eau", en: "Guided walking safari — elephants at the waterhole", es: "Safari a pie con guía — elefantes en el abrevadero" }, wikipedia: "Mole_National_Park" },
         { name: { fr: "Larabanga Mosque — mosquée en banco la plus ancienne du Ghana (XIIIe s.)", en: "Larabanga Mosque — Ghana's oldest mud-and-stick mosque (13th century)", es: "Mezquita de Larabanga — la mezquita de barro más antigua de Ghana (s. XIII)" }, wikipedia: "Larabanga_Mosque" },
@@ -148,7 +148,7 @@ export const GHANA = {
         es: "Accra es una de las capitales más dinámicas de África: el barrio de Jamestown con su faro colonial y sus boxeadores al aire libre, el mercado de Makola, Labadi Beach de noche, y una escena artística contemporánea (galerías, arte urbano) que irradia por todo el continente. Cuna del afrobeats.",
       },
       wikipedia: "Accra",
-      tags: ["Ville", "Art", "Musique", "Plage", "Gastronomie"],
+      tags: ["Ville", "Art", "Culture", "Plage", "Gastronomie"],
       mustSee: [
         { name: "Kwame Nkrumah Memorial Park", wikipedia: "File:Kwame Nkrumah artworks at Kwame Nkrumah Mausoleum.jpg" },
         { name: { fr: "Labadi Beach — nuits afrobeats", en: "Labadi Beach — afrobeats nights", es: "Labadi Beach — noches de afrobeats" }, wikipedia: "Labadi_Beach" },

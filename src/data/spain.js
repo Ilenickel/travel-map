@@ -162,7 +162,7 @@ export const SPAIN = {
         es: "Capital del modernismo catalán, Barcelona fascina con la Sagrada Família de Gaudí, el Parque Güell, sus playas urbanas y la vida nocturna más animada de Europa.",
       },
       wikipedia: "Barcelona",
-      tags: ["Architecture", "Plage", "Culture", "Nuit", "Ville", "Gastronomie", "UNESCO"],
+      tags: ["Architecture", "Plage", "Culture", "Nightlife", "Ville", "Gastronomie", "UNESCO"],
       mustSee: [
         { name: "Sagrada Família", wikipedia: "Sagrada_Família" },
         { name: { fr: "Parc Güell", en: "Park Güell", es: "Parque Güell" }, wikipedia: "Park_Güell" },
@@ -198,7 +198,7 @@ export const SPAIN = {
         es: "Capital del flamenco y de la corrida, con el Alcázar morisco, la catedral gótica más grande del mundo y el animado barrio de Triana.",
       },
       wikipedia: "Seville",
-      tags: ["Histoire", "Culture", "Flamenco", "UNESCO", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "Culture", "UNESCO", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Alcázar de Séville", en: "Alcázar of Seville", es: "Alcázar de Sevilla" }, wikipedia: "Alcázar_of_Seville" },
         { name: { fr: "Cathédrale de Séville & La Giralda", en: "Seville Cathedral & La Giralda", es: "Catedral de Sevilla y La Giralda" }, wikipedia: "Seville_Cathedral" },
@@ -234,7 +234,7 @@ export const SPAIN = {
         es: "Mallorca, Menorca, Ibiza y Formentera — cuatro islas mediterráneas de aguas turquesas, playas de ensueño y una cultura muy distinta según la isla elegida.",
       },
       wikipedia: "File:Pollença, Balearic Islands, Spain - panoramio (307).jpg",
-      tags: ["Plage", "Mer", "Fête", "Paysage", "Nature", "Randonnée"],
+      tags: ["Plage", "Culture", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Palma de Majorque", en: "Palma de Mallorca", es: "Palma de Mallorca" }, wikipedia: "File:Palma de Mallorca (Spain).jpg" },
         { name: { fr: "Formentera — plages paradisiaques", en: "Formentera — paradisiacal beaches", es: "Formentera — playas paradisíacas" }, wikipedia: "File:Formentera es Mirador.jpg" },
@@ -271,7 +271,7 @@ export const SPAIN = {
         es: "Bilbao ha vivido una transformación espectacular gracias al Museo Guggenheim de Frank Gehry, convertido en icono mundial de la arquitectura contemporánea. El País Vasco español también es célebre por su gastronomía excepcional — más bares de pintxos con estrella Michelin por habitante que en cualquier otro lugar del mundo. La costa salvaje de la Cornisa Cantábrica y las playas de Zarautz y San Sebastián completan la región.",
       },
       wikipedia: "File:Bilbao - Cementerio de Mallona - Vistas 01.jpg",
-      tags: ["Architecture", "Gastronomie", "Culture", "Mer", "Ville", "Plage"],
+      tags: ["Architecture", "Gastronomie", "Culture", "Plage", "Ville"],
       mustSee: [
         { name: { fr: "Musée Guggenheim Bilbao — chef-d'œuvre d'architecture de Frank Gehry", en: "Guggenheim Museum Bilbao — Frank Gehry's architectural masterpiece", es: "Museo Guggenheim Bilbao — obra maestra arquitectónica de Frank Gehry" }, wikipedia: "Guggenheim_Museum_Bilbao" },
         { name: { fr: "Pintxos dans le Casco Viejo — bar-hopping gastronomique basque", en: "Pintxos in the Casco Viejo — Basque bar-hopping", es: "Pintxos en el Casco Viejo — ruta gastronómica vasca" }, wikipedia: "File:Pincho Vitoria 11.JPG" },
@@ -289,7 +289,7 @@ export const SPAIN = {
         es: "Archipiélago volcánico frente a las costas africanas, Canarias ofrece una primavera eterna durante todo el año (20–25 °C en invierno). Tenerife esconde el Teide, el 3er volcán más grande del mundo; Lanzarote exhibe sus paisajes lunares negros; Gran Canaria combina playas, dunas y un carnaval de fama mundial. El destino de sol invernal número uno de los europeos.",
       },
       wikipedia: "File:Vista_de_Santa_Cruz_de_Tenerife.png",
-      tags: ["Plage", "Nature", "Volcan", "Randonnée", "Mer", "UNESCO", "Désert"],
+      tags: ["Plage", "Nature", "Randonnée", "UNESCO", "Désert"],
       mustSee: [
         { name: { fr: "Teide — volcan à 3 718 m, toit de l'Espagne (Tenerife)", en: "Teide — 3,718 m volcano, Spain's highest peak (Tenerife)", es: "Teide — volcán de 3.718 m, techo de España (Tenerife)" }, wikipedia: "Teide" },
         { name: { fr: "Parc national de Timanfaya — paysage lunaire volcanique (Lanzarote)", en: "Timanfaya National Park — volcanic moon-like landscape (Lanzarote)", es: "Parque nacional de Timanfaya — paisaje lunar volcánico (Lanzarote)" }, wikipedia: "Timanfaya_National_Park" },

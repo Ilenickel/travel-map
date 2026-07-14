@@ -69,7 +69,7 @@ export const TIMOR_LESTE = {
         es: "La isla de Atauro es un paraíso para los buceadores y practicantes de esnórquel, con la mayor densidad de peces jamás registrada en el mundo según un estudio de 2016. Situada a solo 25 kilómetros al norte de Dili, esta isla volcánica de pueblos pesqueros preservados ofrece una inmersión total en la vida tradicional timorense. Los arrecifes de coral inmaculados caen directamente sobre aguas cristalinas donde nadan tortugas marinas, tiburones de arrecife y delfines.",
       },
       wikipedia: "File:Dili and Atauro Island.jpg",
-      tags: ["Plongée", "Île", "Corail", "Biodiversité"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Site de plongée Barry's Place — mur de corail vertigineux", en: "Barry's Place dive site — dizzying coral wall", es: "Sitio de buceo Barry's Place — pared de coral vertiginosa" }, wikipedia: "File:44-EastTimor-Dive_Atauro-Manta_Cove_03_(Diver)-APiazza.JPG" },
         { name: { fr: "Village de Beloi — communauté de pêcheurs traditionnels", en: "Beloi village — traditional fishing community", es: "Pueblo de Beloi — comunidad de pescadores tradicionales" }, wikipedia: "File:Atauro 2.jpg" },
@@ -87,7 +87,7 @@ export const TIMOR_LESTE = {
         es: "El Cristo Rei es una estatua de Cristo Rey de 27 metros inaugurada en 1996, ofrecida por el gobierno indonesio y encaramada en un promontorio rocoso que domina el mar de Timor y la capital Dili. La subida por una escalera de 500 escalones bordeada de estaciones del vía crucis recompensa al visitante con una panorámica excepcional de la bahía de Dili, las montañas circundantes y las aguas azuladas. La playa a los pies de la estatua es una de las más populares de la capital.",
       },
       wikipedia: "File:Cristo Rei of Dili, Timor-Leste.jpg",
-      tags: ["Monument", "Panorama", "Religion", "Plage"],
+      tags: ["Architecture", "Panorama", "Spiritualité", "Plage"],
       mustSee: [
         { name: { fr: "Escalier des 500 marches — montée avec vue progressive sur la baie", en: "500-step staircase — climb with a gradually unfolding view of the bay", es: "Escalera de 500 escalones — subida con vistas progresivas de la bahía" }, wikipedia: "File:Dili - Christusstatue 'Cristo Rei'.jpg" },
         { name: { fr: "Panorama depuis la statue — Dili et les îles au loin", en: "View from the statue — Dili and the islands beyond", es: "Panorámica desde la estatua — Dili y las islas al fondo" }, wikipedia: "File:US_Navy_110623-F-HS649-551_The_amphibious_transport_dock_ship_USS_Cleveland_(LPD_7)_is_anchored_in_Dili_Harbor_below_the_statue_of_Cristo_Rei,_or_C.jpg" },
@@ -105,7 +105,7 @@ export const TIMOR_LESTE = {
         es: "El parque nacional Nino Konis Santana es la mayor área protegida de Timor Oriental, que cubre 1.236 km² de selva tropical de montaña, humedales costeros y arrecifes de coral en la región de Tutuala. El parque debe su nombre a un comandante de la resistencia timorense y alberga especies endémicas de aves y reptiles en ecosistemas todavía en gran parte inexplorados por los científicos. Los acantilados prehistóricos de Ile Kere Kere, con sus pinturas rupestres de varios milenios de antigüedad, lo convierten en un sitio arqueológico importante.",
       },
       wikipedia: "File:Tutuala_F-33.jpg",
-      tags: ["Parc national", "Biodiversité", "Archéologie", "Forêt"],
+      tags: ["Nature", "Histoire"],
       mustSee: [
         { name: { fr: "Plage de Tutuala — plage isolée aux eaux turquoise dans le parc", en: "Tutuala Beach — secluded turquoise-water beach within the park", es: "Playa de Tutuala — playa aislada de aguas turquesas dentro del parque" }, wikipedia: "File:Valu beach 2015.jpg" },
         { name: { fr: "Ile Kere Kere — grottes avec peintures rupestres préhistoriques", en: "Ile Kere Kere — caves with prehistoric rock paintings", es: "Ile Kere Kere — cuevas con pinturas rupestres prehistóricas" }, wikipedia: "File:Ile Kére Kére05.jpg" },
@@ -122,7 +122,7 @@ export const TIMOR_LESTE = {
         es: "Dili es una capital en plena reconstrucción, donde la dolorosa historia de la ocupación indonesia y la lucha por la independencia están omnipresentes en sus monumentos y museos. El Museo de la Resistencia narra con emoción y precisión los 24 años de ocupación y el genocidio que diezmó a un tercio de la población timorense. El animado paseo marítimo, los coloridos mercados y la legendaria calidez de sus habitantes convierten a Dili en una parada conmovedora y profundamente humana.",
       },
       wikipedia: "Dili",
-      tags: ["Histoire", "Mémoire", "Culture", "Ville"],
+      tags: ["Histoire", "Culture", "Ville"],
       mustSee: [
         { name: { fr: "Musée de la Résistance — histoire de l'indépendance timoraise", en: "Resistance Museum — history of Timorese independence", es: "Museo de la Resistencia — historia de la independencia timorense" }, wikipedia: "File:Painel pateo AMRT1.jpg" },
         { name: { fr: "Cimetière de Santa Cruz — massacre de 1991 et mémorial", en: "Santa Cruz Cemetery — 1991 massacre and memorial", es: "Cementerio de Santa Cruz — masacre de 1991 y memorial" }, wikipedia: "File:Santa Cruz Cemetery, 2023 (02).jpg" },

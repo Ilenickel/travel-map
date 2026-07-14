@@ -75,7 +75,7 @@ export const SENEGAL = {
         es: "La isla de Gorea, Patrimonio de la Humanidad, es el símbolo de la trata de esclavos atlántica. La Casa de los Esclavos con su «Puerta sin retorno» es un lugar de memoria esencial, en medio de una isla apacible de casas coloridas.",
       },
       wikipedia: "File:Côtes de l'île de Gorée au Sénégal 11.jpg",
-      tags: ["Histoire", "UNESCO", "Mémoire", "Culture", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Maison des Esclaves — Porte du non-retour", en: "House of Slaves — Door of No Return", es: "Casa de los Esclavos — Puerta sin retorno" }, wikipedia: "House_of_Slaves" },
         { name: { fr: "Fort d'Estrées & musée de Gorée", en: "Fort d'Estrées & Gorée Museum", es: "Fuerte de Estrées y museo de Gorea" }, wikipedia: "File:GoréeMuséeHistorique2.JPG" },
@@ -93,7 +93,7 @@ export const SENEGAL = {
         es: "El Lago Rosa debe su color rosa-magenta a las algas halófilas y a su alta salinidad (hasta 10 veces la del mar). Los recolectores de sal, cubiertos de manteca de karité para protegerse, la recogen a mano.",
       },
       wikipedia: "File:Lac Rose in Senegal.jpg",
-      tags: ["Nature", "Unique", "Photo", "Insolite"],
+      tags: ["Nature", "Culture"],
       mustSee: [
         { name: { fr: "Récolte du sel rose", en: "Pink salt harvesting", es: "Recolección de la sal rosa" }, wikipedia: "File:Lac Rose 017 (39668528723).jpg" },
         { name: { fr: "Baignade dans la saumure (flottaison)", en: "Swimming in the brine (floating)", es: "Baño en la salmuera (flotación)" }, wikipedia: "File:Lac Rose 006 (46633565661).jpg" },
@@ -110,7 +110,7 @@ export const SENEGAL = {
         es: "Saly es el destino de playa número uno de Senegal. Saint-Louis, antigua capital colonial francesa declarada Patrimonio de la Humanidad, es una isla fluvial de casas coloridas y balcones de hierro forjado.",
       },
       wikipedia: "Saint-Louis,_Senegal",
-      tags: ["Plage", "Histoire", "UNESCO", "Colonial", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Plage", "Histoire", "UNESCO", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Saint-Louis (UNESCO) — île coloniale", en: "Saint-Louis (UNESCO) — colonial island", es: "Saint-Louis (UNESCO) — isla colonial" }, wikipedia: "Saint-Louis,_Senegal" },
         { name: { fr: "Pont Faidherbe", en: "Faidherbe Bridge", es: "Puente Faidherbe" }, wikipedia: "Faidherbe_Bridge" },
@@ -128,7 +128,7 @@ export const SENEGAL = {
         es: "Casamance es la región más verde y bella de Senegal: bosques de árboles de kapok, pueblos animistas en tierra diola, arrozales inundados y las playas todavía salvajes de Cap Skirring.",
       },
       wikipedia: "File:Casamance landscape.jpg",
-      tags: ["Nature", "Forêts", "Plage", "Cultures", "Randonnée", "Safari"],
+      tags: ["Nature", "Plage", "Culture", "Randonnée", "Safari"],
       mustSee: [
         { name: { fr: "Cap Skirring — plage sauvage", en: "Cap Skirring — wild beach", es: "Cap Skirring — playa salvaje" }, wikipedia: "Cap_Skirring" },
         { name: { fr: "Ziguinchor — vieille ville coloniale", en: "Ziguinchor — old colonial town", es: "Ziguinchor — antigua ciudad colonial" }, wikipedia: "Ziguinchor" },

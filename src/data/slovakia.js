@@ -94,7 +94,7 @@ export const SLOVAKIA = {
         es: "Los Altos Tatras son la cordillera más al noreste de Europa: 29 picos por encima de los 2.500 m, lagos glaciares (Štrbské Pleso), cascadas, y senderos señalizados entre los más bellos de Europa Central. El oso pardo, la rebeco de los Tatras y el águila real todavía viven aquí. Esquí alpino en Jasná en invierno.",
       },
       wikipedia: "High_Tatras",
-      tags: ["Montagne", "Randonnée", "Lacs", "Ski", "UNESCO", "Nature"],
+      tags: ["Montagne", "Randonnée", "Nature", "Ski", "UNESCO"],
       mustSee: [
         { name: { fr: "Lac Štrbské Pleso — vue sur les crêtes des Tatras", en: "Lake Štrbské Pleso — view of the Tatra ridges", es: "Lago Štrbské Pleso — vista de las crestas de los Tatras" }, wikipedia: "Štrbské_Pleso" },
         { name: { fr: "Randonnée Rysy (2 503m) — sommet accessible depuis la Pologne", en: "Rysy hike (2,503m) — a summit accessible from Poland", es: "Ruta al Rysy (2.503 m) — cumbre accesible desde Polonia" }, wikipedia: "Rysy" },
@@ -112,7 +112,7 @@ export const SLOVAKIA = {
         es: "Bratislava es la única capital del mundo que limita con dos países (Austria y Hungría). Su casco antiguo barroco es compacto y peatonal, dominado por el castillo blanco (con vistas al Danubio), y animado por las calles Michalská y Laurinská. A 1h de Viena y 2h de Budapest en tren, es también una base ideal para un circuito de capitales del Danubio.",
       },
       wikipedia: "Bratislava",
-      tags: ["Ville", "Baroque", "Danube", "Compact", "Architecture", "Gastronomie"],
+      tags: ["Ville", "Architecture", "Nature", "Gastronomie"],
       mustSee: [
         { name: { fr: "Château de Bratislava — vue sur le Danube, Autriche et Hongrie", en: "Bratislava Castle — views over the Danube, Austria and Hungary", es: "Castillo de Bratislava — vistas al Danubio, Austria y Hungría" }, wikipedia: "Bratislava_Castle" },
         { name: { fr: "Vieille Ville baroque — rues Michael et Hlavné námestie", en: "Baroque Old Town — Michalská street and Hlavné námestie", es: "Casco antiguo barroco — calle Michalská y Hlavné námestie" }, wikipedia: "Old_Town,_Bratislava" },
@@ -130,7 +130,7 @@ export const SLOVAKIA = {
         es: "El Paraíso Eslovaco (Slovenský Raj) es un parque nacional único: sus desfiladeros encajonados están equipados con escaleras, pasarelas y cadenas metálicas fijadas en la roca — literalmente se sube por dentro de las cascadas. Aventura al alcance de todos, sin equipo de escalada. Los desfiladeros de Suchá Belá y Piecky son los más espectaculares.",
       },
       wikipedia: "Slovak_Paradise",
-      tags: ["Gorges", "Cascade", "Aventure", "Escalade", "Nature", "Randonnée"],
+      tags: ["Nature", "Aventure", "Randonnée"],
       mustSee: [
         { name: { fr: "Gorge de Sucha Bela — échelles dans une cascade de 300m", en: "Suchá Belá gorge — ladders through a 300m waterfall", es: "Desfiladero de Suchá Belá — escaleras en una cascada de 300 m" }, wikipedia: "File:Slovenský_ráj,_Korytový_vodopád.JPG" },
         { name: { fr: "Cascade de Závojový — la plus haute de la région (65m)", en: "Závojový Waterfall — the tallest in the region (65m)", es: "Cascada de Závojový — la más alta de la región (65 m)" }, wikipedia: "File:Zavojovy vodopad detail.JPG" },
@@ -147,7 +147,7 @@ export const SLOVAKIA = {
         es: "Eslovaquia cuenta con más de 180 castillos y fortalezas — la mayor densidad de Europa. Bojnice (el más romántico, estilo neogótico), Trenčín (sobre un espolón basáltico que domina la ciudad), y Oravský Podzámok (encaramado en un acantilado de 112 m sobre el río Orava) están entre los más espectaculares de los Cárpatos.",
       },
       wikipedia: "Bojnice_Castle",
-      tags: ["Châteaux", "Médiéval", "Romantique", "Carpates", "Architecture", "Histoire"],
+      tags: ["Architecture", "Histoire", "Montagne"],
       mustSee: [
         { name: { fr: "Château de Bojnice — le plus romantique de Slovaquie (XIVe s.)", en: "Bojnice Castle — Slovakia's most romantic (14th century)", es: "Castillo de Bojnice — el más romántico de Eslovaquia (siglo XIV)" }, wikipedia: "Bojnice_Castle" },
         { name: { fr: "Château d'Oravský — falaise de 112m au-dessus de l'Orava", en: "Orava Castle — 112m cliff above the Orava River", es: "Castillo de Oravský — acantilado de 112 m sobre el Orava" }, wikipedia: "File:JBZamekOrawski v2.jpg" },

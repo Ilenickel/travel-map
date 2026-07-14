@@ -116,7 +116,7 @@ export const HAITI = {
         es: "Île-à-Vache es una apacible isla tropical frente a Les Cayes, una de las pocas regiones de Haití que aún ofrece turismo de playa en condiciones relativamente seguras. Sus playas de arena blanca, sus aguas turquesas y su atmósfera tranquila contrastan con las dificultades del país continental. Antiguo refugio del pirata Henry Morgan, ofrece buceo y paisajes naturales notables.",
       },
       wikipedia: "File:Ile-a-Vache - Haiti.jpg",
-      tags: ["Plage", "Nature", "Plongée", "Île"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Plages de sable blanc — eaux turquoise et récifs coralliens", en: "White-sand beaches — turquoise waters and coral reefs", es: "Playas de arena blanca — aguas turquesas y arrecifes de coral" }, wikipedia: "File:Ile-a-Vache - Haiti.jpg" },
         { name: { fr: "Village de pêcheurs — vie locale authentique", en: "Fishing village — authentic local life", es: "Pueblo de pescadores — vida local auténtica" }, wikipedia: "File:Vaches ile dupas.jpg" },

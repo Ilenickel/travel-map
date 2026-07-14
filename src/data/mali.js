@@ -105,7 +105,7 @@ export const MALI = {
         es: "Los acantilados de Bandiagara (UNESCO) son uno de los sitios más espectaculares de África: 150 km de acantilados de arenisca roja donde se aferran los pueblos dogón, sus graneros de mijo de barro y las cabañas funerarias tellem encaramadas en la roca. La cosmogonía dogón, preservada durante siglos, es una de las más complejas y poéticas del mundo.",
       },
       wikipedia: "Bandiagara_Escarpment",
-      tags: ["UNESCO", "Dogon", "Falaises", "Culture"],
+      tags: ["UNESCO", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Village de Sangha — porte d'entrée du pays Dogon", en: "Sangha village — gateway to Dogon country", es: "Pueblo de Sangha — puerta de entrada al país dogón" }, wikipedia: "File:ASangha 03.JPG" },
         { name: { fr: "Danse des masques Dogon (fêtes et funérailles)", en: "Dogon mask dance (festivals and funerals)", es: "Danza de máscaras dogón (fiestas y funerales)" }, wikipedia: "Dogon_people" },
@@ -123,7 +123,7 @@ export const MALI = {
         es: "La Gran Mezquita de Djenné (UNESCO) es la mayor construcción de barro (arcilla y paja) del mundo y el símbolo de la arquitectura sudanosaheliana. Reconstruida en 1907 sobre los cimientos de una mezquita del siglo XIII, toda la comunidad la restaura cada año durante el gran enlucido. El mercado de los lunes alrededor de la mezquita es uno de los más hermosos de África.",
       },
       wikipedia: "Great_Mosque_of_Djenné",
-      tags: ["UNESCO", "Architecture", "Banco", "Marché"],
+      tags: ["UNESCO", "Architecture", "Shopping"],
       mustSee: [
         { name: { fr: "Grande Mosquée de Djenné (UNESCO) — la plus grande en banco du monde", en: "Great Mosque of Djenné (UNESCO) — the largest mud-brick building in the world", es: "Gran Mezquita de Djenné (UNESCO) — la mayor construcción de barro del mundo" }, wikipedia: "Great_Mosque_of_Djenné" },
         { name: { fr: "Marché du lundi de Djenné — autour de la mosquée", en: "Djenné Monday market — around the mosque", es: "Mercado de los lunes de Djenné — alrededor de la mezquita" }, wikipedia: "Djenné" },
@@ -140,7 +140,7 @@ export const MALI = {
         es: "Tombuctú (UNESCO) fue, entre los siglos XIV y XVI, la capital intelectual y espiritual de África Occidental: 25.000 estudiantes, 180 escuelas coránicas, manuscritos antiguos de valor incalculable. Sus mezquitas de Djingareyber, Sankore y Sidi Yahia (UNESCO) y sus casas con portales tallados dan testimonio de esta edad de oro. Actualmente solo es accesible por vuelo desde Bamako.",
       },
       wikipedia: "Timbuktu",
-      tags: ["UNESCO", "Désert", "Histoire", "Légendaire"],
+      tags: ["UNESCO", "Désert", "Histoire"],
       mustSee: [
         { name: { fr: "Mosquée Djingareyber (XIVe s., UNESCO)", en: "Djingareyber Mosque (14th c., UNESCO)", es: "Mezquita de Djingareyber (siglo XIV, UNESCO)" }, wikipedia: "Djinguereber_Mosque" },
         { name: { fr: "Mosquée Sankore (XIVe s., UNESCO) — ancienne université", en: "Sankore Mosque (14th c., UNESCO) — former university", es: "Mezquita de Sankore (siglo XIV, UNESCO) — antigua universidad" }, wikipedia: "File:Timbuktu Mosque Sankore.jpg" },

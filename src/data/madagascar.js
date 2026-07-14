@@ -94,7 +94,7 @@ export const MADAGASCAR = {
         es: "La Avenida de los Baobabs, entre Morondava y Belo Tsiribihina, es la imagen icónica de Madagascar: decenas de baobabs centenarios (20–30 m de altura, 1.000 años de edad) flanqueando una pista de laterita roja al atardecer.",
       },
       wikipedia: "Avenue_of_the_Baobabs",
-      tags: ["Nature", "Icône", "Photo", "Unique"],
+      tags: ["Nature", "Culture"],
       mustSee: [
         { name: { fr: "Coucher de soleil sur les baobabs", en: "Sunset over the baobabs", es: "Atardecer sobre los baobabs" }, wikipedia: "File:Avenue of the Baobabs at Sunset.jpg" },
         { name: { fr: "Baobabs amoureux (deux baobabs enlacés)", en: "Baobabs Amoureux (two intertwined baobabs)", es: "Baobabs enamorados (dos baobabs entrelazados)" }, wikipedia: "Avenue_of_the_Baobabs" },
@@ -112,7 +112,7 @@ export const MADAGASCAR = {
         es: "Los Tsingy son «bosques» de piedra caliza en forma de cuchillas, Patrimonio UNESCO. Estas formaciones kársticas únicas se recorren mediante vías ferratas, en medio de una biodiversidad extraordinaria (lémures, aves endémicas).",
       },
       wikipedia: "Tsingy_de_Bemaraha_Strict_Nature_Reserve",
-      tags: ["UNESCO", "Nature", "Aventure", "Unique"],
+      tags: ["UNESCO", "Nature", "Aventure"],
       mustSee: [
         { name: { fr: "Grands Tsingy — via ferrata suspendue", en: "Grands Tsingy — suspended via ferrata", es: "Grands Tsingy — vía ferrata suspendida" }, wikipedia: "File:Tsingy de Bemaraha, Madagascar.jpg" },
         { name: { fr: "Lémuriens dans la forêt", en: "Lemurs in the forest", es: "Lémures en el bosque" }, wikipedia: "File:Grote vasapapegaai, Tsingy de Bemaraha.JPG" },
@@ -129,7 +129,7 @@ export const MADAGASCAR = {
         es: "Isalo es el «Gran Cañón» malgache: un macizo de arenisca esculpido por la erosión en cañones, piscinas naturales, formaciones de arena naranja y bosques de pachypodium en flor. Caminatas inolvidables.",
       },
       wikipedia: "Isalo_National_Park",
-      tags: ["Randonnée", "Nature", "Canyon", "Piscines"],
+      tags: ["Randonnée", "Nature", "Détente"],
       mustSee: [
         { name: { fr: "Piscine naturelle bleue (nage)", en: "Blue natural pool (swimming)", es: "Piscina natural azul (baño)" }, wikipedia: "File:Falls_of_Anjofo,_Isalo,_Madagascar_(21833449081).jpg" },
         { name: { fr: "Canyon des Makis (lémuriens)", en: "Canyon des Makis (lemurs)", es: "Cañón de los Makis (lémures)" }, wikipedia: "File:Eulemur_rufifrons,_Isalo_National_Park_2007-03-01.jpg" },
@@ -146,7 +146,7 @@ export const MADAGASCAR = {
         es: "La isla de Nosy Be es el paraíso costero de Madagascar: playas de arena blanca, lagunas de aguas tropicales, avistamiento de ballenas jorobadas (jul.–sept.) y tiburones ballena. La «isla de los perfumes» (ylang-ylang).",
       },
       wikipedia: "File:Nosy Iranja, Madagascar, 2025-09-17, DD 21.jpg",
-      tags: ["Plage", "Plongée", "Baleines", "Île"],
+      tags: ["Plage", "Safari"],
       mustSee: [
         { name: { fr: "Plage de Hell-Ville & Madirokely", en: "Hell-Ville & Madirokely beach", es: "Playa de Hell-Ville y Madirokely" }, wikipedia: "File:Ville de Nosy Be Hell ville, Madagascar.jpg" },
         { name: { fr: "Baleines à bosse (juil.–sept.)", en: "Humpback whales (Jul.–Sep.)", es: "Ballenas jorobadas (jul.–sept.)" }, wikipedia: "Humpback_whale" },

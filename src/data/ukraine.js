@@ -71,7 +71,7 @@ export const UKRAINE = {
         es: "Leópolis es la capital cultural de Ucrania occidental, cuyo centro histórico declarado Patrimonio de la Humanidad por la UNESCO combina arquitectura polaca, austriaca y ucraniana. La ciudad es célebre por su cultura del café única y sus numerosos museos. Es uno de los destinos más accesibles de Ucrania durante el conflicto, aunque se sigue desaconsejando todo viaje.",
       },
       wikipedia: "Lviv",
-      tags: ["UNESCO", "Culture", "Café", "Architecture", "Ville", "Gastronomie"],
+      tags: ["UNESCO", "Culture", "Gastronomie", "Architecture", "Ville"],
       mustSee: [
         { name: { fr: "Centre historique — vieille ville baroque classée UNESCO", en: "Historic centre — UNESCO-listed baroque old town", es: "Centro histórico — casco antiguo barroco declarado UNESCO" }, wikipedia: "File:LvivOldTown1.jpg" },
         { name: { fr: "Opéra de L'viv — chef-d'œuvre néobaroque du XIXe siècle", en: "Lviv Opera House — 19th-century neo-baroque masterpiece", es: "Ópera de Leópolis — obra maestra neobarroca del siglo XIX" }, wikipedia: "Lviv_Theatre_of_Opera_and_Ballet" },
@@ -89,7 +89,7 @@ export const UKRAINE = {
         es: "Los Cárpatos ucranianos ofrecen paisajes montañosos salvajes con pueblos hutsules que conservan tradiciones artesanales. El monte Hoverla culmina a 2061 m, el punto más alto del país. La región es propicia para el senderismo en verano y el esquí en invierno.",
       },
       wikipedia: "Ukrainian_Carpathians",
-      tags: ["Nature", "Randonnée", "Montagne", "Traditions", "Ski"],
+      tags: ["Nature", "Randonnée", "Montagne", "Tradition", "Ski"],
       mustSee: [
         { name: { fr: "Mont Hoverla — sommet le plus élevé d'Ukraine", en: "Mount Hoverla — Ukraine's highest peak", es: "Monte Hoverla — el pico más alto de Ucrania" }, wikipedia: "Hoverla" },
         { name: { fr: "Village de Kryvorivnia — cœur de la culture houtsoule", en: "Kryvorivnia village — heart of Hutsul culture", es: "Pueblo de Kryvorivnia — corazón de la cultura hutsul" }, wikipedia: "Kryvorivnia" },
@@ -107,7 +107,7 @@ export const UKRAINE = {
         es: "Odesa es una ciudad portuaria cosmopolita en el mar Negro, conocida por su célebre escalera Potemkin y su arquitectura neoclásica. La ciudad posee un alma mediterránea única con sus playas, sus catacumbas y su legendaria vida nocturna. Sigue muy expuesta al conflicto y se desaconseja formalmente viajar allí.",
       },
       wikipedia: "File:Mys-Fontan-aerial-2.jpg",
-      tags: ["Mer Noire", "Architecture", "Histoire", "Plage", "Ville"],
+      tags: ["Plage", "Architecture", "Histoire", "Ville"],
       mustSee: [
         { name: { fr: "Escalier Potemkine — 192 marches monumentales immortalisées au cinéma", en: "Potemkin Stairs — 192 monumental steps immortalised on film", es: "Escalera Potemkin — 192 escalones monumentales inmortalizados en el cine" }, wikipedia: "Potemkin_Stairs" },
         { name: { fr: "Opéra d'Odessa — l'un des plus beaux opéras d'Europe orientale", en: "Odesa Opera House — one of the finest opera houses in Eastern Europe", es: "Ópera de Odesa — una de las óperas más bellas de Europa oriental" }, wikipedia: "File:Театр оперы и балета. Зал.jpg" },
@@ -125,7 +125,7 @@ export const UKRAINE = {
         es: "La zona de exclusión de Chernóbil, hecha famosa por la catástrofe nuclear de 1986, acogía circuitos guiados desde Kiev antes de la guerra. La ciudad fantasma de Prípiat, con sus edificios abandonados, ofrecía una experiencia extraordinaria. Estas visitas ya no son posibles debido al conflicto armado.",
       },
       wikipedia: "File:Chernobyl radiation warning sign.jpg",
-      tags: ["Histoire", "Nucléaire", "Ville fantôme", "Insolite"],
+      tags: ["Histoire"],
       mustSee: [
         { name: { fr: "Pripyat — ville fantôme abandonnée après l'accident de 1986", en: "Pripyat — ghost town abandoned after the 1986 accident", es: "Prípiat — ciudad fantasma abandonada tras el accidente de 1986" }, wikipedia: "File:Aerial view of Pripyat.jpg" },
         { name: { fr: "Centrale nucléaire de Tchernobyl — site du réacteur n°4 sous sarcophage", en: "Chernobyl Nuclear Power Plant — site of reactor No. 4 under its sarcophagus", es: "Central nuclear de Chernóbil — emplazamiento del reactor n.º 4 bajo el sarcófago" }, wikipedia: "Chernobyl_Nuclear_Power_Plant" },

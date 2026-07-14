@@ -75,7 +75,7 @@ export const GAMBIA = {
         es: "Las playas de Kololi, Kotu y Senegambia son el corazón del turismo de playa gambiano: arena blanca inmaculada, aguas cálidas del Atlántico, palmeras, animados bares de playa. La Senegambia Strip concentra hoteles, restaurantes y vida nocturna. Un destino de sol invernal muy popular entre británicos y escandinavos.",
       },
       wikipedia: "Kololi",
-      tags: ["Plage", "Balnéaire", "Détente", "Soleil"],
+      tags: ["Plage", "Détente"],
       mustSee: [
         { name: { fr: "Plage de Kololi — la plus belle plage de Gambie", en: "Kololi Beach — the most beautiful beach in Gambia", es: "Playa de Kololi — la playa más bonita de Gambia" }, wikipedia: "Kololi" },
         { name: { fr: "Strip de Senegambia — restaurants, bars et vie nocturne", en: "Senegambia Strip — restaurants, bars and nightlife", es: "Senegambia Strip — restaurantes, bares y vida nocturna" }, wikipedia: "File:GambiaSenegambiaHotel067_(11853073665).jpg" },
@@ -93,7 +93,7 @@ export const GAMBIA = {
         es: "La isla de Kunta Kinteh (antigua James Island, UNESCO) es el principal sitio de la trata de esclavos en Gambia — hecha célebre por la novela Roots de Alex Haley. Las ruinas del Fort James (1651) son Patrimonio UNESCO. Un lugar de memoria profundamente conmovedor, accesible desde Juffureh y Albreda, pueblos de tradiciones mandingas preservadas.",
       },
       wikipedia: "Kunta_Kinteh_Island",
-      tags: ["UNESCO", "Histoire", "Mémorial", "Traite"],
+      tags: ["UNESCO", "Histoire"],
       mustSee: [
         { name: { fr: "Île de Kunta Kinteh — ruines Fort James (UNESCO)", en: "Kunta Kinteh Island — Fort James ruins (UNESCO)", es: "Isla de Kunta Kinteh — ruinas del Fort James (UNESCO)" }, wikipedia: "File:Baobabs on James Island (4383600924).jpg" },
         { name: { fr: "Village de Juffureh — berceau de Kunta Kinteh (Roots)", en: "Juffureh village — birthplace of Kunta Kinteh (Roots)", es: "Pueblo de Juffureh — cuna de Kunta Kinteh (Roots)" }, wikipedia: "File:Never Again, Albreda Juffureh 2.jpg" },
@@ -111,7 +111,7 @@ export const GAMBIA = {
         es: "Gambia es uno de los mejores destinos ornitológicos del mundo: 560 especies en un territorio minúsculo. Destacan la Reserva Natural de Abuko (a 20min de Banjul), la Reserva de Aves de Tanji, y el Parque nacional del río Gambia con sus chimpancés. Observadores de aves de todo el mundo vienen aquí para avistar especies raras en pocos días.",
       },
       wikipedia: "Abuko_Nature_Reserve",
-      tags: ["Oiseaux", "Nature", "Birding", "Chimpanzés"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Abuko Nature Reserve — 300 espèces à 20min de Banjul", en: "Abuko Nature Reserve — 300 species just 20 minutes from Banjul", es: "Reserva Natural de Abuko — 300 especies a 20min de Banjul" }, wikipedia: "File:Gambia abuko 003.jpg" },
         { name: { fr: "River Gambia National Park — chimpanzés sauvages", en: "River Gambia National Park — wild chimpanzees", es: "Parque nacional del río Gambia — chimpancés salvajes" }, wikipedia: "River_Gambia_National_Park" },

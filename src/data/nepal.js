@@ -96,7 +96,7 @@ export const NEPAL = {
         es: "El EBC es el trekking icónico del mundo entero: 14 días de caminata hasta el campo base del Everest a 5364 m. Pueblos sherpa, monasterios encaramados, glaciares y panorámicas de los ochomiles están en el programa. Dificultad moderada con buena condición física.",
       },
       wikipedia: "File:Sagarmatha Trek 02.jpg",
-      tags: ["trekking", "Himalaya", "altitude", "Everest"],
+      tags: ["Aventure", "Montagne"],
       mustSee: [
         { name: "Namche Bazaar", wikipedia: "Namche_Bazaar" },
         { name: "Tengboche Monastery", wikipedia: "File:Tengboche Buddhist Monastery, Nepal.jpg" },
@@ -114,7 +114,7 @@ export const NEPAL = {
         es: "El circuito de las Annapurna (12–21 días) está considerado uno de los treks más bellos del mundo. El paso de Thorong La (5416 m) ofrece paisajes inolvidables entre entornos subtropicales y la meseta tibetana. Pokhara es la ciudad de partida.",
       },
       wikipedia: "Annapurna_Circuit",
-      tags: ["trekking", "Himalaya", "altitude", "Nature"],
+      tags: ["Aventure", "Montagne", "Nature"],
       mustSee: [
         { name: "Thorong La Pass (5 416 m)", wikipedia: "Thorong_La" },
         { name: "Muktinath Temple", wikipedia: "Muktinath" },
@@ -132,7 +132,7 @@ export const NEPAL = {
         es: "El valle de Katmandú concentra 7 sitios UNESCO, incluidos el templo de Pashupatinath (gran templo crematorio hindú), Boudhanath (gran estupa budista), Swayambhunath (templo de los monos) y los palacios de las plazas Durbar.",
       },
       wikipedia: "Kathmandu",
-      tags: ["temples", "UNESCO", "hindouisme", "bouddhisme"],
+      tags: ["Spiritualité", "UNESCO"],
       mustSee: [
         { name: "Boudhanath Stupa", wikipedia: "File:Boudhanath, Kathmandu, Nepal.jpg" },
         { name: "Pashupatinath Temple", wikipedia: "Pashupatinath_Temple" },
@@ -150,7 +150,7 @@ export const NEPAL = {
         es: "El parque nacional de Chitwan, declarado Patrimonio de la Humanidad por la UNESCO, protege una de las últimas poblaciones de rinocerontes unicornio de Asia y tigres de Bengala. Los safaris en elefante o jeep y los paseos en piragua son experiencias memorables.",
       },
       wikipedia: "Chitwan_National_Park",
-      tags: ["safari", "rhinocéros", "tigres", "UNESCO"],
+      tags: ["Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Rhinocéros unicorne d'Asie", en: "Indian one-horned rhinoceros", es: "Rinoceronte unicornio indio" }, wikipedia: "Indian_rhinoceros" },
         { name: { fr: "Tigre du Bengale", en: "Bengal tiger", es: "Tigre de Bengala" }, wikipedia: "Bengal_tiger" },

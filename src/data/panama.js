@@ -94,7 +94,7 @@ export const PANAMA = {
         es: "El Canal de Panamá, una de las mayores obras de ingeniería de la humanidad, conecta el Atlántico con el Pacífico en 80 km. Las esclusas de Miraflores permiten observar en directo el tránsito de portacontenedores gigantes. El museo interoceánico narra la epopeya de su construcción.",
       },
       wikipedia: "File:Panama Canal Gatun Locks.jpg",
-      tags: ["Ingénierie", "Histoire", "Icône", "Incontournable"],
+      tags: ["Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Écluses de Miraflores — transit en direct", en: "Miraflores Locks — live ship transit", es: "Esclusas de Miraflores — tránsito en directo" }, wikipedia: "File:Panama Canal Miraflores Locks.jpg" },
         { name: { fr: "Écluses d'Agua Clara (canal élargi)", en: "Agua Clara Locks (expanded canal)", es: "Esclusas de Agua Clara (canal ampliado)" }, wikipedia: "File:Agua Clara Locks 09 2019 0752.jpg" },
@@ -112,7 +112,7 @@ export const PANAMA = {
         es: "El Casco Viejo, barrio histórico de Ciudad de Panamá declarado Patrimonio de la Humanidad, es una península de callejuelas coloniales españolas, hoteles boutique y restaurantes gastronómicos con vistas a los rascacielos del ultramoderno skyline panameño: un contraste sorprendente entre pasado y futuro.",
       },
       wikipedia: "Casco_Viejo,_Panama",
-      tags: ["UNESCO", "Colonial", "Gastronomie", "Rooftop"],
+      tags: ["UNESCO", "Histoire", "Gastronomie", "Nightlife"],
       mustSee: [
         { name: { fr: "Plaza de la Independencia & cathédrale", en: "Plaza de la Independencia & cathedral", es: "Plaza de la Independencia y catedral" }, wikipedia: "File:Panama Catedral Metropolitana.jpg" },
         { name: { fr: "Rooftop bars — vue skyline + canal", en: "Rooftop bars — skyline + canal views", es: "Bares en azoteas — vistas al skyline y al canal" }, wikipedia: "Casco_Viejo,_Panama" },
@@ -130,7 +130,7 @@ export const PANAMA = {
         es: "El archipiélago de Bocas del Toro es el paraíso caribeño de Panamá: islas coralinas, aguas turquesas, delfines en las lagunas, ranas venenosas en la jungla y playas de arena blanca. Bocas Town (Isla Colón) es una ciudad sobre pilotes, colorida y festiva.",
       },
       wikipedia: "File:Bocas aerial.jpg",
-      tags: ["Île", "Caraïbes", "Snorkel", "Faune"],
+      tags: ["Plage", "Safari"],
       mustSee: [
         { name: { fr: "Red Frog Beach — grenouilles vénéneuses", en: "Red Frog Beach — poison dart frogs", es: "Red Frog Beach — ranas venenosas" }, wikipedia: "File:Oophaga pumilio 263283848.jpg" },
         { name: { fr: "Dolphin Bay — dauphins dans la lagune", en: "Dolphin Bay — dolphins in the lagoon", es: "Dolphin Bay — delfines en la laguna" }, wikipedia: "File:Dolphin in Cardigan Bay, off New Quay.jpg" },
@@ -148,7 +148,7 @@ export const PANAMA = {
         es: "San Blas (Guna Yala) es un archipiélago de 365 islas coralinas gestionado por el pueblo kuna, una de las pocas naciones indígenas que ha conservado su autonomía completa. Aguas cristalinas, playas desiertas, hamacas sobre el agua y comercio de molas (telas bordadas) componen este paraíso atemporal.",
       },
       wikipedia: "Guna_Yala",
-      tags: ["Île", "Culture Kuna", "Paradis", "Authentique"],
+      tags: ["Plage", "Culture"],
       mustSee: [
         { name: { fr: "Île aux cocotiers avec hamacs sur l'eau", en: "Coconut island with hammocks over the water", es: "Isla de cocoteros con hamacas sobre el agua" }, wikipedia: "San_Blas_Islands" },
         { name: { fr: "Molas — textiles brodés des Kunas", en: "Molas — embroidered Kuna textiles", es: "Molas — textiles bordados de los kunas" }, wikipedia: "File:Mola_blouse,_Kuna_peoples,_San_Blas_Islands,_Panama,_20th_century,_cotton,_polyester_-_Fernbank_Museum_of_Natural_History_-_DSC09997.JPG" },

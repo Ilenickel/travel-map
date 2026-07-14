@@ -105,7 +105,7 @@ export const ISRAEL = {
         es: "Ciudad santa para las tres grandes religiones monoteístas, con el casco antiguo declarado Patrimonio UNESCO: el Muro Occidental, la Explanada de las Mezquitas (Cúpula de la Roca, Al-Aqsa), el Santo Sepulcro y el barrio judío.",
       },
       wikipedia: "Jerusalem",
-      tags: ["Histoire", "Religion", "UNESCO", "Archéologie", "Ville", "Architecture"],
+      tags: ["Histoire", "Spiritualité", "UNESCO", "Ville", "Architecture"],
       mustSee: [
         { name: { fr: "Mur occidental (Kotel)", en: "Western Wall (Kotel)", es: "Muro Occidental (Kotel)" }, wikipedia: "Western_Wall" },
         { name: { fr: "Dôme du Rocher & al-Aqsa", en: "Dome of the Rock & Al-Aqsa", es: "Cúpula de la Roca y Al-Aqsa" }, wikipedia: "Dome_of_the_Rock" },
@@ -140,7 +140,7 @@ export const ISRAEL = {
         es: "El punto más bajo de la Tierra (−430 m), con un agua al 34% de salinidad donde se flota sin esfuerzo. Sus lodos minerales negros tienen propiedades terapéuticas reconocidas.",
       },
       wikipedia: "Dead_Sea",
-      tags: ["Nature", "Bien-être", "Unique", "Désert", "Randonnée"],
+      tags: ["Nature", "Détente", "Désert", "Randonnée"],
       mustSee: [
         { name: { fr: "Masada — forteresse hérodienne", en: "Masada — a Herodian fortress", es: "Masada — fortaleza herodiana" }, wikipedia: "Masada" },
         { name: { fr: "Bain flottant mer Morte", en: "Floating bath in the Dead Sea", es: "Baño flotante en el mar Muerto" }, wikipedia: "Dead_Sea" },
@@ -157,7 +157,7 @@ export const ISRAEL = {
         es: "Estación balnearia en la punta del Néguev, donde el mar Rojo ofrece un buceo excepcional (corales, peces tropicales, delfines) y sol garantizado 360 días al año.",
       },
       wikipedia: "Eilat",
-      tags: ["Plongée", "Plage", "Nature", "Désert"],
+      tags: ["Plage", "Nature", "Désert"],
       mustSee: [
         { name: { fr: "Coral Beach Reserve (snorkeling)", en: "Coral Beach Reserve (snorkelling)", es: "Coral Beach Reserve (esnórquel)" }, wikipedia: "File:Gulf of Aqaba - Gulf von Akaba.jpg" },
         { name: { fr: "Plongée avec dauphins", en: "Diving with dolphins", es: "Buceo con delfines" }, wikipedia: "File:Eilat Dolphin Reef (3).jpg" },

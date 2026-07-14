@@ -119,7 +119,7 @@ export const BOLIVIA = {
         es: "El mayor desierto de sal del mundo (10 573 km²) es la joya de Bolivia. En la estación seca, sus hexágonos de sal se extienden hasta donde alcanza la vista; en la estación de lluvias, se convierte en un espejo gigante que refleja las nubes. Las islas de cactus (Isla Incahuasi) emergen como por arte de magia.",
       },
       wikipedia: "Salar_de_Uyuni",
-      tags: ["Paysages", "Unique", "Photos", "Altiplano", "Désert", "Nature"],
+      tags: ["Nature", "Culture", "Montagne", "Désert"],
       mustSee: [
         { name: "Isla Incahuasi", wikipedia: "File:04-Isla_Incahuasi-nX-1.jpg" },
         { name: { fr: "Cimetière de trains (Uyuni)", en: "Uyuni Train Cemetery", es: "Cementerio de trenes (Uyuni)" }, wikipedia: "File:02-Train-Cemetery-Uyuni-nX-22.jpg" },
@@ -137,7 +137,7 @@ export const BOLIVIA = {
         es: "La capital administrativa más alta del mundo (3650 m) es una ciudad fascinante suspendida en un cañón andino. El teleférico Mi Teleférico ofrece vistas extraordinarias de la cuenca y del majestuoso Illimani (6439 m). El Mercado de las Brujas es único en su género.",
       },
       wikipedia: "La_Paz",
-      tags: ["Ville", "Altitude", "Culture", "Marchés", "Gastronomie"],
+      tags: ["Ville", "Montagne", "Culture", "Shopping", "Gastronomie"],
       mustSee: [
         { name: "Mi Teleférico", wikipedia: "File:Mi Teleférico - Linea Naranja.jpg" },
         { name: { fr: "Mercado de las Brujas", en: "Witches' Market", es: "Mercado de las Brujas" }, wikipedia: "File:05-Mercado de las Brujas (La Paz)-8.jpg" },
@@ -155,7 +155,7 @@ export const BOLIVIA = {
         es: "El lago navegable más alto del mundo (3812 m) es sagrado para el pueblo aimara. Las islas flotantes de los Uros, la Isla de la Luna y la Isla del Sol albergan ruinas incas y comunidades tradicionales.",
       },
       wikipedia: "Lake_Titicaca",
-      tags: ["Lac", "Culture", "Inca", "Îles Flottantes"],
+      tags: ["Nature", "Culture", "Histoire", "Plage"],
       mustSee: [
         { name: { fr: "Îles Uros (flottantes)", en: "Floating Uros Islands", es: "Islas de los Uros (flotantes)" }, wikipedia: "File:Indigenas Uros en el Lago Titicaca Bolivia.jpg" },
         { name: "Isla del Sol", wikipedia: "Isla_del_Sol" },
@@ -173,7 +173,7 @@ export const BOLIVIA = {
         es: "La blanca capital constitucional es una de las ciudades coloniales más bellas de Sudamérica, declarada Patrimonio de la Humanidad por la UNESCO. Sus fachadas blancas inmaculadas, sus coloridos mercados y su ambiente apacible la convierten en un remanso de paz.",
       },
       wikipedia: "File:Sucre capital de Bolivia.jpg",
-      tags: ["Colonial", "UNESCO", "Histoire", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Cathédrale Métropolitaine", en: "Metropolitan Cathedral", es: "Catedral Metropolitana" }, wikipedia: "File:Catedral - Sucre.jpg" },
         { name: { fr: "Casa de la Libertad", en: "Casa de la Libertad", es: "Casa de la Libertad" }, wikipedia: "File:Casa de la libertad.jpg" },

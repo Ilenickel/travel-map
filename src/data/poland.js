@@ -94,7 +94,7 @@ export const POLAND = {
         es: "Cracovia es una de las ciudades medievales más hermosas de Europa: la plaza del mercado (Rynek Główny, la mayor plaza medieval de Europa), el castillo de Wawel dominando el Vístula, el casco antiguo y Kazimierz (barrio judío histórico) están clasificados como Patrimonio de la UNESCO desde 1978. La ciudad sobrevivió a la Segunda Guerra Mundial casi intacta — un tesoro poco común en Europa Central.",
       },
       wikipedia: "Kraków",
-      tags: ["Médiéval", "UNESCO", "Château", "Juif", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Spiritualité", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Rynek Główny — plus grande place médiévale d'Europe", en: "Rynek Główny — largest medieval square in Europe", es: "Rynek Główny — la mayor plaza medieval de Europa" }, wikipedia: "File:Empty_Old_Town_Market_Square_in_Kraków_during_the_COVID-19_pandemic_in_Poland,_April_2020.jpg" },
         { name: { fr: "Château royal du Wawel avec la crypte des rois de Pologne", en: "Wawel Royal Castle with the crypt of Polish kings", es: "Castillo real de Wawel con la cripta de los reyes de Polonia" }, wikipedia: "Wawel_Castle" },
@@ -112,7 +112,7 @@ export const POLAND = {
         es: "El campo de exterminio de Auschwitz-Birkenau está clasificado como Patrimonio de la UNESCO 'para que la memoria humana no pierda de vista este acto de barbarie'. El sitio concentra los archivos más importantes del genocidio de los judíos de Europa: 1,1 millones de víctimas, el 90% de ellas judías. Una visita guiada es obligatoria para comprender el alcance del lugar.",
       },
       wikipedia: "Auschwitz_concentration_camp",
-      tags: ["Mémorial", "UNESCO", "Histoire", "WWII"],
+      tags: ["Histoire", "UNESCO"],
       mustSee: [
         { name: { fr: "Auschwitz I — 'Arbeit Macht Frei', blocs d'exposition, salles des victimes", en: "Auschwitz I — 'Arbeit Macht Frei', exhibition blocks, victims' rooms", es: "Auschwitz I — 'Arbeit Macht Frei', bloques de exposición, salas de las víctimas" }, wikipedia: "File:Auschwitz-Work Set Free-new.JPG" },
         { name: { fr: "Auschwitz II-Birkenau — ruines des chambres à gaz et crématoires", en: "Auschwitz II-Birkenau — ruins of the gas chambers and crematoria", es: "Auschwitz II-Birkenau — ruinas de las cámaras de gas y crematorios" }, wikipedia: "File:Auschwitz II Birkenau - crematory.jpg" },
@@ -130,7 +130,7 @@ export const POLAND = {
         es: "Varsovia es una de las grandes sorpresas de Europa: destruida en un 85% durante la Segunda Guerra Mundial, fue reconstruida de forma idéntica por sus habitantes a partir de los cuadros del pintor Canaletto. Su Casco Antiguo (UNESCO) se parece al del siglo XVII. El Museo del Levantamiento de Varsovia es uno de los más conmovedores de Europa. La ciudad es también un polo de cultura techno y gastronomía.",
       },
       wikipedia: "Warsaw",
-      tags: ["Reconstruction", "UNESCO", "Musée", "Modernité", "Ville", "Histoire", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Musées", "Modernité", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Vieille Ville de Varsovie (UNESCO) — reconstruite à l'identique", en: "Warsaw Old Town (UNESCO) — rebuilt identically", es: "Casco Antiguo de Varsovia (UNESCO) — reconstruido de forma idéntica" }, wikipedia: "File:Warsaw Old Town, Warsaw, Poland - panoramio (69).jpg" },
         { name: { fr: "Musée de l'Insurrection de Varsovie (1944)", en: "Warsaw Uprising Museum (1944)", es: "Museo del Levantamiento de Varsovia (1944)" }, wikipedia: "File:Muzeum Powstania Warszawskiego 2014 018.JPG" },
@@ -148,7 +148,7 @@ export const POLAND = {
         es: "Białowieża es el último bosque primario de las llanuras de Europa — con 12.000 años de antigüedad, nunca explotado industrialmente. Alberga al bisonte europeo (żubr), el animal más pesado de Europa, salvado de la extinción en la década de 1920. Las caminatas guiadas por la reserva estricta permiten observar bisontes, lobos, linces y ciervos en libertad.",
       },
       wikipedia: "Białowieża_Forest",
-      tags: ["Forêt primaire", "Bisons", "UNESCO", "Nature"],
+      tags: ["Nature", "Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Randonnée guidée dans la réserve stricte — bisons sauvages", en: "Guided hike in the strict reserve — wild bison", es: "Caminata guiada por la reserva estricta — bisontes salvajes" }, wikipedia: "File:European bison (Bison bonasus) male Białowieza.jpg" },
         { name: { fr: "Parc national — arbres millénaires et silence absolu", en: "National park — ancient trees and absolute silence", es: "Parque nacional — árboles milenarios y silencio absoluto" }, wikipedia: "File:Smolany Sadek Aleja Lipowa 2024 01.jpg" },

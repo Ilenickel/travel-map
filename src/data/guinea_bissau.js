@@ -79,7 +79,7 @@ export const GUINEA_BISSAU = {
         es: "El archipiélago de los Bijagós es una reserva de biosfera de la UNESCO compuesta por 88 islas, de las cuales solo 20 están habitadas. Este santuario marino alberga hipopótamos pigmeos, manatíes, búfalos salvajes y decenas de especies de aves. Los bijagós, pueblo matriarcal de fuertes ritos animistas, viven en casi total autarquía en sus islas.",
       },
       wikipedia: "File:L'Archipel des Bijagos vu par Sentinel 2.jpg",
-      tags: ["UNESCO", "Nature", "Îles", "Animisme"],
+      tags: ["UNESCO", "Nature", "Plage", "Spiritualité"],
       mustSee: [
         { name: { fr: "Île d'Orango — hippopotames marins", en: "Orango Island — marine hippos", es: "Isla de Orango — hipopótamos marinos" }, wikipedia: "File:Lagoa_com_hipopótamos_03_(cropped).jpg" },
         { name: { fr: "Île de Bubaque — centre de l'archipel", en: "Bubaque Island — the archipelago's hub", es: "Isla de Bubaque — centro del archipiélago" }, wikipedia: "Bubaque" },
@@ -96,7 +96,7 @@ export const GUINEA_BISSAU = {
         es: "Bolama, antigua capital colonial portuguesa, es una magnífica ciudad fantasma invadida por la vegetación tropical. Sus edificios neoclásicos en ruinas y su atmósfera melancólica hacen de ella un lugar fotográfico único, lejos de los circuitos turísticos habituales.",
       },
       wikipedia: "File:Viagem_de_Bissau_para_Bolama,_Guiné-Bissau_–_2018-03-02_–_DSCN0996.jpg",
-      tags: ["Histoire", "Colonial", "Ruines", "Photo"],
+      tags: ["Histoire", "Ruines", "Culture"],
       mustSee: [
         { name: { fr: "Palais du gouverneur colonial en ruines", en: "Ruined colonial governor's palace", es: "Palacio del gobernador colonial en ruinas" }, wikipedia: "File:Bolama ruins.jpg" },
         { name: { fr: "Coucher de soleil sur l'estuaire", en: "Sunset over the estuary", es: "Puesta de sol sobre el estuario" }, wikipedia: "File:Porto de Bolama 06.jpg" },
@@ -112,7 +112,7 @@ export const GUINEA_BISSAU = {
         es: "La capital de Guinea-Bisáu es una ciudad a escala humana, relajada y auténtica. El mercado de Bandim, el Museu Nacional, las ruinas del Fuerte de São José de Amura y los barrios de casas coloniales deterioradas componen un retrato entrañable de esta capital poco conocida.",
       },
       wikipedia: "Bissau",
-      tags: ["Ville", "Marché", "Histoire", "Coloniale"],
+      tags: ["Ville", "Shopping", "Histoire"],
       mustSee: [
         { name: { fr: "Marché de Bandim — cœur animé de Bissau", en: "Bandim Market — Bissau's lively heart", es: "Mercado de Bandim — corazón animado de Bisáu" }, wikipedia: "File:Avenida_dos_Combatentes_da_Liberdade_da_Pátria,_Bissau_(2).jpg" },
         { name: { fr: "Fort de São José de Amura (XVIII°)", en: "Fort São José de Amura (18th century)", es: "Fuerte de São José de Amura (siglo XVIII)" }, wikipedia: "File:Interior_da_Fortaleza_de_São_José_de_Amura,_Bissau.jpg" },

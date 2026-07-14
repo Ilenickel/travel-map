@@ -87,7 +87,7 @@ export const EL_SALVADOR = {
           "Joya de Cerén es un pueblo maya sepultado por una erupción volcánica en el año 590 d. C., que conserva intactas casas, huertos y reservas de alimentos. Declarado Patrimonio UNESCO, es la única ventana del mundo a la vida cotidiana de un aldeano maya común.",
       },
       wikipedia: "Joya_de_Cerén",
-      tags: ["UNESCO", "Archéologie", "Histoire", "Unique"],
+      tags: ["UNESCO", "Histoire"],
       mustSee: [
         { name: { fr: "Village maya fossilisé (structures in situ)", en: "Buried Maya village (in situ structures)", es: "Pueblo maya fosilizado (estructuras in situ)" }, wikipedia: "File:Joya de Cerén, domestic complex.jpg" },
         { name: { fr: "Musée de site — vaisselle et outils mayas", en: "Site museum — Maya pottery and tools", es: "Museo del sitio — cerámica y herramientas mayas" }, wikipedia: "File:ES Estructura 12 y 10 Area 1 Joya Ceren 05 2012 1516.jpg" },
@@ -107,7 +107,7 @@ export const EL_SALVADOR = {
           "El Tunco es la capital del surf en Centroamérica: olas constantes para todos los niveles, ambiente bohemio y atardeceres sobre el Pacífico. El Zonte (Bitcoin Beach) se hizo mundialmente famoso como el primer pueblo del mundo en adoptar el Bitcoin como moneda local.",
       },
       wikipedia: "File:El tunco.png",
-      tags: ["Surf", "Plage", "Vie nocturne", "Pacifique"],
+      tags: ["Plage", "Nightlife"],
       mustSee: [
         { name: { fr: "Surf à El Sunzal et La Bocana", en: "Surfing at El Sunzal and La Bocana", es: "Surf en El Sunzal y La Bocana" }, wikipedia: "Surfing" },
         { name: { fr: "Rocher El Tunco — coucher de soleil", en: "El Tunco Rock — sunset views", es: "Roca El Tunco — atardecer" }, wikipedia: "File:El tunco.png" },
@@ -127,7 +127,7 @@ export const EL_SALVADOR = {
           "El lago de Coatepeque es un lago volcánico de cráter, con aguas azules y cálidas a 22°C durante todo el año, rodeado de colinas verdes. El cercano volcán Santa Ana (2.381 m) ofrece una de las mejores caminatas del país con vistas a la caldera.",
       },
       wikipedia: "File:Coatepeque Vista.jpg",
-      tags: ["Nature", "Lac", "Randonnée", "Volcans"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Baignade et kayak dans le lac volcanique", en: "Swimming and kayaking in the volcanic lake", es: "Baño y kayak en el lago volcánico" }, wikipedia: "File:Coatepeque Vista.jpg" },
         { name: { fr: "Volcan Santa Ana — caldera fumante (2 381 m)", en: "Santa Ana Volcano — smoking caldera (2,381 m)", es: "Volcán Santa Ana — caldera humeante (2.381 m)" }, wikipedia: "Santa_Ana_Volcano" },
@@ -148,7 +148,7 @@ export const EL_SALVADOR = {
           "La Ruta de las Flores atraviesa cuatro pueblos de montaña de casas coloridas: Nahuizalco (artesanía de mimbre), Juayúa (festival gastronómico cada fin de semana), Apaneca (café de especialidad) y Ataco (murales gigantes). Una de las rutas culturales más bellas de Centroamérica.",
       },
       wikipedia: "File:RUTA DE LAS FLORES EN ATACO. - panoramio.jpg",
-      tags: ["Culture", "Gastronomie", "Artisanat", "Café"],
+      tags: ["Culture", "Gastronomie", "Shopping"],
       mustSee: [
         { name: { fr: "Juayúa — festival gastronomique (week-ends)", en: "Juayúa — food festival (weekends)", es: "Juayúa — festival gastronómico (fines de semana)" }, wikipedia: "Juayúa" },
         { name: { fr: "Nahuizalco — artisanat en rotin et bois", en: "Nahuizalco — rattan and wood crafts", es: "Nahuizalco — artesanía de mimbre y madera" }, wikipedia: "Nahuizalco" },

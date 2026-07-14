@@ -94,7 +94,7 @@ export const BHUTAN = {
         es: "El monasterio de Paro Taktsang, encaramado a 3120 m en un acantilado vertical, es la imagen icónica de Bután. La caminata de 2h desde el valle es accesible para cualquiera.",
       },
       wikipedia: "Paro_Taktsang",
-      tags: ["Randonnée", "Bouddhisme", "Panorama", "Incontournable"],
+      tags: ["Randonnée", "Spiritualité", "Panorama"],
       mustSee: [
         { name: { fr: "Monastère du Nid du Tigre (Taktsang)", en: "Tiger's Nest Monastery (Taktsang)", es: "Monasterio del Nido del Tigre (Taktsang)" }, wikipedia: "Paro_Taktsang" },
         { name: { fr: "Rinpung Dzong — forteresse-monastère", en: "Rinpung Dzong — fortress-monastery", es: "Rinpung Dzong — fortaleza-monasterio" }, wikipedia: "Rinpung_Dzong" },
@@ -111,7 +111,7 @@ export const BHUTAN = {
         es: "Capital sin semáforos (única en el mundo), Timbu es una ciudad a escala humana con el Tashichho Dzong, la estatua del Buda Dordenma (51 m) y mercados coloridos.",
       },
       wikipedia: "Thimphu",
-      tags: ["Ville", "Culture", "Bouddhisme"],
+      tags: ["Ville", "Culture", "Spiritualité"],
       mustSee: [
         { name: { fr: "Bouddha Dordenma (51 m)", en: "Buddha Dordenma (51 m)", es: "Buda Dordenma (51 m)" }, wikipedia: "Buddha_Dordenma_statue" },
         { name: "Tashichho Dzong", wikipedia: "Tashichho_Dzong" },

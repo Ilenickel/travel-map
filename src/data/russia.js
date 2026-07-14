@@ -71,7 +71,7 @@ export const RUSSIA = {
         es: "Moscú es la megalópolis rusa por excelencia, capital política y económica del país, donde el Kremlin medieval convive con los rascacielos del Centro Internacional de Negocios. La Plaza Roja, una de las más célebres del mundo, reúne la catedral de San Basilio, el mausoleo de Lenin y el GUM, el inmenso centro comercial imperial. Las estaciones del metro de Moscú, auténticos palacios subterráneos ornados de mármoles y frescos, merecen por sí solas el viaje.",
       },
       wikipedia: "Moscow",
-      tags: ["Kremlin", "UNESCO", "Métropole", "Art", "Histoire", "Ville", "Gastronomie", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Ville", "Art", "Gastronomie", "Architecture"],
       mustSee: [
         { name: { fr: "Kremlin de Moscou — forteresse médiévale inscrite à l'UNESCO", en: "Moscow Kremlin — UNESCO-listed medieval fortress", es: "Kremlin de Moscú — fortaleza medieval declarada Patrimonio de la UNESCO" }, wikipedia: "File:Moscow 05-2012 Kremlin 22.jpg" },
         { name: { fr: "Cathédrale Saint-Basile-le-Bienheureux — chef-d'œuvre de l'architecture russe", en: "Saint Basil's Cathedral — masterpiece of Russian architecture", es: "Catedral de San Basilio — obra maestra de la arquitectura rusa" }, wikipedia: "File:2019-07-25-3046-Moscow-Saint-Basil's-Cathedral.jpg" },
@@ -89,7 +89,7 @@ export const RUSSIA = {
         es: "San Petersburgo es el escaparate artístico y arquitectónico de Rusia, fundada por Pedro el Grande en 1703 a orillas del Nevá como «ventana a Europa». El museo del Ermitage, alojado en el Palacio de Invierno, alberga una de las mayores colecciones de arte del mundo con más de tres millones de obras. Las noches blancas de junio, cuando el sol apenas se pone, confieren a la ciudad una atmósfera mágica incomparable.",
       },
       wikipedia: "Saint_Petersburg",
-      tags: ["Ermitage", "Baroque", "Nuits blanches", "Tsars", "Histoire", "Ville", "Architecture"],
+      tags: ["Spiritualité", "Architecture", "Nightlife", "Histoire", "Ville"],
       mustSee: [
         { name: { fr: "Musée de l'Ermitage — l'un des plus grands musées du monde au Palais d'Hiver", en: "Hermitage Museum — one of the largest museums in the world, in the Winter Palace", es: "Museo del Ermitage — uno de los mayores museos del mundo, en el Palacio de Invierno" }, wikipedia: "Hermitage_Museum" },
         { name: { fr: "Peterhof — palais et jardins impériaux avec fontaines monumentales", en: "Peterhof — imperial palace and gardens with monumental fountains", es: "Peterhof — palacio y jardines imperiales con fuentes monumentales" }, wikipedia: "Peterhof_Palace" },
@@ -107,7 +107,7 @@ export const RUSSIA = {
         es: "El lago Baikal es el lago más profundo y antiguo del mundo, declarado Patrimonio de la UNESCO, y contiene por sí solo el 20 % de las reservas mundiales de agua dulce no congelada. En invierno, su superficie helada permite caminar decenas de kilómetros con una transparencia cristalina única. En verano, sus orillas acogen a senderistas y navegantes en paisajes de taiga y montañas impresionantes.",
       },
       wikipedia: "File:Baikal 04.05.2021.jpg",
-      tags: ["UNESCO", "Nature", "Lac", "Sibérie"],
+      tags: ["UNESCO", "Nature"],
       mustSee: [
         { name: { fr: "Île d'Olkhon — plus grande île du lac, cœur chamanique", en: "Olkhon Island — the lake's largest island, a shamanic heartland", es: "Isla de Olkhon — la mayor isla del lago, corazón chamánico" }, wikipedia: "File:Baikal 04.05.2021.jpg" },
         { name: { fr: "Listvyanka — village pittoresque sur la rive ouest du Baïkal", en: "Listvyanka — picturesque village on Baikal's western shore", es: "Listvianka — pueblo pintoresco en la orilla oeste del Baikal" }, wikipedia: "File:Listvyanka poselok.JPG" },
@@ -125,7 +125,7 @@ export const RUSSIA = {
         es: "El Transiberiano es el viaje ferroviario más mítico del mundo, que une Moscú con Vladivostok a lo largo de 9288 km a través de siete husos horarios, las llanuras siberianas, la taiga y las orillas del Baikal. El trayecto completo dura unos 7 días, pero muchos viajeros hacen escalas en Ekaterimburgo, Irkutsk o Ulán-Udé para descubrir la diversidad cultural de Siberia. Una aventura humana y geográfica incomparable.",
       },
       wikipedia: "Trans-Siberian_Railway",
-      tags: ["Train", "Aventure", "Sibérie", "Épique"],
+      tags: ["Aventure", "Nature"],
       mustSee: [
         { name: { fr: "Transsibérien Moscou–Vladivostok — 9 288 km de voyage ferroviaire", en: "Trans-Siberian Moscow–Vladivostok — a 9,288 km railway journey", es: "Transiberiano Moscú–Vladivostok — 9288 km de viaje ferroviario" }, wikipedia: "Trans-Siberian_Railway" },
         { name: { fr: "Transmongolien — variante via Oulan-Bator et Pékin", en: "Trans-Mongolian — variant via Ulaanbaatar and Beijing", es: "Transmongoliano — variante vía Ulán Bator y Pekín" }, wikipedia: "Trans-Mongolian_Railway" },

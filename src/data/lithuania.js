@@ -94,7 +94,7 @@ export const LITHUANIA = {
         es: "El casco antiguo de Vilna es el mayor casco antiguo barroco del norte de Europa (declarado Patrimonio de la Humanidad): 1.500 edificios de los siglos XVI–XVIII, 65 iglesias, la catedral neoclásica en su gran plaza y el barrio bohemio de Užupis (que declaró su independencia como 'República' artística en 1997). El panorama desde la colina de Gediminas es inolvidable.",
       },
       wikipedia: "Vilnius",
-      tags: ["Baroque", "UNESCO", "Bohème", "Clochers", "Ville", "Gastronomie"],
+      tags: ["Architecture", "UNESCO", "Culture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Vieille Ville baroque de Vilnius (UNESCO) — 65 églises", en: "Baroque Old Town of Vilnius (UNESCO) — 65 churches", es: "Casco antiguo barroco de Vilna (UNESCO) — 65 iglesias" }, wikipedia: "Vilnius_Old_Town" },
         { name: { fr: "Tour de Gediminas — panorama sur la ville et ses clochers", en: "Gediminas Tower — panorama over the city and its spires", es: "Torre de Gediminas — panorama sobre la ciudad y sus campanarios" }, wikipedia: "File:Gedimino pilis by Augustas Didzgalvis.jpg" },
@@ -112,7 +112,7 @@ export const LITHUANIA = {
         es: "La Curlandia (UNESCO) es una franja de arena de 98km que separa la laguna de Curlandia del mar Báltico — la mayor duna móvil de Europa (60m de altura). Los coloridos pueblos de pescadores, los bosques de pinos y las playas de arena blanca son accesibles desde Klaipėda. La parte lituana forma parte del parque nacional de Neringa.",
       },
       wikipedia: "Curonian_Spit",
-      tags: ["Dunes", "UNESCO", "Baltique", "Pêcheurs", "Plage", "Nature", "Randonnée"],
+      tags: ["Nature", "UNESCO", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Dunes du Désert mort (Parnidis) — panorama depuis 52m", en: "Dead Dunes of Parnidis — panorama from 52m", es: "Dunas del Desierto Muerto (Parnidis) — panorama desde 52m" }, wikipedia: "File:Kurische Nehrung Parnidden-Düne 01.JPG" },
         { name: { fr: "Nida — village de pêcheurs avec maisons en bois colorées", en: "Nida — fishing village with colourful wooden houses", es: "Nida — pueblo de pescadores con casas de madera coloridas" }, wikipedia: "Nida,_Lithuania" },
@@ -129,7 +129,7 @@ export const LITHUANIA = {
         es: "El castillo de la isla de Trakai (s. XIV) es el castillo más fotografiado de Lituania: ladrillo rojo reflejado en el lago Galvė, accesible por un puente de madera. La ciudad es también la cuna de los caraítas — una comunidad túrquica de 300 personas asentada desde hace 600 años, que perpetúa la cocina tradicional del kibinas (empanadilla caraíta).",
       },
       wikipedia: "Trakai_Island_Castle",
-      tags: ["Château sur l'eau", "Médiéval", "Lac", "Karaïtes", "Histoire", "Architecture"],
+      tags: ["Architecture", "Histoire", "Nature", "Spiritualité"],
       mustSee: [
         { name: { fr: "Château de l'île de Trakai — brique rouge sur le lac Galvė", en: "Trakai Island Castle — red brick on Lake Galvė", es: "Castillo de la isla de Trakai — ladrillo rojo sobre el lago Galvė" }, wikipedia: "Trakai_Island_Castle" },
         { name: { fr: "Kayak ou paddle sur le lac autour du château", en: "Kayaking or paddleboarding on the lake around the castle", es: "Kayak o paddle surf en el lago alrededor del castillo" }, wikipedia: "Trakai" },
@@ -147,7 +147,7 @@ export const LITHUANIA = {
         es: "Kaunas fue la capital provisional de Lituania entre las dos guerras (1920–1939) y concentra el conjunto Art Déco más bello del norte de Europa de ese periodo. La Laisvės Alėja (Bulevar de la Libertad, peatonal, 1,7km) está bordeada de edificios excepcionales de entreguerras. El museo Čiurlionis expone al pintor simbolista más importante de Lituania.",
       },
       wikipedia: "Kaunas",
-      tags: ["Art Déco", "Interwar", "Musées", "Boulevard", "Ville"],
+      tags: ["Architecture", "Histoire", "Musées", "Ville"],
       mustSee: [
         { name: { fr: "Laisvės Alėja — boulevard Art Déco de 1,7km (piéton)", en: "Laisvės Alėja — 1.7km Art Deco boulevard (pedestrian)", es: "Laisvės Alėja — bulevar Art Déco de 1,7km (peatonal)" }, wikipedia: "File:Laisvės alėja, Kaunas.jpg" },
         { name: { fr: "Musée Čiurlionis — peintre symboliste et compositeur lituanien", en: "Čiurlionis Museum — Lithuanian symbolist painter and composer", es: "Museo Čiurlionis — pintor simbolista y compositor lituano" }, wikipedia: "File:M. K. Ciurlionis National Art Museum (2018).jpg" },

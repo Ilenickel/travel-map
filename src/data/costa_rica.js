@@ -113,7 +113,7 @@ export const COSTA_RICA = {
         es: "El Parque Nacional Manuel Antonio concentra la magia de Costa Rica: monos capuchinos y ardilla paseando por la playa, perezosos dormidos entre las ramas, mapaches curiosos — y playas de arena blanca con aguas turquesa protegidas. Uno de los parques más visitados y más bellos del país.",
       },
       wikipedia: "Manuel_Antonio_National_Park",
-      tags: ["Faune", "Plage", "Nature", "Singes"],
+      tags: ["Safari", "Plage", "Nature"],
       mustSee: [
         { name: { fr: "Singes capucins et paresseux sur la plage", en: "Capuchin monkeys and sloths on the beach", es: "Monos capuchinos y perezosos en la playa" }, wikipedia: "File:Cebus capucinus 241523285.jpg" },
         { name: { fr: "Playa Espadilla — surf et baignade", en: "Playa Espadilla — surfing and swimming", es: "Playa Espadilla — surf y baño" }, wikipedia: "File:Espadilla Sur. Manuel Antonio. Costa Rica.jpg" },
@@ -131,7 +131,7 @@ export const COSTA_RICA = {
         es: "Monteverde es el bosque nuboso más famoso de Centroamérica: un ecosistema suspendido entre las nubes a 1400 m de altitud, hogar del quetzal resplandeciente, 400 especies de aves y orquídeas únicas. Los puentes colgantes y las tirolinas atraviesan el dosel forestal.",
       },
       wikipedia: "Monteverde_Cloud_Forest_Reserve",
-      tags: ["Forêt nuageuse", "Quetzal", "Canopée", "Biodiversité"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Zip line & tyrolienne sur la canopée (Sky Walk)", en: "Zip line & canopy ride (Sky Walk)", es: "Tirolina sobre el dosel forestal (Sky Walk)" }, wikipedia: "File:Seoraksan Cable Car 04.jpg" },
         { name: { fr: "Quetzal resplendissant (janv–mai)", en: "Resplendent quetzal (Jan–May)", es: "Quetzal resplandeciente (ene–may)" }, wikipedia: "File:Resplendent quetzal (Pharomachrus mocinno) male 3.jpg" },
@@ -149,7 +149,7 @@ export const COSTA_RICA = {
         es: "El Arenal es el volcán activo más famoso de Costa Rica (1670 m), rodeado de fuentes termales naturales (Tabacón) calentadas por la actividad volcánica y de un lago turquesa. La selva tropical circundante alberga hormigas cortadoras de hojas, tucanes y monos aulladores.",
       },
       wikipedia: "Arenal_Volcano",
-      tags: ["Volcan", "Thermes", "Nature", "Randonnée"],
+      tags: ["Nature", "Détente", "Randonnée"],
       mustSee: [
         { name: { fr: "Thermes de Tabacón — cascades de lave chaude", en: "Tabacón hot springs — cascading thermal pools", es: "Aguas termales de Tabacón — cascadas termales" }, wikipedia: "File:Tabacon Hot Springs, Arenal Costa Rica (673029573).jpg" },
         { name: { fr: "Lac Arenal — kayak & windsurf", en: "Lake Arenal — kayaking & windsurfing", es: "Lago Arenal — kayak y windsurf" }, wikipedia: "Lake_Arenal" },
@@ -167,7 +167,7 @@ export const COSTA_RICA = {
         es: "Tortuguero, accesible solo en barco o avión, es el gran santuario mundial de las tortugas verdes: entre julio y octubre, miles de hembras llegan de noche a sus playas negras para desovar. El parque nacional es también uno de los más ricos en biodiversidad de Costa Rica.",
       },
       wikipedia: "Tortuguero_National_Park",
-      tags: ["Tortues", "Caraïbes", "Jungle", "Faune"],
+      tags: ["Safari", "Plage", "Nature"],
       mustSee: [
         { name: { fr: "Ponte des tortues vertes (juil–oct, nuit)", en: "Green turtle nesting (Jul–Oct, at night)", es: "Desove de tortugas verdes (jul–oct, de noche)" }, wikipedia: "Green_sea_turtle" },
         { name: { fr: "Safari en canot — crocodiles & singes", en: "Canoe safari — crocodiles & monkeys", es: "Safari en canoa — cocodrilos y monos" }, wikipedia: "File:Tortuguero boat trip.JPG" },

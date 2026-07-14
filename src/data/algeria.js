@@ -105,7 +105,7 @@ export const ALGERIA = {
         es: "La Casbah de Argel (UNESCO) es un laberinto de callejuelas otomanas en suave pendiente sobre la colina que domina el mar: palacios de los deyes, mezquitas del siglo XVI, casas con patios interiores y fuentes, y las escalinatas emblemáticas de las películas sobre la batalla de Argel. Un mundo aparte, vivo y auténtico.",
       },
       wikipedia: "Casbah_of_Algiers",
-      tags: ["UNESCO", "Casbah", "Ottoman", "Méditerranée", "Ville", "Architecture", "Gastronomie"],
+      tags: ["UNESCO", "Architecture", "Histoire", "Plage", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Casbah d'Alger (UNESCO) — ruelles ottomanes du XVIe s.", en: "Casbah of Algiers (UNESCO) — 16th-century Ottoman alleyways", es: "Casbah de Argel (UNESCO) — callejuelas otomanas del siglo XVI" }, wikipedia: "Casbah_of_Algiers" },
         { name: { fr: "Palais des Raïs (Bastion 23) — musée des arts et traditions", en: "Palais des Raïs (Bastion 23) — museum of arts and traditions", es: "Palacio de los Raïs (Bastión 23) — museo de artes y tradiciones" }, wikipedia: "File:Palais des Rais (Es'hine) - Alger.JPG" },
@@ -123,7 +123,7 @@ export const ALGERIA = {
         es: "El Tassili n'Ajjer (UNESCO) es el mayor yacimiento de arte rupestre prehistórico del mundo: 15.000 grabados y pinturas repartidos por una meseta de arenisca desgastada por la erosión, que representan los animales y los hombres del Sahara verde de hace 10.000 años. Un bosque de rocas de formas fantásticas en un desierto absolutamente puro.",
       },
       wikipedia: "File:Tassili Desert Algeria.jpg",
-      tags: ["UNESCO", "Sahara", "Art rupestre", "Préhistoire", "Désert", "Nature"],
+      tags: ["UNESCO", "Nature", "Histoire", "Désert"],
       mustSee: [
         { name: { fr: "Peintures rupestres de Sefar — le 'musée' préhistorique", en: "Rock paintings of Sefar — the prehistoric 'museum'", es: "Pinturas rupestres de Sefar — el 'museo' prehistórico" }, wikipedia: "File:Eheren1.jpg" },
         { name: { fr: "Forêt de rochers de Tamrit — cyprès du Sahara millénaires", en: "Rock forest of Tamrit — thousand-year-old Saharan cypresses", es: "Bosque de rocas de Tamrit — cipreses milenarios del Sahara" }, wikipedia: "File:Tassili n'Ajjer-Tamghit 02.jpg" },
@@ -141,7 +141,7 @@ export const ALGERIA = {
         es: "Djémila (UNESCO) y Timgad (UNESCO) son dos ciudades romanas excepcionalmente bien conservadas en las montañas argelinas: Timgad, construida en el año 100 d. C. por Trajano para sus legiones, despliega su trazado perfecto en la estepa; Djémila, 'la bella' en árabe, se alza sobre un espolón rocoso con foros, templos y un arco de triunfo intactos.",
       },
       wikipedia: "Timgad",
-      tags: ["UNESCO", "Romain", "Antique", "Montagne", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Montagne", "Architecture"],
       mustSee: [
         { name: { fr: "Timgad (UNESCO) — cité romaine de Trajan aux plans parfaits", en: "Timgad (UNESCO) — Trajan's Roman city with its perfect layout", es: "Timgad (UNESCO) — ciudad romana de Trajano de trazado perfecto" }, wikipedia: "File:Timgad Ruins Panorama.jpg" },
         { name: { fr: "Djémila (UNESCO) — forum et arc de triomphe sur un éperon", en: "Djémila (UNESCO) — forum and triumphal arch on a rocky spur", es: "Djémila (UNESCO) — foro y arco de triunfo sobre un espolón" }, wikipedia: "Djémila" },
@@ -159,7 +159,7 @@ export const ALGERIA = {
         es: "El Hoggar (Ahaggar) es el corazón montañoso y espiritual del Sahara argelino: volcanes y picos de granito rojo que forman un paisaje mineral y desértico a 3.000m de altitud, la ermita del padre de Foucauld en el Assekrem (amanecer legendario), y los campamentos tuareg de tiendas azules. Una de las mayores soledades del mundo.",
       },
       wikipedia: "File:Le Hoggar, Massif de l'Attekor.png",
-      tags: ["Sahara", "Touaregs", "Montagne", "Désert", "Randonnée", "Nature"],
+      tags: ["Nature", "Culture", "Montagne", "Désert", "Randonnée"],
       mustSee: [
         { name: { fr: "Assekrem — lever de soleil sur le Hoggar (2 780m)", en: "Assekrem — sunrise over the Hoggar (2,780m)", es: "Assekrem — amanecer sobre el Hoggar (2.780m)" }, wikipedia: "Assekrem" },
         { name: { fr: "Ermitage du Père de Foucauld (1905)", en: "Father de Foucauld's hermitage (1905)", es: "Ermita del padre de Foucauld (1905)" }, wikipedia: "Charles_de_Foucauld" },

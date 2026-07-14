@@ -94,7 +94,7 @@ export const ROMANIA = {
         es: "Transilvania es una región mágica: el castillo de Bran (asociado a Drácula/Vlad el Empalador), la ciudadela medieval sajona de Sighișoara (UNESCO, ciudad natal de Vlad Tepeș), los pueblos fortificados de Viscri y Biertan (UNESCO), y los Cárpatos con poblaciones salvajes de osos pardos, lobos y linces, las más importantes de Europa fuera de Rusia.",
       },
       wikipedia: "File:Cheile_Turzii-(42).JPG",
-      tags: ["Dracula", "Médiéval", "Ours", "UNESCO", "Histoire", "Architecture", "Randonnée", "Ski"],
+      tags: ["Histoire", "Safari", "UNESCO", "Architecture", "Randonnée", "Ski"],
       mustSee: [
         { name: { fr: "Château de Bran — 'château de Dracula' dans les Carpates", en: "Bran Castle — 'Dracula's castle' in the Carpathians", es: "Castillo de Bran — el 'castillo de Drácula' en los Cárpatos" }, wikipedia: "Bran_Castle" },
         { name: { fr: "Sighișoara — ville médiévale saxonne fortifiée (UNESCO)", en: "Sighișoara — fortified medieval Saxon town (UNESCO)", es: "Sighișoara — ciudad medieval sajona fortificada (UNESCO)" }, wikipedia: "Sighișoara" },
@@ -112,7 +112,7 @@ export const ROMANIA = {
         es: "El delta del Danubio es el tercer delta más grande de Europa y uno de los ecosistemas más ricos: 300 especies de aves (pelícanos, garcetas, cormoranes pigmeos), 45 especies de peces incluido el esturión beluga, bosques flotantes y lagos interiores sin carreteras. Solo se puede recorrer en barco desde Tulcea. Patrimonio UNESCO y reserva de la biosfera.",
       },
       wikipedia: "File:Danube Delta, autumn.jpg",
-      tags: ["Delta", "Oiseaux", "UNESCO", "Nature", "Randonnée"],
+      tags: ["Nature", "Safari", "UNESCO", "Randonnée"],
       mustSee: [
         { name: { fr: "Pélicans blancs et frisés (la plus grande colonie d'Europe)", en: "White and Dalmatian pelicans (Europe's largest colony)", es: "Pelícanos blancos y ceñudos (la mayor colonia de Europa)" }, wikipedia: "File:White pelicans (Pelecanus onocrotalus) Danube delta.jpg" },
         { name: { fr: "Excursion en bateau dans les bras secondaires du delta", en: "Boat trip through the delta's secondary channels", es: "Excursión en barco por los brazos secundarios del delta" }, wikipedia: "File:Comrades from the Danube Delta. (29724046008).jpg" },
@@ -130,7 +130,7 @@ export const ROMANIA = {
         es: "Los monasterios pintados de Bucovina (Voroneț, Sucevița, Moldovița) están declarados Patrimonio de la Humanidad: sus fachadas exteriores están totalmente cubiertas de frescos de los siglos XV-XVI que representan escenas bíblicas en el famoso azul de Voroneț (un azul único jamás replicado). Una de las curiosidades artísticas más asombrosas de Europa, entre colinas verdes y boscosas.",
       },
       wikipedia: "File:Voronet murals 2010 15.jpg",
-      tags: ["Fresques", "UNESCO", "Monastères", "Art byzantin", "Architecture"],
+      tags: ["Culture", "UNESCO", "Spiritualité", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Voronet — 'la chapelle Sixtine de l'Est', bleu unique", en: "Voronet — the 'Sistine Chapel of the East', a unique blue", es: "Voroneț — la 'Capilla Sixtina de Oriente', azul único" }, wikipedia: "Voroneț_Monastery" },
         { name: { fr: "Sucevița — forteresse monastique avec fresques intactes", en: "Sucevița — monastic fortress with intact frescoes", es: "Sucevița — fortaleza monástica con frescos intactos" }, wikipedia: "Sucevița_Monastery" },
@@ -148,7 +148,7 @@ export const ROMANIA = {
         es: "Bucarest es una capital fascinante por sus contradicciones: el Palacio del Parlamento (2.º edificio más grande del mundo, encargado por Ceaușescu), los barrios Art Nouveau de Floreasca y Dorobanți, el Museo del Pueblo (museo al aire libre con 300 construcciones campesinas), y una escena nocturna y gastronómica en pleno auge. El 'Pequeño París de los Balcanes' recupera su esplendor.",
       },
       wikipedia: "Bucharest",
-      tags: ["Palais", "Art Nouveau", "Musée", "Nuit", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Architecture", "Musées", "Nightlife", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Palais du Parlement (Ceaușescu) — visite guidée obligatoire", en: "Palace of the Parliament (Ceaușescu) — guided tour mandatory", es: "Palacio del Parlamento (Ceaușescu) — visita guiada obligatoria" }, wikipedia: "Palace_of_the_Parliament" },
         { name: { fr: "Musée du Village — 300 maisons paysannes en plein air", en: "Village Museum — 300 open-air peasant houses", es: "Museo del Pueblo — 300 casas campesinas al aire libre" }, wikipedia: "Dimitrie_Gusti_National_Village_Museum" },

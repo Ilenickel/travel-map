@@ -72,7 +72,7 @@ export const BRUNEI = {
         es: "La mezquita Omar Ali Saifuddien es el emblema arquitectónico de Brunéi, una obra maestra de mármol blanco y cúpulas doradas construida en 1958 y rodeada de una laguna artificial que refleja su majestuosa silueta. Considerada una de las mezquitas más bellas del sudeste asiático, puede acoger hasta 3000 fieles en su interior adornado con mosaicos venecianos y vidrieras británicas. El paseo nocturno alrededor de la laguna iluminada es un momento de serenidad inolvidable.",
       },
       wikipedia: "Omar_Ali_Saifuddien_Mosque",
-      tags: ["Mosquée", "Architecture", "Religion", "Nuit"],
+      tags: ["Architecture", "Spiritualité", "Nightlife"],
       mustSee: [
         { name: { fr: "Dôme doré — vue depuis le lagon au coucher du soleil", en: "Golden dome — view from the lagoon at sunset", es: "Cúpula dorada — vista desde la laguna al atardecer" }, wikipedia: "File:Sultan Omar Ali Saifuddien Mosque; 2002.jpg" },
         { name: { fr: "Réplique de la barge royale — sur le lagon, décoration de fêtes", en: "Replica of the royal barge — on the lagoon, used for festive ceremonies", es: "Réplica de la barcaza real — en la laguna, decoración festiva" }, wikipedia: "File:Mahligai barge, Omar Ali Saifuddien Mosque, April 2025 05.jpg" },
@@ -90,7 +90,7 @@ export const BRUNEI = {
         es: "Kampong Ayer es el mayor pueblo sobre pilotes del mundo, una ciudad acuática de 30 000 habitantes construida sobre las aguas del río Brunéi desde al menos 1521, fecha en la que Magallanes ya lo describió en sus diarios de viaje. Este laberinto de casas de madera unidas por pasarelas y servidas por taxis acuáticos alberga mezquitas, clínicas, escuelas y mercados flotantes. Pasear por sus callejuelas al amanecer, lejos de los circuitos turísticos, revela una vida cotidiana fascinante.",
       },
       wikipedia: "Kampong_Ayer",
-      tags: ["Village sur l'eau", "Culture", "Histoire", "Bateau"],
+      tags: ["Rural", "Culture", "Histoire", "Plage"],
       mustSee: [
         { name: { fr: "Musée culturel de Kampong Ayer — exposition sur la vie aquatique", en: "Kampong Ayer Cultural Museum — exhibition on life on the water", es: "Museo cultural de Kampong Ayer — exposición sobre la vida acuática" }, wikipedia: "File:BN-bsb-kampong-ayer.jpg" },
         { name: { fr: "Traversée en water taxi — réseau de bateaux-taxis entre les villages", en: "Water taxi ride — network of boat taxis between the villages", es: "Travesía en taxi acuático — red de taxis acuáticos entre los pueblos" }, wikipedia: "File:Kampong Ayer 27 May 2023 34.jpg" },
@@ -107,7 +107,7 @@ export const BRUNEI = {
         es: "El parque nacional de Ulu Temburong es un santuario de bosque primario de 550 km² accesible únicamente en lancha rápida y longboat desde la capital, atravesando la Malasia oriental. Esta jungla milenaria, prácticamente intacta, alberga una biodiversidad extraordinaria: monos narigudos, gibones, pitones reticuladas y cientos de especies de aves. La pasarela aérea, que se eleva 60 metros sobre las copas de los árboles, ofrece una vista espectacular sobre la inmensidad de la selva tropical.",
       },
       wikipedia: "Ulu_Temburong_National_Park",
-      tags: ["Forêt tropicale", "Biodiversité", "Nature", "Canopée"],
+      tags: ["Nature"],
       mustSee: [
         { name: { fr: "Passerelle de la canopée — 60 m de hauteur sur la forêt primaire", en: "Canopy walkway — 60 m above the primary rainforest", es: "Pasarela de la canopea — 60 m de altura sobre el bosque primario" }, wikipedia: "File:Ulu Temburong Canopy Walk 2013 12.jpg" },
         { name: { fr: "Longboat sur la rivière — navigation en pirogue à moteur dans la jungle", en: "Longboat ride on the river — motorised canoe through the jungle", es: "Longboat por el río — navegación en piragua a motor por la jungla" }, wikipedia: "Ulu_Temburong_National_Park" },
@@ -125,7 +125,7 @@ export const BRUNEI = {
         es: "El Istana Nurul Iman es la residencia oficial del sultán de Brunéi y la mayor residencia real del mundo, con 1788 habitaciones, 257 baños y establos para 110 ponis de polo. Esta obra maestra mogol-malaya de cúpulas doradas suele estar cerrada al público, pero su parque exterior y las vistas desde el río siguen siendo accesibles. Durante la festividad del Hari Raya Aidilfitri, el sultán abre tradicionalmente el palacio a los habitantes y visitantes.",
       },
       wikipedia: "Istana_Nurul_Iman",
-      tags: ["Palais", "Royauté", "Architecture", "Record"],
+      tags: ["Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Vue depuis le fleuve — panorama du palais depuis un bateau", en: "View from the river — panorama of the palace by boat", es: "Vista desde el río — panorámica del palacio desde un barco" }, wikipedia: "File:Istana Nurul Iman's Heliport.jpg" },
         { name: { fr: "Dômes et minarets — architecture islamique à grande échelle", en: "Domes and minarets — large-scale Islamic architecture", es: "Cúpulas y minaretes — arquitectura islámica a gran escala" }, wikipedia: "File:1000200673.mp4-45579(1).jpg" },

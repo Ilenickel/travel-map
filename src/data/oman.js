@@ -75,7 +75,7 @@ export const OMAN = {
         es: "Capital limpia y ordenada, con la grandiosa mezquita del Sultán Qaboos (una de las más grandes del mundo), el zoco de Mutrah lleno de aromas y el paseo marítimo a lo largo del mar de Omán.",
       },
       wikipedia: "Muscat",
-      tags: ["Ville", "Architecture", "Culture", "Souks", "Histoire", "UNESCO", "Gastronomie"],
+      tags: ["Ville", "Architecture", "Culture", "Histoire", "UNESCO", "Gastronomie"],
       mustSee: [
         { name: { fr: "Grande Mosquée Sultan Qaboos", en: "Sultan Qaboos Grand Mosque", es: "Gran Mezquita del Sultán Qaboos" }, wikipedia: "Sultan_Qaboos_Grand_Mosque" },
         { name: { fr: "Souk Mutrah", en: "Mutrah Souk", es: "Zoco de Mutrah" }, wikipedia: "File:Muttrah (4).jpg" },
@@ -109,7 +109,7 @@ export const OMAN = {
         es: "Meseta montañosa a 2.000 m de altitud con microclimas únicos, terrazas de rosales cultivados (esencia de rosa mundialmente conocida) y pueblos encaramados.",
       },
       wikipedia: "File:Dschabal_Mischt_(Jebel_Misht,_Kamm-Berg),_Oman_-_Hadschar-Gebirge_01.jpg",
-      tags: ["Nature", "Randonnée", "Villages", "Altitude"],
+      tags: ["Nature", "Randonnée", "Rural", "Montagne"],
       mustSee: [
         { name: { fr: "Terasses de Wadi Ghul (Grand Canyon d'Oman)", en: "Wadi Ghul terraces (Oman's Grand Canyon)", es: "Terrazas de Wadi Ghul (el Gran Cañón de Omán)" }, wikipedia: "Jebel_Shams" },
         { name: { fr: "Village de Nizwa & souq", en: "Nizwa village & souq", es: "Pueblo de Nizwa y su zoco" }, wikipedia: "Nizwa" },
@@ -126,7 +126,7 @@ export const OMAN = {
         es: "Wadi Shab es uno de los cañones más bellos de Omán, con piscinas naturales turquesas y una cueva secreta oculta tras una cascada.",
       },
       wikipedia: "File:Wadi Oman.jpg",
-      tags: ["Nature", "Randonnée", "Mer"],
+      tags: ["Nature", "Randonnée", "Plage"],
       mustSee: [
         { name: { fr: "Baignade dans les piscines du Wadi Shab", en: "Swimming in Wadi Shab's pools", es: "Baño en las piscinas del Wadi Shab" }, wikipedia: "File:Tiwi, wadi shabt, 01.jpg" },
         { name: { fr: "Plage de Fins (tortues vertes)", en: "Fins Beach (green turtles)", es: "Playa de Fins (tortugas verdes)" }, wikipedia: "File:Ras Al Jinz turtle reserve (14746801408).jpg" },

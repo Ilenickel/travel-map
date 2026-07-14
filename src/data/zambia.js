@@ -94,7 +94,7 @@ export const ZAMBIA = {
         es: "Las cataratas Victoria son la mayor caída de agua del mundo (1708 m de ancho, 108 m de altura) — declaradas Patrimonio UNESCO y maravilla natural del mundo. En temporada seca (sept-oct) se puede nadar en la «Devil's Pool» al borde del precipicio. En temporada de lluvias, la nube de vapor se ve a 50 km. El acceso del lado zambiano permite recorrer el acantilado frente a las cataratas.",
       },
       wikipedia: "Victoria_Falls",
-      tags: ["Chutes", "UNESCO", "Incontournable", "Aventure", "Nature", "Randonnée"],
+      tags: ["Nature", "UNESCO", "Aventure", "Randonnée"],
       mustSee: [
         { name: "Victoria Falls", wikipedia: "File:Victoria Falls, Zimbabwe 01.jpg" },
         { name: { fr: "Promenade du bord du précipice côté zambien", en: "Cliffside walk on the Zambian side", es: "Paseo por el borde del precipicio del lado zambiano" }, wikipedia: "File:Mosi-oa-Tunya National Park, Zambia (48598581361).jpg" },
@@ -111,7 +111,7 @@ export const ZAMBIA = {
         es: "South Luangwa es la cuna del walking safari, inventado aquí por Norman Carr en 1950. Es el único parque africano donde se puede acercar a los animales a pie con un guía armado — leones, leopardos, elefantes a pocos metros. El valle del río Luangwa concentra una de las densidades de fauna más altas de África. Considerado por los puristas el mejor parque de África.",
       },
       wikipedia: "South_Luangwa_National_Park",
-      tags: ["Walking safari", "Léopards", "Éléphants", "Exclusif", "Safari"],
+      tags: ["Safari"],
       mustSee: [
         { name: { fr: "Safari nocturne — léopards et civettes en chasse", en: "Night safari — leopards and civets on the hunt", es: "Safari nocturno — leopardos y civetas cazando" }, wikipedia: "File:South Luangwa National Park animals 2022 16.png" },
         { name: { fr: "Rive de la Luangwa — hippopotames et crocodiles", en: "Luangwa riverbank — hippos and crocodiles", es: "Orilla del Luangwa — hipopótamos y cocodrilos" }, wikipedia: "File:South Luangwa National Park - 51865178097.jpg" },
@@ -128,7 +128,7 @@ export const ZAMBIA = {
         es: "Kafue es el parque más grande del África subsahariana (22 400 km²) — más grande que Bélgica. Menos conocido que Luangwa, ofrece paisajes variados (llanuras inundables de Busanga, bosques de miombo) y fauna abundante: leones, guepardos, licaones (perro salvaje africano en peligro de extinción), hipopótamos y sitatungas.",
       },
       wikipedia: "Kafue_National_Park",
-      tags: ["Safari", "Lycaons", "Immensité", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Plaines de Busanga — guépards et lions en saison sèche", en: "Busanga Plains — cheetahs and lions in the dry season", es: "Llanuras de Busanga — guepardos y leones en temporada seca" }, wikipedia: "Kafue_National_Park" },
         { name: { fr: "Lycaons (chiens sauvages) — espèce en danger critique", en: "African wild dogs — critically endangered species", es: "Licaones (perros salvajes) — especie en peligro crítico" }, wikipedia: "African_wild_dog" },
@@ -145,7 +145,7 @@ export const ZAMBIA = {
         es: "Lusaka es una capital animada con sus mercados (Soweto Market, el más grande de África central) y sus galerías de arte contemporáneo zambiano. El Lower Zambezi National Park, frente a Zimbabue, ofrece safaris en canoa por el Zambeze — remando entre elefantes que cruzan el río, una experiencia única en África.",
       },
       wikipedia: "File:Lusaka, capital city of Zambia.jpg",
-      tags: ["Ville", "Canoë", "Zambèze", "Éléphants", "Gastronomie", "Architecture", "Histoire"],
+      tags: ["Ville", "Aventure", "Nature", "Safari", "Gastronomie", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Safari en canoë sur le Zambèze — éléphants traversant le fleuve", en: "Canoe safari on the Zambezi — elephants crossing the river", es: "Safari en canoa por el Zambeze — elefantes cruzando el río" }, wikipedia: "Lower_Zambezi_National_Park" },
         { name: { fr: "Soweto Market Lusaka — artisanat et cuisine zambienne", en: "Soweto Market Lusaka — Zambian crafts and cuisine", es: "Soweto Market de Lusaka — artesanía y cocina zambiana" }, wikipedia: "File:Fast Food in Lusaka 10.jpg" },

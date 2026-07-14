@@ -198,7 +198,7 @@ export const ITALY = {
         es: "La Serenísima, construida sobre 118 islotes. Góndolas en los canales, la plaza de San Marcos, palacios góticos reflejados en el agua — una ciudad única en el mundo, mejor visitarla fuera de temporada.",
       },
       wikipedia: "Venice",
-      tags: ["UNESCO", "Architecture", "Romantisme", "Culture", "Histoire", "Ville"],
+      tags: ["UNESCO", "Architecture", "Culture", "Histoire", "Ville"],
       mustSee: [
         { name: { fr: "Place Saint-Marc", en: "St Mark's Square", es: "Plaza de San Marcos" }, wikipedia: "File:Piazza San Marco (Venice) at night-msu-2021-6449-.jpg" },
         { name: { fr: "Basilique Saint-Marc", en: "St Mark's Basilica", es: "Basílica de San Marcos" }, wikipedia: "St_Mark's_Basilica" },
@@ -216,7 +216,7 @@ export const ITALY = {
         es: "Acantilados espectaculares que se hunden en el Mediterráneo, pueblos coloridos aferrados a la roca, limones gigantes y limoncello. Capri, Positano y Ravello en el programa.",
       },
       wikipedia: "Amalfi_Coast",
-      tags: ["Paysage", "Mer", "UNESCO", "Gastronomie", "Plage", "Nature", "Randonnée"],
+      tags: ["Nature", "Plage", "UNESCO", "Gastronomie", "Randonnée"],
       mustSee: [
         { name: "Positano", wikipedia: "Positano" },
         { name: { fr: "Île de Capri", en: "Isle of Capri", es: "Isla de Capri" }, wikipedia: "Capri" },
@@ -234,7 +234,7 @@ export const ITALY = {
         es: "La isla más grande del Mediterráneo, cruce de civilizaciones. Templos griegos del Valle de los Templos, el Etna, cocina de influencias árabes, barrocas y griegas.",
       },
       wikipedia: "File:Sicily in 2025 12.jpg",
-      tags: ["Histoire", "Gastronomie", "Nature", "Mer", "UNESCO", "Plage", "Randonnée"],
+      tags: ["Histoire", "Gastronomie", "Nature", "Plage", "UNESCO", "Randonnée"],
       mustSee: [
         { name: { fr: "Vallée des Temples d'Agrigente", en: "Valley of the Temples, Agrigento", es: "Valle de los Templos de Agrigento" }, wikipedia: "File:Valle dei Templi, Agrigento, Sicilia 4.jpg" },
         { name: { fr: "Mont Etna", en: "Mount Etna", es: "Monte Etna" }, wikipedia: "Mount_Etna" },
@@ -289,7 +289,7 @@ export const ITALY = {
         es: "Nápoles, ciudad ardiente y auténtica, es la capital mundial de la pizza y una de las ciudades más antiguas de Europa. A 30 minutos, Pompeya revela una ciudad romana congelada en el año 79 d. C. por la erupción del Vesubio — el sitio arqueológico más impresionante del mundo. Frente a la costa, Capri y la Gruta Azul completan un programa excepcional.",
       },
       wikipedia: "Naples",
-      tags: ["Histoire", "Gastronomie", "UNESCO", "Culture", "Nature", "Mer", "Randonnée", "Ville"],
+      tags: ["Histoire", "Gastronomie", "UNESCO", "Culture", "Nature", "Plage", "Randonnée", "Ville"],
       mustSee: [
         { name: { fr: "Ruines de Pompéi — ville romaine figée par le Vésuve", en: "Ruins of Pompeii — Roman city frozen by Vesuvius", es: "Ruinas de Pompeya — ciudad romana congelada por el Vesubio" }, wikipedia: "File:Composition ruins Pompeii.jpg" },
         { name: { fr: "Mont Vésuve — volcan actif surplombant la baie de Naples", en: "Mount Vesuvius — active volcano overlooking the Bay of Naples", es: "Monte Vesubio — volcán activo sobre la bahía de Nápoles" }, wikipedia: "File:Mount Vesuvius Araucaria.jpg" },

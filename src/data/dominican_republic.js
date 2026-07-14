@@ -94,7 +94,7 @@ export const DOMINICAN_REPUBLIC = {
         es: "Punta Cana es el símbolo caribeño del todo incluido: 23 km de playa de cocoteros con arena blanca, agua turquesa a 28°C todo el año y una de las mayores ofertas hoteleras del mundo. La cercana Isla Saona es una excursión clásica imprescindible.",
       },
       wikipedia: "Punta_Cana",
-      tags: ["Plage", "All-inclusive", "Cocotiers", "Mer"],
+      tags: ["Plage", "Luxe", "Nature"],
       mustSee: [
         { name: { fr: "Plage Bávaro (23 km) — cocotiers & sable blanc", en: "Bávaro Beach (23 km) — palm trees & white sand", es: "Playa Bávaro (23 km) — cocoteros y arena blanca" }, wikipedia: "File:Bavaro - 23 octobre 2011.JPG" },
         { name: { fr: "Isla Saona — plage déserte en catamaran", en: "Saona Island — deserted beach by catamaran", es: "Isla Saona — playa desierta en catamarán" }, wikipedia: "Saona_Island" },
@@ -112,7 +112,7 @@ export const DOMINICAN_REPUBLIC = {
         es: "La Zona Colonial de Santo Domingo, declarada Patrimonio UNESCO, es la primera ciudad colonial europea fundada en las Américas (1498). La Catedral Primada (la más antigua de las Américas), el Palacio de Diego Colón y la Calle El Conde forman un museo vivo de la historia hispánica.",
       },
       wikipedia: "Santo_Domingo",
-      tags: ["UNESCO", "Histoire", "Colonial", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Zona Colonial — Calle el Conde (piétonne)", en: "Colonial Zone — Calle El Conde (pedestrian street)", es: "Zona Colonial — Calle El Conde (peatonal)" }, wikipedia: "File:Aerial view Ciudad Colonial Santo Domingo 09 2019 0067.jpg" },
         { name: { fr: "Alcázar de Colón (palais de Diego Colomb)", en: "Alcázar de Colón (Diego Columbus's palace)", es: "Alcázar de Colón (palacio de Diego Colón)" }, wikipedia: "Alcázar_de_Colón" },
@@ -130,7 +130,7 @@ export const DOMINICAN_REPUBLIC = {
         es: "La península de Samaná es uno de los destinos más bellos del Caribe: las ballenas jorobadas (enero–marzo) llegan aquí en gran número para reproducirse, la cascada El Limón se visita a caballo por la jungla tropical, y Cayo Levantado (la isla Bacardí) es un paraíso blanco.",
       },
       wikipedia: "File:Samaná Pueblo Principe 2.jpg",
-      tags: ["Baleines", "Nature", "Cascade", "Île"],
+      tags: ["Safari", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Baleines à bosse (jan–mars) — observation en bateau", en: "Humpback whales (Jan–Mar) — boat watching", es: "Ballenas jorobadas (ene–mar) — avistamiento en barco" }, wikipedia: "Humpback_whale" },
         { name: { fr: "Cascada El Limón — à cheval dans la jungle", en: "El Limón waterfall — horseback ride through the jungle", es: "Cascada El Limón — a caballo por la jungla" }, wikipedia: "File:El Limon.JPG" },
@@ -148,7 +148,7 @@ export const DOMINICAN_REPUBLIC = {
         es: "Las Terrenas es apodada la «Saint-Tropez del Caribe»: una comunidad cosmopolita franco-ítalo-dominicana, playas salvajes (Playa Bonita), una gastronomía sorprendente y un ambiente relajado sin los excesos del todo incluido. Ideal para viajeros independientes.",
       },
       wikipedia: "File:Las-Terrenas.jpg",
-      tags: ["Plage", "Gastronomie", "Indépendant", "Cosmopolite"],
+      tags: ["Plage", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Playa Bonita — la plus belle plage de Las Terrenas", en: "Playa Bonita — Las Terrenas' most beautiful beach", es: "Playa Bonita — la playa más bonita de Las Terrenas" }, wikipedia: "File:Las Terrenas beach 7.JPG" },
         { name: { fr: "Plage aux Champignons — formations coralliennes", en: "Mushroom Beach — coral formations", es: "Playa de los Hongos — formaciones coralinas" }, wikipedia: "File:Photo LFILT.jpg" },

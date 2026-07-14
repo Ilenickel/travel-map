@@ -94,7 +94,7 @@ export const SOUTH_AFRICA = {
         es: "Uno de los parques más grandes de África (20.000 km²), donde viven en libertad los Big Five: león, leopardo, elefante, rinoceronte, búfalo. Los safaris en 4x4 guiados o por libre desde los campamentos oficiales son una experiencia inolvidable.",
       },
       wikipedia: "Kruger_National_Park",
-      tags: ["Safari", "Big Five", "Faune", "Nature", "Histoire"],
+      tags: ["Safari", "Nature", "Histoire"],
       mustSee: [
         { name: { fr: "Lion & Léopard — Big Five", en: "Lion & Leopard — Big Five", es: "León y leopardo — Big Five" }, wikipedia: "File:Big Five Game.jpg" },
         { name: { fr: "Rhinocéros blanc & noir", en: "White & black rhinoceros", es: "Rinoceronte blanco y negro" }, wikipedia: "White_rhinoceros" },
@@ -130,7 +130,7 @@ export const SOUTH_AFRICA = {
         es: "A 45 km de Ciudad del Cabo, los valles de Stellenbosch y Franschhoek producen algunos de los mejores vinos del hemisferio sur: pinotage, chenin blanc, cabernet sauvignon. Pueblos con casas Cape Dutch y restaurantes gastronómicos.",
       },
       wikipedia: "Stellenbosch",
-      tags: ["Vin", "Gastronomie", "Architecture", "Nature"],
+      tags: ["Gastronomie", "Architecture", "Nature"],
       mustSee: [
         { name: { fr: "Vignobles de Franschhoek", en: "Franschhoek vineyards", es: "Viñedos de Franschhoek" }, wikipedia: "Franschhoek" },
         { name: { fr: "Dégustation à Stellenbosch", en: "Wine tasting in Stellenbosch", es: "Cata de vinos en Stellenbosch" }, wikipedia: "Stellenbosch" },
@@ -147,7 +147,7 @@ export const SOUTH_AFRICA = {
         es: "La Garden Route es una de las carreteras costeras más espectaculares del mundo: la laguna turquesa de Knysna, Tsitsikamma con sus bosques milenarios y sus actividades al aire libre, y las playas salvajes de Hermanus (ballenas de sept. a nov.).",
       },
       wikipedia: "File:Garden_Route,_Eastern_Cape,_South_Africa_(20485656206).jpg",
-      tags: ["Route", "Nature", "Plage", "Aventure"],
+      tags: ["Nature", "Plage", "Aventure"],
       mustSee: [
         { name: { fr: "Knysna — lagon & forêts", en: "Knysna — lagoon & forests", es: "Knysna — laguna y bosques" }, wikipedia: "Knysna" },
         { name: { fr: "Tsitsikamma — pont de singe & kayak", en: "Tsitsikamma — monkey bridge & kayaking", es: "Tsitsikamma — puente colgante y kayak" }, wikipedia: "Tsitsikamma_National_Park" },
@@ -165,7 +165,7 @@ export const SOUTH_AFRICA = {
         es: "La «Montaña del Dragón» es el macizo más espectacular del África austral, con acantilados vertiginosos de 3.000 m, pinturas rupestres de los san (bosquimanos) y rutas de senderismo excepcionales.",
       },
       wikipedia: "Drakensberg",
-      tags: ["Randonnée", "Nature", "Art rupestre", "UNESCO"],
+      tags: ["Randonnée", "Nature", "Histoire", "UNESCO"],
       mustSee: [
         { name: { fr: "Amphithéâtre — falaise de 5 km", en: "Amphitheatre — 5 km cliff", es: "Anfiteatro — acantilado de 5 km" }, wikipedia: "Amphitheatre_(Drakensberg)" },
         { name: "Cathkin Peak", wikipedia: "Drakensberg" },

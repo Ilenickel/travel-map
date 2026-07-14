@@ -72,7 +72,7 @@ export const MOLDOVA = {
         es: "Chisináu es una capital dinámica cuyo centro revela amplios bulevares heredados del urbanismo soviético junto a parques verdes y cafés animados. La ciudad alberga interesantes museos dedicados a la historia y las tradiciones moldavas. Su vida nocturna y su gastronomía local la convierten en una parada agradable a pesar de una arquitectura a veces austera.",
       },
       wikipedia: "Chișinău",
-      tags: ["Ville", "Architecture soviétique", "Gastronomie", "Culture", "Architecture"],
+      tags: ["Ville", "Histoire", "Gastronomie", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Arc de Triomphe — monument néoclassique au cœur du centre-ville", en: "Triumphal Arch — neoclassical monument at the heart of the city centre", es: "Arco del Triunfo — monumento neoclásico en el corazón del centro" }, wikipedia: "Triumphal_Arch,_Chișinău" },
         { name: { fr: "Cathédrale de la Nativité — cathédrale orthodoxe du XIXe siècle", en: "Nativity Cathedral — 19th-century Orthodox cathedral", es: "Catedral de la Natividad — catedral ortodoxa del siglo XIX" }, wikipedia: "File:Catedral_de_la_Natividad,_Chisináu,_Moldavia,_2023-11-03,_DD_36-38_HDR.jpg" },
@@ -90,7 +90,7 @@ export const MOLDOVA = {
         es: "Cricova y Mileștii Mici albergan dos de las bodegas subterráneas más grandes del mundo, cuyas galerías se extienden a lo largo de decenas de kilómetros bajo el suelo moldavo. Mileștii Mici ostenta el récord Guinness a la mayor colección de vinos del mundo, con más de 1,5 millones de botellas. Recorrer estas catacumbas vinícolas en coche o en bicicleta es una experiencia única.",
       },
       wikipedia: "File:Vinoteca Naţională a Combinatului de vinuri Cricova S.A.jpg",
-      tags: ["Vin", "Caves", "Insolite", "Gastronomie"],
+      tags: ["Gastronomie"],
       mustSee: [
         { name: { fr: "Caves de Cricova — 120 km de galeries souterraines à 80 m de profondeur", en: "Cricova Cellars — 120 km of underground galleries at 80 m depth", es: "Bodegas de Cricova — 120 km de galerías subterráneas a 80 m de profundidad" }, wikipedia: "File:Vinoteca Naţională a Combinatului de vinuri Cricova S.A.jpg" },
         { name: { fr: "Mileștii Mici — record mondial de la plus grande cave à vin", en: "Mileștii Mici — world record for the largest wine cellar", es: "Mileștii Mici — récord mundial de la bodega más grande" }, wikipedia: "Mileștii_Mici" },
@@ -107,7 +107,7 @@ export const MOLDOVA = {
         es: "Orheiul Vechi es un complejo arqueológico y natural excepcional donde un monasterio rupestre del siglo XIII está excavado en los acantilados calizos que dominan el río Răut. El sitio combina restos dacios, getas, mongoles y moldavos en un paisaje salvaje y preservado. Es uno de los enclaves más pintorescos y auténticos de Moldavia.",
       },
       wikipedia: "File:Cetățuia „Orheiul Vechi”.jpg",
-      tags: ["Monastère", "Archéologie", "Nature", "Paysage", "UNESCO", "Histoire"],
+      tags: ["Spiritualité", "Histoire", "Nature", "UNESCO"],
       mustSee: [
         { name: { fr: "Monastère rupestre — église creusée dans la falaise calcaire", en: "Cave Monastery — church carved into the limestone cliff", es: "Monasterio rupestre — iglesia excavada en el acantilado calizo" }, wikipedia: "File:Orhei Vechi 03.JPG" },
         { name: { fr: "Musée d'histoire et d'ethnographie d'Orhei", en: "Orhei Museum of History and Ethnography", es: "Museo de historia y etnografía de Orhei" }, wikipedia: "File:Оргеев,_памятник_Василию_Лупу_Monumentul_lui_Vasile_Lupu_din_Orhei_Vasile_Lupu_monument_in_Orhei_(45922280011).jpg" },
@@ -125,7 +125,7 @@ export const MOLDOVA = {
         es: "Transnistria es una república autoproclamada sin reconocimiento internacional, encajada entre Moldavia y Ucrania, que ha preservado una atmósfera soviética única con sus monumentos a Lenin y su administración independiente. La entrada es posible con pasaporte europeo, pero la situación sigue siendo compleja en el plano jurídico y político. Este enclave fascina a los viajeros en busca de experiencias fuera de lo común.",
       },
       wikipedia: "File:Transnistria entrance in Hrustovaia.jpg",
-      tags: ["Insolite", "Histoire soviétique", "Frontière", "Aventure"],
+      tags: ["Histoire", "Aventure"],
       mustSee: [
         { name: { fr: "Tiraspol — capitale autoproclamée de la Transnistrie", en: "Tiraspol — self-proclaimed capital of Transnistria", es: "Tiraspol — capital autoproclamada de Transnistria" }, wikipedia: "Tiraspol" },
         { name: { fr: "Forteresse de Tighina (Bender) — forteresse ottomane sur le Dniestr", en: "Tighina (Bender) Fortress — Ottoman fortress on the Dniester", es: "Fortaleza de Tighina (Bender) — fortaleza otomana en el Dniéster" }, wikipedia: "Tighina_Fortress" },

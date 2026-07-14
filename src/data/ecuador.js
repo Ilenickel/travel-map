@@ -115,7 +115,7 @@ export const ECUADOR = {
         es: "Las islas Galápagos son un laboratorio natural único que inspiró a Darwin. Iguanas marinas, tortugas gigantes, lobos marinos, pingüinos ecuatoriales y piqueros de patas azules viven aquí sin temer al hombre. El buceo y el esnórquel están entre los mejores del mundo.",
       },
       wikipedia: "File:Lobo_marino_(Zalophus_californianus_wollebaeki),_Punta_Pitt,_isla_de_San_Cristóbal,_islas_Galápagos,_Ecuador,_2015-07-24,_DD_11.JPG",
-      tags: ["Faune", "Plongée", "Darwin", "UNESCO", "Safari", "Plage", "Nature"],
+      tags: ["Safari", "Plage", "Nature", "UNESCO"],
       mustSee: [
         { name: "Isla Santa Cruz", wikipedia: "File:Costa_de_isla_Santa_Cruz,_islas_Galápagos,_Ecuador,_2015-07-26,_DD_48.JPG" },
         { name: { fr: "Isla Española (fous à pieds bleus)", en: "Española Island (blue-footed boobies)", es: "Isla Española (piqueros de patas azules)" }, wikipedia: "File:Isla Espanola - Punta Suarez - panoramio.jpg" },
@@ -132,7 +132,7 @@ export const ECUADOR = {
         es: "Quito es la capital más alta del mundo (2.850 m), con un centro histórico notablemente conservado, el primer sitio inscrito como Patrimonio de la Humanidad UNESCO en 1978. Sus iglesias doradas y plazas coloniales son impresionantes.",
       },
       wikipedia: "Quito",
-      tags: ["Colonial", "UNESCO", "Architecture", "Altitude", "Ville", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Montagne", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Basilique du Vœu National", en: "Basilica of the National Vow", es: "Basílica del Voto Nacional" }, wikipedia: "File:Basilica of the National Vow, Quito, Ecuador.JPG" },
         { name: "La Compañía de Jesús", wikipedia: "File:Iglesia_de_La_Compañía,_Quito,_Ecuador,_2015-07-22,_DD_149-151_HDR.JPG" },
@@ -150,7 +150,7 @@ export const ECUADOR = {
         es: "La selva ecuatoriana es una de las más ricas en biodiversidad del mundo. Desde Tena o Coca, los ecolodges permiten explorar el bosque primario, conocer comunidades kichwa y observar una fauna extraordinaria.",
       },
       wikipedia: "File:The Amazon Basin, Brazil.jpg",
-      tags: ["Jungle", "Faune", "Culture", "Nature", "Randonnée"],
+      tags: ["Nature", "Safari", "Culture", "Randonnée"],
       mustSee: [
         { name: { fr: "Parc national Yasuní", en: "Yasuní National Park", es: "Parque nacional Yasuní" }, wikipedia: "File:Estacion_Cientifica_Yasuni_(ECY)_Yasuni_Research_Station.jpg" },
         { name: { fr: "Tena (kayak)", en: "Tena (kayaking)", es: "Tena (kayak)" }, wikipedia: "File:Capuchin monkeys in Tena, Ecuador.JPG" },
@@ -167,7 +167,7 @@ export const ECUADOR = {
         es: "La Avenida de los Volcanes es una hilera de cumbres andinas que incluye el Cotopaxi (5.897 m) y el Chimborazo (6.268 m, el punto más cercano al sol). Senderismo, ascensos y paisajes grandiosos en el programa.",
       },
       wikipedia: "File:Cotopaxi (37399959476).jpg",
-      tags: ["Volcans", "Randonnée", "Andes", "Aventure"],
+      tags: ["Nature", "Randonnée", "Montagne", "Aventure"],
       mustSee: [
         { name: "Cotopaxi", wikipedia: "Cotopaxi" },
         { name: "Chimborazo", wikipedia: "Chimborazo" },

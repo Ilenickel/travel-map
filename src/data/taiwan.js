@@ -123,7 +123,7 @@ export const TAIWAN = {
         es: "Cañón de mármol de paredes vertiginosas, uno de los enclaves naturales más impresionantes de Asia. Rutas por la jungla, cascadas y templos suspendidos.",
       },
       wikipedia: "File:Taroko Gorge Huang Chung Yu 01.jpg",
-      tags: ["Nature", "Randonnée", "Canyon", "Montagne"],
+      tags: ["Nature", "Randonnée", "Montagne"],
       mustSee: [
         { name: { fr: "Gorges de Taroko", en: "Taroko Gorge", es: "Garganta de Taroko" }, wikipedia: "File:Taroko Gorge Huang Chung Yu 01.jpg" },
         { name: { fr: "Temple Changchun", en: "Changchun Temple", es: "Templo Changchun" }, wikipedia: "File:Chang Chun Shrine amk.jpg" },
@@ -140,7 +140,7 @@ export const TAIWAN = {
         es: "Pueblo de montaña encaramado en acantilados, supuesta inspiración de la película El viaje de Chihiro. Callejuelas empinadas, faroles rojos, casas de té con vistas al mar.",
       },
       wikipedia: "File:Jiufen Buildings 1.jpg",
-      tags: ["Paysage", "Culture", "Gastronomie", "Vue"],
+      tags: ["Nature", "Culture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Rue Jishan — ruelles aux lanternes", en: "Jishan Street — lantern-lit alleys", es: "Calle Jishan — callejuelas iluminadas con faroles" }, wikipedia: "File:Jiufen at night lantern glow.jpg" },
         { name: "Qingyun Temple", wikipedia: "File:Jiufen Qingyun Temple, Taiwan, 2024.jpg" },

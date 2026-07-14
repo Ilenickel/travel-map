@@ -91,7 +91,7 @@ export const EQUATORIAL_GUINEA = {
         es: "Malabo es la capital de Guinea Ecuatorial, encaramada en las laderas del volcán Pico Basilé al norte de la isla de Bioko. Su centro histórico colonial español, con su catedral neogótica y sus edificios coloridos, es uno de los mejor conservados del golfo de Guinea. Rodeada de paisajes volcánicos y bosques densos, la ciudad es una base perfecta para explorar la isla.",
       },
       wikipedia: "Malabo",
-      tags: ["Ville", "Architecture", "Histoire", "Volcan"],
+      tags: ["Ville", "Architecture", "Histoire", "Nature"],
       mustSee: [
         { name: { fr: "Cathédrale de la Conception Immaculée — néo-gothique coloniale espagnole", en: "Cathedral of the Immaculate Conception — Spanish colonial neo-Gothic", es: "Catedral de la Inmaculada Concepción — neogótica colonial española" }, wikipedia: "File:Catedral_Católica_de_la_Inmaculada_Concepción,_Fort_Wayne,_Indiana,_Estados_Unidos,_2012-11-12,_DD_01.jpg" },
         { name: { fr: "Palacio de los Capitanes Generales — architecture coloniale", en: "Palacio de los Capitanes Generales — colonial architecture", es: "Palacio de los Capitanes Generales — arquitectura colonial" }, wikipedia: "File:Habana - Salon del Palacio de los Capitanes Generales.jpg" },
@@ -109,7 +109,7 @@ export const EQUATORIAL_GUINEA = {
         es: "El sur de la isla de Bioko es una zona de bosque tropical primario entre las mejor conservadas del golfo de Guinea, con cascadas espectaculares y playas de anidación de tortugas marinas. Las playas de Arena Blanca y Moraka acogen a cientos de tortugas laúd y tortugas gigantes entre octubre y marzo. La zona también alberga primates endémicos como el drill y el colobo rojo de Bioko.",
       },
       wikipedia: "File:Isla_De_Bioko_-_Fernando_Poo_-_Ecuatorial_Guinea_-_panoramio.jpg",
-      tags: ["Tortues marines", "Forêt", "Cascades", "Plages"],
+      tags: ["Safari", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Plage d'Arena Blanca — ponte des tortues marines (Oct–Mar)", en: "Arena Blanca Beach — sea turtle nesting season (Oct–Mar)", es: "Playa Arena Blanca — anidación de tortugas marinas (oct–mar)" }, wikipedia: "File:Arena Blanca beach, pirogues 2.jpg" },
         { name: { fr: "Cascades de Moca — chutes spectaculaires en forêt dense", en: "Moca Waterfalls — spectacular falls in dense rainforest", es: "Cascadas de Moca — caídas espectaculares en bosque denso" }, wikipedia: "File:Ureca, Bioko Island Equatorial Guinea.jpg" },
@@ -126,7 +126,7 @@ export const EQUATORIAL_GUINEA = {
         es: "Monte Alén es el principal parque nacional de la parte continental de Guinea Ecuatorial, que abarca bosques tropicales densos y colinas de más de 1.000 metros. Alberga gorilas de llanura occidental, chimpancés, elefantes de bosque y una biodiversidad excepcional relativamente bien conservada. El lago Atok, en el corazón del parque, es una joya natural poco conocida.",
       },
       wikipedia: "File:Nationalpark Monte Alén.jpg",
-      tags: ["Gorilles", "Forêt", "Safari", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Trekking gorilles des plaines occidentales", en: "Western lowland gorilla trekking", es: "Trekking de gorilas de llanura occidental" }, wikipedia: "Western_lowland_gorilla" },
         { name: { fr: "Lac Atok — lac naturel en forêt dense", en: "Lake Atok — natural lake in dense forest", es: "Lago Atok — lago natural en bosque denso" }, wikipedia: "File:Nationalpark Monte Alén.jpg" },
@@ -144,7 +144,7 @@ export const EQUATORIAL_GUINEA = {
         es: "Bata es la ciudad más grande de Guinea Ecuatorial y la capital económica de la parte continental, con un frente marítimo animado y una arquitectura moderna financiada por los ingresos del petróleo. El paseo marítimo ofrece vistas al golfo de Guinea y numerosos restaurantes de marisco. También es la puerta de entrada al parque nacional de Monte Alén.",
       },
       wikipedia: "Bata,_Equatorial_Guinea",
-      tags: ["Ville", "Mer", "Architecture", "Gastronomie"],
+      tags: ["Ville", "Plage", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Malecón de Bata — promenade bord de mer", en: "Bata Malecón — seafront promenade", es: "Malecón de Bata — paseo marítimo" }, wikipedia: "File:UNED-GQ_IMG_6305_(6510146963).jpg" },
         { name: { fr: "Cathédrale de Bata — architecture contemporaine", en: "Bata Cathedral — contemporary architecture", es: "Catedral de Bata — arquitectura contemporánea" }, wikipedia: "File:Bata,_2015-02_-i---i-_(15890592774).jpg" },

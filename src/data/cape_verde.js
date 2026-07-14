@@ -94,7 +94,7 @@ export const CAPE_VERDE = {
         es: "La isla de Fogo está dominada por el Pico do Fogo (2829 m), un volcán activo cuya última erupción fue en 2014–2015. Dentro de la caldera (Chã das Caldeiras), un pueblo de 1000 personas cultiva vino y café en la lava, rodeado por las paredes de la caldera — uno de los paisajes más impactantes de África.",
       },
       wikipedia: "File:Fogo, Cape Verde Islands.jpg",
-      tags: ["Volcan", "Randonnée", "Unique", "Vin"],
+      tags: ["Nature", "Randonnée", "Gastronomie"],
       mustSee: [
         { name: { fr: "Ascension Pico do Fogo (2 829 m, 5h)", en: "Pico do Fogo ascent (2,829 m, 5h)", es: "Ascenso al Pico do Fogo (2829 m, 5h)" }, wikipedia: "Pico_do_Fogo" },
         { name: { fr: "Village Chã das Caldeiras dans la lave", en: "Chã das Caldeiras village in the lava", es: "Pueblo de Chã das Caldeiras en la lava" }, wikipedia: "Chã_das_Caldeiras" },
@@ -111,7 +111,7 @@ export const CAPE_VERDE = {
         es: "Mindelo es la capital cultural de Cabo Verde: cuna de la morna (música melancólica de Cesária Évora, declarada UNESCO), un colorido puerto colonial de edificios portugueses, y sede del Carnaval de Mindelo (febrero) — el más espectacular de África. Una ciudad que vibra de verdad.",
       },
       wikipedia: "Mindelo",
-      tags: ["Culture", "Musique", "Carnaval", "Port"],
+      tags: ["Culture", "Plage"],
       mustSee: [
         { name: { fr: "Carnaval de Mindelo (février) — le plus grand d'Afrique", en: "Mindelo Carnival (February) — the biggest in Africa", es: "Carnaval de Mindelo (febrero) — el más grande de África" }, wikipedia: "File:קרנבל_מינדלו_באי_סאו_ויסנטה_באיי_כף_ורדה_פברואר_2023_21.jpg" },
         { name: { fr: "Morna — héritage de Cesária Évora (UNESCO)", en: "Morna — Cesária Évora's legacy (UNESCO)", es: "Morna — legado de Cesária Évora (UNESCO)" }, wikipedia: "Morna_(music)" },
@@ -129,7 +129,7 @@ export const CAPE_VERDE = {
         es: "Sal es la isla más turística de Cabo Verde: sus vientos constantes y sus aguas poco profundas la convierten en un paraíso mundial del kitesurf y el windsurf. Pedra de Lume, un antiguo cráter volcánico lleno de agua salada, permite flotar como en el mar Muerto. Santa Maria es la playa más concurrida.",
       },
       wikipedia: "File:Sal, Cape Verde Islands.jpeg",
-      tags: ["Kitesurf", "Plage", "Salines", "Sports nautiques"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Kitesurf Kite Beach Santa Maria (vent constant)", en: "Kitesurfing at Kite Beach Santa Maria (steady wind)", es: "Kitesurf en Kite Beach Santa Maria (viento constante)" }, wikipedia: "Kiteboarding" },
         { name: { fr: "Pedra de Lume — cratère volcanique salin (flottaison)", en: "Pedra de Lume — salty volcanic crater (floating)", es: "Pedra de Lume — cráter volcánico salino (flotación)" }, wikipedia: "Pedra_de_Lume" },
@@ -146,7 +146,7 @@ export const CAPE_VERDE = {
         es: "Santo Antão es la más grande y verde de las islas de Cabo Verde: sus valles tropicales (Paúl, Ribeira Grande) contrastan con crestas áridas y acantilados sobre el Atlántico. La caminata de Cova a la playa de Ponta do Sol (5h) es una de las más bellas de África.",
       },
       wikipedia: "File:Coastline Santo Antao.JPG",
-      tags: ["Randonnée", "Nature", "Vallées", "Montagne"],
+      tags: ["Randonnée", "Nature", "Montagne"],
       mustSee: [
         { name: { fr: "Vallée de Paul — randonnée tropicale dans les bananiers", en: "Paul Valley — tropical hike through banana groves", es: "Valle de Paul — senderismo tropical entre bananeras" }, wikipedia: "File:Santo Antão, Cabo Verde 2017-04 --3.jpg" },
         { name: { fr: "Trek Cova–Ponta do Sol (falaises atlantiques, 5h)", en: "Cova–Ponta do Sol trek (Atlantic cliffs, 5h)", es: "Trek Cova–Ponta do Sol (acantilados atlánticos, 5h)" }, wikipedia: "Santo_Antão,_Cape_Verde" },

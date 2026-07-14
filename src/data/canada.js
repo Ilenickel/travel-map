@@ -142,7 +142,7 @@ export const CANADA = {
         es: "El parque nacional de Banff es uno de los más bellos del mundo: lagos de aguas turquesa (Lake Louise, Moraine Lake), glaciares, uapitíes y osos grizzly en paisajes de postal.",
       },
       wikipedia: "Banff_National_Park",
-      tags: ["Nature", "Randonnée", "Ski", "Faune"],
+      tags: ["Nature", "Randonnée", "Ski", "Safari"],
       mustSee: [
         { name: { fr: "Lake Louise — lac turquoise", en: "Lake Louise — turquoise lake", es: "Lake Louise — lago turquesa" }, wikipedia: "Lake_Louise,_Alberta" },
         { name: { fr: "Lac Moraine — vallée des 10 Sommets", en: "Moraine Lake — Valley of the Ten Peaks", es: "Lago Moraine — valle de los 10 Picos" }, wikipedia: "Moraine_Lake" },
@@ -196,7 +196,7 @@ export const CANADA = {
         es: "La última frontera: auroras boreales sobre Whitehorse, parques nacionales donde viven osos polares y caribúes, la carretera Dempster hacia el círculo ártico. Para los más aventureros.",
       },
       wikipedia: "File:Cañón Miles, Yukón, Canadá, 2017-08-26, DD 130-132 PAN.jpg",
-      tags: ["Aventure", "Aurores boréales", "Nature", "Faune", "Randonnée"],
+      tags: ["Aventure", "Nature", "Safari", "Randonnée"],
       mustSee: [
         { name: { fr: "Aurores boréales à Whitehorse", en: "Northern lights in Whitehorse", es: "Auroras boreales en Whitehorse" }, wikipedia: "File:Frederic Edwin Church - Aurora Borealis - Google Art Project.jpg" },
         { name: { fr: "Parc national Kluane (UNESCO)", en: "Kluane National Park (UNESCO)", es: "Parque nacional Kluane (UNESCO)" }, wikipedia: "Kluane_National_Park_and_Reserve" },

@@ -94,7 +94,7 @@ export const DENMARK = {
         es: "Copenhague es elegida regularmente la ciudad más apta para bicicletas del mundo (400 km de carriles bici). Nyhavn, con sus casas coloridas del siglo XVII a orillas del agua, es la imagen de la ciudad. La Sirenita (escultura de Andersen), las callejuelas de Christiania (comuna libre) y la escena gastronómica (Noma, Geranium, Kadeau) hacen de Copenhague una capital europea de primer nivel.",
       },
       wikipedia: "Copenhagen",
-      tags: ["Vélo", "Design", "Gastronomie", "Canaux", "Ville", "Architecture"],
+      tags: ["Aventure", "Architecture", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Nyhavn — maisons colorées et bateaux historiques", en: "Nyhavn — colourful houses and historic boats", es: "Nyhavn — casas coloridas y barcos históricos" }, wikipedia: "Nyhavn" },
         { name: { fr: "Tivoli Gardens — parc d'attractions depuis 1843", en: "Tivoli Gardens — amusement park since 1843", es: "Tivoli Gardens — parque de atracciones desde 1843" }, wikipedia: "File:Tivoli Lake Parterrehaven.jpg" },
@@ -112,7 +112,7 @@ export const DENMARK = {
         es: "El castillo de Kronborg en Helsingør (a 45 min en tren de Copenhague) está declarado UNESCO: es el castillo de Elsinor de la obra de Shakespeare 'Hamlet'. Construido en 1574, controla el estrecho de Øresund entre Dinamarca y Suecia. Sus mazmorras albergan la estatua del legendario vikingo Holger Danske, dormido hasta el día en que Dinamarca lo necesite.",
       },
       wikipedia: "Kronborg",
-      tags: ["Château", "Shakespeare", "UNESCO", "Histoire"],
+      tags: ["Architecture", "Culture", "UNESCO", "Histoire"],
       mustSee: [
         { name: { fr: "Château de Kronborg — décor de Hamlet (UNESCO)", en: "Kronborg Castle — the setting of Hamlet (UNESCO)", es: "Castillo de Kronborg — escenario de Hamlet (UNESCO)" }, wikipedia: "Kronborg" },
         { name: { fr: "Donjons avec la statue de Holger Danske", en: "Casemates with the statue of Holger Danske", es: "Mazmorras con la estatua de Holger Danske" }, wikipedia: "File:Holger Danske, Kronborg 2023.jpg" },
@@ -130,7 +130,7 @@ export const DENMARK = {
         es: "Billund alberga el Legoland original (creado en 1968), el mayor parque Lego del mundo. Pero Jutlandia guarda muchos otros tesoros: las dunas de Råbjerg Mile (la duna migratoria), las playas salvajes del mar del Norte y los túmulos vikingos de Jelling (runas reales del siglo X, UNESCO), la cuna del cristianismo danés.",
       },
       wikipedia: "File:Jutland Street - geograph.org.uk - 7939998.jpg",
-      tags: ["Legoland", "Dunes", "UNESCO", "Plage", "Nature"],
+      tags: ["Famille", "Nature", "UNESCO", "Plage"],
       mustSee: [
         { name: { fr: "Legoland Billund — le parc Lego original (depuis 1968)", en: "Legoland Billund — the original Lego park (since 1968)", es: "Legoland Billund — el parque Lego original (desde 1968)" }, wikipedia: "File:LegoBillundTowerView.jpg" },
         { name: { fr: "Tumulus de Jelling — runes royales du Xe siècle (UNESCO)", en: "Jelling burial mounds — 10th-century royal runestones (UNESCO)", es: "Túmulos de Jelling — runas reales del siglo X (UNESCO)" }, wikipedia: "File:Jelling, cemetery July 2015.jpg" },
@@ -148,7 +148,7 @@ export const DENMARK = {
         es: "Bornholm es una isla danesa en el mar Báltico (más cerca de Suecia y Polonia que de Dinamarca): sus roundkirker (iglesias-fortaleza redondas del siglo XII, únicas en Europa), sus ahumaderos de arenque de Hasle y Nexø, sus playas de arena blanca y sus rocas de granito la convierten en la joya oculta de Escandinavia.",
       },
       wikipedia: "Bornholm",
-      tags: ["Île", "Fumoirs", "Médiéval", "Baltique", "Nature", "Plage"],
+      tags: ["Plage", "Histoire", "Nature"],
       mustSee: [
         { name: { fr: "Roundkirker (églises rondes forteresses) — uniques en Europe", en: "Roundkirker (round fortress churches) — unique in Europe", es: "Roundkirker (iglesias-fortaleza redondas) — únicas en Europa" }, wikipedia: "File:Nylars Round Church on Bornholm.jpg" },
         { name: { fr: "Rocher de Hammershus — ruines de château le plus grand de Scandinavie", en: "Hammershus — the ruins of Scandinavia's largest castle", es: "Roca de Hammershus — ruinas del castillo más grande de Escandinavia" }, wikipedia: "File:Bornholm Hammershus 01.jpg" },

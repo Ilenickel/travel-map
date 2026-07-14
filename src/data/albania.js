@@ -94,7 +94,7 @@ export const ALBANIA = {
         es: "Berat (UNESCO) es una de las ciudades otomanas mejor conservadas de los Balcanes: sus casas blancas con cientos de ventanas idénticas se escalonan en la colina bajo la ciudadela medieval del siglo XIII. El barrio de Mangalem (lado musulmán) y Gorica (lado cristiano) se enfrentan a ambos lados del río Osum. Un museo vivo de la arquitectura otomana.",
       },
       wikipedia: "Berat",
-      tags: ["UNESCO", "Ottoman", "Citadelle", "Fenêtres", "Histoire", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Citadelle de Berat (Kalaja) — habitée depuis le IVe s. av. J.-C.", en: "Berat Citadel (Kalaja) — inhabited since the 4th century BC", es: "Ciudadela de Berat (Kalaja) — habitada desde el siglo IV a. C." }, wikipedia: "Berat_Castle" },
         { name: { fr: "Quartier de Mangalem — maisons ottomanes aux cents fenêtres", en: "Mangalem quarter — Ottoman houses with hundreds of windows", es: "Barrio de Mangalem — casas otomanas con cientos de ventanas" }, wikipedia: "Berat" },
@@ -112,7 +112,7 @@ export const ALBANIA = {
         es: "Gjirokastër (UNESCO) es una ciudad de piedra del siglo XVII en el valle del Drino: sus casas-torre con tejados de piedra gris (pizarra local) y su ciudadela otomana son únicas en los Balcanes. Ciudad natal de Enver Hoxha (dictador comunista) y de Ismail Kadaré (novelista albanés de fama mundial). La prisión comunista en la ciudadela es un testimonio histórico contundente.",
       },
       wikipedia: "Gjirokastër",
-      tags: ["UNESCO", "Pierre", "Ottoman", "Citadelle"],
+      tags: ["UNESCO", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Citadelle de Gjirokastër — avion américain F-86 capturé en 1957", en: "Gjirokastër Citadel — American F-86 aircraft captured in 1957", es: "Ciudadela de Gjirokastër — avión estadounidense F-86 capturado en 1957" }, wikipedia: "File:Gjirokastër Castle (by Pudelek) 3.jpg" },
         { name: { fr: "Maison-musée d'Ismail Kadaré — romancier albanais", en: "Ismail Kadaré House-Museum — Albanian novelist", es: "Casa-museo de Ismail Kadaré — novelista albanés" }, wikipedia: "File:Gjirokastër, Albania November 2022 - Winding lane.jpg" },
@@ -129,7 +129,7 @@ export const ALBANIA = {
         es: "La Riviera albanesa (de Vlorë a Sarandë) es la costa mediterránea menos conocida de Europa: aguas jónicas turquesa, acantilados calcáreos, playas de guijarros y arena, pueblos de pescadores aferrados al acantilado (Dhermi, Himara, Lukova). La carretera panorámica de la Riviera (SH8) es una de las más bellas de Europa y sigue poco frecuentada.",
       },
       wikipedia: "File:Bunec beach Albanian Riviera.jpg",
-      tags: ["Côte", "Turquoise", "Panorama", "Villages", "Plage", "Nature"],
+      tags: ["Plage", "Panorama", "Rural", "Nature"],
       mustSee: [
         { name: { fr: "Plage de Ksamil — 4 îlots dans l'eau turquoise face à Corfou", en: "Ksamil Beach — 4 islets in turquoise water facing Corfu", es: "Playa de Ksamil — 4 islotes en aguas turquesa frente a Corfú" }, wikipedia: "File:Bunec beach Albanian Riviera.jpg" },
         { name: { fr: "Route panoramique SH8 Vlorë–Sarandë — vue sur les îles grecques", en: "SH8 scenic road Vlorë–Sarandë — views of the Greek islands", es: "Carretera panorámica SH8 Vlorë–Sarandë — vistas de las islas griegas" }, wikipedia: "File:Road construction at Albanian Riviera.jpg" },
@@ -147,7 +147,7 @@ export const ALBANIA = {
         es: "Los Alpes albaneses (también llamados 'Montañas Malditas') al norte de Albania son una de las zonas más salvajes de los Balcanes: el parque nacional de Valbonë con sus picos de 2.700m, el valle de Theth (pueblo aislado con su torre de vigilancia del bektachismo), y el trekking Valbonë-Theth (6h) están entre los más bellos de la región.",
       },
       wikipedia: "File:Albanian Alps from Air.jpg",
-      tags: ["Randonnée", "Alpes", "Nature", "Isolé", "Ski"],
+      tags: ["Randonnée", "Montagne", "Nature", "Ski"],
       mustSee: [
         { name: { fr: "Trek Valbonë–Theth (6h) — passage montagneux à 1 800m", en: "Valbonë–Theth trek (6h) — mountain pass at 1,800m", es: "Trekking Valbonë–Theth (6h) — paso de montaña a 1.800m" }, wikipedia: "File:Albanian Alps from Air.jpg" },
         { name: { fr: "Cascade de Theth (Grunas) — 30m dans la forêt de pins", en: "Theth Waterfall (Grunas) — 30m in a pine forest", es: "Cascada de Theth (Grunas) — 30m en un bosque de pinos" }, wikipedia: "File:2024-10-14 Theth National Park 18.jpg" },

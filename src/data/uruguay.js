@@ -96,7 +96,7 @@ export const URUGUAY = {
         es: "La capital uruguaya es una ciudad a escala humana con una rambla de 22 km, un animado mercado Tristán Narvaja y un elegante centro histórico. Su escena cultural, sus pequeños bares de mate y su ambiente relajado la convierten en un destino entrañable.",
       },
       wikipedia: "Montevideo",
-      tags: ["Ville", "Culture", "Gastronomie", "Bord De Mer", "Architecture"],
+      tags: ["Ville", "Culture", "Gastronomie", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Ciudad Vieja (vieille ville)", en: "Ciudad Vieja (old town)", es: "Ciudad Vieja" }, wikipedia: "Ciudad_Vieja,_Montevideo" },
         { name: { fr: "Marché du Port (Mercado del Puerto)", en: "Port Market (Mercado del Puerto)", es: "Mercado del Puerto" }, wikipedia: "Mercado_del_Puerto" },
@@ -114,7 +114,7 @@ export const URUGUAY = {
         es: "Esta ciudad colonial portuguesa del siglo XVII, declarada Patrimonio de la Humanidad por la UNESCO, está a 1h en ferry desde Buenos Aires. Sus calles empedradas, sus faros y sus casas de colores pastel la convierten en un museo al aire libre.",
       },
       wikipedia: "Colonia_del_Sacramento",
-      tags: ["Colonial", "UNESCO", "Histoire", "Romantique", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Barrio Histórico", en: "Barrio Histórico", es: "Barrio Histórico" }, wikipedia: "File:Calle en Colonia del Sacramento 2013.jpg" },
         { name: { fr: "Phare de Colonia", en: "Colonia Lighthouse", es: "Faro de Colonia" }, wikipedia: "Colonia_del_Sacramento_Lighthouse" },
@@ -149,7 +149,7 @@ export const URUGUAY = {
         es: "El interior uruguayo es un vasto territorio rural de pampas y colinas suaves. Las estancias abren sus puertas a los turistas para estancias auténticas: equitación, asado, atardeceres sobre las praderas.",
       },
       wikipedia: "File:Parque_Anchorena_Estancia_Residencial_Presidencial_Colonia_Uruguay_-_panoramio_(2).jpg",
-      tags: ["Gaucho", "Nature", "Équitation", "Rural"],
+      tags: ["Rural", "Nature", "Aventure"],
       mustSee: [
         { name: { fr: "Tacuarembó (festival gaucho)", en: "Tacuarembó (gaucho festival)", es: "Tacuarembó (festival gaucho)" }, wikipedia: "File:Tablado Velódromo Municipal Tacuarembó.jpg" },
         { name: "Quebrada de los Cuervos", wikipedia: "Quebrada_de_los_Cuervos" },

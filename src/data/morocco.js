@@ -124,7 +124,7 @@ export const MOROCCO = {
         es: "La Ciudad Roja cautiva con la plaza Jemaa el-Fna, sus zocos laberínticos, sus riads con jardines secretos, el jardín Majorelle y sus restaurantes con terraza.",
       },
       wikipedia: "Marrakesh",
-      tags: ["Culture", "Shopping", "Gastronomie", "Artisanat", "Ville", "Histoire", "UNESCO"],
+      tags: ["Culture", "Shopping", "Gastronomie", "Ville", "Histoire", "UNESCO"],
       mustSee: [
         { name: { fr: "Place Jemaa el-Fna", en: "Jemaa el-Fna Square", es: "Plaza Jemaa el-Fna" }, wikipedia: "Jemaa_el-Fnaa" },
         { name: { fr: "Jardins Majorelle", en: "Majorelle Garden", es: "Jardines Majorelle" }, wikipedia: "Majorelle_Garden" },
@@ -142,7 +142,7 @@ export const MOROCCO = {
         es: "La ciudad imperial más antigua, cuya medina declarada Patrimonio de la Humanidad es la mayor zona peatonal del mundo. Curtidurías de cuero, la medersa Bou Inania y zocos medievales.",
       },
       wikipedia: "File:Minaret_of_the_Zawiya_of_Moulay_Idris_II_shrine,_Fès_El_Bali,_Morocco_2005.jpg",
-      tags: ["Histoire", "UNESCO", "Culture", "Artisanat", "Ville", "Architecture"],
+      tags: ["Histoire", "UNESCO", "Culture", "Shopping", "Ville", "Architecture"],
       mustSee: [
         { name: { fr: "Médina de Fès el-Bali", en: "Fès el-Bali Medina", es: "Medina de Fez el-Bali" }, wikipedia: "File:Fes Bab Bou Jeloud 2011.jpg" },
         { name: { fr: "Tanneries Chouara", en: "Chouara Tannery", es: "Curtidurías Chouara" }, wikipedia: "Chouara_Tannery" },
@@ -160,7 +160,7 @@ export const MOROCCO = {
         es: "El erg Chebbi, dunas doradas que alcanzan los 150 m de altura, ofrece una noche bajo las estrellas en un campamento bereber y un amanecer inolvidable.",
       },
       wikipedia: "Erg_Chebbi",
-      tags: ["Nature", "Aventure", "Paysage", "Culture berbère", "Désert"],
+      tags: ["Nature", "Aventure", "Culture", "Désert"],
       mustSee: [
         { name: { fr: "Dunes de l'Erg Chebbi", en: "Erg Chebbi dunes", es: "Dunas del erg Chebbi" }, wikipedia: "Erg_Chebbi" },
         { name: { fr: "Nuit dans un camp sous les étoiles", en: "Night in a camp under the stars", es: "Noche en un campamento bajo las estrellas" }, wikipedia: "File:Merzouga.20200114.1.jpg" },
@@ -178,7 +178,7 @@ export const MOROCCO = {
         es: "Ciudad costera de murallas azules y blancas, azotada por los vientos del Atlántico. Antigua ciudad de corsarios, hoy paraíso de surfistas y artistas.",
       },
       wikipedia: "Essaouira",
-      tags: ["Plage", "Mer", "Culture", "Kitesurf"],
+      tags: ["Plage", "Culture"],
       mustSee: [
         { name: { fr: "Remparts de la Sqala", en: "Sqala ramparts", es: "Murallas de la Sqala" }, wikipedia: "File:Qasba Sqala of Oudaïa.jpg" },
         { name: { fr: "Médina et Mellah", en: "Medina and Mellah", es: "Medina y Mellah" }, wikipedia: "File:Seaward_Walls_of_the_Medina_of_Essaouira,_Morocco.jpg" },
@@ -196,7 +196,7 @@ export const MOROCCO = {
         es: "La Ciudad Azul, enclavada en el macizo del Rif, es una de las más fotogénicas de Marruecos con sus callejuelas pintadas de azul y blanco, sus fuentes y su ambiente atemporal.",
       },
       wikipedia: "Chefchaouen",
-      tags: ["Paysage", "Culture", "Photographie", "Randonnée", "Architecture"],
+      tags: ["Nature", "Culture", "Randonnée", "Architecture"],
       mustSee: [
         { name: { fr: "Médina — ruelles bleues", en: "Medina — blue alleys", es: "Medina — callejuelas azules" }, wikipedia: "File:2018 01 (Blue) - Chaouen.jpg" },
         { name: { fr: "Plaza Uta el-Hammam", en: "Plaza Uta el-Hammam", es: "Plaza Uta el-Hammam" }, wikipedia: "File:Plaza Uta Hamam 04.jpg" },

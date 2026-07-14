@@ -105,7 +105,7 @@ export const GEORGIA = {
         es: "Capital de casas antiguas con balcones de madera tallada, baños sulfurosos (Abanotubani), la fortaleza de Narikala y una animada vida nocturna — una ciudad auténtica y entrañable.",
       },
       wikipedia: "Tbilisi",
-      tags: ["Ville", "Histoire", "Culture", "Nuit", "Architecture", "Gastronomie"],
+      tags: ["Ville", "Histoire", "Culture", "Nightlife", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Forteresse Narikala", en: "Narikala Fortress", es: "Fortaleza de Narikala" }, wikipedia: "Narikala" },
         { name: { fr: "Cathédrale Sainte-Trinité", en: "Holy Trinity Cathedral", es: "Catedral de la Santísima Trinidad" }, wikipedia: "Holy_Trinity_Cathedral_of_Tbilisi" },
@@ -140,7 +140,7 @@ export const GEORGIA = {
         es: "Región montañosa salvaje con sus torres medievales milenarias, sus pueblos aislados y algunas de las rutas de senderismo más bellas del Cáucaso.",
       },
       wikipedia: "File:Svaneti, Georgia. 2018 79.jpg",
-      tags: ["Montagne", "UNESCO", "Randonnée", "Villages", "Architecture"],
+      tags: ["Montagne", "UNESCO", "Randonnée", "Rural", "Architecture"],
       mustSee: [
         { name: { fr: "Tours svanes de Mestia", en: "Mestia's Svan towers", es: "Torres suanas de Mestia" }, wikipedia: "Mestia" },
         { name: { fr: "Glacier d'Ushguli", en: "Ushguli Glacier", es: "Glaciar de Ushguli" }, wikipedia: "Ushguli" },
@@ -157,7 +157,7 @@ export const GEORGIA = {
         es: "Cuna de la viticultura mundial (8.000 años), los viñedos de Kajetia y los monasterios de Sighnaghi ofrecen un viaje gastronómico y cultural incomparable.",
       },
       wikipedia: "Kakheti",
-      tags: ["Vin", "Gastronomie", "Culture", "Nature"],
+      tags: ["Gastronomie", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Monastère de Bodbe", en: "Bodbe Monastery", es: "Monasterio de Bodbe" }, wikipedia: "Bodbe_Monastery" },
         { name: { fr: "Sighnaghi — ville de l'amour", en: "Sighnaghi — the city of love", es: "Sighnaghi — la ciudad del amor" }, wikipedia: "File:Sighnaghi IMG 9071 1920.jpg" },

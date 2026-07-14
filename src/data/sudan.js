@@ -94,7 +94,7 @@ export const SUDAN = {
         es: "Las pirámides de Meroe son la joya arqueológica de Sudán: más de 200 esbeltas pirámides nubias, más numerosas que en Egipto, Patrimonio de la Humanidad de la UNESCO. Capitales del reino de Kush y Meroe durante más de mil años, dan testimonio de una civilización africana de una riqueza excepcional. Antes de la guerra, Meroe recibía a miles de visitantes al año que venían a admirar estos centinelas de arenisca rosa en el desierto nubio.",
       },
       wikipedia: "File:Sudan Meroe Pyramids 2001.JPG",
-      tags: ["UNESCO", "Archéologie", "Pyramides", "Nubie"],
+      tags: ["UNESCO", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Nécropole nord de Méroé — principale concentration de pyramides", en: "Northern necropolis of Meroë — the main cluster of pyramids", es: "Necrópolis norte de Meroe — la principal concentración de pirámides" }, wikipedia: "Meroë" },
         { name: { fr: "Temple d'Apedemak à Naqa — temple du lion nubien", en: "Temple of Apedemak at Naqa — the Nubian lion temple", es: "Templo de Apedemak en Naqa — el templo del león nubio" }, wikipedia: "Naqa" },
@@ -112,7 +112,7 @@ export const SUDAN = {
         es: "Jebel Barkal es una montaña sagrada de los antiguos egipcios y nubios, dominada por un acantilado de 100 metros sobre el Nilo, que alberga templos y pirámides reales catalogados por la UNESCO. Kerma, más al norte, es el emplazamiento de la ciudad más antigua conocida del África subsahariana, con objetos que se remontan al 2500 a.C. Antes de la guerra, estos sitios eran las paradas imprescindibles de un circuito nubio único en el mundo.",
       },
       wikipedia: "Jebel_Barkal",
-      tags: ["UNESCO", "Archéologie", "Nubie", "Antiquité"],
+      tags: ["UNESCO", "Histoire"],
       mustSee: [
         { name: { fr: "Temple d'Amon à Jebel Barkal — sanctuaire taillé dans la roche", en: "Temple of Amun at Jebel Barkal — sanctuary carved into the rock", es: "Templo de Amón en Jebel Barkal — santuario tallado en la roca" }, wikipedia: "Jebel_Barkal" },
         { name: { fr: "Pyramides de Nuri — tombeaux royaux nubiens", en: "Pyramids of Nuri — royal Nubian tombs", es: "Pirámides de Nuri — tumbas reales nubias" }, wikipedia: "Nuri" },
@@ -130,7 +130,7 @@ export const SUDAN = {
         es: "Port Sudan daba acceso a una de las mejores zonas de buceo del Mar Rojo, en aguas todavía poco exploradas con arrecifes de coral intactos, pecios históricos y una biodiversidad marina notable. Las colinas del Mar Rojo ofrecen un ambiente nubio auténtico con las comunidades nómadas Beja. Hoy la región está menos afectada por la guerra civil que Jartum.",
       },
       wikipedia: "Port_Sudan",
-      tags: ["Plongée", "Mer Rouge", "Nature", "Pêche"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Récifs de Sanganeb — parc marin avec requins et dauphins", en: "Sanganeb reefs — marine park with sharks and dolphins", es: "Arrecifes de Sanganeb — parque marino con tiburones y delfines" }, wikipedia: "File:Barracuda_Tornado.jpg" },
         { name: { fr: "Épave du MV Umbria — navire mussolini coulé en 1940", en: "MV Umbria wreck — Mussolini-era ship sunk in 1940", es: "Pecio del MV Umbria — barco de la era Mussolini hundido en 1940" }, wikipedia: "SS_Umbria" },

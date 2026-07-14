@@ -91,7 +91,7 @@ export const BURUNDI = {
         es: "El lago Tanganica es una de las maravillas naturales del mundo: el segundo lago más profundo del planeta con 1.470 metros, y el lago de agua dulce más largo, con 676 km. Sus aguas azules y cristalinas bañan las playas de Bujumbura, antigua capital, donde se puede nadar, hacer kayak y observar hipopótamos y aves. La ciudad ofrece además una vida cultural y gastronómica sorprendente para la región.",
       },
       wikipedia: "Lake_Tanganyika",
-      tags: ["Lac", "Plage", "Nature", "Eau"],
+      tags: ["Nature", "Plage"],
       mustSee: [
         { name: { fr: "Plage de Saga Beach — natation et hippos dans le lac", en: "Saga Beach — swimming and hippos in the lake", es: "Playa de Saga Beach — natación e hipopótamos en el lago" }, wikipedia: "Bujumbura" },
         { name: { fr: "Lac Tanganyika — plongée et snorkeling (cichlidés endémiques)", en: "Lake Tanganyika — diving and snorkelling (endemic cichlids)", es: "Lago Tanganica — buceo y esnórquel (cíclidos endémicos)" }, wikipedia: "Lake_Tanganyika" },
@@ -109,7 +109,7 @@ export const BURUNDI = {
         es: "En Mugere, un monumento señala el lugar donde presuntamente el explorador británico Henry Morton Stanley reencontró al Dr. David Livingstone en noviembre de 1871, durante la expedición que dio origen a la célebre frase 'Dr. Livingstone, supongo'. El lugar se encuentra a orillas del lago Tanganica, en un entorno verde y cargado de historia. Una visita imprescindible para los amantes de la historia africana.",
       },
       wikipedia: "Henry_Morton_Stanley",
-      tags: ["Histoire", "Exploration", "Patrimoine", "Lac"],
+      tags: ["Histoire", "Aventure", "Nature"],
       mustSee: [
         { name: { fr: "Stèle commémorative de la rencontre Livingstone-Stanley", en: "Memorial stele for the Livingstone-Stanley meeting", es: "Estela conmemorativa del encuentro Livingstone-Stanley" }, wikipedia: "Henry_Morton_Stanley" },
         { name: { fr: "Rive du lac Tanganyika à Mugere — paysage historique", en: "Lake Tanganyika shoreline in Mugere — historic scenery", es: "Orilla del lago Tanganica en Mugere — paisaje histórico" }, wikipedia: "File:Fisherman on Lake Tanganyika.jpg" },
@@ -127,7 +127,7 @@ export const BURUNDI = {
         es: "El Parque Nacional de Kibira es el mayor bosque de montaña de Burundi, extendido sobre las crestas de la Divisoria Congo-Nilo a más de 2.000 metros de altitud. Este bosque nuboso alberga chimpancés, colobos blanquinegros y una avifauna excepcional. Sigue siendo un destino poco visitado para el trekking y el ecoturismo.",
       },
       wikipedia: "Kibira_National_Park",
-      tags: ["Forêt", "Chimpanzés", "Trekking", "Altitude"],
+      tags: ["Nature", "Safari", "Aventure", "Montagne"],
       mustSee: [
         { name: { fr: "Trekking dans la forêt de brouillard de Kibira", en: "Trekking through Kibira's cloud forest", es: "Trekking en el bosque nuboso de Kibira" }, wikipedia: "Kibira_National_Park" },
         { name: { fr: "Observation des chimpanzés dans leur habitat naturel", en: "Chimpanzee watching in their natural habitat", es: "Observación de chimpancés en su hábitat natural" }, wikipedia: "Chimpanzee" },
@@ -145,7 +145,7 @@ export const BURUNDI = {
         es: "Los tamborileros reales de Burundi están inscritos en el patrimonio cultural inmaterial de la UNESCO. En Gishora, cerca de Gitega, el centro cultural de los tamborileros organiza espectáculos con bailarines intore y los célebres tambores ingoma, que antaño acompañaban a los reyes de Burundi. Esta tradición viva es una de las más espectaculares del África subsahariana.",
       },
       wikipedia: "Royal_Drummers_of_Burundi",
-      tags: ["Culture", "Musique", "UNESCO", "Tradition"],
+      tags: ["Culture", "UNESCO", "Tradition"],
       mustSee: [
         { name: { fr: "Spectacle des tambourinaires d'Ingoma à Gishora", en: "Ingoma drummers performance in Gishora", es: "Espectáculo de los tamborileros ingoma en Gishora" }, wikipedia: "Royal_Drummers_of_Burundi" },
         { name: { fr: "Danse Intore — guerriers en tenues traditionnelles", en: "Intore dance — warriors in traditional dress", es: "Danza intore — guerreros con trajes tradicionales" }, wikipedia: "Intore" },

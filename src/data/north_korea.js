@@ -75,7 +75,7 @@ export const NORTH_KOREA = {
         es: "Pionyang es una capital concebida como un decorado de propaganda, con sus inmensos bulevares, sus monumentos colosales y sus edificios de fachadas pastel en una ciudad sorprendentemente despejada. La plaza Kim Il-sung, las fuentes del parque Mansu y el Arco del Triunfo (más grande que el de París) dan fe de las ambiciones monumentales del régimen. Los norcoreanos que los turistas pueden conocer ofrecen una visión fascinante y parcial de una sociedad completamente distinta.",
       },
       wikipedia: "Pyongyang",
-      tags: ["Ville", "Architecture", "Propagande", "Histoire"],
+      tags: ["Ville", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Place Kim Il-sung — cœur cérémonial de la capitale", en: "Kim Il-sung Square — ceremonial heart of the capital", es: "Plaza Kim Il-sung — corazón ceremonial de la capital" }, wikipedia: "File:Practising a torch march on Kim il-sung square 11.JPG" },
         { name: { fr: "Grand Monument de Mansu — statues colossales des leaders", en: "Mansudae Grand Monument — colossal statues of the leaders", es: "Gran Monumento de Mansu — estatuas colosales de los líderes" }, wikipedia: "Mansudae_Grand_Monument" },
@@ -93,7 +93,7 @@ export const NORTH_KOREA = {
         es: "La Zona Desmilitarizada coreana es la frontera más militarizada del mundo, una cicatriz de 4 km de ancho que divide la península coreana desde el armisticio de 1953. Desde el lado norcoreano, los visitantes pueden vislumbrar los puestos fronterizos del pueblo de Panmunjom y observar, a pocos cientos de metros, los edificios de la parte sur. La atmósfera, cargada de historia y de tensión política, hace de esta visita algo particularmente impactante.",
       },
       wikipedia: "Korean_Demilitarized_Zone",
-      tags: ["Géopolitique", "Histoire", "Frontière", "Guerre de Corée"],
+      tags: ["Histoire"],
       mustSee: [
         { name: { fr: "Panmunjom — salle des négociations de l'armistice", en: "Panmunjom — armistice negotiation hall", es: "Panmunjom — sala de negociaciones del armisticio" }, wikipedia: "Panmunjom" },
         { name: { fr: "Kaesong — ancienne capitale médiévale Goryeo à proximité", en: "Kaesong — nearby former medieval Goryeo capital", es: "Kaesong — antigua capital medieval de Goryeo cercana" }, wikipedia: "Kaesong" },
@@ -111,7 +111,7 @@ export const NORTH_KOREA = {
         es: "El monte Paektu es el punto más alto de la península coreana con 2.744 metros y un lugar de peregrinación fundamental en la mitología nacional norcoreana, descrito como la cuna de la nación coreana y lugar de nacimiento legendario de Kim Jong-il. Su cráter alberga el Lago del Cielo, uno de los lagos de cráter más bellos del mundo, cuyas aguas de un azul profundo contrastan con los acantilados de basalto negro. El volcán activo, en la frontera con China, está rodeado de bosques vírgenes y cascadas espectaculares.",
       },
       wikipedia: "File:長白山 Changbai Mountain - panoramio.jpg",
-      tags: ["Volcan", "Montagne", "Mythologie", "Nature"],
+      tags: ["Nature", "Montagne", "Culture"],
       mustSee: [
         { name: { fr: "Lac du Ciel (Chon Ji) — lac de cratère à 2 150 m d'altitude", en: "Heaven Lake (Chon Ji) — crater lake at 2,150 m altitude", es: "Lago del Cielo (Chon Ji) — lago de cráter a 2.150 m de altitud" }, wikipedia: "Heaven_Lake" },
         { name: { fr: "Cascade de Rimyongsu — chutes de 76 m dans une forêt de bouleaux", en: "Rimyongsu Falls — 76 m waterfall in a birch forest", es: "Cascada de Rimyongsu — saltos de 76 m en un bosque de abedules" }, wikipedia: "File:Rimyongsu Falls5.jpg" },
@@ -128,7 +128,7 @@ export const NORTH_KOREA = {
         es: "Los Juegos de masas de Arirang, o Festival de la Juventud y de los Estudiantes, constituyen el mayor espectáculo de masas del mundo, reuniendo hasta 100.000 participantes en el estadio Rungrado, el más grande del mundo. Decenas de miles de gimnastas, bailarines y niños sosteniendo tarjetas de colores crean un mural viviente de una precisión asombrosa que ilustra la historia y los ideales de la RPDC. El evento, cuando se celebra, es una de las experiencias más extraordinarias e inquietantes que puede vivir un viajero.",
       },
       wikipedia: "Arirang_Mass_Games",
-      tags: ["Festival", "Propagande", "Spectacle", "Unique"],
+      tags: ["Culture", "Histoire"],
       mustSee: [
         { name: { fr: "Stade de Rungrado — plus grand stade du monde (114 000 places)", en: "Rungrado Stadium — the world's largest (114,000 seats)", es: "Estadio Rungrado — el más grande del mundo (114.000 asientos)" }, wikipedia: "Rungrado_1st_of_May_Stadium" },
         { name: { fr: "Fresque humaine — mosaïque vivante de 20 000 enfants avec des cartes", en: "Human mural — living mosaic of 20,000 children with cards", es: "Mural humano — mosaico viviente de 20.000 niños con tarjetas" }, wikipedia: "Arirang_Mass_Games" },

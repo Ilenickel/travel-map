@@ -94,7 +94,7 @@ export const ESTONIA = {
         es: "Tallin tiene uno de los cascos antiguos medievales mejor conservados del norte de Europa (UNESCO): la plaza del Ayuntamiento (s. XIV), las torres de vigilancia de la muralla, la colina de Toompea con su castillo y su catedral ortodoxa de cúpulas azules, y los gremios hanseáticos. La ciudad es a la vez medieval e hiperdigital — una contradicción fascinante.",
       },
       wikipedia: "Tallinn",
-      tags: ["Médiéval", "UNESCO", "Hanséatique", "Numérique", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Modernité", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Place de l'Hôtel de Ville de Tallinn (XIVe s.) et tour Raekoja", en: "Tallinn Town Hall Square (14th century) and Raekoja Tower", es: "Plaza del Ayuntamiento de Tallin (s. XIV) y torre Raekoja" }, wikipedia: "Tallinn_Town_Hall" },
         { name: { fr: "Toompea — colline avec château, parlement, cathédrale orthodoxe", en: "Toompea — hill with the castle, parliament and Orthodox cathedral", es: "Toompea — colina con castillo, parlamento y catedral ortodoxa" }, wikipedia: "Toompea" },
@@ -112,7 +112,7 @@ export const ESTONIA = {
         es: "Saaremaa es la isla más grande de Estonia: sus molinos de viento de Angla, el castillo episcopal de Kuressaare (el mejor conservado de los estados bálticos), el cráter de meteorito de Kaali (uno de los más visibles de Europa), y los acantilados de Panga junto al Báltico. Una isla apacible y ventosa con un marcado carácter nórdico.",
       },
       wikipedia: "Saaremaa",
-      tags: ["Île", "Moulins", "Château", "Météorite", "Nature", "Plage"],
+      tags: ["Plage", "Architecture", "Nature"],
       mustSee: [
         { name: { fr: "Moulins à vent d'Angla — les plus beaux d'Estonie", en: "Angla windmills — the finest in Estonia", es: "Molinos de viento de Angla — los más bellos de Estonia" }, wikipedia: "File:Angla tuulikud Saaremaal.jpg" },
         { name: { fr: "Château de Kuressaare — forteresse épiscopale gothique intacte", en: "Kuressaare Castle — an intact Gothic episcopal fortress", es: "Castillo de Kuressaare — fortaleza episcopal gótica intacta" }, wikipedia: "Kuressaare_Castle" },
@@ -130,7 +130,7 @@ export const ESTONIA = {
         es: "Estonia está cubierta en un 50% por bosques de abedules y pinos, y en un 22% por turberas — humedales de musgo de esfagno que se cruzan sobre pasarelas de madera. El parque nacional de Lahemaa (a 70 km de Tallin) es el más grande de Estonia: mansiones bálticas, bosques vírgenes y costa rocosa. Los baños de barro y las saunas de turbera son una tradición local.",
       },
       wikipedia: "Lahemaa_National_Park",
-      tags: ["Tourbière", "Forêt", "Randonnée", "Nature"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Marche en tourbière (Viru Bog, Lahemaa) — sensation de nuages sous les pieds", en: "Bog walk (Viru Bog, Lahemaa) — like walking on clouds", es: "Caminata por la turbera (Viru Bog, Lahemaa) — sensación de nubes bajo los pies" }, wikipedia: "Lahemaa_National_Park" },
         { name: { fr: "Manoir de Palmse (XVIIIe s.) au cœur du parc", en: "Palmse Manor (18th century) in the heart of the park", es: "Mansión de Palmse (s. XVIII) en el corazón del parque" }, wikipedia: "File:Palmse manor house at summer.jpg" },
@@ -147,7 +147,7 @@ export const ESTONIA = {
         es: "Tartu es la segunda ciudad de Estonia y la capital intelectual del país: la Universidad de Tartu (fundada en 1632 por Gustavo Adolfo de Suecia) es una de las más antiguas del mundo. El Museo Nacional de Estonia (con su espectacular arquitectura contemporánea), los cafés del casco antiguo y el Élan Festival en julio hacen de Tartu una ciudad viva y creativa.",
       },
       wikipedia: "Tartu",
-      tags: ["Université", "Culture", "Musée", "Animée", "Ville"],
+      tags: ["Ville", "Culture", "Musées"],
       mustSee: [
         { name: { fr: "Musée national estonien (KUMU de Tartu) — architecture remarquable", en: "Estonian National Museum (Tartu's KUMU) — remarkable architecture", es: "Museo Nacional de Estonia (KUMU de Tartu) — arquitectura notable" }, wikipedia: "File:Wall from the Estonian National Museum.jpg" },
         { name: { fr: "Colline de Toome — ruines de cathédrale médiévale + observatoire", en: "Toome Hill — medieval cathedral ruins + observatory", es: "Colina de Toome — ruinas de catedral medieval + observatorio" }, wikipedia: "File:Ruins_of_Tartu_Dome_Cathedral_-_Toomemagi_(Cathedral_Hill)_-_Tartu_-_Estonia_(35961979372).jpg" },

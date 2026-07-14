@@ -68,7 +68,7 @@ export const KUWAIT = {
         es: "Ciudad de Kuwait es una metrópoli moderna cuyo perfil está dominado por las emblemáticas Torres de Kuwait, símbolos del renacimiento del país tras la guerra del Golfo de 1990–1991. El paseo marítimo (Corniche) ofrece un agradable recorrido frente al Golfo, jalonado de esculturas y jardines cuidados. La ciudad combina centros comerciales ultramodernos y barrios históricos donde las tradiciones mercantiles del Golfo siguen muy vivas.",
       },
       wikipedia: "Kuwait_City",
-      tags: ["Architecture", "Modernité", "Culture", "Promenade", "Ville", "Gastronomie"],
+      tags: ["Architecture", "Modernité", "Culture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Tours du Koweït — symbole national aux sphères bleues caractéristiques", en: "Kuwait Towers — national symbol with characteristic blue spheres", es: "Torres de Kuwait — símbolo nacional con sus características esferas azules" }, wikipedia: "Kuwait_Towers" },
         { name: { fr: "Grande Mosquée du Koweït — l'une des plus grandes de la péninsule arabique", en: "Grand Mosque of Kuwait — one of the largest on the Arabian Peninsula", es: "Gran Mezquita de Kuwait — una de las más grandes de la península arábiga" }, wikipedia: "Grand_Mosque_of_Kuwait" },
@@ -86,7 +86,7 @@ export const KUWAIT = {
         es: "El Museo Nacional de Kuwait recorre la fascinante historia de la península arábiga desde las civilizaciones Dilmun y Failaka hasta la era petrolera contemporánea. Sus colecciones de antigüedades, artesanía tradicional y piezas relacionadas con la pesca de perlas dan testimonio de una cultura muy anterior al descubrimiento del petróleo. El Museo de Arte Islámico adyacente alberga una de las más bellas colecciones de arte islámico de la región.",
       },
       wikipedia: "File:Kwnmuseum.jpg",
-      tags: ["Musée", "Histoire", "Art islamique", "Culture"],
+      tags: ["Musées", "Histoire", "Spiritualité", "Culture"],
       mustSee: [
         { name: { fr: "Collection Dilmun — artefacts de la civilisation Dilmun de l'île Failaka", en: "Dilmun collection — artefacts of the Dilmun civilisation from Failaka island", es: "Colección Dilmun — artefactos de la civilización Dilmun de la isla de Failaka" }, wikipedia: "File:Echanges Dilmun AO3999.jpg" },
         { name: { fr: "Section pêche aux perles — patrimoine maritime immatériel du Golfe", en: "Pearl-diving section — the Gulf's intangible maritime heritage", es: "Sección de pesca de perlas — patrimonio marítimo inmaterial del Golfo" }, wikipedia: "File:Wolfstein Jagdmuseum - Süßwasserperlen.jpg" },
@@ -104,7 +104,7 @@ export const KUWAIT = {
         es: "La isla de Failaka, accesible en ferry desde la capital, es un yacimiento arqueológico excepcional que revela las capas sucesivas de civilizaciones que ocuparon el Golfo. Las excavaciones han sacado a la luz templos y fortificaciones griegos de la época de Alejandro Magno, superpuestos a vestigios Dilmun aún más antiguos. La isla, evacuada durante la invasión iraquí de 1990 y parcialmente rehabilitada desde entonces, ofrece también hermosas playas desiertas.",
       },
       wikipedia: "Failaka_Island",
-      tags: ["Archéologie", "Île", "Grèce antique", "Dilmun", "Histoire", "Architecture"],
+      tags: ["Histoire", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Temple d'Ikaros — sanctuaire grec de l'époque hellénistique", en: "Temple of Ikaros — Greek sanctuary from the Hellenistic era", es: "Templo de Ícaros — santuario griego de la época helenística" }, wikipedia: "File:Antiquities_of_Failaka_island_02.JPG" },
         { name: { fr: "Fort al-Qusur — fortification portugaise réutilisée par les Koweïtiens", en: "Al-Qusur Fort — Portuguese fortification later reused by Kuwaitis", es: "Fuerte al-Qusur — fortificación portuguesa reutilizada por los kuwaitíes" }, wikipedia: "Failaka_Island" },
@@ -122,7 +122,7 @@ export const KUWAIT = {
         es: "Al-Jahra alberga el Fuerte Rojo, vestigio de la resistencia kuwaití durante la batalla de Jahra de 1920, donde las tribus locales rechazaron el avance wahabita saudí. Más allá de la ciudad, el desierto kuwaití se extiende hasta donde alcanza la vista, salpicado de reservas naturales y campamentos de tiendas tradicionales (beit al-sha'ar) muy apreciados por los locales los fines de semana de invierno. Las dunas de arena dorada y la fauna salvaje (gacelas, aves migratorias) hacen de él una escapada natural muy popular.",
       },
       wikipedia: "File:Jahra Gate.jpg",
-      tags: ["Désert", "Histoire", "Nature", "Traditions"],
+      tags: ["Désert", "Histoire", "Nature", "Tradition"],
       mustSee: [
         { name: { fr: "Fort Rouge d'Al-Jahra — forteresse historique de la résistance koweïtienne", en: "Al-Jahra Red Fort — historic fortress of the Kuwaiti resistance", es: "Fuerte Rojo de Al-Jahra — fortaleza histórica de la resistencia kuwaití" }, wikipedia: "File:Al Jahra al-Qasr al-Ahmar Exterior 3.jpg" },
         { name: { fr: "Réserve naturelle de Sulaibikhat — refuge d'oiseaux migrateurs", en: "Sulaibikhat Nature Reserve — refuge for migratory birds", es: "Reserva natural de Sulaibikhat — refugio de aves migratorias" }, wikipedia: "File:Bird photography Kuwait by irvin calicut 09.jpg" },

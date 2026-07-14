@@ -105,7 +105,7 @@ export const JORDAN = {
         es: "Una de las siete maravillas del mundo moderno: una ciudad nabatea entera esculpida en roca rosa, con el Tesoro (Al-Khazneh) como su símbolo absoluto.",
       },
       wikipedia: "Petra",
-      tags: ["Histoire", "Archéologie", "UNESCO", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Le Trésor (Al-Khazneh)", en: "The Treasury (Al-Khazneh)", es: "El Tesoro (Al-Khazneh)" }, wikipedia: "Al-Khazneh" },
         { name: { fr: "Le Monastère (Ad Deir)", en: "The Monastery (Ad Deir)", es: "El Monasterio (Ad Deir)" }, wikipedia: "File:The Monastery, Petra, Jordan8.jpg" },
@@ -156,7 +156,7 @@ export const JORDAN = {
         es: "El punto más bajo de la Tierra (430 m bajo el nivel del mar). Baño flotante en un agua ultrasalada de propiedades minerales únicas, cubrirse de barro negro.",
       },
       wikipedia: "Dead_Sea",
-      tags: ["Nature", "Bien-être", "Unique"],
+      tags: ["Nature", "Détente"],
       mustSee: [
         { name: { fr: "Bain flottant (sel 30%)", en: "Floating bath (30% salt)", es: "Baño flotante (30% de sal)" }, wikipedia: "File:Dead Sea salt crystals.jpg" },
         { name: { fr: "Coucher de soleil sur la mer", en: "Sunset over the sea", es: "Atardecer sobre el mar" }, wikipedia: "File:The dead sea.jpg" },

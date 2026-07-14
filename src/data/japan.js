@@ -192,7 +192,7 @@ export const JAPAN = {
         es: "Capital ultramoderna, mezcla de rascacielos iluminados, barrios tradicionales (Asakusa), cultura pop (Akihabara) y una gastronomía de talla mundial.",
       },
       wikipedia: "Tokyo",
-      tags: ["Ville", "Shopping", "Gastronomie", "Nuit", "Culture", "Histoire", "Architecture"],
+      tags: ["Ville", "Shopping", "Gastronomie", "Nightlife", "Culture", "Histoire", "Architecture"],
       mustSee: [
         { name: "Shibuya Crossing", wikipedia: "Shibuya_Crossing" },
         { name: { fr: "Temple Senso-ji", en: "Senso-ji Temple", es: "Templo Senso-ji" }, wikipedia: "Asakusa" },
@@ -228,7 +228,7 @@ export const JAPAN = {
         es: "Capital de la gastronomía japonesa, conocida por su takoyaki, okonomiyaki, su castillo histórico y su animada vida nocturna en Dotonbori.",
       },
       wikipedia: "Osaka",
-      tags: ["Gastronomie", "Nuit", "Histoire", "Shopping", "Ville", "Culture"],
+      tags: ["Gastronomie", "Nightlife", "Histoire", "Shopping", "Ville", "Culture"],
       mustSee: [
         { name: "Dotonbori", wikipedia: "File:Osaka_Dotonbori_Ebisu_Bridge.jpg" },
         { name: { fr: "Château d'Osaka", en: "Osaka Castle", es: "Castillo de Osaka" }, wikipedia: "Osaka_Castle" },
@@ -263,7 +263,7 @@ export const JAPAN = {
         es: "Isla del norte ideal para esquiar en Niseko, disfrutar de aguas termales y paisajes nevados en invierno, y de campos de lavanda en verano.",
       },
       wikipedia: "Furano,_Hokkaido",
-      tags: ["Nature", "Ski", "Onsen", "Randonnée"],
+      tags: ["Nature", "Ski", "Détente", "Randonnée"],
       mustSee: [
         { name: { fr: "Niseko — ski de poudreuse", en: "Niseko — powder skiing", es: "Niseko — esquí de nieve polvo" }, wikipedia: "Niseko" },
         { name: { fr: "Champs de lavande de Furano", en: "Furano lavender fields", es: "Campos de lavanda de Furano" }, wikipedia: "Furano,_Hokkaido" },

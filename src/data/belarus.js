@@ -72,7 +72,7 @@ export const BELARUS = {
         es: "Minsk es una capital única en el mundo, reconstruida desde cero tras ser casi totalmente destruida en la Segunda Guerra Mundial, ofreciendo así uno de los conjuntos arquitectónicos estalinistas más puros e impresionantes de Europa. La avenida de la Independencia, de 15 km de largo, despliega sus palacios neoclásicos y sus inmensas plazas. Pese al régimen autoritario, la ciudad tiene una juventud culturalmente viva y una gastronomía sorprendente.",
       },
       wikipedia: "Minsk",
-      tags: ["Architecture soviétique", "Ville", "Histoire", "Culture", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "Ville", "Culture", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Avenue de l'Indépendance — boulevard stalinien monumental de 15 km", en: "Independence Avenue — monumental 15 km Stalinist boulevard", es: "Avenida de la Independencia — bulevar estalinista monumental de 15 km" }, wikipedia: "File:Minsk Unabhängigkeitsprospekt 1.JPG" },
         { name: { fr: "Île des Larmes — mémorial aux soldats soviétiques morts en Afghanistan", en: "Island of Tears — memorial to Soviet soldiers killed in Afghanistan", es: "Isla de las Lágrimas — memorial a los soldados soviéticos caídos en Afganistán" }, wikipedia: "File:Island of Tears.jpg" },
@@ -90,7 +90,7 @@ export const BELARUS = {
         es: "El castillo de Mir es una de las joyas arquitectónicas de Bielorrusia, declarado Patrimonio de la Humanidad por la UNESCO desde 2000. Construido en el siglo XVI, este castillo gótico y renacentista combina estilos polaco, bielorruso e italiano en un entorno bucólico. Parcialmente restaurado, alberga hoy un museo y un hotel con encanto.",
       },
       wikipedia: "File:Комплекс Мирского замка.JPG",
-      tags: ["UNESCO", "Château", "Moyen Âge", "Architecture"],
+      tags: ["UNESCO", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Château de Mir — forteresse Renaissance inscrite à l'UNESCO", en: "Mir Castle — UNESCO-listed Renaissance fortress", es: "Castillo de Mir — fortaleza renacentista declarada Patrimonio de la UNESCO" }, wikipedia: "File:Комплекс Мирского замка.JPG" },
         { name: { fr: "Parc du château — jardins reconstitués du XVIe siècle", en: "Castle Park — recreated 16th-century gardens", es: "Parque del castillo — jardines recreados del siglo XVI" }, wikipedia: "File:Belarus Mir Mir Castle Complex 8152 2110.jpg" },
@@ -108,7 +108,7 @@ export const BELARUS = {
         es: "El castillo de Nesvizh, también declarado Patrimonio de la UNESCO, es la residencia histórica de los príncipes Radziwill, una de las familias nobles más poderosas del antiguo Gran Ducado de Lituania. Rodeado de un parque paisajístico de 90 hectáreas, este castillo barroco del siglo XVI es uno de los mejor conservados de Europa del Este. Junto con Mir, forma un circuito ideal para los amantes del patrimonio.",
       },
       wikipedia: "Nesvizh_Castle",
-      tags: ["UNESCO", "Baroque", "Parc", "Noblesse", "Architecture"],
+      tags: ["UNESCO", "Architecture", "Nature", "Histoire"],
       mustSee: [
         { name: { fr: "Château de Nesvizh — résidence baroque des Radziwill inscrite à l'UNESCO", en: "Nesvizh Castle — UNESCO-listed Baroque Radziwill residence", es: "Castillo de Nesvizh — residencia barroca de los Radziwill declarada UNESCO" }, wikipedia: "Nesvizh_Castle" },
         { name: { fr: "Église du Corpus Christi — première église baroque d'Europe orientale", en: "Corpus Christi Church — first Baroque church in Eastern Europe", es: "Iglesia del Corpus Christi — primera iglesia barroca de Europa oriental" }, wikipedia: "File:Corpus_Christi_Church,_Wroclaw_(P1180304).jpg" },
@@ -125,7 +125,7 @@ export const BELARUS = {
         es: "La fortaleza de Brest es un memorial conmovedor de la resistencia soviética durante la invasión nazi de junio de 1941; su visita es una experiencia emocionalmente intensa. Cerca de allí, el bosque de Białowieża, compartido con Polonia y declarado Patrimonio de la UNESCO, alberga el último gran bosque primario de Europa y la mayor manada de bisontes europeos salvajes. Ambos lugares forman la excursión imprescindible desde Brest.",
       },
       wikipedia: "Brest_Fortress",
-      tags: ["WWII", "Mémorial", "UNESCO", "Nature", "Randonnée"],
+      tags: ["Histoire", "UNESCO", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Forteresse de Brest — mémorial héroïque de la résistance soviétique en 1941", en: "Brest Fortress — heroic memorial to the 1941 Soviet resistance", es: "Fortaleza de Brest — memorial heroico a la resistencia soviética de 1941" }, wikipedia: "Brest_Fortress" },
         { name: { fr: "Forêt de Białowieża — dernière forêt primaire d'Europe, classée UNESCO", en: "Białowieża Forest — Europe's last primeval forest, UNESCO-listed", es: "Bosque de Białowieża — último bosque primario de Europa, declarado UNESCO" }, wikipedia: "Białowieża_Forest" },

@@ -94,7 +94,7 @@ export const BOTSWANA = {
         es: "El Delta del Okavango es uno de los mayores deltas interiores del mundo: un oasis de 15 000 km² en el corazón del desierto del Kalahari, declarado Patrimonio de la UNESCO. Los mokoros (piraguas locales) se deslizan en silencio entre papiros y nenúfares, entre hipopótamos, elefantes y leopardos.",
       },
       wikipedia: "Okavango_Delta",
-      tags: ["UNESCO", "Safari", "Mokoro", "Nature"],
+      tags: ["UNESCO", "Safari", "Nature"],
       mustSee: [
         { name: { fr: "Safari en mokoro entre les îles aux éléphants", en: "Mokoro safari between elephant islands", es: "Safari en mokoro entre islas de elefantes" }, wikipedia: "Dugout_canoe" },
         { name: { fr: "Camp flottant — nuit dans le delta", en: "Floating camp — night in the delta", es: "Campamento flotante — noche en el delta" }, wikipedia: "File:Moremi Game Reserve in summer 02.jpg" },
@@ -112,7 +112,7 @@ export const BOTSWANA = {
         es: "Chobe alberga la mayor concentración de elefantes del continente: hasta 130 000 paquidermos en el parque. El safari en barco por el río Chobe, donde los elefantes cruzan a nado ante los ojos de los turistas, es una experiencia incomparable.",
       },
       wikipedia: "Chobe_National_Park",
-      tags: ["Éléphants", "Safari", "Bateau", "Big Five"],
+      tags: ["Safari", "Plage"],
       mustSee: [
         { name: { fr: "Safari bateau rivière Chobe — éléphants à la nage", en: "Boat safari on the Chobe River — swimming elephants", es: "Safari en barco por el río Chobe — elefantes nadando" }, wikipedia: "File:Cuando River, Botswana.jpg" },
         { name: { fr: "Troupeaux de buffles et lions (Savuti)", en: "Herds of buffalo and lions (Savuti)", es: "Manadas de búfalos y leones (Savuti)" }, wikipedia: "File:Lion-savuti-botswana-april-2025.jpg" },
@@ -130,7 +130,7 @@ export const BOTSWANA = {
         es: "El Kalahari Central (Central Kalahari Game Reserve, CKGR) es una de las mayores reservas del mundo: dominio de los leones de melena negra, de las suricatas que se pueden observar cada mañana a pocos metros, y de las comunidades san (bosquimanos) con técnicas de caza milenarias.",
       },
       wikipedia: "File:Kalahari C17.JPG",
-      tags: ["Lions noirs", "Méerkats", "San", "Désert"],
+      tags: ["Safari", "Culture", "Désert"],
       mustSee: [
         { name: { fr: "Méerkats au lever du soleil (à 1 m)", en: "Meerkats at sunrise (just 1 metre away)", es: "Suricatas al amanecer (a solo 1 m)" }, wikipedia: "Meerkat" },
         { name: { fr: "Nuits étoilées — ciel parmi les plus purs du monde", en: "Star-filled nights — one of the purest skies in the world", es: "Noches estrelladas — uno de los cielos más puros del mundo" }, wikipedia: "File:Kalahari desert, South Africa.jpg" },
@@ -146,7 +146,7 @@ export const BOTSWANA = {
         es: "Los Makgadikgadi Pans son uno de los mayores desiertos de sal del mundo: en la estación seca, una inmensidad blanca hasta donde alcanza la vista y suricatas de las salinas; en la estación de lluvias (nov–mar), millones de cebras y ñus migran hasta aquí. Los baobabs de Chapman y noches de luna de miel bajo las estrellas completan el cuadro.",
       },
       wikipedia: "File:Avestruces_(Struthio_camelus),_salar_del_parque_nacional_Makgadikgadi_Pans,_Botsuana,_2018-07-30,_DD_51.jpg",
-      tags: ["Salines", "Zèbres", "Baobabs", "Migration"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Migration des zèbres (nov–mars)", en: "Zebra migration (Nov–Mar)", es: "Migración de cebras (nov–mar)" }, wikipedia: "Plains_zebra" },
         { name: { fr: "Méerkats des salines — observatoire privé", en: "Salt-pan meerkats — private viewing hide", es: "Suricatas de las salinas — observatorio privado" }, wikipedia: "Meerkat" },

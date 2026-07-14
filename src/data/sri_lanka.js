@@ -115,7 +115,7 @@ export const SRI_LANKA = {
         es: "La fortaleza rocosa de Sigiriya (siglo V), Patrimonio de la Humanidad de la UNESCO, se alcanza por una escalera espectacular entre frescos y jardines de agua. Cerca de allí, Dambulla (templo cueva), Polonnaruwa y Anuradhapura forman el triángulo cultural de Sri Lanka.",
       },
       wikipedia: "Sigiriya",
-      tags: ["UNESCO", "archéologie", "Histoire", "fresques", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Culture", "Architecture"],
       mustSee: [
         { name: "Sigiriya Rock Fortress", wikipedia: "Sigiriya" },
         { name: "Dambulla Cave Temple", wikipedia: "Dambulla_cave_temple" },
@@ -133,7 +133,7 @@ export const SRI_LANKA = {
         es: "Kandy, última capital real de Sri Lanka, alberga el Templo del Diente Sagrado de Buda (Sri Dalada Maligawa), Patrimonio de la Humanidad de la UNESCO. El lago artificial de Kandy, las danzas kandyanas y los jardines botánicos de Peradeniya completan esta ciudad santa.",
       },
       wikipedia: "Kandy",
-      tags: ["bouddhisme", "UNESCO", "Culture", "danses", "Architecture", "Gastronomie", "Ville"],
+      tags: ["Spiritualité", "UNESCO", "Culture", "Architecture", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Temple de la Dent (Sri Dalada)", en: "Temple of the Tooth (Sri Dalada)", es: "Templo del Diente (Sri Dalada)" }, wikipedia: "Temple_of_the_Tooth" },
         { name: { fr: "Jardin botanique de Peradeniya", en: "Peradeniya Royal Botanic Gardens", es: "Jardín botánico de Peradeniya" }, wikipedia: "Royal_Botanic_Gardens,_Peradeniya" },
@@ -151,7 +151,7 @@ export const SRI_LANKA = {
         es: "Yala es uno de los mejores lugares del mundo para observar leopardos salvajes, con la mayor densidad de leopardos del planeta. Elefantes, cocodrilos, osos perezosos y aves migratorias habitan este parque de 979 km².",
       },
       wikipedia: "Yala_National_Park",
-      tags: ["safari", "léopards", "éléphants", "Faune", "Safari", "Nature"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Léopard du Sri Lanka", en: "Sri Lankan leopard", es: "Leopardo de Sri Lanka" }, wikipedia: "File:Sri Lankan leopard (Panthera pardus kotiya) female 5.jpg" },
         { name: { fr: "Bloc 1 (zone principale)", en: "Block 1 (main area)", es: "Bloque 1 (zona principal)" }, wikipedia: "Yala_National_Park" },
@@ -169,7 +169,7 @@ export const SRI_LANKA = {
         es: "Galle Fort, fortaleza holandesa del siglo XVII y Patrimonio de la Humanidad de la UNESCO, es uno de los fuertes coloniales mejor conservados de Asia. La costa sur ofrece hermosas playas (Mirissa para ver ballenas), pueblos de pescadores y un ambiente relajado.",
       },
       wikipedia: "Galle_Fort",
-      tags: ["colonial", "UNESCO", "Plage", "baleines", "Architecture", "Ville"],
+      tags: ["Histoire", "UNESCO", "Plage", "Safari", "Architecture", "Ville"],
       mustSee: [
         { name: { fr: "Galle Fort (remparts)", en: "Galle Fort (ramparts)", es: "Galle Fort (murallas)" }, wikipedia: "Galle_Fort" },
         { name: { fr: "Mirissa (observation des baleines)", en: "Mirissa (whale watching)", es: "Mirissa (avistamiento de ballenas)" }, wikipedia: "Mirissa" },

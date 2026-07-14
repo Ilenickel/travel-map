@@ -75,7 +75,7 @@ export const SIERRA_LEONE = {
         es: "Freetown, capital fundada en 1787 para acoger a esclavos liberados, posee una historia única ligada a la abolición. El centenario árbol del algodón en el corazón de la ciudad, el Museo Nacional, el barrio de Krio Cotton Tree y la isla Banana narran esta memoria singular sobre un fondo de animación africana.",
       },
       wikipedia: "Freetown",
-      tags: ["Histoire", "Abolition", "Culture", "Ville"],
+      tags: ["Histoire", "Culture", "Ville"],
       mustSee: [
         { name: { fr: "Cotton Tree — kapokier tricentenaire symbole de la ville", en: "Cotton Tree — 300-year-old kapok tree, symbol of the city", es: "Cotton Tree — árbol de kapok tricentenario, símbolo de la ciudad" }, wikipedia: "Cotton_Tree_(Sierra_Leone)" },
         { name: "Sierra Leone National Museum", wikipedia: "Sierra_Leone_National_Museum" },
@@ -93,7 +93,7 @@ export const SIERRA_LEONE = {
         es: "La península de Freetown alberga playas de arena blanca todavía poco frecuentadas y de una belleza excepcional. River No. 2 Beach, enmarcada por palmeras y una laguna, y Tokeh Beach figuran entre las playas más bellas de África Occidental.",
       },
       wikipedia: "File:Beach in Freetown, Sierra Leone (14176784751).jpg",
-      tags: ["Plage", "Nature", "Lagon", "Détente"],
+      tags: ["Plage", "Nature", "Détente"],
       mustSee: [
         { name: { fr: "River No. 2 Beach — lagon et palmiers, top Afrique", en: "River No. 2 Beach — lagoon and palm trees, a top African beach", es: "River No. 2 Beach — laguna y palmeras, top de África" }, wikipedia: "File:River_No._2_Beach_(Sierra_Leone).jpg" },
         { name: { fr: "Tokeh Beach — plage de sable blanc préservée", en: "Tokeh Beach — pristine white sand beach", es: "Tokeh Beach — playa de arena blanca preservada" }, wikipedia: "File:Tokeh_Beach.jpg" },
@@ -111,7 +111,7 @@ export const SIERRA_LEONE = {
         es: "La isla de Tiwai, en el río Moa, es un santuario natural privado que alberga una de las mayores densidades de primates del mundo. Se pueden observar 11 especies de primates, entre ellas el colobo de Diana en peligro, el mangabey ahumado, y sobre todo el hipopótamo pigmeo en su hábitat natural.",
       },
       wikipedia: "Tiwai_Island",
-      tags: ["Nature", "Primates", "Hippopotames pygmées", "Forêt"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Hippopotame pygmée — espèce rarissime", en: "Pygmy hippopotamus — an extremely rare species", es: "Hipopótamo pigmeo — especie rarísima" }, wikipedia: "Pygmy_hippopotamus" },
         { name: { fr: "Colobe de Diana et 10 autres espèces de primates", en: "Diana monkey and 10 other primate species", es: "Colobo de Diana y otras 10 especies de primates" }, wikipedia: "Diana_monkey" },

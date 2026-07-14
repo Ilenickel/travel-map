@@ -93,7 +93,7 @@ export const AZERBAIJAN = {
         es: "Antigua capital de los kanes, Sheki es una de las ciudades históricas más bellas del Cáucaso, con su caravasar otomano y su palacio de incomparables vidrieras de mosaico.",
       },
       wikipedia: "File:Şəki,_Azerbaijan_-_overview_1987.jpg",
-      tags: ["Histoire", "Architecture", "Forêts", "Gastronomie"],
+      tags: ["Histoire", "Architecture", "Nature", "Gastronomie"],
       mustSee: [
         { name: { fr: "Palais des Khans de Sheki", en: "Palace of the Sheki Khans", es: "Palacio de los Kanes de Sheki" }, wikipedia: "File:Shaki KhanPalace 004 3718.jpg" },
         { name: { fr: "Caravansérail de Sheki", en: "Sheki Caravanserai", es: "Caravasar de Sheki" }, wikipedia: "File:Palace of Shaki Khans 1.jpg" },
@@ -110,7 +110,7 @@ export const AZERBAIJAN = {
         es: "Reserva nacional con miles de petroglifos prehistóricos (hasta 40 000 años de antigüedad), volcanes de barro burbujeantes y un entorno lunar espectacular.",
       },
       wikipedia: "File:Gobustan State Reserve 7.jpg",
-      tags: ["Nature", "Archéologie", "UNESCO", "Désert"],
+      tags: ["Nature", "Histoire", "UNESCO", "Désert"],
       mustSee: [
         { name: { fr: "Pétroglyphes de Gobustan (UNESCO)", en: "Gobustan petroglyphs (UNESCO)", es: "Petroglifos de Gobustán (UNESCO)" }, wikipedia: "File:Petroglyphs of Qobustan 2.jpg" },
         { name: { fr: "Volcans de boue de Gobustan", en: "Gobustan mud volcanoes", es: "Volcanes de barro de Gobustán" }, wikipedia: "File:Gobustan mud volcanoes 02.jpg" },

@@ -124,7 +124,7 @@ export const EGYPT = {
         es: "La megaciudad de 20 millones de habitantes con las pirámides de Guiza, la única de las Maravillas antiguas aún en pie, la Esfinge y el Gran Museo Egipcio.",
       },
       wikipedia: "Cairo",
-      tags: ["Histoire", "UNESCO", "Culture", "Archéologie"],
+      tags: ["Histoire", "UNESCO", "Culture"],
       mustSee: [
         { name: { fr: "Pyramides de Gizeh & Sphinx", en: "Pyramids of Giza & Sphinx", es: "Pirámides de Guiza y Esfinge" }, wikipedia: "Giza_pyramid_complex" },
         { name: { fr: "Grand Musée Égyptien", en: "Grand Egyptian Museum", es: "Gran Museo Egipcio" }, wikipedia: "File:Grand Egyptian Museum 2025 (90006).jpg" },
@@ -142,7 +142,7 @@ export const EGYPT = {
         es: "La antigua Tebas, capital del Egipto faraónico. El templo de Karnak, el mayor complejo religioso antiguo del mundo, y el Valle de los Reyes con las tumbas de los faraones.",
       },
       wikipedia: "Luxor",
-      tags: ["Histoire", "UNESCO", "Archéologie", "Culture"],
+      tags: ["Histoire", "UNESCO", "Culture"],
       mustSee: [
         { name: { fr: "Temple de Karnak", en: "Karnak Temple", es: "Templo de Karnak" }, wikipedia: "Karnak" },
         { name: { fr: "Vallée des Rois — tombeau de Toutânkhamon", en: "Valley of the Kings — Tutankhamun's tomb", es: "Valle de los Reyes — tumba de Tutankamón" }, wikipedia: "Valley_of_the_Kings" },
@@ -160,7 +160,7 @@ export const EGYPT = {
         es: "El crucero Luxor–Asuán (4–7 días) es una de las experiencias de viaje más legendarias. Los templos se suceden en las orillas del Nilo, entre palmeras y desierto.",
       },
       wikipedia: "Nile",
-      tags: ["Croisière", "Histoire", "Paysage", "Temples"],
+      tags: ["Plage", "Histoire", "Nature", "Temples"],
       mustSee: [
         { name: { fr: "Temple d'Edfou — mieux conservé d'Égypte", en: "Temple of Edfu — Egypt's best-preserved temple", es: "Templo de Edfú — el mejor conservado de Egipto" }, wikipedia: "Edfu" },
         { name: { fr: "Temple de Kom Ombo", en: "Temple of Kom Ombo", es: "Templo de Kom Ombo" }, wikipedia: "Kom_Ombo" },
@@ -178,7 +178,7 @@ export const EGYPT = {
         es: "Las mejores playas y sitios de buceo del Mediterráneo oriental: corales de ensueño, delfines y tiburones de arrecife en aguas cristalinas todo el año.",
       },
       wikipedia: "File:Red Sea Sunrise BWP.jpg",
-      tags: ["Plage", "Plongée", "Snorkeling", "Détente"],
+      tags: ["Plage", "Détente"],
       mustSee: [
         { name: { fr: "Récif de corail de Hurghada", en: "Hurghada coral reef", es: "Arrecife de coral de Hurghada" }, wikipedia: "Hurghada" },
         { name: { fr: "Charm el-Cheikh — snorkeling Ras Mohammed", en: "Sharm el-Sheikh — Ras Mohammed snorkelling", es: "Sharm el-Sheij — esnórquel en Ras Mohammed" }, wikipedia: "File:Coral Bay, Sharm-El-Sheikh.jpg" },

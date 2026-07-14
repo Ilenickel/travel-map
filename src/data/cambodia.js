@@ -96,7 +96,7 @@ export const CAMBODIA = {
         es: "Angkor es uno de los sitios arqueológicos más impresionantes del mundo: 400 km² de templos jemeres del siglo IX al XV. Angkor Wat, la mayor estructura religiosa jamás construida, es el símbolo por excelencia de Camboya.",
       },
       wikipedia: "File:2016 Angkor, Angkor Wat, Brama Angkor Wat (48).jpg",
-      tags: ["Temples", "Archéologie", "UNESCO", "Histoire", "Gastronomie"],
+      tags: ["Temples", "Histoire", "UNESCO", "Gastronomie"],
       mustSee: [
         { name: "Angkor Wat", wikipedia: "Angkor_Wat" },
         { name: { fr: "Angkor Thom & Bayon", en: "Angkor Thom & Bayon", es: "Angkor Thom y Bayon" }, wikipedia: "Angkor_Thom" },
@@ -114,7 +114,7 @@ export const CAMBODIA = {
         es: "La capital es una ciudad entrañable a orillas del Mekong. El Palacio Real, las pagodas budistas y el mercado central contrastan con los memoriales de Tuol Sleng (S-21) y Choeung Ek, testimonios conmovedores del genocidio de los jemeres rojos.",
       },
       wikipedia: "Phnom_Penh",
-      tags: ["Ville", "Histoire", "Culture", "Mémorial", "Gastronomie"],
+      tags: ["Ville", "Histoire", "Culture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Palais Royal de Phnom Penh", en: "Phnom Penh Royal Palace", es: "Palacio Real de Nom Pen" }, wikipedia: "File:2016 Phnom Penh, Pałac Królewski, Srebrna Pagoda (02).jpg" },
         { name: { fr: "Musée Tuol Sleng (S-21)", en: "Tuol Sleng Museum (S-21)", es: "Museo Tuol Sleng (S-21)" }, wikipedia: "Tuol_Sleng_Genocide_Museum" },
@@ -132,7 +132,7 @@ export const CAMBODIA = {
         es: "Las islas de Koh Rong y Koh Rong Samloem ofrecen playas de arena blanca y aguas turquesa aún preservadas. Sihanoukville es la puerta de entrada, aunque la ciudad principal ha cambiado mucho en los últimos años.",
       },
       wikipedia: "Sihanoukville",
-      tags: ["Plage", "Îles", "Plongée", "Nature"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: "Koh Rong Samloem", wikipedia: "File:Koh Rong Sanloem estuary.jpg" },
         { name: "Koh Rong", wikipedia: "Koh_Rong" },
@@ -150,7 +150,7 @@ export const CAMBODIA = {
         es: "Battambang es la segunda ciudad de Camboya, más auténtica y menos turística que Siem Reap. Sus templos preangkorianos, su tren de bambú (Norry), sus pueblos de alfareros y su arquitectura colonial la convierten en una parada encantadora.",
       },
       wikipedia: "Battambang",
-      tags: ["Authentique", "Culture", "Architecture", "Vélo"],
+      tags: ["Culture", "Architecture", "Aventure"],
       mustSee: [
         { name: { fr: "Train de bambou (Norry)", en: "Bamboo train (Norry)", es: "Tren de bambú (Norry)" }, wikipedia: "File:Bamboo train (Norry) station near Battambang in 2012.jpg" },
         { name: { fr: "Phnom Sampeau (temple-falaise)", en: "Phnom Sampeau (cliffside temple)", es: "Phnom Sampeau (templo en el acantilado)" }, wikipedia: "File:Wat Phnom Sampeau.Battambang.2006.jpg" },

@@ -123,7 +123,7 @@ export const GERMANY = {
         es: "Berlín es una ciudad en perpetua reinvención, marcada por las cicatrices de la historia y animada por una creatividad artística única en Europa. Los restos del Muro, el Reichstag, la Isla de los Museos y el Memorial del Holocausto dan testimonio de un pasado denso y complejo. La capital alemana también es célebre por su escena musical underground, sus galerías de arte contemporáneo y su legendaria vida nocturna.",
       },
       wikipedia: "Berlin",
-      tags: ["Histoire", "Culture", "Art", "Musées", "Vie nocturne", "Ville", "Architecture"],
+      tags: ["Histoire", "Culture", "Art", "Musées", "Nightlife", "Ville", "Architecture"],
       mustSee: [
         {
           name: { fr: "Mur de Berlin & Checkpoint Charlie — symboles de la Guerre froide", en: "Berlin Wall & Checkpoint Charlie — symbols of the Cold War", es: "Muro de Berlín y Checkpoint Charlie — símbolos de la Guerra Fría" },
@@ -153,7 +153,7 @@ export const GERMANY = {
         es: "Baviera es la región más turística de Alemania, con Múnich como capital festiva y cultural. La Marienplatz y la Residenz reflejan el esplendor de los Wittelsbach, mientras que los cercanos Alpes bávaros ofrecen senderismo y estaciones de esquí. El castillo de Neuschwanstein, encaramado en su roca, es uno de los lugares más visitados de Europa.",
       },
       wikipedia: "File:Bavaria Statue and Ruhmeshalle Munich, April 2019 -01.jpg",
-      tags: ["Culture", "Alpes", "Gastronomie", "Châteaux", "Oktoberfest", "Ski", "Ville"],
+      tags: ["Culture", "Montagne", "Gastronomie", "Architecture", "Ski", "Ville"],
       mustSee: [
         {
           name: { fr: "Château de Neuschwanstein — château de conte de fées de Louis II de Bavière", en: "Neuschwanstein Castle — the fairy-tale castle of Ludwig II of Bavaria", es: "Castillo de Neuschwanstein — el castillo de cuento de Luis II de Baviera" },
@@ -183,7 +183,7 @@ export const GERMANY = {
         es: "El Rin romántico entre Bingen y Coblenza ofrece uno de los paisajes más pintorescos de Europa, con sus viñedos en terrazas, sus castillos medievales encaramados y sus pueblos de casas de entramado de madera. La Loreley, roca legendaria que domina el río, encarna toda la poesía de esta región declarada Patrimonio de la Humanidad UNESCO. Un crucero fluvial es la mejor forma de disfrutar de este panorama único.",
       },
       wikipedia: "Rhine_Gorge",
-      tags: ["Nature", "Vin", "UNESCO", "Randonnée", "Croisière", "Architecture"],
+      tags: ["Nature", "Gastronomie", "UNESCO", "Randonnée", "Plage", "Architecture"],
       mustSee: [
         {
           name: { fr: "Rocher de la Loreley — site légendaire aux 130 m de hauteur sur le Rhin", en: "Loreley Rock — legendary 130 m outcrop above the Rhine", es: "Roca de la Loreley — enclave legendario de 130 m sobre el Rin" },
@@ -213,7 +213,7 @@ export const GERMANY = {
         es: "La Selva Negra es un macizo forestal de belleza salvaje, salpicado de pueblos tradicionales de tejados de paja, cascadas y lagos glaciares. Cerca de allí, Heidelberg es una de las ciudades medievales más bellas de Alemania, dominada por su romántico castillo en ruinas y atravesada por el Neckar. La tarta Schwarzwälder Kirschtorte y los relojes de cuco son los emblemas gastronómicos y artesanales de la región.",
       },
       wikipedia: "Black_Forest",
-      tags: ["Nature", "Randonnée", "Histoire", "Gastronomie", "Vélo"],
+      tags: ["Nature", "Randonnée", "Histoire", "Gastronomie", "Aventure"],
       mustSee: [
         {
           name: { fr: "Château de Heidelberg — ruines romantiques dominant la ville et le Neckar", en: "Heidelberg Castle — romantic ruins overlooking the town and the Neckar", es: "Castillo de Heidelberg — ruinas románticas que dominan la ciudad y el Neckar" },
@@ -243,7 +243,7 @@ export const GERMANY = {
         es: "Segunda ciudad de Alemania, Hamburgo es una metrópolis portuaria orgullosa de su pasado hanseático y su arquitectura de ladrillo rojo. La Speicherstadt, almacenes del siglo XIX convertidos en museos y galerías, es Patrimonio UNESCO. El Reeperbahn es el barrio de entretenimiento más animado del norte de Europa, y el puerto —el tercero más grande de Europa— se puede visitar en barco. Es también la ciudad de los Beatles, que debutaron aquí.",
       },
       wikipedia: "Hamburg",
-      tags: ["Ville", "Culture", "Architecture", "UNESCO", "Histoire", "Musique"],
+      tags: ["Ville", "Culture", "Architecture", "UNESCO", "Histoire"],
       mustSee: [
         {
           name: { fr: "Speicherstadt — entrepôts en briques rouges classés UNESCO", en: "Speicherstadt — UNESCO-listed red-brick warehouses", es: "Speicherstadt — almacenes de ladrillo rojo Patrimonio UNESCO" },

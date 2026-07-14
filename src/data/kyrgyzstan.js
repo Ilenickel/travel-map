@@ -87,7 +87,7 @@ export const KYRGYZSTAN = {
         es: "Segundo lago alpino más grande del mundo, Issyk-Kul está rodeado de montañas nevadas todo el año a pesar de su altitud de 1.600 metros. Sus aguas azules ligeramente saladas nunca se congelan, de ahí su nombre kirguís que significa «lago cálido». La costa norte ofrece animadas estaciones balnearias mientras que el sur permanece salvaje y preservado.",
       },
       wikipedia: "File:Issyk-Kul, Kyrgyzstan (43713946455).jpg",
-      tags: ["Lac", "Montagne", "Nature", "Plage"],
+      tags: ["Nature", "Montagne", "Plage"],
       mustSee: [
         { name: { fr: "Côte nord — plages et resorts soviétiques rénovés", en: "North shore — beaches and renovated Soviet-era resorts", es: "Costa norte — playas y resorts soviéticos renovados" }, wikipedia: "File:Lago Issyk Kul, Kirguistán.jpg" },
         { name: { fr: "Karakol — base pour les treks dans le Tian Shan", en: "Karakol — base for treks in the Tian Shan", es: "Karakol — base para trekking en el Tian Shan" }, wikipedia: "Karakol" },
@@ -105,7 +105,7 @@ export const KYRGYZSTAN = {
         es: "El lago Son-Kul es una vasta meseta alpina a 3.016 metros de altitud, accesible solo en verano, a caballo o en 4x4. Rodeado de estepas onduladas, es el hogar estival de los pastores nómadas kirguises con sus coloridas yurtas. Dormir en una yurta junto al lago bajo un cielo estrellado excepcional es una experiencia inolvidable.",
       },
       wikipedia: "File:Riding at Song Kol lake.jpg",
-      tags: ["Yourte", "Nomade", "Altitude", "Cheval"],
+      tags: ["Rural", "Montagne", "Aventure"],
       mustSee: [
         { name: { fr: "Camps de yourtes — séjour chez des familles nomades", en: "Yurt camps — staying with nomadic families", es: "Campamentos de yurtas — estancia con familias nómadas" }, wikipedia: "File:Song-Kul, Kyrgyzstan (Unsplash).jpg" },
         { name: { fr: "Trek à cheval — tour du lac en plusieurs jours", en: "Horseback trek — multi-day tour around the lake", es: "Trekking a caballo — vuelta al lago de varios días" }, wikipedia: "File:Riding at Song Kol lake.jpg" },
@@ -123,7 +123,7 @@ export const KYRGYZSTAN = {
         es: "Tash Rabat es una caravasar medieval del siglo XV encaramada a 3.500 metros en un valle aislado, uno de los monumentos históricos mejor conservados de Asia Central. Este edificio de piedra era una parada de la Ruta de la Seda para los mercaderes y peregrinos que cruzaban las montañas. Su atmósfera misteriosa y el paisaje circundante lo convierten en un sitio arqueológico único.",
       },
       wikipedia: "Tash_Rabat",
-      tags: ["Histoire", "Route de la Soie", "Architecture", "Montagne"],
+      tags: ["Histoire", "Architecture", "Montagne"],
       mustSee: [
         { name: { fr: "Caravansérail — intérieur à 40 chambres voûtées", en: "Caravanserai — interior with 40 vaulted chambers", es: "Caravasar — interior con 40 cámaras abovedadas" }, wikipedia: "File:Caravansarai_Karaj.jpg" },
         { name: { fr: "Col de Tash Rabat — panorama sur les montagnes", en: "Tash Rabat Pass — panoramic mountain views", es: "Paso de Tash Rabat — panorámica de las montañas" }, wikipedia: "File:Landscape near Tash Rabat Kyrgyzstan.jpg" },
@@ -140,7 +140,7 @@ export const KYRGYZSTAN = {
         es: "El parque nacional de Ala Archa es el patio de recreo natural de los habitantes de Biskek, accesible en menos de una hora desde la capital. Este espectacular cañón alpino ofrece senderos para todos los niveles, desde simples paseos por el bosque hasta ascensos a cumbres de más de 4.000 metros. Sus cascadas heladas y sus vistas a los glaciares lo convierten en un destino predilecto de los amantes de la montaña.",
       },
       wikipedia: "File:Ала-Арча сверху (1).jpg",
-      tags: ["Randonnée", "Canyon", "Glaciers", "Parc national"],
+      tags: ["Randonnée", "Nature"],
       mustSee: [
         { name: { fr: "Cascade d'Ak-Sai — 40 minutes de marche depuis l'entrée", en: "Ak-Sai Waterfall — 40-minute walk from the entrance", es: "Cascada de Ak-Sai — 40 minutos a pie desde la entrada" }, wikipedia: "File:Ала арча нп.jpg" },
         { name: { fr: "Glacier Ak-Sai — vue sur les séracs impressionnants", en: "Ak-Sai Glacier — view of impressive seracs", es: "Glaciar Ak-Sai — vistas de impresionantes seracs" }, wikipedia: "File:River in Ala Archa National Park, Kyrgyzstan 01.jpg" },

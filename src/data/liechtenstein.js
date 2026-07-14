@@ -73,7 +73,7 @@ export const LIECHTENSTEIN = {
         es: "Vaduz es una de las capitales más pequeñas del mundo, con solo 5.500 habitantes. Está dominada por el castillo del príncipe Hans-Adam II, residencia oficial de la familia reinante y no abierta al público, pero que ofrece una silueta icónica sobre la ciudad. La calle principal concentra los museos, el Kunstmuseum y las tiendas de sellos (Liechtenstein es célebre en filatelia).",
       },
       wikipedia: "Vaduz",
-      tags: ["Ville", "Château", "Musées", "Principauté"],
+      tags: ["Ville", "Architecture", "Musées", "Histoire"],
       mustSee: [
         { name: { fr: "Château de Vaduz — résidence princière médiévale en hauteur dominant la ville", en: "Vaduz Castle — medieval princely residence overlooking the town", es: "Castillo de Vaduz — residencia principesca medieval en altura que domina la ciudad" }, wikipedia: "Vaduz_Castle" },
         { name: { fr: "Kunstmuseum Liechtenstein — musée d'art moderne et contemporain de haute qualité", en: "Kunstmuseum Liechtenstein — high-quality modern and contemporary art museum", es: "Kunstmuseum Liechtenstein — museo de arte moderno y contemporáneo de gran calidad" }, wikipedia: "Kunstmuseum_Liechtenstein" },
@@ -108,7 +108,7 @@ export const LIECHTENSTEIN = {
         es: "Triesenberg es un pueblo walser encaramado a 884 m en la ladera de la montaña, poblado por descendientes de colonos suizos germanófonos (walser) llegados en el siglo XIV. Su museo walser y sus casas tradicionales de madera son un testimonio único de esta cultura de alta montaña. El pueblo ofrece una vista panorámica de todo el valle del Rin y los Alpes suizos.",
       },
       wikipedia: "Triesenberg",
-      tags: ["Village", "Culture Walser", "Panorama", "Tradition"],
+      tags: ["Rural", "Culture", "Panorama", "Tradition"],
       mustSee: [
         { name: { fr: "Walsermuseum de Triesenberg — histoire de la colonisation walser du XIVe siècle", en: "Walsermuseum in Triesenberg — history of 14th-century Walser settlement", es: "Walsermuseum de Triesenberg — historia de la colonización walser del siglo XIV" }, wikipedia: "Triesenberg" },
         { name: { fr: "Église paroissiale Saint-Joseph — architecture néo-romane dominant le village", en: "St. Joseph's parish church — neo-Romanesque architecture overlooking the village", es: "Iglesia parroquial de San José — arquitectura neorrománica que domina el pueblo" }, wikipedia: "File:Triesenberg 08-2011 - panoramio (2).jpg" },

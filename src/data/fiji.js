@@ -88,7 +88,7 @@ export const FIJI = {
         es: "Las islas Yasawa se extienden 80 km al noroeste de Viti Levu, formando un rosario de volcanes dormidos con playas salvajes y aguas de un azul casi irreal. Este archipiélago estuvo cerrado a los turistas durante mucho tiempo y conserva hoy una autenticidad poco común, con pueblos fiyianos tradicionales que acogen a los viajeros. La Laguna Azul, hecha famosa por la película homónima, se encuentra en la isla de Nanuya Levu.",
       },
       wikipedia: "File:Yasawa Islands2.jpg",
-      tags: ["Plages", "Snorkeling", "Village", "Isolé", "Plage", "Nature"],
+      tags: ["Plage", "Rural", "Nature"],
       mustSee: [
         {
           name: { fr: "Blue Lagoon de Nanuya Levu — eaux turquoise d'une beauté légendaire", en: "Blue Lagoon on Nanuya Levu — legendary turquoise waters", es: "Laguna Azul de Nanuya Levu — aguas turquesa de belleza legendaria" },
@@ -118,7 +118,7 @@ export const FIJI = {
         es: "A solo 30 minutos en barco de Nadi, las islas Mamanuca son el escenario ideal para quienes buscan playas de ensueño y actividades acuáticas. Escenario de la película 'Náufrago' con Tom Hanks, la isla de Monuriki es un símbolo del aislamiento insular fiyiano. Este archipiélago ofrece un amplio abanico de alojamientos, desde bungalós económicos hasta resorts de cinco estrellas.",
       },
       wikipedia: "Mamanuca_Islands",
-      tags: ["Resort", "Nautisme", "Famille", "Plongée"],
+      tags: ["Luxe", "Plage", "Famille"],
       mustSee: [
         {
           name: { fr: "Île de Monuriki — décor du film Cast Away et snorkeling exceptionnel", en: "Monuriki Island — the setting for Cast Away and home to exceptional snorkelling", es: "Isla de Monuriki — escenario de la película Náufrago y esnórquel excepcional" },
@@ -144,7 +144,7 @@ export const FIJI = {
         es: "El Gran Arrecife Astrolabe, frente a la isla de Kadavu, es uno de los arrecifes barrera más importantes del Pacífico Sur y un paraíso para buceadores expertos. Sus aguas profundas y poco frecuentadas albergan una biodiversidad marina excepcional: tiburones nodriza, peces napoleón, tortugas y una multitud de corales en perfecto estado. La propia isla de Kadavu se ha mantenido al margen del turismo de masas.",
       },
       wikipedia: "Great_Astrolabe_Reef",
-      tags: ["Plongée", "Récif", "Nature", "Préservé"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         {
           name: { fr: "Great Astrolabe Reef — plongée avec requins, raies et poissons tropicaux", en: "Great Astrolabe Reef — diving with sharks, rays and tropical fish", es: "Gran Arrecife Astrolabe — buceo con tiburones, rayas y peces tropicales" },
@@ -170,7 +170,7 @@ export const FIJI = {
         es: "Suva, la capital cosmopolita, combina arquitectura colonial británica, mercados animados y museos que revelan la riqueza cultural fiyiana. Cerca de allí, las dunas de Sigatoka son un notable sitio prehistórico y natural: estas dunas de arena costeras han revelado restos arqueológicos lapita de 2.600 años de antigüedad. La Costa de Coral entre Nadi y Suva ofrece playas más accesibles y experiencias culturales auténticas.",
       },
       wikipedia: "Suva",
-      tags: ["Ville", "Culture", "Histoire", "Archéologie", "Gastronomie", "Architecture"],
+      tags: ["Ville", "Culture", "Histoire", "Gastronomie", "Architecture"],
       mustSee: [
         {
           name: { fr: "Musée de Fidji — histoire mélanésienne et artefacts des guerriers cannibales", en: "Fiji Museum — Melanesian history and artefacts from cannibal warriors", es: "Museo de Fiyi — historia melanesia y artefactos de guerreros caníbales" },

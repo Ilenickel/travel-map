@@ -75,7 +75,7 @@ export const LIBERIA = {
         es: "El parque nacional de Sapo es la mayor reserva natural de Liberia y una de las últimas y más bellas selvas primarias del África Occidental. Alberga elefantes de bosque, hipopótamos pigmeos, chimpancés y más de 600 especies de aves en un ecosistema prácticamente intacto.",
       },
       wikipedia: "African_forest_elephant",
-      tags: ["Nature", "Forêt", "Éléphants", "Primaires"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Éléphants de forêt d'Afrique de l'Ouest", en: "West African forest elephants", es: "Elefantes de bosque de África Occidental" }, wikipedia: "African_forest_elephant" },
         { name: { fr: "Hippopotames pygmées dans les rivières", en: "Pygmy hippos in the rivers", es: "Hipopótamos pigmeos en los ríos" }, wikipedia: "Pygmy_hippopotamus" },
@@ -93,7 +93,7 @@ export const LIBERIA = {
         es: "Monrovia, fundada en 1822 y bautizada en honor al presidente estadounidense Monroe, es la única capital africana que lleva el nombre de un presidente de EE. UU. Su historia ligada a los esclavos liberados es visible en los barrios antiguos, y sus alrededores ofrecen playas salvajes y lagunas.",
       },
       wikipedia: "Monrovia",
-      tags: ["Ville", "Histoire", "Afro-américain", "Culture"],
+      tags: ["Ville", "Histoire", "Culture"],
       mustSee: [
         { name: { fr: "Capitol Building du Libéria", en: "Liberian Capitol Building", es: "Capitol Building de Liberia" }, wikipedia: "File:Liberian_Capitol_Building.jpg" },
         { name: { fr: "Providence Island — île fondatrice de Monrovia", en: "Providence Island — Monrovia's founding island", es: "Providence Island — isla fundadora de Monrovia" }, wikipedia: "Providence_Island,_Liberia" },
@@ -110,7 +110,7 @@ export const LIBERIA = {
         es: "Liberia cuenta con más de 500 km de costa atlántica con playas de arena blanca todavía casi desiertas. Silver Beach y las playas alrededor de Robertsport, un spot de surf de reputación creciente, atraen a un puñado de aventureros en busca de un África Occidental preservada.",
       },
       wikipedia: "Robertsport",
-      tags: ["Plage", "Surf", "Nature", "Sauvage"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         { name: { fr: "Robertsport — plage de surf mythique", en: "Robertsport — legendary surf beach", es: "Robertsport — mítica playa de surf" }, wikipedia: "Robertsport" },
         { name: { fr: "Lac Piso — lagon naturel protégé", en: "Lake Piso — protected natural lagoon", es: "Lago Piso — laguna natural protegida" }, wikipedia: "Lake_Piso" },

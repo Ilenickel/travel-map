@@ -52,7 +52,7 @@ export const SAN_MARINO = {
         es: "El casco histórico de San Marino y el monte Titano, declarados conjuntamente Patrimonio de la Humanidad desde 2008, forman un conjunto medieval notablemente bien conservado a 755 metros de altitud. Las calles empedradas, los palacios gubernamentales y las murallas ofrecen una inmersión en la historia milenaria de la república más antigua del mundo. La visita se puede hacer en medio día desde Rímini, idealmente por la mañana antes de la afluencia de turistas.",
       },
       wikipedia: "File:Fortress of Guaita 2013-09-19.jpg",
-      tags: ["UNESCO", "Médiéval", "République", "Panorama"],
+      tags: ["UNESCO", "Histoire", "Panorama"],
       mustSee: [
         { name: { fr: "Tour Guaita (Prima Torre) — la plus ancienne des trois tours, XIe siècle", en: "Guaita Tower (Prima Torre) — the oldest of the three towers, 11th century", es: "Torre Guaita (Prima Torre) — la más antigua de las tres torres, siglo XI" }, wikipedia: "Guaita" },
         { name: { fr: "Tour Cesta (Seconda Torre) — vue panoramique sur l'Adriatique", en: "Cesta Tower (Seconda Torre) — panoramic view over the Adriatic", es: "Torre Cesta (Seconda Torre) — vista panorámica sobre el Adriático" }, wikipedia: "File:Cesta 2013-09-19.jpg" },
@@ -70,7 +70,7 @@ export const SAN_MARINO = {
         es: "Rímini, a solo 25 km de San Marino y accesible en autobús o taxi, es la base ideal para visitar el microestado en una excursión de un día. Esta ciudad costera italiana cuenta con una larga playa de arena y un notable centro histórico romano con el Arco de Augusto y el Puente de Tiberio. Combinar San Marino y Rímini durante 2 o 3 días permite disfrutar tanto del patrimonio medieval como del mar Adriático.",
       },
       wikipedia: "File:Rimini veduta litorale dal Grattacielo maggio 2026.jpg",
-      tags: ["Plage", "Excursion", "Adriatique", "Italie"],
+      tags: ["Plage", "Histoire"],
       mustSee: [
         { name: { fr: "Arc d'Auguste de Rimini — arche romaine du Ier siècle av. J.-C.", en: "Arch of Augustus, Rimini — Roman arch from the 1st century BC", es: "Arco de Augusto de Rímini — arco romano del siglo I a.C." }, wikipedia: "Arch_of_Augustus_(Rimini)" },
         { name: { fr: "Pont de Tibère — pont romain à cinq arches du Ier siècle", en: "Bridge of Tiberius — 1st-century five-arch Roman bridge", es: "Puente de Tiberio — puente romano de cinco arcos del siglo I" }, wikipedia: "File:Ponte di Tiberio 4569.JPG" },
@@ -88,7 +88,7 @@ export const SAN_MARINO = {
         es: "San Marino alberga varios museos originales que merecen una visita: el Museo Estatal reúne colecciones arqueológicas y pictóricas, mientras que el Museo de Instrumentos de Tortura fascina a los curiosos de la historia medieval. La Galería de Arte Moderno y Contemporáneo ofrece exposiciones temporales en un entorno medieval inesperado. Un día completo permite visitar tanto las torres como los principales museos.",
       },
       wikipedia: "File:RSM-San Marino109.jpg",
-      tags: ["Musée", "Culture", "Histoire", "Art"],
+      tags: ["Musées", "Culture", "Histoire", "Art"],
       mustSee: [
         { name: { fr: "Musée d'État de Saint-Marin — archéologie et histoire du micro-État", en: "State Museum of San Marino — archaeology and history of the micro-state", es: "Museo Estatal de San Marino — arqueología e historia del microestado" }, wikipedia: "File:RSM-San Marino109.jpg" },
         { name: { fr: "Musée des Instruments de Torture — collection médiévale dans la Guaita", en: "Museum of Torture Instruments — medieval collection inside the Guaita", es: "Museo de Instrumentos de Tortura — colección medieval en la Guaita" }, wikipedia: "File:San_Marino_Tortura.jpg" },

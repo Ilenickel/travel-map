@@ -94,7 +94,7 @@ export const BOSNIA_HERZEGOVINA = {
         es: "Sarajevo es la única ciudad de Europa donde se puede oír la llamada a la oración desde una mezquita otomana y las campanas de una catedral católica al mismo tiempo: el barrio otomano de Baščaršija (bazares, fuentes, artesanos del cobre), el lugar del asesinato del archiduque Francisco Fernando (1914, chispa que desencadenó la Primera Guerra Mundial), y la Biblioteca Nacional incendiada en 1992 — Sarajevo lleva consigo la historia de toda Europa.",
       },
       wikipedia: "Sarajevo",
-      tags: ["Histoire", "Ottoman", "WWI", "Carrefour", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Baščaršija — grand bazar ottoman du XVe siècle", en: "Baščaršija — great 15th-century Ottoman bazaar", es: "Baščaršija — gran bazar otomano del siglo XV" }, wikipedia: "Baščaršija" },
         { name: { fr: "Pont Latin — lieu de l'assassinat de François-Ferdinand (28 juin 1914)", en: "Latin Bridge — site of Franz Ferdinand's assassination (28 June 1914)", es: "Puente Latino — lugar del asesinato de Francisco Fernando (28 de junio de 1914)" }, wikipedia: "Latin_Bridge" },
@@ -111,7 +111,7 @@ export const BOSNIA_HERZEGOVINA = {
         es: "Mostar es la joya de Herzegovina: el Stari Most ('Puente Viejo', UNESCO) es un arco de piedra otomano de 1566 — destruido en 1993 y reconstruido piedra a piedra en 2004 — símbolo de la reconciliación bosnia. Los saltos desde el puente (24 m de altura) realizados por los Mostari (saltadores locales) son todo un ritual. El antiguo barrio otomano (Kujundžiluk) está perfectamente conservado.",
       },
       wikipedia: "Mostar",
-      tags: ["UNESCO", "Pont ottoman", "Réconciliation", "Neretva", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Nature", "Architecture"],
       mustSee: [
         { name: { fr: "Stari Most (Vieux Pont, UNESCO) — arc ottoman de 1566 reconstruit en 2004", en: "Stari Most (Old Bridge, UNESCO) — 1566 Ottoman arch rebuilt in 2004", es: "Stari Most (Puente Viejo, UNESCO) — arco otomano de 1566 reconstruido en 2004" }, wikipedia: "Stari_Most" },
         { name: { fr: "Plongeons des Mostari depuis le pont (24m, spectacle régulier)", en: "The Mostari's bridge dives (24m, regular spectacle)", es: "Saltos de los Mostari desde el puente (24 m, espectáculo habitual)" }, wikipedia: "Mostar" },
@@ -129,7 +129,7 @@ export const BOSNIA_HERZEGOVINA = {
         es: "Las cascadas de Kravice son las más impresionantes de los Balcanes occidentales: una media luna de 25 m de alto por 120 m de ancho, con una piscina natural turquesa al pie, perfecta para bañarse. Cerca se encuentran el lago de Jablanica, los cañones del Neretva y Počitelj, un pueblo fortificado otomano encaramado en una colina sobre el río.",
       },
       wikipedia: "File:Waterfalls Kravica 5, Bosnia and Herzegovina.jpg",
-      tags: ["Cascades", "Baignade", "Canyon", "Ottoman", "Nature", "Randonnée"],
+      tags: ["Nature", "Plage", "Histoire", "Randonnée"],
       mustSee: [
         { name: { fr: "Cascades de Kravice — demi-cercle turquoise de 25m de haut", en: "Kravice waterfalls — a 25-metre-high turquoise semicircle", es: "Cascadas de Kravice — semicírculo turquesa de 25 m de altura" }, wikipedia: "File:Kravice-kosk9.jpg" },
         { name: { fr: "Počitelj — village fortifié ottoman du XVe siècle", en: "Počitelj — 15th-century Ottoman fortified village", es: "Počitelj — pueblo fortificado otomano del siglo XV" }, wikipedia: "Počitelj" },
@@ -147,7 +147,7 @@ export const BOSNIA_HERZEGOVINA = {
         es: "Jahorina y Bjelašnica son las dos estaciones de esquí de los Juegos Olímpicos de Invierno de 1984 — los únicos Juegos Olímpicos celebrados en un país que ya no existe (Yugoslavia). Aún pueden verse algunas infraestructuras olímpicas, como la pista de bobsleigh de Trebević, hoy accesible en teleférico. En verano, las montañas alrededor de Sarajevo ofrecen senderismo por praderas alpinas.",
       },
       wikipedia: "Jahorina",
-      tags: ["JO 1984", "Ski", "Histoire", "Yougoslavie", "Randonnée", "Nature"],
+      tags: ["Histoire", "Ski", "Randonnée", "Nature"],
       mustSee: [
         { name: { fr: "Piste de bobsleigh des JO 1984 sur Trebević (maintenant sentier graffiti)", en: "1984 Olympic bobsleigh track on Trebević (now a graffiti-covered trail)", es: "Pista de bobsleigh de los JJ. OO. de 1984 en Trebević (hoy un sendero con grafitis)" }, wikipedia: "Trebević" },
         { name: { fr: "Ski à Jahorina (1 900m) — ancienne piste olympique encore fonctionnelle", en: "Skiing in Jahorina (1,900m) — a former Olympic slope still in use", es: "Esquí en Jahorina (1900 m) — antigua pista olímpica todavía en uso" }, wikipedia: "Jahorina" },

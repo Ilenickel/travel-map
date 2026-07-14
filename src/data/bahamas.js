@@ -69,7 +69,7 @@ export const BAHAMAS = {
         es: "Nasáu, capital de las Bahamas, es una ciudad animada donde las mansiones coloniales pastel conviven con casinos y enormes cruceros. El barrio histórico ofrece calles coloridas, el mercado artesanal de Straw Market y las fortificaciones británicas del siglo XVIII. Paradise Island, conectada por un puente, alberga el Atlantis Resort con su espectacular parque acuático, sus acuarios abiertos y sus playas de arena blanca.",
       },
       wikipedia: "Nassau,_Bahamas",
-      tags: ["Plage", "Culture", "Casino", "Histoire coloniale"],
+      tags: ["Plage", "Culture", "Nightlife", "Histoire"],
       mustSee: [
         {
           name: { fr: "Fort Fincastle et Queen's Staircase — escalier taillé dans le corail", en: "Fort Fincastle and Queen's Staircase — staircase carved into coral", es: "Fort Fincastle y Queen's Staircase — escalera tallada en coral" },
@@ -99,7 +99,7 @@ export const BAHAMAS = {
         es: "Los Exumas son un archipiélago de islotes salvajes de aguas de un azul irreal, mundialmente célebre por los cerdos nadadores de Big Major Cay, los tiburones nodriza de Compass Cay y las rayas gigantes de Stingray City. El Exuma Land and Sea Park, uno de los primeros parques marinos protegidos del Atlántico, alberga corales en excelente estado y una biodiversidad marina excepcional. George Town, tranquila capital, es un punto de partida ideal para explorar el archipiélago en catamarán.",
       },
       wikipedia: "File:Emerald bay great exuma bahamas.jpg",
-      tags: ["Plage", "Snorkeling", "Faune marine", "Kayak"],
+      tags: ["Plage", "Safari", "Aventure"],
       mustSee: [
         {
           name: { fr: "Cochons nageurs de Big Major Cay — unique au monde", en: "Big Major Cay swimming pigs — one of a kind", es: "Cerdos nadadores de Big Major Cay — únicos en el mundo" },
@@ -122,7 +122,7 @@ export const BAHAMAS = {
         es: "Eleuthera es una isla larga y estrecha famosa por sus playas de arena rosa, un fenómeno natural causado por foraminíferos microscópicos triturados por las olas. Harbour Island, un islote minúsculo accesible en taxi acuático, está considerada uno de los rincones más bellos del Caribe, con su célebre Pink Sand Beach y sus casas de madera pastel. Glass Window Bridge, el punto más estrecho de la isla, ofrece una vista impresionante del oscuro Atlántico por un lado y las aguas turquesas del Caribe por el otro.",
       },
       wikipedia: "File:Eleuthera.jpg",
-      tags: ["Plage rose", "Luxe discret", "Snorkeling", "Photographie"],
+      tags: ["Plage", "Luxe", "Culture"],
       mustSee: [
         {
           name: { fr: "Pink Sand Beach (Harbour Island) — sable rose unique", en: "Pink Sand Beach (Harbour Island) — uniquely pink sand", es: "Pink Sand Beach (Harbour Island) — arena rosa única" },
@@ -148,7 +148,7 @@ export const BAHAMAS = {
         es: "Grand Bahama es la cuarta isla en superficie del archipiélago y la más accesible desde Florida, a solo 90 km de Palm Beach. El Lucayan National Park alberga uno de los sistemas de cuevas submarinas más largos del mundo, además de manglares preservados. Los centros de buceo de Freeport ofrecen excursiones a pecios y arrecifes de coral en excelente estado, con una fuerte presencia de delfines salvajes.",
       },
       wikipedia: "Grand_Bahama",
-      tags: ["Plongée", "Nature", "Accessible", "Grottes"],
+      tags: ["Plage", "Nature"],
       mustSee: [
         {
           name: { fr: "Lucayan National Park — grottes sous-marines et mangroves", en: "Lucayan National Park — underwater caves and mangroves", es: "Lucayan National Park — cuevas submarinas y manglares" },

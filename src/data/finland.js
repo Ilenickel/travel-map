@@ -94,7 +94,7 @@ export const FINLAND = {
         es: "Helsinki es una capital compacta y elegante en el mar Báltico: el barrio de Kallio con sus bares y galerías de moda, el Design District, la catedral luterana blanca (plaza del Senado), el mercado cubierto de Vanha Kauppahalli, y las islas accesibles en ferry (Suomenlinna, fortaleza UNESCO). Una ciudad que respira.",
       },
       wikipedia: "Helsinki",
-      tags: ["Design", "Îles", "Architecture", "Café", "Ville", "Gastronomie"],
+      tags: ["Architecture", "Plage", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Suomenlinna — forteresse maritime UNESCO sur une île", en: "Suomenlinna — UNESCO sea fortress on an island", es: "Suomenlinna — fortaleza marítima UNESCO en una isla" }, wikipedia: "Suomenlinna" },
         { name: { fr: "Sauna Löyly — sauna public avec plongée dans la mer Baltique", en: "Löyly Sauna — public sauna with a dip in the Baltic Sea", es: "Sauna Löyly — sauna pública con baño en el mar Báltico" }, wikipedia: "Helsinki" },
@@ -112,7 +112,7 @@ export const FINLAND = {
         es: "Rovaniemi es oficialmente el hogar de Papá Noel según las Naciones Unidas — Santa Claus Village se encuentra exactamente sobre el círculo polar ártico. Pero más allá del mito, es la capital de Laponia: base para observar auroras boreales, safaris en moto de nieve, raquetas de nieve en el bosque de pinos y expediciones a los parques nacionales cercanos.",
       },
       wikipedia: "File:Santa Land Rovaniemi Arctic Circle2.jpg",
-      tags: ["Père Noël", "Aurores", "Laponie", "Motoneige", "Ski"],
+      tags: ["Famille", "Nature", "Ski"],
       mustSee: [
         { name: { fr: "Santa Claus Village — sur le cercle polaire exactement", en: "Santa Claus Village — right on the Arctic Circle", es: "Santa Claus Village — exactamente sobre el círculo polar" }, wikipedia: "Santa_Claus_Village" },
         { name: { fr: "Safari en motoneige dans la forêt de Laponie", en: "Snowmobile safari through the Lapland forest", es: "Safari en moto de nieve por el bosque de Laponia" }, wikipedia: "File:Santa Land Rovaniemi Arctic Circle2.jpg" },
@@ -130,7 +130,7 @@ export const FINLAND = {
         es: "El lago Saimaa es el mayor de Finlandia y el cuarto de Europa: su laberinto de 14.000 islas es el paraíso de la canoa y el kayak. La ciudad de Savonlinna alberga el castillo medieval de Olavinlinna, escenario del Festival de Ópera de Savonlinna (julio) — único en el mundo. La foca anillada de Saimaa es una especie endémica de agua dulce en grave peligro de extinción.",
       },
       wikipedia: "Saimaa",
-      tags: ["Lacs", "Canoë", "Opéra", "Phoques", "Nature", "Randonnée"],
+      tags: ["Nature", "Aventure", "Culture", "Safari", "Randonnée"],
       mustSee: [
         { name: { fr: "Canoë sur le Saimaa (itinéraire 3–7 jours, île à île)", en: "Canoeing on Lake Saimaa (3–7-day route, island to island)", es: "Canoa en el Saimaa (ruta de 3–7 días, de isla en isla)" }, wikipedia: "Saimaa" },
         { name: { fr: "Château médiéval d'Olavinlinna à Savonlinna", en: "Medieval Olavinlinna Castle in Savonlinna", es: "Castillo medieval de Olavinlinna en Savonlinna" }, wikipedia: "Olavinlinna" },
@@ -148,7 +148,7 @@ export const FINLAND = {
         es: "El archipiélago de Turku es uno de los más grandes del mundo (20.000 islas e islotes) y la parte habitada más meridional de Finlandia. Turku, antigua capital del país, conserva su castillo medieval y su catedral del siglo XIII. El ferry de temporada recorre el archipiélago entre Turku y Åland pasando por decenas de islas habitadas.",
       },
       wikipedia: "File:Lempisaari, Naantali, Finland..jpg",
-      tags: ["Îles", "Ferry", "Médiéval", "Baltique"],
+      tags: ["Plage", "Histoire"],
       mustSee: [
         { name: { fr: "Château de Turku (XIIIe s.) — musée historique finnois", en: "Turku Castle (13th c.) — Finnish history museum", es: "Castillo de Turku (s. XIII) — museo histórico finlandés" }, wikipedia: "Turku_Castle" },
         { name: { fr: "Archipel Trail en ferry (Turku → Åland) — paysage unique", en: "Archipelago Trail by ferry (Turku → Åland) — unique scenery", es: "Archipelago Trail en ferry (Turku → Åland) — paisaje único" }, wikipedia: "File:Oasis of the seas leaving STX shipyard, Turku, Finland - pic2.JPG" },

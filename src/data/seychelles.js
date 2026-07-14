@@ -86,7 +86,7 @@ export const SEYCHELLES = {
         es: "La Digue es la isla más pintoresca de Seychelles: Anse Source d'Argent está clasificada como una de las playas más bellas del mundo, con rocas de granito rosa esculpidas por el viento y el mar, aguas turquesas poco profundas y cocoteros. Solo se puede recorrer en bicicleta o carro de bueyes. Una isla preservada fuera del tiempo.",
       },
       wikipedia: "File:Grand Anse-La Digue-Seychellen.jpg",
-      tags: ["Plage", "Granit", "Vélo", "Paradis"],
+      tags: ["Plage", "Nature", "Aventure"],
       mustSee: [
         { name: { fr: "Anse Source d'Argent — la plus photographiée du monde", en: "Anse Source d'Argent — the most photographed beach in the world", es: "Anse Source d'Argent — la más fotografiada del mundo" }, wikipedia: "File:Anse Source d'Argent 3-La Digue.jpg" },
         { name: { fr: "Grand Anse La Digue — plage sauvage côté vent", en: "Grand Anse La Digue — wild beach on the windward side", es: "Grand Anse La Digue — playa salvaje del lado del viento" }, wikipedia: "File:Seychellen la digue nil daigle.jpg" },
@@ -104,7 +104,7 @@ export const SEYCHELLES = {
         es: "Praslin alberga el Vallée de Mai (UNESCO), el sitio de Patrimonio de la Humanidad más pequeño: un bosque de palmeras coco de mer cuyo fruto es el más grande del reino vegetal (25 kg). Aquí anida el loro negro endémico. Anse Lazio, a menudo votada la mejor playa del mundo, está a 20 minutos. Las aguas al norte de la isla son ideales para el buceo.",
       },
       wikipedia: "Praslin",
-      tags: ["UNESCO", "Forêt", "Plage", "Plongée"],
+      tags: ["UNESCO", "Nature", "Plage"],
       mustSee: [
         { name: { fr: "Vallée de Mai (UNESCO) — forêt de coco de mer (fruit 25kg)", en: "Vallée de Mai (UNESCO) — coco de mer forest (25kg fruit)", es: "Vallée de Mai (UNESCO) — bosque de coco de mer (fruto de 25 kg)" }, wikipedia: "Vallée_de_Mai" },
         { name: { fr: "Anse Lazio — souvent élue plus belle plage du monde", en: "Anse Lazio — often voted the world's most beautiful beach", es: "Anse Lazio — a menudo votada la playa más bella del mundo" }, wikipedia: "Anse_Lazio" },
@@ -122,7 +122,7 @@ export const SEYCHELLES = {
         es: "Mahé, la isla más grande, concentra las infraestructuras: Victoria, la capital (la más pequeña del mundo), sus mercados llenos de especias y artesanía criolla, jardines botánicos con tortugas gigantes en libertad, y buceo alrededor de las islas vecinas. La playa de Beau Vallon (norte) es la más animada de Seychelles.",
       },
       wikipedia: "File:Wind turbines - wind energy - Mahe - Seychelles.jpg",
-      tags: ["Ville", "Plongée", "Marchés", "Tortues"],
+      tags: ["Ville", "Plage", "Shopping", "Safari"],
       mustSee: [
         { name: { fr: "Marché de Victoria — épices, artisanat créole", en: "Victoria Market — spices, Creole crafts", es: "Mercado de Victoria — especias, artesanía criolla" }, wikipedia: "File:Big Ben Clock Tower - Victoria - Mahe - Seychelles - 01.jpg" },
         { name: { fr: "Jardins botaniques — tortues géantes Aldabra en semi-liberté", en: "Botanical gardens — semi-wild giant Aldabra tortoises", es: "Jardines botánicos — tortugas gigantes de Aldabra semilibres" }, wikipedia: "File:Green_turtle_Chelonia_mydas_is_basking_on_Punaluu_Beach_Big_Island_of_Hawaii.jpg" },

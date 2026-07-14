@@ -94,7 +94,7 @@ export const SAUDI_ARABIA = {
         es: "Yacimiento arqueológico nabateo de primer orden, Hégra (Madain Saleh) es la Petra saudí: tumbas monumentales talladas en roca roja, Patrimonio de la Humanidad desde 2008.",
       },
       wikipedia: "File:Al Ula old town, Saudi Arabia 2011.jpg",
-      tags: ["Histoire", "Archéologie", "UNESCO", "Désert", "Architecture", "Randonnée", "Nature"],
+      tags: ["Histoire", "UNESCO", "Désert", "Architecture", "Randonnée", "Nature"],
       mustSee: [
         { name: { fr: "Hégra — tombeaux nabatéens (UNESCO)", en: "Hegra — Nabataean tombs (UNESCO)", es: "Hégra — tumbas nabateas (UNESCO)" }, wikipedia: "File:Hegra, Al-Ula, Saudi Arabia.png" },
         { name: "Elephant Rock", wikipedia: "File:Elephant_rock_Al_Ula,_Saudi_Arabia_2011.jpg" },
@@ -111,7 +111,7 @@ export const SAUDI_ARABIA = {
         es: "Al-Balad, el barrio antiguo de Yeda, está declarado Patrimonio de la Humanidad: casas de coral con celosías mashrabiya, callejuelas perfumadas de incienso y puerto histórico en el mar Rojo.",
       },
       wikipedia: "Jeddah",
-      tags: ["Histoire", "UNESCO", "Mer Rouge", "Plage", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Histoire", "UNESCO", "Plage", "Ville", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Al-Balad — vieille ville (UNESCO)", en: "Al-Balad — old town (UNESCO)", es: "Al-Balad — casco antiguo (UNESCO)" }, wikipedia: "Al-Balad,_Jeddah" },
         { name: { fr: "Fontaine du roi Fahd (305m)", en: "King Fahd's Fountain (305m)", es: "Fuente del rey Fahd (305 m)" }, wikipedia: "File:King Fahd's Fountain.jpg" },

@@ -94,7 +94,7 @@ export const LATVIA = {
         es: "Riga cuenta con el mayor conjunto Art Nouveau de Europa: 800 edificios adornados con máscaras, atlantes y ornamentos florales, concentrados en el barrio de Alberta iela. El casco antiguo medieval (UNESCO) con la catedral del Domo (el órgano más grande de los países bálticos), la Casa de las Cabezas Negras y las calles empedradas es uno de los más bellos del norte de Europa.",
       },
       wikipedia: "Riga",
-      tags: ["Art Nouveau", "UNESCO", "Hanséatique", "Orgue", "Ville", "Histoire", "Architecture", "Gastronomie"],
+      tags: ["Architecture", "UNESCO", "Histoire", "Culture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Alberta iela — rue Art Nouveau, chef-d'œuvre de Mikhail Eisenstein", en: "Alberta iela — Art Nouveau street, masterpiece by Mikhail Eisenstein", es: "Alberta iela — calle Art Nouveau, obra maestra de Mijaíl Eisenstein" }, wikipedia: "File:Edificio_modernista_en_Alberta_iela_2a,_Riga,_Letonia,_2012-08-07,_DD_02.JPG" },
         { name: { fr: "Maison des Têtes Noires (XVe s.) reconstruite — façade dorée", en: "House of the Blackheads (15th c.), rebuilt — golden façade", es: "Casa de las Cabezas Negras (s. XV) reconstruida — fachada dorada" }, wikipedia: "File:House of the Blackheads, Riga, Latvia-24June2009.jpg" },
@@ -112,7 +112,7 @@ export const LATVIA = {
         es: "Jūrmala es la histórica estación balnearia de la nobleza rusa y soviética: 35km de playas de arena fina en el golfo de Riga (aguas más cálidas que el Báltico abierto), y una hilera única de villas de madera talladas del siglo XIX en el pinar. A solo 30 minutos en tren de Riga, es la escapada veraniega imprescindible de los locales.",
       },
       wikipedia: "Jūrmala",
-      tags: ["Plage", "Villas en bois", "Pinède", "Balnéaire"],
+      tags: ["Plage", "Architecture", "Nature"],
       mustSee: [
         { name: { fr: "Plage de Majori — sable blanc et mer chaude du golfe", en: "Majori Beach — white sand and warm gulf waters", es: "Playa de Majori — arena blanca y aguas cálidas del golfo" }, wikipedia: "File:Jurmala 2017 05.jpg" },
         { name: { fr: "Villas en bois Art Nouveau sculptées dans la pinède", en: "Carved Art Nouveau wooden villas in the pine forest", es: "Villas de madera Art Nouveau talladas en el pinar" }, wikipedia: "File:Kāpu iela 80 Jūrmala.jpg" },
@@ -129,7 +129,7 @@ export const LATVIA = {
         es: "El parque nacional de Gauja es el más grande de Letonia: el río Gauja ha esculpido acantilados de arenisca roja y cuevas en el bosque. Sigulda, apodada la «Suiza letona», está rodeada de tres castillos medievales en ruinas (Sigulda, Turaida, Krimulda) en el bosque. Una excursión de dos días desde Riga.",
       },
       wikipedia: "Gauja_National_Park",
-      tags: ["Forêt", "Châteaux", "Grottes", "Randonnée", "Nature"],
+      tags: ["Nature", "Architecture", "Randonnée"],
       mustSee: [
         { name: { fr: "Château de Turaida (XIIIe s.) et tour ronde dans la forêt", en: "Turaida Castle (13th c.) and round tower in the forest", es: "Castillo de Turaida (s. XIII) y torre redonda en el bosque" }, wikipedia: "File:Turaida_Castle.JPG" },
         { name: { fr: "Grottes de grès de Gutmanis — plus grande grotte des pays baltes", en: "Gutmanis sandstone cave — the largest cave in the Baltic states", es: "Cueva de arenisca de Gutmanis — la cueva más grande de los países bálticos" }, wikipedia: "File:Gutmana ala3 8sep07.jpg" },
@@ -146,7 +146,7 @@ export const LATVIA = {
         es: "El palacio de Rundāle es el Versalles de los países bálticos: diseñado por Rastrelli (el arquitecto del Hermitage de San Petersburgo) para el duque de Curlandia en el siglo XVIII, sus 138 salas rococó y sus jardines a la francesa están entre los más bellos del norte de Europa. A 80km de Riga, es una excursión de medio día.",
       },
       wikipedia: "File:Rundāle Palace 27.jpg",
-      tags: ["Palais", "Baroque", "Jardins", "Rococo"],
+      tags: ["Architecture", "Nature"],
       mustSee: [
         { name: { fr: "Salle d'or du palais de Rundale — rococo letton parfait", en: "Golden Hall of Rundāle Palace — Latvian rococo at its finest", es: "Salón Dorado del palacio de Rundāle — el rococó letón en su máxima expresión" }, wikipedia: "File:Rundale_Palace_reception_hall.JPG" },
         { name: { fr: "Jardins à la française de Rundale — parterres de roses", en: "Rundāle's French-style gardens — rose beds", es: "Jardines a la francesa de Rundāle — parterres de rosas" }, wikipedia: "File:Le_château_de_Rundal_(Rundal_Pils)_(6).JPG" },

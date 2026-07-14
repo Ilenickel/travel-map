@@ -105,7 +105,7 @@ export const BURKINA_FASO = {
         es: "Uagadugú ('Ouaga') es la capital cultural de África Occidental: el FESPACO (Festival Panafricano de Cine, en febrero de los años impares) es el mayor festival de cine africano del mundo. El Gran Mercado, el Museo Nacional y los centros culturales (Institut Français, Espace Camille Guichard) rebosan de vida. La escena musical (djembé, balafón) es excepcional.",
       },
       wikipedia: "Ouagadougou",
-      tags: ["Culture", "FESPACO", "Cinéma", "Musique"],
+      tags: ["Culture"],
       mustSee: [
         { name: { fr: "FESPACO — Festival Panafricain du Cinéma (années impaires, février)", en: "FESPACO — Panafrican Film Festival (odd-numbered years, February)", es: "FESPACO — Festival Panafricano de Cine (años impares, febrero)" }, wikipedia: "File:Siege FESPACO Ouaga.jpg" },
         { name: { fr: "Musée National du Burkina Faso — masques et bronzes Mossi", en: "National Museum of Burkina Faso — Mossi masks and bronzes", es: "Museo Nacional de Burkina Faso — máscaras y bronces mossi" }, wikipedia: "File:Théâtre de plein air au musée national du Burkina Faso.jpg" },
@@ -123,7 +123,7 @@ export const BURKINA_FASO = {
         es: "La región de Banfora es el paraíso natural de Burkina Faso: las cascadas de Karfiguéla (saltos de 10 m en medio de un entorno verde), el lago Tengrela con sus hipopótamos, los picos de Sindou (formaciones rocosas espectaculares) y las cúpulas de Fabédougou. La región es accesible y relativamente segura.",
       },
       wikipedia: "Banfora",
-      tags: ["Cascades", "Hippos", "Roches", "Nature"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Cascades de Karfiguéla — chutes spectaculaires dans la brousse", en: "Karfiguéla Waterfalls — spectacular falls in the bush", es: "Cascadas de Karfiguéla — saltos espectaculares en la sabana" }, wikipedia: "File:Cascades_de_Banfora_Burkina_Faso.JPG" },
         { name: { fr: "Lac de Tengrela — hippopotames (observation en pirogue)", en: "Lake Tengrela — hippos (seen by pirogue)", es: "Lago Tengrela — hipopótamos (observación en piragua)" }, wikipedia: "File:Lac de Tengrela vu sud.jpg" },
@@ -141,7 +141,7 @@ export const BURKINA_FASO = {
         es: "A 30 km de Uagadugú, el Simposio Internacional de Escultura sobre Granito de Laongo reúne desde 1989 a escultores de todo el mundo que trabajan directamente sobre enormes rocas de granito. Una galería al aire libre única en África, donde el arte contemporáneo africano e internacional se funde con el paisaje saheliano.",
       },
       wikipedia: "File:Symposium accueil.JPG",
-      tags: ["Art", "Sculpture", "Rochers", "Unique"],
+      tags: ["Art", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Sculptures sur granite de Laongo (symposium international)", en: "Laongo granite sculptures (international symposium)", es: "Esculturas sobre granito de Laongo (simposio internacional)" }, wikipedia: "File:TR Sculture sur granite de Laongo 03.jpg" },
         { name: { fr: "Paysage de rochers de granite rose à perte de vue", en: "Endless landscape of pink granite boulders", es: "Paisaje de rocas de granito rosa hasta donde alcanza la vista" }, wikipedia: "File:GRANITE PETROGLYPHE DE LAONGO.jpg" },

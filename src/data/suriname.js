@@ -61,7 +61,7 @@ export const SURINAME = {
         es: "El centro histórico de Paramaribo es Patrimonio de la Humanidad de la UNESCO desde 2002 por su excepcional conjunto colonial neerlandés de los siglos XVII–XIX, con casas de madera pintadas de colores vivos y calles bordeadas de palmeras reales. La catedral de San Pedro y San Pablo, construida enteramente en madera tropical, es una de las más grandes de su tipo en el mundo. El mercado central ofrece una fascinante mezcla de culturas con sus puestos hindostaníes, javaneses y criollos.",
       },
       wikipedia: "File:P1060656a.jpg",
-      tags: ["UNESCO", "Architecture coloniale", "Culture", "Marché"],
+      tags: ["UNESCO", "Histoire", "Culture", "Shopping"],
       mustSee: [
         { name: { fr: "Fort Zeelandia — forteresse néerlandaise du XVIIe siècle devenue musée", en: "Fort Zeelandia — 17th-century Dutch fortress turned museum", es: "Fuerte Zeelandia — fortaleza neerlandesa del siglo XVII convertida en museo" }, wikipedia: "File:Fort Zeelandia, Paramaribo, Suriname.jpg" },
         { name: { fr: "Cathédrale Saint-Pierre-et-Saint-Paul — plus grande église en bois des Amériques", en: "Cathedral of St. Peter and St. Paul — the largest wooden church in the Americas", es: "Catedral de San Pedro y San Pablo — la iglesia de madera más grande de las Américas" }, wikipedia: "File:Sint-Petrus-en-Pauluskathedraal.jpg" },
@@ -79,7 +79,7 @@ export const SURINAME = {
         es: "La reserva natural de Raleighvallen, en el corazón de la selva amazónica surinamesa, solo es accesible en avión o piragua y ofrece una de las experiencias de ecoturismo más salvajes de Sudamérica. La cascada de Voltzberg y el campamento en los inselbergs (colinas rocosas que emergen del dosel forestal) permiten observar jaguares, tapires, monos y guacamayos rojos en su hábitat natural. El lodge de Raleighvallen recibe a los viajeros en un entorno totalmente inmersivo.",
       },
       wikipedia: "File:Amazon_jungle_from_above.jpg",
-      tags: ["Écotourisme", "Faune sauvage", "Forêt amazonienne", "Randonnée"],
+      tags: ["Nature", "Safari", "Randonnée"],
       mustSee: [
         { name: { fr: "Observation des jaguars et tapirs en pirogue", en: "Jaguar and tapir spotting by canoe", es: "Observación de jaguares y tapires en piragua" }, wikipedia: "Jaguar" },
         { name: { fr: "Ara de Maynard — perroquet endémique du Suriname", en: "Red-and-green macaw — a parrot endemic to Suriname", es: "Guacamayo rojo — loro endémico de Surinam" }, wikipedia: "Red-and-green_macaw" },
@@ -96,7 +96,7 @@ export const SURINAME = {
         es: "Los cimarrones son descendientes de esclavos africanos que huyeron de las plantaciones neerlandesas en los siglos XVII–XVIII para asentarse en la selva tropical, donde reconstituyeron una civilización africana única en América. Sus pueblos a lo largo del río Marowijne, frontera natural con la Guayana Francesa, son accesibles en piragua desde Saint-Laurent-du-Maroni, en el lado francés. La artesanía cimarrona — tallas en madera, textiles bordados, joyas — está considerada entre las más bellas de Sudamérica.",
       },
       wikipedia: "File:Roseau - Neg mawon emancipation monument.jpg",
-      tags: ["Culture", "Histoire", "Rivière", "Artisanat"],
+      tags: ["Culture", "Histoire", "Nature", "Shopping"],
       mustSee: [
         { name: { fr: "Village Saramaka — société matrilinéaire d'origine africaine", en: "Saramaka village — a matrilineal society of African origin", es: "Pueblo Saramaka — sociedad matrilineal de origen africano" }, wikipedia: "File:Tribus de Saramaka (Guyane Française).jpg" },
         { name: { fr: "Navigation en pirogue sur le Maroni — expérience unique", en: "Canoe trip on the Maroni — a unique experience", es: "Navegación en piragua por el Marowijne — experiencia única" }, wikipedia: "File:ALI,_M._(2011-2013)._Parc_Amazonien_de_la_Guyane._Fleuve_Maroni._1_(20).jpg" },
@@ -113,7 +113,7 @@ export const SURINAME = {
         es: "El parque natural de Brownsberg, encaramado en una meseta a 500 metros de altitud, ofrece vistas espectaculares sobre el embalse de Brokopondo y la selva tropical que se extiende hasta el horizonte. Accesible en 3 horas desde Paramaribo, es la puerta de entrada más fácil al interior salvaje de Surinam. Numerosos senderos permiten observar monos aulladores, tucanes y mariposas morfo en un entorno bien conservado.",
       },
       wikipedia: "File:Brownsberg panorama.jpg",
-      tags: ["Nature", "Randonnée", "Vues panoramiques", "Faune"],
+      tags: ["Nature", "Randonnée", "Safari"],
       mustSee: [
         { name: { fr: "Plateau de Brownsberg — panorama sur le lac Brokopondo", en: "Brownsberg plateau — panorama over Lake Brokopondo", es: "Meseta de Brownsberg — panorámica sobre el lago Brokopondo" }, wikipedia: "File:Suriname,_view_over_Brokopondo_reservoir_from_Brownsberg.JPG" },
         { name: { fr: "Singes hurleurs — observation quasi garantie à l'aube", en: "Howler monkeys — nearly guaranteed sighting at dawn", es: "Monos aulladores — avistamiento casi garantizado al amanecer" }, wikipedia: "File:Mantled howler monkey and baby (81337)2.jpg" },

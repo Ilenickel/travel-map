@@ -94,7 +94,7 @@ export const UZBEKISTAN = {
         es: "Joya de la Ruta de la Seda, con el Registán (tres madrasas monumentales), el mausoleo de Tamerlán (Gur-e-Amir) y los observatorios del astrónomo Ulugh Beg.",
       },
       wikipedia: "Samarkand",
-      tags: ["Histoire", "Architecture", "UNESCO", "Route de la Soie", "Désert"],
+      tags: ["Histoire", "Architecture", "UNESCO", "Désert"],
       mustSee: [
         { name: { fr: "Registan — 3 médersas monumentales", en: "Registan — 3 monumental madrasas", es: "Registán — 3 madrasas monumentales" }, wikipedia: "Registan" },
         { name: { fr: "Gour-é-Amir — tombeau de Tamerlan", en: "Gur-e-Amir — Tamerlane's tomb", es: "Gur-e-Amir — tumba de Tamerlán" }, wikipedia: "Gur-e-Amir" },
@@ -112,7 +112,7 @@ export const UZBEKISTAN = {
         es: "Bujará la Santa conserva su centro histórico medieval casi intacto, con sus 140 monumentos catalogados, su fortaleza Ark y su mercado de cúpulas cubiertas.",
       },
       wikipedia: "Bukhara",
-      tags: ["Histoire", "Architecture", "UNESCO", "Souks"],
+      tags: ["Histoire", "Architecture", "UNESCO"],
       mustSee: [
         { name: { fr: "Forteresse Ark (IVe s.)", en: "Ark Fortress (4th century)", es: "Fortaleza Ark (siglo IV)" }, wikipedia: "Ark_of_Bukhara" },
         { name: { fr: "Minaret Kalon et mosquée", en: "Kalon Minaret and mosque", es: "Minarete Kalón y mezquita" }, wikipedia: "File:Le_minaret_et_la_mosquée_Kalon_(Boukhara,_Ouzbékistan)_(5658826884).jpg" },

@@ -80,7 +80,7 @@ export const FRENCH_GUIANA = {
         es: "El Centro Espacial Guayanés (CSG) de Kourou es la base de lanzamiento de la Agencia Espacial Europea (ESA) y el sitio más utilizado del mundo para lanzamientos comerciales de satélites. Su ubicación geográfica ideal, cerca del ecuador, ofrece una ventaja mecánica óptima para las puestas en órbita geoestacionaria. Se organizan visitas guiadas gratuitas fuera de los periodos de lanzamiento, que permiten explorar las instalaciones de Ariane 5 y 6, y presenciar lanzamientos desde zonas habilitadas para el público.",
       },
       wikipedia: "File:Accueil du centre spatial guyanais 2.jpg",
-      tags: ["Espace", "Technologie", "Science", "Visite gratuite"],
+      tags: ["Modernité", "Musées"],
       mustSee: [
         { name: { fr: "Jupiter — zone de préparation des fusées Ariane (visite guidée)", en: "Jupiter — Ariane rocket preparation area (guided tour)", es: "Jupiter — zona de preparación de los cohetes Ariane (visita guiada)" }, wikipedia: "File:Accueil du centre spatial guyanais 2.jpg" },
         { name: { fr: "Musée de l'Espace — histoire des lancements spatiaux depuis Kourou", en: "Space Museum — the history of launches from Kourou", es: "Museo del Espacio — historia de los lanzamientos espaciales desde Kourou" }, wikipedia: "File:Centre Spatial Guyanais - 46834152082.jpg" },
@@ -98,7 +98,7 @@ export const FRENCH_GUIANA = {
         es: "El archipiélago de las Islas de la Salvación, formado por la Isla Real, la Isla San José y la Isla del Diablo, es uno de los enclaves históricos más impresionantes de América del Sur. Antigua colonia penitenciaria francesa (1852–1953), hizo famoso el presidio guayanés a través del libro Papillon de Henri Charrière. La Isla del Diablo, donde Alfred Dreyfus estuvo injustamente encarcelado de 1895 a 1899, no se puede visitar, pero es visible desde la Isla Real, donde los edificios del presidio se conservan notablemente bien entre la vegetación tropical.",
       },
       wikipedia: "File:Île Royale 03.jpg",
-      tags: ["Histoire", "Bagne", "Plongée", "Randonnée"],
+      tags: ["Histoire", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Île Royale — bagne colonial préservé dans la jungle", en: "Royale Island — colonial prison camp preserved in the jungle", es: "Isla Real — presidio colonial conservado en la jungla" }, wikipedia: "File:Île Royale 01.jpg" },
         { name: { fr: "Île du Diable — prison d'Alfred Dreyfus (vue depuis l'Île Royale)", en: "Devil's Island — Alfred Dreyfus's prison (seen from Royale Island)", es: "Isla del Diablo — prisión de Alfred Dreyfus (vista desde la Isla Real)" }, wikipedia: "File:Île du Diable Dreyfus.jpg" },
@@ -116,7 +116,7 @@ export const FRENCH_GUIANA = {
         es: "El Maroni, río fronterizo entre la Guayana Francesa y Surinam, es la arteria vital del interior guayanés, poblado por comunidades wayana, teko, aluku y saramaka. Saint-Laurent-du-Maroni, antigua ciudad del presidio, es el punto de partida de las excursiones en piragua hacia los pueblos aislados del interior. La diversidad cultural de estos pueblos de la selva —lenguas, artesanía, medicina tradicional— es un patrimonio vivo único.",
       },
       wikipedia: "File:Maroni Fluss Sonnenaufgang.jpg",
-      tags: ["Culture amérindienne", "Fleuve", "Pirogue", "Bagne"],
+      tags: ["Culture", "Nature", "Aventure", "Histoire"],
       mustSee: [
         { name: { fr: "Camp de la Transportation (Saint-Laurent) — bagne historique sur le Maroni", en: "Camp de la Transportation (Saint-Laurent) — historic prison camp on the Maroni", es: "Camp de la Transportation (Saint-Laurent) — presidio histórico en el Maroni" }, wikipedia: "File:Saint-Laurent-du-Maroni gendarmerie.JPG" },
         { name: { fr: "Navigation en pirogue sur le Maroni — frontière vivante", en: "Dugout canoe trip on the Maroni — a living border", es: "Navegación en piragua por el Maroni — una frontera viva" }, wikipedia: "File:ALI,_M._(2011-2013)._Parc_Amazonien_de_la_Guyane._Fleuve_Maroni._1_(20).jpg" },
@@ -133,7 +133,7 @@ export const FRENCH_GUIANA = {
         es: "El Parque Amazónico de Guayana es el parque nacional más grande de Francia y uno de los espacios protegidos más extensos de la Amazonía, con 3,4 millones de hectáreas de selva primaria totalmente virgen. Alberga jaguares, tapires, águilas harpía, nutrias gigantes y más de 700 especies de aves en uno de los ecosistemas mejor conservados del mundo. El acceso solo es posible con guías autorizados por el parque, en piragua desde los pueblos fronterizos — una aventura exigente pero inolvidable.",
       },
       wikipedia: "Guiana_Amazonian_Park",
-      tags: ["Forêt amazonienne", "Jaguar", "Ornithologie", "Écotourisme"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Observation du jaguar et du tapir en forêt primaire", en: "Spotting jaguars and tapirs in primary rainforest", es: "Observación del jaguar y el tapir en selva primaria" }, wikipedia: "Jaguar" },
         { name: { fr: "Harpie féroce — l'aigle le plus puissant du monde", en: "Harpy eagle — the world's most powerful eagle", es: "Águila harpía — el águila más poderosa del mundo" }, wikipedia: "Harpy_eagle" },

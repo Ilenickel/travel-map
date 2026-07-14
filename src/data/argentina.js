@@ -144,7 +144,7 @@ export const ARGENTINA = {
         es: "La Patagonia ofrece paisajes sobrecogedores: lagos glaciares, bosques de hayas, cóndores y cumbres nevadas. Bariloche es la puerta de entrada al circuito de los Andes, con sus estaciones de esquí y senderismo.",
       },
       wikipedia: "File:View_from_the_Golf_course_at_Llao_Llao.jpg",
-      tags: ["Nature", "Randonnée", "Ski", "Lacs"],
+      tags: ["Nature", "Randonnée", "Ski"],
       mustSee: [
         { name: { fr: "Parc National Nahuel Huapi", en: "Nahuel Huapi National Park", es: "Parque Nacional Nahuel Huapi" }, wikipedia: "Nahuel_Huapi_National_Park" },
         { name: { fr: "Cerro Catedral", en: "Cerro Catedral", es: "Cerro Catedral" }, wikipedia: "File:Bariloche_cerra_catedral.jpg" },
@@ -162,7 +162,7 @@ export const ARGENTINA = {
         es: "Una de las maravillas naturales del mundo, las cataratas del Iguazú se extienden a lo largo de 2,7 km con 275 saltos de agua, entre ellos la espectacular Garganta del Diablo. Accesibles desde ambos lados de la frontera entre Argentina y Brasil.",
       },
       wikipedia: "Iguazu_Falls",
-      tags: ["Nature", "Cascades", "Faune", "UNESCO"],
+      tags: ["Nature", "Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Garganta del Diablo", en: "Garganta del Diablo", es: "Garganta del Diablo" }, wikipedia: "File:Iguacu-004.jpg" },
         { name: { fr: "Parc National Iguazú", en: "Iguazú National Park", es: "Parque Nacional Iguazú" }, wikipedia: "File:Cataratas027.jpg" },
@@ -180,7 +180,7 @@ export const ARGENTINA = {
         es: "Al pie de los Andes, Mendoza es el paraíso del vino argentino, en especial del Malbec. Las bodegas ofrecen catas en un entorno montañoso excepcional.",
       },
       wikipedia: "Mendoza,_Argentina",
-      tags: ["Vin", "Gastronomie", "Montagne", "Vélo"],
+      tags: ["Gastronomie", "Montagne", "Aventure"],
       mustSee: [
         { name: { fr: "Luján de Cuyo", en: "Luján de Cuyo", es: "Luján de Cuyo" }, wikipedia: "File:Plaza_de_Luján_de_Cuyo,_Mendoza,_Argentina.jpg" },
         { name: { fr: "Aconcagua", en: "Aconcagua", es: "Aconcagua" }, wikipedia: "Aconcagua" },
@@ -197,7 +197,7 @@ export const ARGENTINA = {
         es: "El parque nacional Los Glaciares alberga el majestuoso glaciar Perito Moreno, uno de los pocos glaciares del mundo en avance. El Chaltén, pueblo de senderismo, da acceso a las cumbres del Fitz Roy.",
       },
       wikipedia: "File:Glacial_iceberg_in_Argentina.jpg",
-      tags: ["Glaciers", "Randonnée", "Nature", "UNESCO"],
+      tags: ["Nature", "Randonnée", "UNESCO"],
       mustSee: [
         { name: { fr: "Glacier Perito Moreno", en: "Perito Moreno Glacier", es: "Glaciar Perito Moreno" }, wikipedia: "Perito_Moreno_Glacier" },
         { name: { fr: "Mont Fitz Roy", en: "Mount Fitz Roy", es: "Monte Fitz Roy" }, wikipedia: "File:Fitz_Roy_2.jpg" },

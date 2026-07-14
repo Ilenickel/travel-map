@@ -94,7 +94,7 @@ export const CAMEROON = {
         es: "El Parque nacional de Waza es el más accesible y el más rico en fauna de Camerún: elefantes (la mayor población del país), leones, jirafas, avestruces e hipotragos en una espectacular sabana saheliana. Mejor en estación seca (noviembre–abril), cuando los animales se concentran en torno a los puntos de agua.",
       },
       wikipedia: "Waza_National_Park",
-      tags: ["Safari", "Éléphants", "Lions", "Savane"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Safari Waza — éléphants, girafes et lions en saison sèche", en: "Waza safari — elephants, giraffes and lions in the dry season", es: "Safari de Waza — elefantes, jirafas y leones en estación seca" }, wikipedia: "Waza_National_Park" },
         { name: { fr: "Sultanat de Maroua — palais du sultan peul", en: "Maroua Sultanate — palace of the Fulani sultan", es: "Sultanato de Maroua — palacio del sultán fulani" }, wikipedia: "Maroua" },
@@ -111,7 +111,7 @@ export const CAMEROON = {
         es: "El monte Camerún (4.095m) es el pico más alto de África Occidental y Central: un volcán activo (última erupción en 1999) cuya ascensión de 3 días atraviesa todas las zonas de vegetación, desde la selva tropical hasta las lavas recientes. La ciudad de Buea es el punto de partida. Limbe, en la costa, completa el circuito con sus playas de arena negra volcánica.",
       },
       wikipedia: "Mount_Cameroon",
-      tags: ["Volcan", "Randonnée", "Altitude", "Forêt"],
+      tags: ["Nature", "Randonnée", "Montagne"],
       mustSee: [
         { name: { fr: "Ascension mont Cameroun (3j, guide obligatoire)", en: "Mount Cameroon ascent (3 days, guide required)", es: "Ascensión al monte Camerún (3 días, guía obligatorio)" }, wikipedia: "Mount_Cameroon" },
         { name: { fr: "Plages de sable noir de Limbe", en: "Limbe's black sand beaches", es: "Playas de arena negra de Limbe" }, wikipedia: "File:Limbe view with Bioko.jpg" },
@@ -129,7 +129,7 @@ export const CAMEROON = {
         es: "Kribi es la estación balnearia más bella de Camerún: playas de arena blanca bordeadas de palmeras con la selva tropical de fondo. Las cataratas de Lobé son únicas en el mundo: un río que se precipita directamente en el océano Atlántico desde un acantilado rocoso. Cerca: los pigmeos baka y el bosque primario.",
       },
       wikipedia: "Kribi",
-      tags: ["Plage", "Cascades", "Forêt", "Pygmées"],
+      tags: ["Plage", "Nature", "Culture"],
       mustSee: [
         { name: { fr: "Chutes de la Lobé — chutes tombant directement dans l'océan", en: "Lobé Falls — waterfalls plunging directly into the ocean", es: "Cataratas de Lobé — caídas que se precipitan directamente en el océano" }, wikipedia: "File:Les chutes de la lobé kribi cameroon1.jpg" },
         { name: { fr: "Plages de Kribi — sable blanc et palmiers", en: "Kribi beaches — white sand and palm trees", es: "Playas de Kribi — arena blanca y palmeras" }, wikipedia: "Kribi" },
@@ -147,7 +147,7 @@ export const CAMEROON = {
         es: "Las jefaturas tradicionales del oeste de Camerún están entre las más vivas de África: el palacio de la jefatura de Bafut con sus danzas Abakwa, los tejedores ndop, y el palacio del sultán bamún en Foumban con su museo de 2.000 piezas que recorre la historia del reino bamún. El oeste de Camerún es también una espectacular región agrícola de paisajes montañosos.",
       },
       wikipedia: "Foumban",
-      tags: ["Royauté", "Culture", "Artisanat", "Montagne"],
+      tags: ["Histoire", "Culture", "Shopping", "Montagne"],
       mustSee: [
         { name: { fr: "Palais du Sultan des Bamoun à Foumban + musée", en: "Bamoun Sultan's Palace in Foumban + museum", es: "Palacio del sultán bamún en Foumban + museo" }, wikipedia: "Foumban" },
         { name: { fr: "Chefferie de Bafut et danse Abakwa sacrée", en: "Bafut chiefdom and the sacred Abakwa dance", es: "Jefatura de Bafut y danza sagrada Abakwa" }, wikipedia: "File:Bafut Palace - EcoVillage - Cameroon.JPG" },

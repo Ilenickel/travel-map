@@ -99,7 +99,7 @@ export const BANGLADESH = {
         es: "Los Sundarbans forman el mayor manglar del mundo, declarado Patrimonio de la Humanidad por la UNESCO, compartido entre Bangladés e India. Este bosque pantanoso, hogar del famoso tigre de Bengala, los delfines del Ganges y los cocodrilos de agua salada, se extiende por más de 10 000 km². Las excursiones en barco por los sinuosos canales entre los manglares ofrecen una inmersión total en este ecosistema único y preservado.",
       },
       wikipedia: "Sundarbans",
-      tags: ["UNESCO", "Faune", "Mangrove", "Tigre", "Safari", "Nature"],
+      tags: ["UNESCO", "Safari", "Nature"],
       mustSee: [
         { name: { fr: "Kotka — zone centrale avec observation de la faune", en: "Kotka — central area for wildlife watching", es: "Kotka — zona central para observación de fauna" }, wikipedia: "Sundarbans" },
         { name: { fr: "Hiron Point — phare et vue panoramique sur la mangrove", en: "Hiron Point — lighthouse and panoramic view over the mangrove", es: "Hiron Point — faro y vista panorámica del manglar" }, wikipedia: "File:Deep inside the mangrove forest.jpg" },
@@ -117,7 +117,7 @@ export const BANGLADESH = {
         es: "Cox's Bazar posee la playa de arena natural ininterrumpida más larga del mundo, extendiéndose por 120 kilómetros a lo largo del golfo de Bengala. A pesar de su reciente desarrollo turístico, la playa sigue relativamente conservada y ofrece un entorno espectacular con olas potentes y puestas de sol resplandecientes. La isla de Maheshkhali y los pueblos de pescadores cercanos aportan una dimensión cultural auténtica a la visita.",
       },
       wikipedia: "Cox's_Bazar",
-      tags: ["Plage", "Océan", "Record", "Pêche"],
+      tags: ["Plage"],
       mustSee: [
         { name: { fr: "Plage de Laboni — cœur animé de la station balnéaire", en: "Laboni Beach — lively heart of the seaside resort", es: "Playa de Laboni — corazón animado de la estación balnearia" }, wikipedia: "Cox's_Bazar" },
         { name: { fr: "Île d'Inani — falaises de corail et eaux turquoise", en: "Inani Island — coral cliffs and turquoise waters", es: "Isla de Inani — acantilados de coral y aguas turquesa" }, wikipedia: "Inani_Beach" },
@@ -135,7 +135,7 @@ export const BANGLADESH = {
         es: "Daca es una de las megaciudades más densas del mundo, una ciudad que combina arquitectura mogol, mercados coloridos y una modernidad caótica en una atmósfera única. El viejo Daca concentra joyas arquitectónicas como la mezquita de Lalbagh y el palacio Ahsan Manzil, construidos bajo los mogoles y los nawabs de Bengala. Recorrer en rickshaw las callejuelas abarrotadas del barrio de Sadarghat, a orillas del río Buriganga, sigue siendo una experiencia humana intensa e inolvidable.",
       },
       wikipedia: "Dhaka",
-      tags: ["Culture", "Histoire", "Architecture", "Mégapole", "Ville", "Gastronomie"],
+      tags: ["Culture", "Histoire", "Architecture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Fort de Lalbagh — citadelle moghole du XVIIe siècle inachevée", en: "Lalbagh Fort — unfinished 17th-century Mughal citadel", es: "Fuerte de Lalbagh — ciudadela mogol inacabada del siglo XVII" }, wikipedia: "Lalbagh_Fort" },
         { name: { fr: "Palais d'Ahsan Manzil — musée rose au bord du fleuve", en: "Ahsan Manzil Palace — pink riverside museum", es: "Palacio de Ahsan Manzil — museo rosa a orillas del río" }, wikipedia: "Ahsan_Manzil" },
@@ -153,7 +153,7 @@ export const BANGLADESH = {
         es: "La región de Sylhet, en el noreste de Bangladés, está cubierta de colinas verdes tapizadas de plantaciones de té que se extienden hasta donde alcanza la vista entre una neblina matinal encantadora. Srimangal, apodada la «capital del té» de Bangladés, ofrece visitas a plantaciones y degustaciones del famoso té de siete capas, una especialidad local servida en vasos donde distintas densidades de té forman estratos de colores diferenciados. Las reservas naturales cercanas albergan gibones y aves raras.",
       },
       wikipedia: "Sylhet",
-      tags: ["Thé", "Nature", "Collines", "Gastronomie", "Randonnée"],
+      tags: ["Gastronomie", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Srimangal — visite de plantations de thé et musée du thé", en: "Srimangal — tea plantation tours and tea museum", es: "Srimangal — visita a plantaciones de té y museo del té" }, wikipedia: "File:Sreemangal tea garden 2017-08-20.jpg" },
         { name: { fr: "Réserve de Lawachara — forêt tropicale et gibbons agiles", en: "Lawachara Reserve — rainforest and agile gibbons", es: "Reserva de Lawachara — selva tropical y gibones ágiles" }, wikipedia: "Lawachara_National_Park" },

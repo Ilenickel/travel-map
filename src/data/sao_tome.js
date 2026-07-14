@@ -86,7 +86,7 @@ export const SAO_TOME = {
         es: "El Pico de Santo Tomé (2.024 m) es el punto más alto de la isla: una ascensión de 2 días a través de todos los estratos de la selva tropical (bosque denso, bosque de niebla, páramos de altitud) con una biodiversidad endémica excepcional (aves raras, plantas gigantes). Una aventura en un bosque virgen donde África se encuentra con las Galápagos.",
       },
       wikipedia: "Pico_de_São_Tomé",
-      tags: ["Randonnée", "Forêt", "Altitude", "Endémique"],
+      tags: ["Randonnée", "Nature", "Montagne"],
       mustSee: [
         { name: { fr: "Ascension Pico de São Tomé (2 024m, 2 jours, guide)", en: "Pico de São Tomé climb (2,024m, 2 days, guided)", es: "Ascensión al Pico de Santo Tomé (2.024 m, 2 días, con guía)" }, wikipedia: "Pico_de_São_Tomé" },
         { name: { fr: "Forêt de brume — espèces végétales endémiques géantes", en: "Cloud forest — giant endemic plant species", es: "Bosque de niebla — especies vegetales endémicas gigantes" }, wikipedia: "File:Sao_Tome_Ponta_Figo_Hike_8_(16063229667).jpg" },
@@ -103,7 +103,7 @@ export const SAO_TOME = {
         es: "Claudio Corallo, considerado el productor del mejor chocolate del mundo, cultiva su cacao en la isla de Príncipe en plantaciones coloniales restauradas desde los años 1990. Visitar su granja de Terreiro Velho es una experiencia sensorial única: de la mazorca a la tableta, pasando por la fermentación y el secado al sol.",
       },
       wikipedia: "File:Principe 1220.jpg",
-      tags: ["Cacao", "Gastronomie", "Plantation", "Unique"],
+      tags: ["Gastronomie", "Rural"],
       mustSee: [
         { name: { fr: "Ferme Claudio Corallo — dégustation du meilleur cacao mondial", en: "Claudio Corallo farm — tasting the world's finest cocoa", es: "Granja Claudio Corallo — degustación del mejor cacao del mundo" }, wikipedia: "Claudio_Corallo" },
         { name: { fr: "Forêt primaire de Príncipe (UNESCO Biosphère)", en: "Príncipe primary forest (UNESCO Biosphere)", es: "Bosque primario de Príncipe (Reserva de la Biosfera UNESCO)" }, wikipedia: "File:Principe 3181.jpg" },
@@ -120,7 +120,7 @@ export const SAO_TOME = {
         es: "Las 'roças' son las grandes plantaciones coloniales portuguesas abandonadas que salpican Santo Tomé: Roça Agostinho Neto, Roça Monte Café (cacao), Roça Sundy (la más bella, en Príncipe). Estas inmensas fincas en ruinas románticas, con su arquitectura colonial Art Nouveau y sus antiguos almacenes, son el símbolo de la historia de la isla.",
       },
       wikipedia: "File:Roça Agostinho Neto (São Tomé) (2).jpg",
-      tags: ["Plantation", "Colonial", "Histoire", "Architecture"],
+      tags: ["Rural", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Roça Agostinho Neto — ancienne capitale des plantations", en: "Roça Agostinho Neto — former plantation capital", es: "Roça Agostinho Neto — antigua capital de las plantaciones" }, wikipedia: "File:Roça Agostinho Neto (São Tomé) (2).jpg" },
         { name: { fr: "Roça Monte Café — cacao et chemin de fer colonial", en: "Roça Monte Café — cocoa and colonial railway", es: "Roça Monte Café — cacao y ferrocarril colonial" }, wikipedia: "File:Musée du Café à Monte Café (São Tomé) (2).jpg" },
@@ -137,7 +137,7 @@ export const SAO_TOME = {
         es: "Santo Tomé posee algunas de las playas más bellas y desiertas de África Central: Praia Lagarto, Praia Micondó, la bahía de Abade con sus tortugas. El sur de la isla, más lluvioso, está cubierto de bosque denso hasta el mar. La playa de Praia Grande al norte es la principal playa de baño.",
       },
       wikipedia: "File:Praia Grande do Rodízio 01.jpg",
-      tags: ["Plage", "Tortues", "Déserte", "Baignade"],
+      tags: ["Plage", "Safari"],
       mustSee: [
         { name: { fr: "Praia Lagarto — plage déserte au sud-ouest", en: "Praia Lagarto — deserted beach in the south-west", es: "Praia Lagarto — playa desierta al suroeste" }, wikipedia: "File:Praia das Calhetas - PE.jpg" },
         { name: { fr: "Baie de l'Abade — observation des tortues marines", en: "Abade Bay — sea turtle watching", es: "Bahía de Abade — observación de tortugas marinas" }, wikipedia: "File:Hawaii turtle 2.JPG" },

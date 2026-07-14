@@ -94,7 +94,7 @@ export const JAMAICA = {
         es: "Montego Bay es la capital turística de Jamaica: Doctor's Cave Beach, playa histórica de aguas claras, las cascadas de Dunn's River en Ocho Ríos (a 1h30 en coche), y Rose Hall Great House con su leyenda de la «Bruja Blanca». Es el punto de partida de todos los circuitos de la isla.",
       },
       wikipedia: "Montego_Bay",
-      tags: ["Plage", "Resort", "Excursions", "Point de départ"],
+      tags: ["Plage", "Luxe", "Nature"],
       mustSee: [
         { name: { fr: "Doctor's Cave Beach — eaux cristallines historiques", en: "Doctor's Cave Beach — historic crystal-clear waters", es: "Doctor's Cave Beach — aguas cristalinas históricas" }, wikipedia: "File:Doctors-Cave-Beach.jpg" },
         { name: { fr: "Chutes de Dunn's River (Ocho Ríos)", en: "Dunn's River Falls (Ocho Ríos)", es: "Cascadas de Dunn's River (Ocho Ríos)" }, wikipedia: "Dunn's_River_Falls" },
@@ -112,7 +112,7 @@ export const JAMAICA = {
         es: "Las Blue Mountains, parque nacional declarado Patrimonio de la Humanidad por la UNESCO, culminan a 2256 m y producen el café Blue Mountain, uno de los más caros y reputados del mundo. La caminata hasta el Blue Mountain Peak (salida a las 2 de la madrugada para ver el amanecer) es una experiencia inolvidable por encima de las nubes.",
       },
       wikipedia: "File:JM Blue Mountain Peak 1010 (12) (17257070915).jpg",
-      tags: ["UNESCO", "Randonnée", "Café", "Nature"],
+      tags: ["UNESCO", "Randonnée", "Gastronomie", "Nature"],
       mustSee: [
         { name: { fr: "Blue Mountain Peak (2 256 m) — lever de soleil", en: "Blue Mountain Peak (2,256 m) — sunrise", es: "Blue Mountain Peak (2256 m) — amanecer" }, wikipedia: "Blue_Mountain_Peak" },
         { name: { fr: "Plantation de café — torréfaction artisanale", en: "Coffee plantation — small-batch roasting", es: "Plantación de café — tostado artesanal" }, wikipedia: "File:Fog_hangs_over_the_village_of_Section_in_the_Blue_Mountains_of_Portland_Parish,_Jamaica.jpg" },
@@ -130,7 +130,7 @@ export const JAMAICA = {
         es: "Negril es la capital de las puestas de sol de Jamaica: Seven Mile Beach (una de las playas más largas del Caribe), Rick's Café, donde los lugareños se lanzan desde los acantilados de coral, y su reciente fama como meca del reggae y de una vida nocturna relajada.",
       },
       wikipedia: "Negril",
-      tags: ["Plage", "Coucher de soleil", "Falaises", "Vie nocturne"],
+      tags: ["Plage", "Nature", "Nightlife"],
       mustSee: [
         { name: { fr: "Seven Mile Beach — 11 km de sable doré", en: "Seven Mile Beach — 11 km of golden sand", es: "Seven Mile Beach — 11 km de arena dorada" }, wikipedia: "File:Jamaica, Negril - Flickr - VV Nincic.jpg" },
         { name: { fr: "Plongée récifs coralliens (Throne Room Cave)", en: "Coral reef diving (Throne Room Cave)", es: "Buceo en arrecifes de coral (Throne Room Cave)" }, wikipedia: "File:Yellow stingray (Urobatis jamaicensis).jpg" },
@@ -147,7 +147,7 @@ export const JAMAICA = {
         es: "Kingston es la capital cultural de Jamaica: el Bob Marley Museum (antigua casa del cantante), el barrio de Trench Town donde nació el reggae, la National Gallery of Jamaica y Devon House con sus legendarios helados artesanales conforman un circuito cultural único.",
       },
       wikipedia: "Kingston,_Jamaica",
-      tags: ["Culture", "Reggae", "Musée", "Art"],
+      tags: ["Culture", "Musées", "Art"],
       mustSee: [
         { name: { fr: "Bob Marley Museum (9 Hope Road)", en: "Bob Marley Museum (9 Hope Road)", es: "Bob Marley Museum (9 Hope Road)" }, wikipedia: "Bob_Marley_Museum" },
         { name: { fr: "Trench Town — berceau du reggae (visite guidée)", en: "Trench Town — birthplace of reggae (guided tour)", es: "Trench Town — cuna del reggae (visita guiada)" }, wikipedia: "File:Shop in Trench Town (4547356620).jpg" },

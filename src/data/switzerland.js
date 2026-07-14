@@ -115,7 +115,7 @@ export const SWITZERLAND = {
         es: "Zermatt es una estación de montaña sin coches a los pies del Cervino (4.478 m), cumbre emblemática de los Alpes y símbolo de Suiza. El acceso se hace únicamente en tren eléctrico desde Täsch, lo que preserva la atmósfera única de este pueblo alpino. En verano como en invierno, el senderismo, el esquí y las fotografías del Cervino con la luz dorada del atardecer son la esencia de esta experiencia inolvidable.",
       },
       wikipedia: "Zermatt",
-      tags: ["Alpes", "Ski", "Randonnée", "Photographie", "Nature"],
+      tags: ["Montagne", "Ski", "Randonnée", "Culture", "Nature"],
       mustSee: [
         {
           name: { fr: "Le Cervin — ascension ou observation depuis Schwarzsee ou Gornergrat", en: "The Matterhorn — climb it or view it from Schwarzsee or Gornergrat", es: "El Cervino — ascensión u observación desde Schwarzsee o Gornergrat" },
@@ -145,7 +145,7 @@ export const SWITZERLAND = {
         es: "Interlaken es el punto de partida ideal para explorar el Oberland bernés, encajado entre el lago de Thun y el lago de Brienz. El Jungfrau (4.158 m) es accesible desde Grindelwald o Wengen mediante el famoso ferrocarril del Jungfrau, que sube hasta el «techo de Europa» a 3.454 m. Las cascadas de Giessbach, los desfiladeros de Rosenlaui y los pueblos de Grindelwald y Mürren completan este cuadro alpino excepcional.",
       },
       wikipedia: "Interlaken",
-      tags: ["Alpes", "Aventure", "Nature", "Randonnée", "Sports extrêmes", "Ski"],
+      tags: ["Montagne", "Aventure", "Nature", "Randonnée", "Ski"],
       mustSee: [
         {
           name: { fr: "Jungfraujoch — « toit de l'Europe » à 3 454 m en train à crémaillère", en: "Jungfraujoch — the 'Top of Europe' at 3,454m via cogwheel train", es: "Jungfraujoch — el «techo de Europa» a 3.454 m en tren de cremallera" },
@@ -175,7 +175,7 @@ export const SWITZERLAND = {
         es: "Lucerna es una de las ciudades más pintorescas de Suiza, con su famoso Puente de la Capilla, su casco antiguo medieval preservado y el majestuoso Rigi de fondo. El lago de los Cuatro Cantones ofrece cruceros panorámicos hacia lugares cargados de historia como el Rütli, la pradera donde se fundó la Confederación Suiza. Los montes Pilatus y Rigi, accesibles en barco y tren de cremallera, ofrecen vistas de 360° sobre los Alpes.",
       },
       wikipedia: "Lucerne",
-      tags: ["Histoire", "Nature", "Lac", "Architecture", "Croisière", "Ville"],
+      tags: ["Histoire", "Nature", "Architecture", "Plage", "Ville"],
       mustSee: [
         {
           name: { fr: "Pont de la Chapelle — pont en bois du XIVe siècle, symbole de Lucerne", en: "Chapel Bridge — a 14th-century wooden bridge, the symbol of Lucerne", es: "Puente de la Capilla — puente de madera del siglo XIV, símbolo de Lucerna" },
@@ -205,7 +205,7 @@ export const SWITZERLAND = {
         es: "Ginebra, capital mundial de la diplomacia, es una ciudad cosmopolita a orillas del lago Leman con los picos del Mont Blanc de telón de fondo. El Jet d'Eau, icono de la ciudad, lanza 500 litros de agua a 140 metros de altura. La vuelta al lago Leman permite descubrir Lausana, Montreux (festival de jazz), el castillo de Chillon y los viñedos en terrazas de Lavaux, Patrimonio de la Humanidad.",
       },
       wikipedia: "Geneva",
-      tags: ["Diplomatie", "Lac", "UNESCO", "Vin", "Culture", "Ville", "Gastronomie"],
+      tags: ["Histoire", "Nature", "UNESCO", "Gastronomie", "Culture", "Ville"],
       mustSee: [
         {
           name: { fr: "Jet d'Eau — geyser lacustre de 140 m visible de toute la ville", en: "Jet d'Eau — a 140m lake fountain visible from all over the city", es: "Jet d'Eau — géiser lacustre de 140 m visible desde toda la ciudad" },

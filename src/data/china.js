@@ -198,7 +198,7 @@ export const CHINA = {
         es: "Antigua capital de la China imperial, punto de partida de la Ruta de la Seda. El ejército de terracota de Qin Shi Huang es uno de los mayores descubrimientos arqueológicos del mundo.",
       },
       wikipedia: "Terracotta_Army",
-      tags: ["Histoire", "Archéologie", "UNESCO", "Culture"],
+      tags: ["Histoire", "UNESCO", "Culture"],
       mustSee: [
         { name: { fr: "Armée de Terre Cuite", en: "Terracotta Army", es: "Ejército de Terracota" }, wikipedia: "Terracotta_Army" },
         { name: { fr: "Remparts de Xi'an", en: "Xi'an City Wall", es: "Murallas de Xi'an" }, wikipedia: "File:大明宫—丹凤门遗址.JPG" },
@@ -216,7 +216,7 @@ export const CHINA = {
         es: "Legendarios paisajes kársticos, con picos en aguja reflejados en el río Li, inmortalizados en el billete de 20 yuanes.",
       },
       wikipedia: "Guilin",
-      tags: ["Nature", "Paysage", "Rivière", "Randonnée"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Croisière sur la rivière Li", en: "Li River cruise", es: "Crucero por el río Li" }, wikipedia: "Li_River" },
         { name: { fr: "Rizières en terrasses de Longsheng", en: "Longsheng rice terraces", es: "Arrozales en terrazas de Longsheng" }, wikipedia: "File:1_longsheng_ping_an_rice_terrace_2011.jpg" },
@@ -234,7 +234,7 @@ export const CHINA = {
         es: "Columnas de arenisca flotando entre las nubes, el modelo de las «Montañas Aleluya» de Avatar. Uno de los paisajes más espectaculares de China.",
       },
       wikipedia: "Zhangjiajie_National_Forest_Park",
-      tags: ["Nature", "Randonnée", "Paysage", "Montagne"],
+      tags: ["Nature", "Randonnée", "Montagne"],
       mustSee: [
         { name: { fr: "Piliers de grès de l'Avatar", en: "Avatar sandstone pillars", es: "Pilares de arenisca de Avatar" }, wikipedia: "Zhangjiajie_National_Forest_Park" },
         { name: { fr: "Pont de verre de Zhangjiajie", en: "Zhangjiajie glass bridge", es: "Puente de cristal de Zhangjiajie" }, wikipedia: "File:ZhangjiajieGlassByHighestBridges.jpg" },

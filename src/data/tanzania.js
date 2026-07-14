@@ -94,7 +94,7 @@ export const TANZANIA = {
         es: "El parque nacional del Serengueti es el reino de la Gran Migración: 1,5 millones de ñus, 400.000 cebras en un circuito permanente dentro del ecosistema Mara-Serengueti. La biodiversidad más espectacular del planeta.",
       },
       wikipedia: "Serengeti_National_Park",
-      tags: ["Safari", "Grande Migration", "Big Five", "UNESCO"],
+      tags: ["Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Grande Migration des gnous", en: "Great Wildebeest Migration", es: "Gran Migración de los ñus" }, wikipedia: "File:Gnous Beauval.jpg" },
         { name: { fr: "Lions du Serengeti", en: "Serengeti lions", es: "Leones del Serengueti" }, wikipedia: "File:011_The_lion_king_Tryggve_in_the_Serengeti_National_Park_Photo_by_Giles_Laurent.jpg" },
@@ -112,7 +112,7 @@ export const TANZANIA = {
         es: "La caldera del Ngorongoro (260 km²) es la más grande del mundo y la de mayor densidad de fauna: leones, leopardos, rinocerontes negros, hienas y flamencos concentrados en un espectacular anfiteatro natural.",
       },
       wikipedia: "Ngorongoro_Conservation_Area",
-      tags: ["Safari", "UNESCO", "Rhinocéros", "Caldeira"],
+      tags: ["Safari", "UNESCO", "Nature"],
       mustSee: [
         { name: { fr: "Rhinocéros noir — espèce menacée", en: "Black rhinoceros — endangered species", es: "Rinoceronte negro — especie amenazada" }, wikipedia: "Black_rhinoceros" },
         { name: { fr: "Flamants roses du Lac Magadi", en: "Flamingos of Lake Magadi", es: "Flamencos del lago Magadi" }, wikipedia: "Flamingo" },
@@ -130,7 +130,7 @@ export const TANZANIA = {
         es: "El Techo de África (5.895 m) es la ascensión emblemática del continente, accesible sin equipo técnico por las rutas Marangu o Lemosho (5–8 días). Un reto asequible recompensado con vistas desde los glaciares.",
       },
       wikipedia: "Mount_Kilimanjaro",
-      tags: ["Ascension", "Nature", "UNESCO", "Défi", "Randonnée"],
+      tags: ["Randonnée", "Nature", "UNESCO", "Aventure"],
       mustSee: [
         { name: { fr: "Sommet Uhuru Peak (5 895 m)", en: "Uhuru Peak summit (5,895 m)", es: "Cumbre Uhuru Peak (5.895 m)" }, wikipedia: "Mount_Kilimanjaro" },
         { name: { fr: "Zone de brume (forêt tropicale)", en: "Cloud forest zone (rainforest)", es: "Zona de bruma (selva tropical)" }, wikipedia: "File:Kilimanjaro forest.jpg" },
@@ -148,7 +148,7 @@ export const TANZANIA = {
         es: "El archipiélago de Zanzíbar, la «isla de las especias», es un paraíso de arena blanca, lagunas turquesas, arrecifes de coral y Stone Town (UNESCO), la antigua ciudad suajili-árabe de callejuelas cautivadoras y puertas talladas.",
       },
       wikipedia: "File:Stone Town, Zanzibar (1).jpg",
-      tags: ["Plage", "UNESCO", "Culture", "Épices", "Histoire", "Architecture", "Gastronomie"],
+      tags: ["Plage", "UNESCO", "Culture", "Gastronomie", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Stone Town (UNESCO)", en: "Stone Town (UNESCO)", es: "Stone Town (UNESCO)" }, wikipedia: "Stone_Town" },
         { name: { fr: "Plage de Nungwi", en: "Nungwi Beach", es: "Playa de Nungwi" }, wikipedia: "Nungwi" },

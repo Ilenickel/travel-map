@@ -94,7 +94,7 @@ export const REUNION = {
         es: "El Piton de la Fournaise (2.632 m) es uno de los volcanes más activos del mundo: entra en erupción casi todos los años, algunas veces de forma espectacular con coladas de lava incandescente que llegan hasta el océano. La carretera de la Plaine des Cafres y el descenso al Enclos Fouqué (caldera) son los accesos clásicos. Un espectáculo geológico único.",
       },
       wikipedia: "File:Reunion PitonFournaise PitonChisny.JPG",
-      tags: ["Volcan", "Unique", "Randonnée", "Lave"],
+      tags: ["Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Piton de la Fournaise — ascension au cratère (si non actif)", en: "Piton de la Fournaise — climb to the crater (if not erupting)", es: "Piton de la Fournaise — ascensión al cráter (si no está activo)" }, wikipedia: "Piton_de_la_Fournaise" },
         { name: { fr: "Belvedère de l'Enclos Fouqué — vue sur la caldeira", en: "Enclos Fouqué viewpoint — view over the caldera", es: "Mirador del Enclos Fouqué — vista sobre la caldera" }, wikipedia: "File:Route forestière du Volcan - Réunion.jpg" },
@@ -112,7 +112,7 @@ export const REUNION = {
         es: "Mafate es el único circo de La Reunión inaccesible en coche: sus îlets (caseríos de unas pocas decenas de habitantes) solo son accesibles a pie o en helicóptero. Los senderos GR R1 y R2 atraviesan paisajes de basalto, bosques de tamarindos y acantilados vertiginosos. Un vivac excepcional en el corazón del parque nacional (UNESCO).",
       },
       wikipedia: "File:14-07-2011_Grand_Bénare_(26)_Mafate_(version_améliorée).jpg",
-      tags: ["Randonnée", "UNESCO", "Sans voiture", "Bivouac"],
+      tags: ["Randonnée", "UNESCO", "Aventure"],
       mustSee: [
         { name: { fr: "Ilet à Cordes — village suspendu dans les falaises", en: "Ilet à Cordes — village perched on the cliffs", es: "Ilet à Cordes — pueblo suspendido en los acantilados" }, wikipedia: "File:Ilet à Cordes - Cilaos.jpg" },
         { name: { fr: "Ilet La Nouvelle — cœur de Mafate avec gîtes", en: "Ilet La Nouvelle — the heart of Mafate with guesthouses", es: "Ilet La Nouvelle — corazón de Mafate con alojamientos rurales" }, wikipedia: "File:Rivière des Galets @ Nouvelle Mafate.jpg" },
@@ -130,7 +130,7 @@ export const REUNION = {
         es: "Cilaos es el circo más accesible (carretera de montaña espectacular) y el más turístico: sus fuentes termales (centro termal), sus vinos locales (Chai de Cilaos, únicos a esta altitud), el encaje artesanal de Cilaos, y las rutas hacia el Piton des Neiges (3.071 m, punto más alto del océano Índico). La carretera de las 400 curvas para llegar es en sí misma un espectáculo.",
       },
       wikipedia: "Cilaos",
-      tags: ["Cirque", "Randonnée", "Thermales", "Vin"],
+      tags: ["Nature", "Randonnée", "Détente", "Gastronomie"],
       mustSee: [
         { name: { fr: "Route des 400 virages — accès spectaculaire à Cilaos", en: "Route of 400 bends — spectacular access to Cilaos", es: "Carretera de las 400 curvas — acceso espectacular a Cilaos" }, wikipedia: "File:La_Réunion_-_Route_nationale_5_-04.JPG" },
         { name: { fr: "Piton des Neiges (3 071m) — toit de l'océan Indien (bivouac)", en: "Piton des Neiges (3,071m) — the roof of the Indian Ocean (overnight hike)", es: "Piton des Neiges (3.071 m) — el techo del océano Índico (vivac)" }, wikipedia: "Piton_des_Neiges" },
@@ -148,7 +148,7 @@ export const REUNION = {
         es: "Saint-Gilles-les-Bains es la capital costera de La Reunión: la laguna protegida por el arrecife de coral ofrece aguas turquesas ideales para el baño y el esnórquel, la playa de l'Ermitage, los deportes acuáticos, y los restaurantes de rougail de salchichas y cari de pescado. La puesta de sol desde la costa es excepcional.",
       },
       wikipedia: "File:Saint-Gilles les Bains depuis le chemin Summer.jpg",
-      tags: ["Plage", "Lagon", "Snorkeling", "Créole"],
+      tags: ["Plage", "Culture"],
       mustSee: [
         { name: { fr: "Lagon de Saint-Gilles — snorkeling avec tortues et poissons multicolores", en: "Saint-Gilles lagoon — snorkelling with turtles and colourful fish", es: "Laguna de Saint-Gilles — esnórquel con tortugas y peces multicolores" }, wikipedia: "File:Saint-Gilles-les-Bains 2024 04.jpg" },
         { name: { fr: "Plage de l'Ermitage — la plus belle plage de La Réunion", en: "Ermitage beach — Réunion's most beautiful beach", es: "Playa de l'Ermitage — la playa más bonita de La Reunión" }, wikipedia: "File:L'Ermitage beach, Réunion.jpg" },

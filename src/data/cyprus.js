@@ -73,7 +73,7 @@ export const CYPRUS = {
         es: "Pafos, ciudad costera del suroeste de Chipre, está declarada Patrimonio Mundial de la UNESCO por sus extraordinarios mosaicos romanos de los siglos II al IV. Ligada por leyenda a Afrodita, alberga la Roca de Afrodita (lugar de nacimiento de la diosa) y las Tumbas de los Reyes, una necrópolis excavada en la roca. El casco antiguo y su pintoresco puerto son ideales para las tardes.",
       },
       wikipedia: "Paphos",
-      tags: ["UNESCO", "Antique", "Mosaïques", "Aphrodite", "Architecture"],
+      tags: ["UNESCO", "Histoire", "Culture", "Architecture"],
       mustSee: [
         { name: { fr: "Parc archéologique de Paphos — mosaïques romaines exceptionnelles classées UNESCO", en: "Paphos Archaeological Park — exceptional UNESCO-listed Roman mosaics", es: "Parque arqueológico de Pafos — excepcionales mosaicos romanos declarados UNESCO" }, wikipedia: "Paphos_Archaeological_Park" },
         { name: { fr: "Tombeaux des Rois — nécropole hellénistique et romaine taillée dans la roche", en: "Tombs of the Kings — Hellenistic and Roman necropolis carved into the rock", es: "Tumbas de los Reyes — necrópolis helenística y romana excavada en la roca" }, wikipedia: "Tombs_of_the_Kings_(Paphos)" },
@@ -91,7 +91,7 @@ export const CYPRUS = {
         es: "Las montañas del Troodos, coronadas por el monte Olimpo (1.952 m), ofrecen un contraste sorprendente con las playas costeras. La región alberga monasterios bizantinos adornados con frescos dorados declarados UNESCO, senderos sombreados y pueblos vinícolas productores de la célebre Commandaria, el vino más antiguo del mundo que se sigue produciendo.",
       },
       wikipedia: "Troodos_Mountains",
-      tags: ["Montagne", "UNESCO", "Randonnée", "Vins", "Ski", "Nature"],
+      tags: ["Montagne", "UNESCO", "Randonnée", "Gastronomie", "Ski", "Nature"],
       mustSee: [
         { name: { fr: "Monastère de Kykkos — plus grand monastère de Chypre, icônes byzantines", en: "Kykkos Monastery — Cyprus's largest monastery, home to Byzantine icons", es: "Monasterio de Kykkos — el mayor monasterio de Chipre, con iconos bizantinos" }, wikipedia: "Kykkos_Monastery" },
         { name: { fr: "Eglises byzantines du Troodos — 10 églises à fresques classées UNESCO", en: "Byzantine churches of Troodos — 10 frescoed churches listed by UNESCO", es: "Iglesias bizantinas del Troodos — 10 iglesias con frescos declaradas UNESCO" }, wikipedia: "Painted_Churches_in_the_Troodos_Region" },
@@ -109,7 +109,7 @@ export const CYPRUS = {
         es: "Nicosia es la última capital dividida del mundo, partida en dos desde 1974 por la 'línea verde' de la ONU que separa la República de Chipre de la parte norte turca. El casco antiguo, dentro de las murallas venecianas, alberga museos, mezquitas y cafés en ambas partes. El paso del checkpoint de Ledra Street permite visitar los dos lados de la ciudad.",
       },
       wikipedia: "Nicosia",
-      tags: ["Ville", "Divisée", "Histoire", "Médiéval", "Architecture", "Plage"],
+      tags: ["Ville", "Histoire", "Architecture", "Plage"],
       mustSee: [
         { name: { fr: "Remparts vénitiens de Nicosie — enceinte étoilée du XVIe siècle", en: "Venetian walls of Nicosia — 16th-century star-shaped fortifications", es: "Murallas venecianas de Nicosia — recinto estrellado del siglo XVI" }, wikipedia: "File:Venetian_walls_and_green_parks_Nicosia_Republic_of_Cyprus_Kypros.jpg" },
         { name: { fr: "Checkpoint Ledra Street — seul passage entre les deux parties de la ville", en: "Ledra Street checkpoint — the main crossing between the city's two sides", es: "Checkpoint de Ledra Street — el paso principal entre las dos partes de la ciudad" }, wikipedia: "Ledra_Street" },
@@ -127,7 +127,7 @@ export const CYPRUS = {
         es: "Limasol es la segunda ciudad de Chipre y su principal puerto comercial, conocida por su animada vida nocturna y su carnaval. La ruta del vino en el interior de Limasol atraviesa pueblos tradicionales productores de Commandaria, un vino de postre que existe desde la Antigüedad y está reconocido como el vino más antiguo aún producido en el mundo.",
       },
       wikipedia: "Limassol",
-      tags: ["Gastronomie", "Vins", "Plages", "Nightlife"],
+      tags: ["Gastronomie", "Plage", "Nightlife"],
       mustSee: [
         { name: { fr: "Château médiéval de Limassol — où Richard Cœur de Lion épousa Bérengère", en: "Limassol medieval castle — where Richard the Lionheart married Berengaria", es: "Castillo medieval de Limasol — donde Ricardo Corazón de León se casó con Berenguela" }, wikipedia: "Limassol_Castle" },
         { name: { fr: "Village de Lania — village viticole traditionnel au cœur des Troodos", en: "Lania village — a traditional wine village in the heart of the Troodos", es: "Pueblo de Lania — pueblo vinícola tradicional en el corazón del Troodos" }, wikipedia: "File:View of Laneia 2.jpg" },

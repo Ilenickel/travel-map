@@ -123,7 +123,7 @@ export const PERU = {
         es: "La antigua capital del Imperio Inca, hoy una magnífica ciudad colonial a 3.400 m de altitud. Catedral barroca sobre cimientos incas, mercado de Pisac y Valle Sagrado.",
       },
       wikipedia: "Cusco",
-      tags: ["Histoire", "Culture", "UNESCO", "Altitude", "Architecture", "Gastronomie", "Ville"],
+      tags: ["Histoire", "Culture", "UNESCO", "Montagne", "Architecture", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Qorikancha — temple inca du Soleil", en: "Qorikancha — Inca Temple of the Sun", es: "Qorikancha — templo inca del Sol" }, wikipedia: "File:Entrada_del_Museo_Qorikancha_02.jpg" },
         { name: { fr: "Forteresse de Sacsayhuamán", en: "Sacsayhuamán Fortress", es: "Fortaleza de Sacsayhuamán" }, wikipedia: "Sacsayhuamán" },
@@ -159,7 +159,7 @@ export const PERU = {
         es: "A 3.810 m de altitud, el lago Titicaca es el lago navegable más alto del mundo. Las islas flotantes de los Uros, construidas con totora, y Taquile, hogar de tejedores, son únicas.",
       },
       wikipedia: "File:Amanecer_en_el_lago_Titicaca,_Puno,_Perú,_2015-08-01,_DD_01.JPG",
-      tags: ["Nature", "Culture", "Altitude", "Unique"],
+      tags: ["Nature", "Culture", "Montagne"],
       mustSee: [
         { name: { fr: "Îles flottantes des Uros", en: "Floating Uros Islands", es: "Islas flotantes de los Uros" }, wikipedia: "File:View_on_a_floating_Uros_Island_from_a_Uru_watchtower,_visible_are_drying_clothes_and_a_shower_building.jpg" },
         { name: { fr: "Île de Taquile — tisserands", en: "Taquile Island — weavers", es: "Isla de Taquile — tejedores" }, wikipedia: "File:Taquile from Amantani.jpg" },

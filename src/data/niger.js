@@ -94,7 +94,7 @@ export const NIGER = {
         es: "Agadez es una de las grandes ciudades caravaneras del Sáhara, declarada Patrimonio de la Humanidad por la UNESCO. Su Gran Mezquita, con su minarete de tierra y madera, es uno de los edificios más emblemáticos de África Occidental. El casco antiguo de adobe, de callejuelas laberínticas, es testigo de cinco siglos de historia tuareg, comercio transahariano y cultura nómada. Antes de la crisis de seguridad, era la principal puerta de entrada al Ténéré.",
       },
       wikipedia: "Agadez",
-      tags: ["UNESCO", "Culture touareg", "Architecture", "Désert"],
+      tags: ["UNESCO", "Culture", "Architecture", "Désert"],
       mustSee: [
         { name: { fr: "Grande Mosquée d'Agadez — minaret de terre et de bois (27m), symbole de la ville", en: "Agadez Grand Mosque — 27m earthen and wooden minaret, symbol of the city", es: "Gran Mezquita de Agadez — minarete de tierra y madera (27 m), símbolo de la ciudad" }, wikipedia: "File:Niger, Agadez (43), Grand Mosque.jpg" },
         { name: { fr: "Vieille ville (médina) d'Agadez — ruelles en adobe et palais du Sultan", en: "Agadez old town (medina) — adobe alleys and the Sultan's palace", es: "Casco antiguo (medina) de Agadez — callejuelas de adobe y palacio del Sultán" }, wikipedia: "Agadez" },
@@ -112,7 +112,7 @@ export const NIGER = {
         es: "El macizo del Aïr y el desierto del Ténéré forman una reserva natural declarada Patrimonio de la Humanidad de más de 7 millones de hectáreas, una de las más grandes del mundo. Las montañas volcánicas del Aïr albergan valles verdes (oasis), grabados rupestres neolíticos y el célebre addax, antílope sahariano. El Ténéré, «desierto dentro del desierto», ofrece paisajes de arena y ergs de una belleza absoluta, antaño dominados por el Árbol del Ténéré (hoy desaparecido).",
       },
       wikipedia: "File:Montagnes Bleus1.jpg",
-      tags: ["UNESCO", "Sahara", "Gravures rupestres", "Faune"],
+      tags: ["UNESCO", "Nature", "Histoire", "Safari"],
       mustSee: [
         { name: { fr: "Erg du Ténéré — mer de sable monumentale", en: "Ténéré Erg — a monumental sand sea", es: "Erg del Ténéré — mar de arena monumental" }, wikipedia: "Ténéré" },
         { name: { fr: "Gravures rupestres de l'Aïr — art néolithique saharien", en: "Aïr rock carvings — Neolithic Saharan art", es: "Grabados rupestres del Aïr — arte neolítico sahariano" }, wikipedia: "File:Fondazione Passaré V27 230.jpg" },
@@ -130,7 +130,7 @@ export const NIGER = {
         es: "El parque del W (llamado así por los meandros en forma de W del río Níger en sus fronteras) es un parque transfronterizo declarado Patrimonio de la Humanidad, compartido entre Níger, Benín y Burkina Faso. Alberga leones, elefantes, búfalos, hipopótamos y una avifauna notable en una sabana saheliana característica. Es el destino de safari más accesible desde Niamey, a unos 150 km.",
       },
       wikipedia: "W_National_Park",
-      tags: ["Safari", "UNESCO", "Lions", "Éléphants"],
+      tags: ["Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Mares d'hippopotames — nombreux dans le fleuve Niger", en: "Hippo pools — numerous in the Niger River", es: "Charcas de hipopótamos — numerosas en el río Níger" }, wikipedia: "File:La_boule_du_monde,_Chutes_de_koudou,_Parc_W,_Benin.jpg" },
         { name: { fr: "Troupeaux d'éléphants — migration entre les trois pays", en: "Elephant herds — migrating between the three countries", es: "Manadas de elefantes — migración entre los tres países" }, wikipedia: "File:Elephants bath park w wide 2006.jpg" },

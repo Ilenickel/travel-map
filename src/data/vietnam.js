@@ -161,7 +161,7 @@ export const VIETNAM = {
         es: "Más de 1600 islas kársticas emergiendo de un mar esmeralda. Cruceros en junco tradicional, kayak por las cuevas y atardeceres mágicos.",
       },
       wikipedia: "File:Ha_Long_Bay_in_2019.jpg",
-      tags: ["Nature", "UNESCO", "Croisière", "Paysage", "Plage"],
+      tags: ["Nature", "UNESCO", "Plage"],
       mustSee: [
         { name: { fr: "Croisière jonque 2 jours", en: "2-day junk boat cruise", es: "Crucero en junco de 2 días" }, wikipedia: "File:Ha_Long_Bay_in_2019.jpg" },
         { name: { fr: "Grotte de Hang Sung Sot", en: "Hang Sung Sot Cave", es: "Cueva de Hang Sung Sot" }, wikipedia: "File:Son_Doong_Cave_5.jpg" },
@@ -178,7 +178,7 @@ export const VIETNAM = {
         es: "Antigua ciudad comercial declarada Patrimonio UNESCO, con callejuelas iluminadas por coloridas farolillos de seda. Sastres a medida, deliciosa cocina local y playas a 4 km.",
       },
       wikipedia: "File:10549-Hoi-An_(37621348460).jpg",
-      tags: ["Histoire", "UNESCO", "Artisanat", "Gastronomie", "Architecture", "Plage"],
+      tags: ["Histoire", "UNESCO", "Shopping", "Gastronomie", "Architecture", "Plage"],
       mustSee: [
         { name: { fr: "Vieille ville aux lanternes", en: "Old town of lanterns", es: "Casco antiguo de los farolillos" }, wikipedia: "File:10549-Hoi-An_(37621348460).jpg" },
         { name: { fr: "Pont japonais couvert", en: "Covered Japanese Bridge", es: "Puente japonés cubierto" }, wikipedia: "File:2024_Hội_An_-_Japanese_Covered_Bridge_(Chùa_Cầu)_after_renovation_-_img_11.jpg" },
@@ -196,7 +196,7 @@ export const VIETNAM = {
         es: "La antigua Saigón, megaciudad trepidante con los túneles de Cu Chi, el museo de la guerra, una gastronomía callejera excepcional y una vida nocturna efervescente.",
       },
       wikipedia: "Ho_Chi_Minh_City",
-      tags: ["Ville", "Histoire", "Gastronomie", "Nuit"],
+      tags: ["Ville", "Histoire", "Gastronomie", "Nightlife"],
       mustSee: [
         { name: { fr: "Tunnels de Cu Chi", en: "Cu Chi Tunnels", es: "Túneles de Cu Chi" }, wikipedia: "File:VietnamCuChiTunnels.jpg" },
         { name: { fr: "Musée des vestiges de guerre", en: "War Remnants Museum", es: "Museo de los vestigios de guerra" }, wikipedia: "War_Remnants_Museum" },
@@ -232,7 +232,7 @@ export const VIETNAM = {
         es: "Apodada la Isla Perla, Phú Quốc es la isla más grande de Vietnam y uno de los mejores destinos de playa del sudeste asiático. Playas de arena blanca bordeadas de palmeras, aguas turquesas y selvas tropicales protegidas ocupan el 70 % de la isla. Los atardeceres sobre Long Beach están entre los más bellos de Vietnam. Imprescindible descubrir la pimienta de Phú Quốc y la salsa nuoc-mam artesanal.",
       },
       wikipedia: "Phú_Quốc",
-      tags: ["Plage", "Mer", "Nature", "Snorkeling", "Détente", "Safari"],
+      tags: ["Plage", "Nature", "Détente", "Safari"],
       mustSee: [
         { name: { fr: "Long Beach (Bãi Trường) — plage de 20 km au coucher de soleil", en: "Long Beach (Bãi Trường) — 20 km beach at sunset", es: "Long Beach (Bãi Trường) — playa de 20 km al atardecer" }, wikipedia: "File:Kiss Bridge at sunset Phu Quoc Island Vietnam.jpg" },
         { name: { fr: "Vinpearl Safari — parc animalier sur l'île", en: "Vinpearl Safari — wildlife park on the island", es: "Vinpearl Safari — parque de fauna en la isla" }, wikipedia: "File:The Herd of Rhinos.jpg" },

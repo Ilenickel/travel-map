@@ -94,7 +94,7 @@ export const BULGARIA = {
         es: "La costa búlgara del mar Negro ofrece 350 km de playas de arena dorada y aguas cálidas (27°C en julio-agosto). Sozópolis, antigua ciudad griega sobre un cabo rocoso, es una de las localidades costeras más bellas de Bulgaria. Nesebar (UNESCO) es una ciudad bizantina y medieval bien conservada sobre un istmo rocoso. Las estaciones de Sunny Beach y Golden Sands atraen a las familias.",
       },
       wikipedia: "File:Bulgaria black sea coast.jpg",
-      tags: ["Plage", "Mer Noire", "Grec antique", "UNESCO", "Nature"],
+      tags: ["Plage", "Histoire", "UNESCO", "Nature"],
       mustSee: [
         { name: { fr: "Sozopol — cité grecque antique sur cap rocheux", en: "Sozopol — ancient Greek town on a rocky cape", es: "Sozópolis — antigua ciudad griega sobre un cabo rocoso" }, wikipedia: "File:Sozopol2.jpg" },
         { name: { fr: "Nessebar — ville byzantine et médiévale (UNESCO)", en: "Nessebar — Byzantine and medieval town (UNESCO)", es: "Nesebar — ciudad bizantina y medieval (UNESCO)" }, wikipedia: "File:Church of Christ Pantocrator Nesebar.jpg" },
@@ -112,7 +112,7 @@ export const BULGARIA = {
         es: "El monasterio de Rila (UNESCO) es el más grande e importante de Bulgaria — fundado en el siglo X en las montañas, a 1.147 m de altitud. Sus frescos del siglo XIX (más de 1.200 escenas bíblicas en las galerías) y su arquitectura de arcos rayados en blanco y negro lo convierten en uno de los conjuntos religiosos más bellos de los Balcanes. Sigue siendo un vivo lugar de peregrinación nacional.",
       },
       wikipedia: "Rila_Monastery",
-      tags: ["Monastère", "UNESCO", "Fresques", "Montagnes", "Nature", "Randonnée", "Architecture"],
+      tags: ["Spiritualité", "UNESCO", "Culture", "Montagne", "Nature", "Randonnée", "Architecture"],
       mustSee: [
         { name: { fr: "Fresques des galeries du monastère (1 200 scènes)", en: "Frescoes in the monastery galleries (1,200 scenes)", es: "Frescos de las galerías del monasterio (1.200 escenas)" }, wikipedia: "File:Religious fresco in Rila Monastery.jpg" },
         { name: { fr: "Musée du monastère — trésor religieux et icônes", en: "Monastery museum — religious treasures and icons", es: "Museo del monasterio — tesoro religioso e iconos" }, wikipedia: "Rila_Monastery" },
@@ -130,7 +130,7 @@ export const BULGARIA = {
         es: "Plovdiv es la segunda ciudad de Bulgaria y una de las ciudades habitadas de forma continua más antiguas de Europa (6.000 años). Su casco antiguo sobre las colinas (Kapana — el laberinto) mezcla casas del renacimiento búlgaro del siglo XIX, calles empedradas, galerías de arte y cafés de moda. El anfiteatro romano del siglo II todavía se usa para conciertos.",
       },
       wikipedia: "Plovdiv",
-      tags: ["Vieille ville", "Romain", "Capitale culture", "Art", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Architecture", "Histoire", "Ville", "Art", "Gastronomie"],
       mustSee: [
         { name: { fr: "Vieille ville de Plovdiv — maisons renaissance bulgare du XIXe s.", en: "Plovdiv Old Town — 19th-century Bulgarian Revival houses", es: "Casco antiguo de Plovdiv — casas del renacimiento búlgaro del siglo XIX" }, wikipedia: "File:Odeon plovdiv old.jpg" },
         { name: { fr: "Amphithéâtre romain (IIe s.) — concerts en plein air", en: "Roman amphitheatre (2nd c.) — open-air concerts", es: "Anfiteatro romano (siglo II) — conciertos al aire libre" }, wikipedia: "File:Plovdiv Ancient theatre.jpg" },
@@ -148,7 +148,7 @@ export const BULGARIA = {
         es: "Veliko Tarnovo fue la capital del Segundo Imperio Búlgaro (1185–1393). Su fortaleza de Tsarevets, sobre una colina rodeada por un meandro del río Yantra, es el símbolo nacional de Bulgaria. El espectáculo nocturno de luz y sonido sobre las murallas es inolvidable. El casco antiguo, en terrazas, desciende hacia el río en un paisaje digno de postal.",
       },
       wikipedia: "File:Veliko Tarnovo (Велико Търново) - Tsarevets.JPG",
-      tags: ["Médiéval", "Forteresse", "Ville", "Son-et-lumière", "Architecture"],
+      tags: ["Histoire", "Architecture", "Ville", "Culture"],
       mustSee: [
         { name: { fr: "Forteresse de Tsarevets — spectacle son-et-lumière le soir", en: "Tsarevets Fortress — evening sound-and-light show", es: "Fortaleza de Tsarevets — espectáculo de luz y sonido al anochecer" }, wikipedia: "File:Tsarevets - Veliko Tarnovo - 2.jpg" },
         { name: { fr: "Vieille ville de Veliko Tarnovo — maisons en terrasses", en: "Veliko Tarnovo Old Town — terraced houses", es: "Casco antiguo de Veliko Tarnovo — casas en terrazas" }, wikipedia: "File:Veliko Tarnovo - Varosha quarter.jpg" },

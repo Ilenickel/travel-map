@@ -75,7 +75,7 @@ export const IRELAND = {
         es: "Capital animada y acogedora, Dublín es el corazón literario y musical de Irlanda. El barrio de Temple Bar con sus pubs tradicionales, el Trinity College que alberga el Libro de Kells, y la Chester Beatty Library hacen de ella una ciudad de una riqueza cultural insospechada. La escena de los pubs irlandeses con música en vivo es una experiencia única en Europa.",
       },
       wikipedia: "Dublin",
-      tags: ["Ville", "Culture", "Pubs", "Littérature", "Histoire", "Gastronomie", "Architecture"],
+      tags: ["Ville", "Culture", "Nightlife", "Histoire", "Gastronomie", "Architecture"],
       mustSee: [
         { name: { fr: "Trinity College et Livre de Kells — manuscrit enluminé du VIIIe siècle", en: "Trinity College and the Book of Kells — an illuminated 8th-century manuscript", es: "Trinity College y el Libro de Kells — manuscrito iluminado del siglo VIII" }, wikipedia: "Book_of_Kells" },
         { name: { fr: "Temple Bar — quartier des pubs et de la vie nocturne", en: "Temple Bar — the pub and nightlife district", es: "Temple Bar — barrio de pubs y vida nocturna" }, wikipedia: "File:Temple Bar at Dusk 4.jpg" },
@@ -93,7 +93,7 @@ export const IRELAND = {
         es: "El Anillo de Kerry es una de las rutas panorámicas más famosas de Europa, que serpentea 179 km alrededor de la península de Iveragh. Los lagos de Killarney, las islas Skellig (escenario de rodaje de Star Wars), pueblos costeros y montañas forman un paisaje de belleza grandiosa. Killarney es la base ideal para explorar la región.",
       },
       wikipedia: "Ring_of_Kerry",
-      tags: ["Paysage", "Nature", "Côte", "Péninsule", "Randonnée"],
+      tags: ["Nature", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Skellig Michael — monastère médiéval sur un rocher en pleine mer", en: "Skellig Michael — a medieval monastery on an offshore rock", es: "Skellig Michael — monasterio medieval en una roca en alta mar" }, wikipedia: "Skellig_Michael" },
         { name: { fr: "Lacs de Killarney — parc national aux paysages enchanteurs", en: "Lakes of Killarney — a national park with enchanting scenery", es: "Lagos de Killarney — parque nacional de paisajes encantadores" }, wikipedia: "Killarney_National_Park" },
@@ -111,7 +111,7 @@ export const IRELAND = {
         es: "Los acantilados de Moher se alzan 214 metros sobre el Atlántico a lo largo de 8 km de costa salvaje en el condado de Clare. Constituyen el enclave natural más visitado de Irlanda y ofrecen vistas espectaculares de las islas Aran y Connemara. La región del Burren, meseta caliza única en Europa, se encuentra cerca.",
       },
       wikipedia: "Cliffs_of_Moher",
-      tags: ["Nature", "Falaises", "UNESCO", "Atlantique", "Randonnée"],
+      tags: ["Nature", "UNESCO", "Plage", "Randonnée"],
       mustSee: [
         { name: { fr: "Tour O'Brien — tour de guet victorienne au sommet des falaises", en: "O'Brien's Tower — a Victorian lookout at the cliff top", es: "Torre O'Brien — atalaya victoriana en lo alto de los acantilados" }, wikipedia: "O'Brien's_Tower" },
         { name: { fr: "Le Burren — paysage karstique unique avec flore méditerranéenne", en: "The Burren — a unique karst landscape with Mediterranean flora", es: "El Burren — paisaje kárstico único con flora mediterránea" }, wikipedia: "The_Burren" },
@@ -129,7 +129,7 @@ export const IRELAND = {
         es: "La Calzada del Gigante es una espectacular formación geológica de 40.000 columnas hexagonales de basalto que se adentran en el mar de Irlanda, Patrimonio de la Humanidad UNESCO. Según la leyenda, el gigante Finn McCool la construyó para llegar a Escocia. Se encuentra en Irlanda del Norte, de fácil acceso desde Dublín.",
       },
       wikipedia: "Giant's_Causeway",
-      tags: ["UNESCO", "Géologie", "Légende", "Nature"],
+      tags: ["UNESCO", "Nature", "Histoire"],
       mustSee: [
         { name: { fr: "Chaussée des Géants — colonnes basaltiques hexagonales classées UNESCO", en: "Giant's Causeway — UNESCO-listed hexagonal basalt columns", es: "Calzada del Gigante — columnas basálticas hexagonales, Patrimonio UNESCO" }, wikipedia: "Giant's_Causeway" },
         { name: { fr: "Château de Dunluce — ruines médiévales perchées sur une falaise", en: "Dunluce Castle — medieval ruins perched on a cliff", es: "Castillo de Dunluce — ruinas medievales encaramadas en un acantilado" }, wikipedia: "Dunluce_Castle" },

@@ -73,7 +73,7 @@ export const ANDORRA = {
         es: "Grandvalira es el mayor dominio esquiable de la península ibérica, con 210 km de pistas repartidas en 6 parroquias y 2 estaciones (Pas de la Casa y Soldeu). Las pistas bien cuidadas, las escuelas de esquí locales y los numerosos restaurantes de altura la convierten en un destino de esquí muy apreciado por familias francesas y españolas. La altitud garantiza buena nieve de diciembre a abril.",
       },
       wikipedia: "File:Grandvalira ski resort, Andorra5.jpg",
-      tags: ["Ski", "Sport d'hiver", "Montagne", "Stations"],
+      tags: ["Ski", "Montagne"],
       mustSee: [
         { name: { fr: "Soldeu — station principale avec pistes débutants et intermédiaires", en: "Soldeu — main resort with beginner and intermediate slopes", es: "Soldeu — estación principal con pistas para principiantes e intermedios" }, wikipedia: "Soldeu" },
         { name: { fr: "Pas de la Casa — station frontalière avec shopping et nightlife animé", en: "Pas de la Casa — border resort with shopping and lively nightlife", es: "Pas de la Casa — estación fronteriza con compras y animada vida nocturna" }, wikipedia: "File:Pas de la Casa (1).jpg" },
@@ -91,7 +91,7 @@ export const ANDORRA = {
         es: "La capital de Andorra es la capital más alta de Europa, a 1023 m de altitud. Pese a su reducido tamaño, ofrece un contraste sorprendente entre su casco antiguo medieval en torno a la Casa de la Vall y su moderno centro comercial famoso por las compras libres de impuestos. La Avinguda Meritxell concentra las grandes marcas a precios inmejorables.",
       },
       wikipedia: "Andorra_la_Vella",
-      tags: ["Ville", "Shopping", "Médiéval", "Duty-free"],
+      tags: ["Ville", "Shopping", "Histoire"],
       mustSee: [
         { name: { fr: "Casa de la Vall — Parlement historique du XVIe siècle, monument symbolique", en: "Casa de la Vall — historic 16th-century Parliament, a symbolic landmark", es: "Casa de la Vall — Parlamento histórico del siglo XVI, monumento emblemático" }, wikipedia: "Casa_de_la_Vall" },
         { name: { fr: "Église Sant Esteve — église romane au cœur de la vieille ville", en: "Sant Esteve Church — Romanesque church in the heart of the old town", es: "Iglesia de Sant Esteve — iglesia románica en el corazón del casco antiguo" }, wikipedia: "File:Església de Sant Esteve de Bixessarri - 2.jpg" },
@@ -109,7 +109,7 @@ export const ANDORRA = {
         es: "Andorra conserva un notable patrimonio de iglesias románicas de los siglos XI–XIII, testimonio de su fundación medieval. Sant Joan de Caselles, Sant Climent de Pal y Sant Martí de la Cortinada, decoradas con auténticos frescos medievales, son de fácil acceso. El Museo Nacional de Arte Románico de Cataluña (MNAC) en Barcelona conserva las obras más destacadas trasladadas allí.",
       },
       wikipedia: "File:QUERALBS - St. Jaume.JPG",
-      tags: ["Roman", "Patrimoine", "Médiéval", "Fresques"],
+      tags: ["Architecture", "Histoire", "Culture"],
       mustSee: [
         { name: { fr: "Sant Joan de Caselles — tour roman du XIIe siècle avec retable polychrome", en: "Sant Joan de Caselles — 12th-century Romanesque tower with a polychrome altarpiece", es: "Sant Joan de Caselles — torre románica del siglo XII con retablo policromado" }, wikipedia: "Sant_Joan_de_Caselles" },
         { name: { fr: "Sant Climent de Pal — église romane avec clocher carré typique", en: "Sant Climent de Pal — Romanesque church with a typical square bell tower", es: "Sant Climent de Pal — iglesia románica con el típico campanario cuadrado" }, wikipedia: "File:Sant Climent de Pal 2017.jpg" },
@@ -127,7 +127,7 @@ export const ANDORRA = {
         es: "En verano, Andorra se convierte en un paraíso del senderismo con más de 600 km de sendas señalizadas que recorren los Pirineos. El Circo de Tristaina con sus tres lagos glaciares, el grandioso circo de los lagos del Pessons y el pico de Coma Pedrosa (2943 m, el punto más alto) ofrecen experiencias inolvidables con distintos niveles de dificultad.",
       },
       wikipedia: "File:Andorra l Vella-20100128-RM-165853.jpg",
-      tags: ["Randonnée", "Lacs", "Montagne", "Nature"],
+      tags: ["Randonnée", "Nature", "Montagne"],
       mustSee: [
         { name: { fr: "Cirque de Tristaina — trois lacs glaciaires à 2 300 m, randonnée facile", en: "Tristaina Cirque — three glacial lakes at 2,300 m, an easy hike", es: "Circo de Tristaina — tres lagos glaciares a 2300 m, ruta fácil" }, wikipedia: "File:Tristaina 50 Cirque.jpg" },
         { name: { fr: "Lacs del Pessons — cirque de 8 lacs à 2 400 m", en: "Pessons lakes — a cirque of 8 lakes at 2,400 m", es: "Lagos del Pessons — circo de 8 lagos a 2400 m" }, wikipedia: "File:Circ dels Pessons (Encamp) - 12.jpg" },

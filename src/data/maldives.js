@@ -75,7 +75,7 @@ export const MALDIVES = {
         es: "El más accesible desde el aeropuerto internacional, con resorts emblemáticos sobre pilotes, buceo en Banana Reef (el primer sitio de buceo de Maldivas) y excursiones para ver delfines.",
       },
       wikipedia: "File:Kaafu Atoll, Maldives - panoramio (9).jpg",
-      tags: ["Plongée", "Luxe", "Plage"],
+      tags: ["Plage", "Luxe"],
       mustSee: [
         { name: { fr: "Bungalows sur pilotis", en: "Overwater bungalows", es: "Bungalós sobre pilotes" }, wikipedia: "File:1 Maldives, Indian Ocean, Asia.jpg" },
         { name: { fr: "Banana Reef (plongée)", en: "Banana Reef (diving)", es: "Banana Reef (buceo)" }, wikipedia: "File:Funadhoo.jpg" },
@@ -92,7 +92,7 @@ export const MALDIVES = {
         es: "Paraíso de los buceadores con tiburones ballena presentes todo el año, mantarrayas en los canales y muros de coral espectaculares.",
       },
       wikipedia: "Ari_Atoll",
-      tags: ["Plongée", "Faune marine", "Nature"],
+      tags: ["Plage", "Safari", "Nature"],
       mustSee: [
         { name: { fr: "Plongée avec requins-baleines", en: "Diving with whale sharks", es: "Buceo con tiburones ballena" }, wikipedia: "Whale_shark" },
         { name: { fr: "Nage avec raies mantas", en: "Swimming with manta rays", es: "Nado con mantarrayas" }, wikipedia: "File:Manta birostris-Thailand3.jpg" },
@@ -109,7 +109,7 @@ export const MALDIVES = {
         es: "Reserva de biosfera de la UNESCO, el atolón de Baa alberga la laguna de Hanifaru Bay, donde cientos de mantarrayas se reúnen cada temporada para alimentarse.",
       },
       wikipedia: "File:Baa atoll islands.JPG",
-      tags: ["UNESCO", "Faune marine", "Plongée"],
+      tags: ["UNESCO", "Safari", "Plage"],
       mustSee: [
         { name: { fr: "Hanifaru Bay — banquet de raies manta", en: "Hanifaru Bay — manta ray feeding frenzy", es: "Hanifaru Bay — festín de mantarrayas" }, wikipedia: "File:Manta birostris-Thailand3.jpg" },
         { name: { fr: "Snorkeling — récifs de Baa", en: "Snorkelling — Baa reefs", es: "Snorkel — arrecifes de Baa" }, wikipedia: "File:Baa Atoll (Voavah).JPG" },

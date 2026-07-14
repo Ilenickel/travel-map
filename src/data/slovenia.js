@@ -94,7 +94,7 @@ export const SLOVENIA = {
         es: "El lago Bled es una de las vistas más fotografiadas de Europa: una iglesia barroca en una pequeña isla en medio de un lago verde esmeralda rodeado de Alpes, con un castillo medieval encaramado en un acantilado. La pletna (barca tradicional) lleva a los visitantes hasta la isla. La tarta de crema (kremšnita) inventada aquí es todo un ritual.",
       },
       wikipedia: "Lake_Bled",
-      tags: ["Lac", "Alpes", "Château", "Île", "Nature", "Randonnée", "Ski"],
+      tags: ["Nature", "Montagne", "Architecture", "Plage", "Randonnée", "Ski"],
       mustSee: [
         { name: { fr: "Île de Bled en pletna — église baroque du XVIIe siècle", en: "Bled Island by pletna — 17th-century baroque church", es: "Isla de Bled en pletna — iglesia barroca del siglo XVII" }, wikipedia: "File:Bled Overview.JPG" },
         { name: { fr: "Château de Bled (XIe s.) — vue plongeante sur le lac", en: "Bled Castle (11th century) — sweeping view over the lake", es: "Castillo de Bled (s. XI) — vista panorámica sobre el lago" }, wikipedia: "Bled_Castle" },
@@ -112,7 +112,7 @@ export const SLOVENIA = {
         es: "Las cuevas de Postojna son las más visitadas de Europa (24 millones de visitantes desde su descubrimiento): 24km de galerías con estalactitas gigantes, el proteo (olm, el 'pez humano' — salamandra ciega endémica de las cuevas balcánicas) y un tren subterráneo que recorre 5km en las entrañas de la tierra. A 10km: el castillo de Predjama, incrustado en el acantilado sobre una cueva.",
       },
       wikipedia: "Postojna_Cave",
-      tags: ["Grottes", "Stalactites", "Olm", "Château-grotte", "UNESCO"],
+      tags: ["Nature", "Safari", "UNESCO"],
       mustSee: [
         { name: { fr: "Train souterrain dans les grottes de Postojna (5km)", en: "Underground train through the Postojna Caves (5km)", es: "Tren subterráneo en las cuevas de Postojna (5km)" }, wikipedia: "File:Postojna Cave train (3).jpg" },
         { name: { fr: "Protée (olm) — salamandre aveugle endémique des grottes balkaniques", en: "Olm — blind salamander endemic to Balkan caves", es: "Proteo (olm) — salamandra ciega endémica de las cuevas balcánicas" }, wikipedia: "Olm" },
@@ -130,7 +130,7 @@ export const SLOVENIA = {
         es: "El Triglav (2.864m) es el símbolo nacional esloveno — su ascensión es un rito de paso para todo esloveno. El parque nacional del Triglav (838 km²) es el único parque nacional del país: lagos de altitud de color ópalo (el Valle de los Siete Lagos), el desfiladero del Soča (agua de un turquesa alucinante, paraíso del kayak) y praderas alpinas floridas.",
       },
       wikipedia: "File:Triglav National Park (28749976304).jpg",
-      tags: ["Alpinisme", "Kayak", "Lacs", "Nature", "Randonnée", "Ski", "UNESCO"],
+      tags: ["Aventure", "Nature", "Randonnée", "Ski", "UNESCO"],
       mustSee: [
         { name: { fr: "Rivière Soča — turquoise intense, kayak et rafting", en: "Soča River — intense turquoise, kayaking and rafting", es: "Río Soča — turquesa intenso, kayak y rafting" }, wikipedia: "Soča" },
         { name: { fr: "Sept lacs de Triglav — randonnée de 2 jours", en: "Triglav's Seven Lakes — a 2-day hike", es: "Siete lagos del Triglav — caminata de 2 días" }, wikipedia: "File:Triglav_Lakes_Valley_Mountain_Lodge_in_Slovenia%27s_Julian_Alps.jpg" },
@@ -148,7 +148,7 @@ export const SLOVENIA = {
         es: "Liubliana fue capital verde europea en 2016: centro urbano totalmente peatonal desde 2007, 30km de carriles bici, el río Liubliana atravesando el centro con sus animadas terrazas, el castillo medieval en la colina, y los mercados ecológicos de los viernes. Una ciudad a escala humana, dinámica y bilingüe (inglés excelente).",
       },
       wikipedia: "Ljubljana",
-      tags: ["Capitale verte", "Vélo", "Rivière", "Marché", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Ville", "Aventure", "Nature", "Shopping", "Architecture", "Gastronomie"],
       mustSee: [
         { name: { fr: "Triple-pont de Plečnik — entrée monumentale en vieille ville", en: "Plečnik's Triple Bridge — monumental entrance to the old town", es: "Triple puente de Plečnik — entrada monumental al casco antiguo" }, wikipedia: "Triple_Bridge" },
         { name: { fr: "Château de Ljubljana — vue panoramique sur les Alpes", en: "Ljubljana Castle — panoramic view of the Alps", es: "Castillo de Liubliana — vista panorámica de los Alpes" }, wikipedia: "Ljubljana_Castle" },

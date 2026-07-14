@@ -94,7 +94,7 @@ export const HUNGARY = {
         es: "Budapest está dividida en dos por el Danubio: Buda, con su castillo real (UNESCO), el Bastión de los Pescadores y las colinas boscosas; Pest, con sus grandes bulevares modernistas, el Parlamento neogótico (uno de los más grandes del mundo) y las animadas calles del distrito VII. El panorama desde la ciudadela al atardecer es inolvidable.",
       },
       wikipedia: "Budapest",
-      tags: ["Danube", "UNESCO", "Parlement", "Art Nouveau", "Ville", "Architecture", "Gastronomie"],
+      tags: ["Nature", "UNESCO", "Architecture", "Ville", "Gastronomie"],
       mustSee: [
         { name: { fr: "Parlement de Budapest — le plus grand d'Europe (UNESCO)", en: "Budapest Parliament — the largest in Europe (UNESCO)", es: "Parlamento de Budapest — el mayor de Europa (UNESCO)" }, wikipedia: "Hungarian_Parliament_Building" },
         { name: { fr: "Château de Buda et quartier du château (UNESCO)", en: "Buda Castle and Castle District (UNESCO)", es: "Castillo de Buda y barrio del Castillo (UNESCO)" }, wikipedia: "Buda_Castle" },
@@ -112,7 +112,7 @@ export const HUNGARY = {
         es: "Budapest se asienta sobre 118 manantiales de agua caliente — la ciudad termal más rica del mundo. El Széchenyi (1913, el mayor baño al aire libre de Europa), el Gellért (modernista y palaciego), el Rudas (otomano del siglo XVI) y el Kiraly son monumentos arquitectónicos tanto como lugares de vida social. Una experiencia cultural profundamente húngara.",
       },
       wikipedia: "File:Budapest Széchenyi Baths R01.jpg",
-      tags: ["Thermes", "Ottoman", "Art Nouveau", "Culture"],
+      tags: ["Détente", "Histoire", "Architecture", "Culture"],
       mustSee: [
         { name: { fr: "Széchenyi — grand bain en plein air Art Nouveau (1913)", en: "Széchenyi — large Art Nouveau open-air baths (1913)", es: "Széchenyi — gran baño modernista al aire libre (1913)" }, wikipedia: "Széchenyi_thermal_bath" },
         { name: { fr: "Gellért — bain de style Sécession viennoise", en: "Gellért — bath in Viennese Secession style", es: "Gellért — baño de estilo Secesión vienesa" }, wikipedia: "File:Gellért Thermal Baths and Swimming Pool (41147709020).jpg" },
@@ -130,7 +130,7 @@ export const HUNGARY = {
         es: "El lago Balaton (594 km²) es el mayor lago de Europa Central — apodado 'el mar de los húngaros'. Su orilla norte (Badacsony) está cubierta de viñedos volcánicos que producen los mejores vinos blancos del país; la orilla sur ofrece playas de arena y pueblos animados. La abadía de Tihany (s. XI), en su península, es una de las más antiguas de Hungría.",
       },
       wikipedia: "Lake_Balaton",
-      tags: ["Lac", "Vin", "Plage", "Abbaye", "Nature"],
+      tags: ["Nature", "Gastronomie", "Plage", "Architecture"],
       mustSee: [
         { name: { fr: "Abbaye bénédictine de Tihany (XIe s.) sur sa presqu'île", en: "Tihany Benedictine Abbey (11th century) on its peninsula", es: "Abadía benedictina de Tihany (s. XI) en su península" }, wikipedia: "Tihany_Abbey" },
         { name: { fr: "Vignobles de Badacsony — vins blancs sur sol volcanique", en: "Badacsony vineyards — white wines grown on volcanic soil", es: "Viñedos de Badacsony — vinos blancos sobre suelo volcánico" }, wikipedia: "Badacsony" },
@@ -148,7 +148,7 @@ export const HUNGARY = {
         es: "Tokaj (UNESCO) produce el 'vino de reyes, rey de los vinos' según Luis XIV: el Aszú, un blanco dulce de podredumbre noble entre los grandes vinos del mundo. La región vinícola de Tokaj está declarada Patrimonio Mundial. Eger, ciudad barroca entre colinas, es célebre por su tinto 'Sangre de Toro' y su castillo que resistió a los otomanos.",
       },
       wikipedia: "Tokaj_wine_region",
-      tags: ["Vin", "UNESCO", "Château", "Baroque", "Gastronomie"],
+      tags: ["Gastronomie", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Caves de Tokaj — dégustation d'Aszú dans les caves à moisissures nobles", en: "Tokaj cellars — tasting Aszú in noble-mould cellars", es: "Bodegas de Tokaj — cata de Aszú en cuevas de moho noble" }, wikipedia: "File:Wine Cellar in Slovakian Tokaj.jpg" },
         { name: { fr: "Château d'Eger — résistance héroïque contre les Ottomans (1552)", en: "Eger Castle — heroic resistance against the Ottomans (1552)", es: "Castillo de Eger — resistencia heroica contra los otomanos (1552)" }, wikipedia: "Eger_Castle" },

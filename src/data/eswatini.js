@@ -94,7 +94,7 @@ export const ESWATINI = {
         es: "Hlane es el mayor parque nacional de Esuatini y alberga a los Big Five (elefantes, rinocerontes blancos, leones, leopardos, búfalos), una rareza para un país tan pequeño. El parque, propiedad de la familia real suazi, ofrece safaris en 4x4 y caminatas guiadas cerca de los rinocerontes. Sus poblaciones de elefantes y rinocerontes blancos son notablemente accesibles.",
       },
       wikipedia: "Hlane_Royal_National_Park",
-      tags: ["Safari", "Rhinocéros", "Éléphants", "Big Five"],
+      tags: ["Safari"],
       mustSee: [
         { name: { fr: "Zone des rhinocéros blancs — approche en safari à pied possible", en: "White rhino area — possible to approach on a walking safari", es: "Zona de rinocerontes blancos — posible acercarse en safari a pie" }, wikipedia: "File:Hlane_Royal_National_Park_banner_White_Rhinos_wallowing_and_resting_in_the_bushes.jpg" },
         { name: { fr: "Zone des lions — lions introduits dans le parc", en: "Lion area — lions introduced into the park", es: "Zona de leones — leones introducidos en el parque" }, wikipedia: "File:04.20_總統參訪_Hlane_Royal_National_Park_(40954029404).jpg" },
@@ -110,7 +110,7 @@ export const ESWATINI = {
         es: "Mlilwane es la reserva animal más antigua y accesible de Esuatini, idealmente ubicada cerca de la capital, Mbabane. Se puede explorar en bicicleta, a caballo o a pie entre antílopes, cebras, hipopótamos y aves. La ausencia de depredadores la convierte en un lugar perfecto para recorrer a pie con total seguridad, una experiencia poco común en el África austral.",
       },
       wikipedia: "Mlilwane_Wildlife_Sanctuary",
-      tags: ["Nature", "Randonnée", "Équitation", "Famille"],
+      tags: ["Nature", "Randonnée", "Aventure", "Famille"],
       mustSee: [
         { name: { fr: "Randonnée à pied entre les zèbres et antilopes", en: "Walking trails among zebras and antelope", es: "Senderismo entre cebras y antílopes" }, wikipedia: "File:Plains zebra in Mlilwane Wildlife Sanctuary 02.jpg" },
         { name: { fr: "Hippo Haunt — observation des hippopotames", en: "Hippo Haunt — hippo watching", es: "Hippo Haunt — observación de hipopótamos" }, wikipedia: "File:Hippo Swaziland.jpg" },
@@ -127,7 +127,7 @@ export const ESWATINI = {
         es: "Mantenga es un auténtico pueblo cultural suazi que recrea la vida tradicional de un kraal del siglo XVIII, con danzas guerreras, demostraciones de artesanía y chozas de paja tradicionales. Junto al pintoresco cañón de Mantenga y las cataratas de Mantenga, es el mejor lugar para sumergirse en la cultura suazi sin alejarse mucho de Mbabane.",
       },
       wikipedia: "File:Mantenga nature reserve (37097743884).jpg",
-      tags: ["Culture", "Traditions", "Artisanat", "Danse"],
+      tags: ["Culture", "Tradition", "Shopping"],
       mustSee: [
         { name: { fr: "Danses traditionnelles swazies — spectacles quotidiens", en: "Traditional Swazi dances — daily performances", es: "Danzas tradicionales suazis — espectáculos diarios" }, wikipedia: "File:Mantenga nature reserve (37097743884).jpg" },
         { name: { fr: "Chutes de Mantenga — cascade dans le canyon", en: "Mantenga Falls — waterfall in the gorge", es: "Cataratas de Mantenga — cascada en el cañón" }, wikipedia: "File:Mantenga nature reserve (37097743884).jpg" },
@@ -144,7 +144,7 @@ export const ESWATINI = {
         es: "La Reed Dance (Umhlanga) es la mayor ceremonia cultural suazi, que reúne cada año en agosto-septiembre a decenas de miles de jóvenes solteras que llevan cañas a la residencia real de la Reina Madre. Este extraordinario espectáculo de colores, cantos y danza tradicional está abierto a visitantes extranjeros y es una de las experiencias culturales más singulares del África austral.",
       },
       wikipedia: "Umhlanga_(ceremony)",
-      tags: ["Festival", "Culture", "Cérémonie", "Roi"],
+      tags: ["Culture", "Tradition", "Histoire"],
       mustSee: [
         { name: { fr: "Cortège des porteuses de roseaux — des milliers de femmes en tenue traditionnelle", en: "Procession of reed bearers — thousands of women in traditional dress", es: "Desfile de portadoras de cañas — miles de mujeres en traje tradicional" }, wikipedia: "Umhlanga_(ceremony)" },
         { name: { fr: "Palais royal de Lobamba — siège de la monarchie swazi", en: "Lobamba Royal Palace — seat of the Swazi monarchy", es: "Palacio real de Lobamba — sede de la monarquía suazi" }, wikipedia: "Lobamba" },

@@ -126,7 +126,7 @@ export const BRAZIL = {
         es: "La Cidade Maravilhosa es la postal de Brasil, con el Cristo Redentor, el Pan de Azúcar y las playas de Copacabana e Ipanema. Su carnaval anual es el espectáculo más grande del mundo.",
       },
       wikipedia: "Rio_de_Janeiro",
-      tags: ["Plage", "Culture", "Carnaval", "Panorama"],
+      tags: ["Plage", "Culture", "Panorama"],
       mustSee: [
         { name: { fr: "Christ Rédempteur", en: "Christ the Redeemer", es: "Cristo Redentor" }, wikipedia: "Christ_the_Redeemer_(statue)" },
         { name: { fr: "Pain de Sucre", en: "Sugarloaf Mountain", es: "Pan de Azúcar" }, wikipedia: "Sugarloaf_Mountain" },
@@ -144,7 +144,7 @@ export const BRAZIL = {
         es: "Salvador es el corazón de la cultura afrobrasileña: Pelourinho (barrio colonial UNESCO), candomblé, capoeira y música omnipresente. La cocina baiana es una de las más sabrosas del país.",
       },
       wikipedia: "Salvador,_Bahia",
-      tags: ["Culture", "Histoire", "Musique", "Afro-Brésilien"],
+      tags: ["Culture", "Histoire"],
       mustSee: [
         { name: "Pelourinho", wikipedia: "File:Pelourinho.png" },
         { name: { fr: "Igreja do Bonfim", en: "Bonfim Church", es: "Igreja do Bonfim" }, wikipedia: "File:Igreja do Senhor Jesus do Bonfim - Portalegre - Portugal (52894055751).jpg" },
@@ -162,7 +162,7 @@ export const BRAZIL = {
         es: "La mayor selva tropical del mundo se explora desde Manaos. Los lodges en plena jungla, las piraguas por el Rio Negro y el encuentro de las aguas (Negro + Solimões) son experiencias inolvidables.",
       },
       wikipedia: "Amazon_rainforest",
-      tags: ["Nature", "Jungle", "Faune", "Écotourisme"],
+      tags: ["Nature", "Safari"],
       mustSee: [
         { name: { fr: "Rencontre des eaux", en: "Meeting of the Waters", es: "Encuentro de las aguas" }, wikipedia: "Meeting_of_Waters" },
         { name: "Teatro Amazonas", wikipedia: "Amazon_Theatre" },
@@ -180,7 +180,7 @@ export const BRAZIL = {
         es: "Archipiélago volcánico a 350 km de la costa, Fernando de Noronha es uno de los lugares de buceo más bellos del mundo. Delfines, tortugas marinas y aguas cristalinas azul verdosas en un entorno preservado.",
       },
       wikipedia: "Fernando_de_Noronha",
-      tags: ["Plongée", "Île", "Faune Marine", "Nature"],
+      tags: ["Plage", "Safari", "Nature"],
       mustSee: [
         { name: "Praia do Sancho", wikipedia: "File:Praia_do_Sancho_Noronha.JPG" },
         { name: { fr: "Baie des Dauphins", en: "Dolphin Bay", es: "Bahía de los Delfines" }, wikipedia: "File:Baia dos Golfinhos - Pipa.jpg" },
@@ -198,7 +198,7 @@ export const BRAZIL = {
         es: "Bonito es célebre por sus ríos de aguas translúcidas donde se nada junto a peces de colores. El vecino Pantanal es el mayor humedal del mundo y ofrece avistamientos de jaguares inigualables.",
       },
       wikipedia: "Bonito,_Mato_Grosso_do_Sul",
-      tags: ["Nature", "Plongée Snorkeling", "Faune", "Jaguar"],
+      tags: ["Nature", "Plage", "Safari"],
       mustSee: [
         { name: "Rio da Prata", wikipedia: "File:Rio_de_la_Plata_BA_2.JPG" },
         { name: "Pantanal", wikipedia: "Pantanal" },

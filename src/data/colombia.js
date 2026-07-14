@@ -115,7 +115,7 @@ export const COLOMBIA = {
         es: "Ciudad colonial declarada Patrimonio de la Humanidad por la UNESCO, Cartagena deslumbra por sus calles coloridas, sus imponentes fortificaciones y las playas cercanas de las Islas del Rosario. Su ambiente caribeño, la música de cumbia y la gastronomía costera la convierten en una parada imprescindible.",
       },
       wikipedia: "Cartagena,_Colombia",
-      tags: ["Colonial", "Plage", "UNESCO", "Histoire", "Architecture"],
+      tags: ["Histoire", "Plage", "UNESCO", "Architecture"],
       mustSee: [
         { name: { fr: "Ciudad Amurallada (vieille ville)", en: "Ciudad Amurallada (old town)", es: "Ciudad Amurallada (casco antiguo)" }, wikipedia: "File:City walls of Cartagena 01.jpg" },
         { name: "Castillo de San Felipe", wikipedia: "Castillo_San_Felipe_de_Barajas" },
@@ -133,7 +133,7 @@ export const COLOMBIA = {
         es: "Antigua ciudad azotada por los carteles, Medellín se ha convertido en un modelo de innovación urbana y renacimiento social. El sistema de metrocable, las escaleras eléctricas de la Comuna 13 y los parques biblioteca son testimonio de ello.",
       },
       wikipedia: "File:Ball court - Comuna 13 - Medellín - Colombia 2024.jpg",
-      tags: ["Ville", "Culture", "Transformation", "Art", "Architecture"],
+      tags: ["Ville", "Culture", "Art", "Architecture"],
       mustSee: [
         { name: "Comuna 13", wikipedia: "File:Ball court - Comuna 13 - Medellín - Colombia 2024.jpg" },
         { name: "Plaza Botero", wikipedia: "File:Medellín, Plaza Botero, 2023-07 CN-01.jpg" },
@@ -151,7 +151,7 @@ export const COLOMBIA = {
         es: "El Valle de Cocora alberga las gigantescas palmas de cera, árbol nacional de Colombia, que se elevan hasta 60 m entre las nubes. La caminata por este paisaje único es una de las más hermosas de Sudamérica.",
       },
       wikipedia: "Cocora_Valley",
-      tags: ["Randonnée", "Nature", "Palmiers", "Café"],
+      tags: ["Randonnée", "Nature", "Gastronomie"],
       mustSee: [
         { name: { fr: "Palmiers de cire", en: "Wax palms", es: "Palmas de cera" }, wikipedia: "File:Ceroxylon quindiuense cocora.jpg" },
         { name: "Salento", wikipedia: "File:Campanile di Salento.jpg" },

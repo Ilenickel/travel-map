@@ -99,7 +99,7 @@ export const TAJIKISTAN = {
         es: "La carretera del Pamir (M41), que une Dusambé con Osh (Kirguistán) a lo largo de 1.200 kilómetros, es una de las grandes rutas de aventura del mundo, que atraviesa las altas mesetas del 'Techo del mundo' a altitudes que superan regularmente los 4.000 metros. El paisaje alterna entre valles verdes bordeados de álamos, llanuras lunares azotadas por el viento y lagos de alta altitud de un azul irreal. La carretera a veces bordea la frontera afgana a pocas decenas de metros, ofreciendo una visión única del Wakhan afgano.",
       },
       wikipedia: "File:Panj Valley Pamir.jpg",
-      tags: ["Route d'aventure", "Altitude", "Pamir", "Incontournable"],
+      tags: ["Aventure", "Montagne"],
       mustSee: [
         { name: { fr: "Col de Ak-Baital — point culminant de la M41 à 4 655 m", en: "Ak-Baital Pass — the M41's highest point at 4,655 m", es: "Paso de Ak-Baital — punto más alto de la M41 a 4.655 m" }, wikipedia: "Ak-Baital_Pass" },
         { name: { fr: "Lac Karakul — lac volcanique à 3 914 m aux eaux indigo", en: "Lake Karakul — volcanic lake at 3,914 m with indigo waters", es: "Lago Karakul — lago volcánico a 3.914 m de aguas índigo" }, wikipedia: "File:Karakul.jpg" },
@@ -117,7 +117,7 @@ export const TAJIKISTAN = {
         es: "El corredor de Wakhan es una de las regiones más remotas y mágicas de Asia Central: una estrecha franja de tierra entre las montañas del Hindu Kush y el Pamir, donde el río Panj marca la frontera con Afganistán, visible al alcance de la voz. Los pueblos tayikos de la orilla norte y afganos de la orilla sur comparten las mismas tradiciones ancestrales de los nómadas wakhi. Alejandro Magno pasó por aquí durante su conquista de Bactriana.",
       },
       wikipedia: "File:Sahrad.jpg",
-      tags: ["Aventure", "Frontière afghane", "Nomades", "Isolated"],
+      tags: ["Aventure", "Rural"],
       mustSee: [
         { name: { fr: "Yamchun — fort zoroastrien surplombant la rivière Panj et l'Afghanistan", en: "Yamchun — Zoroastrian fort overlooking the Panj River and Afghanistan", es: "Yamchun — fuerte zoroástrico sobre el río Panj y Afganistán" }, wikipedia: "File:Yamchun fort and the mountains (1) (31701755881).jpg" },
         { name: { fr: "Sources chaudes de Bibi Fatima — sources sacrées nichées dans les rochers", en: "Bibi Fatima hot springs — sacred springs nestled in the rocks", es: "Fuentes termales de Bibi Fatima — fuentes sagradas entre las rocas" }, wikipedia: "File:Wakhan, Tajikistan (42367325990).jpg" },
@@ -135,7 +135,7 @@ export const TAJIKISTAN = {
         es: "El lago Iskanderkul, cuyo nombre significa 'lago de Alejandro' en referencia a Alejandro Magno, que habría acampado en sus orillas durante su campaña asiática, es uno de los lagos de montaña más bellos de Tayikistán. Situado a 2.195 metros de altitud en el macizo de Fann, está rodeado de picos nevados de más de 5.000 metros y bosques de abedules. Una cascada espectacular alimenta el lago procedente de los glaciares circundantes.",
       },
       wikipedia: "Iskanderkul",
-      tags: ["Lac", "Randonnée", "Montagnes Fann", "Nature"],
+      tags: ["Nature", "Randonnée", "Montagne"],
       mustSee: [
         { name: { fr: "Lac Iskanderkul — miroir turquoise dans le massif du Fann", en: "Lake Iskanderkul — turquoise mirror in the Fann Mountains", es: "Lago Iskanderkul — espejo turquesa en el macizo de Fann" }, wikipedia: "File:Fann Mountains - lake.jpg" },
         { name: { fr: "Lac des Grenouilles — petit lac de haute altitude accessible à pied", en: "Frog Lake — small high-altitude lake reachable on foot", es: "Lago de las Ranas — pequeño lago de alta altitud accesible a pie" }, wikipedia: "File:Iskenderkul.jpg" },
@@ -152,7 +152,7 @@ export const TAJIKISTAN = {
         es: "Dusambé, capital y única auténtica metrópoli de Tayikistán, es una ciudad agradable y a escala humana, todavía marcada por la arquitectura soviética pero animada por una juventud dinámica. Su museo nacional, recientemente ampliado, alberga una de las estatuas de Buda reclinado más grandes de Asia Central (13 metros), descubierta en el yacimiento de Ajina-Tepa. La ciudad es la puerta de entrada indispensable para organizar y preparar un viaje al Pamir.",
       },
       wikipedia: "Dushanbe",
-      tags: ["Ville", "Musée", "Base de départ", "Soviétique"],
+      tags: ["Ville", "Musées", "Histoire"],
       mustSee: [
         { name: { fr: "Musée national du Tadjikistan — Bouddha couché et art sogdien", en: "National Museum of Tajikistan — reclining Buddha and Sogdian art", es: "Museo Nacional de Tayikistán — Buda reclinado y arte sogdiano" }, wikipedia: "File:National_Museum_of_Tajikistan_Национальный_музей_Таджикистана(0)_Осорхонаи_милли.jpg" },
         { name: { fr: "Parc Rudaki — promenade centrale ombragée aux fontaines animées", en: "Rudaki Park — shaded central promenade with lively fountains", es: "Parque Rudaki — paseo central sombreado con animadas fuentes" }, wikipedia: "File:Rudaki Park, Dushanbe, Tajikistan.JPG" },

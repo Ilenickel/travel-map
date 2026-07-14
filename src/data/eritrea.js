@@ -94,7 +94,7 @@ export const ERITREA = {
         es: "Asmara fue declarada Patrimonio de la Humanidad por la UNESCO en 2017 por su excepcional arquitectura italiana de los años 1930: el Cinema Impero (futurista, 1937), la gasolinera FIAT Tagliero (un avión de hormigón sin pilares, 1938), la ópera, los edificios art déco de Harnet Avenue. Una ciudad congelada en la Italia de los años 30, sin publicidad ni neones — un museo viviente.",
       },
       wikipedia: "File:Asmara-Night Panorama.jpeg",
-      tags: ["Art déco", "UNESCO", "Architecture", "Italie coloniale"],
+      tags: ["Architecture", "UNESCO", "Histoire"],
       mustSee: [
         { name: { fr: "Cinema Impero (1937) — chef-d'œuvre du futurisme", en: "Cinema Impero (1937) — a Futurist masterpiece", es: "Cinema Impero (1937) — obra maestra del futurismo" }, wikipedia: "Cinema_Impero" },
         { name: { fr: "Station FIAT Tagliero (1938) — avion en béton sans piliers", en: "FIAT Tagliero station (1938) — a pillarless concrete airplane", es: "Estación FIAT Tagliero (1938) — avión de hormigón sin pilares" }, wikipedia: "Fiat_Tagliero_Building" },
@@ -111,7 +111,7 @@ export const ERITREA = {
         es: "Massawa es el principal puerto eritreo del mar Rojo: su centro histórico (isla de Taulud), con sus casas otomanas de celosías, mezquitas y zocos, sobrevivió a las guerras. Las ruinas del palacio de Haile Selassie y los tanques de guerra abandonados recuerdan la brutal liberación de 1990. El mar es cristalino y el pescado abunda.",
       },
       wikipedia: "Massawa",
-      tags: ["Port", "Ottoman", "Histoire", "Mer Rouge"],
+      tags: ["Plage", "Histoire"],
       mustSee: [
         { name: { fr: "Vieille ville de Taulud — maisons ottomanes et moucharabieh", en: "Taulud old town — Ottoman houses and mashrabiya balconies", es: "Casco antiguo de Taulud — casas otomanas y celosías" }, wikipedia: "File:Massawa Island Causeway (8529061280).jpg" },
         { name: { fr: "Chars de guerre devant la gare — mémorial de libération", en: "War tanks in front of the station — liberation memorial", es: "Tanques de guerra frente a la estación — memorial de la liberación" }, wikipedia: "File:Three Tanks (8529065894).jpg" },
@@ -129,7 +129,7 @@ export const ERITREA = {
         es: "El archipiélago de Dahlak comprende 209 islas coralinas (solo 4 habitadas) sobre los arrecifes más ricos del mar Rojo. Sus aguas están entre las menos contaminadas y menos frecuentadas del planeta: delfines, mantarrayas, tiburones ballena, tortugas y corales preservados. El acceso se hace desde Massawa en barco chárter.",
       },
       wikipedia: "Dahlak_Archipelago",
-      tags: ["Plongée", "Récifs", "Îles", "Isolé"],
+      tags: ["Plage"],
       mustSee: [
         { name: { fr: "Plongée récifs de Dahlak — coraux 40m de profondeur", en: "Dahlak reef diving — coral down to 40 m deep", es: "Buceo en los arrecifes de Dahlak — corales a 40 m de profundidad" }, wikipedia: "File:Coral reef on Dahlak Island (Eritrea), Red Sea.jpg" },
         { name: { fr: "Dauphins et raies manta dans les canaux inter-îles", en: "Dolphins and manta rays in the channels between the islands", es: "Delfines y mantarrayas en los canales entre islas" }, wikipedia: "File:ISS016-E-11489 - View of Eritrea.jpg" },

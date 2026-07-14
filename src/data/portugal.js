@@ -105,7 +105,7 @@ export const PORTUGAL = {
         es: "Capital de las siete colinas, Lisboa cautiva con sus tranvías históricos, sus miradouros (miradores), el barrio de Alfama y sus inolvidables noches de fado.",
       },
       wikipedia: "Lisbon",
-      tags: ["Ville", "Culture", "Gastronomie", "Nuit", "Histoire", "Architecture", "UNESCO"],
+      tags: ["Ville", "Culture", "Gastronomie", "Nightlife", "Histoire", "Architecture", "UNESCO"],
       mustSee: [
         { name: { fr: "Tramway 28 & Alfama", en: "Tram 28 & Alfama", es: "Tranvía 28 y Alfama" }, wikipedia: "Alfama" },
         { name: { fr: "Monastère des Hiéronymites", en: "Jerónimos Monastery", es: "Monasterio de los Jerónimos" }, wikipedia: "Jerónimos_Monastery" },
@@ -123,7 +123,7 @@ export const PORTUGAL = {
         es: "Ciudad con carácter a orillas del Duero, con sus bodegas de vino de Oporto en Vila Nova de Gaia, su barrio de Ribeira declarado Patrimonio de la UNESCO, las librerías legendarias y los pasteles de nata.",
       },
       wikipedia: "Porto",
-      tags: ["Culture", "UNESCO", "Gastronomie", "Vin", "Ville", "Histoire", "Architecture"],
+      tags: ["Culture", "UNESCO", "Gastronomie", "Ville", "Histoire", "Architecture"],
       mustSee: [
         { name: { fr: "Ribeira — quartier du bord du Douro", en: "Ribeira — riverside district on the Douro", es: "Ribeira — barrio a orillas del Duero" }, wikipedia: "File:View_of_Ribeira_from_Cais_de_Gaia,_20250605_1628_9890.jpg" },
         { name: { fr: "Caves de Porto (Vila Nova de Gaia)", en: "Port wine cellars (Vila Nova de Gaia)", es: "Bodegas de vino de Oporto (Vila Nova de Gaia)" }, wikipedia: "Vila_Nova_de_Gaia" },
@@ -141,7 +141,7 @@ export const PORTUGAL = {
         es: "A 30 minutos de Lisboa, un pueblo de cuento en un bosque brumoso, con los extravagantes palacios de Pena y Quinta da Regaleira, declarados Patrimonio de la UNESCO.",
       },
       wikipedia: "Sintra",
-      tags: ["Histoire", "UNESCO", "Architecture", "Paysage", "Nature", "Randonnée"],
+      tags: ["Histoire", "UNESCO", "Architecture", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Palais national de Pena", en: "Pena National Palace", es: "Palacio Nacional de la Pena" }, wikipedia: "Pena_Palace" },
         { name: { fr: "Quinta da Regaleira", en: "Quinta da Regaleira", es: "Quinta da Regaleira" }, wikipedia: "Quinta_da_Regaleira" },
@@ -159,7 +159,7 @@ export const PORTUGAL = {
         es: "La región costera más bella de Portugal: acantilados dorados, cuevas marinas, playas de arena fina y pequeños pueblos de pescadores. Lagos, Sagres y Albufeira a la cabeza.",
       },
       wikipedia: "Algarve",
-      tags: ["Plage", "Mer", "Paysage", "Surf", "Nature", "Randonnée"],
+      tags: ["Plage", "Nature", "Randonnée"],
       mustSee: [
         { name: { fr: "Plage de Praia da Marinha", en: "Praia da Marinha Beach", es: "Playa de Praia da Marinha" }, wikipedia: "Praia_da_Marinha" },
         { name: { fr: "Grottes de Benagil", en: "Benagil Caves", es: "Cuevas de Benagil" }, wikipedia: "File:Algar_de_Benagil,_O_Algarve_20210713_111259_(51615818880).jpg" },

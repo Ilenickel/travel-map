@@ -61,7 +61,7 @@ export const SAMOA = {
         es: "El To Sua Ocean Trench es, sin duda, una de las maravillas naturales más impactantes de Samoa y de todo el Pacífico. Esta fosa natural de 30 metros de profundidad, llena de agua marina de un intenso azul turquesa, está conectada al océano por un túnel submarino. Se desciende por una larga escalera de madera en un entorno enmarcado por helechos gigantes y densa vegetación tropical, para un baño inolvidable.",
       },
       wikipedia: "File:To Sua Ocean Trench.jpg",
-      tags: ["Nature", "Baignade", "Insolite", "Paysage"],
+      tags: ["Nature", "Plage"],
       mustSee: [
         { name: { fr: "To Sua Trench — plongeon dans la fosse d'eau turquoise depuis l'échelle de bois", en: "To Sua Trench — diving into the turquoise pit from the wooden ladder", es: "Fosa de To Sua — zambullida en la fosa turquesa desde la escalera de madera" }, wikipedia: "File:To Sua Ocean Trench.jpg" },
         { name: { fr: "Plage de Lotofaga — accès à la mer depuis les jardins du To Sua", en: "Lotofaga beach — sea access from the To Sua gardens", es: "Playa de Lotofaga — acceso al mar desde los jardines del To Sua" }, wikipedia: "File:Beach_on_Upolu_Island,_Samoa,_2009.jpg" },
@@ -79,7 +79,7 @@ export const SAMOA = {
         es: "Lalomanu se cita regularmente entre las playas más bellas del Pacífico Sur, con su arena blanca inmaculada, sus cocoteros inclinados sobre el mar y sus aguas cristalinas ideales para el esnórquel. La playa está bordeada de acantilados de coral y ofrece una vista impresionante de la isla de Manu'a a lo lejos. Los fales tradicionales (bungalós abiertos en la playa) permiten dormir a pocos metros de las olas para una experiencia insular auténtica.",
       },
       wikipedia: "Lalomanu",
-      tags: ["Plage", "Snorkeling", "Détente", "Hébergement traditionnel"],
+      tags: ["Plage", "Détente", "Tradition"],
       mustSee: [
         { name: { fr: "Plage de Lalomanu — l'une des plus belles plages de Polynésie", en: "Lalomanu Beach — one of the most beautiful beaches in Polynesia", es: "Playa de Lalomanu — una de las más bellas de Polinesia" }, wikipedia: "Lalomanu" },
         { name: { fr: "Fales de Taufua Beach — nuit en bungalow ouvert sur la plage", en: "Taufua Beach fales — a night in an open beach bungalow", es: "Fales de Taufua Beach — noche en bungaló abierto en la playa" }, wikipedia: "File:Our fale Taufua Beach Fales Samoa.jpg" },
@@ -96,7 +96,7 @@ export const SAMOA = {
         es: "Savai'i, la isla más grande de Samoa, es una isla volcánica poco desarrollada que ofrece paisajes espectaculares: los campos de lava de Saleaula procedentes de una erupción de principios del siglo XX, impresionantes bufaderos en la costa norte, y la piscina de tortugas de Fa'a'ala donde las tortugas marinas vienen a alimentarse a pocos metros de los visitantes. La isla alberga también el Túmulo de Pulemelei, el monumento prehistórico más grande de Polinesia.",
       },
       wikipedia: "File:Tafua Peninsula, Savai'i, Samoa - August 2016.jpg",
-      tags: ["Volcan", "Tortues", "Nature", "Préhistoire"],
+      tags: ["Nature", "Safari", "Histoire"],
       mustSee: [
         { name: { fr: "Champs de lave de Saleaula — coulées de 1905-1911 ayant englouti un village et une église", en: "Saleaula lava fields — 1905–1911 flows that engulfed a village and a church", es: "Campos de lava de Saleaula — coladas de 1905-1911 que sepultaron un pueblo y una iglesia" }, wikipedia: "File:Lava_Fields_-_Savai'i_island_-_Samoa.jpg" },
         { name: { fr: "Piscine aux tortues de Fa'a'ala — tortues marines en liberté dans un bassin naturel", en: "Fa'a'ala turtle pool — free-roaming sea turtles in a natural pool", es: "Piscina de tortugas de Fa'a'ala — tortugas marinas libres en una poza natural" }, wikipedia: "File:Total internal reflection of Chelonia mydas.jpg" },
@@ -114,7 +114,7 @@ export const SAMOA = {
         es: "Apia, la animada capital de Samoa, combina un colorido mercado cubierto, arquitectura colonial alemana y un ambiente polinesio relajado. La ciudad es conocida en todo el mundo por haber sido el hogar de Robert Louis Stevenson, autor de La isla del tesoro, quien se instaló allí en 1890 y falleció en 1894. Su villa Vailima, convertida en museo, es hoy una de las principales atracciones turísticas del país. Las cascadas de Papapapai-tai, accesibles con una corta caminata, están entre las más bellas de la isla.",
       },
       wikipedia: "File:Samoa - Apia Govt buildings.jpg",
-      tags: ["Ville", "Histoire", "Culture", "Cascades"],
+      tags: ["Ville", "Histoire", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Villa Vailima — ancienne demeure de Robert Louis Stevenson, aujourd'hui musée", en: "Villa Vailima — Robert Louis Stevenson's former home, now a museum", es: "Villa Vailima — antigua residencia de Robert Louis Stevenson, hoy museo" }, wikipedia: "File:Villa Vailima (30086489993).jpg" },
         { name: { fr: "Chutes de Papapapai-tai — cascade de 100 m dans la forêt tropicale d'Upolu", en: "Papapapai-tai Falls — a 100m waterfall in Upolu's rainforest", es: "Cascadas de Papapapai-tai — caída de 100 m en el bosque tropical de Upolu" }, wikipedia: "File:Papapapaitai.jpg" },

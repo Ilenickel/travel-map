@@ -94,7 +94,7 @@ export const CHAD = {
         es: "La meseta de Ennedi es una de las joyas ocultas de África, declarada Patrimonio de la Humanidad por la UNESCO por sus formaciones rocosas de arenisca de formas espectaculares y sus miles de pinturas y grabados rupestres de 7.000 años de antigüedad. El Arco de Aloba, uno de los más grandes del mundo, y las gargantas de Guelta d'Archei, último refugio de los cocodrilos saharianos, son sus lugares emblemáticos. El acceso requiere un 4x4 y una organización logística seria.",
       },
       wikipedia: "Ennedi_Plateau",
-      tags: ["UNESCO", "Désert", "Art rupestre", "Aventure"],
+      tags: ["UNESCO", "Désert", "Histoire", "Aventure"],
       mustSee: [
         { name: { fr: "Arche d'Aloba — l'une des plus grandes arches naturelles du monde", en: "Aloba Arch — one of the largest natural arches in the world", es: "Arco de Aloba — uno de los arcos naturales más grandes del mundo" }, wikipedia: "Aloba_Arch" },
         { name: { fr: "Guelta d'Archei — oasis avec crocodiles sahariens reliques", en: "Guelta d'Archei — oasis with relic Saharan crocodiles", es: "Guelta d'Archei — oasis con cocodrilos saharianos reliquia" }, wikipedia: "Guelta_d'Archei" },
@@ -112,7 +112,7 @@ export const CHAD = {
         es: "Zakouma es uno de los mayores éxitos de conservación animal de África Central. Tras haber estado a punto de desaparecer por los furtivos, sus poblaciones de elefantes (más de 600 individuos) han recuperado una dinámica positiva gracias a African Parks. Leones, búfalos, licaones, hipopótamos y una avifauna excepcional lo convierten en un destino de safari de primer nivel, todavía poco conocido.",
       },
       wikipedia: "Zakouma_National_Park",
-      tags: ["Safari", "Éléphants", "Conservation", "Faune"],
+      tags: ["Safari", "Nature"],
       mustSee: [
         { name: { fr: "Troupeaux d'éléphants — regroupements spectaculaires en saison sèche", en: "Elephant herds — spectacular gatherings in the dry season", es: "Manadas de elefantes — agrupaciones espectaculares en la estación seca" }, wikipedia: "File:Elephant du parc national de Zakouma.jpg" },
         { name: { fr: "Lions de Zakouma — meutes emblématiques du parc", en: "Zakouma lions — the park's iconic prides", es: "Leones de Zakouma — manadas emblemáticas del parque" }, wikipedia: "Zakouma_National_Park" },
@@ -130,7 +130,7 @@ export const CHAD = {
         es: "El lago Chad, antaño el 4º lago más grande de África, se ha reducido un 90% desde la década de 1960 debido al cambio climático y a la extracción agrícola de agua, convirtiéndose en un símbolo de los desafíos ambientales del continente. Los pueblos de pescadores buduma siguen viviendo en sus orillas y en sus islas flotantes de papiro. N'Djamena, la animada capital, es el punto de partida natural.",
       },
       wikipedia: "Lake_Chad",
-      tags: ["Environnement", "Culture", "Pêche", "Histoire"],
+      tags: ["Nature", "Culture", "Plage", "Histoire"],
       mustSee: [
         { name: { fr: "Villages buduma — communautés de pêcheurs sur les îles du lac", en: "Buduma villages — fishing communities on the lake's islands", es: "Pueblos buduma — comunidades de pescadores en las islas del lago" }, wikipedia: "File:Habitat d’un boudouma du Tchad.jpg" },
         { name: { fr: "N'Djamena — capitale avec grand marché central", en: "N'Djamena — capital with a large central market", es: "N'Djamena — capital con gran mercado central" }, wikipedia: "N'Djamena" },
