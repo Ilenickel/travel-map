@@ -254,7 +254,16 @@ export default function GroupManager({ tripId, groups, activities, cities, trip,
       activityIdToCluster = Object.fromEntries(clustered.map(p => [p.id, p.cluster]));
     }
 
-    const k = Math.max(...Object.values(activityIdToCluster)) + 1;
+    // .filter(Number.isInteger) : une activité dont la ville n'est plus dans
+    // `cities` (état encore désynchronisé juste après une suppression de
+    // ville, par ex.) résout en `undefined` — sans ce filtre, Math.max
+    // incluait cette valeur, tombait sur NaN, et l'auto-détection ne créait
+    // alors SILENCIEUSEMENT aucun groupe (GROUP_COLORS.slice(0, NaN) = [],
+    // boucle 0..NaN jamais exécutée) tout en ayant déjà effacé les groupes
+    // précédents via onClearAutoGroups ci-dessus.
+    const clusterValues = Object.values(activityIdToCluster).filter(Number.isInteger);
+    if (!clusterValues.length) { setDetecting(false); return; }
+    const k = Math.max(...clusterValues) + 1;
     const clusterColors = GROUP_COLORS.slice(0, k);
     let created = 0;
     for (let ci = 0; ci < k; ci++) {
