@@ -5,6 +5,8 @@ import { COUNTRIES } from '../../data/index';
 import { countryAlpha2FromEmoji, formatDuration } from '../../lib/planningUtils';
 import { CriteriaFilterChips, CriteriaIndicators } from './TripFullSuggestions';
 import { useActivityNameTranslations } from '../../lib/translateContent';
+import { useActivityWikiImages } from '../../hooks/useActivityWikiImages';
+import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 
 // 3 créneaux seulement — alignés sur les 3 créneaux réels du calendrier
 // (DayView.jsx SLOTS : matin/apres-midi/soir, 0-12/12-18/18-24), pas 4 : un
@@ -27,7 +29,7 @@ function groupBySlot(activities) {
 // factorisé pour être réutilisé identiquement par la ville suggérée ET par
 // ses excursions (voir daytrips ci-dessous), plutôt que de dupliquer le
 // rendu de la timeline une 2e fois.
-function DayTimelineBlock({ day, dayNumber, t, getActivityName }) {
+function DayTimelineBlock({ day, dayNumber, t, getActivityName, getActivityImage }) {
   return (
     <div className="pp-trip-suggestions-day">
       <div className="pp-trip-suggestions-day-divider">
@@ -42,16 +44,24 @@ function DayTimelineBlock({ day, dayNumber, t, getActivityName }) {
             <div className="pp-trip-suggestions-slot-content">
               <div className="pp-trip-suggestions-slot-label">{t(`tripSuggestions.timeSlot.${slot}`)}</div>
               <div className="pp-trip-suggestions-slot-items">
-                {items.map((a) => (
-                  <span key={a.id} className="pp-trip-suggestions-item">
-                    {getActivityName(a)}
-                    {a.duration_minutes > 0 && (
-                      <span className="pp-trip-suggestions-item-duration" title={t('tripSuggestions.durationTitle')}>
-                        ⏱ {formatDuration(a.duration_minutes)}
-                      </span>
-                    )}
-                  </span>
-                ))}
+                {items.map((a) => {
+                  // Photo du lieu (Wikipédia/Commons, licence déjà filtrée
+                  // par le hook) : icône indicatrice + aperçu grand format au
+                  // survol/tap, UNIQUEMENT si résolue — jamais d'indicateur
+                  // pour "le petit resto du coin".
+                  const img = getActivityImage?.(a);
+                  return (
+                    <span key={a.id} className="pp-trip-suggestions-item">
+                      {getActivityName(a)}
+                      {a.duration_minutes > 0 && (
+                        <span className="pp-trip-suggestions-item-duration" title={t('tripSuggestions.durationTitle')}>
+                          ⏱ {formatDuration(a.duration_minutes)}
+                        </span>
+                      )}
+                      {img && <ActivityPhotoIndicator img={img} name={getActivityName(a)} />}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -103,9 +113,12 @@ function buildCityTimeline(template) {
 
 // Bouton "Suggestion de planning" (planning-modèle communautaire, branche
 // planModel) : propose jusqu'à 5 plannings importés d'autres utilisateurs
-// pour cette ville et ce nombre de jours (voir api/trip-templates.js),
-// triés par popularité. Invisible tant que le nombre de jours de la ville
-// n'est pas renseigné, ou si aucun modèle ne correspond.
+// pour cette ville (voir api/trip-templates.js), triés par popularité.
+// Le nombre de jours de la ville est FACULTATIF : sans lui, TOUS les
+// plannings de la ville sont proposés (toutes durées, affichées sur chaque
+// carte) — l'utilisateur regarde ce qui existe et décide en fonction combien
+// de jours rester ; à l'import, la durée du planning choisi devient alors
+// celle de la ville. Invisible seulement si aucun modèle ne correspond.
 export default function TripPlanSuggestionsButton({
   tripId, cityId, cityName, countryCode, countryName, plannedDays,
   hasExistingActivities, onImported,
@@ -138,7 +151,6 @@ export default function TripPlanSuggestionsButton({
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[countryCode]?.emoji);
 
   const fetchTemplates = async (wantedCriteria = criteria) => {
-    if (!plannedDays) { setTemplates(null); return; }
     const result = await callModeration('trip-templates', {
       action: 'suggest', countryCode, cityName, countryAlpha2, plannedDays, criteria: wantedCriteria,
     });
@@ -215,7 +227,6 @@ export default function TripPlanSuggestionsButton({
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (!plannedDays) { setTemplates(null); setBaselineCount(0); return; }
       const result = await callModeration('trip-templates', {
         action: 'suggest', countryCode, cityName, countryAlpha2, plannedDays, criteria: [],
       });
@@ -232,8 +243,11 @@ export default function TripPlanSuggestionsButton({
 
   const current = templates && templates.length > 0 ? templates[index] : null;
   const getActivityName = useActivityNameTranslations(collectTemplateActivities(current), i18n.language);
+  // Photos du template COURANT du carrousel uniquement — même retenue que la
+  // traduction ci-dessus : pas de résolution pour des pages jamais consultées.
+  const { getActivityImage, loading: photosLoading } = useActivityWikiImages(collectTemplateActivities(current), i18n.language);
 
-  if (!plannedDays || baselineCount === 0) return null;
+  if (baselineCount === 0) return null;
 
   // Recharge à chaque OUVERTURE de la popup (pas seulement au montage du
   // bouton) : sans ça, un partage/import survenu après le premier chargement
@@ -301,6 +315,15 @@ export default function TripPlanSuggestionsButton({
                 </div>
               ) : (
                 <>
+                  {/* La résolution des photos (Wikipédia) prend quelques
+                      secondes au premier affichage : sans ce message, l'œil
+                      conclut qu'il n'y a pas de photos du tout — les icônes 📷
+                      apparaissent au fil des résolutions. */}
+                  {photosLoading && (
+                    <p className="pp-trip-suggestions-photos-loading">
+                      <span className="pp-search-busy" /> {t('tripSuggestions.photosLoading')}
+                    </p>
+                  )}
                   <div
                     className="pp-trip-suggestions-carousel"
                     onTouchStart={handleTouchStart}
@@ -318,6 +341,13 @@ export default function TripPlanSuggestionsButton({
 
                     <div className="pp-trip-suggestions-card">
                       <div className="pp-trip-suggestions-card-header">
+                        {/* Durée du planning proposé : c'est l'information qui
+                            permet de choisir SANS avoir fixé de nombre de jours
+                            au préalable — "ce planning me plaît, je resterai
+                            donc X jours". */}
+                        <span className="pp-fulltrip-days-badge">
+                          📅 {t('fullTripSuggestions.totalDays', { count: current.nbDays })}
+                        </span>
                         {current.daytrips.length > 0 && (
                           <span className="pp-trip-suggestions-daytrips-badge">
                             {t('tripSuggestions.includesDaytrips', { count: current.daytrips.length, names: current.daytrips.map((d) => d.cityName).join(', ') })}
@@ -328,7 +358,15 @@ export default function TripPlanSuggestionsButton({
                         </span>
                       </div>
                       {current.isEditorial && (
-                        <p className="pp-fulltrip-notice">✏️ {t('tripSuggestions.editorialNotice')}</p>
+                        <div className="pp-editorial-notice">
+                          <span className="pp-editorial-notice-icon" aria-hidden="true">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                          </span>
+                          <span className="pp-editorial-notice-texts">
+                            <span className="pp-editorial-notice-title">{t('tripSuggestions.editorialNoticeTitle')}</span>
+                            <span className="pp-editorial-notice-text">{t('tripSuggestions.editorialNoticeText')}</span>
+                          </span>
+                        </div>
                       )}
                       <CriteriaIndicators templateCriteria={current.criteria} selectedCriteria={criteria} />
                       {/* Fusionné avec les excursions (buildCityTimeline) et trié par jour
@@ -348,13 +386,13 @@ export default function TripPlanSuggestionsButton({
                               <span className="pp-fulltrip-daytrip-tag">{t('daytrip.badge')}</span>
                             </div>
                             {group.entries.map((e) => (
-                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} getActivityName={getActivityName} />
+                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} getActivityName={getActivityName} getActivityImage={getActivityImage} />
                             ))}
                           </div>
                         ) : (
                           <Fragment key={`base-${gi}`}>
                             {group.entries.map((e) => (
-                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} getActivityName={getActivityName} />
+                              <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} t={t} getActivityName={getActivityName} getActivityImage={getActivityImage} />
                             ))}
                           </Fragment>
                         )
@@ -401,14 +439,29 @@ export default function TripPlanSuggestionsButton({
                       </div>
                     </div>
                   ) : (
-                    <div className="pp-modal-actions">
-                      <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={closeModal}>
-                        {t('common:actions.cancel')}
-                      </button>
-                      <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleImportClick} disabled={importing}>
-                        {importing ? <span className="pp-search-busy" /> : t('tripSuggestions.importButton')}
-                      </button>
-                    </div>
+                    <>
+                      {/* Ville sans durée renseignée : importer ce planning en
+                          fait la durée de la ville (voir handleImport côté
+                          serveur) — dit AVANT le clic, pas découvert après.
+                          Style info (bleu) distinct des avertissements (ambre) :
+                          c'est une conséquence normale de l'import, pas un
+                          problème — et séparé visuellement de la carte
+                          au-dessus, pas collé dessus. */}
+                      {plannedDays == null && (
+                        <p className="pp-trip-suggestions-setdays-notice">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                          {t('tripSuggestions.willSetDaysNotice', { count: current.nbDays })}
+                        </p>
+                      )}
+                      <div className="pp-modal-actions">
+                        <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={closeModal}>
+                          {t('common:actions.cancel')}
+                        </button>
+                        <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleImportClick} disabled={importing}>
+                          {importing ? <span className="pp-search-busy" /> : t('tripSuggestions.importButton')}
+                        </button>
+                      </div>
+                    </>
                   )}
                 </>
               )}

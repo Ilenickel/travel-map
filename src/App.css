@@ -4,6 +4,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* Pilote le rendu natif du navigateur (icône de calendrier des <input
+     type="date">/type="time">, curseurs, scrollbars système…) : sans ça, ces
+     éléments restent câblés sombre même en mode jour et deviennent invisibles
+     sur fond clair. Hérité par tous les inputs, pas besoin de le répéter par
+     composant. */
+  color-scheme: dark;
   --bg: #080c14;
   --surface: #0f1623;
   --surface2: #151d2e;
@@ -6840,6 +6846,7 @@ html, body, #root { height: 100%; }
    écrans), puis on reprend un à un les éléments dont les couleurs sombres
    sont écrites en dur (topbar, pilules verre, tooltips, zoom, filtres...). */
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #f4f1ea;
   --surface: #fbf9f4;
   --surface2: #f0ece1;

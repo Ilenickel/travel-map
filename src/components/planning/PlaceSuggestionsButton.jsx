@@ -10,18 +10,37 @@ import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { formatWikiAttribution } from '../../lib/wikiAttribution';
 import WikiImage from '../WikiImage';
 
+// Qualificatif administratif générique ("City", "Ville de…") retiré avant
+// comparaison : une ville de planification nommée "New York" (nom renvoyé
+// tel quel par l'autocomplete) doit reconnaître la destination en dur
+// "New York City" (voir src/data/usa.js) comme la MÊME ville, pas une ville
+// différente — sans ce retrait, un nom de destination rédigé avec ce
+// qualificatif ("Ho Chi Minh City", "Ville de Québec"…) ne matchait la ville
+// de planification correspondante que si l'utilisateur l'avait tapée avec
+// exactement le même suffixe.
+const CITY_QUALIFIER_RE = /\b(city|ville(?:\s+de)?|ciudad(?:\s+de)?)\b/g;
+function stripCityQualifier(normalized) {
+  return normalized.replace(CITY_QUALIFIER_RE, ' ').replace(/\s+/g, ' ').trim();
+}
+
 // Comparaison stricte (exacte ou sous-chaîne, pas de tolérance Levenshtein) —
 // utilisée pour le matching ville↔destination et la détection "déjà ajouté",
 // où une comparaison trop permissive risquerait de faux positifs entre deux
 // lieux réels différents mais orthographiquement proches (ex. "Grand Palace"
 // à Bangkok vs "Grand Place" à Bruxelles). La confiance de géocodage (plus
 // tolérante, avec repli IA) est gérée côté serveur — voir api/geocode-place.js
-// et api/_lib/geocodeConfidence.js.
+// et api/_lib/geocodeConfidence.js. Le retrait du qualificatif administratif
+// générique (ci-dessus) reste sûr : il ne court-circuite jamais la
+// comparaison stricte, il élargit seulement ce qui est comparé.
 function namesMatch(a, b) {
   const na = normalizeStr(a || '');
   const nb = normalizeStr(b || '');
   if (!na || !nb) return false;
-  return na === nb || na.includes(nb) || nb.includes(na);
+  if (na === nb || na.includes(nb) || nb.includes(na)) return true;
+  const sa = stripCityQualifier(na);
+  const sb = stripCityQualifier(nb);
+  if (!sa || !sb) return false;
+  return sa === sb || sa.includes(sb) || sb.includes(sa);
 }
 
 // Bouton "X lieux conseillés" affiché après l'ajout d'une ville en planification.
@@ -157,6 +176,11 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
     await onAddActivity(tripId, cityId, place.name, {
       place_lat: lat ?? null,
       place_lng: lng ?? null,
+      // Slug Wikipédia/Commons du lieu (lieux éditoriaux mustSee — les lieux
+      // communautaires n'en ont pas) : stocké sur l'activité pour que la
+      // vignette photo des suggestions reste exacte si ce voyage est ensuite
+      // partagé en modèle (voir planning_modele_v11.sql).
+      wikipedia: place.wikipedia ?? null,
     });
     setAddingId(null);
   };

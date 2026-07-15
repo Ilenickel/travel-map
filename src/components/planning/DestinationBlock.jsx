@@ -7,7 +7,6 @@ import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 import NewCityOptionsForm from './NewCityOptionsForm';
 import TripFullSuggestions from './TripFullSuggestions';
-import { tripDurationDays } from '../../lib/planningUtils';
 
 export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData }) {
   const { t } = useTranslation();
@@ -125,7 +124,11 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           dest={dest}
           tripId={tripId}
           baseCitiesCount={baseCities.length}
-          defaultNbDays={tripDurationDays(tripStartDate, tripEndDate)}
+          // Sert uniquement à la note "sera importé à dater" : même critère
+          // que l'ancre d'import côté serveur (date de départ du voyage OU au
+          // moins une ville datée quelque part dans le voyage) — voir
+          // handleImportTrip dans api/trip-templates.js.
+          hasAnyDates={!!tripStartDate || cities.some((c) => c.start_date && c.planned_days)}
           onClose={() => setSuggestionsOpen(false)}
           onImported={() => { setSuggestionsOpen(false); onReloadTripData?.(); }}
         />

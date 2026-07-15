@@ -4,6 +4,8 @@ import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { countryAlpha2FromEmoji, TRIP_CRITERIA } from '../../lib/planningUtils';
 import { useActivityNameTranslations } from '../../lib/translateContent';
+import { useActivityWikiImages } from '../../hooks/useActivityWikiImages';
+import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 import DaysStepper from './DaysStepper';
 import CitySearchInput from './CitySearchInput';
 
@@ -81,7 +83,7 @@ function groupBySlot(activities) {
 // soir) — factorisé pour être réutilisé identiquement par une ville de base
 // ET par ses excursions (voir daytrips ci-dessous), plutôt que de dupliquer
 // le rendu de la timeline une 2e fois.
-function DayTimelineBlock({ day, dayNumber, getActivityName }) {
+function DayTimelineBlock({ day, dayNumber, getActivityName, getActivityImage }) {
   const { t } = useTranslation();
   return (
     <div className="pp-trip-suggestions-day">
@@ -97,9 +99,19 @@ function DayTimelineBlock({ day, dayNumber, getActivityName }) {
             <div className="pp-trip-suggestions-slot-content">
               <div className="pp-trip-suggestions-slot-label">{t(`tripSuggestions.timeSlot.${slot}`)}</div>
               <div className="pp-trip-suggestions-slot-items">
-                {items.map((a) => (
-                  <span key={a.id} className="pp-trip-suggestions-item">{getActivityName(a)}</span>
-                ))}
+                {items.map((a) => {
+                  // Photo du lieu (Wikipédia/Commons, licence déjà filtrée
+                  // par le hook) : icône indicatrice + aperçu grand format au
+                  // survol/tap, UNIQUEMENT si résolue — jamais d'indicateur
+                  // pour "le petit resto du coin".
+                  const img = getActivityImage?.(a);
+                  return (
+                    <span key={a.id} className="pp-trip-suggestions-item">
+                      {getActivityName(a)}
+                      {img && <ActivityPhotoIndicator img={img} name={getActivityName(a)} />}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -155,17 +167,24 @@ function buildCityTimeline(city) {
 // Mode "Suggestions de voyages" d'une destination (pays) du planning : au
 // lieu de planifier ville par ville, propose des voyages ENTIERS partagés
 // par d'autres utilisateurs (groupes de modèles, action 'suggest-trip' de
-// api/trip-templates.js) correspondant à la durée voulue (±1 jour si
-// autorisé), avec conditions optionnelles : ville imposée ("je sais que je
-// veux aller à Rome") et critères (avec enfants, en couple…). L'import crée
-// les villes À LA SUITE des villes existantes — il ne remplace jamais rien.
+// api/trip-templates.js). TOUS les champs sont facultatifs, y compris la
+// durée : on peut chercher juste avec le pays, regarder les voyages
+// proposés (leur durée est affichée sur chaque carte) et décider ensuite
+// combien de jours partir — la planification peut se faire dans ce sens-là.
+// Conditions optionnelles : durée (±1 jour si autorisé), villes imposées
+// ("je sais que je veux aller à Rome") et critères (avec enfants, en
+// couple…). L'import crée les villes À LA SUITE des villes existantes — il
+// ne remplace jamais rien.
 export default function TripFullSuggestions({
-  dest, tripId, baseCitiesCount, defaultNbDays, onClose, onImported,
+  dest, tripId, baseCitiesCount, hasAnyDates, onClose, onImported,
 }) {
   const { t, i18n } = useTranslation();
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[dest.country_code]?.emoji);
 
-  const [nbDays, setNbDays] = useState(defaultNbDays ?? null);
+  // Volontairement vide par défaut (plus de pré-remplissage avec la durée du
+  // voyage) : demander une durée avant même la recherche forçait un choix que
+  // beaucoup n'ont pas encore fait à ce stade.
+  const [nbDays, setNbDays] = useState(null);
   const [flex, setFlex] = useState(true);
   // Plusieurs villes "à ne pas manquer" possibles (pas une seule) : le
   // classement fait remonter en priorité les voyages ayant le PLUS de ces
@@ -206,14 +225,18 @@ export default function TripFullSuggestions({
 
   const expandedGroup = (groups || []).find((g) => g.id === expandedId) || null;
   const getActivityName = useActivityNameTranslations(collectGroupActivities(expandedGroup), i18n.language);
+  // Photos des activités du groupe DÉPLIÉ uniquement — même retenue que la
+  // traduction ci-dessus : pas de résolution pour des détails jamais consultés.
+  const { getActivityImage, loading: photosLoading } = useActivityWikiImages(collectGroupActivities(expandedGroup), i18n.language);
 
   const toggleCriterion = (key) => {
     setCriteria((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);
   };
 
+  // Aucun paramètre n'est requis : une recherche "à vide" (juste le pays)
+  // liste tous les voyages partagés, triés par critères puis popularité.
   const runSearch = async (overrides = {}) => {
     const params = { nbDays, flex, mustCities, criteria, ...overrides };
-    if (!params.nbDays) return;
     setSearching(true);
     setConfirmingId(null);
     const result = await callModeration('trip-templates', {
@@ -303,8 +326,13 @@ export default function TripFullSuggestions({
       ? group.totalDays - searchedNbDays
       : 0;
 
+  // Rien n'est encore daté dans le voyage : l'import arrivera "à dater" —
+  // sa structure (jour 1, jour 2…) est conservée et s'ancrera automatiquement
+  // sur la date de départ choisie plus tard (voir planning_modele_v10.sql).
+  // On le dit AVANT l'import (via l'étape de confirmation) plutôt que de
+  // laisser l'utilisateur découvrir des activités sans dates sans explication.
   const handleImportClick = (group) => {
-    if (baseCitiesCount > 0 || dayMismatchFor(group) !== 0) setConfirmingId(group.id);
+    if (baseCitiesCount > 0 || dayMismatchFor(group) !== 0 || !hasAnyDates) setConfirmingId(group.id);
     else runImport(group);
   };
 
@@ -337,7 +365,9 @@ export default function TripFullSuggestions({
           <div className="pp-fulltrip-summary">
             <span className="pp-fulltrip-summary-text">
               🔍 {[
-                t('fullTripSuggestions.summaryDays', { count: searchedNbDays }),
+                searchedNbDays != null
+                  ? t('fullTripSuggestions.summaryDays', { count: searchedNbDays })
+                  : t('fullTripSuggestions.summaryAnyDuration'),
                 mustCities.length > 0 && mustCities.join(', '),
                 criteria.length > 0 && criteria.map((k) => TRIP_CRITERIA[k]?.label).filter(Boolean).join(', '),
               ].filter(Boolean).join(' · ')}
@@ -348,6 +378,12 @@ export default function TripFullSuggestions({
           </div>
         ) : (
         <>
+        {/* Message hors formulaire : recherche possible sans rien remplir */}
+        <p className="pp-fulltrip-optional-banner">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+          {t('fullTripSuggestions.allOptionalHint')}
+        </p>
+
         {/* ── Conditions au-dessus des propositions ── */}
         <div className="pp-fulltrip-conditions">
         <div className="pp-fulltrip-fields">
@@ -413,8 +449,7 @@ export default function TripFullSuggestions({
         <button
           className="pp-fulltrip-search-btn"
           onClick={async () => { await runSearch(); setFormCollapsed(true); }}
-          disabled={!nbDays || searching}
-          title={!nbDays ? t('fullTripSuggestions.needDaysTitle') : undefined}
+          disabled={searching}
         >
           {searching ? <span className="pp-search-busy" /> : (
             <>
@@ -434,7 +469,9 @@ export default function TripFullSuggestions({
         groups.length === 0 ? (
           <div className="pp-fulltrip-empty">
             <span className="pp-fulltrip-empty-icon">🗺️</span>
-            <p>{t('fullTripSuggestions.emptyText', { days: nbDays })}</p>
+            <p>{searchedNbDays != null
+              ? t('fullTripSuggestions.emptyText', { days: searchedNbDays })
+              : t('fullTripSuggestions.emptyTextAnyDuration')}</p>
             {unresolvedMustCities.map((city) => (
               <p key={city} className="pp-fulltrip-empty-sub">{t('fullTripSuggestions.mustCityNotFound', { city })}</p>
             ))}
@@ -467,7 +504,15 @@ export default function TripFullSuggestions({
                 <CriteriaIndicators templateCriteria={group.criteria} selectedCriteria={criteria} />
 
                 {group.isEditorial && (
-                  <p className="pp-fulltrip-notice">✏️ {t('tripSuggestions.editorialNotice')}</p>
+                  <div className="pp-editorial-notice">
+                    <span className="pp-editorial-notice-icon" aria-hidden="true">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    </span>
+                    <span className="pp-editorial-notice-texts">
+                      <span className="pp-editorial-notice-title">{t('tripSuggestions.editorialNoticeTitle')}</span>
+                      <span className="pp-editorial-notice-text">{t('tripSuggestions.editorialNoticeText')}</span>
+                    </span>
+                  </div>
                 )}
 
                 {/* Chaîne des villes du voyage, dans l'ordre */}
@@ -498,6 +543,13 @@ export default function TripFullSuggestions({
 
                 {expandedId === group.id && (
                   <div className="pp-fulltrip-detail">
+                    {/* Voir TripPlanSuggestionsButton : sans ce message, on
+                        croit qu'il n'y a pas de photos pendant la résolution. */}
+                    {photosLoading && (
+                      <p className="pp-trip-suggestions-photos-loading">
+                        <span className="pp-search-busy" /> {t('tripSuggestions.photosLoading')}
+                      </p>
+                    )}
                     {group.cities.map((city) => (
                       <div key={city.templateId} className="pp-fulltrip-detail-city">
                         <div className="pp-fulltrip-detail-city-name">
@@ -524,13 +576,13 @@ export default function TripFullSuggestions({
                                 <span className="pp-fulltrip-daytrip-tag">{t('daytrip.badge')}</span>
                               </div>
                               {dayGroup.entries.map((e) => (
-                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} getActivityName={getActivityName} />
+                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} getActivityName={getActivityName} getActivityImage={getActivityImage} />
                               ))}
                             </div>
                           ) : (
                             <Fragment key={`base-${gi}`}>
                               {dayGroup.entries.map((e) => (
-                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} getActivityName={getActivityName} />
+                                <DayTimelineBlock key={e.dayNumber} day={e.day} dayNumber={e.dayNumber} getActivityName={getActivityName} getActivityImage={getActivityImage} />
                               ))}
                             </Fragment>
                           )
@@ -551,6 +603,9 @@ export default function TripFullSuggestions({
                     )}
                     {baseCitiesCount > 0 && (
                       <p>{t('fullTripSuggestions.confirmAppendText', { count: baseCitiesCount })}</p>
+                    )}
+                    {!hasAnyDates && (
+                      <p className="pp-fulltrip-notice">🗓️ {t('fullTripSuggestions.confirmNoDatesText')}</p>
                     )}
                     <div className="pp-modal-actions">
                       <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setConfirmingId(null)} disabled={importing}>

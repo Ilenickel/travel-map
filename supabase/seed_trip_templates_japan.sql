@@ -16,10 +16,12 @@
 --
 -- Idempotence : ce script n'est pas ré-exécutable tel quel (pas de clé
 -- naturelle sur les groupes éditoriaux, contrairement aux modèles réels
--- indexés par source_trip_id). Si vous le relancez, supprimez d'abord les
--- groupes existants :
+-- indexés par source_trip_id). Si vous le relancez, supprimez d'abord, DANS
+-- CET ORDRE (groupe → ville est un ON DELETE SET NULL, PAS un cascade —
+-- supprimer les groupes seuls laisserait les villes orphelines en base) :
+--   DELETE FROM trip_templates WHERE is_editorial = true AND country_code = 'JPN';
 --   DELETE FROM trip_template_groups WHERE is_editorial = true AND country_code = 'JPN';
---   (ON DELETE CASCADE nettoie les trip_templates, days et activities liés)
+--   (le 1er DELETE cascade bien, lui, vers days et activities)
 -- ════════════════════════════════════════════════════════════════
 
 DO $$
@@ -77,9 +79,9 @@ BEGIN
 
   INSERT INTO trip_template_days (template_id, day_index) VALUES (v_kyoto, 3) RETURNING id INTO v_day;
   INSERT INTO trip_template_activities (template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position) VALUES
-    (v_day, 'Pavillon d''or (Kinkaku-ji)', 'Temple recouvert de feuilles d''or se reflétant dans son étang.', 'matin', 'visit', 35.0394, 135.7292, 'Kita-ku, Kyoto', 1),
-    (v_day, 'Jardin zen Ryōan-ji et château Nijō', 'Célèbre jardin de pierres, puis château aux planchers rossignol.', 'apres-midi', 'visit', 35.0345, 135.7183, 'Ukyo-ku, Kyoto', 2),
-    (v_day, 'Marché de Nishiki', 'Longue galerie couverte surnommée « la cuisine de Kyoto ».', 'soir', 'food', 35.0050, 135.7649, 'Nakagyo-ku, Kyoto', 3);
+    (v_day, 'Pavillon d''or (Kinkaku-ji) et jardin zen Ryōan-ji', 'Temple doré sur son étang puis célèbre jardin de pierres, voisins au nord-ouest.', 'matin', 'visit', 35.0394, 135.7292, 'Kita-ku, Kyoto', 1),
+    (v_day, 'Château Nijō puis marché de Nishiki', 'Planchers rossignol puis « la cuisine de Kyoto » — le marché ferme vers 18 h.', 'apres-midi', 'visit', 35.0142, 135.7481, 'Nakagyo-ku, Kyoto', 2),
+    (v_day, 'Kyoto Tower et quartier de la gare', 'Panorama nocturne sur la ville illuminée.', 'soir', 'visit', 34.9875, 135.7594, 'Shimogyo-ku, Kyoto', 3);
 END $$;
 
 
@@ -144,9 +146,9 @@ BEGIN
 
   INSERT INTO trip_template_days (template_id, day_index) VALUES (v_kyoto, 3) RETURNING id INTO v_day;
   INSERT INTO trip_template_activities (template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position) VALUES
-    (v_day, 'Pavillon d''or (Kinkaku-ji)', 'Temple recouvert de feuilles d''or se reflétant dans son étang.', 'matin', 'visit', 35.0394, 135.7292, 'Kita-ku, Kyoto', 1),
-    (v_day, 'Jardin zen Ryōan-ji et château Nijō', 'Célèbre jardin de pierres, puis château aux planchers rossignol.', 'apres-midi', 'visit', 35.0345, 135.7183, 'Ukyo-ku, Kyoto', 2),
-    (v_day, 'Marché de Nishiki', 'Longue galerie couverte surnommée « la cuisine de Kyoto ».', 'soir', 'food', 35.0050, 135.7649, 'Nakagyo-ku, Kyoto', 3);
+    (v_day, 'Pavillon d''or (Kinkaku-ji) et jardin zen Ryōan-ji', 'Temple doré sur son étang puis célèbre jardin de pierres, voisins au nord-ouest.', 'matin', 'visit', 35.0394, 135.7292, 'Kita-ku, Kyoto', 1),
+    (v_day, 'Château Nijō puis marché de Nishiki', 'Planchers rossignol puis « la cuisine de Kyoto » — le marché ferme vers 18 h.', 'apres-midi', 'visit', 35.0142, 135.7481, 'Nakagyo-ku, Kyoto', 2),
+    (v_day, 'Kyoto Tower et quartier de la gare', 'Panorama nocturne sur la ville illuminée.', 'soir', 'visit', 34.9875, 135.7594, 'Shimogyo-ku, Kyoto', 3);
 
   -- Excursion Nara : modèle à part (parent_template_id) rattaché à Kyoto,
   -- day_offset = 3 → prend le jour 4 du séjour à Kyoto (day_index 4 volontairement
@@ -166,7 +168,7 @@ BEGIN
   INSERT INTO trip_template_activities (template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position) VALUES
     (v_day, 'Kiyomizu-dera', 'Temple perché offrant une vue spectaculaire sur Kyoto.', 'matin', 'visit', 34.9949, 135.7850, 'Higashiyama, Kyoto', 1),
     (v_day, 'Ruelles Ninenzaka et Sannenzaka', 'Escaliers pavés bordés de boutiques et maisons traditionnelles.', 'apres-midi', 'shopping', 34.9977, 135.7793, 'Higashiyama, Kyoto', 2),
-    (v_day, 'Marché de Nishiki', 'Longue galerie couverte surnommée « la cuisine de Kyoto ».', 'soir', 'food', 35.0050, 135.7649, 'Nakagyo-ku, Kyoto', 3);
+    (v_day, 'Sanctuaire Yasaka et Gion illuminés', 'Lanternes du sanctuaire et ruelles de Higashiyama à la nuit tombée.', 'soir', 'visit', 35.0037, 135.7787, 'Higashiyama, Kyoto', 3);
 
   -- Osaka (2 jours)
   INSERT INTO trip_templates (country_code, city_name, city_lat, city_lng, nb_days, is_public, is_editorial, criteria, group_id, group_position, group_day_offset)
@@ -295,9 +297,9 @@ BEGIN
 
   INSERT INTO trip_template_days (template_id, day_index) VALUES (v_kyoto, 3) RETURNING id INTO v_day;
   INSERT INTO trip_template_activities (template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position) VALUES
-    (v_day, 'Pavillon d''or (Kinkaku-ji)', 'Temple recouvert de feuilles d''or se reflétant dans son étang.', 'matin', 'visit', 35.0394, 135.7292, 'Kita-ku, Kyoto', 1),
-    (v_day, 'Jardin zen Ryōan-ji et château Nijō', 'Célèbre jardin de pierres, puis château aux planchers rossignol.', 'apres-midi', 'visit', 35.0345, 135.7183, 'Ukyo-ku, Kyoto', 2),
-    (v_day, 'Marché de Nishiki', 'Longue galerie couverte surnommée « la cuisine de Kyoto ».', 'soir', 'food', 35.0050, 135.7649, 'Nakagyo-ku, Kyoto', 3);
+    (v_day, 'Pavillon d''or (Kinkaku-ji) et jardin zen Ryōan-ji', 'Temple doré sur son étang puis célèbre jardin de pierres, voisins au nord-ouest.', 'matin', 'visit', 35.0394, 135.7292, 'Kita-ku, Kyoto', 1),
+    (v_day, 'Château Nijō puis marché de Nishiki', 'Planchers rossignol puis « la cuisine de Kyoto » — le marché ferme vers 18 h.', 'apres-midi', 'visit', 35.0142, 135.7481, 'Nakagyo-ku, Kyoto', 2),
+    (v_day, 'Kyoto Tower et quartier de la gare', 'Panorama nocturne sur la ville illuminée.', 'soir', 'visit', 34.9875, 135.7594, 'Shimogyo-ku, Kyoto', 3);
 
   -- Excursion Nara (mêmes raisons qu'au groupe 14 jours)
   INSERT INTO trip_templates (country_code, city_name, city_lat, city_lng, nb_days, is_public, is_editorial, criteria, parent_template_id, day_offset)
@@ -313,7 +315,7 @@ BEGIN
   INSERT INTO trip_template_activities (template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position) VALUES
     (v_day, 'Kiyomizu-dera', 'Temple perché offrant une vue spectaculaire sur Kyoto.', 'matin', 'visit', 34.9949, 135.7850, 'Higashiyama, Kyoto', 1),
     (v_day, 'Ruelles Ninenzaka et Sannenzaka', 'Escaliers pavés bordés de boutiques et maisons traditionnelles.', 'apres-midi', 'shopping', 34.9977, 135.7793, 'Higashiyama, Kyoto', 2),
-    (v_day, 'Marché de Nishiki', 'Longue galerie couverte surnommée « la cuisine de Kyoto ».', 'soir', 'food', 35.0050, 135.7649, 'Nakagyo-ku, Kyoto', 3);
+    (v_day, 'Sanctuaire Yasaka et Gion illuminés', 'Lanternes du sanctuaire et ruelles de Higashiyama à la nuit tombée.', 'soir', 'visit', 35.0037, 135.7787, 'Higashiyama, Kyoto', 3);
 
   -- Osaka (2 jours, identique)
   INSERT INTO trip_templates (country_code, city_name, city_lat, city_lng, nb_days, is_public, is_editorial, criteria, group_id, group_position, group_day_offset)
@@ -388,4 +390,42 @@ BEGIN
     (v_day, 'Sanctuaire Kushida', 'Plus vieux sanctuaire de Fukuoka, célèbre pour le festival Hakata Gion Yamakasa.', 'matin', 'visit', 33.5928, 130.4116, 'Hakata, Fukuoka', 1),
     (v_day, 'Canal City Hakata', 'Grand complexe commercial traversé par un canal, fontaines animées.', 'apres-midi', 'shopping', 33.5895, 130.4113, 'Hakata, Fukuoka', 2),
     (v_day, 'Tour de Fukuoka', 'Plus haute tour littorale du Japon, vue sur la baie de Hakata.', 'soir', 'visit', 33.5933, 130.3514, 'Momochihama, Fukuoka', 3);
+END $$;
+
+
+-- ════════════════════════════════════════════════════════════════
+-- Variante enrichie : Tokyo 6 jours (+ Odaiba/Skytree + excursion Kamakura)
+-- NÉCESSITE seed_trip_templates_helpers.sql (contrairement au reste du
+-- fichier, écrit avant les helpers) — à exécuter après ceux-ci.
+-- ════════════════════════════════════════════════════════════════
+DO $$
+DECLARE g UUID; c UUID; e UUID;
+BEGIN
+  g := seed_group('JPN', 6);
+  c := seed_city('JPN', 'Tokyo', 35.6762, 139.6503, 6, g, 1, 0);
+  PERFORM seed_day(c, 1, '[
+    ["Temple Sensō-ji (Asakusa)", "Le plus ancien temple bouddhiste de Tokyo, dans le quartier historique d''Asakusa.", "matin", "visit", 35.7148, 139.7967, "Asakusa, Tokyo"],
+    ["Parc d''Ueno et musée national de Tokyo", "Grand parc verdoyant abritant le principal musée d''art et d''histoire du pays.", "apres-midi", "visit", 35.7188, 139.7766, "Ueno, Tokyo"],
+    ["Akihabara", "Quartier emblématique de l''électronique et du manga, au meilleur de ses néons la nuit.", "soir", "shopping", 35.6984, 139.7731, "Akihabara, Tokyo"]]'::jsonb);
+  PERFORM seed_day(c, 2, '[
+    ["Sanctuaire Meiji-jingū", "Sanctuaire shinto niché dans une forêt en plein cœur de Tokyo.", "matin", "visit", 35.6764, 139.6993, "Yoyogi, Tokyo"],
+    ["Harajuku (Takeshita-dōri)", "Rue piétonne emblématique de la mode alternative.", "apres-midi", "shopping", 35.6702, 139.7027, "Harajuku, Tokyo"],
+    ["Carrefour de Shibuya", "Le passage piéton le plus fréquenté du monde, sous les néons géants.", "soir", "night", 35.6595, 139.7005, "Shibuya, Tokyo"]]'::jsonb);
+  PERFORM seed_day(c, 3, '[
+    ["Marché extérieur de Tsukiji", "Ruelles animées d''étals de produits de la mer ultra-frais.", "matin", "food", 35.6654, 139.7707, "Tsukiji, Tokyo"],
+    ["Jardin Hamarikyu et Ginza", "Jardin traditionnel en bord de baie, à deux pas du quartier chic.", "apres-midi", "nature", 35.6597, 139.7633, "Hamarikyu, Tokyo"],
+    ["Tour de Tokyo illuminée", "La tour emblématique brille de mille feux la nuit.", "soir", "visit", 35.6586, 139.7454, "Minato, Tokyo"]]'::jsonb);
+  PERFORM seed_day(c, 4, '[
+    ["Jardin Shinjuku Gyoen", "Vaste parc mêlant jardins japonais, français et anglais.", "matin", "nature", 35.6852, 139.7100, "Shinjuku, Tokyo"],
+    ["Observatoire du gouvernement métropolitain", "Vue panoramique gratuite depuis le 45e étage.", "apres-midi", "visit", 35.6896, 139.6917, "Shinjuku, Tokyo"],
+    ["Omoide Yokochō et Golden Gai", "Gargotes à yakitori puis micro-bars de Shinjuku.", "soir", "food", 35.6938, 139.6997, "Shinjuku, Tokyo"]]'::jsonb);
+  PERFORM seed_day(c, 5, '[
+    ["teamLab Planets", "Musée d''art numérique immersif, les pieds dans l''eau.", "matin", "visit", 35.6493, 139.7898, "Toyosu, Tokyo"],
+    ["Odaiba", "Île futuriste de la baie, Gundam géant et centres commerciaux.", "apres-midi", "visit", 35.6270, 139.7768, "Odaiba, Tokyo"],
+    ["Tokyo Skytree", "634 m au-dessus de la ville illuminée.", "soir", "visit", 35.7101, 139.8107, "Sumida, Tokyo"]]'::jsonb);
+  e := seed_daytrip('JPN', 'Kamakura', 35.3192, 139.5467, c, 5);
+  PERFORM seed_day(e, 1, '[
+    ["Grand Bouddha de Kamakura", "Le Bouddha de bronze en plein air du Kōtoku-in.", "matin", "visit", 35.3167, 139.5357, "Kamakura"],
+    ["Temple Hase-dera et Komachi-dōri", "Temple aux hortensias puis rue commerçante.", "apres-midi", "visit", 35.3125, 139.5330, "Kamakura"],
+    ["Île d''Enoshima au couchant", "Le mont Fuji en silhouette derrière la mer, par temps clair.", "soir", "nature", 35.2990, 139.4800, "Enoshima"]]'::jsonb);
 END $$;

@@ -424,7 +424,6 @@ button.pp-sidebar-toggle {
   outline: none;
   cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s;
-  color-scheme: dark;
 }
 
 .pp-date-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
@@ -894,7 +893,6 @@ button.pp-sidebar-toggle {
   font-family: inherit;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
-  color-scheme: dark;
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
@@ -1064,7 +1062,6 @@ button.pp-sidebar-toggle {
   outline: none;
   text-align: center;
   transition: border-color 0.15s;
-  color-scheme: dark;
 }
 .pp-trajet-duration-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
 /* Masque les flèches natives du input[type=number], trop petites pour être utiles ici */
@@ -1095,7 +1092,6 @@ button.pp-sidebar-toggle {
   outline: none;
   width: 100%;
   box-sizing: border-box;
-  color-scheme: dark;
   transition: border-color 0.15s;
 }
 .pp-add-trajet-name:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
@@ -1822,6 +1818,68 @@ button.pp-sidebar-toggle {
   font-weight: 600;
   color: var(--text-muted);
   white-space: nowrap;
+}
+/* Icône "photo disponible" d'une activité de planning suggéré
+   (ActivityPhotoIndicator.jsx) — n'existe que si une photo libre a été
+   résolue (useActivityWikiImages.js), jamais d'indicateur vide. Une vignette
+   en dur était illisible à cette taille : l'icône signale, l'aperçu au
+   survol/tap montre la photo en vrai format. */
+.pp-trip-suggestions-photo-ind {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 7px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: rgba(129,140,248,0.14);
+  color: #a5b4fc;
+  cursor: pointer;
+}
+.pp-trip-suggestions-photo-ind:hover,
+.pp-trip-suggestions-photo-ind.active {
+  background: rgba(129,140,248,0.28);
+  color: #c7d2fe;
+}
+/* Message "photos en cours de chargement" en tête des suggestions : la
+   résolution Wikipédia prend quelques secondes au premier affichage, sans
+   lui on conclut à tort qu'aucune photo n'existe. */
+.pp-trip-suggestions-photos-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  background: rgba(129,140,248,0.12);
+  border: 1px solid rgba(129,140,248,0.25);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #a5b4fc;
+}
+[data-theme="light"] .pp-trip-suggestions-photos-loading {
+  color: #5b5bd6;
+}
+/* Aperçu grand format de la photo — même recette visuelle que
+   .pp-place-suggestions-preview (les classes internes -img/-name/-credit
+   sont réutilisées telles quelles), mais conteneur dédié : celui des lieux
+   est en z-index 900 et masqué sur mobile, or ici l'aperçu vit AU-DESSUS
+   d'une modale (pp-modal-overlay, 1000+) et doit rester accessible au tap
+   sur l'icône (pas de survol tactile). */
+.pp-trip-suggestions-photo-preview {
+  position: fixed;
+  z-index: 1300;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  background: var(--surface2);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+  pointer-events: none; /* purement informatif : ne bloque pas les clics/survols voisins */
+  animation: pp-preview-in 0.14s ease-out;
+}
+[data-theme="light"] .pp-trip-suggestions-photo-preview {
+  box-shadow: 0 18px 48px rgba(43,38,32,0.22);
 }
 
 .pp-trip-suggestions-dots {
@@ -2764,7 +2822,6 @@ button.pp-sidebar-toggle {
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.15s;
-  color-scheme: dark;
 }
 .pp-notes-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
 .pp-notes-textarea::placeholder { color: var(--text-muted); }
@@ -3035,7 +3092,6 @@ button.pp-sidebar-toggle {
   font-family: inherit;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
-  color-scheme: dark;
   width: 100%;
   box-sizing: border-box;
 }
@@ -3066,7 +3122,6 @@ button.pp-sidebar-toggle {
   font-family: inherit;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
-  color-scheme: dark;
   width: 100%;
   box-sizing: border-box;
 }
@@ -4622,7 +4677,6 @@ button.pp-sidebar-toggle {
   color: var(--text);
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
-  color-scheme: dark;
 }
 .pp-invite-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
@@ -6487,7 +6541,6 @@ button.pp-sidebar-toggle {
   font-size: 13px;
   font-family: inherit;
   outline: none;
-  color-scheme: dark;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .pp-lodging-form input:focus,
@@ -6963,6 +7016,34 @@ button.pp-sidebar-toggle {
 }
 .pp-fulltrip-fieldbox-body { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .pp-fulltrip-fieldbox-hint { font-size: 11.5px; color: var(--text-dim); }
+
+/* "Tous les champs sont facultatifs" — bandeau HORS formulaire, au-dessus des
+   champs de recherche : indique qu'on peut chercher juste avec le pays, sans
+   durée ni condition, pour se donner une idée avant de fixer quoi que ce soit.
+   Fond vert (pas orange, réservé aux avertissements) : c'est une information
+   positive/rassurante, pas une mise en garde. */
+.pp-fulltrip-optional-banner {
+  margin: 0 0 12px; padding: 9px 13px;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 10px; color: #4ade80; font-size: 12.5px;
+}
+.pp-fulltrip-optional-banner svg { flex-shrink: 0; }
+[data-theme="light"] .pp-fulltrip-optional-banner { color: #15803d; }
+
+/* Note "cette ville n'a pas de durée renseignée" au-dessus des actions
+   d'import de la suggestion par ville — style info (bleu), pas avertissement
+   (ambre) : c'est une conséquence normale de l'import, pas un problème.
+   Séparée de la carte de planning au-dessus par une vraie marge, pas collée
+   dessus (elle ne fait pas partie du contenu de la carte). */
+.pp-trip-suggestions-setdays-notice {
+  margin: 14px 0 0; padding: 9px 13px;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 10px; color: #a5b4fc; font-size: 12.5px; line-height: 1.45;
+}
+.pp-trip-suggestions-setdays-notice svg { flex-shrink: 0; }
+[data-theme="light"] .pp-trip-suggestions-setdays-notice { color: #4338ca; }
 /* Les filtres critères (composant partagé) adoptent le style du bloc */
 .pp-fulltrip-fieldbox .pp-criteria-filter { margin-bottom: 0; }
 .pp-fulltrip-fieldbox .pp-criteria-filter-label {
@@ -7043,6 +7124,36 @@ button.pp-sidebar-toggle {
   margin: 0; padding: 9px 13px;
   background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
   border-radius: 10px; color: #fbbf24; font-size: 12.5px;
+}
+
+/* Note "itinéraire proposé par Triply" (isEditorial) : PAS un avertissement
+   (contrairement à pp-fulltrip-notice, ambre) — c'est juste une provenance à
+   mentionner, un badge dans les couleurs de la marque (indigo/violet) avec un
+   petit médaillon plutôt qu'un simple bloc de texte plat. */
+.pp-editorial-notice {
+  margin: 0; padding: 10px 13px;
+  display: flex; align-items: flex-start; gap: 10px;
+  background:
+    radial-gradient(ellipse 120% 140% at 0% 0%, rgba(139,92,246,0.14), transparent 65%),
+    var(--surface3);
+  border: 1px solid var(--accent-glow);
+  border-radius: 12px;
+}
+.pp-editorial-notice-icon {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+}
+.pp-editorial-notice-icon svg { display: block; }
+.pp-editorial-notice-texts { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.pp-editorial-notice-title {
+  font-size: 12px; font-weight: 700; color: var(--accent2);
+}
+.pp-editorial-notice-text {
+  font-size: 12px; line-height: 1.4; color: var(--text-dim);
 }
 
 .pp-fulltrip-card {

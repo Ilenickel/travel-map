@@ -19,11 +19,24 @@ function normalize(str) {
     .trim();
 }
 
+// Qualificatif administratif générique retiré avant comparaison — même
+// raisonnement et même liste que côté client (voir PlaceSuggestionsButton.jsx
+// namesMatch) : "New York" (ville de planification) doit reconnaître
+// "New York City" (nom de destination communautaire) comme la même ville.
+const CITY_QUALIFIER_RE = /\b(city|ville(?:\s+de)?|ciudad(?:\s+de)?)\b/g;
+function stripCityQualifier(normalized) {
+  return normalized.replace(CITY_QUALIFIER_RE, ' ').replace(/\s+/g, ' ').trim();
+}
+
 function namesMatch(a, b) {
   const na = normalize(a);
   const nb = normalize(b);
   if (!na || !nb) return false;
-  return na === nb || na.includes(nb) || nb.includes(na);
+  if (na === nb || na.includes(nb) || nb.includes(na)) return true;
+  const sa = stripCityQualifier(na);
+  const sb = stripCityQualifier(nb);
+  if (!sa || !sb) return false;
+  return sa === sb || sa.includes(sb) || sb.includes(sa);
 }
 
 /**

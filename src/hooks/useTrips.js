@@ -114,7 +114,40 @@ export function useTrips(userId) {
     const ts = new Date().toISOString();
     setTrips(prev => prev.map(t => t.id === tripId ? { ...t, ...updates, updated_at: ts } : t));
     setTripData(prev => prev ? { ...prev, trip: { ...prev.trip, ...updates, updated_at: ts } } : prev);
-  }, []);
+
+    // Ancrage différé d'un import sans dates (voir planning_modele_v10.sql) :
+    // si le voyage contient des villes importées "en attente de dates"
+    // (pending_day_offset) et que l'utilisateur vient de choisir sa date de
+    // départ, cette date devient le jour 1 — toutes les villes/activités en
+    // attente reçoivent leurs vraies dates, en une fois (un changement de
+    // date ULTÉRIEUR ne re-décale rien, comme pour un voyage déjà daté).
+    if (updates.start_date && tripData?.trip?.id === tripId
+      && tripData.cities.some(c => !c.parent_city_id && c.pending_day_offset != null)) {
+      const { error: anchorError } = await supabase.rpc('anchor_trip_pending_days', {
+        p_trip_id: tripId, p_start_date: updates.start_date,
+      });
+      if (anchorError) { console.error('anchor_trip_pending_days failed:', anchorError); return; }
+      // Date de retour déduite du contenu ancré si elle n'est pas encore
+      // renseignée : le voyage importé "fait" N jours, autant que les dates
+      // du voyage le reflètent sans re-saisie manuelle.
+      const endDate = updates.end_date !== undefined ? updates.end_date : tripData.trip.end_date;
+      if (!endDate) {
+        const totalDays = tripData.cities
+          .filter(c => !c.parent_city_id && c.pending_day_offset != null && c.planned_days)
+          .reduce((max, c) => Math.max(max, c.pending_day_offset + c.planned_days), 0);
+        if (totalDays > 0) {
+          const end = new Date(updates.start_date + 'T12:00:00');
+          end.setDate(end.getDate() + totalDays - 1);
+          const endStr = end.toISOString().slice(0, 10);
+          const { error: endError } = await supabase.from('trips').update({ end_date: endStr }).eq('id', tripId);
+          if (!endError) {
+            setTrips(prev => prev.map(t => t.id === tripId ? { ...t, end_date: endStr } : t));
+          }
+        }
+      }
+      await loadTripData(tripId);
+    }
+  }, [tripData, loadTripData]);
 
   const deleteTrip = useCallback(async (tripId) => {
     // Nettoyage Storage AVANT la suppression SQL : depuis planning_tables_v13.sql,
@@ -318,7 +351,24 @@ export function useTrips(userId) {
   const updateCity = useCallback(async (cityId, updates) => {
     await supabase.from('trip_cities').update(updates).eq('id', cityId);
     setTripData(prev => prev ? { ...prev, cities: prev.cities.map(c => c.id === cityId ? { ...c, ...updates } : c) } : prev);
-  }, []);
+
+    // Ancrage différé d'un planning importé sans dates dans CETTE ville (voir
+    // planning_modele_v10.sql) : l'utilisateur donne une date de début à une
+    // ville dont les activités importées attendent leurs dates
+    // (pending_day_index) — la date choisie devient le jour 1 de la ville,
+    // ses activités et ses excursions rattachées sont datées en une fois.
+    const hasPending = updates.start_date && tripData && (
+      tripData.activities.some(a => a.city_id === cityId && a.pending_day_index != null)
+      || tripData.cities.some(c => c.parent_city_id === cityId && c.pending_day_offset != null)
+    );
+    if (hasPending) {
+      const { error: anchorError } = await supabase.rpc('anchor_city_pending_days', {
+        p_city_id: cityId, p_start_date: updates.start_date,
+      });
+      if (anchorError) { console.error('anchor_city_pending_days failed:', anchorError); return; }
+      if (tripData.trip?.id) await loadTripData(tripData.trip.id);
+    }
+  }, [tripData, loadTripData]);
 
   const removeCity = useCallback(async (cityId) => {
     // Les excursions (daytrips) rattachées à cette ville cascadent aussi en base
@@ -395,6 +445,20 @@ export function useTrips(userId) {
   }, [tripData]);
 
   const updateActivity = useCallback(async (actId, updates) => {
+    // Dater manuellement une activité importée "en attente de dates"
+    // (pending_day_index, voir planning_modele_v10.sql) la sort de l'attente :
+    // sans ça, l'ancrage différé déclenché plus tard par le choix d'une date
+    // de départ écraserait la date que l'utilisateur vient de poser à la
+    // main. On ne le fait QUE si une vraie date est posée (updates.visit_date
+    // non null) — le formulaire d'activité (ActivityItem) envoie TOUJOURS
+    // `visit_date` dans ses updates, y compris `null` quand l'activité reste
+    // non planifiée (ex. cocher "toute la journée" sans avoir touché la
+    // date) : vider pending_day_index dans ce cas-là ferait perdre
+    // l'activité de tout ancrage futur — elle ne recevrait alors plus jamais
+    // de date, ni maintenant ni lors d'un ancrage différé ultérieur.
+    if (updates.visit_date != null && !('pending_day_index' in updates)) {
+      updates = { ...updates, pending_day_index: null };
+    }
     // Si l'écriture échoue (connexion perdue en plein voyage, RLS, etc.), on
     // n'applique pas le changement localement : sans ce garde-fou, l'écran
     // affichait un changement (ex. case cochée) jamais réellement enregistré
@@ -626,10 +690,10 @@ export function useTrips(userId) {
 
   const assignActivitiesToDay = useCallback(async (ids, date, time = null) => {
     if (!ids?.length) return;
-    const { error } = await supabase.from('trip_activities').update({ visit_date: date, visit_time: time }).in('id', ids);
+    const { error } = await supabase.from('trip_activities').update({ visit_date: date, visit_time: time, pending_day_index: null }).in('id', ids);
     if (error) { console.error('assignActivitiesToDay failed:', error); return; }
     setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time } : a),
+      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
     } : prev);
   }, []);
 
@@ -637,9 +701,9 @@ export function useTrips(userId) {
     const groupActs = (tripData?.activities || []).filter(a => a.group_id === groupId);
     if (!groupActs.length) return;
     const ids = groupActs.map(a => a.id);
-    await supabase.from('trip_activities').update({ visit_date: date, visit_time: time }).in('id', ids);
+    await supabase.from('trip_activities').update({ visit_date: date, visit_time: time, pending_day_index: null }).in('id', ids);
     setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time } : a),
+      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
     } : prev);
   }, [tripData]);
 
@@ -687,9 +751,9 @@ export function useTrips(userId) {
     const cityActs = (tripData?.activities || []).filter(a => a.city_id === cityId);
     if (!cityActs.length) return;
     const ids = cityActs.map(a => a.id);
-    await supabase.from('trip_activities').update({ visit_date: date, visit_time: time }).in('id', ids);
+    await supabase.from('trip_activities').update({ visit_date: date, visit_time: time, pending_day_index: null }).in('id', ids);
     setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time } : a),
+      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
     } : prev);
   }, [tripData]);
 

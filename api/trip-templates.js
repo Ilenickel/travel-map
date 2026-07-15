@@ -115,7 +115,7 @@ async function handleShare(admin, user, body, res) {
 
     const { data: activities } = await admin
       .from('trip_activities')
-      .select('name, description, visit_date, visit_time, category, place_lat, place_lng, place_address, position, duration_minutes')
+      .select('name, description, visit_date, visit_time, category, place_lat, place_lng, place_address, position, duration_minutes, wikipedia')
       .eq('city_id', city.id)
       .order('position', { ascending: true });
 
@@ -190,6 +190,11 @@ async function handleShare(admin, user, body, res) {
           // l'étirement et la ré-affichait comme une activité ponctuelle
           // normale dans la suggestion et l'import.
           duration_minutes: a.duration_minutes,
+          // Slug Wikipédia/Commons explicite (photo de l'activité dans les
+          // suggestions, voir planning_modele_v11.sql) : recopié dans le
+          // modèle comme le reste — la vignette du planning partagé doit être
+          // aussi fiable que celle du voyage source.
+          wikipedia: a.wikipedia,
         })),
     }));
     const { error: contentError } = await admin.rpc('replace_template_content', { p_template_id: template.id, p_days: days });
@@ -310,7 +315,7 @@ async function fetchDaysByTemplate(admin, templateIds) {
   const { data: activities } = dayIds.length
     ? await admin
         .from('trip_template_activities')
-        .select('id, template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes')
+        .select('id, template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes, wikipedia')
         .in('template_day_id', dayIds)
         .order('position', { ascending: true })
     : { data: [] };
@@ -337,7 +342,7 @@ function criteriaMatchCount(templateCriteria, wanted) {
 
 async function handleSuggest(admin, body, res) {
   const { countryCode, cityName, countryAlpha2, plannedDays, criteria: wantedCriteria } = body;
-  if (!countryCode || !cityName || !plannedDays) {
+  if (!countryCode || !cityName) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
   // Pagination "Charger plus de suggestions" (client, voir
@@ -355,32 +360,80 @@ async function handleSuggest(admin, body, res) {
   // calculé à partir du nombre de jours RÉELLEMENT activités, donc un jour
   // sans activité au milieu du séjour le fait apparaître un jour plus court
   // que la durée déclarée par le voyageur d'origine.
-  const { data: candidates } = await admin
+  //
+  // plannedDays est FACULTATIF : sans durée renseignée sur la ville, on
+  // propose TOUS les plannings de cette ville (toutes durées) — l'utilisateur
+  // regarde ce qui existe et décide ensuite combien de jours il y reste,
+  // plutôt que d'être obligé de fixer une durée avant même de chercher.
+  let query = admin
     .from('trip_templates')
     .select('id, city_name, city_lat, city_lng, nb_days, uses_count, likes_count, criteria, is_editorial')
     .eq('country_code', countryCode)
     .eq('is_public', true)
-    .gte('nb_days', plannedDays - 1)
-    .lte('nb_days', plannedDays + 1)
     .is('parent_template_id', null);
+  if (plannedDays) query = query.gte('nb_days', plannedDays - 1).lte('nb_days', plannedDays + 1);
+  const { data: candidates } = await query;
 
-  const nearbyAll = (candidates || [])
-    .filter((t) => distanceKm(coords.lat, coords.lng, t.city_lat, t.city_lng) <= SAME_CITY_RADIUS_KM)
+  const nearbyCandidates = (candidates || [])
+    .filter((t) => distanceKm(coords.lat, coords.lng, t.city_lat, t.city_lng) <= SAME_CITY_RADIUS_KM);
+
+  if (!nearbyCandidates.length) return res.status(200).json({ ok: true, templates: [], hasMore: false });
+
+  // Déduplication par CONTENU (jours + activités), pas seulement ville+durée :
+  // plusieurs lignes trip_templates peuvent légitimement partager EXACTEMENT
+  // le même contenu — systématique pour nos itinéraires éditoriaux, qui
+  // réutilisent le même bloc "ville" dans plusieurs voyages complets (chaque
+  // groupe a besoin de sa propre ligne, group_id étant mono-valué), et ça
+  // peut tout autant arriver avec deux vrais voyages partagés indépendamment
+  // par des utilisateurs différents pour la même ville. Réduire la durée
+  // affichée pour "faire différent" dégraderait le contenu pour de mauvaises
+  // raisons ; ne garder qu'UN représentant par contenu identique règle le
+  // problème sans toucher à la qualité de l'itinéraire.
+  const allDaysByTemplate = await fetchDaysByTemplate(admin, nearbyCandidates.map((t) => t.id));
+  const contentSignature = (t) => JSON.stringify(
+    (allDaysByTemplate[t.id] || []).map((d) => ({ i: d.dayIndex, a: d.activities.map((act) => act.name) }))
+  );
+
+  const rankedAll = nearbyCandidates
     // Critères demandés satisfaits d'abord (les non-correspondants sont
-    // rétrogradés, jamais exclus), puis correspondance exacte du nombre de
-    // jours, puis popularité. Le tri par critères se fait ICI, avant la
-    // pagination : un modèle "avec enfants" classé 6e par popularité doit
-    // pouvoir remonter dans la première page quand ce filtre est actif.
+    // rétrogradés, jamais exclus), puis un vrai voyage communautaire AVANT un
+    // itinéraire éditorial (is_editorial) — ces derniers n'existent que pour
+    // amorcer les suggestions tant qu'il n'y a pas encore assez de voyages
+    // réels partagés (voir planning_modele_v9.sql) : ne pas les rétrograder
+    // ainsi les ferait remonter devant la communauté dès qu'ils cumulent plus
+    // d'imports, alors qu'ils sont justement les seuls disponibles au début et
+    // accumulent mécaniquement plus d'uses_count. Puis correspondance exacte
+    // du nombre de jours (uniquement si une durée est demandée), puis
+    // popularité. Le tri par critères se fait ICI, avant la pagination : un
+    // modèle "avec enfants" classé 6e par popularité doit pouvoir remonter
+    // dans la première page quand ce filtre est actif.
     .sort((a, b) =>
       criteriaMatchCount(b.criteria, wantedCriteria) - criteriaMatchCount(a.criteria, wantedCriteria)
-      || Math.abs(a.nb_days - plannedDays) - Math.abs(b.nb_days - plannedDays)
-      || b.uses_count - a.uses_count);
-  const { page: nearby, hasMore } = paginateRanked(nearbyAll, offset, MAX_SUGGEST_RESULTS);
+      || (a.is_editorial === b.is_editorial ? 0 : a.is_editorial ? 1 : -1)
+      || (plannedDays ? Math.abs(a.nb_days - plannedDays) - Math.abs(b.nb_days - plannedDays) : 0)
+      || b.uses_count - a.uses_count
+      // Dernier départage, à égalité stricte sur tout ce qui précède (aucun
+      // critère, aucune durée demandée, aucun import) : durée croissante —
+      // sans lui, deux modèles jamais importés se retrouvaient dans un ordre
+      // arbitraire (celui de la requête SQL), ex. "New York 7 jours" listé
+      // après "New York 21 jours" sans raison apparente pour l'utilisateur.
+      || a.nb_days - b.nb_days);
+
+  const seenSignatures = new Set();
+  const dedupedAll = [];
+  for (const t of rankedAll) {
+    const sig = contentSignature(t);
+    if (seenSignatures.has(sig)) continue;
+    seenSignatures.add(sig);
+    dedupedAll.push(t);
+  }
+
+  const { page: nearby, hasMore } = paginateRanked(dedupedAll, offset, MAX_SUGGEST_RESULTS);
 
   if (!nearby.length) return res.status(200).json({ ok: true, templates: [], hasMore: false });
 
   const templateIds = nearby.map((t) => t.id);
-  const daysByTemplate = await fetchDaysByTemplate(admin, templateIds);
+  const daysByTemplate = allDaysByTemplate;
 
   const { data: childTemplates } = await admin
     .from('trip_templates')
@@ -426,8 +479,12 @@ async function handleSuggest(admin, body, res) {
 // ces villes — les autres restent proposés derrière, avec un indicateur
 // côté client listant lesquelles ont effectivement matché.
 async function handleSuggestTrip(admin, body, res) {
+  // nbDays est FACULTATIF : une recherche sans aucun critère (juste le pays)
+  // est valide — elle liste tous les voyages partagés du pays, triés par
+  // critères puis popularité, pour se donner une idée avant de fixer une
+  // durée (la planification peut se faire dans ce sens-là).
   const { countryCode, countryAlpha2, nbDays, nbDaysFlex, mustCityNames, criteria: wantedCriteria } = body;
-  if (!countryCode || !nbDays) {
+  if (!countryCode) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
   const wantedCities = [...new Set((mustCityNames || []).filter(Boolean))];
@@ -438,13 +495,13 @@ async function handleSuggestTrip(admin, body, res) {
   const offset = Math.max(0, parseInt(body.offset, 10) || 0);
 
   const flex = nbDaysFlex ? 1 : 0;
-  const { data: groups } = await admin
+  let groupsQuery = admin
     .from('trip_template_groups')
     .select('id, total_days, uses_count, criteria, is_editorial')
     .eq('country_code', countryCode)
-    .eq('is_public', true)
-    .gte('total_days', nbDays - flex)
-    .lte('total_days', nbDays + flex);
+    .eq('is_public', true);
+  if (nbDays) groupsQuery = groupsQuery.gte('total_days', nbDays - flex).lte('total_days', nbDays + flex);
+  const { data: groups } = await groupsQuery;
 
   if (!groups?.length) return res.status(200).json({ ok: true, groups: [], hasMore: false, mustCitiesResolved: [] });
 
@@ -487,11 +544,18 @@ async function handleSuggestTrip(admin, body, res) {
     // rien à importer : on ne le propose pas.
     .filter((g) => (membersByGroup[g.id] || []).length > 0)
     .map((g) => ({ ...g, matchedMustCities: matchedMustCitiesFor(g.id) }))
+    // Même raisonnement que handleSuggest ci-dessus : un groupe éditorial
+    // (is_editorial) passe toujours après un vrai voyage communautaire, quel
+    // que soit son uses_count.
     .sort((a, b) =>
       b.matchedMustCities.length - a.matchedMustCities.length
       || criteriaMatchCount(b.criteria, wantedCriteria) - criteriaMatchCount(a.criteria, wantedCriteria)
-      || Math.abs(a.total_days - nbDays) - Math.abs(b.total_days - nbDays)
-      || b.uses_count - a.uses_count);
+      || (a.is_editorial === b.is_editorial ? 0 : a.is_editorial ? 1 : -1)
+      || (nbDays ? Math.abs(a.total_days - nbDays) - Math.abs(b.total_days - nbDays) : 0)
+      || b.uses_count - a.uses_count
+      // Même dernier départage que handleSuggest ci-dessus : durée totale
+      // croissante à égalité stricte sur tout le reste.
+      || a.total_days - b.total_days);
   const { page: ranked, hasMore } = paginateRanked(rankedAll, offset, MAX_SUGGEST_RESULTS);
 
   // Aperçu complet : jours/activités de chaque ville membre + excursions
@@ -558,7 +622,7 @@ async function fetchTemplateDaysAndActivities(admin, templateId) {
   const { data: activities } = dayIds.length
     ? await admin
         .from('trip_template_activities')
-        .select('template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes')
+        .select('template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes, wikipedia')
         .in('template_day_id', dayIds)
         .order('position', { ascending: true })
     : { data: [] };
@@ -568,8 +632,13 @@ async function fetchTemplateDaysAndActivities(admin, templateId) {
 }
 
 // Insère les activités d'un modèle dans une ville (existante ou tout juste
-// créée pour une excursion) — startDate peut être null (activités laissées
-// "non planifiées").
+// créée pour une excursion). Sans startDate, la structure relative du modèle
+// n'est PLUS perdue en "non planifié" : chaque activité garde son jour relatif
+// dans pending_day_index (+ son créneau via visit_time et son étirement via
+// duration_minutes), et tout sera converti en vraies dates dès que
+// l'utilisateur choisira une date de départ — voir les RPC
+// anchor_trip_pending_days / anchor_city_pending_days
+// (supabase/planning_modele_v10.sql).
 async function importActivitiesInto(admin, { tripId, cityId, activities, startDate }) {
   const rows = activities.map((a) => {
     const visitDate = startDate ? addDays(startDate, a.dayIndex - 1) : null;
@@ -579,16 +648,23 @@ async function importActivitiesInto(admin, { tripId, cityId, activities, startDa
       name: a.name,
       description: a.description,
       visit_date: visitDate,
-      visit_time: visitDate ? SLOT_TIME[a.time_slot] || null : null,
+      // visit_time même sans date : un "⏰ HH:MM" sans jour est un état déjà
+      // géré par l'UI (voir ActivityItem), et c'est lui qui permet à
+      // l'ancrage différé de replacer l'activité dans le bon créneau.
+      visit_time: SLOT_TIME[a.time_slot] || null,
       category: a.category || 'other',
       position: a.position,
       place_lat: a.place_lat,
       place_lng: a.place_lng,
       place_address: a.place_address,
-      // Étirement sur plusieurs créneaux/jours (voir DayView.jsx) : restauré
-      // seulement si l'activité a une vraie date, comme pour visit_time —
-      // une activité "non planifiée" n'a pas de créneau de départ à étirer.
-      duration_minutes: visitDate ? a.duration_minutes : null,
+      // Étirement sur plusieurs créneaux/jours (voir DayView.jsx) : conservé
+      // aussi en attente de dates — il ne s'affiche étiré qu'une fois daté,
+      // mais l'ancrage différé doit pouvoir le restaurer.
+      duration_minutes: a.duration_minutes,
+      // Slug photo explicite (voir planning_modele_v11.sql) : restauré à
+      // l'import pour qu'un re-partage de ce voyage le conserve à son tour.
+      wikipedia: a.wikipedia,
+      pending_day_index: visitDate ? null : a.dayIndex,
     };
   });
   if (rows.length) await admin.from('trip_activities').insert(rows);
@@ -643,6 +719,10 @@ async function importDaytripChildren(admin, { tripId, destinationId, parentCityI
         position: startPosition + i,
         parent_city_id: parentCityId,
         is_daytrip: true,
+        // Sans date d'ancrage : le décalage de l'excursion par rapport au
+        // jour 1 de sa ville parente est conservé, pour que l'ancrage différé
+        // (anchor_city_pending_days) la date correctement plus tard.
+        pending_day_offset: childStartDate == null ? clampedOffset : null,
       })
       .select('id')
       .single();
@@ -667,13 +747,13 @@ async function handleImport(admin, user, body, res) {
 
   const { data: city } = await admin
     .from('trip_cities')
-    .select('id, destination_id, start_date')
+    .select('id, destination_id, start_date, planned_days')
     .eq('id', cityId)
     .eq('trip_id', tripId)
     .maybeSingle();
   if (!city) return res.status(404).json({ ok: false, reason: 'Ville introuvable.' });
 
-  const { data: template } = await admin.from('trip_templates').select('id').eq('id', templateId).maybeSingle();
+  const { data: template } = await admin.from('trip_templates').select('id, nb_days').eq('id', templateId).maybeSingle();
   if (!template) return res.status(404).json({ ok: false, reason: 'Modèle introuvable.' });
 
   const { data: existingActivities } = await admin.from('trip_activities').select('id').eq('city_id', cityId);
@@ -687,6 +767,19 @@ async function handleImport(admin, user, body, res) {
 
   const activities = await fetchTemplateDaysAndActivities(admin, templateId);
   const importedCount = await importActivitiesInto(admin, { tripId, cityId, activities, startDate: city.start_date });
+
+  // Ville sans nombre de jours renseigné (l'utilisateur regarde les
+  // suggestions AVANT de décider combien de temps rester) : la durée du
+  // planning importé devient sa durée — c'est précisément la décision qu'il
+  // vient de prendre en choisissant ce planning. Jamais écrasé s'il avait
+  // déjà renseigné une durée lui-même.
+  if (city.planned_days == null && template.nb_days) {
+    const { error: daysError } = await admin
+      .from('trip_cities')
+      .update({ planned_days: template.nb_days })
+      .eq('id', cityId);
+    if (daysError) console.error('[trip-templates:import] set planned_days:', daysError);
+  }
 
   const importedChildIds = await importDaytripChildren(admin, {
     tripId,
@@ -776,6 +869,25 @@ async function handleImportTrip(admin, user, body, res) {
   }, null);
   const importAnchorDate = latestEndDate ? addDays(latestEndDate, 1) : trip.start_date;
 
+  // Même protection anti-chevauchement pour le flux SANS dates : un 2e import
+  // "en attente" (pending_day_offset) doit continuer APRÈS le premier, pas
+  // repartir du jour 1 — sinon, au moment de l'ancrage différé, les deux
+  // voyages importés se superposeraient silencieusement sur les mêmes dates
+  // (exactement le chevauchement que latestEndDate ci-dessus évite pour le
+  // flux daté).
+  let pendingBaseOffset = 0;
+  if (!importAnchorDate) {
+    const { data: pendingCities } = await admin
+      .from('trip_cities')
+      .select('pending_day_offset, planned_days')
+      .eq('trip_id', tripId)
+      .is('parent_city_id', null)
+      .not('pending_day_offset', 'is', null);
+    pendingBaseOffset = (pendingCities || []).reduce(
+      (max, c) => Math.max(max, c.pending_day_offset + (c.planned_days || 1)), 0
+    );
+  }
+
   const { count: existingCities } = await admin
     .from('trip_cities')
     .select('id', { count: 'exact', head: true })
@@ -801,6 +913,14 @@ async function handleImportTrip(admin, user, body, res) {
         position: startPosition + i,
         planned_days: member.nb_days,
         start_date: startDate,
+        // Voyage sans aucune date : le décalage de la ville par rapport au
+        // jour 1 du voyage source est conservé (décalé après les éventuels
+        // imports "en attente" précédents, voir pendingBaseOffset) — dès que
+        // l'utilisateur choisira sa date de départ, elle deviendra le jour 1
+        // et toutes les villes/activités en attente seront datées
+        // automatiquement (RPC anchor_trip_pending_days,
+        // planning_modele_v10.sql).
+        pending_day_offset: startDate == null && offset != null ? pendingBaseOffset + offset : null,
       })
       .select('id')
       .single();
