@@ -50,8 +50,8 @@ DECLARE v UUID;
 BEGIN
   v := seed_city('HRV', 'Hvar', 43.1729, 16.4411, 2, p_group, p_pos, p_offset);
   PERFORM seed_day(v, 1, '[
-    ["Ville de Hvar et forteresse espagnole", "Montée au fort au-dessus du port.", "matin", "visit", 43.1740, 16.4400, "Hvar"],
-    ["Îles Pakleni en bateau-taxi", "Criques translucides face à la ville.", "apres-midi", "beach", 43.1620, 16.3950, "Pakleni"],
+    ["Îles Pakleni en bateau-taxi", "Criques translucides face à la ville.", "matin", "beach", 43.1620, 16.3950, "Pakleni"],
+    ["Ville de Hvar et forteresse espagnole", "Montée au fort au-dessus du port.", "apres-midi", "visit", 43.1740, 16.4400, "Hvar"],
     ["Place Saint-Étienne", "Cocktails sur la plus grande place de Dalmatie.", "soir", "night", 43.1725, 16.4420, "Hvar"]]'::jsonb);
   PERFORM seed_day(v, 2, '[
     ["Stari Grad", "L''une des plus vieilles villes d''Europe et sa plaine Unesco.", "matin", "visit", 43.1840, 16.5960, "Stari Grad"],
@@ -85,8 +85,8 @@ BEGIN
     ["Marché Dolac et cathédrale", "Les parasols rouges du ventre de Zagreb.", "apres-midi", "food", 45.8144, 15.9770, "Zagreb"],
     ["Rue Tkalčićeva", "L''artère des cafés et des terrasses.", "soir", "night", 45.8160, 15.9750, "Zagreb"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Musée des Cœurs brisés", "Le musée le plus singulier d''Europe.", "matin", "visit", 45.8151, 15.9733, "Zagreb"],
-    ["Parc Maksimir", "Le grand parc à l''anglaise de la ville.", "apres-midi", "nature", 45.8230, 16.0180, "Zagreb"],
+    ["Parc Maksimir", "Le grand parc à l''anglaise de la ville.", "matin", "nature", 45.8230, 16.0180, "Zagreb"],
+    ["Musée des Cœurs brisés", "Le musée le plus singulier d''Europe.", "apres-midi", "visit", 45.8151, 15.9733, "Zagreb"],
     ["Dernière soirée sur Ban Jelačić", "La place centrale avant le départ.", "soir", "food", 45.8130, 15.9770, "Zagreb"]]'::jsonb);
 END $$;
 

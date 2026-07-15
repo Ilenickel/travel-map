@@ -43,7 +43,7 @@ BEGIN
     ["Arrivée à Assouan", "Passage de l''écluse et nuit à quai.", "soir", "night", 24.0889, 32.8998, "Assouan"]]'::jsonb);
   c := seed_city('EGY', 'Assouan', 24.0889, 32.8998, 1, g, 4, 7);
   PERFORM seed_day(c, 1, '[
-    ["Temple de Philae", "Le sanctuaire d''Isis sauvé des eaux sur son île.", "matin", "visit", 24.0125, 32.8847, "Assouan"],
-    ["Haut barrage et obélisque inachevé", "Le lac Nasser et le granit des pharaons.", "apres-midi", "visit", 23.9707, 32.8770, "Assouan"],
+    ["Haut barrage et obélisque inachevé", "Le lac Nasser et le granit des pharaons.", "matin", "visit", 23.9707, 32.8770, "Assouan"],
+    ["Temple de Philae", "Le sanctuaire d''Isis sauvé des eaux sur son île.", "apres-midi", "visit", 24.0125, 32.8847, "Assouan"],
     ["Felouque autour de l''île Éléphantine", "Voile au couchant entre les rochers noirs.", "soir", "nature", 24.0860, 32.8880, "Assouan"]]'::jsonb);
 END $$;

@@ -65,7 +65,7 @@ BEGIN
     ["3e tunnel d''infiltration et observatoire Dora", "La Corée du Nord à la jumelle.", "apres-midi", "visit", 37.9160, 126.6900, "Paju"],
     ["Retour et bords du fleuve Han", "Pique-nique coréen au parc Yeouido.", "soir", "nature", 37.5280, 126.9340, "Séoul"]]'::jsonb);
   PERFORM seed_day(c, 5, '[
-    ["Gangnam et bibliothèque Starfield (COEX)", "Le quartier de la K-pop et sa bibliothèque cathédrale.", "matin", "visit", 37.5100, 127.0590, "Séoul"],
-    ["Lotte World Tower (Seoul Sky)", "Observatoire au 123e étage, plancher de verre.", "apres-midi", "visit", 37.5126, 127.1025, "Séoul"],
+    ["Lotte World Tower (Seoul Sky)", "Observatoire au 123e étage, plancher de verre.", "matin", "visit", 37.5126, 127.1025, "Séoul"],
+    ["Gangnam et bibliothèque Starfield (COEX)", "Le quartier de la K-pop et sa bibliothèque cathédrale.", "apres-midi", "visit", 37.5100, 127.0590, "Séoul"],
     ["Itaewon", "Quartier cosmopolite, dernière soirée coréenne.", "soir", "night", 37.5345, 126.9946, "Séoul"]]'::jsonb);
 END $$;

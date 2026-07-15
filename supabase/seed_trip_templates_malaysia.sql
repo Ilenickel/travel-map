@@ -38,7 +38,7 @@ BEGIN
     ["Plage de Pantai Cenang", "La grande plage animée de l''île.", "apres-midi", "beach", 6.2930, 99.7280, "Langkawi"],
     ["Coucher de soleil sur la mer d''Andaman", "Cocktail les pieds dans le sable.", "soir", "beach", 6.2920, 99.7270, "Langkawi"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Mangrove de Kilim", "Aigles, grottes et forêts flottantes en bateau.", "matin", "nature", 6.4090, 99.8520, "Langkawi"],
-    ["Cascade des Sept Puits", "Bassins naturels étagés dans la jungle.", "apres-midi", "nature", 6.3820, 99.6740, "Langkawi"],
+    ["Cascade des Sept Puits", "Bassins naturels étagés dans la jungle.", "matin", "nature", 6.3820, 99.6740, "Langkawi"],
+    ["Mangrove de Kilim", "Aigles, grottes et forêts flottantes en bateau.", "apres-midi", "nature", 6.4090, 99.8520, "Langkawi"],
     ["Marché de nuit de Kuah", "Dernière soirée de spécialités malaises.", "soir", "food", 6.3260, 99.8430, "Kuah"]]'::jsonb);
 END $$;

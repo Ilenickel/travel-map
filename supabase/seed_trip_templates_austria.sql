@@ -52,12 +52,12 @@ BEGIN
     ["Rives du lac au couchant", "Le point de vue carte postale du village.", "soir", "nature", 47.5610, 13.6480, "Hallstatt"]]'::jsonb);
   c := seed_city('AUT', 'Innsbruck', 47.2692, 11.4041, 2, g, 3, 6);
   PERFORM seed_day(c, 1, '[
-    ["Petit Toit d''or", "L''emblème gothique de la vieille ville.", "matin", "visit", 47.2687, 11.3936, "Innsbruck"],
-    ["Nordkette", "Funiculaire de Zaha Hadid puis téléphérique à 2 300 m.", "apres-midi", "nature", 47.3120, 11.3800, "Innsbruck"],
+    ["Nordkette", "Funiculaire de Zaha Hadid puis téléphérique à 2 300 m.", "matin", "nature", 47.3120, 11.3800, "Innsbruck"],
+    ["Petit Toit d''or", "L''emblème gothique de la vieille ville.", "apres-midi", "visit", 47.2687, 11.3936, "Innsbruck"],
     ["Maria-Theresien-Strasse", "Façades baroques face aux montagnes.", "soir", "food", 47.2650, 11.3930, "Innsbruck"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Palais impérial d''Innsbruck", "La Hofburg tyrolienne de Marie-Thérèse.", "matin", "visit", 47.2696, 11.3948, "Innsbruck"],
-    ["Tremplin de Bergisel", "L''architecture olympique au-dessus de la ville.", "apres-midi", "visit", 47.2470, 11.3990, "Innsbruck"],
+    ["Tremplin de Bergisel", "L''architecture olympique au-dessus de la ville.", "matin", "visit", 47.2470, 11.3990, "Innsbruck"],
+    ["Palais impérial d''Innsbruck", "La Hofburg tyrolienne de Marie-Thérèse.", "apres-midi", "visit", 47.2696, 11.3948, "Innsbruck"],
     ["Dernière soirée tyrolienne", "Auberge traditionnelle avant le départ.", "soir", "food", 47.2680, 11.3930, "Innsbruck"]]'::jsonb);
 END $$;
 

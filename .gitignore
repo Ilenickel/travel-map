@@ -28,3 +28,6 @@ dist-ssr
 # Worktrees créés par des agents Claude Code (copies temporaires du dépôt,
 # jamais destinées à être versionnées)
 .claude/worktrees/
+
+# Configuration locale créée par `vercel dev` / `vercel link`
+.vercel

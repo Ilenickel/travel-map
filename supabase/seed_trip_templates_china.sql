@@ -17,8 +17,8 @@ DECLARE v UUID; e UUID;
 BEGIN
   v := seed_city('CHN', 'Pékin', 39.9042, 116.4074, CASE WHEN p_five THEN 5 ELSE 4 END, p_group, p_pos, p_offset);
   PERFORM seed_day(v, 1, '[
-    ["Cité interdite", "Palais impérial aux 9 999 pièces.", "matin", "visit", 39.9163, 116.3972, "Pékin"],
-    ["Place Tian''anmen", "La plus grande place du monde.", "apres-midi", "visit", 39.9055, 116.3976, "Pékin"],
+    ["Place Tian''anmen", "La plus grande place du monde.", "matin", "visit", 39.9055, 116.3976, "Pékin"],
+    ["Cité interdite", "Palais impérial aux 9 999 pièces.", "apres-midi", "visit", 39.9163, 116.3972, "Pékin"],
     ["Parc Jingshan", "La Cité interdite vue d''en haut au couchant.", "soir", "nature", 39.9250, 116.3960, "Pékin"]]'::jsonb);
   e := seed_daytrip('CHN', 'Grande Muraille', 40.4319, 116.5704, v, 1);
   PERFORM seed_day(e, 1, '[
@@ -26,8 +26,8 @@ BEGIN
     ["Marche sur les remparts", "Tours de guet et panoramas à perte de vue.", "apres-midi", "nature", 40.4330, 116.5650, "Mutianyu"],
     ["Descente en luge et retour", "Toboggan le long de la muraille puis route vers Pékin.", "soir", "visit", 40.4310, 116.5680, "Mutianyu"]]'::jsonb);
   PERFORM seed_day(v, 3, '[
-    ["Temple du Ciel", "Rotonde aux tuiles bleues des empereurs.", "matin", "visit", 39.8822, 116.4066, "Pékin"],
-    ["Marché de la soie", "Négociation dans le temple de la contrefaçon chic.", "apres-midi", "shopping", 39.9078, 116.4522, "Pékin"],
+    ["Marché de la soie", "Négociation dans le temple de la contrefaçon chic.", "matin", "shopping", 39.9078, 116.4522, "Pékin"],
+    ["Temple du Ciel", "Rotonde aux tuiles bleues des empereurs.", "apres-midi", "visit", 39.8822, 116.4066, "Pékin"],
     ["Canard laqué à Qianmen", "Le plat pékinois par excellence.", "soir", "food", 39.8994, 116.3977, "Pékin"]]'::jsonb);
   PERFORM seed_day(v, 4, '[
     ["Palais d''été", "Lac Kunming et longue galerie peinte.", "matin", "visit", 39.9999, 116.2755, "Pékin"],
@@ -52,8 +52,8 @@ BEGIN
     ["Fosse 2 et musée du site", "Archers, chars et officiers en détail.", "apres-midi", "visit", 34.3846, 109.2780, "Xi''an"],
     ["Tour de la Cloche illuminée", "Cœur de la ville ancienne by night.", "soir", "visit", 34.2610, 108.9423, "Xi''an"]]'::jsonb);
   PERFORM seed_day(v, 2, '[
-    ["Remparts de Xi''an à vélo", "14 km de muraille Ming à parcourir en selle.", "matin", "visit", 34.2662, 108.9430, "Xi''an"],
-    ["Grande pagode de l''oie sauvage", "Pagode Tang aux sutras rapportés d''Inde.", "apres-midi", "visit", 34.2186, 108.9640, "Xi''an"],
+    ["Grande pagode de l''oie sauvage", "Pagode Tang aux sutras rapportés d''Inde.", "matin", "visit", 34.2186, 108.9640, "Xi''an"],
+    ["Remparts de Xi''an à vélo", "14 km de muraille Ming à parcourir en selle.", "apres-midi", "visit", 34.2662, 108.9430, "Xi''an"],
     ["Quartier musulman", "Brochettes, roujiamo et marché nocturne.", "soir", "food", 34.2632, 108.9380, "Xi''an"]]'::jsonb);
   RETURN v;
 END $$;

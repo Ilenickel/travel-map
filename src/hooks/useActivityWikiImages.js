@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useWikipediaImages } from './useWikipediaImages';
+import { normalizeName, tokensOf, matchScore } from '../lib/placeNameMatch';
 
 // Résout une photo Wikipédia/Commons pour les ACTIVITÉS d'un planning suggéré
 // (TripPlanSuggestionsButton / TripFullSuggestions) — "Kinkaku-ji" ne dit rien
@@ -31,52 +32,14 @@ import { useWikipediaImages } from './useWikipediaImages';
 
 const resolutionCache = {}; // clé -> "File:xxx" | slug article | null (résolu sans résultat)
 
-const STOPWORDS = new Set(['the', 'les', 'des', 'and', 'del', 'las', 'los', 'der', 'die', 'das', 'van', 'von']);
-
-function normalizeName(s) {
-  return (s || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .trim();
-}
-
-function tokensOf(s) {
-  return normalizeName(s)
-    .split(' ')
-    .filter((w) => w.length >= 3 && !STOPWORDS.has(w));
-}
-
-// Score de correspondance nom d'activité ↔ titre d'article, dans [0, 1].
+// normalizeName/tokensOf/matchScore : voir src/lib/placeNameMatch.js — score
+// de correspondance nom d'activité ↔ titre candidat, dans [0, 1].
 // Un SCORE (et pas un booléen pris sur le premier candidat) : le geosearch
 // renvoie les articles par DISTANCE, et l'article le plus proche n'est pas le
 // bon — "Esplanade des Ouvriers-de-la-Tour-Eiffel" arrive avant "Tour Eiffel"
 // et contient son nom (constaté sur l'API réelle) ; seul un classement où
 // l'égalité exacte (1.0) bat l'inclusion/le recouvrement partiel choisit le
 // bon article.
-//   - égalité normalisée, brute ou sur les tokens significatifs ("Le Louvre"
-//     vs "Louvre") : 1.0 (couvre aussi les noms CJK sans espaces) ;
-//   - sinon coefficient de Dice sur les tokens (2×communs / total), qui
-//     pénalise les titres à rallonge : "Tour Eiffel" vs l'Esplanade ≈ 0.67,
-//     vs "Torre Eiffel"/"Eiffel Tower" = 0.5 (le nom propre est commun) ;
-//   - bonus (+0.15, plafonné sous l'exact) quand le titre est CONTENU dans le
-//     nom de l'activité : le nom est alors une formulation plus précise de ce
-//     même article — c'est ce qui fait gagner "Grande Muraille" (0.95) contre
-//     "Grande muraille verte (Chine)" (0.86, un programme de reboisement du
-//     Gobi — constaté sur l'API réelle) pour "Grande Muraille de Chine".
-function matchScore(activityName, title) {
-  const na = normalizeName(activityName);
-  const nt = normalizeName(title);
-  if (!na || !nt) return 0;
-  const ta = tokensOf(activityName);
-  const tt = tokensOf(title);
-  if (na === nt || (ta.length && ta.join(' ') === tt.join(' '))) return 1;
-  const common = ta.filter((w) => tt.includes(w)).length;
-  const dice = ta.length + tt.length ? (2 * common) / (ta.length + tt.length) : 0;
-  const included = na.includes(nt) || nt.includes(na);
-  return Math.min(0.95, Math.max(dice + (na.includes(nt) ? 0.15 : 0), included ? 0.6 : 0));
-}
 
 // `requireSpecific` (recherche texte, sans garde-fou géographique) : un titre
 // à un seul token significatif n'est accepté que sur une égalité parfaite —

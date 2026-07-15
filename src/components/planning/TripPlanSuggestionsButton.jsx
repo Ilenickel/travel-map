@@ -5,7 +5,7 @@ import { COUNTRIES } from '../../data/index';
 import { countryAlpha2FromEmoji, formatDuration } from '../../lib/planningUtils';
 import { CriteriaFilterChips, CriteriaIndicators } from './TripFullSuggestions';
 import { useActivityNameTranslations } from '../../lib/translateContent';
-import { useActivityWikiImages } from '../../hooks/useActivityWikiImages';
+import { useActivityPhoto } from '../../hooks/useActivityPhoto';
 import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 
 // 3 créneaux seulement — alignés sur les 3 créneaux réels du calendrier
@@ -74,11 +74,11 @@ function DayTimelineBlock({ day, dayNumber, t, getActivityName, getActivityImage
 // Toutes les activités du template affiché (ville + excursions), pour
 // traduction en lot — même raisonnement que TripFullSuggestions : seul le
 // template COURANT du carrousel est traduit, pas les autres pages chargées.
-function collectTemplateActivities(template) {
+function collectTemplateActivities(template, cityName) {
   if (!template) return [];
   return [
-    ...template.days.flatMap((d) => d.activities),
-    ...template.daytrips.flatMap((dt) => dt.days.flatMap((d) => d.activities)),
+    ...template.days.flatMap((d) => d.activities.map((a) => ({ ...a, _cityName: cityName }))),
+    ...template.daytrips.flatMap((dt) => dt.days.flatMap((d) => d.activities.map((a) => ({ ...a, _cityName: dt.cityName })))),
   ];
 }
 
@@ -242,10 +242,10 @@ export default function TripPlanSuggestionsButton({
   }, [cityName, countryCode, plannedDays]);
 
   const current = templates && templates.length > 0 ? templates[index] : null;
-  const getActivityName = useActivityNameTranslations(collectTemplateActivities(current), i18n.language);
+  const getActivityName = useActivityNameTranslations(collectTemplateActivities(current, cityName), i18n.language);
   // Photos du template COURANT du carrousel uniquement — même retenue que la
   // traduction ci-dessus : pas de résolution pour des pages jamais consultées.
-  const { getActivityImage, loading: photosLoading } = useActivityWikiImages(collectTemplateActivities(current), i18n.language);
+  const { getActivityImage, loading: photosLoading } = useActivityPhoto(collectTemplateActivities(current, cityName), countryCode, i18n.language);
 
   if (baselineCount === 0) return null;
 

@@ -21,8 +21,8 @@ BEGIN
     ["Tombeaux saadiens et palais El Badi", "Nécropole royale et ruines grandioses.", "apres-midi", "visit", 31.6176, -7.9887, "Marrakech"],
     ["Dîner sur une terrasse de la médina", "Tajine face aux minarets illuminés.", "soir", "food", 31.6260, -7.9890, "Marrakech"]]'::jsonb);
   PERFORM seed_day(c, 3, '[
-    ["Jardin Majorelle", "Le bleu Majorelle et le musée Yves Saint Laurent.", "matin", "nature", 31.6417, -8.0035, "Marrakech"],
-    ["Jardin de la Ménara", "Bassin et pavillon face à l''Atlas.", "apres-midi", "nature", 31.6130, -8.0220, "Marrakech"],
+    ["Jardin de la Ménara", "Bassin et pavillon face à l''Atlas.", "matin", "nature", 31.6130, -8.0220, "Marrakech"],
+    ["Jardin Majorelle", "Le bleu Majorelle et le musée Yves Saint Laurent.", "apres-midi", "nature", 31.6417, -8.0035, "Marrakech"],
     ["Quartier des tanneurs", "Cuirs et pigments au nord de la médina.", "soir", "visit", 31.6350, -7.9790, "Marrakech"]]'::jsonb);
   c := seed_city('MAR', 'Ouarzazate', 30.9189, -6.8934, 2, g, 2, 3);
   PERFORM seed_day(c, 1, '[
@@ -52,8 +52,8 @@ BEGIN
   g := seed_group('MAR', 5);
   c := seed_city('MAR', 'Casablanca', 33.5731, -7.5898, 1, g, 1, 0);
   PERFORM seed_day(c, 1, '[
-    ["Mosquée Hassan-II", "Minaret de 210 m posé sur l''océan.", "matin", "visit", 33.6083, -7.6325, "Casablanca"],
-    ["Quartier Habous", "La médina nouvelle aux arcades élégantes.", "apres-midi", "visit", 33.5790, -7.6110, "Casablanca"],
+    ["Quartier Habous", "La médina nouvelle aux arcades élégantes.", "matin", "visit", 33.5790, -7.6110, "Casablanca"],
+    ["Mosquée Hassan-II", "Minaret de 210 m posé sur l''océan.", "apres-midi", "visit", 33.6083, -7.6325, "Casablanca"],
     ["Corniche d''Aïn Diab", "Front de mer et cafés face à l''Atlantique.", "soir", "food", 33.5940, -7.6690, "Casablanca"]]'::jsonb);
   c := seed_city('MAR', 'Rabat', 34.0209, -6.8416, 1, g, 2, 1);
   PERFORM seed_day(c, 1, '[
@@ -71,7 +71,7 @@ BEGIN
     ["Dernière soirée dans la médina", "Tissages et cuisine rifaine.", "soir", "food", 35.1690, -5.2640, "Chefchaouen"]]'::jsonb);
   c := seed_city('MAR', 'Tanger', 35.7595, -5.8340, 1, g, 4, 4);
   PERFORM seed_day(c, 1, '[
-    ["Kasbah de Tanger", "Palais du sultan et vue sur le détroit.", "matin", "visit", 35.7890, -5.8130, "Tanger"],
-    ["Grottes d''Hercule et cap Spartel", "Là où l''Atlantique rencontre la Méditerranée.", "apres-midi", "nature", 35.7920, -5.9380, "Tanger"],
+    ["Grottes d''Hercule et cap Spartel", "Là où l''Atlantique rencontre la Méditerranée.", "matin", "nature", 35.7920, -5.9380, "Tanger"],
+    ["Kasbah de Tanger", "Palais du sultan et vue sur le détroit.", "apres-midi", "visit", 35.7890, -5.8130, "Tanger"],
     ["Café Hafa", "Thé à la menthe face à l''Espagne, avant le départ.", "soir", "food", 35.7880, -5.8180, "Tanger"]]'::jsonb);
 END $$;

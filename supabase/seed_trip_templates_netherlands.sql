@@ -24,9 +24,9 @@ BEGIN
     ["Begijnhof et place du Dam", "Cour secrète puis palais royal.", "apres-midi", "visit", 52.3730, 4.8926, "Amsterdam"],
     ["De Wallen", "Le vieux cœur médiéval by night.", "soir", "night", 52.3740, 4.8980, "Amsterdam"]]'::jsonb);
   PERFORM seed_day(v, 4, '[
-    ["Musée maritime ou Heineken Experience", "Histoire navale ou brasserie interactive.", "matin", "visit", 52.3714, 4.9146, "Amsterdam"],
-    ["NDSM en ferry", "Friche créative sur la rive nord de l''IJ.", "apres-midi", "visit", 52.4010, 4.8940, "Amsterdam"],
-    ["De Pijp et marché Albert Cuyp", "Quartier vivant et stroopwafels.", "soir", "food", 52.3560, 4.8920, "Amsterdam"]]'::jsonb);
+    ["De Pijp et marché Albert Cuyp", "Quartier vivant et stroopwafels.", "matin", "food", 52.3560, 4.8920, "Amsterdam"],
+    ["Musée maritime ou Heineken Experience", "Histoire navale ou brasserie interactive.", "apres-midi", "visit", 52.3714, 4.9146, "Amsterdam"],
+    ["NDSM en ferry", "Friche créative sur la rive nord de l''IJ.", "soir", "visit", 52.4010, 4.8940, "Amsterdam"]]'::jsonb);
   IF p_five THEN
     e := seed_daytrip('NLD', 'Zaanse Schans', 52.4746, 4.8163, v, 4);
     PERFORM seed_day(e, 1, '[

@@ -30,8 +30,8 @@ BEGIN
   IF p_five THEN
     e := seed_daytrip('DEU', 'Potsdam', 52.3906, 13.0645, v, 4);
     PERFORM seed_day(e, 1, '[
-      ["Château de Sanssouci", "Le petit Versailles prussien et ses vignes en terrasses.", "matin", "visit", 52.4042, 13.0385, "Potsdam"],
-      ["Nouveau Palais et parc", "Fastes de Frédéric le Grand.", "apres-midi", "nature", 52.4010, 13.0160, "Potsdam"],
+      ["Nouveau Palais et parc", "Fastes de Frédéric le Grand.", "matin", "nature", 52.4010, 13.0160, "Potsdam"],
+      ["Château de Sanssouci", "Le petit Versailles prussien et ses vignes en terrasses.", "apres-midi", "visit", 52.4042, 13.0385, "Potsdam"],
       ["Quartier hollandais", "Briques rouges et cafés avant le retour.", "soir", "food", 52.4020, 13.0590, "Potsdam"]]'::jsonb);
   END IF;
   RETURN v;

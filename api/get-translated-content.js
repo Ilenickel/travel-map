@@ -24,14 +24,39 @@ const SOURCE_TABLES = {
   review_comment: { table: 'reviews', column: 'comment' },
   destination_review_comment: { table: 'destination_reviews', column: 'comment' },
   country_recommendation_description: { table: 'country_recommendations', column: 'description' },
-  trip_template_activity_name: { table: 'trip_template_activities', column: 'name' },
+  // ÉDITORIAL uniquement (is_editorial = true) : toujours saisi en français
+  // par l'équipe (voir translateContent.js). Un modèle partagé par un vrai
+  // utilisateur (is_editorial = false) peut être dans n'importe quelle
+  // langue puisque l'app est multilingue — voir needsEditorialCheck ci-dessous,
+  // qui distingue les deux cas avant de forcer 'fr'.
+  trip_template_activity_name: { table: 'trip_template_activities', column: 'name', needsEditorialCheck: true },
 };
 
-async function fetchRealSourceText(admin, contentType, contentId, field) {
-  const mapping = SOURCE_TABLES[`${contentType}_${field}`];
-  if (!mapping) return null;
+function sourceMapping(contentType, field) {
+  return SOURCE_TABLES[`${contentType}_${field}`] ?? null;
+}
+
+async function fetchRealSourceText(admin, mapping, contentId) {
   const { data } = await admin.from(mapping.table).select(mapping.column).eq('id', contentId).maybeSingle();
   return data?.[mapping.column] ?? null;
+}
+
+// source_language FIXE ('fr') uniquement pour un itinéraire ÉDITORIAL — sur
+// ces noms courts et saturés de noms propres ("Tour Eiffel et Champ de
+// Mars"), l'auto-détection de Google Translate croit parfois que la source
+// est déjà "en" (peu de mots grammaticaux à reconnaître) et renvoie alors le
+// texte tel quel puisque source == target — le nom reste en français (le
+// "et" qui ne se traduit jamais en est le symptôme visible). Pour un modèle
+// partagé par un vrai utilisateur, aucun indice fiable sur sa langue :
+// laisser Google Translate auto-détecter, comme avant ce correctif.
+async function resolveSourceLanguage(admin, mapping, contentId) {
+  if (!mapping.needsEditorialCheck) return null;
+  const { data } = await admin
+    .from('trip_template_activities')
+    .select('trip_template_days(trip_templates(is_editorial))')
+    .eq('id', contentId)
+    .maybeSingle();
+  return data?.trip_template_days?.trip_templates?.is_editorial ? 'fr' : null;
 }
 
 export default async function handler(req, res) {
@@ -59,8 +84,11 @@ export default async function handler(req, res) {
   try {
     await Promise.all(
       cleanItems.map(async (it) => {
-        const realSourceText = await fetchRealSourceText(admin, it.contentType, it.contentId, it.field);
-        if (!realSourceText) return; // type inconnu ou ligne introuvable : rien à traduire
+        const mapping = sourceMapping(it.contentType, it.field);
+        if (!mapping) return; // type inconnu
+        const realSourceText = await fetchRealSourceText(admin, mapping, it.contentId);
+        if (!realSourceText) return; // ligne introuvable : rien à traduire
+        const sourceLanguage = await resolveSourceLanguage(admin, mapping, it.contentId);
         const key = `${it.contentType}:${it.contentId}:${it.field}`;
         translations[key] = await getTranslatedField({
           admin,
@@ -68,6 +96,7 @@ export default async function handler(req, res) {
           contentId: it.contentId,
           field: it.field,
           sourceText: realSourceText,
+          sourceLanguage,
           targetLanguage,
         });
       })

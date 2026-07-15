@@ -25,8 +25,8 @@ BEGIN
     ["Fish and chips au port", "Le classique face aux bateaux.", "soir", "food", 53.3920, -6.0700, "Howth"]]'::jsonb);
   c := seed_city('IRL', 'Killarney', 52.0599, -9.5044, 2, g, 2, 3);
   PERFORM seed_day(c, 1, '[
-    ["Parc national de Killarney", "Muckross House et jardins au bord des lacs.", "matin", "nature", 52.0190, -9.4970, "Killarney"],
-    ["Cascade de Torc et Ladies View", "Points de vue du parc en calèche ou à vélo.", "apres-midi", "nature", 51.9970, -9.5080, "Killarney"],
+    ["Cascade de Torc et Ladies View", "Points de vue du parc en calèche ou à vélo.", "matin", "nature", 51.9970, -9.5080, "Killarney"],
+    ["Parc national de Killarney", "Muckross House et jardins au bord des lacs.", "apres-midi", "nature", 52.0190, -9.4970, "Killarney"],
     ["Pubs de Killarney", "Ragoût irlandais et fiddle.", "soir", "food", 52.0590, -9.5040, "Killarney"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
     ["Ring of Kerry (côte ouest)", "Boucle mythique entre océan et montagnes.", "matin", "nature", 51.8830, -10.3320, "Portmagee"],
@@ -38,7 +38,7 @@ BEGIN
     ["Le Burren", "Plateau lunaire de calcaire et dolmens.", "apres-midi", "nature", 53.0180, -9.1370, "Burren"],
     ["Arrivée à Galway", "Première pinte sur Quay Street.", "soir", "food", 53.2700, -9.0530, "Galway"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Quartier latin de Galway", "Ruelles pavées et arche espagnole.", "matin", "visit", 53.2710, -9.0540, "Galway"],
-    ["Baie de Galway et Salthill", "Promenade face aux collines du Clare.", "apres-midi", "nature", 53.2600, -9.0800, "Galway"],
+    ["Baie de Galway et Salthill", "Promenade face aux collines du Clare.", "matin", "nature", 53.2600, -9.0800, "Galway"],
+    ["Quartier latin de Galway", "Ruelles pavées et arche espagnole.", "apres-midi", "visit", 53.2710, -9.0540, "Galway"],
     ["Dernière session de musique live", "Fiddle et bodhrán avant le départ.", "soir", "night", 53.2720, -9.0550, "Galway"]]'::jsonb);
 END $$;

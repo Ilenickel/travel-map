@@ -37,8 +37,8 @@ BEGIN
     ["Canggu", "Plages de surf et cafés bohèmes.", "apres-midi", "beach", -8.6478, 115.1385, "Canggu"],
     ["Coucher de soleil à Tanah Lot", "Silhouette du temple dans les vagues.", "soir", "nature", -8.6210, 115.0870, "Tanah Lot"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Temple d''Uluwatu", "Falaises de 70 m au-dessus de l''océan.", "matin", "visit", -8.8291, 115.0849, "Uluwatu"],
-    ["Plages du Bukit", "Padang Padang et Bingin, criques de surf.", "apres-midi", "beach", -8.8110, 115.1030, "Uluwatu"],
+    ["Plages du Bukit", "Padang Padang et Bingin, criques de surf.", "matin", "beach", -8.8110, 115.1030, "Uluwatu"],
+    ["Temple d''Uluwatu", "Falaises de 70 m au-dessus de l''océan.", "apres-midi", "visit", -8.8291, 115.0849, "Uluwatu"],
     ["Danse kecak au couchant", "Le chœur de feu face à l''océan.", "soir", "night", -8.8290, 115.0850, "Uluwatu"]]'::jsonb);
   PERFORM seed_day(c, 3, '[
     ["Plage de Seminyak", "Matinée transats et vagues.", "matin", "beach", -8.6910, 115.1580, "Seminyak"],

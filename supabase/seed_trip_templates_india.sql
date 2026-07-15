@@ -16,8 +16,8 @@ BEGIN
     ["Jama Masjid", "La plus grande mosquée d''Inde.", "apres-midi", "visit", 28.6507, 77.2334, "Delhi"],
     ["Chandni Chowk en rickshaw", "Le bazar labyrinthique du vieux Delhi.", "soir", "food", 28.6560, 77.2300, "Delhi"]]'::jsonb);
   PERFORM seed_day(v, 2, '[
-    ["Tombe de Humayun", "L''ancêtre moghol du Taj Mahal.", "matin", "visit", 28.5933, 77.2507, "Delhi"],
-    ["Qutb Minar", "Le minaret de 73 m du sultanat de Delhi.", "apres-midi", "visit", 28.5245, 77.1855, "Delhi"],
+    ["Qutb Minar", "Le minaret de 73 m du sultanat de Delhi.", "matin", "visit", 28.5245, 77.1855, "Delhi"],
+    ["Tombe de Humayun", "L''ancêtre moghol du Taj Mahal.", "apres-midi", "visit", 28.5933, 77.2507, "Delhi"],
     ["Porte de l''Inde et Rajpath", "L''arc mémorial illuminé.", "soir", "visit", 28.6129, 77.2295, "Delhi"]]'::jsonb);
   PERFORM seed_day(v, 3, '[
     ["Temple du Lotus", "Le sanctuaire bahá''í en forme de fleur.", "matin", "visit", 28.5535, 77.2588, "Delhi"],

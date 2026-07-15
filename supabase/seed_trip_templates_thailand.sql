@@ -60,8 +60,8 @@ BEGIN
     ["Plage de Kata au couchant", "Sable doré et fruits de mer.", "soir", "beach", 7.8200, 98.2980, "Phuket"]]'::jsonb);
   e := seed_daytrip('THA', 'Baie de Phang Nga', 8.2745, 98.5012, v, 1);
   PERFORM seed_day(e, 1, '[
-    ["Île de James Bond (Ko Tapu)", "Le piton karstique du film mythique.", "matin", "nature", 8.2745, 98.5012, "Phang Nga"],
-    ["Kayak dans les hongs", "Lagons secrets accessibles sous les falaises.", "apres-midi", "nature", 8.2500, 98.4900, "Phang Nga"],
+    ["Kayak dans les hongs", "Lagons secrets accessibles sous les falaises.", "matin", "nature", 8.2500, 98.4900, "Phang Nga"],
+    ["Île de James Bond (Ko Tapu)", "Le piton karstique du film mythique.", "apres-midi", "nature", 8.2745, 98.5012, "Phang Nga"],
     ["Village flottant de Ko Panyi", "Village musulman sur pilotis.", "soir", "food", 8.3330, 98.5060, "Ko Panyi"]]'::jsonb);
   e := seed_daytrip('THA', 'Ko Phi Phi', 7.7407, 98.7784, v, 2);
   PERFORM seed_day(e, 1, '[

@@ -4,7 +4,7 @@ import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { countryAlpha2FromEmoji, TRIP_CRITERIA } from '../../lib/planningUtils';
 import { useActivityNameTranslations } from '../../lib/translateContent';
-import { useActivityWikiImages } from '../../hooks/useActivityWikiImages';
+import { useActivityPhoto } from '../../hooks/useActivityPhoto';
 import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 import DaysStepper from './DaysStepper';
 import CitySearchInput from './CitySearchInput';
@@ -127,8 +127,8 @@ function DayTimelineBlock({ day, dayNumber, getActivityName, getActivityImage })
 // jamais consultés.
 function collectGroupActivities(group) {
   return (group?.cities || []).flatMap((city) => [
-    ...city.days.flatMap((d) => d.activities),
-    ...city.daytrips.flatMap((dt) => dt.days.flatMap((d) => d.activities)),
+    ...city.days.flatMap((d) => d.activities.map((a) => ({ ...a, _cityName: city.name }))),
+    ...city.daytrips.flatMap((dt) => dt.days.flatMap((d) => d.activities.map((a) => ({ ...a, _cityName: dt.cityName })))),
   ]);
 }
 
@@ -227,7 +227,7 @@ export default function TripFullSuggestions({
   const getActivityName = useActivityNameTranslations(collectGroupActivities(expandedGroup), i18n.language);
   // Photos des activités du groupe DÉPLIÉ uniquement — même retenue que la
   // traduction ci-dessus : pas de résolution pour des détails jamais consultés.
-  const { getActivityImage, loading: photosLoading } = useActivityWikiImages(collectGroupActivities(expandedGroup), i18n.language);
+  const { getActivityImage, loading: photosLoading } = useActivityPhoto(collectGroupActivities(expandedGroup), dest.country_code, i18n.language);
 
   const toggleCriterion = (key) => {
     setCriteria((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);

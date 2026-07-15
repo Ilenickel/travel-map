@@ -68,8 +68,8 @@ BEGIN
     ["Ville souterraine de Derinkuyu", "Huit niveaux creusés sous terre.", "apres-midi", "visit", 38.3735, 34.7345, "Derinkuyu"],
     ["Dîner cave et danse des derviches", "Soirée traditionnelle troglodyte.", "soir", "night", 38.6430, 34.8280, "Göreme"]]'::jsonb);
   PERFORM seed_day(c, 3, '[
-    ["Vallée de Pasabag", "Cheminées de fées à triple tête.", "matin", "nature", 38.6660, 34.8570, "Pasabag"],
-    ["Citadelle d''Uçhisar", "Piton criblé de galeries, panorama total.", "apres-midi", "visit", 38.6300, 34.8050, "Uçhisar"],
+    ["Citadelle d''Uçhisar", "Piton criblé de galeries, panorama total.", "matin", "visit", 38.6300, 34.8050, "Uçhisar"],
+    ["Vallée de Pasabag", "Cheminées de fées à triple tête.", "apres-midi", "nature", 38.6660, 34.8570, "Pasabag"],
     ["Poterie à Avanos", "Ateliers au bord du Kızılırmak.", "soir", "shopping", 38.7150, 34.8460, "Avanos"]]'::jsonb);
   c := seed_city('TUR', 'Izmir', 38.4237, 27.1428, 3, g, 3, 7);
   e := seed_daytrip('TUR', 'Éphèse', 37.9411, 27.3419, c, 0);

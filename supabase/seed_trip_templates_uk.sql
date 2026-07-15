@@ -35,8 +35,8 @@ BEGIN
       ["Sky Garden", "Jardin panoramique gratuit au 35e étage, la City illuminée.", "soir", "visit", 51.5112, -0.0836, "Londres"]]'::jsonb);
     PERFORM seed_day(v, 6, '[
       ["Natural History Museum et V&A", "Squelettes de dinosaures puis arts décoratifs à Kensington.", "matin", "visit", 51.4967, -0.1764, "Londres"],
-      ["Greenwich", "Cutty Sark, observatoire royal et méridien zéro.", "apres-midi", "visit", 51.4826, -0.0077, "Londres"],
-      ["Pub historique au bord de la Tamise", "Dernière pinte face au fleuve.", "soir", "food", 51.5080, -0.0740, "Londres"]]'::jsonb);
+      ["Pub historique au bord de la Tamise", "Dernière pinte face au fleuve.", "apres-midi", "food", 51.5080, -0.0740, "Londres"],
+      ["Greenwich", "Cutty Sark, observatoire royal et méridien zéro.", "soir", "visit", 51.4826, -0.0077, "Londres"]]'::jsonb);
   END IF;
   RETURN v;
 END $$;
@@ -58,8 +58,8 @@ BEGIN
   c := seed_city('GBR', 'Cardiff', 51.4816, -3.1791, 1, g, 2, 4);
   PERFORM seed_day(c, 1, '[
     ["Château de Cardiff", "Forteresse normande au cœur de la capitale galloise.", "matin", "visit", 51.4822, -3.1810, "Cardiff"],
-    ["Baie de Cardiff", "Wales Millennium Centre et front de mer réaménagé.", "apres-midi", "visit", 51.4645, -3.1630, "Cardiff"],
-    ["Arcades victoriennes", "Cafés et disquaires des galeries couvertes.", "soir", "food", 51.4810, -3.1790, "Cardiff"]]'::jsonb);
+    ["Arcades victoriennes", "Cafés et disquaires des galeries couvertes.", "apres-midi", "food", 51.4810, -3.1790, "Cardiff"],
+    ["Baie de Cardiff", "Wales Millennium Centre et front de mer réaménagé.", "soir", "visit", 51.4645, -3.1630, "Cardiff"]]'::jsonb);
   c := seed_city('GBR', 'Liverpool', 53.4084, -2.9916, 1, g, 3, 5);
   PERFORM seed_day(c, 1, '[
     ["Albert Dock", "Docks classés et musées au bord de la Mersey.", "matin", "visit", 53.4009, -2.9935, "Liverpool"],

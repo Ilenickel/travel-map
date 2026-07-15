@@ -46,8 +46,8 @@ BEGIN
     ["Remparts et rue Saint-Jean", "La seule ville fortifiée d''Amérique du Nord.", "soir", "food", 46.8130, -71.2100, "Québec"]]'::jsonb);
   e := seed_daytrip('CAN', 'Chute Montmorency', 46.8906, -71.1475, c, 1);
   PERFORM seed_day(e, 1, '[
-    ["Chute Montmorency", "83 m, plus haute que le Niagara.", "matin", "nature", 46.8906, -71.1475, "Québec"],
-    ["Île d''Orléans", "Vergers, cidreries et villages anciens.", "apres-midi", "food", 46.9330, -70.9860, "Île d''Orléans"],
+    ["Île d''Orléans", "Vergers, cidreries et villages anciens.", "matin", "food", 46.9330, -70.9860, "Île d''Orléans"],
+    ["Chute Montmorency", "83 m, plus haute que le Niagara.", "apres-midi", "nature", 46.8906, -71.1475, "Québec"],
     ["Dernière soirée dans le Vieux-Québec", "Table québécoise avant le départ.", "soir", "food", 46.8120, -71.2050, "Québec"]]'::jsonb);
 
   -- ─── 12 jours : Ouest ──────────────────────────────────────────
@@ -58,8 +58,8 @@ BEGIN
     ["Canada Place et Gastown", "Voiles blanches puis horloge à vapeur.", "apres-midi", "visit", 49.2854, -123.1115, "Vancouver"],
     ["Granville Island", "Marché public et brasseries sur l''eau.", "soir", "food", 49.2712, -123.1340, "Vancouver"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Pont suspendu de Capilano", "Passerelles dans la canopée de la forêt pluviale.", "matin", "nature", 49.3429, -123.1149, "North Vancouver"],
-    ["Grouse Mountain", "Téléphérique et grizzlys au sommet.", "apres-midi", "nature", 49.3800, -123.0810, "North Vancouver"],
+    ["Grouse Mountain", "Téléphérique et grizzlys au sommet.", "matin", "nature", 49.3800, -123.0810, "North Vancouver"],
+    ["Pont suspendu de Capilano", "Passerelles dans la canopée de la forêt pluviale.", "apres-midi", "nature", 49.3429, -123.1149, "North Vancouver"],
     ["English Bay", "Coucher de soleil sur la plage urbaine.", "soir", "beach", 49.2860, -123.1440, "Vancouver"]]'::jsonb);
   e := seed_daytrip('CAN', 'Whistler', 50.1163, -122.9574, c, 2);
   PERFORM seed_day(e, 1, '[
@@ -67,8 +67,8 @@ BEGIN
     ["Village de Whistler", "Station olympique au pied des pistes.", "apres-midi", "visit", 50.1163, -122.9574, "Whistler"],
     ["Télécabine Peak 2 Peak", "Record du monde entre deux sommets.", "soir", "nature", 50.0590, -122.9480, "Whistler"]]'::jsonb);
   PERFORM seed_day(c, 4, '[
-    ["Kitsilano", "Plage et cafés du quartier bohème.", "matin", "beach", 49.2730, -123.1540, "Vancouver"],
-    ["Musée d''anthropologie (MOA)", "Grands mâts et art des Premières Nations.", "apres-midi", "visit", 49.2699, -123.2588, "Vancouver"],
+    ["Musée d''anthropologie (MOA)", "Grands mâts et art des Premières Nations.", "matin", "visit", 49.2699, -123.2588, "Vancouver"],
+    ["Kitsilano", "Plage et cafés du quartier bohème.", "apres-midi", "beach", 49.2730, -123.1540, "Vancouver"],
     ["Chinatown et dîner asiatique", "L''un des plus grands Chinatowns d''Amérique.", "soir", "food", 49.2800, -123.1000, "Vancouver"]]'::jsonb);
   c := seed_city('CAN', 'Kamloops', 50.6745, -120.3273, 1, g, 2, 4);
   PERFORM seed_day(c, 1, '[
@@ -81,8 +81,8 @@ BEGIN
     ["Canyon Maligne", "Gorges et passerelles vertigineuses.", "apres-midi", "nature", 52.9230, -118.0000, "Jasper"],
     ["Observation de la faune", "Wapitis et ours noirs au crépuscule.", "soir", "nature", 52.8730, -118.0810, "Jasper"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Téléphérique des Whistlers", "Panorama alpin à 2 277 m.", "matin", "nature", 52.8480, -118.1160, "Jasper"],
-    ["Chutes Athabasca", "Puissance brute dans la roche.", "apres-midi", "nature", 52.6640, -117.8880, "Jasper"],
+    ["Chutes Athabasca", "Puissance brute dans la roche.", "matin", "nature", 52.6640, -117.8880, "Jasper"],
+    ["Téléphérique des Whistlers", "Panorama alpin à 2 277 m.", "apres-midi", "nature", 52.8480, -118.1160, "Jasper"],
     ["Lac Pyramid", "Reflets du mont Pyramid au couchant.", "soir", "nature", 52.9190, -118.0950, "Jasper"]]'::jsonb);
   PERFORM seed_day(c, 3, '[
     ["Promenade des Glaciers", "L''Icefields Parkway, plus belle route du monde.", "matin", "nature", 52.2200, -117.2240, "Icefields Parkway"],
@@ -99,8 +99,8 @@ BEGIN
     ["Téléphérique du mont Sulphur", "Crête panoramique sur toute la vallée.", "apres-midi", "nature", 51.1490, -115.5730, "Banff"],
     ["Sources chaudes Banff Upper", "Bain à 40° face aux sommets enneigés.", "soir", "nature", 51.1500, -115.5620, "Banff"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Lac Minnewanka", "Croisière sur le plus grand lac du parc.", "matin", "nature", 51.2540, -115.5040, "Banff"],
-    ["Canyon Johnston", "Passerelles jusqu''aux chutes gelées ou vives.", "apres-midi", "nature", 51.2450, -115.8390, "Banff"],
+    ["Canyon Johnston", "Passerelles jusqu''aux chutes gelées ou vives.", "matin", "nature", 51.2450, -115.8390, "Banff"],
+    ["Lac Minnewanka", "Croisière sur le plus grand lac du parc.", "apres-midi", "nature", 51.2540, -115.5040, "Banff"],
     ["Vermilion Lakes", "Le mont Rundle en miroir au couchant.", "soir", "nature", 51.1790, -115.6070, "Banff"]]'::jsonb);
   PERFORM seed_day(c, 3, '[
     ["Lac Two Jack au lever du jour", "Brumes matinales sur l''eau.", "matin", "nature", 51.2320, -115.5010, "Banff"],

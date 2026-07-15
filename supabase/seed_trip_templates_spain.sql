@@ -15,8 +15,8 @@ DECLARE v_city UUID; v_exc UUID;
 BEGIN
   v_city := seed_city('ESP', 'Barcelone', 41.3874, 2.1686, p_days, p_group, p_pos, p_offset);
   PERFORM seed_day(v_city, 1, '[
-    ["Sagrada Família", "Basilique inachevée de Gaudí, chef-d''œuvre absolu.", "matin", "visit", 41.4036, 2.1744, "Barcelone"],
-    ["Parc Güell", "Mosaïques et salamandre de Gaudí sur les hauteurs.", "apres-midi", "nature", 41.4145, 2.1527, "Barcelone"],
+    ["Parc Güell", "Mosaïques et salamandre de Gaudí sur les hauteurs.", "matin", "nature", 41.4145, 2.1527, "Barcelone"],
+    ["Sagrada Família", "Basilique inachevée de Gaudí, chef-d''œuvre absolu.", "apres-midi", "visit", 41.4036, 2.1744, "Barcelone"],
     ["Barrio Gótico", "Ruelles médiévales et cathédrale de Barcelone.", "soir", "visit", 41.3833, 2.1760, "Barcelone"]]'::jsonb);
   PERFORM seed_day(v_city, 2, '[
     ["La Rambla et marché de la Boqueria", "Artère mythique et halles gourmandes.", "matin", "food", 41.3818, 2.1719, "Barcelone"],

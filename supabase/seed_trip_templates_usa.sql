@@ -166,8 +166,8 @@ BEGIN
     ["Ocean Drive by night", "Néons pastel et rooftops.", "soir", "night", 25.7796, -80.1300, "Miami Beach"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
     ["Wynwood Walls", "Musée de street art à ciel ouvert.", "matin", "visit", 25.8010, -80.1994, "Miami"],
-    ["Little Havana", "Calle Ocho, dominos et cafecito cubain.", "apres-midi", "food", 25.7654, -80.2196, "Miami"],
-    ["Bayside Marketplace", "Marina et vue sur la skyline.", "soir", "visit", 25.7784, -80.1867, "Miami"]]'::jsonb);
+    ["Bayside Marketplace", "Marina et vue sur la skyline.", "apres-midi", "visit", 25.7784, -80.1867, "Miami"],
+    ["Little Havana", "Calle Ocho, dominos et cafecito cubain.", "soir", "food", 25.7654, -80.2196, "Miami"]]'::jsonb);
   e := seed_daytrip('USA', 'Everglades', 25.2866, -80.8987, c, 2);
   PERFORM seed_day(e, 1, '[
     ["Hydroglisseur dans les Everglades", "Marais de sawgrass à toute vitesse.", "matin", "nature", 25.7617, -80.7333, "Everglades"],
@@ -226,8 +226,8 @@ BEGIN
     ["Bright Angel Trail", "Descente partielle dans le canyon.", "apres-midi", "nature", 36.0572, -112.1435, "Grand Canyon Village"],
     ["Desert View Watchtower", "Coucher de soleil sur le Colorado.", "soir", "nature", 36.0440, -111.8261, "Grand Canyon"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
-    ["Horseshoe Bend", "Méandre parfait du Colorado vu d''en haut.", "matin", "nature", 36.8791, -111.5104, "Page"],
-    ["Antelope Canyon", "Canyon en fente aux courbes de grès sculptées.", "apres-midi", "nature", 36.8619, -111.3743, "Page"],
+    ["Antelope Canyon", "Canyon en fente aux courbes de grès sculptées.", "matin", "nature", 36.8619, -111.3743, "Page"],
+    ["Horseshoe Bend", "Méandre parfait du Colorado vu d''en haut.", "apres-midi", "nature", 36.8791, -111.5104, "Page"],
     ["Lac Powell", "Baignade ou croisière au couchant.", "soir", "nature", 36.9147, -111.4558, "Page"]]'::jsonb);
   c := seed_city('USA', 'Springdale', 37.1889, -112.9989, 2, g, 4, 7);
   PERFORM seed_day(c, 1, '[

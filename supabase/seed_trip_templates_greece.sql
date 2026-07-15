@@ -59,8 +59,8 @@ BEGIN
     ["Dernière soirée à Chora", "Ruelles blanches et bougainvilliers.", "soir", "food", 37.4460, 25.3280, "Mykonos"]]'::jsonb);
   c := seed_city('GRC', 'Santorin', 36.3932, 25.4615, 4, g, 3, 6);
   PERFORM seed_day(c, 1, '[
-    ["Fira", "Capitale accrochée au bord de la caldeira.", "matin", "visit", 36.4166, 25.4326, "Santorin"],
-    ["Sentier Fira-Imerovigli", "Marche en balcon au-dessus du volcan.", "apres-midi", "nature", 36.4330, 25.4230, "Santorin"],
+    ["Sentier Fira-Imerovigli", "Marche en balcon au-dessus du volcan.", "matin", "nature", 36.4330, 25.4230, "Santorin"],
+    ["Fira", "Capitale accrochée au bord de la caldeira.", "apres-midi", "visit", 36.4166, 25.4326, "Santorin"],
     ["Dîner face à la caldeira", "Tomatokeftedes et assyrtiko au couchant.", "soir", "food", 36.4200, 25.4300, "Santorin"]]'::jsonb);
   PERFORM seed_day(c, 2, '[
     ["Oia", "Le village aux coupoles bleues.", "matin", "visit", 36.4618, 25.3753, "Santorin"],

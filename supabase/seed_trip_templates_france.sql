@@ -75,8 +75,8 @@ DECLARE v_city UUID; v_exc UUID;
 BEGIN
   v_city := seed_city('FRA', 'Bordeaux', 44.8378, -0.5792, 2, p_group, p_pos, p_offset);
   PERFORM seed_day(v_city, 1, '[
-    ["Place de la Bourse et miroir d''eau", "Façade XVIIIe reflétée dans le plus grand miroir d''eau du monde.", "matin", "visit", 44.8412, -0.5704, "Bordeaux"],
-    ["Cité du Vin", "Musée immersif du vin, dégustation panoramique au belvédère.", "apres-midi", "visit", 44.8627, -0.5504, "Bordeaux"],
+    ["Cité du Vin", "Musée immersif du vin, dégustation panoramique au belvédère.", "matin", "visit", 44.8627, -0.5504, "Bordeaux"],
+    ["Place de la Bourse et miroir d''eau", "Façade XVIIIe reflétée dans le plus grand miroir d''eau du monde.", "apres-midi", "visit", 44.8412, -0.5704, "Bordeaux"],
     ["Quartier Saint-Pierre et rue Sainte-Catherine", "Ruelles animées et plus longue rue commerçante d''Europe.", "soir", "food", 44.8393, -0.5717, "Bordeaux"]]'::jsonb);
   v_exc := seed_daytrip('FRA', 'Saint-Émilion', 44.8934, -0.1552, v_city, 1);
   PERFORM seed_day(v_exc, 1, '[
@@ -97,8 +97,8 @@ BEGIN
     ["Château de Chenonceau", "Le château des Dames enjambant le Cher.", "apres-midi", "visit", 47.3249, 1.0706, "Chenonceaux"],
     ["Amboise", "Château royal et Clos Lucé, dernière demeure de Léonard de Vinci.", "soir", "visit", 47.4136, 0.9860, "Amboise"]]'::jsonb);
   PERFORM seed_day(v_city, 2, '[
-    ["Château de Villandry", "Jardins Renaissance en terrasses, potager décoratif.", "matin", "nature", 47.3400, 0.5140, "Villandry"],
-    ["Château d''Azay-le-Rideau", "Joyau Renaissance posé sur l''Indre.", "apres-midi", "visit", 47.2593, 0.4657, "Azay-le-Rideau"],
+    ["Château d''Azay-le-Rideau", "Joyau Renaissance posé sur l''Indre.", "matin", "visit", 47.2593, 0.4657, "Azay-le-Rideau"],
+    ["Château de Villandry", "Jardins Renaissance en terrasses, potager décoratif.", "apres-midi", "nature", 47.3400, 0.5140, "Villandry"],
     ["Vieux Tours", "Place Plumereau et maisons à colombages.", "soir", "food", 47.3936, 0.6829, "Tours"]]'::jsonb);
   RETURN v_city;
 END $$;
@@ -129,8 +129,8 @@ BEGIN
     ["Place des Cardeurs", "Terrasses provençales au soleil couchant.", "soir", "food", 43.5290, 5.4460, "Aix-en-Provence"]]'::jsonb);
   v_exc := seed_daytrip('FRA', 'Arles', 43.6766, 4.6278, v_city, v_arles_offset);
   PERFORM seed_day(v_exc, 1, '[
-    ["Arènes d''Arles", "Amphithéâtre romain toujours en activité.", "matin", "visit", 43.6777, 4.6310, "Arles"],
-    ["Camargue", "Étangs, chevaux blancs et flamants roses.", "apres-midi", "nature", 43.5292, 4.4287, "Saintes-Maries-de-la-Mer"],
+    ["Camargue", "Étangs, chevaux blancs et flamants roses.", "matin", "nature", 43.5292, 4.4287, "Saintes-Maries-de-la-Mer"],
+    ["Arènes d''Arles", "Amphithéâtre romain toujours en activité.", "apres-midi", "visit", 43.6777, 4.6310, "Arles"],
     ["Place du Forum", "Café Van Gogh et soirée arlésienne.", "soir", "food", 43.6778, 4.6277, "Arles"]]'::jsonb);
   RETURN v_city;
 END $$;
@@ -186,8 +186,8 @@ BEGIN
   PERFORM seed_fr_bordeaux(g, 2, 4);
   c := seed_city('FRA', 'Biarritz', 43.4832, -1.5586, 2, g, 3, 6);
   PERFORM seed_day(c, 1, '[
-    ["Grande Plage et Rocher de la Vierge", "Front de mer impérial et passerelle Eiffel.", "matin", "beach", 43.4844, -1.5590, "Biarritz"],
-    ["Phare de Biarritz", "Vue sur la côte basque depuis la pointe Saint-Martin.", "apres-midi", "visit", 43.4961, -1.5539, "Biarritz"],
+    ["Phare de Biarritz", "Vue sur la côte basque depuis la pointe Saint-Martin.", "matin", "visit", 43.4961, -1.5539, "Biarritz"],
+    ["Grande Plage et Rocher de la Vierge", "Front de mer impérial et passerelle Eiffel.", "apres-midi", "beach", 43.4844, -1.5590, "Biarritz"],
     ["Port des Pêcheurs", "Cabanes de pêcheurs et tapas basques.", "soir", "food", 43.4837, -1.5643, "Biarritz"]]'::jsonb);
   e := seed_daytrip('FRA', 'Saint-Jean-de-Luz', 43.3887, -1.6631, c, 1);
   PERFORM seed_day(e, 1, '[

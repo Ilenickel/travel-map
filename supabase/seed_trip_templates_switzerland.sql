@@ -21,8 +21,8 @@ BEGIN
     ["Terrasses de Lavaux", "Vignobles Unesco au-dessus du lac.", "soir", "nature", 46.4920, 6.7440, "Lavaux"]]'::jsonb);
   c := seed_city('CHE', 'Interlaken', 46.6863, 7.8632, 2, g, 2, 2);
   PERFORM seed_day(c, 1, '[
-    ["Harder Kulm", "Funiculaire vers la vue sur les deux lacs.", "matin", "nature", 46.6970, 7.8560, "Interlaken"],
-    ["Croisière sur le lac de Brienz", "Eaux turquoise entre les parois.", "apres-midi", "nature", 46.7260, 7.9650, "Brienz"],
+    ["Croisière sur le lac de Brienz", "Eaux turquoise entre les parois.", "matin", "nature", 46.7260, 7.9650, "Brienz"],
+    ["Harder Kulm", "Funiculaire vers la vue sur les deux lacs.", "apres-midi", "nature", 46.6970, 7.8560, "Interlaken"],
     ["Höheweg", "L''esplanade face à la Jungfrau.", "soir", "visit", 46.6860, 7.8600, "Interlaken"]]'::jsonb);
   e := seed_daytrip('CHE', 'Jungfraujoch', 46.5474, 7.9857, c, 1);
   PERFORM seed_day(e, 1, '[
@@ -31,8 +31,8 @@ BEGIN
     ["Lauterbrunnen et ses cascades", "La vallée aux 72 chutes au retour.", "soir", "nature", 46.5936, 7.9081, "Lauterbrunnen"]]'::jsonb);
   c := seed_city('CHE', 'Lucerne', 47.0502, 8.3093, 1, g, 3, 4);
   PERFORM seed_day(c, 1, '[
-    ["Pont de la Chapelle", "Le pont de bois fleuri du XIVe siècle.", "matin", "visit", 47.0517, 8.3072, "Lucerne"],
-    ["Mont Pilatus", "Bateau puis crémaillère la plus raide du monde.", "apres-midi", "nature", 46.9790, 8.2540, "Pilatus"],
+    ["Mont Pilatus", "Bateau puis crémaillère la plus raide du monde.", "matin", "nature", 46.9790, 8.2540, "Pilatus"],
+    ["Pont de la Chapelle", "Le pont de bois fleuri du XIVe siècle.", "apres-midi", "visit", 47.0517, 8.3072, "Lucerne"],
     ["Vieille ville de Lucerne", "Façades peintes et lion mourant.", "soir", "visit", 47.0520, 8.3060, "Lucerne"]]'::jsonb);
   c := seed_city('CHE', 'Zurich', 47.3769, 8.5417, 1, g, 4, 5);
   PERFORM seed_day(c, 1, '[

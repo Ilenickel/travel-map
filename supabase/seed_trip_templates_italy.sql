@@ -38,8 +38,8 @@ BEGIN
   END IF;
   IF p_days >= 7 THEN
     PERFORM seed_day(v, 6, '[
-      ["Thermes de Caracalla", "Les bains monumentaux de la Rome impériale.", "matin", "visit", 41.8790, 12.4925, "Rome"],
-      ["Via Appia antique et catacombes", "La reine des voies romaines et ses galeries souterraines.", "apres-midi", "visit", 41.8558, 12.5150, "Rome"],
+      ["Via Appia antique et catacombes", "La reine des voies romaines et ses galeries souterraines.", "matin", "visit", 41.8558, 12.5150, "Rome"],
+      ["Thermes de Caracalla", "Les bains monumentaux de la Rome impériale.", "apres-midi", "visit", 41.8790, 12.4925, "Rome"],
       ["Testaccio", "Le quartier de la vraie cuisine romaine.", "soir", "food", 41.8760, 12.4750, "Rome"]]'::jsonb);
     e := seed_daytrip('ITA', 'Tivoli', 41.9633, 12.7958, v, 6);
     PERFORM seed_day(e, 1, '[
@@ -85,8 +85,8 @@ BEGIN
     ["Palais des Doges", "Salles d''apparat et pont des Soupirs.", "apres-midi", "visit", 45.4337, 12.3401, "Venise"],
     ["Gondole au crépuscule", "Petits canaux loin de la foule.", "soir", "visit", 45.4340, 12.3380, "Venise"]]'::jsonb);
   PERFORM seed_day(v, 2, '[
-    ["Pont du Rialto et marché", "Poissons et primeurs au bord du Grand Canal.", "matin", "food", 45.4380, 12.3358, "Venise"],
-    ["Murano et Burano", "Souffleurs de verre et maisons multicolores.", "apres-midi", "visit", 45.4853, 12.4167, "Venise"],
+    ["Murano et Burano", "Souffleurs de verre et maisons multicolores.", "matin", "visit", 45.4853, 12.4167, "Venise"],
+    ["Pont du Rialto et marché", "Poissons et primeurs au bord du Grand Canal.", "apres-midi", "food", 45.4380, 12.3358, "Venise"],
     ["Bacari de Cannaregio", "Cicchetti et spritz sur les fondamenta.", "soir", "food", 45.4450, 12.3320, "Venise"]]'::jsonb);
   IF p_days = 3 THEN
     PERFORM seed_day(v, 3, '[

@@ -5,43 +5,10 @@ import i18n from '../../i18n';
 import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
 import { localizeField } from '../../lib/localizeCountry';
-import { normalizeStr, countryAlpha2FromEmoji } from '../../lib/planningUtils';
+import { countryAlpha2FromEmoji, matchingStaticDestinations, namesMatch } from '../../lib/planningUtils';
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { formatWikiAttribution } from '../../lib/wikiAttribution';
 import WikiImage from '../WikiImage';
-
-// Qualificatif administratif générique ("City", "Ville de…") retiré avant
-// comparaison : une ville de planification nommée "New York" (nom renvoyé
-// tel quel par l'autocomplete) doit reconnaître la destination en dur
-// "New York City" (voir src/data/usa.js) comme la MÊME ville, pas une ville
-// différente — sans ce retrait, un nom de destination rédigé avec ce
-// qualificatif ("Ho Chi Minh City", "Ville de Québec"…) ne matchait la ville
-// de planification correspondante que si l'utilisateur l'avait tapée avec
-// exactement le même suffixe.
-const CITY_QUALIFIER_RE = /\b(city|ville(?:\s+de)?|ciudad(?:\s+de)?)\b/g;
-function stripCityQualifier(normalized) {
-  return normalized.replace(CITY_QUALIFIER_RE, ' ').replace(/\s+/g, ' ').trim();
-}
-
-// Comparaison stricte (exacte ou sous-chaîne, pas de tolérance Levenshtein) —
-// utilisée pour le matching ville↔destination et la détection "déjà ajouté",
-// où une comparaison trop permissive risquerait de faux positifs entre deux
-// lieux réels différents mais orthographiquement proches (ex. "Grand Palace"
-// à Bangkok vs "Grand Place" à Bruxelles). La confiance de géocodage (plus
-// tolérante, avec repli IA) est gérée côté serveur — voir api/geocode-place.js
-// et api/_lib/geocodeConfidence.js. Le retrait du qualificatif administratif
-// générique (ci-dessus) reste sûr : il ne court-circuite jamais la
-// comparaison stricte, il élargit seulement ce qui est comparé.
-function namesMatch(a, b) {
-  const na = normalizeStr(a || '');
-  const nb = normalizeStr(b || '');
-  if (!na || !nb) return false;
-  if (na === nb || na.includes(nb) || nb.includes(na)) return true;
-  const sa = stripCityQualifier(na);
-  const sb = stripCityQualifier(nb);
-  if (!sa || !sb) return false;
-  return sa === sb || sa.includes(sb) || sb.includes(sa);
-}
 
 // Bouton "X lieux conseillés" affiché après l'ajout d'une ville en planification.
 // Interroge les lieux communautaires + statiques déjà connus pour la
@@ -51,22 +18,6 @@ function namesMatch(a, b) {
 // cours de planification. La géolocalisation est résolue à la volée
 // (Geoapify) au moment de l'ajout, best-effort : le lieu reste ajoutable même
 // si elle échoue.
-
-// Un nom de destination statique peut être une chaîne brute ou un objet bilingue { fr, en }.
-function staticDestNames(name) {
-  if (name && typeof name === 'object') return [name.fr, name.en].filter(Boolean);
-  return [name].filter(Boolean);
-}
-
-// Matching des destinations statiques (src/data/<pays>.js) fait ici, côté
-// client, où ces ~186 fichiers sont déjà chargés : les importer depuis une
-// fonction serverless échouerait (imports sans extension non résolus par le
-// loader ESM strict de Node, contrairement au bundler Vite utilisé ici).
-function matchingStaticDestinations(cityName, countryCode) {
-  const country = COUNTRIES[countryCode];
-  return (country?.destinations || [])
-    .filter((d) => staticDestNames(d.name).some((n) => namesMatch(n, cityName)));
-}
 
 // Lieux éditoriaux (mustSee) des destinations statiques correspondantes : déjà
 // bilingues { fr, en } dans le JSON, donc simple localizeField — pas besoin de

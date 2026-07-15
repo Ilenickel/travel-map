@@ -420,8 +420,8 @@ BEGIN
     ["Observatoire du gouvernement métropolitain", "Vue panoramique gratuite depuis le 45e étage.", "apres-midi", "visit", 35.6896, 139.6917, "Shinjuku, Tokyo"],
     ["Omoide Yokochō et Golden Gai", "Gargotes à yakitori puis micro-bars de Shinjuku.", "soir", "food", 35.6938, 139.6997, "Shinjuku, Tokyo"]]'::jsonb);
   PERFORM seed_day(c, 5, '[
-    ["teamLab Planets", "Musée d''art numérique immersif, les pieds dans l''eau.", "matin", "visit", 35.6493, 139.7898, "Toyosu, Tokyo"],
-    ["Odaiba", "Île futuriste de la baie, Gundam géant et centres commerciaux.", "apres-midi", "visit", 35.6270, 139.7768, "Odaiba, Tokyo"],
+    ["Odaiba", "Île futuriste de la baie, Gundam géant et centres commerciaux.", "matin", "visit", 35.6270, 139.7768, "Odaiba, Tokyo"],
+    ["teamLab Planets", "Musée d''art numérique immersif, les pieds dans l''eau.", "apres-midi", "visit", 35.6493, 139.7898, "Toyosu, Tokyo"],
     ["Tokyo Skytree", "634 m au-dessus de la ville illuminée.", "soir", "visit", 35.7101, 139.8107, "Sumida, Tokyo"]]'::jsonb);
   e := seed_daytrip('JPN', 'Kamakura', 35.3192, 139.5467, c, 5);
   PERFORM seed_day(e, 1, '[
