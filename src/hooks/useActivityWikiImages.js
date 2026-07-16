@@ -91,9 +91,19 @@ async function candidateTitles(wiki, mode, name, lat, lng) {
   return (data?.query?.search || []).map((s) => s.title);
 }
 
+// L'image "à la une" (pageimage) d'un article n'est pas toujours une photo
+// du lieu : c'est souvent un logo/blason/drapeau institutionnel (ex. le
+// wordmark du Centre Pompidou plutôt qu'une photo du bâtiment) — quasi
+// toujours en SVG (les photos ne le sont jamais) ou nommé explicitement
+// comme tel. Rejetée ici plutôt que filtrée par useWikipediaImages : ce
+// dernier ne voit que le nom de fichier final, sans savoir s'il a été choisi
+// par correspondance géo/nom ou explicitement écarté pour ce motif.
+const NON_PHOTO_FILENAME_RE = /\.svg$|logo|wordmark|seal_of|coat_of_arms|blason|armoiries|flag_of|drapeau_de/i;
+
 // Nom du fichier "image à la une" (pageimage) d'un article sur ce wiki —
 // c'est lui (préfixé "File:") qui sera résolu/vérifié via Commons par
-// useWikipediaImages. null si l'article n'a pas d'image.
+// useWikipediaImages. null si l'article n'a pas d'image (ou seulement un
+// logo/blason non représentatif, voir NON_PHOTO_FILENAME_RE).
 async function pageImageFile(wiki, title) {
   const data = await fetchJson(
     `https://${wiki}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}` +
@@ -101,7 +111,7 @@ async function pageImageFile(wiki, title) {
   );
   const pages = data?.query?.pages || {};
   for (const page of Object.values(pages)) {
-    if (page.pageimage) return `File:${page.pageimage}`;
+    if (page.pageimage && !NON_PHOTO_FILENAME_RE.test(page.pageimage)) return `File:${page.pageimage}`;
   }
   return null;
 }
