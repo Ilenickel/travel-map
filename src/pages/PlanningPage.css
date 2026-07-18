@@ -5003,6 +5003,14 @@ button.pp-sidebar-toggle {
     user-select: none;
   }
 
+  /* Sans portail (voir ActivityItem.jsx), la carte glissée reste à sa place
+     dans le DOM au lieu d'être téléportée en fin de document — dans "Non
+     planifiées", elle vient donc AVANT les sections de jours dans l'ordre du
+     DOM et passe dessous par défaut (aucun des deux n'a de z-index). */
+  .pp-day-activity--dragging {
+    z-index: 200;
+  }
+
   .pp-pager-track {
     display: flex;
     position: relative;
