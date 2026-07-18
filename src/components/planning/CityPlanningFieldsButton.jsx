@@ -9,7 +9,7 @@ import DaysStepper from './DaysStepper';
 // deux champs en permanence visibles dans l'en-tête (qui débordaient sur
 // petit écran) par une action à la demande, cohérente avec le reste des
 // icônes d'action de la ville (renommer, supprimer…).
-export default function CityPlanningFieldsButton({ city, tripStartDate, onUpdate }) {
+export default function CityPlanningFieldsButton({ city, tripStartDate, onUpdate, asMenuItem = false }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
@@ -34,13 +34,14 @@ export default function CityPlanningFieldsButton({ city, tripStartDate, onUpdate
     <div className="pp-city-planning-popover-wrap">
       <button
         type="button"
-        className={`pp-icon-btn${hasValue ? ' pp-icon-btn--active' : ''}`}
+        className={asMenuItem ? 'pp-dropdown-item' : `pp-icon-btn${hasValue ? ' pp-icon-btn--active' : ''}`}
         onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }}
-        title={t('city.planningFieldsTitle')}
+        title={asMenuItem ? undefined : t('city.planningFieldsTitle')}
       >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+        <svg width={asMenuItem ? 13 : 12} height={asMenuItem ? 13 : 12} viewBox="0 0 24 24" fill="currentColor">
           <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
         </svg>
+        {asMenuItem && t('city.planningFieldsTitle')}
       </button>
       {open && (
         <>

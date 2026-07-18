@@ -22,6 +22,7 @@ import { useSettings } from "../context/SettingsContext";
 import CountryFlag from "./planning/CountryFlag";
 import { fetchTranslatedFields, translationKey } from "../lib/translateContent";
 import { translateTag } from "../lib/tagTranslations";
+import { useModalHistory } from "../hooks/useModalHistory";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 
@@ -29,6 +30,7 @@ const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
 export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, onNavigateCountry, alertIds = new Map(), onAdminAction }) {
+  useModalHistory(onClose);
   useSettings(); // abonnement devise : les montants affichés sont convertis
   const { t, i18n } = useTranslation("app");
   const data = useMemo(() => localizeCountry(COUNTRIES[countryCode], i18n.language), [countryCode, i18n.language]);

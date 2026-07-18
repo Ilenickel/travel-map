@@ -3,7 +3,7 @@ import { useWikipediaImages } from './useWikipediaImages';
 import { normalizeName, tokensOf, matchScore } from '../lib/placeNameMatch';
 
 // Résout une photo Wikipédia/Commons pour les ACTIVITÉS d'un planning suggéré
-// (TripPlanSuggestionsButton / TripFullSuggestions) — "Kinkaku-ji" ne dit rien
+// (voir TripSuggestionsModal) — "Kinkaku-ji" ne dit rien
 // à quelqu'un qui ne connaît pas le Japon, une vignette si.
 //
 // Ordre de résolution, par activité :

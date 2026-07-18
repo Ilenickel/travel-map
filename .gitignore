@@ -31,3 +31,4 @@ dist-ssr
 
 # Configuration locale créée par `vercel dev` / `vercel link`
 .vercel
+.env*

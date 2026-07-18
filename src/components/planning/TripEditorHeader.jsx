@@ -5,9 +5,8 @@ import { useSettings } from '../../context/SettingsContext';
 
 export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities, lodgings = [],
-  onUpdate, mapOpen, onToggleMap, onToggleShare,
+  onUpdate, onToggleShare,
   onExportPdf, onExportIcal,
-  dayModeActive, onToggleDayMode,
   onToggleAutoShareTemplate,
 }) {
   const { t } = useTranslation();
@@ -101,68 +100,46 @@ export default function TripEditorHeader({
           </svg>
         </button>
         <div className="pp-header-actions">
-          <div className="pp-toolbar-group">
-            <button
-              className={`pp-toolbar-btn${showNotes ? ' active' : ''}`}
-              onClick={() => setShowNotes(n => !n)}
-              title={t('header.notesButtonTitle')}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-              </svg>
-              {t('header.notesButton')}
-            </button>
-            <button
-              className={`pp-toolbar-btn pp-toolbar-btn--map${mapOpen ? ' active' : ''}`}
-              onClick={onToggleMap}
-              title={mapOpen ? t('header.closeMapTitle') : t('header.showMapTitle')}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
-              </svg>
-              {t('header.mapButton')}
-            </button>
-            <button
-              className={`pp-toolbar-btn pp-toolbar-btn--dayj${dayModeActive ? ' active' : ''}`}
-              onClick={onToggleDayMode}
-              disabled={!trip?.start_date || !trip?.end_date}
-              title={
-                !trip?.start_date || !trip?.end_date
-                  ? t('header.dayModeNeedDatesTitle')
-                  : (dayModeActive ? t('header.dayModeBackTitle') : t('header.dayModeEnterTitle'))
-              }
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4zm7.9-3a7.94 7.94 0 00-1.6-3.86l1.14-1.14-1.41-1.41-1.14 1.14A7.94 7.94 0 0013 4.1V2h-2v2.1a7.94 7.94 0 00-3.86 1.6L5.99 4.56 4.58 5.97l1.14 1.14A7.94 7.94 0 004.1 11H2v2h2.1a7.94 7.94 0 001.6 3.86l-1.14 1.14 1.41 1.41 1.14-1.14A7.94 7.94 0 0011 19.9V22h2v-2.1a7.94 7.94 0 003.86-1.6l1.14 1.14 1.41-1.41-1.14-1.14A7.94 7.94 0 0019.9 13H22v-2h-2.1z"/>
-              </svg>
-              {t('header.dayModeButton')}
-            </button>
-            <button
-              className="pp-toolbar-btn"
-              onClick={onExportPdf}
-              title={t('header.exportPdfTitle')}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-              </svg>
-              {t('header.exportPdfButton')}
-            </button>
-            <button
-              className="pp-toolbar-btn"
-              onClick={onExportIcal}
-              disabled={icalExportableCount === 0}
-              title={icalExportableCount === 0
-                ? (plannedCount > 0
-                  ? t('header.icalAllDoneTitle')
-                  : t('header.icalNoneTitle'))
-                : t('header.icalExportTitle')}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
-              </svg>
-              {t('header.exportIcalButton')}
-            </button>
-          </div>
+          {/* Notes/Imprimer/Agenda/Partager à égalité visuelle : plus de
+              sous-groupe secondaire pour Imprimer/Agenda (ex pp-toolbar-group),
+              et plus de menu "⋯" caché — chaque action reste un bouton direct.
+              Carte (désormais automatique, voir TripEditor) et Jour J (déplacé
+              dans l'en-tête de la colonne Jours) ne sont plus ici. */}
+          <button
+            className={`pp-toolbar-btn${showNotes ? ' active' : ''}`}
+            onClick={() => setShowNotes(n => !n)}
+            title={t('header.notesButtonTitle')}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </svg>
+            {t('header.notesButton')}
+          </button>
+          <button
+            className="pp-toolbar-btn"
+            onClick={onExportPdf}
+            title={t('header.exportPdfTitle')}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+            {t('header.exportPdfButton')}
+          </button>
+          <button
+            className="pp-toolbar-btn"
+            onClick={onExportIcal}
+            disabled={icalExportableCount === 0}
+            title={icalExportableCount === 0
+              ? (plannedCount > 0
+                ? t('header.icalAllDoneTitle')
+                : t('header.icalNoneTitle'))
+              : t('header.icalExportTitle')}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+            </svg>
+            {t('header.exportIcalButton')}
+          </button>
           <button
             className="pp-btn pp-btn--share"
             onClick={onToggleShare}
@@ -310,15 +287,27 @@ export default function TripEditorHeader({
         </div>
       </div>
 
+      {/* Panneau notes dédié (plutôt qu'un simple textarea planqué en bas) :
+          même habillage carte que la section "partage communautaire"
+          ci-dessus (icône dans un médaillon + titre), pour rester cohérent
+          avec le reste de la refonte. */}
       {showNotes && (
-        <div className="pp-trip-notes">
-          <textarea
-            className="pp-notes-textarea"
-            value={notes}
-            onChange={e => handleNotesChange(e.target.value)}
-            placeholder={t('header.notesPlaceholder')}
-            rows={3}
-          />
+        <div className="pp-trip-notes-card">
+          <div className="pp-trip-notes-card-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </svg>
+          </div>
+          <div className="pp-trip-notes-card-content">
+            <span className="pp-trip-notes-card-title">{t('header.notesButton')}</span>
+            <textarea
+              className="pp-notes-textarea"
+              value={notes}
+              onChange={e => handleNotesChange(e.target.value)}
+              placeholder={t('header.notesPlaceholder')}
+              rows={3}
+            />
+          </div>
         </div>
       )}
     </div>

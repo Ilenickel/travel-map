@@ -69,8 +69,8 @@
     "showDetail": "Show day-by-day detail",
     "hideDetail": "Hide detail",
     "fromDay": "starting on day {{day}}",
-    "confirmAppendText_one": "This country already contains {{count}} city: the imported trip will be added after it, without deleting anything. Continue?",
-    "confirmAppendText_other": "This country already contains {{count}} cities: the imported trip will be added after them, without deleting anything. Continue?",
+    "confirmAppendText_one": "This country already has {{count}} city: if its name matches a city in this imported trip, it will be replaced; otherwise, the new city will be added after it. Continue?",
+    "confirmAppendText_other": "This country already has {{count}} cities: those whose name matches a city in this imported trip will be replaced; the others will be added after them. Continue?",
     "confirmMoreDaysText_one": "This trip is {{count}} day longer than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
     "confirmMoreDaysText_other": "This trip is {{count}} days longer than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
     "confirmFewerDaysText_one": "This trip is {{count}} day shorter than the duration you asked for — it will be imported as is, you can still adjust the organization afterwards.",
@@ -182,12 +182,37 @@
       "soir": "Evening"
     },
     "importButton": "Import this plan",
-    "confirmReplaceText": "You already have content added for this city: do you want to fully replace it with this imported plan?",
-    "confirmReplaceButton": "Replace and import",
+    "replaceNoticeText": "The current content of {{city}} will be replaced by this plan.",
     "filteredEmptyText": "None of the suggestions for this city match the selected criteria.",
     "clearFiltersButton": "Clear criteria",
     "willSetDaysNotice_one": "You haven't set a stay duration for this city yet. Importing this suggestion will automatically set it to {{count}} day.",
-    "willSetDaysNotice_other": "You haven't set a stay duration for this city yet. Importing this suggestion will automatically set it to {{count}} days."
+    "willSetDaysNotice_other": "You haven't set a stay duration for this city yet. Importing this suggestion will automatically set it to {{count}} days.",
+    "backToCities": "← Back to cities",
+    "chooseButton": "Choose this plan",
+    "chosenLabel": "Plan chosen",
+    "addedToCartText": "Plan added to your selection for {{city}} — would you like to continue with other cities, or import now?",
+    "continueOtherCitiesButton": "Yes, choose other cities",
+    "importNowButton": "No, import now",
+    "cartEmpty": "No city pending for now.",
+    "cartSummary_one": "{{count}} city pending: {{list}}",
+    "cartSummary_other": "{{count}} cities pending: {{list}}",
+    "finishImportButton": "Finish & import",
+    "noCitiesYet": "No shared plan exists yet for this country.",
+    "alreadyInTrip": "Already in your trip",
+    "confirmLoseCart": "You have cities pending import ({{list}}) that will be lost if you continue.",
+    "confirmLoseCartButton": "Continue anyway",
+    "selectedCitiesHeading_one": "{{count}} city pending import",
+    "selectedCitiesHeading_other": "{{count}} cities pending import",
+    "otherCitiesHeading": "Other cities",
+    "citySelectedBadge": "Selected",
+    "loadError": "Couldn't load suggestions right now. Please try again shortly.",
+    "importCartError": "Import failed for: {{cities}}. Please try again shortly."
+  },
+  "tripSuggestionsModal": {
+    "title": "Suggestions — {{country}}",
+    "citiesTab": "Cities",
+    "fullTripTab": "Full trip",
+    "filtersOptionalHint": "The filters below are optional."
   },
   "trajetsSection": {
     "label": "Trips",
@@ -214,6 +239,7 @@
     "deleteTitle": "Delete the daytrip"
   },
   "city": {
+    "menuTitle": "City actions",
     "reorderTitle": "Reorder the city",
     "expandTitle": "Expand",
     "collapseTitle": "Collapse",
@@ -241,7 +267,8 @@
     "citiesCount_one": "{{count}} city",
     "citiesCount_other": "{{count}} cities",
     "removeTitle": "Remove this country from the trip",
-    "addCityButton": "Add a city"
+    "addCityButton": "Add a city",
+    "suggestButton": "Suggestions for {{country}}"
   },
   "country": {
     "addTitle": "Add a country",
@@ -287,8 +314,9 @@
     "header": "Activity groups",
     "emptyHint": "Group your places by neighborhood or theme. Click a place's colored dot to assign it.",
     "newGroupButton": "New group",
-    "autoDetectTitle": "Automatically detect geographic groups ({{count}} geolocated places)",
-    "autoDetectButton": "Auto-detect zones"
+    "autoDetectTitle": "Automatically detect zones by geographic clustering ({{count}} geolocated places)",
+    "autoDetectButton": "Detect zones",
+    "columnHint": "Group your places by neighborhood or area: each zone colors its points on the map and can be dropped onto a day all at once. \"Detect zones\" creates them automatically by geographic clustering."
   },
   "attachments": {
     "sizeKo": "{{value}} KB",
@@ -400,7 +428,9 @@
     "newButton": "New",
     "emptyTitle": "No trips yet",
     "emptySub": "Start by creating your first itinerary",
-    "createButton": "Create a trip"
+    "createButton": "Create a trip",
+    "collapseTitle": "Collapse \"My trips\"",
+    "expandTitle": "Expand \"My trips\""
   },
   "tripCard": {
     "durationAbbrev": "{{count}}d",
@@ -465,6 +495,8 @@
     "addCountryPrompt": "Add a country to get started",
     "expandMapTitle": "Expand the map as an overlay",
     "collapseMapTitle": "Collapse the map",
+    "showMapTitle": "Show the map",
+    "hideMapToRailTitle": "Hide the map",
     "navLabel": "Navigation between panels",
     "navCities": "Cities",
     "navGroups": "Groups",

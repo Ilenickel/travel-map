@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
@@ -18,7 +19,8 @@
   display: flex;
   align-items: center;
   padding: 0 28px;
-  height: 62px;
+  padding-top: env(safe-area-inset-top, 0px);
+  height: calc(62px + env(safe-area-inset-top, 0px));
   background: rgba(8, 12, 20, 0.92);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(20px);
@@ -1585,19 +1587,18 @@ button.pp-sidebar-toggle {
   margin: 4px 10px 8px;
 }
 
-.pp-trip-suggestions-modal {
-  max-width: 500px;
-  border-radius: 22px;
-}
 /* Un seul scroll (celui du corps de la modale, voir .pp-modal-body) plutôt
    que deux imbriqués (carte + modale) : évite la double barre de défilement
-   qui rendait mal. Scrollbar fine plutôt que celle, épaisse, du navigateur. */
-.pp-trip-suggestions-modal .pp-modal-body {
+   qui rendait mal. Scrollbar fine plutôt que celle, épaisse, du navigateur.
+   (Rattaché à .pp-suggestions-modal, la classe réellement portée par
+   TripSuggestionsModal.jsx — .pp-trip-suggestions-modal n'existe plus dans
+   le JSX depuis la fusion en fenêtre unifiée, voir 5.9 du changelog.) */
+.pp-suggestions-modal .pp-modal-body {
   scrollbar-width: thin;
   scrollbar-color: var(--border-light) transparent;
 }
-.pp-trip-suggestions-modal .pp-modal-body::-webkit-scrollbar { width: 6px; }
-.pp-trip-suggestions-modal .pp-modal-body::-webkit-scrollbar-thumb {
+.pp-suggestions-modal .pp-modal-body::-webkit-scrollbar { width: 6px; }
+.pp-suggestions-modal .pp-modal-body::-webkit-scrollbar-thumb {
   background: var(--border-light);
   border-radius: 3px;
 }
@@ -1661,6 +1662,28 @@ button.pp-sidebar-toggle {
 .pp-trip-suggestions-card::-webkit-scrollbar-thumb {
   background: var(--border-light);
   border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  /* Sur un écran étroit, les deux flèches à 34px chacune + leurs marges
+     mangeaient une bonne partie de la largeur dispo, écrasant la carte de
+     planning au milieu. Elles passent en petits boutons superposés sur les
+     bords de la carte (position: absolute, retirés du flux flex — la carte,
+     seule enfant restante en flux normal, prend alors toute la largeur)
+     plutôt que de continuer à se disputer l'espace avec elle. */
+  .pp-trip-suggestions-carousel { position: relative; }
+  .pp-trip-suggestions-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .pp-trip-suggestions-nav:first-child { left: -2px; }
+  .pp-trip-suggestions-nav:last-child { right: -2px; }
+  .pp-trip-suggestions-nav svg { width: 14px; height: 14px; }
 }
 
 .pp-trip-suggestions-card-header {
@@ -2524,13 +2547,20 @@ button.pp-sidebar-toggle {
   }
 
   .pp-date-group {
-    flex: 1;
-    min-width: 0;
+    /* PAS de min-width:0 ici (c'était le bug) : un <input type="date">
+       natif refuse de se peindre sous sa largeur intrinsèque (icône +
+       jj/mm/aaaa) — min-width:0 autorisait le flex-item à être calculé plus
+       étroit que ça, et le widget natif débordait de sa boîte par-dessus le
+       champ voisin au lieu de s'y contenir (constaté sur iPhone 14). En
+       laissant le min-width par défaut (auto = taille du contenu), le
+       flex-wrap hérité de la règle de base empile Départ/Retour sur deux
+       lignes si la largeur dispo est trop juste, plutôt que de forcer un
+       côte-à-côte impossible à peindre proprement. */
+    flex: 1 1 auto;
   }
 
   .pp-date-input {
     width: 100%;
-    min-width: 0;
     box-sizing: border-box;
   }
 
@@ -2548,8 +2578,9 @@ button.pp-sidebar-toggle {
 
   .pp-topbar {
     padding: 0 16px;
+    padding-top: env(safe-area-inset-top, 0px);
     gap: 10px;
-    height: 52px;
+    height: calc(52px + env(safe-area-inset-top, 0px));
   }
 
   .pp-brand-name { display: none; }
@@ -4866,23 +4897,20 @@ button.pp-sidebar-toggle {
 
   /* ── Actions de l'en-tête : tout doit rester VISIBLE sans défilement —
      une rangée défilante cachait Partager et les exports hors écran.
-     Carte et Jour J sont retirés (la barre de navigation basse les a déjà),
-     il reste Notes / PDF / iCal sur une ligne et Partager en pleine largeur,
-     bien en évidence (invitations, membres du groupe). ── */
+     Carte et Jour J n'y sont plus du tout (la barre de navigation basse gère
+     Carte, Jour J a migré dans l'en-tête de la colonne Jours) : il reste
+     Notes / PDF / iCal en grille 3 colonnes (ex pp-toolbar-group, désormais
+     des frères directs de .pp-header-actions plutôt qu'un sous-groupe) et
+     Partager en pleine largeur sur la ligne suivante, bien en évidence
+     (invitations, membres du groupe). */
   .pp-header-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-  .pp-header-actions .pp-toolbar-group {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
   }
   .pp-header-actions .pp-toolbar-btn { justify-content: center; white-space: nowrap; }
-  .pp-toolbar-btn--map { display: none; }
-  .pp-toolbar-btn--dayj { display: none; }
   .pp-header-actions .pp-btn--share {
+    grid-column: 1 / -1;
     width: 100%;
     justify-content: center;
     padding: 10px;
@@ -4904,7 +4932,16 @@ button.pp-sidebar-toggle {
   .pp-modal {
     position: relative;
     max-width: none;
-    max-height: 86dvh;
+    /* height (pas seulement max-height) : sans ça, une feuille au contenu
+       court (ex. "Aucun planning partagé") se réduisait à la taille de son
+       contenu au lieu de garder une hauteur d'appli cohérente — .pp-modal-body
+       (flex:1, déjà en place) absorbe l'écart et défile si le contenu dépasse.
+       95dvh (pas 86 — trop petit à l'usage, laissait un bandeau du fond
+       visible en haut plus large que "juste un peu de place") : ne laisse
+       plus qu'un petit aperçu du fond, la feuille occupe quasiment tout
+       l'écran. */
+    height: 95dvh;
+    max-height: 95dvh;
     border-radius: 20px 20px 0 0;
     border-bottom: none;
     padding-top: 8px;
@@ -4921,6 +4958,7 @@ button.pp-sidebar-toggle {
     z-index: 2;
   }
   .pp-modal-body { padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px)); }
+  .pp-modal-footer { padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
   @keyframes ppSheetIn {
     from { transform: translateY(48px); opacity: 0; }
     to   { transform: translateY(0);    opacity: 1; }
@@ -4969,13 +5007,16 @@ button.pp-sidebar-toggle {
     overflow-x: hidden;
   }
 
-  .pp-city-panel { display: flex; }
+  /* padding-bottom = hauteur de la barre flottante : le panneau (hauteur bornée)
+     laisse défiler la liste en interne et épingle le bouton "Ajouter un pays"
+     juste au-dessus de la barre, sans jamais recouvrir le contenu. */
+  .pp-city-panel { display: flex; padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
   .pp-groups-panel { display: flex; overflow-y: auto; }
 
   /* Pages 3 : planning par jour. Padding bas = barre de navigation. */
   .pp-content-panel {
     display: block;
-    padding: 10px 10px 76px;
+    padding: 10px 10px 72px;
   }
 
   /* Page Jour J : redevient une page normale du pager ici (masquée par défaut
@@ -4984,11 +5025,13 @@ button.pp-sidebar-toggle {
   .pp-daymode-page {
     display: block;
     overflow-y: auto;
-    padding-bottom: 76px;
+    padding-bottom: 72px;
   }
 
-  .pp-city-panel-dests { padding-bottom: 66px; }
-  .pp-groups-panel { padding-bottom: 66px; }
+  /* Petit padding seulement : c'est .pp-city-panel (padding-bottom ci-dessus)
+     qui dégage la barre ; le bouton est un frère sous cette liste. */
+  .pp-city-panel-dests { padding-bottom: 12px; }
+  .pp-groups-panel { padding-bottom: 68px; }
 
   /* Page 4 : la carte (le display:none hérité du bloc 900px est annulé — ici
      elle a sa propre page). La superposition plein écran reste accessible via
@@ -4999,7 +5042,7 @@ button.pp-sidebar-toggle {
   .pp-map-panel {
     display: flex;
     isolation: isolate;
-    padding-bottom: 58px;
+    padding-bottom: 68px;
   }
   .pp-map-panel--overlay {
     inset: 10px;
@@ -5007,21 +5050,31 @@ button.pp-sidebar-toggle {
   }
 
   /* ── Barre de navigation basse, façon appli ── */
+  /* Barre flottante détachée en pilule, même langage que le menu classique. */
   .pp-mobile-nav {
     display: flex;
+    align-items: center;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    right: 12px;
     z-index: 95;
-    background: rgba(8, 12, 20, 0.96);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-top: 1px solid var(--border);
-    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: rgba(18, 22, 34, 0.9);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+    padding: 5px 6px;
+  }
+  [data-theme="light"] .pp-mobile-nav {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(43, 38, 32, 0.1);
+    box-shadow: 0 14px 34px rgba(43, 38, 32, 0.16);
   }
 
   .pp-mobile-nav-btn {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -5029,24 +5082,45 @@ button.pp-sidebar-toggle {
     gap: 2px;
     background: none;
     border: none;
-    border-radius: 10px;
-    padding: 4px 0 3px;
-    font-size: 10px;
-    font-weight: 700;
+    border-radius: 12px;
+    padding: 5px 0 3px;
+    font-size: 9px;
+    font-weight: 600;
     font-family: inherit;
     color: var(--text-muted);
     cursor: pointer;
-    transition: color 0.15s, background 0.15s;
-  }
-
-  .pp-mobile-nav-btn.active {
-    color: var(--accent2);
-    background: var(--accent-subtle);
+    transition: color 0.18s, transform 0.18s;
   }
 
   .pp-mobile-nav-icon {
     font-size: 17px;
     line-height: 1.1;
+    opacity: 0.42;
+    filter: grayscale(0.5);
+    transition: opacity 0.18s, filter 0.18s, transform 0.18s;
+  }
+
+  /* Onglet actif : emoji ravivé + libellé accent + point indicateur sous le
+     libellé — même langage que la barre du menu classique. */
+  .pp-mobile-nav-btn.active {
+    color: var(--accent2);
+    font-weight: 800;
+  }
+  .pp-mobile-nav-btn.active .pp-mobile-nav-icon {
+    opacity: 1;
+    filter: none;
+    transform: translateY(-1px) scale(1.12);
+  }
+  .pp-mobile-nav-btn.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent2);
   }
 
   /* ── Compaction : les blocs pensés pour un grand écran deviennent denses ──
@@ -5060,6 +5134,13 @@ button.pp-sidebar-toggle {
     border-width: 1px;
     border-radius: 10px;
   }
+
+  /* Le bouton "Ajouter un pays" reste un simple frère de .pp-city-panel-dests :
+     la liste défile en interne (panneau à hauteur bornée) et le bouton s'épingle
+     sous elle. Le padding-bottom de .pp-city-panel le maintient au-dessus de la
+     barre. Il n'est plus en position:fixed, donc il défile avec sa page au
+     balayage (plus besoin de le masquer via [data-page]) et ne recouvre jamais
+     le contenu de la planif. */
 
   .pp-add-city-btn {
     padding: 8px 12px;
@@ -6840,6 +6921,10 @@ button.pp-sidebar-toggle {
   margin-bottom: 12px;
 }
 .pp-criteria-filter-label { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+/* Plus d'air entre les chips ici que dans les autres usages de
+   .pp-criteria-chips (partage de voyage, en-tête éditeur) : cette rangée-ci
+   est plus dense (7 critères) et se lisait mal collée. */
+.pp-criteria-filter .pp-criteria-chips { gap: 10px 12px; }
 
 /* Indicateurs de correspondance sur une carte de suggestion : coche verte
    (répond au critère), croix grisée (n'y répond pas), "?" neutre (modèle
@@ -7366,6 +7451,26 @@ button.pp-sidebar-toggle {
      un écran étroit — la réduire regagne de la place pour les noms
      d'activités plutôt que de les compresser inutilement. */
   .pp-fulltrip-daytrip { margin-left: 6px; padding-left: 10px; }
+
+  /* Chips de critères ("Mes critères :") DANS LE FILTRE DE SUGGESTIONS
+     uniquement (.pp-criteria-filter — pas le formulaire de partage de fin de
+     voyage ni l'en-tête de l'éditeur, qui réutilisent la même classe
+     .pp-criteria-chips sans avoir demandé ce traitement) : en flex-wrap à
+     largeur libre, chaque chip garde la largeur de son propre texte, donc le
+     nombre qui tient par ligne dépend de la longueur du libellé — 1 sur une
+     ligne avec "Avec enfants", 2 sur la suivante avec "Entre amis" + "En
+     solo" plus courts. Grille à 2 colonnes fixes : toujours le même rythme,
+     quelle que soit la longueur des libellés. */
+  .pp-criteria-filter .pp-criteria-chips {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .pp-criteria-filter .pp-criteria-chip {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
 }
 
 /* Jour : les surfaces "verre blanc" des nouvelles cartes deviennent des
@@ -7509,4 +7614,557 @@ button.pp-sidebar-toggle {
   bottom: 46px;
   width: max-content;
   max-width: 240px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REFONTE — sidebar repliable, menu ville, suggestions unifiées,
+   carte auto + rail, Jour J en en-tête de colonne
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── "Mes voyages" repliable (desktop) ─── */
+.pp-sidebar {
+  position: relative;
+  transition: width 0.25s ease, min-width 0.25s ease;
+}
+/* Poignée de repli : languette à cheval sur la bordure droite du panneau
+   (pas dans la ligne d'en-tête, voir TripSidebar.jsx), verticalement centrée,
+   visible aussi bien déplié qu'en rail 56px replié — sa position (right: -12px,
+   relative à .pp-sidebar) reste correcte dans les deux largeurs puisqu'elle est
+   toujours calée sur le bord droit RÉEL du panneau, quelle que soit sa largeur. */
+.pp-sidebar-desktop-collapse-btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: color 0.15s, background 0.15s;
+}
+.pp-sidebar-desktop-collapse-btn:hover { color: var(--text-dim); background: var(--surface3); }
+
+@media (min-width: 769px) {
+  .pp-sidebar-desktop-collapse-btn { display: flex; }
+  /* La poignée déborde à droite du panneau (right: -12px) : sans ceci, le
+     overflow:hidden de base de .pp-sidebar (nécessaire par ailleurs pour
+     clipper la largeur pendant la transition de repli) la rogne de moitié. */
+  .pp-sidebar { overflow: visible; }
+
+  .pp-sidebar--desktop-collapsed {
+    width: 56px;
+    min-width: 56px;
+  }
+  .pp-sidebar--desktop-collapsed .pp-sidebar-header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 8px;
+  }
+  .pp-sidebar--desktop-collapsed .pp-sidebar-home,
+  .pp-sidebar--desktop-collapsed .pp-sidebar-title,
+  .pp-sidebar--desktop-collapsed .pp-sidebar-chevron,
+  .pp-sidebar--desktop-collapsed .pp-sidebar-list {
+    display: none;
+  }
+  .pp-sidebar--desktop-collapsed .pp-sidebar-title-wrap { justify-content: center; }
+  .pp-sidebar--desktop-collapsed .pp-btn--primary.pp-btn--sm {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 8px;
+  }
+}
+
+/* ─── Menu "⋯" par ville (CityMenu) — même habillage que le menu "Options"
+   d'un voyage dans la sidebar (.pp-trip-card-dropdown / .pp-dropdown-item). ── */
+.pp-city-menu-wrap { position: relative; flex-shrink: 0; }
+.pp-city-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 99;
+  overflow: visible;
+  min-width: 190px;
+}
+/* Le popover "jours & nuits sur place" (CityPlanningFieldsButton, imbriqué en
+   tant que ligne de ce menu) doit s'ouvrir vers le bas de CE menu, sans se
+   faire rogner par lui — d'où overflow:visible ci-dessus plutôt que hidden. */
+/* Le wrapper de CityPlanningFieldsButton est en inline-flex (usage normal :
+   une icône isolée à côté d'autres icônes) — en tant que ligne de CE menu,
+   il doit au contraire occuper toute la largeur comme les autres
+   .pp-dropdown-item, sinon sa ligne "Jours & nuits sur place" apparaît
+   rétrécie au lieu de s'aligner avec Renommer/Supprimer. */
+.pp-city-menu-dropdown .pp-city-planning-popover-wrap { display: flex; width: 100%; }
+
+/* ─── Bouton "Suggestions pour…" (DestinationBlock) — remplace le sélecteur
+   "Manuel / Suggestions" à deux grandes cartes. ── */
+.pp-dest-suggest-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin: 8px 12px 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(129,140,248,0.3);
+  background: linear-gradient(135deg, rgba(129,140,248,0.12), rgba(192,132,252,0.08));
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  box-sizing: border-box;
+}
+.pp-dest-suggest-btn:hover {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, rgba(129,140,248,0.2), rgba(192,132,252,0.14));
+  transform: translateY(-1px);
+}
+.pp-dest-suggest-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(129,140,248,0.18);
+}
+
+/* ─── TripSuggestionsModal ─── */
+.pp-suggestions-modal { max-width: 720px; }
+.pp-suggestions-modal-body { display: flex; flex-direction: column; gap: 12px; }
+
+.pp-trip-suggestions-cities-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Groupe "villes en attente d'import" / "autres villes" : les premières en
+   attente d'import remontent dans leur propre section en tête de liste
+   (au lieu d'être mélangées, difficiles à retrouver une fois choisies). */
+.pp-trip-suggestions-city-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pp-trip-suggestions-city-group-label {
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+.pp-trip-suggestions-city-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.pp-trip-suggestions-city-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.pp-trip-suggestions-city-item:hover {
+  border-color: var(--accent);
+  background: var(--surface3);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+/* Bulle d'avatar : donne un point d'ancrage visuel à chaque ligne (avant, la
+   liste n'était qu'un empilement de texte gris uniforme). Dégradé neutre par
+   défaut, vire au vert "succès" une fois la ville choisie (même check que le
+   badge de droite, pour que l'état soit lisible même en scannant vite). */
+.pp-trip-suggestions-city-item-avatar {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  background: linear-gradient(135deg, var(--surface3), var(--border-light));
+}
+.pp-trip-suggestions-city-item--chosen .pp-trip-suggestions-city-item-avatar {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: #06281c;
+  font-weight: 800;
+}
+/* Ligne sélectionnée (planning déjà choisi dans le panier de cette session) :
+   traitement bien plus visible qu'un simple texte vert — fond + bordure
+   teintés, même logique de "succès" que le vert déjà utilisé ailleurs dans
+   l'app (ex. badges de statut), cohérent visuellement avec les autres états
+   actifs (.pp-criteria-chip.active) sans réutiliser leur violet, réservé aux
+   filtres. */
+.pp-trip-suggestions-city-item--chosen {
+  background: rgba(52,211,153,0.12);
+  border-color: rgba(52,211,153,0.5);
+}
+.pp-trip-suggestions-city-item--chosen:hover {
+  background: rgba(52,211,153,0.18);
+  border-color: rgba(52,211,153,0.65);
+}
+/* Bloc nom + indice "déjà dans le voyage" : flex:1 pour que le nom garde
+   TOUJOURS la même position horizontale, que le badge de droite (check) soit
+   présent ou non (5b) — c'est ce conteneur qui absorbe l'espace disponible,
+   pas le badge lui-même. */
+.pp-trip-suggestions-city-item-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.pp-trip-suggestions-city-item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* "Déjà dans votre voyage" : simple indice discret, à ne pas confondre avec
+   le badge "✓ Sélectionnée" ci-dessous — l'un dit "vous l'avez déjà
+   ajoutée", l'autre "vous avez choisi un planning pour elle dans CETTE
+   session de la popup". */
+.pp-trip-suggestions-city-item-already {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 7px;
+}
+/* Conteneur du badge "check" à droite : toujours présent dans le DOM (vide si
+   pas choisi) pour ne jamais faire varier la mise en page du reste de la
+   ligne (5b) — le nom ne se décale plus quand une ville passe au vert. */
+.pp-trip-suggestions-city-item-badge-slot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+/* Casse normale, pas de majuscules/letter-spacing forcées : en majuscules
+   serrées, un mot accentué ("SÉLECTIONNÉE") rendait avec une graisse/chasse
+   irrégulière selon la police système du navigateur — perçu comme "une
+   police bizarre" alors que c'est la même police que le reste de l'app,
+   juste maltraitée par la combinaison uppercase + letter-spacing. */
+.pp-trip-suggestions-city-item-check {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #06281c;
+  background: linear-gradient(135deg, #34d399, #10b981);
+  border-radius: 20px;
+  padding: 4px 10px 4px 8px;
+}
+.pp-trip-suggestions-city-list-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Pied de modale FIXE (5a) : sibling de .pp-modal-body, PAS un élément
+   sticky au milieu du flux flex — la modale (.pp-modal) est déjà en
+   flex-direction column avec max-height/overflow:hidden, ce footer se
+   comporte donc comme .pp-modal-header (flex-shrink: 0), jamais chevauché
+   par le contenu scrollable au-dessus. */
+.pp-modal-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  padding: 12px 22px;
+}
+.pp-trip-suggestions-cart-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pp-trip-suggestions-cart-summary {
+  flex: 1;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  min-width: 0;
+}
+
+.pp-trip-suggestions-confirm--cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 30px 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+}
+.pp-trip-suggestions-confirm--cart .pp-modal-actions { justify-content: center; width: 100%; flex-wrap: wrap; }
+.pp-trip-suggestions-confirm-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: #06281c;
+  box-shadow: 0 6px 16px rgba(52,211,153,0.35);
+}
+.pp-trip-suggestions-confirm--cart p {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+  max-width: 400px;
+}
+
+/* Dialogue "panier perdu" : empilé au-dessus du reste de la fenêtre de
+   suggestions (scrim propre, z-index supérieur à .pp-modal-overlay standard
+   qui reste à 200 — voir la fenêtre englobante). */
+.pp-discard-confirm-overlay { z-index: 220; }
+.pp-discard-confirm-modal {
+  max-width: 380px;
+  padding: 22px;
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.pp-discard-confirm-text {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pp-suggestions-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 6px;
+}
+.pp-suggestions-back-btn:hover { color: var(--text-dim); }
+
+.pp-trip-suggestions-city-heading {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* Note "sera remplacé" (3e) : affirmative et informative, juste à côté du
+   bouton "Choisir ce planning" — pas un état de confirmation séparé. */
+.pp-trip-suggestions-choose-row { align-items: center; }
+.pp-trip-suggestions-replace-notice { flex: 1; min-width: 0; margin: 0; text-align: left; }
+
+/* ─── Colonne Jours — mini en-tête pour le bouton Jour J (migré depuis
+   l'en-tête du voyage) ── */
+.pp-content-panel-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+/* ─── Carte repliée en rail fin (distinct de mapOpen/mapOverlay) ─── */
+.pp-map-panel--collapsed {
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  transition: width 0.25s ease, min-width 0.25s ease, max-width 0.25s ease;
+}
+.pp-map-collapsed-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  background: var(--surface2);
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 12px 4px;
+}
+.pp-map-collapsed-rail:hover { color: var(--text-dim); background: var(--surface3); }
+.pp-map-collapsed-rail-label {
+  writing-mode: vertical-rl;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pp-map-collapse-toggle {
+  position: absolute;
+  top: 10px;
+  right: 48px;
+  z-index: 510;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: rgba(20,20,26,0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.pp-map-collapse-toggle:hover { color: var(--text); background: rgba(20,20,26,0.95); }
+.pp-map-panel-mount { flex: 1; display: flex; min-height: 0; }
+.pp-map-panel-mount--hidden { visibility: hidden; pointer-events: none; }
+
+/* ─── Panneau notes — carte cohérente avec .pp-share-template-section ─── */
+.pp-trip-notes-card {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+.pp-trip-notes-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(129,140,248,0.16);
+  color: var(--accent2);
+}
+.pp-trip-notes-card-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.pp-trip-notes-card-title { font-size: 12.5px; font-weight: 800; color: var(--text); letter-spacing: 0.01em; }
+
+@media (max-width: 768px) {
+  /* Le bouton Jour J de la colonne Jours n'a pas sa place sur mobile : le
+     pager y a déjà sa propre page dédiée (JOURJ_PAGE) et sa barre de
+     navigation basse (.pp-mobile-nav). */
+  .pp-content-panel-header { display: none; }
+  /* Rail carte : fonctionnalité desktop uniquement (le bouton qui le
+     déclenche est masqué ci-dessous) — sur mobile, la carte est une page à
+     part entière du pager (voir pp-daymode-page/pp-pager-track), jamais un
+     panneau réductible. Si l'état restait "collapsed" suite à un redimen-
+     sionnement fenêtre → mobile, on neutralise plutôt que de risquer une
+     page Carte qui resterait vide sans bouton pour la rouvrir. */
+  .pp-map-collapse-toggle,
+  .pp-map-collapsed-rail { display: none; }
+  .pp-map-panel--collapsed { width: auto; min-width: 0; max-width: none; }
+  .pp-map-panel-mount--hidden { visibility: visible; pointer-events: auto; }
+
+  /* Écran "ajouté au panier" : les deux boutons ("Oui, choisir d'autres
+     villes" / "Non, importer maintenant") sont trop longs pour tenir côte à
+     côte sur un écran étroit — ils débordaient du cadre de la carte au lieu
+     d'y être contenus. Empilés en pleine largeur, comme le reste des
+     confirmations de l'app sur mobile. */
+  .pp-trip-suggestions-confirm--cart .pp-modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .pp-trip-suggestions-confirm--cart .pp-modal-actions .pp-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Liste des villes suggérées : le badge "Sélectionnée" masquait le nom de
+     la ville sur cet écran étroit — mais même réduit à une simple pastille
+     coche (voir commit précédent), il reste redondant avec l'avatar de
+     gauche, déjà vert et coché lui aussi : deux fois le même symbole sur une
+     ligne aussi courte n'apporte rien. Retiré entièrement sur mobile,
+     l'avatar seul suffit à signaler l'état. */
+  .pp-trip-suggestions-city-item-badge-slot { display: none; }
+
+  /* Même souci que "Sélectionnée" ci-dessus, avec "Already in your trip" :
+     le texte en toutes lettres écrasait le nom de la ville (vu tronqué à une
+     seule lettre). Icône seule sur mobile, le texte reste sur desktop où il
+     y a la place. */
+  .pp-trip-suggestions-city-item-already {
+    padding: 4px;
+    border-radius: 50%;
+  }
+  .pp-trip-suggestions-city-item-already-label { display: none; }
+
+  /* Dialogue "panier en attente" : reste une petite carte centrée, jamais la
+     feuille bottom-sheet plein-écran de la règle .pp-modal générique
+     ci-dessus (poignée de glissement, hauteur 95dvh, coins arrondis
+     seulement en haut) — un message de 2 lignes + 2 boutons n'a aucune
+     raison d'occuper presque tout l'écran avec du vide en dessous.
+     Sélecteur `.pp-modal.pp-discard-confirm-modal` (les 2 classes, pas
+     juste la seconde) : sans ça, cette règle n'a que la même spécificité
+     que `.pp-modal` ci-dessus et ne gagne que parce qu'elle est déclarée
+     après — un `.pp-modal{...}` ajouté plus tard dans le fichier annulerait
+     silencieusement ce correctif sans qu'on s'en aperçoive. */
+  .pp-discard-confirm-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+  .pp-modal.pp-discard-confirm-modal {
+    position: static;
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    max-height: none;
+    border-radius: 20px;
+    border-bottom: 1px solid var(--border-light);
+    padding: 22px;
+    text-align: center;
+    animation: none;
+  }
+  .pp-discard-confirm-modal::before { display: none; }
+  .pp-discard-confirm-modal .pp-modal-actions {
+    justify-content: center;
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .pp-discard-confirm-modal .pp-modal-actions .pp-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

@@ -69,8 +69,8 @@
     "showDetail": "Voir le détail jour par jour",
     "hideDetail": "Masquer le détail",
     "fromDay": "à partir du jour {{day}}",
-    "confirmAppendText_one": "Ce pays contient déjà {{count}} ville : le voyage importé sera ajouté à la suite, sans rien supprimer. Continuer ?",
-    "confirmAppendText_other": "Ce pays contient déjà {{count}} villes : le voyage importé sera ajouté à la suite, sans rien supprimer. Continuer ?",
+    "confirmAppendText_one": "Ce pays contient déjà {{count}} ville : si son nom correspond à une ville de ce voyage importé, elle sera remplacée ; sinon, la nouvelle ville sera ajoutée à la suite. Continuer ?",
+    "confirmAppendText_other": "Ce pays contient déjà {{count}} villes : celles dont le nom correspond à une ville de ce voyage importé seront remplacées ; les autres seront ajoutées à la suite. Continuer ?",
     "confirmMoreDaysText_one": "Ce voyage dure {{count}} jour de plus que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
     "confirmMoreDaysText_other": "Ce voyage dure {{count}} jours de plus que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
     "confirmFewerDaysText_one": "Ce voyage dure {{count}} jour de moins que la durée demandée — il sera importé tel quel, vous pourrez toujours ajuster l'organisation ensuite.",
@@ -182,12 +182,37 @@
       "soir": "Soir"
     },
     "importButton": "Importer cette planif",
-    "confirmReplaceText": "Vous avez déjà du contenu ajouté pour cette ville : voulez-vous le remplacer entièrement par cette planif importée ?",
-    "confirmReplaceButton": "Remplacer et importer",
+    "replaceNoticeText": "Le contenu actuel de {{city}} sera remplacé par ce planning.",
     "filteredEmptyText": "Aucune des suggestions pour cette ville ne correspond aux critères sélectionnés.",
     "clearFiltersButton": "Réinitialiser les critères",
     "willSetDaysNotice_one": "Vous n'avez pas saisi de durée de séjour pour cette ville. En important cette suggestion, elle sera automatiquement fixée à {{count}} jour.",
-    "willSetDaysNotice_other": "Vous n'avez pas saisi de durée de séjour pour cette ville. En important cette suggestion, elle sera automatiquement fixée à {{count}} jours."
+    "willSetDaysNotice_other": "Vous n'avez pas saisi de durée de séjour pour cette ville. En important cette suggestion, elle sera automatiquement fixée à {{count}} jours.",
+    "backToCities": "← Retour aux villes",
+    "chooseButton": "Choisir ce planning",
+    "chosenLabel": "Planning choisi",
+    "addedToCartText": "Planning ajouté à votre sélection pour {{city}} — voulez-vous continuer avec d'autres villes, ou importer maintenant ?",
+    "continueOtherCitiesButton": "Oui, choisir d'autres villes",
+    "importNowButton": "Non, importer maintenant",
+    "cartEmpty": "Aucune ville en attente pour l'instant.",
+    "cartSummary_one": "{{count}} ville en attente : {{list}}",
+    "cartSummary_other": "{{count}} villes en attente : {{list}}",
+    "finishImportButton": "Terminer & importer",
+    "noCitiesYet": "Aucun planning partagé n'existe encore pour ce pays.",
+    "alreadyInTrip": "Déjà dans votre voyage",
+    "confirmLoseCart": "Vous avez des villes en attente d'import ({{list}}) qui seront perdues si vous continuez.",
+    "confirmLoseCartButton": "Continuer quand même",
+    "selectedCitiesHeading_one": "{{count}} ville en attente d'import",
+    "selectedCitiesHeading_other": "{{count}} villes en attente d'import",
+    "otherCitiesHeading": "Autres villes",
+    "citySelectedBadge": "Sélectionnée",
+    "loadError": "Impossible de charger les suggestions pour le moment. Réessayez dans un instant.",
+    "importCartError": "Échec de l'import pour : {{cities}}. Réessayez dans un instant."
+  },
+  "tripSuggestionsModal": {
+    "title": "Suggestions — {{country}}",
+    "citiesTab": "Villes",
+    "fullTripTab": "Planning complet",
+    "filtersOptionalHint": "Les filtres ci-dessous sont facultatifs."
   },
   "trajetsSection": {
     "label": "Trajets",
@@ -214,6 +239,7 @@
     "deleteTitle": "Supprimer l'excursion"
   },
   "city": {
+    "menuTitle": "Actions sur la ville",
     "reorderTitle": "Réordonner la ville",
     "expandTitle": "Développer",
     "collapseTitle": "Réduire",
@@ -241,7 +267,8 @@
     "citiesCount_one": "{{count}} ville",
     "citiesCount_other": "{{count}} villes",
     "removeTitle": "Retirer ce pays du voyage",
-    "addCityButton": "Ajouter une ville"
+    "addCityButton": "Ajouter une ville",
+    "suggestButton": "Suggestions pour {{country}}"
   },
   "country": {
     "addTitle": "Ajouter un pays",
@@ -287,8 +314,9 @@
     "header": "Groupes d'activité",
     "emptyHint": "Regroupez vos lieux par quartier ou thème. Cliquez sur le point coloré d'un lieu pour l'assigner.",
     "newGroupButton": "Nouveau groupe",
-    "autoDetectTitle": "Détecter automatiquement des groupes géographiques ({{count}} lieux géolocalisés)",
-    "autoDetectButton": "Détecter zones auto"
+    "autoDetectTitle": "Détecter automatiquement des zones par regroupement géographique ({{count}} lieux géolocalisés)",
+    "autoDetectButton": "Détecter des zones",
+    "columnHint": "Regroupez vos lieux par quartier ou secteur : chaque zone colore ses points sur la carte et peut être posée sur un jour d'un coup. « Détecter des zones » les crée automatiquement par regroupement géographique."
   },
   "attachments": {
     "sizeKo": "{{value}} Ko",
@@ -400,7 +428,9 @@
     "newButton": "Nouveau",
     "emptyTitle": "Aucun voyage pour l'instant",
     "emptySub": "Commencez par créer votre premier itinéraire",
-    "createButton": "Créer un voyage"
+    "createButton": "Créer un voyage",
+    "collapseTitle": "Replier « Mes voyages »",
+    "expandTitle": "Déplier « Mes voyages »"
   },
   "tripCard": {
     "durationAbbrev": "{{count}}j",
@@ -465,6 +495,8 @@
     "addCountryPrompt": "Ajoutez un pays pour commencer",
     "expandMapTitle": "Agrandir la carte en superposition",
     "collapseMapTitle": "Réduire la carte",
+    "showMapTitle": "Afficher la carte",
+    "hideMapToRailTitle": "Masquer la carte",
     "navLabel": "Navigation entre les volets",
     "navCities": "Villes",
     "navGroups": "Groupes",

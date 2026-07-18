@@ -7,6 +7,7 @@ import { findCountry, COUNTRIES } from '../data/index';
 import { localizeField } from '../lib/localizeCountry';
 import { translateTag } from '../lib/tagTranslations';
 import i18n from '../i18n';
+import { useModalHistory } from '../hooks/useModalHistory';
 
 function parseDestId(destId) {
   if (!destId) return { countryCode: null, localId: destId, countryMeta: null, dest: null };
@@ -54,6 +55,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
+  useModalHistory(onClose);
   const { t } = useTranslation('app');
   const { user, isAdmin, signOut } = useAuth();
   const { triggerCheck } = useBadge();

@@ -28,16 +28,21 @@ export default async function handler(req, res) {
 
   const table = placeType === 'community' ? 'destination_places' : 'static_destination_places';
 
-  const { data: existingRows } = await admin
+  const { data: existingRows, error: existingError } = await admin
     .from('place_votes')
     .select('id, vote_type')
     .eq('user_id', user.id)
     .eq('place_id', placeId)
     .eq('place_type', placeType)
     .limit(1);
+  // Une lecture échouée ne doit jamais retomber sur "pas de vote existant" :
+  // ça aurait tenté un insert alors qu'un vote existe peut-être déjà (conflit
+  // de contrainte silencieusement avalé plus bas, faute de vérification).
+  if (existingError) return res.status(500).json({ ok: false });
   const existing = existingRows?.[0] ?? null;
 
-  const { data: row } = await admin.from(table).select('upvotes, downvotes').eq('id', placeId).maybeSingle();
+  const { data: row, error: rowError } = await admin.from(table).select('upvotes, downvotes').eq('id', placeId).maybeSingle();
+  if (rowError) return res.status(500).json({ ok: false });
   if (!row) return res.status(404).json({ ok: false });
 
   let { upvotes, downvotes } = row;
@@ -45,26 +50,32 @@ export default async function handler(req, res) {
   if (existing) {
     if (existing.vote_type === voteType) {
       // Même vote → retrait
-      await admin.from('place_votes').delete().eq('id', existing.id);
+      const { error: delError } = await admin.from('place_votes').delete().eq('id', existing.id);
+      if (delError) return res.status(500).json({ ok: false });
       if (voteType === 'up') upvotes = Math.max(0, upvotes - 1);
       else downvotes = Math.max(0, downvotes - 1);
-      await admin.from(table).update({ upvotes, downvotes }).eq('id', placeId);
+      const { error: updError } = await admin.from(table).update({ upvotes, downvotes }).eq('id', placeId);
+      if (updError) return res.status(500).json({ ok: false });
       return res.status(200).json({ ok: true, action: 'removed', voteType, upvotes, downvotes });
     } else {
       // Vote différent → changement
-      await admin.from('place_votes').update({ vote_type: voteType }).eq('id', existing.id);
+      const { error: voteUpdError } = await admin.from('place_votes').update({ vote_type: voteType }).eq('id', existing.id);
+      if (voteUpdError) return res.status(500).json({ ok: false });
       if (voteType === 'up') { upvotes++; downvotes = Math.max(0, downvotes - 1); }
       else { downvotes++; upvotes = Math.max(0, upvotes - 1); }
-      await admin.from(table).update({ upvotes, downvotes }).eq('id', placeId);
+      const { error: updError } = await admin.from(table).update({ upvotes, downvotes }).eq('id', placeId);
+      if (updError) return res.status(500).json({ ok: false });
       return res.status(200).json({ ok: true, action: 'changed', voteType, upvotes, downvotes });
     }
   }
 
   // Pas de vote existant → insertion
-  await admin.from('place_votes').insert({ user_id: user.id, place_id: placeId, place_type: placeType, vote_type: voteType });
+  const { error: insError } = await admin.from('place_votes').insert({ user_id: user.id, place_id: placeId, place_type: placeType, vote_type: voteType });
+  if (insError) return res.status(500).json({ ok: false });
   if (voteType === 'up') upvotes++;
   else downvotes++;
-  await admin.from(table).update({ upvotes, downvotes }).eq('id', placeId);
+  const { error: updError } = await admin.from(table).update({ upvotes, downvotes }).eq('id', placeId);
+  if (updError) return res.status(500).json({ ok: false });
   return res.status(200).json({ ok: true, action: 'added', voteType, upvotes, downvotes });
 }
 

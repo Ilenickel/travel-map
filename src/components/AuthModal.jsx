@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
+import { useModalHistory } from '../hooks/useModalHistory';
 
 export default function AuthModal({ onClose }) {
+  useModalHistory(onClose);
   const { t } = useTranslation('app');
   const { signIn, signUp, signInWithGoogle } = useAuth();
   const [tab, setTab] = useState('login');

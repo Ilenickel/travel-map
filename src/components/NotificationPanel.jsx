@@ -6,6 +6,7 @@ import { findCountry } from '../data/index';
 import { localizeField } from '../lib/localizeCountry';
 import i18n from '../i18n';
 import { relativeTime } from '../lib/relativeTime';
+import { useModalHistory } from '../hooks/useModalHistory';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 
@@ -22,6 +23,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function NotificationPanel({ notifications, onClose, onOpenCountry, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne }) {
+  useModalHistory(onClose);
   const { t } = useTranslation('app');
   const [profiles, setProfiles] = useState({});
   const [tooltip, setTooltip] = useState(null); // { id, x, y }
@@ -87,7 +89,12 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
     }
     await deleteOne(notif.id);
     onClose();
-    navigate(tripId ? `/planifier?trip=${tripId}` : '/planifier');
+    // replace: true — onClose() démonte ce panneau de façon asynchrone
+    // (useModalHistory), et son cleanup fait un history.back() s'il n'est pas
+    // encore parti d'un popstate. Un navigate() normal (pushState) créerait
+    // une entrée que ce back() annulerait aussitôt, renvoyant l'utilisateur
+    // sur l'état "panneau ouvert" au lieu de la page de planning visée.
+    navigate(tripId ? `/planifier?trip=${tripId}` : '/planifier', { replace: true });
   }
 
   async function handleDeclineInvite(notif) {

@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
+import { useToast } from "../context/ToastContext";
 
 const KEY = "triply-favorites";
 
@@ -9,6 +11,8 @@ function loadLocal() {
 }
 
 export function useFavorites(user) {
+  const { t } = useTranslation("app");
+  const toast = useToast();
   const [favorites, setFavorites] = useState(loadLocal);
   const prevUserId = useRef(null);
   const latestFavorites = useRef(favorites);
@@ -56,15 +60,19 @@ export function useFavorites(user) {
       ? latestFavorites.current.filter((c) => c !== code)
       : [...latestFavorites.current, code]
     );
-    if (isIn) {
-      await supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code);
-    } else {
-      await supabase.from('carnet_favorites').upsert(
-        { user_id: user.id, country_code: code },
-        { onConflict: 'user_id,country_code' }
-      );
+    const { error } = isIn
+      ? await supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code)
+      : await supabase.from('carnet_favorites').upsert(
+          { user_id: user.id, country_code: code },
+          { onConflict: 'user_id,country_code' }
+        );
+    if (error) {
+      // L'écriture optimiste ci-dessus n'a pas abouti côté serveur : on
+      // réaligne l'état local plutôt que de laisser les deux diverger en silence.
+      setFavorites((prev) => isIn ? [...prev, code] : prev.filter((c) => c !== code));
+      toast?.error(t('favorites.toggleError'));
     }
-  }, [user]);
+  }, [user, toast, t]);
 
   const remove = useCallback(async (code) => {
     if (!user) {
@@ -75,9 +83,14 @@ export function useFavorites(user) {
       });
       return;
     }
+    const removed = latestFavorites.current.find((c) => c === code);
     setFavorites(latestFavorites.current.filter((c) => c !== code));
-    await supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code);
-  }, [user]);
+    const { error } = await supabase.from('carnet_favorites').delete().eq('user_id', user.id).eq('country_code', code);
+    if (error && removed) {
+      setFavorites((prev) => [...prev, removed]);
+      toast?.error(t('favorites.toggleError'));
+    }
+  }, [user, toast, t]);
 
   const linkToAccount = useCallback(async () => {
     if (!user) return;

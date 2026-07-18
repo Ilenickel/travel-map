@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
+import { useToast } from "../context/ToastContext";
 
 const KEY = "triply-visited";
 
@@ -9,6 +11,8 @@ function loadLocal() {
 }
 
 export function useVisited(user) {
+  const { t } = useTranslation("app");
+  const toast = useToast();
   const [visited, setVisited] = useState(loadLocal);
   const prevUserId = useRef(null);
   const latestVisited = useRef(visited);
@@ -56,15 +60,17 @@ export function useVisited(user) {
       ? latestVisited.current.filter((c) => c !== code)
       : [...latestVisited.current, code]
     );
-    if (isIn) {
-      await supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code);
-    } else {
-      await supabase.from('carnet_visited').upsert(
-        { user_id: user.id, country_code: code },
-        { onConflict: 'user_id,country_code' }
-      );
+    const { error } = isIn
+      ? await supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code)
+      : await supabase.from('carnet_visited').upsert(
+          { user_id: user.id, country_code: code },
+          { onConflict: 'user_id,country_code' }
+        );
+    if (error) {
+      setVisited((prev) => isIn ? [...prev, code] : prev.filter((c) => c !== code));
+      toast?.error(t('favorites.toggleError'));
     }
-  }, [user]);
+  }, [user, toast, t]);
 
   const remove = useCallback(async (code) => {
     if (!user) {
@@ -75,9 +81,14 @@ export function useVisited(user) {
       });
       return;
     }
+    const removed = latestVisited.current.find((c) => c === code);
     setVisited(latestVisited.current.filter((c) => c !== code));
-    await supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code);
-  }, [user]);
+    const { error } = await supabase.from('carnet_visited').delete().eq('user_id', user.id).eq('country_code', code);
+    if (error && removed) {
+      setVisited((prev) => [...prev, removed]);
+      toast?.error(t('favorites.toggleError'));
+    }
+  }, [user, toast, t]);
 
   const linkToAccount = useCallback(async () => {
     if (!user) return;

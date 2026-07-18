@@ -7,6 +7,7 @@ import { monthAbbrev } from "../lib/monthAbbrev";
 import { localizeAmountString } from "../lib/currency";
 import { useSettings } from "../context/SettingsContext";
 import CountryFlag from "./planning/CountryFlag";
+import { useModalHistory } from "../hooks/useModalHistory";
 
 const TAB_DEFS = [
   { id: "resume", labelKey: "tabResume",       icon: "📊" },
@@ -182,6 +183,7 @@ function ColEmpty({ exclude, onAdd }) {
 
 /* ── Panel principal ── */
 export default function ComparePanel({ baseCode, initialCodes, onClose, onCountryClick }) {
+  useModalHistory(onClose);
   useSettings(); // abonnement devise : les montants affichés sont convertis
   const { t } = useTranslation("app");
   const [codes, setCodes] = useState(() =>
@@ -220,7 +222,10 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
     const url = new URL(window.location.href);
     url.searchParams.set("compare", codes.join(","));
     url.searchParams.delete("country");
-    history.replaceState(null, "", url);
+    // history.state (pas null) : préserve le marqueur qu'une modale ouverte
+    // par-dessus (useModalHistory) a pu poser sur l'entrée courante — voir
+    // la même correction dans App.jsx.
+    history.replaceState(history.state, "", url);
   }, [codes]);
 
   const handleCopyLink = () => {

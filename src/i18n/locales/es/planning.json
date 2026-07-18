@@ -69,8 +69,8 @@
     "showDetail": "Mostrar detalle día a día",
     "hideDetail": "Ocultar detalle",
     "fromDay": "a partir del día {{day}}",
-    "confirmAppendText_one": "Este país ya contiene {{count}} ciudad: el viaje importado se añadirá después, sin eliminar nada. ¿Continuar?",
-    "confirmAppendText_other": "Este país ya contiene {{count}} ciudades: el viaje importado se añadirá después de ellas, sin eliminar nada. ¿Continuar?",
+    "confirmAppendText_one": "Este país ya tiene {{count}} ciudad: si su nombre coincide con una ciudad de este viaje importado, será reemplazada; si no, la nueva ciudad se añadirá a continuación. ¿Continuar?",
+    "confirmAppendText_other": "Este país ya tiene {{count}} ciudades: las que coincidan en nombre con una ciudad de este viaje importado serán reemplazadas; las demás se añadirán a continuación. ¿Continuar?",
     "confirmMoreDaysText_one": "Este viaje dura {{count}} día más de lo solicitado — se importará tal cual, luego podrá ajustar la organización.",
     "confirmMoreDaysText_other": "Este viaje dura {{count}} días más de lo solicitado — se importará tal cual, luego podrá ajustar la organización.",
     "confirmFewerDaysText_one": "Este viaje dura {{count}} día menos de lo solicitado — se importará tal cual, luego podrá ajustar la organización.",
@@ -182,12 +182,37 @@
       "soir": "Noche"
     },
     "importButton": "Importar este plan",
-    "confirmReplaceText": "Ya tiene contenido añadido para esta ciudad: ¿desea reemplazarlo por completo con este plan importado?",
-    "confirmReplaceButton": "Reemplazar e importar",
+    "replaceNoticeText": "El contenido actual de {{city}} será reemplazado por este planning.",
     "filteredEmptyText": "Ninguna de las sugerencias para esta ciudad coincide con los criterios seleccionados.",
     "clearFiltersButton": "Borrar criterios",
     "willSetDaysNotice_one": "Aún no ha indicado una duración de estancia para esta ciudad. Al importar esta sugerencia, se fijará automáticamente en {{count}} día.",
-    "willSetDaysNotice_other": "Aún no ha indicado una duración de estancia para esta ciudad. Al importar esta sugerencia, se fijará automáticamente en {{count}} días."
+    "willSetDaysNotice_other": "Aún no ha indicado una duración de estancia para esta ciudad. Al importar esta sugerencia, se fijará automáticamente en {{count}} días.",
+    "backToCities": "← Volver a las ciudades",
+    "chooseButton": "Elegir este planning",
+    "chosenLabel": "Planning elegido",
+    "addedToCartText": "Planning añadido a su selección para {{city}} — ¿desea continuar con otras ciudades o importar ahora?",
+    "continueOtherCitiesButton": "Sí, elegir otras ciudades",
+    "importNowButton": "No, importar ahora",
+    "cartEmpty": "Ninguna ciudad en espera por ahora.",
+    "cartSummary_one": "{{count}} ciudad en espera: {{list}}",
+    "cartSummary_other": "{{count}} ciudades en espera: {{list}}",
+    "finishImportButton": "Finalizar e importar",
+    "noCitiesYet": "Aún no existe ningún planning compartido para este país.",
+    "alreadyInTrip": "Ya está en su viaje",
+    "confirmLoseCart": "Tiene ciudades pendientes de importar ({{list}}) que se perderán si continúa.",
+    "confirmLoseCartButton": "Continuar de todos modos",
+    "selectedCitiesHeading_one": "{{count}} ciudad pendiente de importar",
+    "selectedCitiesHeading_other": "{{count}} ciudades pendientes de importar",
+    "otherCitiesHeading": "Otras ciudades",
+    "citySelectedBadge": "Seleccionada",
+    "loadError": "No se han podido cargar las sugerencias por ahora. Vuelva a intentarlo en un momento.",
+    "importCartError": "Error al importar: {{cities}}. Vuelva a intentarlo en un momento."
+  },
+  "tripSuggestionsModal": {
+    "title": "Sugerencias — {{country}}",
+    "citiesTab": "Ciudades",
+    "fullTripTab": "Viaje completo",
+    "filtersOptionalHint": "Los filtros siguientes son opcionales."
   },
   "trajetsSection": {
     "label": "Trayectos",
@@ -214,6 +239,7 @@
     "deleteTitle": "Eliminar la excursión"
   },
   "city": {
+    "menuTitle": "Acciones de la ciudad",
     "reorderTitle": "Reordenar la ciudad",
     "expandTitle": "Expandir",
     "collapseTitle": "Contraer",
@@ -241,7 +267,8 @@
     "citiesCount_one": "{{count}} ciudad",
     "citiesCount_other": "{{count}} ciudades",
     "removeTitle": "Eliminar este país del viaje",
-    "addCityButton": "Añadir una ciudad"
+    "addCityButton": "Añadir una ciudad",
+    "suggestButton": "Sugerencias para {{country}}"
   },
   "country": {
     "addTitle": "Añadir un país",
@@ -287,8 +314,9 @@
     "header": "Grupos de actividades",
     "emptyHint": "Agrupe sus lugares por barrio o tema. Haga clic en el punto de color de un lugar para asignarlo.",
     "newGroupButton": "Nuevo grupo",
-    "autoDetectTitle": "Detectar automáticamente zonas geográficas ({{count}} lugares geolocalizados)",
-    "autoDetectButton": "Detectar zonas automáticamente"
+    "autoDetectTitle": "Detectar automáticamente zonas por agrupación geográfica ({{count}} lugares geolocalizados)",
+    "autoDetectButton": "Detectar zonas",
+    "columnHint": "Agrupe sus lugares por barrio o zona: cada zona colorea sus puntos en el mapa y puede asignarse a un día de una vez. «Detectar zonas» las crea automáticamente por agrupación geográfica."
   },
   "attachments": {
     "sizeKo": "{{value}} KB",
@@ -400,7 +428,9 @@
     "newButton": "Nuevo",
     "emptyTitle": "Aún no hay viajes",
     "emptySub": "Empiece creando su primer itinerario",
-    "createButton": "Crear un viaje"
+    "createButton": "Crear un viaje",
+    "collapseTitle": "Contraer «Mis viajes»",
+    "expandTitle": "Expandir «Mis viajes»"
   },
   "tripCard": {
     "durationAbbrev": "{{count}}d",
@@ -465,6 +495,8 @@
     "addCountryPrompt": "Añada un país para empezar",
     "expandMapTitle": "Expandir el mapa como superposición",
     "collapseMapTitle": "Contraer el mapa",
+    "showMapTitle": "Mostrar el mapa",
+    "hideMapToRailTitle": "Ocultar el mapa",
     "navLabel": "Navegación entre paneles",
     "navCities": "Ciudades",
     "navGroups": "Grupos",
