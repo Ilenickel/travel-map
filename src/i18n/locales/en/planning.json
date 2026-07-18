@@ -198,7 +198,15 @@
     "cartSummary_other": "{{count}} cities pending: {{list}}",
     "finishImportButton": "Finish & import",
     "noCitiesYet": "No shared plan exists yet for this country.",
-    "alreadyInTrip": "Already in your trip"
+    "alreadyInTrip": "Already in your trip",
+    "confirmLoseCart": "You have cities pending import ({{list}}) that will be lost if you continue.",
+    "confirmLoseCartButton": "Continue anyway",
+    "selectedCitiesHeading_one": "{{count}} city pending import",
+    "selectedCitiesHeading_other": "{{count}} cities pending import",
+    "otherCitiesHeading": "Other cities",
+    "citySelectedBadge": "Selected",
+    "loadError": "Couldn't load suggestions right now. Please try again shortly.",
+    "importCartError": "Import failed for: {{cities}}. Please try again shortly."
   },
   "tripSuggestionsModal": {
     "title": "Suggestions — {{country}}",

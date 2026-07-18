@@ -118,6 +118,16 @@ export default function TripEditor({
   // explicitement refermé la carte (mapOpen à false) la rouvrirait de force à
   // chaque fois, ignorant son choix.
   const mapAutoOpenedRef = useRef(false);
+  // TripEditor n'est pas démonté/remonté quand on change de voyage dans la
+  // sidebar (pas de `key={tripId}` côté PlanningPage) : sans ce reset, le
+  // garde-fou au-dessus resterait armé pour le voyage précédent, empêchant
+  // l'auto-ouverture de la carte pour un voyage tout neuf où l'utilisateur
+  // n'a pourtant jamais rien fermé lui-même.
+  useEffect(() => {
+    mapAutoOpenedRef.current = false;
+    setMapOpen(false);
+    setMapCollapsed(false);
+  }, [tripId]);
   useEffect(() => {
     if (mapAutoOpenedRef.current) return;
     if (activities.some(a => a.place_lat && a.place_lng)) {

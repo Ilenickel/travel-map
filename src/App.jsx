@@ -191,7 +191,11 @@ function AppInner() {
       if (url.pathname.startsWith("/pays/")) url.pathname = "/";
       document.title = t("seo.homeTitle");
     }
-    history.replaceState(null, "", url);
+    // history.state (pas null) : préserve le marqueur qu'une modale ouverte
+    // par-dessus (useModalHistory) a pu poser sur l'entrée courante — un
+    // replaceState(null, ...) l'effacerait, cassant la fermeture LIFO d'une
+    // pile de modales (ex. CountryPanel + AuthModal empilées).
+    history.replaceState(history.state, "", url);
   }, [selectedCountry, i18n.language, t]);
   const searchContainerRef = useRef(null);
 
@@ -557,7 +561,11 @@ function AppInner() {
             setCompareBase(null);
             const url = new URL(window.location.href);
             url.searchParams.delete("compare");
-            history.replaceState(null, "", url);
+            // history.state (pas null) : préserve le marqueur qu'une modale ouverte
+    // par-dessus (useModalHistory) a pu poser sur l'entrée courante — un
+    // replaceState(null, ...) l'effacerait, cassant la fermeture LIFO d'une
+    // pile de modales (ex. CountryPanel + AuthModal empilées).
+    history.replaceState(history.state, "", url);
           }}
           onCountryClick={(code) => { setCompareBase(null); openCountry(code); }}
         />

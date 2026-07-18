@@ -222,7 +222,10 @@ export default function ComparePanel({ baseCode, initialCodes, onClose, onCountr
     const url = new URL(window.location.href);
     url.searchParams.set("compare", codes.join(","));
     url.searchParams.delete("country");
-    history.replaceState(null, "", url);
+    // history.state (pas null) : préserve le marqueur qu'une modale ouverte
+    // par-dessus (useModalHistory) a pu poser sur l'entrée courante — voir
+    // la même correction dans App.jsx.
+    history.replaceState(history.state, "", url);
   }, [codes]);
 
   const handleCopyLink = () => {

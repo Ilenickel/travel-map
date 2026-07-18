@@ -139,7 +139,6 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
         <TripSuggestionsModal
           dest={dest}
           tripId={tripId}
-          baseCities={baseCities}
           baseCitiesCount={baseCities.length}
           activities={activities}
           initialTab={suggestionsInitialTab}

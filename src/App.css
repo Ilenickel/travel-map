@@ -3044,6 +3044,12 @@ html, body, #root { height: 100%; }
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    /* Sans ça, ce cercle (absolute, mais z-index:auto) se peint dans l'ordre
+       du DOM parmi les boutons voisins — "Filtres" vient juste après lui,
+       donc le halo lumineux de son animation filter-attract (box-shadow qui
+       déborde largement) passait PAR-DESSUS le cercle "Planifier" au lieu
+       de rester dessous. */
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7668,6 +7674,14 @@ html, body, #root { height: 100%; }
   gap: 8px;
   width: min(360px, calc(100vw - 32px));
   align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  /* Sous ce seuil, la barre de nav pilule flottante (.app-mobile-nav /
+     .pp-mobile-nav) occupe le bas de l'écran jusqu'à ~78px (14px + ~50px de
+     barre + le débordement du cercle central) — sans ce décalage, un toast
+     (z-index 500) s'affiche par-dessus elle. */
+  .toast-container { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
 }
 
 .toast {

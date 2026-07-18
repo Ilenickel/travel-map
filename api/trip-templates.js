@@ -341,7 +341,7 @@ function criteriaMatchCount(templateCriteria, wanted) {
 }
 
 async function handleSuggest(admin, body, res) {
-  const { countryCode, cityName, countryAlpha2, plannedDays, criteria: wantedCriteria } = body;
+  const { countryCode, cityName, countryAlpha2, plannedDays, nbDaysFlex, criteria: wantedCriteria } = body;
   if (!countryCode || !cityName) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
@@ -356,22 +356,27 @@ async function handleSuggest(admin, body, res) {
   // suggestion principale — une excursion ne se recherche pas pour
   // elle-même, elle est reprise avec sa ville de base (voir plus bas).
   //
-  // Tolérance de ±1 jour sur nb_days (pas d'égalité stricte) : nb_days est
-  // calculé à partir du nombre de jours RÉELLEMENT activités, donc un jour
-  // sans activité au milieu du séjour le fait apparaître un jour plus court
-  // que la durée déclarée par le voyageur d'origine.
+  // Tolérance de ±1 jour sur nb_days (pas d'égalité stricte par défaut) :
+  // nb_days est calculé à partir du nombre de jours RÉELLEMENT activités,
+  // donc un jour sans activité au milieu du séjour le fait apparaître un jour
+  // plus court que la durée déclarée par le voyageur d'origine. Contrôlable
+  // par le client (nbDaysFlex, même paramètre que suggest-trip) — traité
+  // comme activé par défaut (undefined) pour ne pas changer le comportement
+  // des appels déjà en place, désactivable explicitement pour une recherche
+  // sur la durée exacte uniquement.
   //
   // plannedDays est FACULTATIF : sans durée renseignée sur la ville, on
   // propose TOUS les plannings de cette ville (toutes durées) — l'utilisateur
   // regarde ce qui existe et décide ensuite combien de jours il y reste,
   // plutôt que d'être obligé de fixer une durée avant même de chercher.
+  const flex = nbDaysFlex === false ? 0 : 1;
   let query = admin
     .from('trip_templates')
     .select('id, city_name, city_lat, city_lng, nb_days, uses_count, likes_count, criteria, is_editorial')
     .eq('country_code', countryCode)
     .eq('is_public', true)
     .is('parent_template_id', null);
-  if (plannedDays) query = query.gte('nb_days', plannedDays - 1).lte('nb_days', plannedDays + 1);
+  if (plannedDays) query = query.gte('nb_days', plannedDays - flex).lte('nb_days', plannedDays + flex);
   const { data: candidates } = await query;
 
   const nearbyCandidates = (candidates || [])
@@ -494,7 +499,11 @@ async function handleSuggestTrip(admin, body, res) {
   // 6e ou plus loin.
   const offset = Math.max(0, parseInt(body.offset, 10) || 0);
 
-  const flex = nbDaysFlex ? 1 : 0;
+  // undefined traité comme tolérant (même défaut que handleSuggest ci-dessus) :
+  // le client envoie toujours cette valeur explicitement aujourd'hui, mais un
+  // futur appelant qui l'omettrait ne doit pas se retrouver avec un
+  // comportement inverse selon l'action appelée.
+  const flex = nbDaysFlex === false ? 0 : 1;
   let groupsQuery = admin
     .from('trip_template_groups')
     .select('id, total_days, uses_count, criteria, is_editorial')

@@ -198,7 +198,15 @@
     "cartSummary_other": "{{count}} ciudades en espera: {{list}}",
     "finishImportButton": "Finalizar e importar",
     "noCitiesYet": "Aún no existe ningún planning compartido para este país.",
-    "alreadyInTrip": "Ya está en su viaje"
+    "alreadyInTrip": "Ya está en su viaje",
+    "confirmLoseCart": "Tiene ciudades pendientes de importar ({{list}}) que se perderán si continúa.",
+    "confirmLoseCartButton": "Continuar de todos modos",
+    "selectedCitiesHeading_one": "{{count}} ciudad pendiente de importar",
+    "selectedCitiesHeading_other": "{{count}} ciudades pendientes de importar",
+    "otherCitiesHeading": "Otras ciudades",
+    "citySelectedBadge": "Seleccionada",
+    "loadError": "No se han podido cargar las sugerencias por ahora. Vuelva a intentarlo en un momento.",
+    "importCartError": "Error al importar: {{cities}}. Vuelva a intentarlo en un momento."
   },
   "tripSuggestionsModal": {
     "title": "Sugerencias — {{country}}",

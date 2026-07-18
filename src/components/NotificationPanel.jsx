@@ -89,7 +89,12 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
     }
     await deleteOne(notif.id);
     onClose();
-    navigate(tripId ? `/planifier?trip=${tripId}` : '/planifier');
+    // replace: true — onClose() démonte ce panneau de façon asynchrone
+    // (useModalHistory), et son cleanup fait un history.back() s'il n'est pas
+    // encore parti d'un popstate. Un navigate() normal (pushState) créerait
+    // une entrée que ce back() annulerait aussitôt, renvoyant l'utilisateur
+    // sur l'état "panneau ouvert" au lieu de la page de planning visée.
+    navigate(tripId ? `/planifier?trip=${tripId}` : '/planifier', { replace: true });
   }
 
   async function handleDeclineInvite(notif) {

@@ -9,6 +9,7 @@ import { useActivityPhoto } from '../../hooks/useActivityPhoto';
 import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 import DaysStepper from './DaysStepper';
 import CitySearchInput from './CitySearchInput';
+import { useToast } from '../../context/ToastContext';
 
 // ─── Fenêtre de suggestions unifiée ───────────────────────────────────────
 // Fusionne les anciens TripPlanSuggestionsButton.jsx (suggestions de planning
@@ -114,7 +115,12 @@ function CityTemplatesBrowser({
   dest, cityName, representativeTemplateId, hasExistingActivities, cartEntry, onChooseTemplate, onBack,
 }) {
   const { t, i18n } = useTranslation();
+  const toast = useToast();
   const [nbDays, setNbDays] = useState(null);
+  // ±1 jour de tolérance sur la durée (voir handleSuggest côté serveur) :
+  // activé par défaut (c'était déjà systématiquement le cas avant ce
+  // toggle), désactivable pour ne voir que les plannings de la durée exacte.
+  const [flex, setFlex] = useState(true);
   const [criteria, setCriteria] = useState([]);
   const [templates, setTemplates] = useState(null);
   const [index, setIndex] = useState(0);
@@ -139,11 +145,21 @@ function CityTemplatesBrowser({
     setCriteria((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);
   };
 
+  // Jeton de requête : sans lui, changer `flex`/`nbDays`/`criteria` pendant
+  // qu'un `loadMore` est en vol pouvait faire résoudre ce dernier APRÈS la
+  // nouvelle recherche déclenchée par le changement — ses résultats
+  // (obtenus avec l'ANCIENNE valeur des filtres) s'ajoutaient alors à la
+  // liste affichée, la mélangeant avec des résultats incohérents entre eux.
+  const requestIdRef = useRef(0);
+
   const fetchTemplates = async () => {
+    const myRequestId = ++requestIdRef.current;
     setTemplates(null);
     const result = await callModeration('trip-templates', {
-      action: 'suggest', countryCode: dest.country_code, cityName, countryAlpha2, plannedDays: nbDays, criteria,
+      action: 'suggest', countryCode: dest.country_code, cityName, countryAlpha2, plannedDays: nbDays, nbDaysFlex: flex, criteria,
     });
+    if (myRequestId !== requestIdRef.current) return; // une recherche plus récente a pris le relais
+    if (!result.ok) toast?.error(result.reason || t('tripSuggestions.loadError'));
     setTemplates(result.ok ? (result.templates || []) : []);
     setHasMore(result.ok ? !!result.hasMore : false);
     setIndex(0);
@@ -152,15 +168,20 @@ function CityTemplatesBrowser({
   useEffect(() => {
     fetchTemplates();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cityName, nbDays, criteria]);
+  }, [cityName, nbDays, flex, criteria]);
 
   const loadMore = async () => {
+    // Pas d'incrément ici : "charger plus" prolonge la recherche EN COURS,
+    // ce n'en est pas une nouvelle — seul fetchTemplates doit faire avancer
+    // le jeton.
+    const myRequestId = requestIdRef.current;
     setLoadingMore(true);
     const result = await callModeration('trip-templates', {
-      action: 'suggest', countryCode: dest.country_code, cityName, countryAlpha2, plannedDays: nbDays, criteria, offset: templates.length,
+      action: 'suggest', countryCode: dest.country_code, cityName, countryAlpha2, plannedDays: nbDays, nbDaysFlex: flex, criteria, offset: templates.length,
     });
     setLoadingMore(false);
-    if (!result.ok) return 0;
+    if (myRequestId !== requestIdRef.current) return 0; // filtres changés entre-temps : ces résultats ne correspondent plus à ce qui est affiché
+    if (!result.ok) { toast?.error(result.reason || t('tripSuggestions.loadError')); return 0; }
     const added = result.templates || [];
     setTemplates((prev) => [...(prev || []), ...added]);
     setHasMore(!!result.hasMore);
@@ -206,10 +227,25 @@ function CityTemplatesBrowser({
 
       <h4 className="pp-trip-suggestions-city-heading">{t('tripSuggestions.modalTitle', { city: displayCityName })}</h4>
 
+      {/* Bandeau "filtres facultatifs" repositionné juste au-dessus des
+          filtres eux-mêmes (durée + critères) plutôt qu'en haut de la
+          fenêtre, où il n'avait aucun rapport visuel avec ce qu'il décrit. */}
+      <p className="pp-fulltrip-optional-banner">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+        {t('tripSuggestionsModal.filtersOptionalHint')}
+      </p>
+
       <div className="pp-fulltrip-fieldbox">
         <span className="pp-fulltrip-fieldbox-label">📅 {t('fullTripSuggestions.nbDaysLabel')}</span>
         <div className="pp-fulltrip-fieldbox-body">
           <DaysStepper value={nbDays} onChange={setNbDays} placeholder={t('city.plannedDaysPlaceholder')} />
+          <label className="pp-fulltrip-flex">
+            <span className="profile-toggle">
+              <input type="checkbox" checked={flex} onChange={(e) => setFlex(e.target.checked)} />
+              <span className="profile-toggle-track"><span className="profile-toggle-thumb" /></span>
+            </span>
+            <span>{t('fullTripSuggestions.flexLabel')}</span>
+          </label>
         </div>
       </div>
       <CriteriaFilterChips selected={criteria} onToggle={toggleCriterion} />
@@ -222,6 +258,11 @@ function CityTemplatesBrowser({
         </div>
       ) : (
         <>
+          {/* Bandeau "planning" repositionné ici, juste avant les plannings
+              qu'il décrit, plutôt qu'en haut de la fenêtre où il pouvait
+              s'afficher même sur des écrans sans aucun planning visible
+              (ex. l'écran de confirmation panier de CitiesTab). */}
+          <p className="pp-trip-suggestions-disclaimer">{t('tripSuggestions.disclaimer')}</p>
           {photosLoading && (
             <p className="pp-trip-suggestions-photos-loading">
               <span className="pp-search-busy" /> {t('tripSuggestions.photosLoading')}
@@ -323,10 +364,13 @@ function CityTemplatesBrowser({
 // ─── Onglet "Villes" ───────────────────────────────────────────────────────
 // Liste TOUTES les villes ayant au moins un planning partagé pour ce pays
 // (action 'list-cities'), pas seulement les villes déjà présentes dans le
-// voyage (3b du cahier des charges) — `baseCities` (villes du voyage) sert
-// uniquement à distinguer, pour chacune, si elle existe déjà.
-function CitiesTab({ dest, tripId, baseCities, activities, cart, onChooseTemplate, importing, onImportCart }) {
+// voyage (3b du cahier des charges) — la résolution "déjà dans votre voyage"
+// (existingCityId) se fait entièrement côté serveur par géocodage (voir
+// handleListCities, api/trip-templates.js), pas par comparaison locale avec
+// les villes du voyage — ce composant n'a donc pas besoin de les recevoir.
+function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImportCart }) {
   const { t, i18n } = useTranslation();
+  const toast = useToast();
   const [citiesList, setCitiesList] = useState(null); // null = pas encore chargé
   const [selectedCity, setSelectedCity] = useState(null); // objet cluster entier (voir list-cities), pas juste le nom
   const [justChosenCityKey, setJustChosenCityKey] = useState(null);
@@ -343,6 +387,12 @@ function CitiesTab({ dest, tripId, baseCities, activities, cart, onChooseTemplat
         action: 'list-cities', countryCode: dest.country_code, countryAlpha2, destinationId: dest.id,
       });
       if (cancelled) return;
+      // Sans ce toast, un échec (session expirée, réseau, 500) se montrait
+      // exactement comme "aucun planning partagé n'existe encore" — un
+      // utilisateur déconnecté-sans-le-savoir ne pouvait pas distinguer
+      // "il n'y a rien" de "ça n'a pas pu charger", pour un pays qui a
+      // pourtant du contenu.
+      if (!result.ok) toast?.error(result.reason || t('tripSuggestions.loadError'));
       setCitiesList(result.ok ? (result.cities || []) : []);
     })();
     return () => { cancelled = true; };
@@ -368,13 +418,19 @@ function CitiesTab({ dest, tripId, baseCities, activities, cart, onChooseTemplat
     const cityName = cart[justChosenCityKey]?.cityName;
     return (
       <div className="pp-trip-suggestions-confirm pp-trip-suggestions-confirm--cart">
+        <span className="pp-trip-suggestions-confirm-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>
+        </span>
         <p>{t('tripSuggestions.addedToCartText', { city: cityName })}</p>
+        {/* "Continuer" en avant (primaire) : le flux panier encourage à choisir
+            plusieurs villes avant d'importer, "importer maintenant" reste
+            possible mais ne doit pas être l'action visuellement dominante. */}
         <div className="pp-modal-actions">
-          <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setJustChosenCityKey(null)} disabled={importing}>
-            {t('tripSuggestions.continueOtherCitiesButton')}
-          </button>
-          <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={onImportCart} disabled={importing}>
+          <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={onImportCart} disabled={importing}>
             {importing ? <span className="pp-search-busy" /> : t('tripSuggestions.importNowButton')}
+          </button>
+          <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={() => setJustChosenCityKey(null)} disabled={importing}>
+            {t('tripSuggestions.continueOtherCitiesButton')}
           </button>
         </div>
       </div>
@@ -396,53 +452,88 @@ function CitiesTab({ dest, tripId, baseCities, activities, cart, onChooseTemplat
     );
   }
 
+  // Villes déjà en attente d'import (dans le panier) remontées en tête de
+  // liste, dans une section à part — plus facile à retrouver que mélangées
+  // au reste, et ça donne une trace visuelle immédiate de ce qui a déjà été
+  // choisi avant de continuer à parcourir les autres villes.
+  const chosenCities = (citiesList || []).filter((c) => !!cart[cityKeyFor(c.cityName)]);
+  const otherCities = (citiesList || []).filter((c) => !cart[cityKeyFor(c.cityName)]);
+
+  const renderCityItem = (c) => {
+    const cityKey = cityKeyFor(c.cityName);
+    const chosen = !!cart[cityKey];
+    const alreadyInTrip = !!c.existingCityId;
+    return (
+      <li key={c.cityName}>
+        <button
+          type="button"
+          className={`pp-trip-suggestions-city-item${chosen ? ' pp-trip-suggestions-city-item--chosen' : ''}`}
+          onClick={() => setSelectedCity(c)}
+        >
+          <span className="pp-trip-suggestions-city-item-avatar" aria-hidden="true">{chosen ? '✓' : '🏙️'}</span>
+          <span className="pp-trip-suggestions-city-item-main">
+            <span className="pp-trip-suggestions-city-item-name">{getCityDisplayName({ id: c.representativeTemplateId, name: c.cityName })}</span>
+            {alreadyInTrip && (
+              // Même traitement que le badge "Sélectionnée" (pp-trip-suggestions-city-item-check) :
+              // le texte en toutes lettres écrasait le nom de la ville sur
+              // mobile (vu avec des noms courts type "B"/"X" tronqués à une
+              // lettre) — icône seule sur mobile, icône + texte sur desktop.
+              <span className="pp-trip-suggestions-city-item-already" title={t('tripSuggestions.alreadyInTrip')}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                <span className="pp-trip-suggestions-city-item-already-label">{t('tripSuggestions.alreadyInTrip')}</span>
+              </span>
+            )}
+          </span>
+          <span className="pp-trip-suggestions-city-item-badge-slot">
+            {chosen && (
+              <span className="pp-trip-suggestions-city-item-check" title={t('tripSuggestions.citySelectedBadge')}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>
+                {/* Sur mobile, tout .pp-trip-suggestions-city-item-badge-slot
+                    (le parent) est masqué — pas cette classe -label
+                    directement — car l'avatar de gauche est déjà vert/coché
+                    lui aussi : le badge entier devient redondant, pas
+                    seulement son texte trop large. */}
+                <span className="pp-trip-suggestions-city-item-check-label">{t('tripSuggestions.citySelectedBadge')}</span>
+              </span>
+            )}
+          </span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".5"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+        </button>
+      </li>
+    );
+  };
+
   return (
     <div className="pp-trip-suggestions-cities-tab">
-      <ul className="pp-trip-suggestions-city-list">
-        {(citiesList || []).map((c) => {
-          const cityKey = cityKeyFor(c.cityName);
-          const chosen = !!cart[cityKey];
-          const alreadyInTrip = !!c.existingCityId;
-          return (
-            <li key={c.cityName}>
-              <button
-                type="button"
-                className={`pp-trip-suggestions-city-item${chosen ? ' pp-trip-suggestions-city-item--chosen' : ''}`}
-                onClick={() => setSelectedCity(c)}
-              >
-                <span className="pp-trip-suggestions-city-item-main">
-                  <span className="pp-trip-suggestions-city-item-name">{getCityDisplayName({ id: c.representativeTemplateId, name: c.cityName })}</span>
-                  {alreadyInTrip && (
-                    <span className="pp-trip-suggestions-city-item-already">{t('tripSuggestions.alreadyInTrip')}</span>
-                  )}
-                </span>
-                <span className="pp-trip-suggestions-city-item-badge-slot">
-                  {chosen && (
-                    <span className="pp-trip-suggestions-city-item-check">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>
-                      {t('tripSuggestions.chosenLabel')}
-                    </span>
-                  )}
-                </span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".5"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
-              </button>
-            </li>
-          );
-        })}
-        {citiesList === null && (
-          <li className="pp-trip-suggestions-city-list-empty"><span className="pp-search-busy" /> {t('common:loading')}</li>
+      <p className="pp-trip-suggestions-disclaimer">{t('tripSuggestions.disclaimer')}</p>
+      {chosenCities.length > 0 && (
+        <div className="pp-trip-suggestions-city-group">
+          <span className="pp-trip-suggestions-city-group-label">{t('tripSuggestions.selectedCitiesHeading', { count: chosenCities.length })}</span>
+          <ul className="pp-trip-suggestions-city-list">{chosenCities.map(renderCityItem)}</ul>
+        </div>
+      )}
+      <div className="pp-trip-suggestions-city-group">
+        {chosenCities.length > 0 && otherCities.length > 0 && (
+          <span className="pp-trip-suggestions-city-group-label">{t('tripSuggestions.otherCitiesHeading')}</span>
         )}
-        {citiesList !== null && citiesList.length === 0 && (
-          <li className="pp-trip-suggestions-city-list-empty">{t('tripSuggestions.noCitiesYet')}</li>
-        )}
-      </ul>
+        <ul className="pp-trip-suggestions-city-list">
+          {otherCities.map(renderCityItem)}
+          {citiesList === null && (
+            <li className="pp-trip-suggestions-city-list-empty"><span className="pp-search-busy" /> {t('common:loading')}</li>
+          )}
+          {citiesList !== null && citiesList.length === 0 && (
+            <li className="pp-trip-suggestions-city-list-empty">{t('tripSuggestions.noCitiesYet')}</li>
+          )}
+        </ul>
+      </div>
     </div>
   );
 }
 
 // ─── Onglet "Planning complet" — reprend TripFullSuggestions.jsx à l'identique ──
-function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported }) {
+function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, requestDiscardCart }) {
   const { t, i18n } = useTranslation();
+  const toast = useToast();
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[dest.country_code]?.emoji);
 
   const [nbDays, setNbDays] = useState(null);
@@ -494,6 +585,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
       criteria: params.criteria,
     });
     setSearching(false);
+    if (!result.ok) toast?.error(result.reason || t('tripSuggestions.loadError'));
     setGroups(result.ok ? (result.groups || []) : []);
     setHasMore(result.ok ? !!result.hasMore : false);
     setSearchedNbDays(params.nbDays);
@@ -515,7 +607,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
       offset: (groups || []).length,
     });
     setLoadingMore(false);
-    if (!result.ok) return;
+    if (!result.ok) { toast?.error(result.reason || t('tripSuggestions.loadError')); return; }
     setGroups((prev) => [...(prev || []), ...(result.groups || [])]);
     setHasMore(!!result.hasMore);
   };
@@ -548,7 +640,11 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
     });
     setImporting(false);
     setConfirmingId(null);
+    // Sans ce toast, un échec (session expirée, réseau, 500) ne montrait
+    // absolument rien : ni erreur, ni fermeture — l'utilisateur restait sur
+    // l'écran de confirmation sans comprendre pourquoi rien ne se passait.
     if (result.ok) onImported?.();
+    else toast?.error(result.reason || t('tripSuggestions.loadError'));
   };
 
   const dayMismatchFor = (group) =>
@@ -556,9 +652,15 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
       ? group.totalDays - searchedNbDays
       : 0;
 
+  // `requestDiscardCart` (du composant racine) doit s'exécuter AVANT
+  // l'import, pas après — l'ancienne version le posait sur le `onImported`
+  // transmis en prop, qui ne se déclenche qu'APRÈS un import déjà réussi
+  // côté serveur : "Annuler" sur l'avertissement n'annulait alors rien du
+  // tout (l'import était déjà écrit en base), juste la fermeture de la
+  // fenêtre — trompeur. Averti avant, comme pour un vrai choix.
   const handleImportClick = (group) => {
     if (baseCitiesCount > 0 || dayMismatchFor(group) !== 0 || !hasAnyDates) setConfirmingId(group.id);
-    else runImport(group);
+    else requestDiscardCart(() => runImport(group));
   };
 
   const unresolvedMustCities = mustCitiesResolved.filter((c) => !c.resolved).map((c) => c.name);
@@ -584,6 +686,10 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
         </div>
       ) : (
         <>
+          <p className="pp-fulltrip-optional-banner">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+            {t('tripSuggestionsModal.filtersOptionalHint')}
+          </p>
           <div className="pp-fulltrip-conditions">
             <div className="pp-fulltrip-fields">
               <div className="pp-fulltrip-fieldbox">
@@ -750,7 +856,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
                     {!hasAnyDates && <p className="pp-fulltrip-notice">🗓️ {t('fullTripSuggestions.confirmNoDatesText')}</p>}
                     <div className="pp-modal-actions">
                       <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setConfirmingId(null)} disabled={importing}>{t('common:actions.cancel')}</button>
-                      <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={() => runImport(group)} disabled={importing}>
+                      <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={() => requestDiscardCart(() => runImport(group))} disabled={importing}>
                         {importing ? <span className="pp-search-busy" /> : t('fullTripSuggestions.confirmAppendButton')}
                       </button>
                     </div>
@@ -778,10 +884,11 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported })
 
 // ─── Composant principal ───────────────────────────────────────────────────
 export default function TripSuggestionsModal({
-  dest, tripId, baseCities, baseCitiesCount, activities, hasAnyDates, onAddCity, onClose, onImported,
+  dest, tripId, baseCitiesCount, activities, hasAnyDates, onAddCity, onClose, onImported,
   initialTab = 'villes',
 }) {
   const { t } = useTranslation();
+  const toast = useToast();
   const [tab, setTab] = useState(initialTab);
   // Panier soulevé au niveau de la modale (pas de CitiesTab) : la barre panier
   // doit être un vrai pied de modale fixe, rendu ICI en dehors du corps
@@ -789,13 +896,39 @@ export default function TripSuggestionsModal({
   const [cart, setCart] = useState({}); // { [cityKey]: { cityName, templateId, nbDays, existingCityId } }
   const [importing, setImporting] = useState(false);
 
+  const cartEntries = Object.entries(cart);
+  const cartCount = cartEntries.length;
+
+  // Le panier ne vit que dans cette modale (state local, jamais persisté) —
+  // sans ce garde-fou, changer d'onglet vers "Planning complet" et y importer
+  // referme la fenêtre (onImported force onClose) et efface silencieusement
+  // les villes déjà choisies dans l'onglet "Villes", sans avertissement.
+  // `pendingDiscardAction` porte l'action à exécuter si l'utilisateur confirme
+  // — un dialogue intégré à la modale plutôt qu'un window.confirm() natif
+  // (moche, hors charte, jamais utilisé ailleurs dans l'app).
+  const [pendingDiscardAction, setPendingDiscardAction] = useState(null);
+  const requestDiscardCart = (onConfirm) => {
+    if (cartCount === 0) { onConfirm(); return; }
+    setPendingDiscardAction(() => onConfirm);
+  };
+  const confirmDiscard = () => { pendingDiscardAction?.(); setPendingDiscardAction(null); };
+  const cancelDiscard = () => setPendingDiscardAction(null);
+
+  const handleClose = () => requestDiscardCart(() => onClose?.());
+
   // Échap ferme la modale (comme les modales existantes du projet), en plus
-  // du clic sur le scrim et du bouton ✕ ci-dessous.
+  // du clic sur le scrim et du bouton ✕ ci-dessous — sauf si le dialogue de
+  // confirmation est déjà ouvert, où Échap doit l'annuler lui d'abord.
   useEffect(() => {
-    const handleEscape = (e) => { if (e.key === 'Escape') onClose?.(); };
+    const handleEscape = (e) => {
+      if (e.key !== 'Escape') return;
+      if (pendingDiscardAction) cancelDiscard();
+      else handleClose();
+    };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart, pendingDiscardAction]);
 
   // `existingCityId` résolu par CitiesTab (null si la ville n'est pas encore
   // dans le voyage) — renvoie la cityKey utilisée, pour que CitiesTab puisse
@@ -819,57 +952,69 @@ export default function TripSuggestionsModal({
     // que de risquer des écritures concurrentes sur le même voyage. Même
     // raisonnement pour la création préalable de ville (onAddCity) : elle
     // doit être terminée AVANT l'import qui la remplit.
+    //
+    // `failedCities` : sans ça, un échec (session expirée, réseau, ville non
+    // créée) passait totalement inaperçu — la fenêtre se fermait comme en
+    // cas de succès complet, laissant croire à un import réussi alors que
+    // rien n'avait été écrit pour cette ville.
+    const failedCities = [];
     for (const entry of Object.values(cart)) {
       let cityId = entry.existingCityId;
       if (!cityId) {
         const city = await onAddCity(tripId, dest.id, entry.cityName);
         cityId = city?.id;
       }
-      if (!cityId) continue; // création de ville échouée : on n'interrompt pas les imports suivants
-      await callModeration('trip-templates', { action: 'import', tripId, cityId, templateId: entry.templateId });
+      if (!cityId) { failedCities.push(entry.cityName); continue; } // création de ville échouée : on n'interrompt pas les imports suivants
+      const result = await callModeration('trip-templates', { action: 'import', tripId, cityId, templateId: entry.templateId });
+      if (!result.ok) failedCities.push(entry.cityName);
     }
     setImporting(false);
+    if (failedCities.length > 0) {
+      toast?.error(t('tripSuggestions.importCartError', { cities: failedCities.join(', ') }));
+    }
     onClose?.();
     onImported?.();
   };
 
-  const cartEntries = Object.entries(cart);
-  const cartCount = cartEntries.length;
+  // Changer d'onglet NE touche PAS au panier — `cart` vit dans CE composant
+  // (TripSuggestionsModal), pas dans CitiesTab, donc il survit tel quel au
+  // changement d'onglet. Aucune confirmation à demander ici (il y en a eu
+  // une par erreur avant cette correction) : seule une action qui ferme
+  // vraiment la fenêtre (✕, Échap, clic extérieur, ou un import réussi
+  // depuis "Planning complet" — voir onImported plus bas) perd le panier
+  // pour de bon, et passe donc par requestDiscardCart.
+  const handleTabSwitch = (nextTab) => setTab(nextTab);
 
   return (
-    <div className="pp-modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose?.()}>
+    <div className="pp-modal-overlay" onClick={(e) => e.target === e.currentTarget && handleClose()}>
       <div className="pp-modal pp-suggestions-modal">
         <div className="pp-modal-header">
           <h3 className="pp-modal-title">{t('tripSuggestionsModal.title', { country: dest.country_name })}</h3>
-          <button className="pp-icon-btn" onClick={onClose}>
+          <button className="pp-icon-btn" onClick={handleClose}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
         </div>
 
         <div className="pp-modal-tabs">
-          <button type="button" className={`pp-modal-tab${tab === 'villes' ? ' active' : ''}`} onClick={() => setTab('villes')}>
+          <button type="button" className={`pp-modal-tab${tab === 'villes' ? ' active' : ''}`} onClick={() => handleTabSwitch('villes')}>
             {t('tripSuggestionsModal.citiesTab')}
           </button>
-          <button type="button" className={`pp-modal-tab${tab === 'planning' ? ' active' : ''}`} onClick={() => setTab('planning')}>
+          <button type="button" className={`pp-modal-tab${tab === 'planning' ? ' active' : ''}`} onClick={() => handleTabSwitch('planning')}>
             {t('tripSuggestionsModal.fullTripTab')}
           </button>
         </div>
 
         {/* Corps scrollable — hauteur contrainte (voir .pp-modal-body), la
             barre panier ci-dessous vit EN DEHORS, comme un vrai pied de
-            modale fixe (5a). */}
+            modale fixe (5a). Les bandeaux "filtres facultatifs"/"disclaimer"
+            ne vivent plus ici : affichés une fois pour toute la fenêtre, ils
+            apparaissaient même sur des écrans sans rapport (ex. la
+            confirmation panier) — chacun vit désormais au plus près de ce
+            qu'il décrit, voir CitiesTab/CityTemplatesBrowser/FullTripTab. */}
         <div className="pp-modal-body pp-suggestions-modal-body">
-          <p className="pp-fulltrip-optional-banner">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
-            {t('tripSuggestionsModal.filtersOptionalHint')}
-          </p>
-          <p className="pp-trip-suggestions-disclaimer">{t('tripSuggestions.disclaimer')}</p>
-
           {tab === 'villes' ? (
             <CitiesTab
               dest={dest}
-              tripId={tripId}
-              baseCities={baseCities}
               activities={activities}
               cart={cart}
               onChooseTemplate={handleChooseTemplate}
@@ -882,7 +1027,12 @@ export default function TripSuggestionsModal({
               tripId={tripId}
               baseCitiesCount={baseCitiesCount}
               hasAnyDates={hasAnyDates}
+              // L'avertissement "panier perdu" se pose maintenant AVANT
+              // l'import (voir handleImportClick/requestDiscardCart dans
+              // FullTripTab) — une fois ici, l'import a déjà réussi, il n'y
+              // a plus lieu de redemander : fermer et rafraîchir sans condition.
               onImported={() => { onClose?.(); onImported?.(); }}
+              requestDiscardCart={requestDiscardCart}
             />
           )}
         </div>
@@ -902,6 +1052,28 @@ export default function TripSuggestionsModal({
             <button type="button" className="pp-btn pp-btn--primary pp-btn--sm" onClick={handleImportCart} disabled={cartCount === 0 || importing}>
               {importing ? <span className="pp-search-busy" /> : t('tripSuggestions.finishImportButton')}
             </button>
+          </div>
+        )}
+
+        {/* Dialogue de confirmation "panier perdu" — intégré à la charte de
+            l'app plutôt qu'un window.confirm() natif. Empilé au-dessus du
+            reste de CETTE modale (scrim propre à lui, z-index supérieur),
+            jamais rendu ailleurs. */}
+        {pendingDiscardAction && (
+          <div className="pp-modal-overlay pp-discard-confirm-overlay" onClick={(e) => e.target === e.currentTarget && cancelDiscard()}>
+            <div className="pp-modal pp-discard-confirm-modal">
+              <p className="pp-discard-confirm-text">
+                {t('tripSuggestions.confirmLoseCart', { list: cartEntries.map(([, v]) => v.cityName).join(', ') })}
+              </p>
+              <div className="pp-modal-actions">
+                <button type="button" className="pp-btn pp-btn--ghost pp-btn--sm" onClick={cancelDiscard}>
+                  {t('common:actions.cancel')}
+                </button>
+                <button type="button" className="pp-btn pp-btn--primary pp-btn--sm" onClick={confirmDiscard}>
+                  {t('tripSuggestions.confirmLoseCartButton')}
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
