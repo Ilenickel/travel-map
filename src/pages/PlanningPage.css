@@ -4978,6 +4978,23 @@ button.pp-sidebar-toggle {
     touch-action: pan-y;
   }
 
+  /* La poignée de drag @hello-pangea/dnd (portée par la carte entière d'une
+     activité) hérite du touch-action: pan-y ci-dessus — un touch-action ne
+     peut être QUE restreint par un descendant, jamais réélargi, donc "pan-y"
+     reste la valeur effective même si la lib pose elle-même "manipulation"
+     sur la poignée. Résultat : le navigateur est autorisé à démarrer un
+     scroll natif dès le premier mouvement vertical du doigt, sans attendre
+     que le minuteur d'appui long (120ms) de la lib ait eu la moindre chance
+     d'appeler preventDefault — la carte ne suit alors jamais le doigt, c'est
+     la page qui défile à sa place. En restreignant encore plus (touch-action:
+     none, un descendant a toujours le droit d'être PLUS restrictif que son
+     parent) sur la poignée elle-même, le navigateur laisse la main au JS de
+     la lib pour ce point de contact précis : appui long → drag ; relâché
+     avant 120ms → la lib ne bloque rien, le scroll reprend normalement. */
+  .pp-editor-split [data-rfd-drag-handle-draggable-id] {
+    touch-action: none;
+  }
+
   .pp-pager-track {
     display: flex;
     position: relative;
@@ -5210,6 +5227,15 @@ button.pp-sidebar-toggle {
   .pp-selection-bar { margin: 0 4px 8px; padding: 8px; }
   .pp-selection-count { width: 100%; }
   .pp-selection-actions { margin-left: 0; }
+
+  /* "Non planifiées" ne doit pas être un conteneur de scroll indépendant sur
+     mobile : @hello-pangea/dnd ne supporte pas les conteneurs de scroll
+     imbriqués (cette liste était scrollable EN PLUS de la page Jours qui
+     défile déjà elle-même, cf. .pp-content-panel), ce qui rendait le drag au
+     doigt hors de cette liste peu fiable. On retire son plafond de hauteur
+     propre : elle grandit normalement, et c'est le scroll de la page qui
+     prend le relais, comme pour le reste du contenu de cette page. */
+  .pp-day-unplanned-list { max-height: none; overflow-y: visible; }
 
   /* Vue Jours : lignes d'activité denses — la pastille de couleur est déjà
      portée par la barre de groupe et le chip horaire, le point est masqué. */
