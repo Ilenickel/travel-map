@@ -4991,8 +4991,16 @@ button.pp-sidebar-toggle {
      parent) sur la poignée elle-même, le navigateur laisse la main au JS de
      la lib pour ce point de contact précis : appui long → drag ; relâché
      avant 120ms → la lib ne bloque rien, le scroll reprend normalement. */
+  /* Sans ça, l'appui long sur la poignée déclenche AUSSI la sélection de
+     texte / le menu contextuel natif du navigateur (loupe de sélection sur
+     iOS, "Copier"...) en concurrence avec le geste JS de la lib — le doigt
+     est alors intercepté au milieu du geste, obligeant à le relâcher et le
+     reposer pour reprendre le déplacement au lieu d'un glisser continu. */
   .pp-editor-split [data-rfd-drag-handle-draggable-id] {
     touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   .pp-pager-track {
