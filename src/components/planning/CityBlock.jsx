@@ -10,8 +10,7 @@ import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
 import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
-import TripPlanSuggestionsButton from './TripPlanSuggestionsButton';
-import CityPlanningFieldsButton from './CityPlanningFieldsButton';
+import CityMenu from './CityMenu';
 import { sumCosts, formatPrice } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
 
@@ -20,7 +19,7 @@ export default function CityBlock({
   countryCode, countryName,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
   onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
-  onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData,
+  onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
   const { t } = useTranslation();
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
@@ -171,37 +170,30 @@ export default function CityBlock({
             )}
 
             <div className="pp-city-actions">
-              {placeActivities.length > 0 && (
-                <button
-                  className={`pp-icon-btn${selecting ? ' pp-icon-btn--active' : ''}`}
-                  onClick={toggleSelecting}
-                  title={selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                </button>
-              )}
-              <button className="pp-icon-btn" onClick={() => setEditing(true)} title={t('city.renameTitle')}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                </svg>
-              </button>
-              <CityPlanningFieldsButton city={city} tripStartDate={tripStartDate} onUpdate={onRename} />
-              <button className="pp-icon-btn pp-icon-btn--danger" onClick={() => onRemove(city.id)} title={t('city.deleteTitle')}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                </svg>
-              </button>
+              {/* Menu unique remplaçant les 4 icônes d'action toujours visibles
+                  (sélection, renommer, jours & nuits, supprimer) — voir CityMenu.jsx */}
+              <CityMenu
+                city={city}
+                tripStartDate={tripStartDate}
+                hasPlaces={placeActivities.length > 0}
+                selecting={selecting}
+                onToggleSelecting={toggleSelecting}
+                onRename={() => setEditing(true)}
+                onUpdatePlanning={onRename}
+                onDelete={() => onRemove(city.id)}
+              />
             </div>
           </div>
 
           {!collapsed && (
             <div className="pp-city-body">
               {/* Distinct du menu "+ Ajouter" en bas de bloc : ceci ne fait que
-                  suggérer des lieux ou plannings déjà connus pour cette ville,
-                  pas les ajouter directement — d'où leur place à part, en haut
-                  du bloc, regroupés sur une seule ligne pour rester discrets. */}
+                  suggérer des lieux déjà connus pour cette ville, pas les
+                  ajouter directement — d'où sa place à part, en haut du bloc.
+                  Les plannings complets importables (multi-jours), eux, vivent
+                  désormais dans la fenêtre unifiée ouverte au niveau du pays
+                  (bouton "Suggestions pour…" de DestinationBlock), voir
+                  TripSuggestionsModal.jsx — pas ici. */}
               <div className="pp-suggest-row">
                 <PlaceSuggestionsButton
                   cityName={city.name}
@@ -211,17 +203,6 @@ export default function CityBlock({
                   cityId={city.id}
                   existingActivityNames={cityActivities.map(a => a.name)}
                   onAddActivity={onAddActivity}
-                />
-
-                <TripPlanSuggestionsButton
-                  tripId={tripId}
-                  cityId={city.id}
-                  cityName={city.name}
-                  countryCode={countryCode}
-                  countryName={countryName}
-                  plannedDays={city.planned_days}
-                  hasExistingActivities={cityActivities.length > 0}
-                  onImported={onReloadTripData}
                 />
               </div>
 

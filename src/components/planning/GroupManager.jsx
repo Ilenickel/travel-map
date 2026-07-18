@@ -283,6 +283,15 @@ export default function GroupManager({ tripId, groups, activities, cities, trip,
 
   return (
     <div className="pp-groups">
+      {/* Même bandeau discret que .pp-day-view-hint (colonne Jours) : explique
+          l'usage de la colonne avant même de créer un premier groupe. */}
+      <div className="pp-day-view-hint">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
+          <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>
+        </svg>
+        {t('group.columnHint')}
+      </div>
+
       <button className="pp-groups-toggle" onClick={() => setExpanded(e => !e)}>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
           <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>

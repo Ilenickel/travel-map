@@ -107,8 +107,36 @@ export default function TripEditor({
   // écran par-dessus le reste) — la carte est optionnelle, si l'utilisateur l'ouvre
   // c'est qu'il en a besoin, autant lui laisser la possibilité de la voir en grand.
   const [mapOverlay, setMapOverlay] = useState(false);
+  // Repli manuel en rail fin (distinct de mapOpen/mapOverlay, voir plus bas) :
+  // "masquer la carte" ne doit jamais la démonter (elle resterait ouverte,
+  // juste réduite visuellement) — sinon on perdrait la garantie d'ouverture
+  // automatique une seule fois par montage ci-dessous, et l'état interne de
+  // la carte Leaflet (zoom, centrage) à chaque repli/dépli.
+  const [mapCollapsed, setMapCollapsed] = useState(false);
+  // N'auto-ouvre la carte qu'une seule fois par montage de l'éditeur : sans ce
+  // garde-fou, ajouter un 2e lieu géolocalisé après que l'utilisateur a
+  // explicitement refermé la carte (mapOpen à false) la rouvrirait de force à
+  // chaque fois, ignorant son choix.
+  const mapAutoOpenedRef = useRef(false);
+  useEffect(() => {
+    if (mapAutoOpenedRef.current) return;
+    if (activities.some(a => a.place_lat && a.place_lng)) {
+      mapAutoOpenedRef.current = true;
+      setMapOpen(true);
+    }
+  }, [activities]);
   const [shareOpen, setShareOpen] = useState(false);
   const [dayModeActive, setDayModeActive] = useState(false);
+  // Bouton "Jour J" : vivait dans l'en-tête du voyage (TripEditorHeader), migré
+  // dans l'en-tête de la colonne Jours (voir pp-content-panel-header ci-dessous)
+  // — même comportement, juste un point d'entrée différent.
+  const toggleDayMode = () => {
+    // Sur mobile, Jour J est une page du pager (voir JOURJ_PAGE) : on ne passe
+    // jamais par le mode plein écran `dayModeActive`, qui n'existe que pour
+    // l'ordinateur (là où il n'y a pas de pager à faire glisser).
+    if (pagerActive()) { setPage(JOURJ_PAGE); return; }
+    setDayModeActive(a => !a);
+  };
   // ─── Pager mobile (voir @media max-width:768px) ─────────────────────────────
   // Sur téléphone, les panneaux deviennent des pages plein écran que l'on fait
   // défiler horizontalement au doigt (ou via la barre de navigation basse),
@@ -177,7 +205,14 @@ export default function TripEditor({
       if (!pagerActive() || rbdDraggingRef.current) return;
       // Un geste commencé sur la carte Leaflet est un panoramique de la carte,
       // dans un champ texte une sélection : jamais un changement de page.
-      if (e.target.closest?.('.pp-map-panel, input, textarea, [contenteditable]')) return;
+      // [data-rfd-drag-handle-draggable-id] (carte/ville @hello-pangea/dnd) : la
+      // lib exige ~120ms d'appui maintenu avant de reconnaître un drag tactile
+      // (timeForLongPress). Sans cette exclusion, ce suivi de balayage tournait
+      // en parallèle pendant cette fenêtre et, dès que le doigt bougeait un peu
+      // à l'horizontale (typiquement en glissant une activité vers une autre
+      // colonne/journée), le geste était détourné en changement de page avant
+      // même que le drag n'ait pu s'enclencher.
+      if (e.target.closest?.('.pp-map-panel, input, textarea, [contenteditable], [data-rfd-drag-handle-draggable-id]')) return;
       const t = e.touches[0];
       startX = t.clientX; startY = t.clientY;
       horizontal = null; tracking = true;
@@ -434,21 +469,11 @@ export default function TripEditor({
         cities={cities}
         activities={activities}
         onUpdate={onUpdateTrip}
-        mapOpen={mapOpen}
-        onToggleMap={() => (mapOpen ? closeMap() : openMap())}
         shareOpen={shareOpen}
         onToggleShare={() => setShareOpen(s => !s)}
         onExportPdf={() => window.print()}
         onExportIcal={() => downloadTripIcs({ trip, cities, activities, lodgings })}
         lodgings={lodgings}
-        dayModeActive={dayModeActive}
-        onToggleDayMode={() => {
-          // Sur mobile, Jour J est une page du pager (voir JOURJ_PAGE) : on ne
-          // passe jamais par le mode plein écran `dayModeActive`, qui n'existe
-          // que pour l'ordinateur (là où il n'y a pas de pager à faire glisser).
-          if (pagerActive()) { setPage(JOURJ_PAGE); return; }
-          setDayModeActive(a => !a);
-        }}
         onToggleAutoShareTemplate={(checked) => onUpdateTrip(tripId, { auto_share_template: checked })}
       />
 
@@ -473,7 +498,7 @@ export default function TripEditor({
         <div className="pp-editor-split" ref={splitRef}>
           {/* Piste du pager mobile : translatée d'une page à l'autre au balayage.
               Sur ordinateur, display:contents la rend transparente pour le layout. */}
-          <div className="pp-pager-track" style={{ '--pp-page': page }}>
+          <div className="pp-pager-track" data-page={page} style={{ '--pp-page': page }}>
           {/* ── Panneau villes ── */}
           <div className="pp-city-panel">
             <div className="pp-city-panel-dests">
@@ -554,6 +579,27 @@ export default function TripEditor({
 
           {/* ── Panneau jours ── */}
           <div className={`pp-content-panel${mapOpen ? ' pp-content-panel--narrowed' : ''}`}>
+            {/* Bouton "Jour J" — vivait dans l'en-tête du voyage, il a migré ici
+                (en-tête de LA colonne qu'il concerne) : masqué sur mobile (CSS),
+                où la page dédiée du pager (JOURJ_PAGE) fait déjà ce rôle. */}
+            <div className="pp-content-panel-header">
+              <button
+                type="button"
+                className={`pp-toolbar-btn pp-toolbar-btn--dayj${dayModeActive ? ' active' : ''}`}
+                onClick={toggleDayMode}
+                disabled={!trip?.start_date || !trip?.end_date}
+                title={
+                  !trip?.start_date || !trip?.end_date
+                    ? t('header.dayModeNeedDatesTitle')
+                    : (dayModeActive ? t('header.dayModeBackTitle') : t('header.dayModeEnterTitle'))
+                }
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4zm7.9-3a7.94 7.94 0 00-1.6-3.86l1.14-1.14-1.41-1.41-1.14 1.14A7.94 7.94 0 0013 4.1V2h-2v2.1a7.94 7.94 0 00-3.86 1.6L5.99 4.56 4.58 5.97l1.14 1.14A7.94 7.94 0 004.1 11H2v2h2.1a7.94 7.94 0 001.6 3.86l-1.14 1.14 1.41 1.41 1.14-1.14A7.94 7.94 0 0011 19.9V22h2v-2.1a7.94 7.94 0 003.86-1.6l1.14 1.14 1.41-1.41-1.14-1.14A7.94 7.94 0 0019.9 13H22v-2h-2.1z"/>
+                </svg>
+                {t('header.dayModeButton')}
+              </button>
+            </div>
             <DayView
               trip={trip}
               destinations={destinations}
@@ -596,24 +642,58 @@ export default function TripEditor({
               {mapOverlay && (
                 <div className="pp-map-overlay-backdrop" onClick={collapseOverlay} />
               )}
-              <div className={`pp-map-panel${mapOverlay ? ' pp-map-panel--overlay' : ''}`}>
-                <button
-                  type="button"
-                  className="pp-map-overlay-toggle"
-                  onClick={() => (mapOverlay ? collapseOverlay() : setMapOverlay(true))}
-                  title={mapOverlay ? t('editor.collapseMapTitle') : t('editor.expandMapTitle')}
-                >
-                  {mapOverlay ? (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M9 3H3v6h2V5h4V3zm12 0h-6v2h4v4h2V3zM5 15H3v6h6v-2H5v-4zm14 4h-4v2h6v-6h-2v4z"/>
+              <div className={`pp-map-panel${mapOverlay ? ' pp-map-panel--overlay' : ''}${mapCollapsed && !mapOverlay ? ' pp-map-panel--collapsed' : ''}`}>
+                {mapCollapsed && !mapOverlay ? (
+                  // Rail fin — la carte reste montée derrière (voir
+                  // .pp-map-panel-mount--hidden plus bas), jamais démontée : on
+                  // garde son état interne (zoom, centrage) et l'auto-ouverture
+                  // "une seule fois" ci-dessus reste valable au dépli.
+                  <button
+                    type="button"
+                    className="pp-map-collapsed-rail"
+                    onClick={() => setMapCollapsed(false)}
+                    title={t('editor.showMapTitle')}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
                     </svg>
-                  ) : (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                    </svg>
-                  )}
-                </button>
-                <MapPanel activities={activities} groups={groups} cities={cities} lodgings={lodgings} />
+                    <span className="pp-map-collapsed-rail-label">{t('header.mapButton')}</span>
+                  </button>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="pp-map-overlay-toggle"
+                      onClick={() => (mapOverlay ? collapseOverlay() : setMapOverlay(true))}
+                      title={mapOverlay ? t('editor.collapseMapTitle') : t('editor.expandMapTitle')}
+                    >
+                      {mapOverlay ? (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M9 3H3v6h2V5h4V3zm12 0h-6v2h4v4h2V3zM5 15H3v6h6v-2H5v-4zm14 4h-4v2h6v-6h-2v4z"/>
+                        </svg>
+                      ) : (
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                        </svg>
+                      )}
+                    </button>
+                    {!mapOverlay && (
+                      <button
+                        type="button"
+                        className="pp-map-collapse-toggle"
+                        onClick={() => setMapCollapsed(true)}
+                        title={t('editor.hideMapToRailTitle')}
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                      </button>
+                    )}
+                  </>
+                )}
+                <div className={`pp-map-panel-mount${mapCollapsed && !mapOverlay ? ' pp-map-panel-mount--hidden' : ''}`}>
+                  <MapPanel activities={activities} groups={groups} cities={cities} lodgings={lodgings} />
+                </div>
               </div>
             </>
           )}

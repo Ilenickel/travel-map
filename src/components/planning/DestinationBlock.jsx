@@ -6,16 +6,16 @@ import CityBlock from './CityBlock';
 import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 import NewCityOptionsForm from './NewCityOptionsForm';
-import TripFullSuggestions from './TripFullSuggestions';
+import TripSuggestionsModal from './TripSuggestionsModal';
 
 export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData }) {
   const { t } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
   const [pendingCityName, setPendingCityName] = useState(null);
-  // La vue manuelle (ville par ville) reste toujours affichée en dessous —
-  // "Suggestions de voyages" n'est plus un mode qui la remplace, mais un
-  // déclencheur de popup (voir TripFullSuggestions) : elle ne modifie rien
-  // tant qu'aucun import n'est confirmé, donc pas besoin de "revenir" en
+  // La vue manuelle (ville par ville) reste toujours affichée en dessous — la
+  // fenêtre de suggestions (TripSuggestionsModal) n'est plus un mode qui la
+  // remplace, mais une vraie popup déclenchée par un bouton : elle ne modifie
+  // rien tant qu'aucun import n'est confirmé, donc pas besoin de "revenir" en
   // arrière comme avec l'ancien bascule de mode.
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
 
@@ -78,52 +78,28 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
         </button>
       </div>
 
-      {/* Sélecteur de mode : manuel / suggestions de voyages entiers — deux
-          grandes cartes de choix, c'est LE point d'entrée après ajout d'un pays */}
-      <div className="pp-dest-mode" role="tablist" aria-label={t('destination.modeLabel')}>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={!suggestionsOpen}
-          className={`pp-dest-mode-card pp-dest-mode-card--manual${!suggestionsOpen ? ' active' : ''}`}
-          onClick={() => setSuggestionsOpen(false)}
-        >
-          <span className="pp-dest-mode-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-            </svg>
-          </span>
-          <span className="pp-dest-mode-texts">
-            <span className="pp-dest-mode-title">{t('destination.modeManual')}</span>
-            <span className="pp-dest-mode-desc">{t('destination.modeManualDesc')}</span>
-          </span>
-          <span className="pp-dest-mode-radio" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={suggestionsOpen}
-          className={`pp-dest-mode-card pp-dest-mode-card--suggestions${suggestionsOpen ? ' active' : ''}`}
-          onClick={() => setSuggestionsOpen(true)}
-        >
-          <span className="pp-dest-mode-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l1.9 5.7L19.6 9.6 13.9 11.5 12 17.2 10.1 11.5 4.4 9.6 10.1 7.7 12 2zM19 14l.95 2.85L22.8 17.8l-2.85.95L19 21.6l-.95-2.85-2.85-.95 2.85-.95L19 14zM5.5 15.5l.72 2.14 2.14.72-2.14.72-.72 2.14-.72-2.14-2.14-.72 2.14-.72.72-2.14z"/>
-            </svg>
-          </span>
-          <span className="pp-dest-mode-texts">
-            <span className="pp-dest-mode-title">{t('destination.modeSuggestions')}</span>
-            <span className="pp-dest-mode-desc">{t('destination.modeSuggestionsDesc')}</span>
-          </span>
-          <span className="pp-dest-mode-radio" aria-hidden="true" />
-        </button>
-      </div>
+      {/* Point d'entrée unique vers la fenêtre de suggestions (villes +
+          planning complet) — remplace l'ancien sélecteur "Manuel / Suggestions
+          de voyages" : la vue manuelle (liste des villes) reste désormais
+          TOUJOURS affichée en dessous, ce bouton ouvre juste une popup dédiée
+          plutôt que de basculer tout le panneau. */}
+      <button type="button" className="pp-dest-suggest-btn" onClick={() => setSuggestionsOpen(true)}>
+        <span className="pp-dest-suggest-btn-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l1.9 5.7L19.6 9.6 13.9 11.5 12 17.2 10.1 11.5 4.4 9.6 10.1 7.7 12 2zM19 14l.95 2.85L22.8 17.8l-2.85.95L19 21.6l-.95-2.85-2.85-.95 2.85-.95L19 14zM5.5 15.5l.72 2.14 2.14.72-2.14.72-.72 2.14-.72-2.14-2.14-.72 2.14-.72.72-2.14z"/>
+          </svg>
+        </span>
+        {t('destination.suggestButton', { country: dest.country_name })}
+      </button>
 
       {suggestionsOpen && (
-        <TripFullSuggestions
+        <TripSuggestionsModal
           dest={dest}
           tripId={tripId}
+          baseCities={baseCities}
           baseCitiesCount={baseCities.length}
+          activities={activities}
+          onAddActivity={onAddActivity}
           // Sert uniquement à la note "sera importé à dater" : même critère
           // que l'ancre d'import côté serveur (date de départ du voyage OU au
           // moins une ville datée quelque part dans le voyage) — voir

@@ -4866,23 +4866,20 @@ button.pp-sidebar-toggle {
 
   /* ── Actions de l'en-tête : tout doit rester VISIBLE sans défilement —
      une rangée défilante cachait Partager et les exports hors écran.
-     Carte et Jour J sont retirés (la barre de navigation basse les a déjà),
-     il reste Notes / PDF / iCal sur une ligne et Partager en pleine largeur,
-     bien en évidence (invitations, membres du groupe). ── */
+     Carte et Jour J n'y sont plus du tout (la barre de navigation basse gère
+     Carte, Jour J a migré dans l'en-tête de la colonne Jours) : il reste
+     Notes / PDF / iCal en grille 3 colonnes (ex pp-toolbar-group, désormais
+     des frères directs de .pp-header-actions plutôt qu'un sous-groupe) et
+     Partager en pleine largeur sur la ligne suivante, bien en évidence
+     (invitations, membres du groupe). */
   .pp-header-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-  }
-  .pp-header-actions .pp-toolbar-group {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
   }
   .pp-header-actions .pp-toolbar-btn { justify-content: center; white-space: nowrap; }
-  .pp-toolbar-btn--map { display: none; }
-  .pp-toolbar-btn--dayj { display: none; }
   .pp-header-actions .pp-btn--share {
+    grid-column: 1 / -1;
     width: 100%;
     justify-content: center;
     padding: 10px;
@@ -4975,7 +4972,7 @@ button.pp-sidebar-toggle {
   /* Pages 3 : planning par jour. Padding bas = barre de navigation. */
   .pp-content-panel {
     display: block;
-    padding: 10px 10px 76px;
+    padding: 10px 10px 92px;
   }
 
   /* Page Jour J : redevient une page normale du pager ici (masquée par défaut
@@ -4984,11 +4981,11 @@ button.pp-sidebar-toggle {
   .pp-daymode-page {
     display: block;
     overflow-y: auto;
-    padding-bottom: 76px;
+    padding-bottom: 92px;
   }
 
-  .pp-city-panel-dests { padding-bottom: 66px; }
-  .pp-groups-panel { padding-bottom: 66px; }
+  .pp-city-panel-dests { padding-bottom: 84px; }
+  .pp-groups-panel { padding-bottom: 84px; }
 
   /* Page 4 : la carte (le display:none hérité du bloc 900px est annulé — ici
      elle a sa propre page). La superposition plein écran reste accessible via
@@ -4999,7 +4996,7 @@ button.pp-sidebar-toggle {
   .pp-map-panel {
     display: flex;
     isolation: isolate;
-    padding-bottom: 58px;
+    padding-bottom: 84px;
   }
   .pp-map-panel--overlay {
     inset: 10px;
@@ -5007,46 +5004,77 @@ button.pp-sidebar-toggle {
   }
 
   /* ── Barre de navigation basse, façon appli ── */
+  /* Barre flottante détachée en pilule, même langage que le menu classique. */
   .pp-mobile-nav {
     display: flex;
+    align-items: flex-end;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    right: 12px;
     z-index: 95;
-    background: rgba(8, 12, 20, 0.96);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-top: 1px solid var(--border);
-    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: rgba(18, 22, 34, 0.9);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 26px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+    padding: 8px 8px;
+  }
+  [data-theme="light"] .pp-mobile-nav {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(43, 38, 32, 0.1);
+    box-shadow: 0 14px 34px rgba(43, 38, 32, 0.16);
   }
 
   .pp-mobile-nav-btn {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     background: none;
     border: none;
-    border-radius: 10px;
-    padding: 4px 0 3px;
+    border-radius: 14px;
+    padding: 6px 0 4px;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
     font-family: inherit;
     color: var(--text-muted);
     cursor: pointer;
-    transition: color 0.15s, background 0.15s;
-  }
-
-  .pp-mobile-nav-btn.active {
-    color: var(--accent2);
-    background: var(--accent-subtle);
+    transition: color 0.18s, transform 0.18s;
   }
 
   .pp-mobile-nav-icon {
-    font-size: 17px;
+    font-size: 20px;
     line-height: 1.1;
+    opacity: 0.42;
+    filter: grayscale(0.5);
+    transition: opacity 0.18s, filter 0.18s, transform 0.18s;
+  }
+
+  /* Onglet actif : emoji ravivé + libellé accent + point indicateur sous le
+     libellé — même langage que la barre du menu classique. */
+  .pp-mobile-nav-btn.active {
+    color: var(--accent2);
+    font-weight: 800;
+  }
+  .pp-mobile-nav-btn.active .pp-mobile-nav-icon {
+    opacity: 1;
+    filter: none;
+    transform: translateY(-1px) scale(1.12);
+  }
+  .pp-mobile-nav-btn.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent2);
   }
 
   /* ── Compaction : les blocs pensés pour un grand écran deviennent denses ──
@@ -5059,6 +5087,25 @@ button.pp-sidebar-toggle {
     gap: 8px;
     border-width: 1px;
     border-radius: 10px;
+  }
+
+  /* Le bouton "Ajouter un pays" est un simple frère de .pp-city-panel-dests
+     (la liste, elle, défile en interne) : en théorie il reste donc épinglé
+     sous la liste sans jamais nécessiter de scroll. En pratique, dès que la
+     page Villes affiche plusieurs destinations dépliées, il finissait
+     repoussé hors écran. On le fixe explicitement au-dessus de la barre de
+     navigation, comme un bouton d'action flottant — visible à coup sûr, quelle
+     que soit la longueur du contenu. Ciblé via [data-page="0"] (posé par
+     TripEditor sur .pp-pager-track) : uniquement quand Villes est la page
+     active, sinon il resterait affiché par-dessus les autres pages. */
+  .pp-pager-track[data-page="0"] .pp-add-dest-btn--panel {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    z-index: 90;
+    margin: 0;
+    width: auto;
   }
 
   .pp-add-city-btn {
@@ -7509,4 +7556,322 @@ button.pp-sidebar-toggle {
   bottom: 46px;
   width: max-content;
   max-width: 240px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REFONTE — sidebar repliable, menu ville, suggestions unifiées,
+   carte auto + rail, Jour J en en-tête de colonne
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── "Mes voyages" repliable (desktop) ─── */
+.pp-sidebar {
+  position: relative;
+  transition: width 0.25s ease, min-width 0.25s ease;
+}
+/* Poignée de repli : languette à cheval sur la bordure droite du panneau
+   (pas dans la ligne d'en-tête, voir TripSidebar.jsx), verticalement centrée,
+   visible aussi bien déplié qu'en rail 56px replié — sa position (right: -12px,
+   relative à .pp-sidebar) reste correcte dans les deux largeurs puisqu'elle est
+   toujours calée sur le bord droit RÉEL du panneau, quelle que soit sa largeur. */
+.pp-sidebar-desktop-collapse-btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: color 0.15s, background 0.15s;
+}
+.pp-sidebar-desktop-collapse-btn:hover { color: var(--text-dim); background: var(--surface3); }
+
+@media (min-width: 769px) {
+  .pp-sidebar-desktop-collapse-btn { display: flex; }
+
+  .pp-sidebar--desktop-collapsed {
+    width: 56px;
+    min-width: 56px;
+  }
+  .pp-sidebar--desktop-collapsed .pp-sidebar-header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 8px;
+  }
+  .pp-sidebar--desktop-collapsed .pp-sidebar-home,
+  .pp-sidebar--desktop-collapsed .pp-sidebar-title,
+  .pp-sidebar--desktop-collapsed .pp-sidebar-chevron,
+  .pp-sidebar--desktop-collapsed .pp-sidebar-list {
+    display: none;
+  }
+  .pp-sidebar--desktop-collapsed .pp-sidebar-title-wrap { justify-content: center; }
+  .pp-sidebar--desktop-collapsed .pp-btn--primary.pp-btn--sm {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 8px;
+  }
+}
+
+/* ─── Menu "⋯" par ville (CityMenu) — même habillage que le menu "Options"
+   d'un voyage dans la sidebar (.pp-trip-card-dropdown / .pp-dropdown-item). ── */
+.pp-city-menu-wrap { position: relative; flex-shrink: 0; }
+.pp-city-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  z-index: 99;
+  overflow: visible;
+  min-width: 190px;
+}
+/* Le popover "jours & nuits sur place" (CityPlanningFieldsButton, imbriqué en
+   tant que ligne de ce menu) doit s'ouvrir vers le bas de CE menu, sans se
+   faire rogner par lui — d'où overflow:visible ci-dessus plutôt que hidden. */
+/* Le wrapper de CityPlanningFieldsButton est en inline-flex (usage normal :
+   une icône isolée à côté d'autres icônes) — en tant que ligne de CE menu,
+   il doit au contraire occuper toute la largeur comme les autres
+   .pp-dropdown-item, sinon sa ligne "Jours & nuits sur place" apparaît
+   rétrécie au lieu de s'aligner avec Renommer/Supprimer. */
+.pp-city-menu-dropdown .pp-city-planning-popover-wrap { display: flex; width: 100%; }
+
+/* ─── Bouton "Suggestions pour…" (DestinationBlock) — remplace le sélecteur
+   "Manuel / Suggestions" à deux grandes cartes. ── */
+.pp-dest-suggest-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin: 8px 12px 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(129,140,248,0.3);
+  background: linear-gradient(135deg, rgba(129,140,248,0.12), rgba(192,132,252,0.08));
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  box-sizing: border-box;
+}
+.pp-dest-suggest-btn:hover {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, rgba(129,140,248,0.2), rgba(192,132,252,0.14));
+  transform: translateY(-1px);
+}
+.pp-dest-suggest-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(129,140,248,0.18);
+}
+
+/* ─── TripSuggestionsModal ─── */
+.pp-suggestions-modal { max-width: 720px; }
+.pp-suggestions-modal-body { display: flex; flex-direction: column; gap: 12px; }
+
+.pp-trip-suggestions-cities-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pp-trip-suggestions-city-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pp-trip-suggestions-city-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  box-sizing: border-box;
+}
+.pp-trip-suggestions-city-item:hover { border-color: var(--border-light); background: var(--surface3); }
+.pp-trip-suggestions-city-item-name { flex: 1; }
+.pp-trip-suggestions-city-item-check {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #34d399;
+}
+.pp-trip-suggestions-city-list-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.pp-trip-suggestions-cart-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  position: sticky;
+  bottom: 0;
+}
+.pp-trip-suggestions-cart-summary {
+  flex: 1;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  min-width: 0;
+}
+
+.pp-trip-suggestions-confirm--cart { text-align: center; }
+
+.pp-suggestions-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 6px;
+}
+.pp-suggestions-back-btn:hover { color: var(--text-dim); }
+
+.pp-trip-suggestions-city-heading {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.pp-trip-suggestions-places-row { margin-bottom: 10px; }
+
+/* ─── Colonne Jours — mini en-tête pour le bouton Jour J (migré depuis
+   l'en-tête du voyage) ── */
+.pp-content-panel-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+/* ─── Carte repliée en rail fin (distinct de mapOpen/mapOverlay) ─── */
+.pp-map-panel--collapsed {
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  transition: width 0.25s ease, min-width 0.25s ease, max-width 0.25s ease;
+}
+.pp-map-collapsed-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  background: var(--surface2);
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 12px 4px;
+}
+.pp-map-collapsed-rail:hover { color: var(--text-dim); background: var(--surface3); }
+.pp-map-collapsed-rail-label {
+  writing-mode: vertical-rl;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pp-map-collapse-toggle {
+  position: absolute;
+  top: 10px;
+  right: 48px;
+  z-index: 510;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: rgba(20,20,26,0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.pp-map-collapse-toggle:hover { color: var(--text); background: rgba(20,20,26,0.95); }
+.pp-map-panel-mount { flex: 1; display: flex; min-height: 0; }
+.pp-map-panel-mount--hidden { visibility: hidden; pointer-events: none; }
+
+/* ─── Panneau notes — carte cohérente avec .pp-share-template-section ─── */
+.pp-trip-notes-card {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+.pp-trip-notes-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: rgba(129,140,248,0.16);
+  color: var(--accent2);
+}
+.pp-trip-notes-card-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.pp-trip-notes-card-title { font-size: 12.5px; font-weight: 800; color: var(--text); letter-spacing: 0.01em; }
+
+@media (max-width: 768px) {
+  /* Le bouton Jour J de la colonne Jours n'a pas sa place sur mobile : le
+     pager y a déjà sa propre page dédiée (JOURJ_PAGE) et sa barre de
+     navigation basse (.pp-mobile-nav). */
+  .pp-content-panel-header { display: none; }
+  /* Rail carte : fonctionnalité desktop uniquement (le bouton qui le
+     déclenche est masqué ci-dessous) — sur mobile, la carte est une page à
+     part entière du pager (voir pp-daymode-page/pp-pager-track), jamais un
+     panneau réductible. Si l'état restait "collapsed" suite à un redimen-
+     sionnement fenêtre → mobile, on neutralise plutôt que de risquer une
+     page Carte qui resterait vide sans bouton pour la rouvrir. */
+  .pp-map-collapse-toggle,
+  .pp-map-collapsed-rail { display: none; }
+  .pp-map-panel--collapsed { width: auto; min-width: 0; max-width: none; }
+  .pp-map-panel-mount--hidden { visibility: visible; pointer-events: auto; }
 }

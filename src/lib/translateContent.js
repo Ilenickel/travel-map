@@ -24,7 +24,7 @@ export function translationKey(contentType, contentId, field) {
 }
 
 // Traduit le nom des activités d'un planning-modèle (voyages suggérés, voir
-// TripFullSuggestions/TripPlanSuggestionsButton) — tout le contenu de ces
+// TripSuggestionsModal) — tout le contenu de ces
 // modèles est saisi en français par son auteur (voyage réel ou itinéraire
 // éditorial), jamais traduit avant ce hook. Retourne une fonction de lookup
 // plutôt que la map brute : le composant appelant n'a pas à gérer le cas

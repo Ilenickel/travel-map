@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TripCard from './TripCard';
+
+const DESKTOP_COLLAPSE_KEY = 'pp-sidebar-desktop-collapsed';
 
 export default function TripSidebar({ trips, selectedId, userId, onSelect, onCreate, onDelete, onLeaveTrip, onDuplicate }) {
   const { t } = useTranslation();
@@ -9,8 +11,18 @@ export default function TripSidebar({ trips, selectedId, userId, onSelect, onCre
   // des voyages est replié par défaut pour rendre la hauteur à l'éditeur, et se
   // déplie au tap sur "Mes voyages". Sélectionner un voyage le replie.
   const [mobileOpen, setMobileOpen] = useState(false);
+  // Desktop uniquement : rail fin (~56px, juste l'icône) — persiste en
+  // localStorage comme un vrai réglage d'affichage, pas juste un état de
+  // session, sur le modèle du pliage mobile ci-dessus mais pour l'ordinateur.
+  const [desktopCollapsed, setDesktopCollapsed] = useState(() => {
+    try { return localStorage.getItem(DESKTOP_COLLAPSE_KEY) === '1'; } catch { return false; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem(DESKTOP_COLLAPSE_KEY, desktopCollapsed ? '1' : '0'); } catch { /* stockage indisponible (navigation privée…) — pas bloquant */ }
+  }, [desktopCollapsed]);
+
   return (
-    <aside className={`pp-sidebar${mobileOpen ? '' : ' pp-sidebar--collapsed'}`}>
+    <aside className={`pp-sidebar${mobileOpen ? '' : ' pp-sidebar--collapsed'}${desktopCollapsed ? ' pp-sidebar--desktop-collapsed' : ''}`}>
       <div className="pp-sidebar-header">
         {/* Retour à l'accueil — mobile seulement (la topbar y est masquée) */}
         <Link to="/" className="pp-sidebar-home" aria-label={t('topbar.homeButton')}>
@@ -41,6 +53,23 @@ export default function TripSidebar({ trips, selectedId, userId, onSelect, onCre
           <span className="pp-sidebar-new-label">{t('sidebar.newButton')}</span>
         </button>
       </div>
+
+      {/* Poignée de repli desktop : languette à cheval sur la bordure droite
+          du panneau, PAS dans la ligne d'en-tête (sinon elle déborde visuellement
+          à côté de "+ Nouveau" sur les largeurs de sidebar étroites). Masquée en
+          CSS sur mobile, où le pliage utilise déjà le chevron du titre ci-dessus
+          (mobileOpen). */}
+      <button
+        type="button"
+        className="pp-sidebar-desktop-collapse-btn"
+        onClick={() => setDesktopCollapsed(c => !c)}
+        title={desktopCollapsed ? t('sidebar.expandTitle') : t('sidebar.collapseTitle')}
+        aria-expanded={!desktopCollapsed}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ transform: desktopCollapsed ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+      </button>
 
       <div className="pp-sidebar-list">
         {trips.length === 0 ? (

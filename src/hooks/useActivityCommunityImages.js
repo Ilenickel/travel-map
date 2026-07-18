@@ -4,7 +4,7 @@ import { haversineKm, matchingStaticDestinations } from '../lib/planningUtils';
 import { tokensOf, matchScore } from '../lib/placeNameMatch';
 
 // Repli "photo communautaire" pour les activités des suggestions de voyage
-// (TripFullSuggestions / TripPlanSuggestionsButton) — avant de chercher sur
+// (voir TripSuggestionsModal) — avant de chercher sur
 // Wikipédia (useActivityWikiImages), on regarde si un lieu "à ne pas
 // manquer" déjà ajouté par un membre de la communauté pour la même ville
 // correspond : sa photo est en général plus fidèle/qualitative qu'un article
@@ -104,7 +104,7 @@ function bestMatch(activity, places) {
 
 // `activities` : uniquement celles réellement affichées, chacune porteuse
 // d'un champ `_cityName` (ville d'appartenance de l'activité — nécessaire
-// pour les voyages multi-villes, voir TripFullSuggestions.jsx
+// pour les voyages multi-villes, voir TripSuggestionsModal.jsx
 // collectGroupActivities) en plus des champs habituels (name, place_lat,
 // place_lng).
 export function useActivityCommunityImages(activities, countryCode) {
