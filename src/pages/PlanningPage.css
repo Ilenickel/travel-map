@@ -3617,6 +3617,16 @@ button.pp-sidebar-toggle {
   border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
   border-color: var(--accent) !important;
+  /* Sur mobile, sans portail (voir ActivityItem.jsx), la carte reste enfant
+     réel de sa section d'origine : malgré position:fixed + le z-index élevé
+     posé par la lib en inline, elle continue de passer SOUS les sections de
+     jours suivantes exactement là où elles la recouvrent visuellement (testé
+     sur le terrain — ni un z-index CSS explicite ni overflow:visible pendant
+     le drag n'ont suffi). will-change:transform force sa promotion sur son
+     propre calque de rendu compositeur — contournement connu pour ce genre
+     d'incohérence d'ordre de peinture avec position:fixed sur Chrome Android. */
+  will-change: transform;
+  z-index: 5000 !important;
 }
 
 /* Mode édition dans la vue par jour — même démarcation que dans le panneau villes */
