@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { COUNTRIES } from "../data/index";
 import { localizeField } from "../lib/localizeCountry";
+import { useModalHistory } from "../hooks/useModalHistory";
 
 function getFlagUrl(emoji) {
   const code = [...emoji]
@@ -12,6 +13,7 @@ function getFlagUrl(emoji) {
 }
 
 export default function FavoritesPanel({ favorites, visited, onSelect, onRemove, onRemoveVisited, onClose, user, onLinkToAccount, linkStatus }) {
+  useModalHistory(onClose);
   const { t, i18n } = useTranslation("app");
   const ref = useRef(null);
   const [activeTab, setActiveTab] = useState("favorites");

@@ -17,6 +17,8 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { SettingsProvider } from "./context/SettingsContext";
 import { BadgeProvider } from "./context/BadgeContext";
+import { ToastProvider } from "./context/ToastContext";
+import ToastContainer from "./components/ToastContainer";
 import BadgeUnlockAnimation from "./components/BadgeUnlockAnimation";
 import { useNotifications } from "./hooks/useNotifications";
 import { useAdminAlerts } from "./hooks/useAdminAlerts";
@@ -409,7 +411,11 @@ function AppInner() {
         <Link to="/planifier" className="app-nav-btn app-nav-btn--primary" aria-label={t("topbar.planTripAriaLabel")}>
           <span className="app-nav-primary-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2z"/>
+              <g transform="translate(24,0) scale(-1,1)">
+                <g transform="rotate(-40 12 12)">
+                  <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2.5 1.5V22l4-1 4 1v-1.5L13.5 19v-5.5z"/>
+                </g>
+              </g>
             </svg>
           </span>
           {t("topbar.planLabel")}
@@ -563,15 +569,18 @@ function AppInner() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <SettingsProvider>
-          <Routes>
-            <Route path="/planifier" element={<PlanningPage />} />
-            <Route path="*" element={<AppInner />} />
-          </Routes>
-        </SettingsProvider>
-      </LanguageProvider>
-    </AuthProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <LanguageProvider>
+          <SettingsProvider>
+            <Routes>
+              <Route path="/planifier" element={<PlanningPage />} />
+              <Route path="*" element={<AppInner />} />
+            </Routes>
+          </SettingsProvider>
+        </LanguageProvider>
+      </AuthProvider>
+      <ToastContainer />
+    </ToastProvider>
   );
 }

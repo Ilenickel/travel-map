@@ -30,6 +30,12 @@ const SOURCE_TABLES = {
   // langue puisque l'app est multilingue — voir needsEditorialCheck ci-dessous,
   // qui distingue les deux cas avant de forcer 'fr'.
   trip_template_activity_name: { table: 'trip_template_activities', column: 'name', needsEditorialCheck: true },
+  // Nom de ville d'un modèle partagé (ex. "Pékin" saisi par son auteur) —
+  // is_editorial vit DIRECTEMENT sur trip_templates ici, contrairement à
+  // trip_template_activity_name ci-dessus qui doit remonter par une jointure
+  // depuis trip_template_activities : needsEditorialCheckDirect interroge
+  // donc la table cible sans jointure (voir resolveSourceLanguage).
+  trip_template_city_name: { table: 'trip_templates', column: 'city_name', needsEditorialCheckDirect: true },
 };
 
 function sourceMapping(contentType, field) {
@@ -50,6 +56,12 @@ async function fetchRealSourceText(admin, mapping, contentId) {
 // partagé par un vrai utilisateur, aucun indice fiable sur sa langue :
 // laisser Google Translate auto-détecter, comme avant ce correctif.
 async function resolveSourceLanguage(admin, mapping, contentId) {
+  if (mapping.needsEditorialCheckDirect) {
+    // is_editorial est sur la MÊME ligne que le texte à traduire (pas de
+    // jointure à faire, contrairement au cas needsEditorialCheck ci-dessous).
+    const { data } = await admin.from(mapping.table).select('is_editorial').eq('id', contentId).maybeSingle();
+    return data?.is_editorial ? 'fr' : null;
+  }
   if (!mapping.needsEditorialCheck) return null;
   const { data } = await admin
     .from('trip_template_activities')

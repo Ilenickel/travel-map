@@ -2,3 +2,40 @@
 /* Repli #060d18 : valeur d'avant premier rendu (les variables de thème sont
    définies dans App.css et déclinées via data-theme, voir SettingsContext). */
 html, body { height: 100%; background: var(--bg, #060d18); }
+
+/* Repli de dernier recours (ErrorBoundary) : valeurs autonomes avec repli
+   var(--x, …) — ce composant doit rester lisible même si App.css n'a pas pu
+   se charger, puisqu'il est justement là pour le pire des cas. */
+.error-boundary-fallback {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--bg, #080c14);
+  color: var(--text, #f1f5f9);
+  font-family: "Inter", system-ui, sans-serif;
+  text-align: center;
+}
+.error-boundary-card {
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.error-boundary-icon { font-size: 40px; }
+.error-boundary-card h1 { font-size: 18px; font-weight: 700; }
+.error-boundary-card p { font-size: 14px; color: var(--text-dim, #94a3b8); }
+.error-boundary-card button {
+  margin-top: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border, #1e2d47);
+  background: var(--accent, #6366f1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

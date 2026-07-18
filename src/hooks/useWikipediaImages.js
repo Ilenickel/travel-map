@@ -141,7 +141,17 @@ async function batchFetch(slugs) {
           `&prop=pageimages&pithumbsize=800` +
           `&format=json&origin=*`;
 
-        const data = await fetch(url).then((r) => r.json());
+        let data;
+        try {
+          data = await fetch(url).then((r) => r.json());
+        } catch {
+          // Cohérent avec fetchExtmetadata ci-dessus : un échec réseau ne doit
+          // jamais rejeter le Promise.all englobant (ça bloquait silencieusement
+          // tout batchFetch et redéclenchait un re-fetch infini des slugs
+          // touchés à chaque render). On les marque résolus à null à la place.
+          chunk.forEach((s) => { globalImageCache[s] = null; });
+          return;
+        }
 
         const pages = data?.query?.pages ?? {};
 
@@ -201,7 +211,13 @@ async function batchFetch(slugs) {
           `&prop=imageinfo&iiprop=url&iiurlwidth=800` +
           `&format=json&origin=*`;
 
-        const data = await fetch(url).then((r) => r.json());
+        let data;
+        try {
+          data = await fetch(url).then((r) => r.json());
+        } catch {
+          chunk.forEach((s) => { globalImageCache[s] = null; });
+          return;
+        }
 
         const pages = data?.query?.pages ?? {};
 

@@ -57,3 +57,37 @@ export function useActivityNameTranslations(activities, language) {
 
   return (activity) => (language === 'fr' ? activity.name : (map[activity.id]?.lang === language ? map[activity.id].text : activity.name));
 }
+
+// Traduit le nom d'une ville suggérée (planning-modèle communautaire, voir
+// TripSuggestionsModal) — même principe que useActivityNameTranslations
+// ci-dessus, appliqué au nom de ville plutôt qu'au nom d'activité : un
+// visiteur en anglais doit voir "Beijing" là où l'auteur du modèle a tapé
+// "Pékin", jamais le nom brut tel quel. `cities` attend `{ id, name }` où
+// `id` est le representativeTemplateId renvoyé par l'action 'list-cities'
+// (api/trip-templates.js) — jamais l'id d'une ville du voyage de
+// l'utilisateur, qui n'est pas du contenu communautaire à traduire.
+export function useCityNameTranslations(cities, language) {
+  const [map, setMap] = useState({});
+
+  useEffect(() => {
+    if (language === 'fr' || !cities.length) return;
+    const pending = cities.filter((c) => map[c.id]?.lang !== language);
+    if (!pending.length) return;
+    let cancelled = false;
+    (async () => {
+      const items = pending.map((c) => ({ contentType: 'trip_template_city', contentId: c.id, field: 'name' }));
+      const result = await fetchTranslatedFields(items, language);
+      if (cancelled) return;
+      setMap((prev) => {
+        const next = { ...prev };
+        for (const c of pending) {
+          next[c.id] = { lang: language, text: result[translationKey('trip_template_city', c.id, 'name')] ?? c.name };
+        }
+        return next;
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [cities, language]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (city) => (language === 'fr' ? city.name : (map[city.id]?.lang === language ? map[city.id].text : city.name));
+}

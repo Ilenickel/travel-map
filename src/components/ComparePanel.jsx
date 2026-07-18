@@ -7,6 +7,7 @@ import { monthAbbrev } from "../lib/monthAbbrev";
 import { localizeAmountString } from "../lib/currency";
 import { useSettings } from "../context/SettingsContext";
 import CountryFlag from "./planning/CountryFlag";
+import { useModalHistory } from "../hooks/useModalHistory";
 
 const TAB_DEFS = [
   { id: "resume", labelKey: "tabResume",       icon: "📊" },
@@ -182,6 +183,7 @@ function ColEmpty({ exclude, onAdd }) {
 
 /* ── Panel principal ── */
 export default function ComparePanel({ baseCode, initialCodes, onClose, onCountryClick }) {
+  useModalHistory(onClose);
   useSettings(); // abonnement devise : les montants affichés sont convertis
   const { t } = useTranslation("app");
   const [codes, setCodes] = useState(() =>

@@ -1,13 +1,22 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
+import { useToast } from './ToastContext';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  const { t } = useTranslation('app');
+  const toast = useToast();
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  // Supabase JS ne distingue pas nativement "refresh de session échoué" de
+  // "déconnexion volontaire" : on approxime via ces deux refs plutôt que
+  // d'avertir l'utilisateur à chaque signOut() normal.
+  const intentionalSignOutRef = useRef(false);
+  const hadUserRef = useRef(false);
 
   async function fetchAdminStatus(userId) {
     if (!userId) { setIsAdmin(false); return; }
@@ -18,6 +27,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       const u = session?.user ?? null;
+      hadUserRef.current = !!u;
       setUser(u);
       fetchAdminStatus(u?.id);
       setLoading(false);
@@ -25,6 +35,13 @@ export function AuthProvider({ children }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       const u = session?.user ?? null;
+      if (!u && hadUserRef.current && !intentionalSignOutRef.current) {
+        // Un utilisateur était connecté juste avant et ce n'est pas nous qui
+        // avons appelé signOut() : la session a probablement expiré / le
+        // refresh a échoué, plutôt qu'une déconnexion volontaire.
+        toast?.error(t('auth.sessionExpired'));
+      }
+      hadUserRef.current = !!u;
       setUser(u);
       fetchAdminStatus(u?.id);
       if (u) {
@@ -69,7 +86,12 @@ export function AuthProvider({ children }) {
   }
 
   async function signOut() {
-    await supabase.auth.signOut();
+    intentionalSignOutRef.current = true;
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      intentionalSignOutRef.current = false;
+    }
   }
 
   return (

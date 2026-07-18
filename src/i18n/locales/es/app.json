@@ -83,7 +83,8 @@
     "postedReviewOn": "publicó una reseña en",
     "acceptButton": "Aceptar",
     "declineButton": "Rechazar",
-    "infoAriaLabel": "Más información"
+    "infoAriaLabel": "Más información",
+    "actionError": "Se ha producido un error. Verifique su conexión e inténtelo de nuevo."
   },
   "seo": {
     "countryTitle": "Viajar a {{name}} — clima, cuándo ir, qué hacer | Triply",
@@ -129,7 +130,8 @@
     "confirmPasswordLabel": "Confirmar contraseña",
     "loginButton": "Iniciar sesión",
     "createAccountButton": "Crear mi cuenta",
-    "skipButton": "Continuar sin una cuenta"
+    "skipButton": "Continuar sin una cuenta",
+    "sessionExpired": "Su sesión ha caducado, vuelva a iniciar sesión."
   },
   "profile": {
     "adminBadge": "🛡️ Administrador",
@@ -267,7 +269,8 @@
     "emptyVisitedLine1": "Aún no hay países visitados.",
     "emptyVisitedLine2": "Haga clic en ✈️ en la página de un país para añadirlo.",
     "removeAriaLabel": "Eliminar {{name}}",
-    "syncedHint": "Datos guardados en su cuenta"
+    "syncedHint": "Datos guardados en su cuenta",
+    "toggleError": "Se ha producido un error. Verifique su conexión e inténtelo de nuevo."
   },
   "countryPanel": {
     "compareAriaLabel": "Comparar",
@@ -373,7 +376,14 @@
     "clickToExplore": "Haga clic para explorar",
     "zoomIn": "Acercar",
     "zoomOut": "Alejar",
-    "resetView": "Restablecer vista"
+    "resetView": "Restablecer vista",
+    "loadError": "No se pudo cargar el mapa. Verifique su conexión.",
+    "retryButton": "Reintentar"
+  },
+  "errorBoundary": {
+    "title": "Se ha producido un error",
+    "message": "Algo salió mal. Puede recargar la página para continuar.",
+    "reloadButton": "Recargar la página"
   },
   "badgeAnim": {
     "newLevelUnlocked": "¡Nuevo nivel desbloqueado!",

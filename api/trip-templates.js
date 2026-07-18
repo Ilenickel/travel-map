@@ -608,6 +608,102 @@ async function handleSuggestTrip(admin, body, res) {
 }
 
 // ════════════════════════════════════════════════════════════════
+// action: 'list-cities' — villes ayant au moins un planning partagé pour ce pays
+// ════════════════════════════════════════════════════════════════
+// Lecture seule sur du contenu public (mêmes filtres que 'suggest' : villes de
+// base uniquement, pas les excursions) — sert à afficher dans l'onglet
+// "Villes" TOUTES les villes ayant au moins un planning partagé pour ce pays,
+// pas seulement celles déjà présentes dans le voyage de l'utilisateur.
+//
+// Regroupement GÉOGRAPHIQUE, pas par chaîne city_name : deux exonymes d'une
+// même ville ("Pékin" / "Beijing") ont des city_lat/city_lng proches même si
+// leurs noms bruts diffèrent totalement — les fusionner évite un doublon dans
+// la liste. Clustering glouton par rayon (SAME_CITY_RADIUS_KM, même seuil que
+// resolveCityCoordinates/handleSuggest ailleurs dans ce fichier) : pas besoin
+// d'un vrai k-means pour cet usage. Le nom AFFICHÉ (cityName) est celui du
+// template le plus utilisé du cluster ; le nom traduit dans la langue du
+// visiteur est résolu côté client via representativeTemplateId (voir
+// get-translated-content.js, content_type 'trip_template_city').
+async function handleListCities(admin, body, res) {
+  const { countryCode, countryAlpha2, destinationId } = body;
+  if (!countryCode) return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
+
+  const { data: templates } = await admin
+    .from('trip_templates')
+    .select('id, city_name, city_lat, city_lng, uses_count')
+    .eq('country_code', countryCode)
+    .eq('is_public', true)
+    .is('parent_template_id', null);
+
+  const clusters = []; // [{ representative, totalUses, templateCount }]
+  for (const t of templates || []) {
+    // Coordonnées manquantes (géocodage jamais fait/échoué à l'origine du
+    // partage) : reste isolé dans son propre cluster plutôt que d'être fusionné
+    // au hasard avec un autre — cas de repli, pas le cas nominal.
+    const match = t.city_lat != null && t.city_lng != null
+      ? clusters.find((c) =>
+          c.representative.city_lat != null &&
+          distanceKm(t.city_lat, t.city_lng, c.representative.city_lat, c.representative.city_lng) <= SAME_CITY_RADIUS_KM
+        )
+      : null;
+    if (match) {
+      match.templateCount += 1;
+      match.totalUses += t.uses_count || 0;
+      // Le représentant devient le template le plus utilisé du cluster : nom
+      // le plus "consensuel" à afficher/traduire pour ce groupe de villes.
+      if ((t.uses_count || 0) > (match.representative.uses_count || 0)) match.representative = t;
+    } else {
+      clusters.push({ representative: t, templateCount: 1, totalUses: t.uses_count || 0 });
+    }
+  }
+
+  let cities = clusters.map((c) => ({
+    cityName: c.representative.city_name,
+    representativeTemplateId: c.representative.id,
+    templateCount: c.templateCount,
+    totalUses: c.totalUses,
+    _lat: c.representative.city_lat,
+    _lng: c.representative.city_lng,
+  }));
+
+  // "Déjà dans votre voyage" : comparaison géographique elle aussi, pas de
+  // texte — trip_cities n'a pas de lat/lng stockées, on géocode donc à la
+  // volée le nom (tapé par l'utilisateur, potentiellement dans une autre
+  // langue que les templates suggérés) via resolveCityCoordinates, mis en
+  // cache après le premier appel (table city_geocache).
+  if (destinationId) {
+    const { data: existingCities } = await admin
+      .from('trip_cities')
+      .select('id, name')
+      .eq('destination_id', destinationId)
+      .is('parent_city_id', null);
+    if (existingCities?.length) {
+      const resolvedExisting = await Promise.all(
+        existingCities.map(async (c) => ({
+          id: c.id,
+          name: c.name,
+          coords: await resolveCityCoordinates(admin, { countryCode, cityName: c.name, countryAlpha2 }),
+        }))
+      );
+      cities = cities.map((city) => {
+        if (city._lat == null) return city;
+        const match = resolvedExisting.find((c) =>
+          c.coords && distanceKm(city._lat, city._lng, c.coords.lat, c.coords.lng) <= SAME_CITY_RADIUS_KM
+        );
+        return match ? { ...city, existingCityId: match.id, existingCityName: match.name } : city;
+      });
+    }
+  }
+
+  cities.sort((a, b) => b.totalUses - a.totalUses);
+  // _lat/_lng ne servaient qu'au matching serveur ci-dessus : jamais utiles au
+  // client, pas besoin de les faire voyager dans la réponse.
+  const citiesForClient = cities.map(({ _lat, _lng, ...rest }) => rest);
+
+  return res.status(200).json({ ok: true, cities: citiesForClient });
+}
+
+// ════════════════════════════════════════════════════════════════
 // action: 'import'
 // ════════════════════════════════════════════════════════════════
 
@@ -800,17 +896,33 @@ async function handleImport(admin, user, body, res) {
   });
 }
 
+// Comparaison de noms de ville insensible à la casse et aux accents (mêmes
+// limites que les autres comparaisons de noms de l'app, ex. namesMatch côté
+// client dans planningUtils.js) — deux orthographes réellement différentes
+// d'une même ville (ex. "Pékin" vs "Beijing") ne matchent PAS ici : seule une
+// différence de casse/accentuation est tolérée, contrairement au matching par
+// coordonnées utilisé ailleurs dans ce fichier (resolveCityCoordinates).
+function normalizeCityName(name) {
+  return (name || '').normalize('NFD').replace(/\p{Mn}/gu, '').trim().toLowerCase();
+}
+
 // ════════════════════════════════════════════════════════════════
 // action: 'import-trip' — import d'un voyage entier (groupe de modèles)
 // ════════════════════════════════════════════════════════════════
-// Crée dans la destination une ville par modèle membre du groupe (dans
-// l'ordre du voyage source, APRÈS les villes existantes — l'import ne
-// supprime jamais rien, contrairement à l'import par ville qui remplace le
-// contenu d'UNE ville après confirmation), avec planned_days et, si le
-// voyage a une date de départ, une start_date calée dessus + le décalage de
-// la ville dans le voyage source. Sans dates, tout arrive "non planifié".
+// Pour chaque modèle membre du groupe : si sa ville correspond GÉOGRAPHIQUEMENT
+// à une ville de base déjà présente dans la destination visée (coordonnées
+// proches, voir resolveCityCoordinates — reconnaît "Pékin"/"Beijing" comme la
+// même ville même si les noms diffèrent totalement), REMPLACE le contenu de
+// cette ville existante (mêmes helpers que l'import par ville, handleImport
+// ci-dessus : suppression des activités + excursions existantes puis réimport
+// dans le MÊME cityId) ; sinon, crée une nouvelle ville `trip_cities` (dans
+// l'ordre du voyage source, après les villes existantes), avec planned_days
+// et, si le voyage a une date de départ, une start_date calée dessus + le
+// décalage de la ville dans le voyage source. Sans dates, tout arrive "non
+// planifié". Repli sur normalizeCityName (texte) si le géocodage échoue pour
+// une ville (clé API absente, ville introuvable) — jamais de blocage total.
 async function handleImportTrip(admin, user, body, res) {
-  const { tripId, destinationId, groupId } = body;
+  const { tripId, destinationId, groupId, countryAlpha2 } = body;
   if (!tripId || !destinationId || !groupId) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
@@ -844,7 +956,7 @@ async function handleImportTrip(admin, user, body, res) {
 
   const { data: members } = await admin
     .from('trip_templates')
-    .select('id, city_name, nb_days, group_day_offset')
+    .select('id, city_name, city_lat, city_lng, nb_days, group_day_offset')
     .eq('group_id', groupId)
     .is('parent_template_id', null)
     .order('group_position', { ascending: true });
@@ -895,44 +1007,121 @@ async function handleImportTrip(admin, user, body, res) {
     .is('parent_city_id', null);
   const startPosition = existingCities || 0;
 
-  // Villes créées séquentiellement (pas en Promise.all) : leurs positions
-  // s'enchaînent et l'ordre d'insertion doit rester celui du voyage source.
+  // Villes de base déjà présentes dans cette destination : un membre du
+  // groupe importé dont la ville correspond REMPLACE son contenu plutôt que
+  // de créer un doublon. Matching PRINCIPAL par coordonnées (reconnaît
+  // "Pékin"/"Beijing" comme la même ville) — trip_cities n'a pas de lat/lng
+  // stockées, on géocode donc chaque ville existante une fois ici (mis en
+  // cache ensuite, table city_geocache). Repli sur normalizeCityName (texte,
+  // accents/casse seulement) si le géocodage échoue pour cette ville
+  // existante OU pour le membre importé (clé API absente, ville introuvable) —
+  // jamais de blocage total du fait d'un géocodage indisponible.
+  const { data: existingBaseCities } = await admin
+    .from('trip_cities')
+    .select('id, name, start_date, planned_days')
+    .eq('destination_id', destinationId)
+    .is('parent_city_id', null);
+  const existingCityByName = {};
+  const existingCityWithCoords = [];
+  for (const c of existingBaseCities || []) {
+    existingCityByName[normalizeCityName(c.name)] = c;
+    const coords = await resolveCityCoordinates(admin, { countryCode: destination.country_code, cityName: c.name, countryAlpha2 });
+    if (coords) existingCityWithCoords.push({ ...c, coords });
+  }
+
+  const findExistingCityFor = async (member) => {
+    if (member.city_lat != null && member.city_lng != null && existingCityWithCoords.length) {
+      const match = existingCityWithCoords.find(
+        (c) => distanceKm(member.city_lat, member.city_lng, c.coords.lat, c.coords.lng) <= SAME_CITY_RADIUS_KM
+      );
+      if (match) return match;
+    }
+    return existingCityByName[normalizeCityName(member.city_name)] || null;
+  };
+
+  // Villes créées/remplacées séquentiellement (pas en Promise.all) : leurs
+  // positions s'enchaînent (pour les créations) et l'ordre d'insertion doit
+  // rester celui du voyage source.
   let importedActivitiesCount = 0;
   const importedTemplateIds = [];
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
     const offset = member.group_day_offset != null ? Math.max(0, member.group_day_offset) : null;
-    const startDate = importAnchorDate && offset != null ? addDays(importAnchorDate, offset) : null;
+    const existingCity = await findExistingCityFor(member);
 
-    const { data: city, error: cityError } = await admin
-      .from('trip_cities')
-      .insert({
-        trip_id: tripId,
-        destination_id: destinationId,
-        name: member.city_name,
-        position: startPosition + i,
-        planned_days: member.nb_days,
-        start_date: startDate,
-        // Voyage sans aucune date : le décalage de la ville par rapport au
-        // jour 1 du voyage source est conservé (décalé après les éventuels
-        // imports "en attente" précédents, voir pendingBaseOffset) — dès que
-        // l'utilisateur choisira sa date de départ, elle deviendra le jour 1
-        // et toutes les villes/activités en attente seront datées
-        // automatiquement (RPC anchor_trip_pending_days,
-        // planning_modele_v10.sql).
-        pending_day_offset: startDate == null && offset != null ? pendingBaseOffset + offset : null,
-      })
-      .select('id')
-      .single();
-    if (cityError) { console.error('[trip-templates:import-trip] insert city:', cityError); continue; }
+    let cityId;
+    let startDate;
+
+    if (existingCity) {
+      // Remplacement : même logique que l'import par ville (handleImport
+      // ci-dessus) — supprime les activités existantes de la ville (+ leurs
+      // pièces jointes Storage) puis réimporte dans le MÊME cityId, sans créer
+      // de nouvelle ligne trip_cities. L'ancre de dates reste celle DÉJÀ
+      // choisie pour cette ville (sa propre start_date), pas celle du voyage
+      // source importé — cohérent avec le reste de son calendrier existant.
+      cityId = existingCity.id;
+      startDate = existingCity.start_date;
+
+      const { data: oldActivities } = await admin.from('trip_activities').select('id').eq('city_id', cityId);
+      await cleanupActivityAttachments(admin, (oldActivities || []).map((a) => a.id));
+      const { error: deleteActError } = await admin.from('trip_activities').delete().eq('city_id', cityId);
+      if (deleteActError) console.error('[trip-templates:import-trip] delete existing activities:', deleteActError);
+
+      // Anciennes excursions rattachées à la ville remplacée : supprimées
+      // avant réimport — importDaytripChildren recrée les excursions du
+      // nouveau planning, sans nettoyage préalable elles s'ajouteraient en
+      // doublon à celles laissées par l'ancien contenu.
+      const { data: oldDaytrips } = await admin.from('trip_cities').select('id').eq('parent_city_id', cityId);
+      if (oldDaytrips?.length) {
+        const oldDaytripIds = oldDaytrips.map((d) => d.id);
+        const { data: oldDaytripActivities } = await admin.from('trip_activities').select('id').in('city_id', oldDaytripIds);
+        await cleanupActivityAttachments(admin, (oldDaytripActivities || []).map((a) => a.id));
+        const { error: deleteDaytripActError } = await admin.from('trip_activities').delete().in('city_id', oldDaytripIds);
+        if (deleteDaytripActError) console.error('[trip-templates:import-trip] delete old daytrip activities:', deleteDaytripActError);
+        const { error: deleteDaytripError } = await admin.from('trip_cities').delete().in('id', oldDaytripIds);
+        if (deleteDaytripError) console.error('[trip-templates:import-trip] delete old daytrips:', deleteDaytripError);
+      }
+
+      // Même règle que handleImport : la durée du planning importé ne devient
+      // la durée de la ville que si elle n'en avait pas déjà une — jamais
+      // écrasée si l'utilisateur l'avait renseignée lui-même.
+      if (existingCity.planned_days == null && member.nb_days) {
+        const { error: daysError } = await admin.from('trip_cities').update({ planned_days: member.nb_days }).eq('id', cityId);
+        if (daysError) console.error('[trip-templates:import-trip] set planned_days:', daysError);
+      }
+    } else {
+      startDate = importAnchorDate && offset != null ? addDays(importAnchorDate, offset) : null;
+      const { data: city, error: cityError } = await admin
+        .from('trip_cities')
+        .insert({
+          trip_id: tripId,
+          destination_id: destinationId,
+          name: member.city_name,
+          position: startPosition + i,
+          planned_days: member.nb_days,
+          start_date: startDate,
+          // Voyage sans aucune date : le décalage de la ville par rapport au
+          // jour 1 du voyage source est conservé (décalé après les éventuels
+          // imports "en attente" précédents, voir pendingBaseOffset) — dès que
+          // l'utilisateur choisira sa date de départ, elle deviendra le jour 1
+          // et toutes les villes/activités en attente seront datées
+          // automatiquement (RPC anchor_trip_pending_days,
+          // planning_modele_v10.sql).
+          pending_day_offset: startDate == null && offset != null ? pendingBaseOffset + offset : null,
+        })
+        .select('id')
+        .single();
+      if (cityError) { console.error('[trip-templates:import-trip] insert city:', cityError); continue; }
+      cityId = city.id;
+    }
 
     const activities = await fetchTemplateDaysAndActivities(admin, member.id);
-    importedActivitiesCount += await importActivitiesInto(admin, { tripId, cityId: city.id, activities, startDate });
+    importedActivitiesCount += await importActivitiesInto(admin, { tripId, cityId, activities, startDate });
 
     const childIds = await importDaytripChildren(admin, {
       tripId,
       destinationId,
-      parentCityId: city.id,
+      parentCityId: cityId,
       templateId: member.id,
       parentStartDate: startDate,
     });
@@ -979,6 +1168,7 @@ export default async function handler(req, res) {
   if (action === 'share') return handleShare(admin, user, body, res);
   if (action === 'suggest') return handleSuggest(admin, body, res);
   if (action === 'suggest-trip') return handleSuggestTrip(admin, body, res);
+  if (action === 'list-cities') return handleListCities(admin, body, res);
   if (action === 'import') return handleImport(admin, user, body, res);
   if (action === 'import-trip') return handleImportTrip(admin, user, body, res);
   return res.status(400).json({ ok: false, reason: 'Action invalide.' });

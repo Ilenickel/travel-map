@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
+import { useToast } from '../context/ToastContext';
 
 export function useNotifications(userId) {
+  const { t } = useTranslation('app');
+  const toast = useToast();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const deletedIds = useRef(new Set());
@@ -46,28 +50,36 @@ export function useNotifications(userId) {
     };
   }, [userId, fetchNotifs]);
 
+  // Pas de retour arrière manuel de l'état local sur échec ici (contrairement à
+  // useFavorites/useVisited) : le sondage toutes les 20s + le canal realtime
+  // ci-dessus resynchronisent déjà automatiquement depuis le serveur — le toast
+  // suffit à prévenir l'utilisateur, l'état se corrigera de lui-même.
   const markRead = useCallback(async (id) => {
-    await supabase.from('notifications').update({ read: true }).eq('id', id);
     setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, read: true } : n));
-  }, []);
+    const { error } = await supabase.from('notifications').update({ read: true }).eq('id', id);
+    if (error) toast?.error(t('notification.actionError'));
+  }, [toast, t]);
 
   const markAllRead = useCallback(async () => {
     if (!userId) return;
-    await supabase.from('notifications').update({ read: true }).eq('user_id', userId).eq('read', false);
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-  }, [userId]);
+    const { error } = await supabase.from('notifications').update({ read: true }).eq('user_id', userId).eq('read', false);
+    if (error) toast?.error(t('notification.actionError'));
+  }, [userId, toast, t]);
 
   const deleteOne = useCallback(async (id) => {
     deletedIds.current.add(id);
     setNotifications((prev) => prev.filter((n) => n.id !== id));
-    await supabase.from('notifications').delete().eq('id', id);
-  }, []);
+    const { error } = await supabase.from('notifications').delete().eq('id', id);
+    if (error) { deletedIds.current.delete(id); toast?.error(t('notification.actionError')); }
+  }, [toast, t]);
 
   const deleteAll = useCallback(async () => {
     if (!userId) return;
     setNotifications((prev) => { prev.forEach((n) => deletedIds.current.add(n.id)); return []; });
-    await supabase.from('notifications').delete().eq('user_id', userId);
-  }, [userId]);
+    const { error } = await supabase.from('notifications').delete().eq('user_id', userId);
+    if (error) toast?.error(t('notification.actionError'));
+  }, [userId, toast, t]);
 
   // Suppression sélective (utilisée quand seule une partie des notifications doit
   // vraiment disparaître de la base, ex : "Tout supprimer" qui épargne les invitations
@@ -76,8 +88,9 @@ export function useNotifications(userId) {
     if (!ids.length) return;
     ids.forEach((id) => deletedIds.current.add(id));
     setNotifications((prev) => prev.filter((n) => !ids.includes(n.id)));
-    await supabase.from('notifications').delete().in('id', ids);
-  }, []);
+    const { error } = await supabase.from('notifications').delete().in('id', ids);
+    if (error) toast?.error(t('notification.actionError'));
+  }, [toast, t]);
 
   // Retrait purement visuel, sans toucher à la base ni la blacklister : la notification
   // reste en attente en base et réapparaîtra au prochain sondage/realtime (utilisé pour

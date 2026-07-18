@@ -83,7 +83,8 @@
     "postedReviewOn": "a publié un avis sur",
     "acceptButton": "Accepter",
     "declineButton": "Refuser",
-    "infoAriaLabel": "En savoir plus"
+    "infoAriaLabel": "En savoir plus",
+    "actionError": "Une erreur est survenue. Vérifiez votre connexion et réessayez."
   },
   "seo": {
     "countryTitle": "Partir à {{name}} — météo, quand partir, que faire | Triply",
@@ -129,7 +130,8 @@
     "confirmPasswordLabel": "Confirmer le mot de passe",
     "loginButton": "Se connecter",
     "createAccountButton": "Créer mon compte",
-    "skipButton": "Continuer sans compte"
+    "skipButton": "Continuer sans compte",
+    "sessionExpired": "Votre session a expiré, veuillez vous reconnecter."
   },
   "profile": {
     "adminBadge": "🛡️ Admin",
@@ -267,7 +269,8 @@
     "emptyVisitedLine1": "Aucun pays visité pour l'instant.",
     "emptyVisitedLine2": "Cliquez sur ✈️ dans une fiche pays pour en ajouter.",
     "removeAriaLabel": "Retirer {{name}}",
-    "syncedHint": "Données sauvegardées dans votre compte"
+    "syncedHint": "Données sauvegardées dans votre compte",
+    "toggleError": "Une erreur est survenue. Vérifiez votre connexion et réessayez."
   },
   "countryPanel": {
     "compareAriaLabel": "Comparer",
@@ -373,7 +376,14 @@
     "clickToExplore": "Cliquer pour explorer",
     "zoomIn": "Zoom +",
     "zoomOut": "Zoom −",
-    "resetView": "Vue initiale"
+    "resetView": "Vue initiale",
+    "loadError": "La carte n'a pas pu être chargée. Vérifiez votre connexion.",
+    "retryButton": "Réessayer"
+  },
+  "errorBoundary": {
+    "title": "Une erreur est survenue",
+    "message": "Quelque chose s'est mal passé. Vous pouvez recharger la page pour continuer.",
+    "reloadButton": "Recharger la page"
   },
   "badgeAnim": {
     "newLevelUnlocked": "Nouveau niveau débloqué !",

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
@@ -102,6 +102,13 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   // Thème actif : re-colore les tracés (pays, frontières) au basculement
   // jour/nuit — les couleurs sont lues via mapColors() au moment du rendu.
   const { theme } = useSettings();
+  // Écran d'accueil de l'app : si le fetch de la topologie échoue (CDN injoignable,
+  // hors ligne…), on l'affiche à la place d'une carte vide plutôt que de laisser
+  // le composant ne rien montrer sans explication. retryKey force le useEffect
+  // d'init à rejouer (voir plus bas, init() vide tout via selectAll("*").remove()
+  // en tête, donc rejouable sans fuite).
+  const [mapLoadError, setMapLoadError] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
   const svgRef     = useRef(null);
   const tooltipRef = useRef(null);
   const zoomRef    = useRef(null);
@@ -222,6 +229,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
       .then((r) => r.json())
       .then((world) => {
+        setMapLoadError(false);
         const countries = topojson.feature(world, world.objects.countries);
         const borders   = topojson.mesh(world, world.objects.countries, (a, b) => a !== b);
 
@@ -376,6 +384,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
       })
       .catch((err) => {
         console.error("[WorldMap] Échec du chargement du fond de carte :", err);
+        setMapLoadError(true);
       });
 
     // ── Zoom & pan (desktop + touch pinch) ──
@@ -425,7 +434,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     }; // end init
 
     requestAnimationFrame(init);
-  }, []);
+  }, [retryKey]);
 
   const handleZoomIn = () => {
     const svg = d3.select(svgRef.current);
@@ -446,6 +455,14 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     <div className="map-container">
       <svg ref={svgRef} className="world-svg" preserveAspectRatio="xMidYMid meet" />
       <div ref={tooltipRef} className="map-tooltip" />
+      {mapLoadError && (
+        <div className="map-load-error">
+          <p>{t("worldMap.loadError")}</p>
+          <button type="button" onClick={() => setRetryKey((k) => k + 1)}>
+            {t("worldMap.retryButton")}
+          </button>
+        </div>
+      )}
       <div className="map-zoom-controls">
         <button className="map-zoom-btn" onClick={handleZoomIn} title={t("worldMap.zoomIn")}>+</button>
         <button className="map-zoom-btn" onClick={handleZoomOut} title={t("worldMap.zoomOut")}>−</button>

@@ -83,7 +83,8 @@
     "postedReviewOn": "posted a review on",
     "acceptButton": "Accept",
     "declineButton": "Decline",
-    "infoAriaLabel": "Learn more"
+    "infoAriaLabel": "Learn more",
+    "actionError": "Something went wrong. Check your connection and try again."
   },
   "seo": {
     "countryTitle": "Travel to {{name}} — weather, when to go, what to do | Triply",
@@ -129,7 +130,8 @@
     "confirmPasswordLabel": "Confirm password",
     "loginButton": "Log in",
     "createAccountButton": "Create my account",
-    "skipButton": "Continue without an account"
+    "skipButton": "Continue without an account",
+    "sessionExpired": "Your session has expired, please sign in again."
   },
   "profile": {
     "adminBadge": "🛡️ Admin",
@@ -267,7 +269,8 @@
     "emptyVisitedLine1": "No visited countries yet.",
     "emptyVisitedLine2": "Click ✈️ on a country page to add one.",
     "removeAriaLabel": "Remove {{name}}",
-    "syncedHint": "Data saved to your account"
+    "syncedHint": "Data saved to your account",
+    "toggleError": "Something went wrong. Check your connection and try again."
   },
   "countryPanel": {
     "compareAriaLabel": "Compare",
@@ -373,7 +376,14 @@
     "clickToExplore": "Click to explore",
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
-    "resetView": "Reset view"
+    "resetView": "Reset view",
+    "loadError": "The map couldn't be loaded. Check your connection.",
+    "retryButton": "Retry"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong",
+    "message": "An unexpected error occurred. You can reload the page to continue.",
+    "reloadButton": "Reload page"
   },
   "badgeAnim": {
     "newLevelUnlocked": "New level unlocked!",
