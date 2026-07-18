@@ -5003,12 +5003,16 @@ button.pp-sidebar-toggle {
     user-select: none;
   }
 
-  /* Sans portail (voir ActivityItem.jsx), la carte glissée reste à sa place
-     dans le DOM au lieu d'être téléportée en fin de document — dans "Non
-     planifiées", elle vient donc AVANT les sections de jours dans l'ordre du
-     DOM et passe dessous par défaut (aucun des deux n'a de z-index). */
-  .pp-day-activity--dragging {
-    z-index: 200;
+  /* Sans portail (voir ActivityItem.jsx), la carte glissée reste enfant réel
+     de sa section de jour d'origine au lieu d'être téléportée en fin de
+     document — le z-index élevé posé par la lib (inline, style de drag) ne
+     sert alors à rien : le overflow:hidden de .pp-day-section (coins
+     arrondis, cf. plus haut) la coupe net dès qu'elle sort visuellement de
+     cette section, même en position:fixed. Suspendu seulement pendant un
+     glissement actif (classe posée/retirée par TripEditor sur onDragStart/
+     onDragEnd), pour garder les coins nets le reste du temps. */
+  .pp-editor-split--dnd-active .pp-day-section {
+    overflow: visible;
   }
 
   .pp-pager-track {

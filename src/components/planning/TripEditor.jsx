@@ -502,8 +502,22 @@ export default function TripEditor({
         />
       ) : (
       <DragDropContext
-        onDragStart={() => { rbdDraggingRef.current = true; }}
-        onDragEnd={(result) => { rbdDraggingRef.current = false; handleDragEnd(result); }}
+        onDragStart={() => {
+          rbdDraggingRef.current = true;
+          // Mobile uniquement (voir .pp-editor-split--dnd-active en CSS) :
+          // sans portail, la carte glissée reste position:fixed MAIS enfant
+          // réel de sa section de jour d'origine — le overflow:hidden de
+          // .pp-day-section (coins arrondis) la coupe dès qu'elle en sort
+          // visuellement, alors qu'elle devrait rester au-dessus de tout.
+          // On suspend ce découpage juste le temps du geste plutôt que de le
+          // retirer en permanence (les coins arrondis restent nets hors drag).
+          splitRef.current?.classList.add('pp-editor-split--dnd-active');
+        }}
+        onDragEnd={(result) => {
+          rbdDraggingRef.current = false;
+          splitRef.current?.classList.remove('pp-editor-split--dnd-active');
+          handleDragEnd(result);
+        }}
       >
         <div className="pp-editor-split" ref={splitRef}>
           {/* Piste du pager mobile : translatée d'une page à l'autre au balayage.
