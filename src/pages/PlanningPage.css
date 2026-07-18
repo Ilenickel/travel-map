@@ -3842,6 +3842,9 @@ button.pp-sidebar-toggle {
 .pp-pager-track { display: contents; }
 .pp-mobile-nav { display: none; }
 .pp-header-collapse-btn { display: none; }
+/* Bouton "⋯" (menu des actions du voyage) : mobile uniquement, comme le
+   chevron — sur ordinateur chaque action reste un bouton direct de l'en-tête. */
+.pp-header-menu-btn { display: none; }
 
 /* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte */
 .pp-city-panel {
@@ -4880,7 +4883,8 @@ button.pp-sidebar-toggle {
      actions et notes n'apparaissent qu'à la demande, via le chevron. C'est ce qui
      rend l'écran utilisable — dépliés en permanence, ils mangeaient toute la
      hauteur du téléphone. */
-  .pp-header-collapse-btn {
+  .pp-header-collapse-btn,
+  .pp-header-menu-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4894,6 +4898,9 @@ button.pp-sidebar-toggle {
     color: var(--text-dim);
     cursor: pointer;
   }
+  /* Le chevron porte déjà le margin-left:auto qui pousse la paire à droite :
+     le "⋯" se colle juste après lui (gap de la ligne de titre). */
+  .pp-header-menu-btn { margin-left: 0; }
 
   .pp-editor-header--collapsed .pp-trip-dates-card,
   .pp-editor-header--collapsed .pp-trip-stats,
@@ -4905,26 +4912,48 @@ button.pp-sidebar-toggle {
 
   .pp-editor-header--collapsed .pp-trip-title-row { margin-bottom: 0; }
 
-  /* ── Actions de l'en-tête : tout doit rester VISIBLE sans défilement —
-     une rangée défilante cachait Partager et les exports hors écran.
-     Carte et Jour J n'y sont plus du tout (la barre de navigation basse gère
-     Carte, Jour J a migré dans l'en-tête de la colonne Jours) : il reste
-     Notes / PDF / iCal en grille 3 colonnes (ex pp-toolbar-group, désormais
-     des frères directs de .pp-header-actions plutôt qu'un sous-groupe) et
-     Partager en pleine largeur sur la ligne suivante, bien en évidence
-     (invitations, membres du groupe). */
-  .pp-header-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+  /* ── Actions de l'en-tête : sur mobile elles vivent désormais dans le menu
+     "⋯" (bottom sheet, voir .pp-header-menu-btn / .pp-header-menu-item) —
+     toujours accessibles en un tap, même en-tête replié, au lieu d'être
+     cachées derrière le chevron. La rangée de boutons de l'en-tête déplié
+     devenait redondante : masquée. */
+  .pp-header-actions { display: none; }
+
+  /* Lignes du menu "⋯" : gros boutons pleine largeur, icône + libellé, façon
+     feuille d'actions d'appli. Partager (invitations, membres du groupe) est
+     l'action principale : mise en avant à l'accent. */
+  .pp-header-menu-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
-  .pp-header-actions .pp-toolbar-btn { justify-content: center; white-space: nowrap; }
-  .pp-header-actions .pp-btn--share {
-    grid-column: 1 / -1;
+  .pp-header-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     width: 100%;
-    justify-content: center;
-    padding: 10px;
+    padding: 13px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
   }
+  .pp-header-menu-item:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .pp-header-menu-item svg { flex-shrink: 0; color: var(--text-dim); }
+  .pp-header-menu-item--share {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-color: transparent;
+    color: #fff;
+  }
+  .pp-header-menu-item--share svg { color: #fff; }
 
   /* Section "partage automatique" : compactée, la note explicative est un
      luxe de grand écran. */
@@ -5008,6 +5037,20 @@ button.pp-sidebar-toggle {
     overflow: visible;
   }
 
+  /* LA vraie cause de la carte qui passe sous les sections de jour : .pp-day-
+     section--unplanned a `opacity: 0.85` (juste en dessous) — un opacity
+     différent de 1 crée À LUI SEUL un nouveau contexte d'empilement, qui
+     piège le z-index de la carte glissée (posé par la lib, jusqu'à 5000) à
+     l'intérieur de CE conteneur. Aucun z-index sur la carte elle-même ne
+     peut donc jamais lui permettre de dépasser les sections de jour
+     suivantes, qui n'ont pas ce piège. Relève le conteneur "Non planifiées"
+     tout entier au-dessus, mais seulement pendant un glissement actif (sinon
+     il resterait visuellement au-dessus des jours en permanence, ce qui n'a
+     de sens que pendant un drag). */
+  .pp-editor-split--dnd-active .pp-day-section--unplanned {
+    z-index: 5000;
+  }
+
   .pp-pager-track {
     display: flex;
     position: relative;
@@ -5024,7 +5067,6 @@ button.pp-sidebar-toggle {
      règles de répartition desktop en :has(.pp-map-panel)/:not(:has(...)) plus
      haut sont plus spécifiques que ces sélecteurs simples. */
   .pp-city-panel,
-  .pp-groups-panel,
   .pp-content-panel,
   .pp-daymode-page,
   .pp-map-panel {
@@ -5037,11 +5079,16 @@ button.pp-sidebar-toggle {
     overflow-x: hidden;
   }
 
+  /* Pas de page Groupes sur mobile : la gestion fine des groupes reste un
+     usage ordinateur (l'assignation à un groupe passe par les menus des
+     activités). Le panneau reste monté (GroupManager), juste jamais affiché —
+     les pages restantes du pager se renumérotent d'elles-mêmes (flex). */
+  .pp-groups-panel { display: none; }
+
   /* padding-bottom = hauteur de la barre flottante : le panneau (hauteur bornée)
      laisse défiler la liste en interne et épingle le bouton "Ajouter un pays"
      juste au-dessus de la barre, sans jamais recouvrir le contenu. */
   .pp-city-panel { display: flex; padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
-  .pp-groups-panel { display: flex; overflow-y: auto; }
 
   /* Pages 3 : planning par jour. Padding bas = barre de navigation. */
   .pp-content-panel {
@@ -5061,7 +5108,6 @@ button.pp-sidebar-toggle {
   /* Petit padding seulement : c'est .pp-city-panel (padding-bottom ci-dessus)
      qui dégage la barre ; le bouton est un frère sous cette liste. */
   .pp-city-panel-dests { padding-bottom: 12px; }
-  .pp-groups-panel { padding-bottom: 68px; }
 
   /* Page 4 : la carte (le display:none hérité du bloc 900px est annulé — ici
      elle a sa propre page). La superposition plein écran reste accessible via
@@ -5151,6 +5197,57 @@ button.pp-sidebar-toggle {
     height: 5px;
     border-radius: 50%;
     background: var(--accent2);
+  }
+
+  /* ── Jour J : bouton principal circulaire, même langage que le bouton
+     Planifier de la barre de l'écran principal (.app-nav-btn--primary).
+     Le bouton garde un créneau fixe de 64px dans la rangée ; le cercle est en
+     position:absolute centré dessus pour ne pas gonfler la hauteur de la
+     barre — il déborde en haut et en bas, avec une bordure épaisse couleur
+     barre qui fait l'effet « berceau ». Le libellé est masqué (font-size: 0,
+     le cercle le recouvrirait) ; l'aria-label du bouton le porte toujours.
+     Pour que le cercle tombe au centre exact de la barre malgré la répartition
+     asymétrique voulue (Villes + Jours à gauche, Carte seule à droite), Carte
+     (dernier bouton) prend flex:2 : 1f + 1f + 64px + 2f ⇒ le créneau Jour J
+     est pile au milieu. */
+  .pp-mobile-nav-btn--dayj {
+    flex: 0 0 64px;
+    font-size: 0;
+    padding: 0;
+    align-self: stretch;
+  }
+  .pp-mobile-nav-btn:last-child { flex: 2; }
+  .pp-mobile-nav-primary-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    border: 5px solid rgba(18, 22, 34, 0.92);
+    box-shadow:
+      0 4px 10px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: transform 0.18s, box-shadow 0.18s;
+  }
+  [data-theme="light"] .pp-mobile-nav-primary-icon { border-color: rgba(255, 255, 255, 0.9); }
+  .pp-mobile-nav-btn--dayj:active .pp-mobile-nav-primary-icon {
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+  /* Actif (on est sur la page Jour J) : halo accentué à la place du point
+     indicateur (qui serait recouvert par le cercle). */
+  .pp-mobile-nav-btn--dayj.active::after { display: none; }
+  .pp-mobile-nav-btn--dayj.active .pp-mobile-nav-primary-icon {
+    box-shadow:
+      0 4px 16px rgba(99, 102, 241, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   /* ── Compaction : les blocs pensés pour un grand écran deviennent denses ──
