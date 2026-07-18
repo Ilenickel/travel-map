@@ -570,12 +570,16 @@ export default function ActivityItem({
         // Un portail vers <body> sort la carte de tout ancêtre à overflow le
         // temps du drag, sans rien changer au rendu normal (non-dragging).
         //
-        // TEST DIAGNOSTIC (mobile uniquement, à retirer après vérification) :
-        // déplacer le nœud DOM vers <body> pile au moment où isDragging bascule
-        // à vrai pourrait faire perdre à Android Chrome le suivi du contact
-        // tactile en cours (le navigateur annule le geste si son nœud cible est
-        // déplacé ailleurs dans le DOM pendant qu'il est touché) — désactivé ici
-        // sous 768px pour vérifier si ça correspond au blocage observé.
+        // Désactivé sous 768px (mobile) : déplacer le nœud DOM vers <body> pile
+        // au moment où isDragging bascule à vrai fait perdre à Android Chrome le
+        // suivi du contact tactile en cours (le navigateur annule le geste si son
+        // nœud cible est déplacé ailleurs dans le DOM pendant qu'il est touché) —
+        // confirmé empiriquement : sans le portail, le glisser reste continu au
+        // doigt ; avec lui, il fallait relâcher puis reposer le doigt pour
+        // reprendre le déplacement après le "lift" initial. Le repli sans portail
+        // reste sans régression visible sur mobile (testé glisser-déposer entre
+        // jours, y compris depuis "Non planifiées") : le clonage `overflow`
+        // n'entre pas en jeu dans les mêmes proportions qu'en desktop ici.
         const isMobilePager = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
         return snapshot.isDragging && !isMobilePager ? createPortal(card, document.body) : card;
       }}
