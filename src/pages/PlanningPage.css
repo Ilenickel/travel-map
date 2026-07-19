@@ -4917,9 +4917,18 @@ button.pp-sidebar-toggle {
   display: flex;
   gap: 8px;
 }
+/* Le bouton garde sa taille pleine (jamais compressé en priorité) : c'est le
+   champ juste au-dessus (min-width:0) qui absorbe le manque de place. */
+.pp-invite-input-row .pp-btn { flex-shrink: 0; }
 
 .pp-invite-input {
   flex: 1;
+  /* min-width:0 : sans lui, un <input> garde une largeur minimale intrinsèque
+     (variable selon navigateur/OS, ~170-200px) que flex:1 seul ne peut pas
+     réduire — additionnée au bouton "Inviter" à côté, ça dépassait la largeur
+     de la popup sur mobile (bouton visiblement coupé, "Invi…") sans pouvoir
+     partager la ligne. Même correctif que .pp-city-start-date-row .pp-date-input. */
+  min-width: 0;
   background: var(--surface2);
   border: 1px solid var(--border-light);
   border-radius: 8px;
