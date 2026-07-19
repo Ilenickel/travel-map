@@ -182,8 +182,8 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
   };
 
   return (
-    <div className="pp-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="pp-modal">
+    <div className="pp-modal-overlay pp-share-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="pp-modal pp-share-modal">
         <div className="pp-modal-header">
           <h3 className="pp-modal-title">{t('share.title')}</h3>
           <button className="pp-icon-btn" onClick={onClose}>
@@ -204,39 +204,55 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
           {tab === 'members' && (
             <div className="pp-members-list">
               <div className="pp-member-row">
-                <Avatar profile={ownerProfile} />
-                <div className="pp-member-info">
-                  <span className="pp-member-name">{ownerProfile?.display_name || t('share.ownerFallback')}</span>
-                  <span className="pp-member-role pp-member-role--owner">{t('share.ownerRole')}</span>
+                <div className="pp-member-head">
+                  <Avatar profile={ownerProfile} />
+                  <div className="pp-member-info">
+                    <span className="pp-member-name-row">
+                      <span className="pp-member-name">{ownerProfile?.display_name || t('share.ownerFallback')}</span>
+                      {trip?.user_id === userId && <span className="pp-member-you">{t('share.youLabel')}</span>}
+                    </span>
+                    <span className="pp-member-role pp-member-role--owner">{t('share.ownerRole')}</span>
+                  </div>
                 </div>
-                {trip?.user_id === userId && <span className="pp-member-you">{t('share.youLabel')}</span>}
               </div>
 
               {members.map(m => (
                 <div key={m.id} className="pp-member-row">
-                  <Avatar profile={m.profiles} />
-                  <div className="pp-member-info">
-                    <span className="pp-member-name">{m.profiles?.display_name || t('share.travelerFallback')}</span>
-                    <span className="pp-member-role">{t('share.travelerRole')}</span>
+                  <div className="pp-member-head">
+                    <Avatar profile={m.profiles} />
+                    <div className="pp-member-info">
+                      <span className="pp-member-name-row">
+                        <span className="pp-member-name">{m.profiles?.display_name || t('share.travelerFallback')}</span>
+                        {m.user_id === userId && <span className="pp-member-you">{t('share.youLabel')}</span>}
+                      </span>
+                      <span className="pp-member-role">{t('share.travelerRole')}</span>
+                    </div>
                   </div>
-                  {m.user_id === userId && <span className="pp-member-you">{t('share.youLabel')}</span>}
-                  {isOwner && m.user_id !== userId && (
-                    <button
-                      className={`pp-btn pp-btn--ghost pp-btn--xs${kickConfirm === m.id ? ' pp-btn--danger' : ''}`}
-                      onClick={() => handleKick(m.id)}
-                      title={kickConfirm === m.id ? t('common:actions.confirm') : t('share.removeTitle')}
-                    >
-                      {kickConfirm === m.id ? t('common:actions.confirm') : t('share.removeButton')}
-                    </button>
-                  )}
-                  {!isOwner && m.user_id === userId && (
-                    <button
-                      className={`pp-btn pp-btn--ghost pp-btn--xs${leaveConfirm ? ' pp-btn--danger' : ''}`}
-                      onClick={handleLeave}
-                      title={leaveConfirm ? t('common:actions.confirm') : t('share.leaveThisTripTitle')}
-                    >
-                      {leaveConfirm ? t('common:actions.confirm') : t('tripCard.leaveTripButton')}
-                    </button>
+                  {/* Pied dédié, sous la tête (avatar+nom+rôle) plutôt que
+                      collé dedans : un bouton d'action mêlé à l'identité de la
+                      personne créait une rangée illisible dès que le nom
+                      n'était pas minuscule — voir .pp-member-row/-head/-foot. */}
+                  {((isOwner && m.user_id !== userId) || (!isOwner && m.user_id === userId)) && (
+                    <div className="pp-member-foot">
+                      {isOwner && m.user_id !== userId && (
+                        <button
+                          className={`pp-btn pp-btn--ghost pp-btn--xs${kickConfirm === m.id ? ' pp-btn--danger' : ''}`}
+                          onClick={() => handleKick(m.id)}
+                          title={kickConfirm === m.id ? t('common:actions.confirm') : t('share.removeTitle')}
+                        >
+                          {kickConfirm === m.id ? t('common:actions.confirm') : t('share.removeButton')}
+                        </button>
+                      )}
+                      {!isOwner && m.user_id === userId && (
+                        <button
+                          className={`pp-btn pp-btn--ghost pp-btn--xs${leaveConfirm ? ' pp-btn--danger' : ''}`}
+                          onClick={handleLeave}
+                          title={leaveConfirm ? t('common:actions.confirm') : t('share.leaveThisTripTitle')}
+                        >
+                          {leaveConfirm ? t('common:actions.confirm') : t('tripCard.leaveTripButton')}
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
               ))}
@@ -246,15 +262,19 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
                   <div className="pp-members-section-label">{t('share.pendingInvitesLabel')}</div>
                   {invites.map(inv => (
                     <div key={inv.id} className="pp-member-row pp-member-row--pending">
-                      <div className="pp-member-avatar pp-member-avatar--pending">✉️</div>
-                      <div className="pp-member-info">
-                        <span className="pp-member-name">{inv.invitee_email}</span>
-                        <span className="pp-member-role">{t('share.pendingResponseLabel')}</span>
+                      <div className="pp-member-head">
+                        <div className="pp-member-avatar pp-member-avatar--pending">✉️</div>
+                        <div className="pp-member-info">
+                          <span className="pp-member-name">{inv.invitee_email}</span>
+                          <span className="pp-member-role">{t('share.pendingResponseLabel')}</span>
+                        </div>
                       </div>
                       {isOwner && (
-                        <button className="pp-btn pp-btn--ghost pp-btn--xs" onClick={() => handleCancelInvite(inv.id)}>
-                          {t('common:actions.cancel')}
-                        </button>
+                        <div className="pp-member-foot">
+                          <button className="pp-btn pp-btn--ghost pp-btn--xs" onClick={() => handleCancelInvite(inv.id)}>
+                            {t('common:actions.cancel')}
+                          </button>
+                        </div>
                       )}
                     </div>
                   ))}

@@ -4739,6 +4739,13 @@ button.pp-sidebar-toggle {
 
 .pp-modal-body {
   flex: 1;
+  /* min-height:0 : sans lui, un flex item colonne garde par défaut une
+     hauteur minimale basée sur son CONTENU (min-height:auto), qui peut
+     l'empêcher de rétrécir sous cette taille — avec beaucoup de participants
+     (liste de membres, accordéon des dépenses…), .pp-modal (hauteur
+     plafonnée par max-height) grandirait avec le contenu au lieu que ce soit
+     CE panneau qui défile en interne. */
+  min-height: 0;
   overflow-y: auto;
   padding: 18px 22px 22px;
 }
@@ -4773,10 +4780,17 @@ button.pp-sidebar-toggle {
   margin: 10px 0 4px;
 }
 
+/* Carte membre en 2 niveaux (tête identité + pied action, voir .pp-member-head/
+   -foot) — jamais un bouton d'action mêlé à la même rangée que l'identité :
+   sur une rangée à plat, le bouton (rigide) volait de la place au nom dès
+   qu'il n'était pas minuscule, et le forcer à passer à la ligne avec
+   flex-wrap le laissait "flotter" seul, mal aligné, sous un grand vide. Le
+   pied est un vrai second bloc, aligné à droite, avec son propre espacement —
+   jamais un repli accidentel de la mise en page. */
 .pp-member-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
   padding: 10px 12px;
   border-radius: 10px;
   background: var(--surface2);
@@ -4784,6 +4798,19 @@ button.pp-sidebar-toggle {
 }
 
 .pp-member-row--pending { opacity: 0.75; }
+
+.pp-member-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pp-member-foot {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
 
 .pp-member-avatar {
   width: 36px;
@@ -4813,7 +4840,24 @@ button.pp-sidebar-toggle {
 }
 
 .pp-member-info {
-  flex: 1;
+  /* flex-basis 140px (pas 0) : garantit une largeur lisible au nom/rôle avant
+     que quoi que ce soit d'autre dans la rangée ne passe à la ligne — voir
+     .pp-member-row, flex-wrap. min-width EGAL à cette base (pas 0) : sinon
+     l'auto-shrink par défaut la ramènerait quand même vers 0 en priorité,
+     avant que le wrap ne s'active pour les autres enfants. */
+  flex: 1 1 140px;
+  min-width: 140px;
+}
+
+/* Nom + badge "Vous" côte à côte (pas à côté du bouton d'action, en bas de
+   rangée — un badge d'identité appartient au nom, pas à une action) : le
+   bouton ("Quitter le voyage"/"Retirer") reste seul enfant restant de
+   .pp-member-row après le nom/rôle, donc seul à passer sur sa propre ligne
+   si la rangée ne tient pas tout sur une (voir .pp-member-row, flex-wrap). */
+.pp-member-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   min-width: 0;
 }
 
@@ -4821,7 +4865,7 @@ button.pp-sidebar-toggle {
   font-size: 14px;
   font-weight: 600;
   color: var(--text);
-  display: block;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -5162,6 +5206,37 @@ button.pp-sidebar-toggle {
     height: auto;
     max-height: 80dvh;
   }
+
+  /* Partage : reste une vraie popup centrée, jamais la feuille bottom-sheet
+     plein-écran de la règle .pp-modal générique ci-dessus (poignée de
+     glissement, collée en bas, coins arrondis seulement en haut) — même
+     traitement que .pp-discard-confirm-modal plus bas dans ce fichier, pour
+     la même raison : un contenu qui n'a pas besoin de tout l'écran ne doit
+     pas en donner l'impression. L'onglet "Membres" peut lister plusieurs
+     personnes : max-height (pas de height fixe) laisse la popup grandir avec
+     le contenu réel jusqu'à ce plafond, où .pp-modal-body (flex:1, déjà en
+     place) prend le relais et défile — jamais plus qu'un vrai centré. */
+  /* Sélecteur à 2 classes (comme .pp-modal.pp-share-modal juste en dessous) :
+     .pp-modal-overlay seul seul gagnerait quand même face à .pp-share-overlay
+     seul (même spécificité, mais déclaré APRÈS, plus bas dans ce fichier —
+     voir .pp-modal-overlay { align-items: flex-end } juste après ce bloc) ;
+     2 classes gagne par spécificité, indépendamment de l'ordre. */
+  .pp-modal-overlay.pp-share-overlay {
+    align-items: center;
+    padding: 20px;
+  }
+  .pp-modal.pp-share-modal {
+    position: static;
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    max-height: 80vh;
+    border-radius: 20px;
+    border-bottom: 1px solid var(--border-light);
+    padding-top: 0;
+    animation: none;
+  }
+  .pp-share-modal::before { display: none; }
 
   /* Section "partage automatique" : compactée, la note explicative est un
      luxe de grand écran. */
