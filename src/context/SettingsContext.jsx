@@ -15,9 +15,9 @@ export const THEME_STORAGE_KEY = 'triply_theme';
 export const SUPPORTED_THEMES = ['dark', 'light'];
 
 function readInitialTheme() {
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return SUPPORTED_THEMES.includes(stored) ? stored : 'dark';
+  return SUPPORTED_THEMES.includes(stored) ? stored : 'light';
 }
 
 const SettingsContext = createContext(null);
