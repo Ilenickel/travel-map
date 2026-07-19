@@ -12,6 +12,7 @@ import MapPanel from './MapPanel';
 import TripShareModal from './TripShareModal';
 import TripPrintView from './TripPrintView';
 import TripDayModeView from './TripDayModeView';
+import TripExpensesPanel from './TripExpensesPanel';
 import { getHoveredActivity } from '../../lib/hoverTracker';
 import { downloadTripIcs } from '../../lib/exportTrip';
 import { shareTripAsTemplates } from '../../lib/shareTripTemplate';
@@ -73,7 +74,7 @@ export default function TripEditor({
     // les modifier depuis l'en-tête doit donc re-déclencher un re-partage.
     const signature = JSON.stringify({
       criteria: trip?.share_criteria || [],
-      cities: cities.map((c) => [c.id, c.name, c.planned_days, c.parent_city_id]),
+      cities: cities.map((c) => [c.id, c.name, c.parent_city_id]),
       activities: activities.map((a) => [a.city_id, a.name, a.description, a.visit_date, a.visit_time, a.category, a.place_lat, a.place_lng, a.place_address, a.position, a.duration_minutes]),
     });
     if (signature === autoShareSignatureRef.current) return;
@@ -136,6 +137,10 @@ export default function TripEditor({
     }
   }, [activities]);
   const [shareOpen, setShareOpen] = useState(false);
+  // Modal Dépenses (ordinateur uniquement — sur mobile la fonctionnalité vit
+  // dans sa propre page du pager, cf. plus bas). Même panneau (TripExpensesPanel)
+  // dans les deux cas : seul l'habillage change.
+  const [expensesOpen, setExpensesOpen] = useState(false);
   const [dayModeActive, setDayModeActive] = useState(false);
   // Bouton "Jour J" : vivait dans l'en-tête du voyage (TripEditorHeader), migré
   // dans l'en-tête de la colonne Jours (voir pp-content-panel-header ci-dessous)
@@ -150,10 +155,13 @@ export default function TripEditor({
   // ─── Pager mobile (voir @media max-width:768px) ─────────────────────────────
   // Sur téléphone, les panneaux deviennent des pages plein écran que l'on fait
   // défiler horizontalement au doigt (ou via la barre de navigation basse),
-  // comme les écrans d'une appli : [Villes] [Groupes] [Jours] [Jour J] [Carte,
-  // si ouverte]. La piste (.pp-pager-track) est translatée en CSS via la
+  // comme les écrans d'une appli : [Villes] [Jours] [Jour J] [Carte, si
+  // ouverte] [Dépenses]. La piste (.pp-pager-track) est translatée en CSS via la
   // variable --pp-page ; sur ordinateur elle est en display:contents et tout
   // est inerte (Jour J y est géré séparément par dayModeActive, voir plus bas).
+  // Page d'arrivée : Villes (0) — c'est par là qu'on planifie (ajouter des
+  // villes, importer un planning, dater une ville). Sans effet sur ordinateur
+  // (la piste est en display:contents, tout est visible).
   const [page, setPage] = useState(0);
   const splitRef = useRef(null);
   // true pendant un drag @hello-pangea/dnd : le geste appartient alors au drag
@@ -161,13 +169,23 @@ export default function TripEditor({
   const rbdDraggingRef = useRef(false);
 
   const pagerActive = () => window.matchMedia('(max-width: 768px)').matches;
-  // Pages du pager mobile, dans l'ordre : 0 Villes, 1 Groupes, 2 Jours, 3 Jour J,
-  // 4 Carte (si ouverte). Jour J y est toujours présente (contrairement à la
-  // Carte, qui n'existe comme page que si mapOpen) : sur ordinateur elle n'a pas
-  // besoin d'un bouton dédié, mais sur mobile c'est justement l'usage le plus
-  // fréquent (consultation pendant le voyage) — elle doit être aussi facile
-  // d'accès que les autres onglets, pas cachée dans l'en-tête repliable.
-  const JOURJ_PAGE = 3;
+  // Après un import de suggestion(s) (voir DestinationBlock/TripSuggestionsModal),
+  // les villes viennent d'apparaître/changer : sur mobile, on ramène sur la
+  // page Villes (0) pour les montrer directement, plutôt que de laisser
+  // l'utilisateur sur la page où il a lancé l'import (souvent déjà Villes,
+  // mais pas garanti). Sans effet sur ordinateur, où tout est déjà visible.
+  const VILLES_PAGE = 0;
+  const goToCitiesPageIfMobile = () => { if (pagerActive()) setPage(VILLES_PAGE); };
+  // Pages du pager mobile, dans l'ordre : 0 Villes, 1 Jours, 2 Jour J, 3 Carte
+  // (si ouverte), puis Dépenses en dernière page (index 3 ou 4 selon la carte —
+  // toujours pageCount - 1). Le panneau Groupes n'existe pas sur mobile (masqué
+  // en CSS, .pp-groups-panel) : la gestion fine des groupes reste un usage
+  // ordinateur, l'assignation à un groupe passe par les menus des activités.
+  // Jour J est toujours présente (contrairement à la Carte, qui n'existe comme
+  // page que si mapOpen) : sur ordinateur elle n'a pas besoin d'un bouton
+  // dédié, mais sur mobile c'est justement l'usage le plus fréquent
+  // (consultation pendant le voyage) — c'est le bouton central mis en avant.
+  const JOURJ_PAGE = 2;
   const showMapPage = mapOpen && !mapOverlay;
   const pageCount = showMapPage ? 5 : 4;
   const pageCountRef = useRef(pageCount);
@@ -179,7 +197,7 @@ export default function TripEditor({
   mapOpenRef.current = mapOpen;
 
   // Si la page carte disparaît (carte fermée ou passée en superposition) alors
-  // qu'on était dessus, on retombe sur la dernière page existante (Jours).
+  // qu'on était dessus, on retombe sur la dernière page existante (Dépenses).
   useEffect(() => {
     if (page > pageCount - 1) setPage(pageCount - 1);
   }, [page, pageCount]);
@@ -481,6 +499,7 @@ export default function TripEditor({
         onUpdate={onUpdateTrip}
         shareOpen={shareOpen}
         onToggleShare={() => setShareOpen(s => !s)}
+        onOpenExpenses={() => setExpensesOpen(true)}
         onExportPdf={() => window.print()}
         onExportIcal={() => downloadTripIcs({ trip, cities, activities, lodgings })}
         lodgings={lodgings}
@@ -561,6 +580,7 @@ export default function TripEditor({
                     onUpdateLodging={onUpdateLodging}
                     onRemoveLodging={onRemoveLodging}
                     onReloadTripData={onReloadTripData}
+                    onAfterImport={goToCitiesPageIfMobile}
                   />
                 ))
               )}
@@ -721,40 +741,71 @@ export default function TripEditor({
               </div>
             </>
           )}
+
+          {/* ── Page Dépenses (mobile uniquement — masquée en CSS sur ordinateur,
+              où la fonctionnalité arrivera plus tard via un bouton dédié).
+              Toujours la DERNIÈRE page du pager (après la carte quand elle est
+              ouverte). `active` ne devient vrai que quand la page est affichée :
+              le panneau ne charge rien sur ordinateur ni tant qu'on n'y va pas. */}
+          <div className="pp-expenses-page">
+            <TripExpensesPanel
+              tripId={tripId}
+              trip={trip}
+              userId={user?.id}
+              active={pagerActive() && page === pageCount - 1}
+            />
+          </div>
           </div>{/* /pp-pager-track */}
         </div>
       </DragDropContext>
       )}
 
       {/* Barre de navigation basse, mobile uniquement (masquée sur ordinateur) :
-          les mêmes pages que le balayage, façon appli. Jour J y a son propre
-          onglet (toujours accessible, pas caché dans l'en-tête repliable comme
-          sur ordinateur) puisque c'est l'usage mobile le plus fréquent. L'onglet
-          Carte ouvre la carte à la demande — inutile de passer par l'en-tête. */}
+          les mêmes pages que le balayage, façon appli. Jour J est le bouton
+          central circulaire mis en avant (même langage que le bouton Planifier
+          de la barre de l'écran principal, cf. .app-nav-btn--primary) puisque
+          c'est l'usage mobile le plus fréquent. Villes et Jours à gauche,
+          Carte (ouvre la carte à la demande) et Dépenses à droite. Chaque
+          onglet porte sa cible et son état actif : les index de pages bougent
+          avec la carte (Dépenses est toujours la dernière), un simple
+          `page === i` ne suffit plus. */}
       <nav className="pp-mobile-nav" aria-label={t('editor.navLabel')}>
         {[
-          { icon: '🌍', label: t('editor.navCities') },
-          { icon: '🗂️', label: t('editor.navGroups') },
-          { icon: '📅', label: t('editor.navDays') },
-          { icon: '🧭', label: t('header.dayModeButton') },
-          { icon: '🗺️', label: t('header.mapButton') },
-        ].map(({ icon, label }, i) => (
+          { icon: '🌍', label: t('editor.navCities'), go: () => setPage(0), isActive: page === 0 },
+          { icon: '📅', label: t('editor.navDays'), go: () => setPage(1), isActive: page === 1 },
+          { primary: true, label: t('header.dayModeButton'), go: () => setPage(JOURJ_PAGE), isActive: page === JOURJ_PAGE },
+          { icon: '🗺️', label: t('header.mapButton'), go: openMap, isActive: showMapPage && page === JOURJ_PAGE + 1 },
+          { icon: '🧾', label: t('expenses.navLabel'), go: () => setPage(pageCount - 1), isActive: page === pageCount - 1 },
+        ].map(({ icon, label, primary, go, isActive }) => (
           <button
             key={label}
             type="button"
-            className={`pp-mobile-nav-btn${page === i ? ' active' : ''}`}
+            className={`pp-mobile-nav-btn${primary ? ' pp-mobile-nav-btn--dayj' : ''}${isActive ? ' active' : ''}`}
             onClick={() => {
-              if (i === JOURJ_PAGE + 1) { openMap(); return; }
               // Filet de sécurité : si dayModeActive était resté vrai (ouvert sur
               // ordinateur juste avant un redimensionnement/rotation vers une
               // largeur mobile), on en sort pour retrouver un pager cohérent.
               if (dayModeActive) setDayModeActive(false);
-              setPage(i);
+              go();
             }}
             aria-label={label}
-            aria-current={page === i}
+            aria-current={isActive}
           >
-            <span className="pp-mobile-nav-icon" aria-hidden="true">{icon}</span>
+            {primary ? (
+              // Vraie boussole (aiguille en losange, icône "explore" classique) :
+              // le losange, symétrique par rotation de 180°, reste net à cette
+              // taille — contrairement à la boussole à aiguille fine tentée
+              // précédemment. Distincte de l'engrenage de paramétrage (bouton
+              // séparé, forme différente).
+              <span className="pp-mobile-nav-primary-icon" aria-hidden="true">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                  <path d="M14.19 14.19 6 18l3.81-8.19L18 6l-3.81 8.19z"/>
+                </svg>
+              </span>
+            ) : (
+              <span className="pp-mobile-nav-icon" aria-hidden="true">{icon}</span>
+            )}
             {label}
           </button>
         ))}
@@ -768,6 +819,25 @@ export default function TripEditor({
           onClose={() => setShareOpen(false)}
           onLeaveTrip={onLeaveTrip}
         />
+      )}
+
+      {/* Modal Dépenses (ordinateur uniquement) : même panneau que la page
+          mobile, dans l'habillage pp-modal standard — centré sur ordinateur,
+          bottom sheet sous 768px (cohérent avec les autres modales de l'écran). */}
+      {expensesOpen && (
+        <div className="pp-modal-overlay" onClick={e => e.target === e.currentTarget && setExpensesOpen(false)}>
+          <div className="pp-modal pp-expenses-modal">
+            <div className="pp-modal-header">
+              <h3 className="pp-modal-title">{t('expenses.title')}</h3>
+              <button className="pp-icon-btn" onClick={() => setExpensesOpen(false)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+            <div className="pp-modal-body">
+              <TripExpensesPanel tripId={tripId} trip={trip} userId={user?.id} active={expensesOpen} />
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Invisible à l'écran, révélé uniquement à l'impression (voir .pp-print-view) */}

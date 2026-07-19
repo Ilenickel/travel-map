@@ -2985,7 +2985,10 @@ html, body, #root { height: 100%; }
     background: none;
     border: none;
     border-radius: 12px;
-    padding: 5px 0 3px;
+    /* padding-bottom porté à 8px (au lieu de 3px) : le point d'onglet actif
+       (::after, cf. plus bas) collait quasiment au libellé — trop peu d'air
+       entre le texte et le point pour respirer visuellement. */
+    padding: 5px 0 8px;
     font-size: 9px;
     font-weight: 600;
     font-family: inherit;
@@ -3014,7 +3017,7 @@ html, body, #root { height: 100%; }
   .app-nav-btn.active::after {
     content: "";
     position: absolute;
-    bottom: -1px;
+    bottom: 2px;
     left: 50%;
     transform: translateX(-50%);
     width: 5px;

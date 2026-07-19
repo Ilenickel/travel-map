@@ -11,12 +11,13 @@ import LodgingSection from './LodgingSection';
 import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
 import CityMenu from './CityMenu';
+import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 import { sumCosts, formatPrice } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
 
 export default function CityBlock({
   city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [],
-  countryCode, countryName,
+  countryCode, countryName, startExpanded = false, siblingPendingBaseCitiesCount = 0,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
   onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
@@ -29,7 +30,14 @@ export default function CityBlock({
   const [addingLodging, setAddingLodging] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
-  const [collapsed, setCollapsed] = useState(false);
+  // Repliée d'entrée sur mobile (même seuil que le pager, cf. TripEditor) : la
+  // page Villes y liste tout le voyage sur un petit écran — dépliées, deux ou
+  // trois villes suffisent à noyer l'écran. Sur ordinateur, dépliée comme
+  // toujours. Exception : une ville qu'on vient d'ajouter (startExpanded, posé
+  // par DestinationBlock) s'ouvre directement — on l'ajoute pour y travailler.
+  // Évalué une seule fois au montage : un redimensionnement en cours de route
+  // ne replie pas une ville qu'on vient d'ouvrir.
+  const [collapsed, setCollapsed] = useState(() => !startExpanded && window.matchMedia('(max-width: 768px)').matches);
   // Sélection multiple (lieux uniquement, pas les trajets) : cocher plusieurs
   // cartes pour les assigner à un groupe, les déplacer sur un jour, ou les
   // supprimer en une fois — cf. SelectionActionBar.
@@ -48,6 +56,10 @@ export default function CityBlock({
   // comme pour les compteurs "X lieux" — sinon les chiffres ne se recouperaient
   // plus entre l'en-tête de la ville et ceux des excursions.
   const cityCost = sumCosts(cityActivities);
+  // Planning importé "à dater" : activités qui gardent leur jour relatif
+  // (pending_day_index) tant qu'aucune date de début n'a été choisie pour
+  // CETTE ville — voir icône calendrier + halo ci-dessous et CityMenu.
+  const hasPendingContent = !city.start_date && cityActivities.some(a => a.pending_day_index != null);
 
   const saveRename = () => {
     const trimmed = cityName.trim();
@@ -170,6 +182,22 @@ export default function CityBlock({
             )}
 
             <div className="pp-city-actions">
+              {/* Planning importé "à dater" : les activités de la ville gardent
+                  leur jour relatif (pending_day_index) tant qu'aucune date de
+                  début n'est choisie POUR CETTE VILLE — l'icône calendrier
+                  ressort alors de son menu, avec un halo clignotant, jusqu'à ce
+                  que la date soit posée (l'ancrage fait le reste, voir
+                  anchor_city_pending_days). */}
+              {hasPendingContent && (
+                <CityPlanningFieldsButton
+                  city={city}
+                  tripStartDate={tripStartDate}
+                  onUpdate={onRename}
+                  highlight
+                  hasPendingContent
+                  siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
+                />
+              )}
               {/* Menu unique remplaçant les 4 icônes d'action toujours visibles
                   (sélection, renommer, jours & nuits, supprimer) — voir CityMenu.jsx */}
               <CityMenu
@@ -181,6 +209,19 @@ export default function CityBlock({
                 onRename={() => setEditing(true)}
                 onUpdatePlanning={onRename}
                 onDelete={() => onRemove(city.id)}
+                hasPendingContent={hasPendingContent}
+                siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
+                // Une fois la ville datée ET ses activités réellement placées
+                // sur le calendrier (plus rien en attente à ancrer), changer
+                // cette date ne déplace plus rien : les activités gardent
+                // leur propre visit_date, seul le champ lui-même changerait,
+                // créant un décalage trompeur entre "date affichée" et
+                // "activités réellement là". Le champ est alors grisé —
+                // jamais tant que la ville est vide (une date posée à
+                // l'avance reste utile pour un futur import) ou encore en
+                // attente d'ancrage (voir le halo ci-dessus, mutuellement
+                // exclusif avec cet état).
+                dateLocked={!!city.start_date && cityActivities.some(a => a.visit_date != null)}
               />
             </div>
           </div>

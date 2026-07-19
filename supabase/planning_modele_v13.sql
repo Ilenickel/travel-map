@@ -1,0 +1,33 @@
+-- ════════════════════════════════════════════════════════════════
+-- Planning-modèle communautaire — v13
+-- À exécuter dans l'éditeur SQL de Supabase, après planning_modele_v12.sql
+--
+-- SUPPRESSION DE trip_cities.planned_days : ce champ ("jours prévus")
+-- n'était qu'une durée affichée, saisie à la main, jamais garantie de
+-- correspondre au contenu réellement planifié (rien n'empêchait de dater des
+-- activités en dehors de sa plage start_date/planned_days — le badge "quelle
+-- ville aujourd'hui" pouvait alors se tromper silencieusement, et les
+-- excursions n'avaient de toute façon jamais ce champ, donc n'apparaissaient
+-- jamais dans ce badge).
+--
+-- Tout ce qui en dépendait est désormais dérivé directement des activités
+-- réellement datées (ou, avant ancrage, de leur pending_day_index) :
+--   - le badge "quelle ville aujourd'hui" (citiesForDay, DayView.jsx) —
+--     gère nativement les combos (2 villes le même jour) et les excursions ;
+--   - l'éligibilité au partage d'une ville comme modèle (handleShare,
+--     api/trip-templates.js) — une ville avec au moins une activité datée
+--     est partageable, un champ séparé n'a plus de sens ;
+--   - le décalage des villes suivantes lors du remplacement d'un planning
+--     par un autre de durée différente (applyReplacedCityDuration) ;
+--   - le point d'ancrage anti-chevauchement des imports (latestEndDate,
+--     pendingBaseOffset dans handleImportTrip) — dérivés du MAX(visit_date)
+--     réel des activités du voyage, plus précis qu'avant (une activité datée
+--     en dehors de l'ancienne plage planned_days était mal comptée).
+--
+-- trip_cities.start_date est CONSERVÉ : c'est le point d'ancrage réel utilisé
+-- par anchor_city_pending_days (planning_modele_v10.sql), rien à voir avec
+-- l'affichage du badge — une ville garde sa date de début même sans "jours
+-- prévus".
+-- ════════════════════════════════════════════════════════════════
+
+ALTER TABLE trip_cities DROP COLUMN IF EXISTS planned_days;

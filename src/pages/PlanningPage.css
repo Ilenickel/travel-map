@@ -430,6 +430,39 @@ button.pp-sidebar-toggle {
 
 .pp-date-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 
+/* Halo "date de début à remplir" — voir TripEditorHeader,
+   needsStartDateHighlight (villes en attente d'ancrage après un import
+   complet sans dates). Visible sur ordinateur en permanence (le champ de
+   date est toujours affiché) ; sur mobile seulement panneau déplié
+   (.pp-editor-header--collapsed masque .pp-trip-dates-card) — replié, seul
+   le halo de l'engrenage (.pp-header-collapse-btn.pp-needs-highlight, plus
+   bas, même keyframe) est visible : le halo "revient" dessus simplement
+   parce que le champ derrière disparaît, sans code JS dédié à cette bascule.
+   Schéma en 3 arrêts (0%→70%→100%, comme .pp-pulse-halo pour l'icône
+   calendrier des villes) plutôt qu'un aller-retour 0%/50%/100% : avec deux
+   arrêts seulement, la couleur ET l'étalement variaient ENSEMBLE entre 50%
+   et 100% dans des sens opposés (l'anneau rétrécissait tout en redevenant
+   opaque), un mouvement de "rebond inversé" peu naturel. Ici, l'anneau
+   grandit en s'estompant (0%→70%) puis se réinitialise instantanément,
+   invisible (70%→100%, même valeur transparente) — jamais de retour en
+   arrière visible.
+   --accent2 + color-mix plutôt que --accent/--accent-glow : --accent-glow a
+   une opacité fixe (~0.16-0.18) pensée pour un liseré de focus discret, bien
+   trop faible pour un halo censé attirer l'œil — sur ordinateur (fond clair
+   autour du champ) comme en mode nuit (--accent, #6366f1, trop proche de la
+   teinte du fond pour qu'un halo à cette couleur se détache) il passait
+   presque inaperçu. --accent2 est plus clair (#818cf8 en mode nuit) et reste
+   bien visible en mode jour (redéfini par [data-theme="light"]). */
+@keyframes pp-halo-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent2) 65%, transparent); }
+  70% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent2) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent2) 0%, transparent); }
+}
+.pp-date-group.pp-needs-highlight .pp-date-input {
+  border-color: var(--accent2);
+  animation: pp-halo-pulse 1.8s ease-out infinite;
+}
+
 .pp-date-sep {
   font-size: 18px;
   color: var(--text-muted);
@@ -490,6 +523,14 @@ button.pp-sidebar-toggle {
      perdent leur min-height auto) et ça clipperait les dropdowns de recherche
      qui doivent s'afficher par-dessus. Les coins sont arrondis "à la main" sur
      le header (premier enfant) plutôt que via un clip global. */
+  /* Container query (comme .pp-city plus bas) : le panneau villes peut être
+     étroit (jusqu'à 260px, cf. .pp-city-panel min-width) alors que le
+     viewport reste large — dès que les panneaux carte et/ou groupes sont
+     ouverts à côté sur un écran laptop, pas seulement sur mobile. Sert au
+     sélecteur de mode (.pp-dest-mode, plus bas), dont les 2 cartes côte à
+     côte débordaient sur ces largeurs intermédiaires qu'un @media basé sur
+     le viewport ne peut pas détecter. */
+  container-type: inline-size;
 }
 
 .pp-destination-header {
@@ -2017,12 +2058,61 @@ button.pp-sidebar-toggle {
   box-sizing: border-box;
 }
 
+/* Bouton "Confirmer cette date" (CityPlanningFieldsButton) : la date de début
+   suggérée (départ du voyage) reste "à moitié" affichée mais pas enregistrée
+   tant qu'on n'a rien changé — re-sélectionner la même date dans le
+   calendrier natif ne déclenche aucun événement. Ce bouton confirme
+   explicitement la date déjà visible, sans avoir à passer par un autre jour. */
+.pp-city-start-date-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+/* Le champ date natif n'a pas de largeur fixée : il prend sa largeur
+   intrinsèque (variable selon navigateur/OS — le widget mobile Android/iOS
+   est nettement plus large qu'un input desktop), qui additionnée à celle du
+   bouton "Confirmer" ci-dessous pouvait dépasser les ~220px de contenu
+   disponibles dans le popover (250px de large, moins son padding) : sans
+   pouvoir rétrécir (min-width:auto par défaut sur un enfant flex), le champ
+   poussait le bouton hors du popover au lieu de partager la ligne avec lui.
+   flex + min-width:0 le rend compressible comme les autres champs de l'app. */
+.pp-city-start-date-row .pp-date-input {
+  flex: 1;
+  min-width: 0;
+}
+.pp-city-start-date-confirm { white-space: nowrap; flex-shrink: 0; }
+/* Rien n'est enregistré tant que ce bouton n'est pas cliqué (voir
+   CityPlanningFieldsButton) : désactivé tant que le brouillon local ne
+   diffère pas encore de la valeur réellement enregistrée. */
+.pp-city-start-date-confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.pp-city-start-date-confirm:disabled:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-dim);
+  border-color: var(--border);
+}
+
 .pp-new-city-options-hint {
   font-size: 11.5px;
   color: var(--text-muted);
   opacity: 0.85;
   margin-top: 8px;
 }
+/* Avertissement "confirmer cette date coupe le placement groupé de l'import"
+   (CityPlanningFieldsButton, wouldBreakGroupImport) — remplace le hint neutre
+   ci-dessus dans ce cas précis, même habillage ambre que .pp-fulltrip-notice
+   (avertissement, pas bloquant : l'utilisateur peut toujours confirmer). */
+.pp-new-city-options-hint--warning {
+  padding: 8px 10px;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 10px;
+  color: #fbbf24;
+  opacity: 1;
+}
+[data-theme="light"] .pp-new-city-options-hint--warning { color: #92400e; }
 .pp-new-city-options-actions {
   margin-top: 10px;
 }
@@ -2045,10 +2135,23 @@ button.pp-sidebar-toggle {
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   z-index: 120;
   padding: 12px 14px;
-  min-width: 200px;
+  /* Largeur FIXE (pas juste min-width) : le contenu (champ date natif +
+     bouton "Confirmer" sur une même ligne, jamais de retour à la ligne — voir
+     .pp-city-start-date-confirm, white-space:nowrap) a besoin d'environ
+     230-240px selon le navigateur pour tenir sans déborder de la carte. Une
+     largeur figée et connue est aussi ce sur quoi se base le calcul JS de
+     repositionnement (CityPlanningFieldsButton, POPOVER_WIDTH) : avec un
+     simple min-width, le popover pouvait s'élargir au-delà de ce que JS avait
+     anticipé et déborder quand même. */
+  width: 250px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* Filet de sécurité si même la position clampée en JS (voir
+     CityPlanningFieldsButton, popoverOffsetLeft) ne suffit pas sur un écran
+     vraiment très étroit. */
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
 }
 
 /* Carte "Partage communautaire" de l'en-tête voyage — pastille dégradée +
@@ -2935,6 +3038,16 @@ button.pp-sidebar-toggle {
   .pp-city-cost { display: none; }
 }
 
+/* Sous ~260px de large DE LA CARTE, même sans le chip coût, le badge "N lieux"
+   (flex-shrink: 0, largeur fixe) continue de river de la place pendant que le
+   nom de la ville, seul élément flexible restant, tombe presque à 0px et se
+   tronque sévèrement (ex. "Shanghai" réduit à "Shang…" sur un petit
+   téléphone) — secondaire face au nom, il cède la place à son tour (les lieux
+   restent comptables en dépliant la ville). */
+@container (max-width: 260px) {
+  .pp-city-count { display: none; }
+}
+
 /* ─── Activity view layout fix ─── */
 .pp-activity-view {
   display: flex;
@@ -3482,6 +3595,49 @@ button.pp-sidebar-toggle {
   opacity: 0.85;
 }
 
+/* Icône calendrier d'une ville dont le planning importé attend encore sa date
+   de début (voir CityBlock/CityPlanningFieldsButton, prop highlight) : halo
+   clignotant pour attirer l'œil jusqu'à ce que la date soit choisie. Elle vit
+   dans .pp-city-actions (masqué à opacity:0 hors survol sur PC, voir plus
+   haut) : sans cette dérogation, un utilisateur qui ne survole jamais cette
+   ville précise ne verrait jamais l'alerte — ici, contrairement aux autres
+   actions de ce conteneur, elle doit être visible D'EMBLÉE, pas seulement au
+   survol. Seule CETTE icône est concernée, pas le reste de .pp-city-actions. */
+.pp-city-actions:has(.pp-icon-btn--pulse) { opacity: 1; }
+/* hover:hover uniquement : sur tactile, il n'y a pas de survol pour révéler
+   quoi que ce soit — .pp-city-actions reste visible en permanence via la
+   règle @media (hover:none) plus bas (préexistante), et ces icônes (dont le
+   menu "⋯") doivent rester visibles avec elle, pas masquées par défaut comme
+   ici. Sans cette garde, le menu "⋯" de la ville disparaissait purement et
+   simplement sur mobile (aucun survol possible pour le faire réapparaître). */
+@media (hover: hover) {
+  .pp-city-actions .pp-icon-btn:not(.pp-icon-btn--pulse) { opacity: 0; transition: opacity 0.15s; }
+  .pp-city:hover .pp-city-actions .pp-icon-btn:not(.pp-icon-btn--pulse) { opacity: 1; }
+}
+
+.pp-icon-btn--pulse {
+  color: var(--accent);
+  animation: pp-pulse-halo 1.6s ease-out infinite;
+}
+@keyframes pp-pulse-halo {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  70% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+
+/* Jour ajouté automatiquement parce qu'un voyage importé débordait des dates
+   du voyage (trips.import_added_days, voir DayView/handleImportTrip). */
+.pp-day-imported-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 20px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
 .pp-day-count {
   font-size: 11px;
   font-weight: 600;
@@ -3929,6 +4085,9 @@ button.pp-sidebar-toggle {
    séparé (voir TripEditor, dayModeActive), donc cette page reste toujours
    masquée ici. Redéfinie en page à part entière sous @media (max-width:768px). */
 .pp-daymode-page { display: none; }
+/* Page Dépenses : mobile uniquement, comme la page Jour J ci-dessus — sur
+   ordinateur la fonctionnalité arrivera plus tard via un bouton dédié. */
+.pp-expenses-page { display: none; }
 
 /* Panneau carte */
 .pp-map-panel {
@@ -3946,6 +4105,11 @@ button.pp-sidebar-toggle {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  /* Les panes Leaflet montent à z-index 400-1000 et passaient au-dessus du
+     voile des modales (.pp-modal-overlay, z-index 200) : la carte restait
+     nette par-dessus le fond flouté. Isolée, ces z-index restent internes
+     au panneau — même parade que sur mobile (barre de navigation). */
+  isolation: isolate;
 }
 
 /* Carte en superposition plein écran (plutôt qu'à côté) : la carte est optionnelle,
@@ -4812,6 +4976,26 @@ button.pp-sidebar-toggle {
     padding: 7px 12px;
   }
 
+  /* Déplié (engrenage "paramétrage du voyage"), le contenu — dates, stats,
+     partage communautaire, notes — peut dépasser la hauteur disponible sur un
+     petit écran. Sans son propre scroll ici, .pp-editor (overflow:hidden, but
+     de shrink correct du pager en dessous) le rognait purement et simplement :
+     rien ne défilait, le bas du panneau restait inaccessible tant qu'on
+     n'avait pas re-cliqué sur l'engrenage pour le replier.
+     flex-shrink:0 EXPLICITEMENT annulé : la règle de base (ligne ~344, valable
+     desktop ET mobile) le fixe à 0 pour que l'en-tête ordinateur garde
+     toujours sa taille naturelle — sur mobile déplié, ce même flex-shrink:0
+     empêchait l'élément de rétrécir en dessous de sa hauteur de contenu,
+     rendant overflow-y:auto totalement inopérant (rien à faire défiler tant
+     que la boîte elle-même n'est jamais plus petite que son contenu) :
+     confirmé par un test réel (Playwright, scrollHeight===clientHeight tant
+     que flex-shrink valait encore 0 ici). */
+  .pp-editor-header:not(.pp-editor-header--collapsed) {
+    flex-shrink: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .pp-trip-title-row {
     flex-wrap: wrap;
     gap: 8px;
@@ -4866,16 +5050,15 @@ button.pp-sidebar-toggle {
   .pp-sidebar--collapsed .pp-sidebar-header { border-bottom: none; }
 
   /* Le menu "⋯" d'une carte voyage s'ouvre dans le bandeau horizontal, qui rogne
-     tout ce qui dépasse (overflow-y: hidden obligatoire pour son défilement) : en
-     position fixed avec offsets auto, il garde sa position naturelle (sous le
-     bouton) mais échappe au rognage du conteneur. Marge négative pour le déporter
-     à gauche du bouton, comme le faisait right: 0 en absolu. */
+     tout ce qui dépasse (overflow-y: hidden obligatoire pour son défilement) :
+     en position fixed, il échappe au rognage du conteneur. top/left sont
+     calculés et posés en inline style par TripCard.jsx (mesure réelle du
+     bouton, bornée au viewport) — un fixed sans eux se rabattrait sur la
+     "position statique" de l'élément, un calcul fragile selon les navigateurs
+     qui pouvait faire déborder le menu hors de l'écran (voyage proche du bord
+     droit du bandeau). */
   .pp-trip-card-dropdown {
     position: fixed;
-    top: auto;
-    right: auto;
-    margin-top: 4px;
-    margin-left: -148px;
   }
 
   /* ── En-tête repliable ──
@@ -4901,6 +5084,22 @@ button.pp-sidebar-toggle {
   /* Le chevron porte déjà le margin-left:auto qui pousse la paire à droite :
      le "⋯" se colle juste après lui (gap de la ligne de titre). */
   .pp-header-menu-btn { margin-left: 0; }
+  /* Engrenage "paramétrage du voyage" ouvert : marqué à l'accent, sinon rien
+     n'indiquerait que le panneau déplié vient de lui. */
+  .pp-header-collapse-btn.active {
+    color: var(--accent2);
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+  }
+  /* Halo "date de début à remplir" — même keyframe que
+     .pp-date-group.pp-needs-highlight plus haut — seulement visible tant que
+     le panneau est replié : une fois ouvert, .pp-trip-dates-card redevient
+     visible et porte le halo à sa place, cet engrenage n'a alors plus besoin
+     d'attirer l'œil. */
+  .pp-header-collapse-btn.pp-needs-highlight {
+    border-color: var(--accent2);
+    animation: pp-halo-pulse 1.8s ease-out infinite;
+  }
 
   .pp-editor-header--collapsed .pp-trip-dates-card,
   .pp-editor-header--collapsed .pp-trip-stats,
@@ -4954,6 +5153,15 @@ button.pp-sidebar-toggle {
     color: #fff;
   }
   .pp-header-menu-item--share svg { color: #fff; }
+  /* La feuille du menu épouse ses 4 lignes au lieu des 95dvh de la règle
+     .pp-modal générique plus bas — un menu d'actions n'a aucune raison
+     d'occuper presque tout l'écran avec du vide en dessous. Sélecteur à 2
+     classes pour gagner par spécificité, pas par ordre de déclaration
+     (même précaution que .pp-modal.pp-discard-confirm-modal). */
+  .pp-modal.pp-header-menu-sheet {
+    height: auto;
+    max-height: 80dvh;
+  }
 
   /* Section "partage automatique" : compactée, la note explicative est un
      luxe de grand écran. */
@@ -5069,7 +5277,8 @@ button.pp-sidebar-toggle {
   .pp-city-panel,
   .pp-content-panel,
   .pp-daymode-page,
-  .pp-map-panel {
+  .pp-map-panel,
+  .pp-expenses-page {
     flex: 0 0 100%;
     width: 100% !important;
     max-width: none;
@@ -5100,6 +5309,13 @@ button.pp-sidebar-toggle {
      hors mobile, voir la règle de base). Padding bas identique aux autres pages
      pour dégager la barre de navigation fixe. */
   .pp-daymode-page {
+    display: block;
+    overflow-y: auto;
+    padding-bottom: 72px;
+  }
+
+  /* Dernière page : Dépenses (mêmes raisons que la page Jour J ci-dessus). */
+  .pp-expenses-page {
     display: block;
     overflow-y: auto;
     padding-bottom: 72px;
@@ -5159,7 +5375,9 @@ button.pp-sidebar-toggle {
     background: none;
     border: none;
     border-radius: 12px;
-    padding: 5px 0 3px;
+    /* padding-bottom porté à 8px (au lieu de 3px), même raison que la barre
+       principale (App.css) : le point d'onglet actif collait au libellé. */
+    padding: 5px 0 8px;
     font-size: 9px;
     font-weight: 600;
     font-family: inherit;
@@ -5190,7 +5408,7 @@ button.pp-sidebar-toggle {
   .pp-mobile-nav-btn.active::after {
     content: "";
     position: absolute;
-    bottom: -1px;
+    bottom: 2px;
     left: 50%;
     transform: translateX(-50%);
     width: 5px;
@@ -5199,24 +5417,20 @@ button.pp-sidebar-toggle {
     background: var(--accent2);
   }
 
-  /* ── Jour J : bouton principal circulaire, même langage que le bouton
-     Planifier de la barre de l'écran principal (.app-nav-btn--primary).
-     Le bouton garde un créneau fixe de 64px dans la rangée ; le cercle est en
-     position:absolute centré dessus pour ne pas gonfler la hauteur de la
-     barre — il déborde en haut et en bas, avec une bordure épaisse couleur
-     barre qui fait l'effet « berceau ». Le libellé est masqué (font-size: 0,
-     le cercle le recouvrirait) ; l'aria-label du bouton le porte toujours.
-     Pour que le cercle tombe au centre exact de la barre malgré la répartition
-     asymétrique voulue (Villes + Jours à gauche, Carte seule à droite), Carte
-     (dernier bouton) prend flex:2 : 1f + 1f + 64px + 2f ⇒ le créneau Jour J
-     est pile au milieu. */
+  /* ── Jour J : bouton principal circulaire, MÊME TECHNIQUE que le bouton
+     Planifier de la barre de l'écran principal (.app-nav-btn--primary /
+     .app-nav-primary-icon, cf. App.css) — v3, alignée sur ce modèle après
+     deux tentatives : le cercle est positionné en absolute relativement à
+     TOUTE LA BARRE (.pp-mobile-nav, position:fixed = plus proche ancêtre
+     positionné dès que ce bouton repasse en position:static), pas au bouton
+     qui le porte. left/top 50% + translate(-50%,-50%) le centre donc au
+     milieu exact du PAVÉ de la barre (largeur ET hauteur), en débordant
+     clairement en haut et en bas comme le bouton de référence — jamais
+     collé au bord haut comme la version précédente (margin-top négatif). */
   .pp-mobile-nav-btn--dayj {
-    flex: 0 0 64px;
+    position: static;
     font-size: 0;
-    padding: 0;
-    align-self: stretch;
   }
-  .pp-mobile-nav-btn:last-child { flex: 2; }
   .pp-mobile-nav-primary-icon {
     position: absolute;
     left: 50%;
@@ -5226,8 +5440,8 @@ button.pp-sidebar-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 58px;
-    height: 58px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: #fff;
@@ -5249,6 +5463,30 @@ button.pp-sidebar-toggle {
       0 4px 16px rgba(99, 102, 241, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
+
+  /* ── Noms longs (activités, trajets, hébergements) ── Le flex-wrap des
+     rangées de titre (règles desktop) faisait sauter un nom long SOUS la
+     rangée d'icônes (case à cocher, point, icône, "Forbidden City" orphelin
+     en dessous). Sur mobile le nom reste accroché à son icône et se replie
+     sur plusieurs lignes dans sa propre colonne. Les trajets sont des
+     ActivityItem (category transport) : couverts par les mêmes règles. */
+  .pp-activity-main {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+  .pp-activity-name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .pp-lodging-title-row {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+  .pp-lodging-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .pp-lodging-link { flex-shrink: 0; }
 
   /* ── Compaction : les blocs pensés pour un grand écran deviennent denses ──
      Boutons d'ajout (pays / ville / lieu / trajet / excursion) en petits
@@ -5416,6 +5654,16 @@ button.pp-sidebar-toggle {
   /* Bandeau "Mes voyages" : cartes sur une ligne (titre seul, les dates sont
      dans l'en-tête du voyage ouvert), hauteur totale ~2 fois moindre. */
   .pp-sidebar { max-height: 150px; }
+  /* État "aucun voyage" (icône + titre + sous-titre + bouton) : pensé pour
+     un panneau desktop qui prend toute la hauteur, il ne tenait pas dans les
+     150px ci-dessus — le bouton "Nouveau voyage" (sidebar.createButton) se
+     retrouvait rogné, réduit à un simple liseré de couleur. Masqué sur
+     mobile : EmptyEditor (pp-empty-editor), affiché juste en dessous dans
+     le contenu principal quand aucun voyage n'est sélectionné, propose déjà
+     exactement la même action sans être contraint par cette hauteur — pas de
+     bouton coupé, pas de doublon. Le bouton "+ Nouveau" de l'en-tête du
+     bandeau (toujours visible, lui) reste aussi une voie d'accès directe. */
+  .pp-sidebar-empty { display: none; }
   .pp-sidebar-title { font-size: 14px; }
   .pp-sidebar-title-icon { width: 22px; height: 22px; }
   /* Scrollbar du bandeau horizontal masquée : sur mobile elle s'affichait en
@@ -7141,6 +7389,21 @@ button.pp-sidebar-toggle {
   background: radial-gradient(circle, var(--accent) 0 45%, transparent 50%);
 }
 
+/* Panneau villes étroit (container query sur .pp-destination, pas un @media
+   viewport — voir plus haut) : les 2 cartes côte à côte n'ont plus la place
+   pour leur icône + titre + description, et débordaient du panneau (visible
+   même sur un écran laptop dès que la carte et/ou les groupes sont ouverts à
+   côté). Même traitement que la règle mobile (@media max-width:768px) —
+   dupliqué plutôt que fusionné : les deux conditions (largeur du panneau vs
+   largeur du viewport) sont indépendantes et peuvent se déclencher seules. */
+@container (max-width: 420px) {
+  .pp-dest-mode { grid-template-columns: 1fr; gap: 6px; }
+  .pp-dest-mode-card { padding: 8px 10px; gap: 8px; }
+  .pp-dest-mode-title { font-size: 12.5px; }
+  .pp-dest-mode-desc { font-size: 10.5px; line-height: 1.3; }
+  .pp-dest-mode-icon { width: 26px; height: 26px; font-size: 13px; }
+}
+
 /* ═══════════════ Suggestions de voyage entier (TripFullSuggestions) ═══
    Langage visuel volontairement sobre : surfaces neutres (var(--surface2/3)),
    UNE seule couleur d'accent (var(--accent)) réservée à l'action principale
@@ -7345,6 +7608,12 @@ button.pp-sidebar-toggle {
   margin: 0; padding: 9px 13px;
   background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
   border-radius: 10px; color: #fbbf24; font-size: 12.5px;
+}
+/* Variante rouge — perte de données (remplacement de la planification déjà
+   faite par un import complet), plus grave qu'un simple avertissement ambre. */
+.pp-fulltrip-notice--danger {
+  background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #f87171;
+  font-weight: 600;
 }
 
 /* Note "itinéraire proposé par Triply" (isEditorial) : PAS un avertissement
@@ -7629,6 +7898,7 @@ button.pp-sidebar-toggle {
 [data-theme="light"] .pp-criteria-indicator--met { color: #15803d; }
 [data-theme="light"] .pp-fulltrip-mustcity-badge { color: #15803d; }
 [data-theme="light"] .pp-fulltrip-notice { color: #92400e; }
+[data-theme="light"] .pp-fulltrip-notice--danger { color: #b91c1c; }
 
 /* Badges ambre (popularité, excursions) : le texte #fbbf24 pensé pour un fond
    sombre devient quasi illisible sur le papier clair (jaune pâle sur crème,
@@ -8137,6 +8407,14 @@ button.pp-sidebar-toggle {
 .pp-trip-suggestions-choose-row { align-items: center; }
 .pp-trip-suggestions-replace-notice { flex: 1; min-width: 0; margin: 0; text-align: left; }
 
+/* Sur mobile, la note et le bouton côte à côte se compressaient mutuellement
+   (note en colonne étroite de 3-4 mots par ligne) : on empile — note en
+   pleine largeur au-dessus, bouton en dessous. Aucun changement sur PC. */
+@media (max-width: 768px) {
+  .pp-trip-suggestions-choose-row { flex-direction: column; align-items: stretch; }
+  .pp-trip-suggestions-replace-notice { flex: none; }
+}
+
 /* ─── Colonne Jours — mini en-tête pour le bouton Jour J (migré depuis
    l'en-tête du voyage) ── */
 .pp-content-panel-header {
@@ -8304,3 +8582,442 @@ button.pp-sidebar-toggle {
     justify-content: center;
   }
 }
+
+/* ═══ Dépenses partagées ("qui a payé quoi") — TripExpensesPanel ═══
+   Styles hors media query : la page qui les héberge est mobile uniquement
+   (.pp-expenses-page), le modal desktop (.pp-expenses-modal) réutilise le
+   même panneau tel quel. Tout passe par les variables de thème — rien à
+   surcharger pour le mode clair. */
+.pp-expenses {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+  max-width: 560px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Bilan : gros total + bandeau d'avatars ── */
+.pp-expenses-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  background:
+    radial-gradient(120% 140% at 50% -20%, rgba(99, 102, 241, 0.16), transparent 60%),
+    var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px 18px 18px;
+}
+.pp-expenses-hero-icon {
+  font-size: 26px;
+  margin-bottom: 2px;
+}
+.pp-expenses-hero-total {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
+}
+.pp-expenses-hero-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  max-width: 320px;
+  line-height: 1.45;
+  margin-bottom: 6px;
+}
+
+/* Barre de répartition : un segment par participant, largeur proportionnelle
+   à ce qu'il a payé — la couleur inline (colorOf) est reprise sur le point de
+   la légende juste en dessous et sur l'anneau de sa carte plus bas, même
+   repère visuel du haut en bas de l'écran. */
+.pp-expenses-bar {
+  display: flex;
+  width: 100%;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 10px;
+  background: var(--surface);
+}
+.pp-expenses-bar span {
+  height: 100%;
+  min-width: 3px;
+  transition: width 0.3s ease;
+}
+.pp-expenses-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.pp-expenses-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px 4px 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+}
+.pp-expenses-legend-item:hover { border-color: var(--border-light); }
+.pp-expenses-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pp-expenses-legend-pct {
+  color: var(--text-muted);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+/* Nom tronqué sur une ligne (jamais de retour à la ligne dans une pastille
+   de hauteur fixe) : un nom long resterait lisible en un coup d'œil plutôt
+   que de casser la forme de la pastille. */
+.pp-expenses-legend-name {
+  min-width: 0;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pp-expenses-stats-row {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+.pp-expenses-stats-row strong { color: var(--text); font-weight: 800; }
+.pp-expenses-stat-sep { opacity: 0.5; margin: 0 4px; }
+
+/* ── Accordéon des participants ── */
+.pp-expense-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* Liseré gauche à la couleur du participant (--p-color, posée en inline style
+   par le composant — même couleur que son segment de barre/légende) : repère
+   visuel immédiat, la carte n'est plus une simple boîte grise uniforme. */
+.pp-expense-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--p-color, var(--border));
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.18s;
+}
+.pp-expense-card--open { border-color: var(--border-light); border-left-color: var(--p-color, var(--border-light)); }
+.pp-expense-card--former { opacity: 0.68; }
+
+/* En-tête : nom (peut passer à la ligne, le lire en entier prime) + badge
+   "Vous" dessous à gauche ; montant + nombre de dépenses dessous à droite.
+   La part en % n'est pas répétée ici : elle vit dans le bilan en haut. */
+.pp-expense-card-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+/* Anneau autour de l'avatar à la couleur du participant : identifie qui est
+   qui d'un coup d'œil, cohérent avec la barre de répartition du bilan. */
+.pp-expense-card-avatar-ring {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid var(--p-color, var(--border));
+}
+.pp-expense-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+.pp-expense-avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+}
+.pp-expense-card-who {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pp-expense-card-name {
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+/* Le nom s'affiche EN ENTIER : retour à la ligne autorisé plutôt qu'une
+   troncature "…" — voir qui a payé est l'information principale de la carte. */
+.pp-expense-card-name-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.pp-expense-you-tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent2);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-glow);
+  border-radius: 20px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+  /* Sous le nom (enfant d'une colonne) : ne pas s'étirer sur toute la largeur
+     de la carte, la pastille garde la taille de son texte. */
+  align-self: flex-start;
+}
+.pp-expense-card-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pp-expense-card-totals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.pp-expense-card-total {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.pp-expense-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 10.5px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 1px 8px;
+}
+.pp-expense-delta--plus {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+}
+.pp-expense-delta--minus {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.12);
+}
+.pp-expense-card-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.18s;
+}
+.pp-expense-card--open .pp-expense-card-chevron { transform: rotate(180deg); }
+
+.pp-expense-card-body {
+  padding: 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: ppExpenseBodyIn 0.16s ease-out;
+}
+@keyframes ppExpenseBodyIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Lignes de dépenses d'un participant ── */
+.pp-expense-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* Ligne de dépense : plus de bulle-icône décorative (générique, n'apportait
+   rien) — hiérarchie typographique directe (libellé en gras, date discrète
+   en dessous, montant fort à droite) + fin séparateur entre lignes, plus
+   lisible qu'un fond au survol seul sur une longue liste. */
+.pp-expense-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 4px;
+  border-top: 1px solid var(--border);
+}
+.pp-expense-row:first-child { border-top: none; }
+.pp-expense-row:hover .pp-expense-row-del { opacity: 1; }
+.pp-expense-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pp-expense-row-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.pp-expense-row-date {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+.pp-expense-row-amount {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.pp-expense-row-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+.pp-expense-row-del:hover {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.12);
+  opacity: 1;
+}
+
+/* "Voir N dépenses de plus" : n'apparaît que si la liste dépasse PAGE_SIZE
+   (voir TripExpensesPanel) — un participant avec des dizaines d'entrées ne
+   les déroule pas toutes d'un coup. */
+.pp-expense-showmore-btn {
+  align-self: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.pp-expense-showmore-btn:hover { background: var(--surface3); color: var(--text); }
+
+/* ── Ajout d'une somme ── Le bouton déclencheur réutilise le style standard
+   .pp-add-item-btn (icône en médaillon, fond accent doux) — cohérent avec
+   les autres boutons d'ajout de l'app plutôt qu'un habillage dédié. */
+.pp-expense-add-btn { width: auto; margin: 0; align-self: flex-start; }
+
+.pp-expense-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px;
+}
+.pp-expense-add-amount-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 4px 10px;
+}
+.pp-expense-add-amount-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.pp-expense-add-currency {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.pp-expense-add-amount {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  font-family: inherit;
+}
+.pp-expense-add-label {
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 9px;
+  padding: 8px 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+}
+.pp-expense-add-label:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.pp-expense-add-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.pp-expenses-empty {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  padding: 0 4px;
+  text-align: center;
+}
+
+/* ── Modal desktop (bouton "Dépenses" de l'en-tête) : réutilise exactement
+   le même panneau, dans l'habillage pp-modal standard (centré sur ordinateur,
+   bottom sheet en dessous de 768px comme les autres modales). ── */
+.pp-expenses-modal .pp-modal-body { padding: 0; }
+.pp-expenses-modal .pp-expenses { padding: 20px; max-width: none; }

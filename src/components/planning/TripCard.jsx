@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate, tripDurationDays } from '../../lib/planningUtils';
+
+const DROPDOWN_WIDTH = 160; // doit rester cohérent avec min-width de .pp-trip-card-dropdown (PlanningPage.css)
 
 const TRIP_COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#06b6d4'];
 
@@ -14,6 +16,25 @@ export default function TripCard({ trip, selected, userId, onSelect, onDelete, o
   const { t } = useTranslation();
   const [confirmDel, setConfirmDel] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  // Sur mobile, le bandeau des voyages défile horizontalement avec
+  // overflow-y: hidden — le menu doit donc être en position:fixed pour
+  // échapper à ce rognage (voir PlanningPage.css). Un fixed sans left/top
+  // explicites se rabat sur la "position statique" de l'élément (calcul
+  // fragile selon les navigateurs et le contexte de défilement), ce qui le
+  // faisait parfois déborder hors de l'écran (ex. voyage proche du bord
+  // droit). On calcule donc sa position nous-mêmes à l'ouverture, à partir
+  // du bouton "⋯" réel, et on la borne pour rester dans le viewport.
+  const menuBtnRef = useRef(null);
+  const [menuPos, setMenuPos] = useState(null);
+  useLayoutEffect(() => {
+    if (!showMenu || !window.matchMedia('(max-width: 768px)').matches || !menuBtnRef.current) {
+      setMenuPos(null);
+      return;
+    }
+    const rect = menuBtnRef.current.getBoundingClientRect();
+    const left = Math.min(rect.right - DROPDOWN_WIDTH, window.innerWidth - DROPDOWN_WIDTH - 8);
+    setMenuPos({ top: rect.bottom + 4, left: Math.max(8, left) });
+  }, [showMenu]);
   const duration = tripDurationDays(trip.start_date, trip.end_date);
   const color = getTripColor(trip.id);
   const isOwner = trip.user_id === userId;
@@ -61,6 +82,7 @@ export default function TripCard({ trip, selected, userId, onSelect, onDelete, o
       </div>
       <div className="pp-trip-card-menu-wrap" onClick={e => e.stopPropagation()}>
         <button
+          ref={menuBtnRef}
           className="pp-icon-btn pp-trip-card-menu-btn"
           onClick={() => setShowMenu(m => !m)}
           title={t('tripCard.optionsTitle')}
@@ -72,7 +94,10 @@ export default function TripCard({ trip, selected, userId, onSelect, onDelete, o
         {showMenu && (
           <>
             <div className="pp-backdrop-overlay" onClick={() => setShowMenu(false)} />
-            <div className="pp-trip-card-dropdown">
+            <div
+              className="pp-trip-card-dropdown"
+              style={menuPos ? { top: menuPos.top, left: menuPos.left, right: 'auto', marginLeft: 0 } : undefined}
+            >
               <button className="pp-dropdown-item" onClick={handleDuplicate}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>

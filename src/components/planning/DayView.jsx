@@ -466,6 +466,8 @@ export default function DayView({
             key={day}
             day={day}
             dayIdx={dayIdx}
+            importedDay={(trip.import_added_days || []).includes(day)}
+            dayActs={dayActs}
             totalDay={totalDay}
             doneDay={doneDay}
             nightLodgings={nightLodgings}
@@ -493,23 +495,23 @@ export default function DayView({
   );
 }
 
-// Confort visuel : quelle(s) ville(s) correspondent à ce jour, déduit de
-// trip_cities.start_date + planned_days (planning-modèle, voir
-// supabase/planning_modele_v2.sql) — plusieurs villes possibles le même jour
-// (jour de transition entre deux villes, ou excursion à la journée).
-// Silencieux (tableau vide) tant que ces champs ne sont pas renseignés.
-function citiesForDay(cities, day) {
-  return (cities || [])
-    .filter(c => c.start_date && c.planned_days)
-    .filter(c => {
-      const end = addDaysToDateStr(c.start_date, c.planned_days - 1);
-      return day >= c.start_date && day <= end;
-    })
-    .map(c => c.name);
+// Confort visuel : quelle(s) ville(s) correspondent à ce jour, déduit
+// directement des activités RÉELLEMENT datées ce jour-là (ville de base ET
+// excursions) — plus de champ "jours prévus" séparé à tenir synchronisé avec
+// le contenu réel. Gère nativement les combos (ex. matinée à Tokyo, après-midi
+// à Kyoto le même jour de transition : les deux badges apparaissent) et une
+// activité isolée placée loin du reste du séjour dans cette ville (elle
+// n'avait pas de badge avant si elle tombait hors de la plage
+// start_date/planned_days déclarée — elle en a un maintenant, à sa vraie
+// place). `dayActs` : activités DÉJÀ filtrées sur ce jour par l'appelant
+// (DayView), toutes catégories confondues (place ou trajet, peu importe).
+function citiesForDay(cities, dayActs) {
+  const cityIdsToday = new Set((dayActs || []).map(a => a.city_id));
+  return (cities || []).filter(c => cityIdsToday.has(c.id)).map(c => c.name);
 }
 
 function DaySection({
-  day, dayIdx, totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
+  day, dayIdx, importedDay = false, dayActs = [], totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere,
 }) {
@@ -519,7 +521,7 @@ function DaySection({
     cityId => onAssignCityToDay(cityId, day, null),
   );
 
-  const dayCityLabels = citiesForDay(cities, day);
+  const dayCityLabels = citiesForDay(cities, dayActs);
 
   const isSlotHighlighted = (slotIdx) => {
     if (!resize) return false;
@@ -541,6 +543,14 @@ function DaySection({
           {dayCityLabels.length > 0 && (
             <span className="pp-day-cities-badge" title={t('dayView.cityForDayTitle')}>
               📍 {dayCityLabels.join(' · ')}
+            </span>
+          )}
+          {/* Jour ajouté automatiquement parce qu'un voyage importé était plus
+              long que les dates du voyage (voir handleImportTrip) : signalé,
+              sinon l'extension passerait pour une erreur de saisie de dates. */}
+          {importedDay && (
+            <span className="pp-day-imported-badge" title={t('dayView.importedDayTitle')}>
+              📥 {t('dayView.importedDayBadge')}
             </span>
           )}
           {totalDay > 0 && (

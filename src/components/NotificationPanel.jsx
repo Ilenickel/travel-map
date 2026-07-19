@@ -23,7 +23,7 @@ function FlagImage({ country, code }) {
 }
 
 export default function NotificationPanel({ notifications, onClose, onOpenCountry, markRead, markAllRead, deleteOne, deleteAll, deleteMany, hideOne }) {
-  useModalHistory(onClose);
+  const { consumeEntry } = useModalHistory(onClose);
   const { t } = useTranslation('app');
   const [profiles, setProfiles] = useState({});
   const [tooltip, setTooltip] = useState(null); // { id, x, y }
@@ -88,12 +88,18 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
       return;
     }
     await deleteOne(notif.id);
+    // consumeEntry() AVANT onClose()/navigate() : onClose() démonte ce
+    // panneau de façon asynchrone, et son cleanup normal (useModalHistory)
+    // ferait un history.back() différé d'un micro-tick — un simple
+    // replace:true ne suffit PAS à s'en protéger (replace modifie l'entrée
+    // que ce back() cible ensuite, ANNULANT silencieusement la navigation en
+    // revenant à la page d'AVANT l'ouverture du panneau, jamais à la page de
+    // planning visée — bug constaté : l'invitation était bien acceptée mais
+    // l'utilisateur n'atterrissait jamais sur le voyage). consumeEntry()
+    // retire l'entrée de la pile pour de bon, sans history.back() : plus rien
+    // pour annuler le navigate() qui suit.
+    consumeEntry();
     onClose();
-    // replace: true — onClose() démonte ce panneau de façon asynchrone
-    // (useModalHistory), et son cleanup fait un history.back() s'il n'est pas
-    // encore parti d'un popstate. Un navigate() normal (pushState) créerait
-    // une entrée que ce back() annulerait aussitôt, renvoyant l'utilisateur
-    // sur l'état "panneau ouvert" au lieu de la page de planning visée.
     navigate(tripId ? `/planifier?trip=${tripId}` : '/planifier', { replace: true });
   }
 

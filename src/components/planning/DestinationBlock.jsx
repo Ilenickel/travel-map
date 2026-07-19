@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
+import { namesMatch } from '../../lib/planningUtils';
 import CityBlock from './CityBlock';
 import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
-import NewCityOptionsForm from './NewCityOptionsForm';
 import TripSuggestionsModal from './TripSuggestionsModal';
 
-export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData }) {
+export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
   const { t } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
-  const [pendingCityName, setPendingCityName] = useState(null);
+  // Ville déjà présente dans cette destination et qu'on tente de rajouter :
+  // on n'insère pas silencieusement un doublon, on demande confirmation
+  // (dialogue léger, même charte que pp-discard-confirm-modal ci-dessous).
+  const [pendingDuplicateName, setPendingDuplicateName] = useState(null);
   // Sélecteur "Manuel / Suggestions de voyages" (même style qu'avant la
   // fenêtre unifiée) : la vue manuelle (liste des villes) reste TOUJOURS
   // affichée en dessous quel que soit le mode choisi — "Suggestions de
@@ -36,12 +39,26 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
     .filter(c => c.destination_id === dest.id)
     .sort((a, b) => a.position - b.position);
 
+  // Villes déjà présentes au premier rendu de ce bloc : une ville qui apparaît
+  // APRÈS vient d'être ajoutée dans cette session — son CityBlock s'ouvre
+  // déplié (startExpanded), y compris sur mobile où le défaut est replié.
+  const initialCityIdsRef = useRef(null);
+  if (initialCityIdsRef.current === null) {
+    initialCityIdsRef.current = new Set(destCities.map(c => c.id));
+  }
+
   // Villes de base (étapes du voyage) vs excursions à la journée rattachées
   const baseCities = destCities.filter(c => !c.parent_city_id);
   const daytripsByParent = {};
   destCities.filter(c => c.parent_city_id).forEach(dt => {
     (daytripsByParent[dt.parent_city_id] ||= []).push(dt);
   });
+  // Nombre de villes de base de CETTE destination encore "en attente" d'une
+  // date (pending_day_offset, import complet pas encore ancré — voir
+  // handleImportTrip). Sert à CityBlock/CityPlanningFieldsButton : dater UNE
+  // seule ville pendant que d'autres attendent encore casse le placement
+  // groupé (voir le prop siblingPendingBaseCitiesCount transmis plus bas).
+  const pendingBaseCitiesCount = baseCities.filter(c => c.pending_day_offset != null).length;
 
   // Les trajets ne sont pas des lieux (section séparée) : exclus du compteur, comme
   // pour le total du voyage et le compteur par ville.
@@ -51,16 +68,26 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
 
   const flag = COUNTRIES[dest.country_code]?.emoji || '🌍';
 
+  // Création directe, comme pour une excursion (voir CityBlock, addingDaytrip) :
+  // l'étape intermédiaire "jours prévus + date de début" (NewCityOptionsForm)
+  // a disparu avec le champ "jours prévus" lui-même — la durée réelle d'une
+  // ville se déduit maintenant de ses activités datées, plus d'une métadonnée
+  // à saisir à la création, avant même d'avoir le moindre contenu.
   const handleCityAdd = (name) => {
+    if (baseCities.some((c) => namesMatch(c.name, name))) {
+      setPendingDuplicateName(name);
+      return;
+    }
+    onAddCity(tripId, dest.id, name);
     setAddingCity(false);
-    setPendingCityName(name);
   };
 
-  const handleConfirmCityOptions = async ({ plannedDays, startDate }) => {
-    const city = await onAddCity(tripId, dest.id, pendingCityName);
-    if (city && plannedDays) onRenameCity(city.id, { planned_days: plannedDays, start_date: startDate });
-    setPendingCityName(null);
+  const confirmAddDuplicate = () => {
+    onAddCity(tripId, dest.id, pendingDuplicateName);
+    setPendingDuplicateName(null);
+    setAddingCity(false);
   };
+  const cancelAddDuplicate = () => setPendingDuplicateName(null);
 
   return (
     <div className="pp-destination">
@@ -144,16 +171,20 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           initialTab={suggestionsInitialTab}
           // Résolution de la ville à l'import (3d) : choisir un planning pour
           // une ville pas encore dans le voyage doit d'abord la CRÉER — même
-          // fonction que handleConfirmCityOptions ci-dessus, qui renvoie la
-          // ville créée.
+          // fonction que handleCityAdd ci-dessus, qui renvoie la ville créée.
           onAddCity={onAddCity}
           // Sert uniquement à la note "sera importé à dater" : même critère
           // que l'ancre d'import côté serveur (date de départ du voyage OU au
-          // moins une ville datée quelque part dans le voyage) — voir
-          // handleImportTrip dans api/trip-templates.js.
-          hasAnyDates={!!tripStartDate || cities.some((c) => c.start_date && c.planned_days)}
+          // moins une activité déjà datée quelque part dans le voyage) — voir
+          // handleImportTrip dans api/trip-templates.js, qui dérive désormais
+          // son point d'ancrage du contenu réel plutôt que d'un champ "jours
+          // prévus" séparé.
+          hasAnyDates={!!tripStartDate || activities.some((a) => a.visit_date)}
           onClose={closeSuggestions}
-          onImported={() => { closeSuggestions(); onReloadTripData?.(); }}
+          // Sur mobile, les villes importées viennent d'apparaître/changer :
+          // on ramène sur la page Villes pour les montrer directement (voir
+          // TripEditor, goToCitiesPageIfMobile) — sans effet sur ordinateur.
+          onImported={() => { closeSuggestions(); onReloadTripData?.(); onAfterImport?.(); }}
         />
       )}
 
@@ -175,9 +206,17 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
                   tripId={tripId}
                   countryCode={dest.country_code}
                   countryName={dest.country_name}
+                  startExpanded={!initialCityIdsRef.current.has(city.id)}
                   index={idx}
                   tripStartDate={tripStartDate}
                   tripEndDate={tripEndDate}
+                  // Cette ville elle-même comptée si elle est pending (voir
+                  // pendingBaseCitiesCount plus haut) : CityBlock ne s'en sert
+                  // que combiné à SES PROPRES activités en attente, donc peu
+                  // importe si le compte inclut la ville elle-même ou non —
+                  // ce qui compte est qu'il reste au moins UNE AUTRE ville en
+                  // attente pour que l'avertissement ait un sens.
+                  siblingPendingBaseCitiesCount={pendingBaseCitiesCount}
                   daytrips={daytripsByParent[city.id] || []}
                   onRemove={onRemoveCity}
                   onRename={onRenameCity}
@@ -202,14 +241,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           )}
         </Droppable>
 
-        {pendingCityName ? (
-          <NewCityOptionsForm
-            cityName={pendingCityName}
-            tripStartDate={tripStartDate}
-            onConfirm={handleConfirmCityOptions}
-            onCancel={() => setPendingCityName(null)}
-          />
-        ) : addingCity ? (
+        {addingCity ? (
           <div className="pp-add-city-wrap">
             <CitySearchInput
               onSelect={handleCityAdd}
@@ -228,6 +260,24 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
             </svg>
             {t('destination.addCityButton')}
           </button>
+        )}
+
+        {pendingDuplicateName && (
+          <div className="pp-modal-overlay pp-discard-confirm-overlay" onClick={(e) => e.target === e.currentTarget && cancelAddDuplicate()}>
+            <div className="pp-modal pp-discard-confirm-modal">
+              <p className="pp-discard-confirm-text">
+                {t('city.duplicateConfirmText', { city: pendingDuplicateName })}
+              </p>
+              <div className="pp-modal-actions">
+                <button type="button" className="pp-btn pp-btn--ghost pp-btn--sm" onClick={cancelAddDuplicate}>
+                  {t('common:actions.cancel')}
+                </button>
+                <button type="button" className="pp-btn pp-btn--primary pp-btn--sm" onClick={confirmAddDuplicate}>
+                  {t('city.duplicateConfirmButton')}
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

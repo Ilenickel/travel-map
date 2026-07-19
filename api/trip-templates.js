@@ -3,8 +3,8 @@
 // UN SEUL fichier serverless (au lieu de 3) pour rester sous la limite de 12
 // fonctions du plan Hobby de Vercel — dispatché sur `body.action`.
 //
-// Un modèle par ville de base éligible (celle avec planned_days renseigné et
-// au moins une activité) : copie figée et anonymisée, jamais un lien live
+// Un modèle par ville de base éligible (celle avec au moins une activité
+// DATÉE, voir shareCity) : copie figée et anonymisée, jamais un lien live
 // vers le voyage source — dates réelles, coût, notes, membres et
 // hébergements ne sont jamais copiés, seuls les jours relatifs (day_index)
 // et les activités/lieux le sont.
@@ -49,6 +49,53 @@ function addDays(dateStr, n) {
   return d.toISOString().slice(0, 10);
 }
 
+// Durée réellement occupée par un ensemble d'activités d'UNE ville — dérivée
+// du contenu, jamais d'un champ "jours prévus" séparé (trip_cities.planned_days
+// a été retiré, voir planning_modele_v13.sql) : l'écart calendaire réel entre
+// la première et la dernière activité DATÉE (comme pour handleShare, même
+// calcul), ou à défaut le plus grand jour relatif parmi les activités encore
+// EN ATTENTE (pending_day_index, base 1 — sa valeur EST directement le nombre
+// de jours). null si la ville n'a aucune activité (datée ou en attente) :
+// aucune durée "précédente" à comparer, donc rien à décaler.
+export function contentSpanDays(activities) {
+  if (!activities?.length) return null;
+  const dates = activities.map((a) => a.visit_date).filter(Boolean);
+  if (dates.length) {
+    const sorted = [...dates].sort();
+    return daysBetween(sorted[0], sorted[sorted.length - 1]) + 1;
+  }
+  const indices = activities.map((a) => a.pending_day_index).filter((v) => v != null);
+  if (indices.length) return Math.max(...indices);
+  return null;
+}
+
+// Numérotation des jours d'une ville de base pour le partage (handleShare) :
+// day_index reflète l'écart calendaire réel depuis le premier jour, MAIS
+// seulement pour les jours réellement occupés — par la ville elle-même
+// (`ownDates`), OU par une de ses excursions (`excursionDates`, filtrées à
+// partir du 1er jour de la ville : une excursion antérieure au séjour est un
+// cas limite déjà géré ailleurs via clampedOffset, pas ici). Un jour qui
+// n'est occupé par PERSONNE est compacté (sinon il gonflerait artificiellement
+// la durée partagée et laisserait un trou dans la suggestion — ex. jours 1,
+// 2, 4 remplis, jour 3 totalement vide : la ville s'affichait pourtant
+// "4 jours"). Un jour occupé uniquement par une excursion, lui, reste bien
+// préservé tel quel : c'est la raison d'être originale de ce calcul
+// non-compacté — sans lui, l'import replacerait les jours de la ville en
+// comblant le trou, et l'excursion atterrirait sur une date déjà prise par le
+// jour suivant. Pure et exportée séparément pour être testable directement.
+export function computeCompactDayIndex(ownDates, excursionDates = []) {
+  const firstDate = ownDates[0];
+  const lastDate = ownDates[ownDates.length - 1];
+  const relevantDates = [...new Set([
+    ...ownDates,
+    ...excursionDates.filter((d) => d >= firstDate),
+  ])].sort();
+  const compactRank = Object.fromEntries(relevantDates.map((d, i) => [d, i + 1]));
+  const totalDays = compactRank[lastDate];
+  const dayIndexByDate = Object.fromEntries(ownDates.map((d) => [d, compactRank[d]]));
+  return { compactRank, totalDays, dayIndexByDate };
+}
+
 // Fenêtre "Voir plus" sur une liste déjà triée : pure et exportée
 // séparément (pas de Supabase, pas d'I/O) pour être testable directement,
 // sans avoir à simuler toute la chaîne de requêtes de handleSuggestTrip.
@@ -84,12 +131,17 @@ async function handleShare(admin, user, body, res) {
     .eq('trip_id', tripId);
   const destById = Object.fromEntries((destinations || []).map((d) => [d.id, d]));
 
+  // Toutes les villes de base sont candidates : shareCity (plus bas) exclut
+  // déjà celles sans activité (no_activities) ou sans AUCUNE activité datée
+  // (no_dated_activities) — plus besoin d'un filtre d'entrée séparé sur un
+  // champ "jours prévus" (trip_cities.planned_days, retiré — voir
+  // planning_modele_v13.sql) : une ville avec du contenu réellement daté est
+  // partageable, point.
   const { data: baseCities } = await admin
     .from('trip_cities')
-    .select('id, destination_id, name, planned_days')
+    .select('id, destination_id, name')
     .eq('trip_id', tripId)
-    .is('parent_city_id', null)
-    .not('planned_days', 'is', null);
+    .is('parent_city_id', null);
 
   const { data: daytripCities } = await admin
     .from('trip_cities')
@@ -100,6 +152,23 @@ async function handleShare(admin, user, body, res) {
   const sharedCities = [];
   const skippedCities = [];
 
+  // Dates occupées par les excursions de chaque ville de base, gatherées AVANT
+  // de partager les villes elles-mêmes : nécessaires pour que shareCity (plus
+  // bas) sache quels jours "vides" côté ville de base sont en réalité occupés
+  // par une excursion (à préserver) et lesquels ne sont occupés par PERSONNE
+  // (à compacter) — voir le calcul de day_index ci-dessous.
+  const daytripIds = (daytripCities || []).map((d) => d.id);
+  const { data: daytripDatedActs } = daytripIds.length
+    ? await admin.from('trip_activities').select('city_id, visit_date').in('city_id', daytripIds).not('visit_date', 'is', null)
+    : { data: [] };
+  const excursionDatesByParentId = {};
+  for (const d of daytripCities || []) {
+    const dates = (daytripDatedActs || []).filter((a) => a.city_id === d.id).map((a) => a.visit_date);
+    if (!dates.length) continue;
+    const set = (excursionDatesByParentId[d.parent_city_id] ||= new Set());
+    dates.forEach((date) => set.add(date));
+  }
+
   // Partage le contenu d'une ville (base ou excursion) : géocodage, upsert du
   // modèle, remplacement atomique des jours/activités (RPC
   // replace_template_content, voir supabase/planning_modele_v6.sql — évite la
@@ -109,7 +178,10 @@ async function handleShare(admin, user, body, res) {
   // nom est souvent un monument/site (ex. "Grande Muraille"), pas une ville
   // administrative, et le filtre `type=city` de Geoapify échoue silencieusement
   // dessus (voir api/_lib/cityGeocode.js).
-  async function shareCity(city, isDaytrip) {
+  //
+  // `excursionDates` (villes de BASE uniquement) : dates occupées par les
+  // excursions rattachées, gatherées ci-dessus.
+  async function shareCity(city, isDaytrip, excursionDates = []) {
     const destination = destById[city.destination_id];
     if (!destination) { skippedCities.push({ cityName: city.name, reason: 'destination_missing' }); return null; }
 
@@ -129,22 +201,12 @@ async function handleShare(admin, user, body, res) {
     });
     if (!coords) { skippedCities.push({ cityName: city.name, reason: 'not_geocoded' }); return null; }
 
-    // Jours relatifs : day_index reflète l'écart calendaire réel depuis le
-    // premier jour (pas un simple rang compact) — sinon une journée entière
-    // passée sur une excursion (aucune activité datée sur CETTE ville ce
-    // jour-là, voir shareCity(isDaytrip) plus bas) disparaîtrait du calendrier
-    // du modèle. Le day_offset de l'excursion (ligne ~190) est lui calculé
-    // sur le vrai calendrier : sans ce même repère ici, l'import replace les
-    // jours de la ville de base en comblant le trou, et l'excursion atterrit
-    // sur une date déjà prise par le jour suivant (tous les jours suivants
-    // décalent d'un jour).
     const dated = activities.filter((a) => a.visit_date);
     if (!dated.length) { skippedCities.push({ cityName: city.name, reason: 'no_dated_activities' }); return null; }
-    const sortedDates = [...new Set(dated.map((a) => a.visit_date))].sort();
-    const firstDate = sortedDates[0];
-    const lastDate = sortedDates[sortedDates.length - 1];
-    const totalDays = daysBetween(firstDate, lastDate) + 1;
-    const dayIndexByDate = Object.fromEntries(sortedDates.map((d) => [d, daysBetween(firstDate, d) + 1]));
+    const ownDates = [...new Set(dated.map((a) => a.visit_date))].sort();
+    const firstDate = ownDates[0];
+    const lastDate = ownDates[ownDates.length - 1];
+    const { compactRank, totalDays, dayIndexByDate } = computeCompactDayIndex(ownDates, excursionDates);
 
     // Upsert sur (source_trip_id, country_code, city_name) — voir
     // supabase/planning_modele_v3.sql : un re-partage doit mettre à jour le
@@ -172,7 +234,7 @@ async function handleShare(admin, user, body, res) {
       .single();
     if (templateError) { console.error('[trip-templates:share] upsert template:', templateError); return null; }
 
-    const days = sortedDates.map((date) => ({
+    const days = ownDates.map((date) => ({
       day_index: dayIndexByDate[date],
       activities: dated
         .filter((a) => a.visit_date === date)
@@ -201,11 +263,13 @@ async function handleShare(admin, user, body, res) {
     if (contentError) { console.error('[trip-templates:share] replace_template_content:', contentError); return null; }
 
     sharedCities.push({ cityName: city.name, templateId: template.id, nbDays: totalDays });
-    return { templateId: template.id, firstDate, lastDate };
+    return { templateId: template.id, firstDate, lastDate, compactRank };
   }
 
   const cityShareInfo = {};
-  const baseResults = await Promise.all((baseCities || []).map((city) => shareCity(city, false)));
+  const baseResults = await Promise.all(
+    (baseCities || []).map((city) => shareCity(city, false, [...(excursionDatesByParentId[city.id] || [])]))
+  );
   (baseCities || []).forEach((city, i) => { if (baseResults[i]) cityShareInfo[city.id] = baseResults[i]; });
 
   const eligibleDaytrips = (daytripCities || []).filter((d) => cityShareInfo[d.parent_city_id]);
@@ -214,7 +278,18 @@ async function handleShare(admin, user, body, res) {
     const info = daytripResults[i];
     if (!info) return;
     const parentInfo = cityShareInfo[daytrip.parent_city_id];
-    const dayOffset = daysBetween(parentInfo.firstDate, info.firstDate);
+    // Décalage dans la numérotation COMPACTÉE du parent (voir shareCity).
+    // Pas "forcément" une entrée dans compactRank : les dates d'excursion
+    // ANTÉRIEURES au 1er jour propre de la ville en sont filtrées
+    // (computeCompactDayIndex, `d >= firstDate`) — une excursion qui commence
+    // avant le séjour n'y figure donc pas (rank undefined, et undefined - 1
+    // donnerait NaN, sérialisé null : l'excursion importée n'aurait alors ni
+    // date ni pending_day_offset, ses activités ne s'ancreraient jamais).
+    // Repli sur 0 : même résultat final que l'ancien calcul non compacté, qui
+    // produisait un décalage négatif ensuite clampé à 0 à l'import
+    // (importDaytripChildren, clampedOffset).
+    const rank = parentInfo.compactRank[info.firstDate];
+    const dayOffset = rank != null ? rank - 1 : 0;
     const { error: linkError } = await admin
       .from('trip_templates')
       .update({ parent_template_id: parentInfo.templateId, day_offset: dayOffset })
@@ -226,8 +301,7 @@ async function handleShare(admin, user, body, res) {
   // Les modèles-villes d'une même destination sont liés dans un groupe qui
   // représente le voyage complet dans ce pays : durée totale, ordre des
   // villes et décalage de chacune par rapport au 1er jour — calculés depuis
-  // les VRAIES dates des activités (mêmes firstDate/lastDate que ci-dessus),
-  // jamais depuis planned_days (qui peut ne plus correspondre au calendrier).
+  // les VRAIES dates des activités (mêmes firstDate/lastDate que ci-dessus).
   const sharedCountryCodes = [];
   await Promise.all((destinations || []).map(async (destination) => {
     const destShared = (baseCities || [])
@@ -794,11 +868,11 @@ async function cleanupActivityAttachments(admin, activityIds) {
 
 // Excursions rattachées à un modèle : chacune devient une nouvelle
 // ville-excursion attachée à la ville importée. Elle ne reçoit PAS de
-// planned_days/start_date propres (ces champs n'existent plus dans l'UI des
-// excursions) : les y écrire créerait une valeur figée que rien ne peut plus
-// corriger si l'utilisateur déplace ensuite les activités. Partagé entre
-// l'import par ville et l'import de voyage entier. Renvoie les ids des
-// modèles-excursions importés (pour l'incrément de uses_count).
+// start_date propre (ce champ n'existe plus dans l'UI des excursions) : l'y
+// écrire créerait une valeur figée que rien ne peut plus corriger si
+// l'utilisateur déplace ensuite les activités. Partagé entre l'import par
+// ville et l'import de voyage entier. Renvoie les ids des modèles-excursions
+// importés (pour l'incrément de uses_count).
 async function importDaytripChildren(admin, { tripId, destinationId, parentCityId, templateId, parentStartDate }) {
   const { data: children } = await admin
     .from('trip_templates')
@@ -840,6 +914,127 @@ async function importDaytripChildren(admin, { tripId, destinationId, parentCityI
   return results.filter(Boolean);
 }
 
+// Mémorise des jours comme "ajoutés par un import" (badge de la vue par jour,
+// trips.import_added_days, planning_modele_v12.sql). Jamais bloquant : si la
+// colonne n'existe pas encore (migration pas jouée), seul le badge est perdu.
+async function markImportAddedDays(admin, tripId, addedDays) {
+  if (!addedDays.length) return;
+  const { data: tripRow, error: readError } = await admin.from('trips').select('import_added_days').eq('id', tripId).maybeSingle();
+  if (readError) {
+    console.error('[trip-templates] read import_added_days (avez-vous joué planning_modele_v12.sql ?):', readError);
+    return;
+  }
+  const merged = [...new Set([...(tripRow?.import_added_days || []), ...addedDays])].sort();
+  const { error } = await admin.from('trips').update({ import_added_days: merged }).eq('id', tripId);
+  if (error) console.error('[trip-templates] set import_added_days:', error);
+}
+
+// Étend la date de fin du voyage si le contenu importé la déborde (sinon les
+// derniers jours importés seraient invisibles : la vue par jour n'affiche que
+// les jours entre start_date et end_date, et une activité datée au-delà
+// n'apparaît nulle part). Les jours ainsi AJOUTÉS au-delà d'une fin déjà
+// choisie sont signalés d'un badge ; une fin simplement déduite (le voyage
+// n'en avait pas) n'a rien "d'ajouté" à signaler. Renvoie le nombre de jours
+// ajoutés. Relit end_date à chaque appel : elle a pu être décalée entre-temps
+// (voir applyReplacedCityDuration).
+async function extendTripEndIfNeeded(admin, tripId, candidateEnd) {
+  if (!candidateEnd) return 0;
+  const { data: tripRow } = await admin.from('trips').select('end_date').eq('id', tripId).maybeSingle();
+  if (!tripRow) return 0;
+  if (tripRow.end_date && candidateEnd <= tripRow.end_date) return 0;
+  const { error } = await admin.from('trips').update({ end_date: candidateEnd }).eq('id', tripId);
+  if (error) { console.error('[trip-templates] extend end_date:', error); return 0; }
+  if (!tripRow.end_date) return 0;
+  const added = [];
+  for (let d = addDays(tripRow.end_date, 1); d <= candidateEnd; d = addDays(d, 1)) added.push(d);
+  await markImportAddedDays(admin, tripId, added);
+  return added.length;
+}
+
+// Après remplacement du contenu d'une ville par un planning importé : tout ce
+// qui SUIT la ville est décalé de la différence entre l'ancienne et la
+// nouvelle durée RÉELLEMENT occupée (`prevDays`/`newDays`, tous deux dérivés
+// du contenu — voir contentSpanDays — jamais d'un champ "jours prévus" séparé,
+// qui n'existe plus, voir planning_modele_v13.sql), pour que rien ne se
+// chevauche ni ne laisse de trou : villes datées (avec leurs activités,
+// excursions et hébergements, et la date de fin du voyage) pour un calendrier
+// réel, décalages "en attente" (pending_day_offset) pour des imports pas
+// encore ancrés. Partagé entre l'import par ville et l'import de voyage
+// entier.
+export async function applyReplacedCityDuration(admin, { tripId, cityId, prevStartDate, prevPendingOffset, prevDays, newDays }) {
+  // Sans ancien contenu connu (ville vide avant cet import), durée
+  // inchangée, ou import plus COURT que l'ancien contenu : rien à décaler.
+  // Un import plus court libère des jours en fin de ville plutôt que de les
+  // supprimer — la personne a peut-être choisi un planning plus court
+  // justement pour pouvoir prévoir autre chose sur ce créneau ; les villes
+  // suivantes et la fin du voyage ne doivent donc PAS reculer (ce qui
+  // avalerait ces jours libérés). Seul un import plus LONG continue de
+  // repousser la suite, pour ne rien faire chevaucher.
+  if (!newDays || !prevDays || newDays <= prevDays) return;
+  const delta = newDays - prevDays;
+
+  if (prevStartDate) {
+    const { data: laterCities } = await admin
+      .from('trip_cities')
+      .select('id, start_date')
+      .eq('trip_id', tripId)
+      .is('parent_city_id', null)
+      .neq('id', cityId)
+      .gt('start_date', prevStartDate);
+    for (const c of laterCities || []) {
+      const { error } = await admin.from('trip_cities').update({ start_date: addDays(c.start_date, delta) }).eq('id', c.id);
+      if (error) console.error('[trip-templates:duration] shift city start_date:', error);
+    }
+    const laterIds = (laterCities || []).map((c) => c.id);
+    if (laterIds.length) {
+      // Les excursions rattachées aux villes décalées suivent leur parente ;
+      // leurs activités (datées) et les hébergements aussi — sinon les dates
+      // de la ville et son contenu se désynchroniseraient.
+      const { data: children } = await admin.from('trip_cities').select('id').in('parent_city_id', laterIds);
+      const shiftedCityIds = [...laterIds, ...(children || []).map((c) => c.id)];
+      const { data: acts } = await admin.from('trip_activities').select('id, visit_date').in('city_id', shiftedCityIds).not('visit_date', 'is', null);
+      for (const a of acts || []) {
+        const { error } = await admin.from('trip_activities').update({ visit_date: addDays(a.visit_date, delta) }).eq('id', a.id);
+        if (error) console.error('[trip-templates:duration] shift activity:', error);
+      }
+      const { data: lodgings } = await admin.from('trip_lodgings').select('id, check_in, check_out').in('city_id', shiftedCityIds);
+      for (const l of lodgings || []) {
+        if (!l.check_in && !l.check_out) continue;
+        const { error } = await admin.from('trip_lodgings').update({
+          check_in: l.check_in ? addDays(l.check_in, delta) : null,
+          check_out: l.check_out ? addDays(l.check_out, delta) : null,
+        }).eq('id', l.id);
+        if (error) console.error('[trip-templates:duration] shift lodging:', error);
+      }
+    }
+    // La fin du voyage suit le décalage ; les jours gagnés sont signalés
+    // comme ajoutés par l'import (badge de la vue par jour).
+    const { data: tripRow } = await admin.from('trips').select('end_date').eq('id', tripId).maybeSingle();
+    if (tripRow?.end_date) {
+      const newEnd = addDays(tripRow.end_date, delta);
+      const { error } = await admin.from('trips').update({ end_date: newEnd }).eq('id', tripId);
+      if (error) console.error('[trip-templates:duration] shift end_date:', error);
+      else if (delta > 0) {
+        const added = [];
+        for (let d = addDays(tripRow.end_date, 1); d <= newEnd; d = addDays(d, 1)) added.push(d);
+        await markImportAddedDays(admin, tripId, added);
+      }
+    }
+  } else if (prevPendingOffset != null) {
+    const { data: laterPending } = await admin
+      .from('trip_cities')
+      .select('id, pending_day_offset')
+      .eq('trip_id', tripId)
+      .is('parent_city_id', null)
+      .neq('id', cityId)
+      .gt('pending_day_offset', prevPendingOffset);
+    for (const c of laterPending || []) {
+      const { error } = await admin.from('trip_cities').update({ pending_day_offset: c.pending_day_offset + delta }).eq('id', c.id);
+      if (error) console.error('[trip-templates:duration] shift pending offset:', error);
+    }
+  }
+}
+
 async function handleImport(admin, user, body, res) {
   const { tripId, cityId, templateId } = body;
   if (!tripId || !cityId || !templateId) {
@@ -852,7 +1047,7 @@ async function handleImport(admin, user, body, res) {
 
   const { data: city } = await admin
     .from('trip_cities')
-    .select('id, destination_id, start_date, planned_days')
+    .select('id, destination_id, start_date, pending_day_offset')
     .eq('id', cityId)
     .eq('trip_id', tripId)
     .maybeSingle();
@@ -861,7 +1056,11 @@ async function handleImport(admin, user, body, res) {
   const { data: template } = await admin.from('trip_templates').select('id, nb_days').eq('id', templateId).maybeSingle();
   if (!template) return res.status(404).json({ ok: false, reason: 'Modèle introuvable.' });
 
-  const { data: existingActivities } = await admin.from('trip_activities').select('id').eq('city_id', cityId);
+  // visit_date/pending_day_index inclus : servent à mesurer la durée RÉELLE
+  // (contentSpanDays) occupée par l'ancien contenu de la ville AVANT de le
+  // supprimer — nécessaire à applyReplacedCityDuration plus bas.
+  const { data: existingActivities } = await admin.from('trip_activities').select('id, visit_date, pending_day_index').eq('city_id', cityId);
+  const prevSpan = contentSpanDays(existingActivities);
   await cleanupActivityAttachments(admin, (existingActivities || []).map((a) => a.id));
 
   const { error: deleteError } = await admin.from('trip_activities').delete().eq('city_id', cityId);
@@ -870,20 +1069,47 @@ async function handleImport(admin, user, body, res) {
     return res.status(500).json({ ok: false, reason: "L'import a échoué." });
   }
 
+  // Anciennes excursions rattachées à la ville remplacée : supprimées avant
+  // réimport, comme dans l'import de voyage entier (handleImportTrip) —
+  // importDaytripChildren recrée celles du nouveau planning, sans nettoyage
+  // préalable elles s'ajouteraient en doublon à celles de l'ancien contenu.
+  const { data: oldDaytrips } = await admin.from('trip_cities').select('id').eq('parent_city_id', cityId);
+  if (oldDaytrips?.length) {
+    const oldDaytripIds = oldDaytrips.map((d) => d.id);
+    const { data: oldDaytripActivities } = await admin.from('trip_activities').select('id').in('city_id', oldDaytripIds);
+    await cleanupActivityAttachments(admin, (oldDaytripActivities || []).map((a) => a.id));
+    const { error: deleteDaytripActError } = await admin.from('trip_activities').delete().in('city_id', oldDaytripIds);
+    if (deleteDaytripActError) console.error('[trip-templates:import] delete old daytrip activities:', deleteDaytripActError);
+    const { error: deleteDaytripError } = await admin.from('trip_cities').delete().in('id', oldDaytripIds);
+    if (deleteDaytripError) console.error('[trip-templates:import] delete old daytrips:', deleteDaytripError);
+  }
+
   const activities = await fetchTemplateDaysAndActivities(admin, templateId);
   const importedCount = await importActivitiesInto(admin, { tripId, cityId, activities, startDate: city.start_date });
 
-  // Ville sans nombre de jours renseigné (l'utilisateur regarde les
-  // suggestions AVANT de décider combien de temps rester) : la durée du
-  // planning importé devient sa durée — c'est précisément la décision qu'il
-  // vient de prendre en choisissant ce planning. Jamais écrasé s'il avait
-  // déjà renseigné une durée lui-même.
-  if (city.planned_days == null && template.nb_days) {
-    const { error: daysError } = await admin
-      .from('trip_cities')
-      .update({ planned_days: template.nb_days })
-      .eq('id', cityId);
-    if (daysError) console.error('[trip-templates:import] set planned_days:', daysError);
+  // Tout ce qui suit la ville est décalé si sa durée réellement occupée change
+  // (ex. planning de Tokyo qui occupait 2 jours remplacé par un de 4 : les
+  // villes suivantes reculent de 2 jours) — voir applyReplacedCityDuration.
+  // Volontairement AUCUN pending_day_offset posé ici pour une ville sans
+  // date : l'ordre d'un panier de villes importées n'est pas forcément
+  // l'ordre voulu dans le voyage — c'est l'utilisateur qui place chaque ville
+  // en choisissant sa date de début (icône calendrier mise en avant sur la
+  // ville tant qu'elle attend sa date, voir CityBlock), et l'ancrage
+  // anchor_city_pending_days fait le reste.
+  await applyReplacedCityDuration(admin, {
+    tripId,
+    cityId,
+    prevStartDate: city.start_date,
+    prevPendingOffset: city.pending_day_offset,
+    prevDays: prevSpan,
+    newDays: template.nb_days,
+  });
+
+  // Ville datée dont le nouveau contenu déborde de la fin du voyage (au-delà
+  // du décalage ci-dessus, qui a déjà déplacé la fin d'autant si un espacement
+  // existait) : étendre la date de fin, comme pour l'import de voyage complet.
+  if (city.start_date && template.nb_days) {
+    await extendTripEndIfNeeded(admin, tripId, addDays(city.start_date, template.nb_days - 1));
   }
 
   const importedChildIds = await importDaytripChildren(admin, {
@@ -905,33 +1131,25 @@ async function handleImport(admin, user, body, res) {
   });
 }
 
-// Comparaison de noms de ville insensible à la casse et aux accents (mêmes
-// limites que les autres comparaisons de noms de l'app, ex. namesMatch côté
-// client dans planningUtils.js) — deux orthographes réellement différentes
-// d'une même ville (ex. "Pékin" vs "Beijing") ne matchent PAS ici : seule une
-// différence de casse/accentuation est tolérée, contrairement au matching par
-// coordonnées utilisé ailleurs dans ce fichier (resolveCityCoordinates).
-function normalizeCityName(name) {
-  return (name || '').normalize('NFD').replace(/\p{Mn}/gu, '').trim().toLowerCase();
-}
-
 // ════════════════════════════════════════════════════════════════
 // action: 'import-trip' — import d'un voyage entier (groupe de modèles)
 // ════════════════════════════════════════════════════════════════
-// Pour chaque modèle membre du groupe : si sa ville correspond GÉOGRAPHIQUEMENT
-// à une ville de base déjà présente dans la destination visée (coordonnées
-// proches, voir resolveCityCoordinates — reconnaît "Pékin"/"Beijing" comme la
-// même ville même si les noms diffèrent totalement), REMPLACE le contenu de
-// cette ville existante (mêmes helpers que l'import par ville, handleImport
-// ci-dessus : suppression des activités + excursions existantes puis réimport
-// dans le MÊME cityId) ; sinon, crée une nouvelle ville `trip_cities` (dans
-// l'ordre du voyage source, après les villes existantes), avec planned_days
-// et, si le voyage a une date de départ, une start_date calée dessus + le
-// décalage de la ville dans le voyage source. Sans dates, tout arrive "non
-// planifié". Repli sur normalizeCityName (texte) si le géocodage échoue pour
-// une ville (clé API absente, ville introuvable) — jamais de blocage total.
+// Remplace ENTIÈREMENT la planification de la destination visée (contrairement
+// à l'import ville par ville, handleImport ci-dessus, qui fusionne) : toutes
+// les villes de base existantes de cette destination sont supprimées avant
+// l'import, puis chaque membre du groupe crée une ville `trip_cities` fraîche
+// (dans l'ordre du voyage source), avec, si le voyage a déjà une date de
+// départ (ou une autre destination déjà datée), une start_date calée dessus +
+// le décalage de la ville dans le voyage source. Sans dates, tout arrive "non
+// planifié", en attente que l'utilisateur choisisse une date de départ.
 async function handleImportTrip(admin, user, body, res) {
-  const { tripId, destinationId, groupId, countryAlpha2 } = body;
+  // cityNameOverrides { [templateId]: nom traduit } : le client y met le nom
+  // traduit dans la langue du visiteur (ex. "Beijing"), affiché lors du choix
+  // du groupe — sans lui, la ville créée par cet import prendrait le nom brut
+  // de l'auteur du planning (member.city_name, souvent en français, "Pékin"),
+  // différent de ce que le visiteur vient de voir et choisir. Jamais fait
+  // confiance aveuglément : juste une chaîne de repli si absente/vide.
+  const { tripId, destinationId, groupId, cityNameOverrides } = body;
   if (!tripId || !destinationId || !groupId) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
@@ -965,167 +1183,130 @@ async function handleImportTrip(admin, user, body, res) {
 
   const { data: members } = await admin
     .from('trip_templates')
-    .select('id, city_name, city_lat, city_lng, nb_days, group_day_offset')
+    .select('id, city_name, nb_days, group_day_offset')
     .eq('group_id', groupId)
     .is('parent_template_id', null)
     .order('group_position', { ascending: true });
   if (!members?.length) return res.status(404).json({ ok: false, reason: 'Modèle introuvable.' });
 
-  // Point d'ancrage des dates importées : le lendemain de la dernière journée
-  // déjà planifiée dans TOUT le voyage (toutes destinations confondues), pas
-  // trip.start_date — sinon un import dans une 2e destination (ou dans une
-  // destination qui a déjà des villes datées) retombait systématiquement au
-  // jour 1 du voyage et chevauchait silencieusement ce qui existait déjà
-  // (aucune vérification de collision nulle part ailleurs dans cette
-  // fonction). Repli sur trip.start_date seulement si rien n'est encore daté.
-  const { data: datedCities } = await admin
+  // Un import de voyage COMPLET remplace la planification de cette
+  // destination plutôt que de la compléter (contrairement à l'import ville
+  // par ville, voir handleImport, qui fusionne) — sinon, répéter l'import
+  // (ou en tester plusieurs) empilait indéfiniment des villes dans la même
+  // destination. Toutes les villes de base de CETTE destination (et leurs
+  // excursions/activités/hébergements/pièces jointes) sont donc effacées
+  // AVANT l'import ; les autres destinations du voyage ne sont pas touchées.
+  // L'utilisateur est averti de cette perte avant de valider, voir
+  // fullTripSuggestions.confirmReplaceText côté client.
+  const { data: oldBaseCities } = await admin
     .from('trip_cities')
-    .select('start_date, planned_days')
+    .select('id')
+    .eq('destination_id', destinationId)
+    .is('parent_city_id', null);
+  const oldBaseCityIds = (oldBaseCities || []).map((c) => c.id);
+  if (oldBaseCityIds.length) {
+    const { data: oldDaytrips } = await admin.from('trip_cities').select('id').in('parent_city_id', oldBaseCityIds);
+    const oldDaytripIds = (oldDaytrips || []).map((d) => d.id);
+    const oldCityIds = [...oldBaseCityIds, ...oldDaytripIds];
+    const { data: oldActivities } = await admin.from('trip_activities').select('id').in('city_id', oldCityIds);
+    await cleanupActivityAttachments(admin, (oldActivities || []).map((a) => a.id));
+    const { error: deleteActError } = await admin.from('trip_activities').delete().in('city_id', oldCityIds);
+    if (deleteActError) console.error('[trip-templates:import-trip] delete old activities:', deleteActError);
+    const { error: deleteLodgingsError } = await admin.from('trip_lodgings').delete().in('city_id', oldCityIds);
+    if (deleteLodgingsError) console.error('[trip-templates:import-trip] delete old lodgings:', deleteLodgingsError);
+    const { error: deleteCitiesError } = await admin.from('trip_cities').delete().in('id', oldCityIds);
+    if (deleteCitiesError) console.error('[trip-templates:import-trip] delete old cities:', deleteCitiesError);
+  }
+
+  // Point d'ancrage des dates importées : le lendemain de la dernière journée
+  // RÉELLEMENT occupée par une activité datée dans les AUTRES destinations du
+  // voyage, pas trip.start_date directement — sinon un import dans une 2e
+  // destination (qui a déjà des villes datées ailleurs) chevaucherait
+  // silencieusement ce qui existe déjà. Repli sur trip.start_date si rien
+  // n'est encore daté ailleurs (cas courant d'un voyage à une seule
+  // destination) — c'est alors exactement la date de départ du voyage.
+  // La destination visée venant d'être entièrement vidée ci-dessus, aucune
+  // exclusion à faire : ses éventuelles anciennes dates ont disparu avec elle.
+  const { data: datedActs } = await admin
+    .from('trip_activities')
+    .select('visit_date')
     .eq('trip_id', tripId)
-    .not('start_date', 'is', null)
-    .not('planned_days', 'is', null);
-  const latestEndDate = (datedCities || []).reduce((max, c) => {
-    const end = addDays(c.start_date, c.planned_days - 1);
-    return !max || end > max ? end : max;
-  }, null);
+    .not('visit_date', 'is', null);
+  const latestEndDate = (datedActs || [])
+    .reduce((max, a) => (!max || a.visit_date > max ? a.visit_date : max), null);
   const importAnchorDate = latestEndDate ? addDays(latestEndDate, 1) : trip.start_date;
 
   // Même protection anti-chevauchement pour le flux SANS dates : un 2e import
   // "en attente" (pending_day_offset) doit continuer APRÈS le premier, pas
   // repartir du jour 1 — sinon, au moment de l'ancrage différé, les deux
-  // voyages importés se superposeraient silencieusement sur les mêmes dates
-  // (exactement le chevauchement que latestEndDate ci-dessus évite pour le
-  // flux daté).
+  // voyages importés se superposeraient silencieusement sur les mêmes dates.
+  // Chaque ville pending (des AUTRES destinations, celle-ci vient d'être
+  // vidée) contribue son décalage + sa PROPRE durée réelle (dérivée de ses
+  // activités encore en attente, pending_day_index), jamais moins d'1 jour.
   let pendingBaseOffset = 0;
   if (!importAnchorDate) {
     const { data: pendingCities } = await admin
       .from('trip_cities')
-      .select('pending_day_offset, planned_days')
+      .select('id, pending_day_offset')
       .eq('trip_id', tripId)
       .is('parent_city_id', null)
       .not('pending_day_offset', 'is', null);
-    pendingBaseOffset = (pendingCities || []).reduce(
-      (max, c) => Math.max(max, c.pending_day_offset + (c.planned_days || 1)), 0
-    );
-  }
-
-  const { count: existingCities } = await admin
-    .from('trip_cities')
-    .select('id', { count: 'exact', head: true })
-    .eq('destination_id', destinationId)
-    .is('parent_city_id', null);
-  const startPosition = existingCities || 0;
-
-  // Villes de base déjà présentes dans cette destination : un membre du
-  // groupe importé dont la ville correspond REMPLACE son contenu plutôt que
-  // de créer un doublon. Matching PRINCIPAL par coordonnées (reconnaît
-  // "Pékin"/"Beijing" comme la même ville) — trip_cities n'a pas de lat/lng
-  // stockées, on géocode donc chaque ville existante une fois ici (mis en
-  // cache ensuite, table city_geocache). Repli sur normalizeCityName (texte,
-  // accents/casse seulement) si le géocodage échoue pour cette ville
-  // existante OU pour le membre importé (clé API absente, ville introuvable) —
-  // jamais de blocage total du fait d'un géocodage indisponible.
-  const { data: existingBaseCities } = await admin
-    .from('trip_cities')
-    .select('id, name, start_date, planned_days')
-    .eq('destination_id', destinationId)
-    .is('parent_city_id', null);
-  const existingCityByName = {};
-  const existingCityWithCoords = [];
-  for (const c of existingBaseCities || []) {
-    existingCityByName[normalizeCityName(c.name)] = c;
-    const coords = await resolveCityCoordinates(admin, { countryCode: destination.country_code, cityName: c.name, countryAlpha2 });
-    if (coords) existingCityWithCoords.push({ ...c, coords });
-  }
-
-  const findExistingCityFor = async (member) => {
-    if (member.city_lat != null && member.city_lng != null && existingCityWithCoords.length) {
-      const match = existingCityWithCoords.find(
-        (c) => distanceKm(member.city_lat, member.city_lng, c.coords.lat, c.coords.lng) <= SAME_CITY_RADIUS_KM
-      );
-      if (match) return match;
+    if (pendingCities?.length) {
+      const { data: pendingActs } = await admin
+        .from('trip_activities')
+        .select('city_id, pending_day_index')
+        .in('city_id', pendingCities.map((c) => c.id))
+        .not('pending_day_index', 'is', null);
+      for (const c of pendingCities) {
+        const ownMaxIndex = (pendingActs || [])
+          .filter((a) => a.city_id === c.id)
+          .reduce((m, a) => Math.max(m, a.pending_day_index), 0);
+        pendingBaseOffset = Math.max(pendingBaseOffset, c.pending_day_offset + Math.max(ownMaxIndex, 1));
+      }
     }
-    return existingCityByName[normalizeCityName(member.city_name)] || null;
-  };
+  }
 
-  // Villes créées/remplacées séquentiellement (pas en Promise.all) : leurs
-  // positions s'enchaînent (pour les créations) et l'ordre d'insertion doit
-  // rester celui du voyage source.
+  // Villes créées séquentiellement (pas en Promise.all) : leurs positions
+  // s'enchaînent et l'ordre d'insertion doit rester celui du voyage source.
   let importedActivitiesCount = 0;
   const importedTemplateIds = [];
+  // Dernière journée réellement datée par cet import : sert à étendre la date
+  // de fin du voyage si le contenu importé déborde (voir après la boucle).
+  let maxImportedEnd = null;
   for (let i = 0; i < members.length; i++) {
     const member = members[i];
     const offset = member.group_day_offset != null ? Math.max(0, member.group_day_offset) : null;
-    const existingCity = await findExistingCityFor(member);
+    const startDate = importAnchorDate && offset != null ? addDays(importAnchorDate, offset) : null;
 
-    let cityId;
-    let startDate;
-
-    if (existingCity) {
-      // Remplacement : même logique que l'import par ville (handleImport
-      // ci-dessus) — supprime les activités existantes de la ville (+ leurs
-      // pièces jointes Storage) puis réimporte dans le MÊME cityId, sans créer
-      // de nouvelle ligne trip_cities. L'ancre de dates reste celle DÉJÀ
-      // choisie pour cette ville (sa propre start_date), pas celle du voyage
-      // source importé — cohérent avec le reste de son calendrier existant.
-      cityId = existingCity.id;
-      startDate = existingCity.start_date;
-
-      const { data: oldActivities } = await admin.from('trip_activities').select('id').eq('city_id', cityId);
-      await cleanupActivityAttachments(admin, (oldActivities || []).map((a) => a.id));
-      const { error: deleteActError } = await admin.from('trip_activities').delete().eq('city_id', cityId);
-      if (deleteActError) console.error('[trip-templates:import-trip] delete existing activities:', deleteActError);
-
-      // Anciennes excursions rattachées à la ville remplacée : supprimées
-      // avant réimport — importDaytripChildren recrée les excursions du
-      // nouveau planning, sans nettoyage préalable elles s'ajouteraient en
-      // doublon à celles laissées par l'ancien contenu.
-      const { data: oldDaytrips } = await admin.from('trip_cities').select('id').eq('parent_city_id', cityId);
-      if (oldDaytrips?.length) {
-        const oldDaytripIds = oldDaytrips.map((d) => d.id);
-        const { data: oldDaytripActivities } = await admin.from('trip_activities').select('id').in('city_id', oldDaytripIds);
-        await cleanupActivityAttachments(admin, (oldDaytripActivities || []).map((a) => a.id));
-        const { error: deleteDaytripActError } = await admin.from('trip_activities').delete().in('city_id', oldDaytripIds);
-        if (deleteDaytripActError) console.error('[trip-templates:import-trip] delete old daytrip activities:', deleteDaytripActError);
-        const { error: deleteDaytripError } = await admin.from('trip_cities').delete().in('id', oldDaytripIds);
-        if (deleteDaytripError) console.error('[trip-templates:import-trip] delete old daytrips:', deleteDaytripError);
-      }
-
-      // Même règle que handleImport : la durée du planning importé ne devient
-      // la durée de la ville que si elle n'en avait pas déjà une — jamais
-      // écrasée si l'utilisateur l'avait renseignée lui-même.
-      if (existingCity.planned_days == null && member.nb_days) {
-        const { error: daysError } = await admin.from('trip_cities').update({ planned_days: member.nb_days }).eq('id', cityId);
-        if (daysError) console.error('[trip-templates:import-trip] set planned_days:', daysError);
-      }
-    } else {
-      startDate = importAnchorDate && offset != null ? addDays(importAnchorDate, offset) : null;
-      const { data: city, error: cityError } = await admin
-        .from('trip_cities')
-        .insert({
-          trip_id: tripId,
-          destination_id: destinationId,
-          name: member.city_name,
-          position: startPosition + i,
-          planned_days: member.nb_days,
-          start_date: startDate,
-          // Voyage sans aucune date : le décalage de la ville par rapport au
-          // jour 1 du voyage source est conservé (décalé après les éventuels
-          // imports "en attente" précédents, voir pendingBaseOffset) — dès que
-          // l'utilisateur choisira sa date de départ, elle deviendra le jour 1
-          // et toutes les villes/activités en attente seront datées
-          // automatiquement (RPC anchor_trip_pending_days,
-          // planning_modele_v10.sql).
-          pending_day_offset: startDate == null && offset != null ? pendingBaseOffset + offset : null,
-        })
-        .select('id')
-        .single();
-      if (cityError) { console.error('[trip-templates:import-trip] insert city:', cityError); continue; }
-      cityId = city.id;
-    }
+    const { data: city, error: cityError } = await admin
+      .from('trip_cities')
+      .insert({
+        trip_id: tripId,
+        destination_id: destinationId,
+        name: (cityNameOverrides?.[member.id] || '').trim() || member.city_name,
+        position: i,
+        start_date: startDate,
+        // Voyage sans aucune date : le décalage de la ville par rapport au
+        // jour 1 du voyage source est conservé (décalé après les éventuels
+        // imports "en attente" précédents, voir pendingBaseOffset) — dès que
+        // l'utilisateur choisira sa date de départ, elle deviendra le jour 1
+        // et toutes les villes/activités en attente seront datées
+        // automatiquement (RPC anchor_trip_pending_days,
+        // planning_modele_v10.sql).
+        pending_day_offset: startDate == null && offset != null ? pendingBaseOffset + offset : null,
+      })
+      .select('id')
+      .single();
+    if (cityError) { console.error('[trip-templates:import-trip] insert city:', cityError); continue; }
+    const cityId = city.id;
 
     const activities = await fetchTemplateDaysAndActivities(admin, member.id);
     importedActivitiesCount += await importActivitiesInto(admin, { tripId, cityId, activities, startDate });
+
+    if (startDate && member.nb_days) {
+      const memberEnd = addDays(startDate, member.nb_days - 1);
+      if (!maxImportedEnd || memberEnd > maxImportedEnd) maxImportedEnd = memberEnd;
+    }
 
     const childIds = await importDaytripChildren(admin, {
       tripId,
@@ -1142,11 +1323,23 @@ async function handleImportTrip(admin, user, body, res) {
     await admin.rpc('increment_template_group_uses', { group_id: groupId });
   }
 
+  // Contenu importé débordant de la date de fin du voyage : avant, ces
+  // derniers jours devenaient invisibles (DayView n'affiche que les jours
+  // entre start_date et end_date, et les activités datées au-delà ne sont ni
+  // affichées ni "non planifiées") — le dernier jour du voyage importé était
+  // perdu en silence. La fin est étendue et chaque jour ajouté est signalé
+  // d'un badge dans la vue par jour — voir extendTripEndIfNeeded. Le groupe
+  // s'ancrant toujours sur le calendrier du voyage lui-même (voir
+  // importAnchorDate plus haut), jamais avant, il n'y a plus besoin d'étendre
+  // le départ du voyage en sens inverse ici.
+  const extendedDays = await extendTripEndIfNeeded(admin, tripId, maxImportedEnd);
+
   return res.status(200).json({
     ok: true,
     importedCitiesCount: members.length,
     importedCount: importedActivitiesCount,
     unplanned: !importAnchorDate,
+    extendedDays,
   });
 }
 

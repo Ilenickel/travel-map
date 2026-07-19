@@ -5,7 +5,7 @@ import { useSettings } from '../../context/SettingsContext';
 
 export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities, lodgings = [],
-  onUpdate, onToggleShare,
+  onUpdate, onToggleShare, onOpenExpenses,
   onExportPdf, onExportIcal,
   onToggleAutoShareTemplate,
 }) {
@@ -17,6 +17,11 @@ export default function TripEditorHeader({
   // 768px) : l'en-tête complet (dates, stats, actions, notes) mangeait tout
   // l'écran d'un téléphone — replié par défaut, il se réduit à la ligne du titre.
   const [headerOpen, setHeaderOpen] = useState(false);
+  // Mobile uniquement aussi (bouton "⋯" masqué sur ordinateur) : les actions
+  // Partager / Agenda / PDF / Notes vivaient uniquement dans l'en-tête déplié —
+  // trop cachées derrière le chevron. Le menu les rend accessibles en un tap,
+  // en bottom sheet (habillage pp-modal, transformé en feuille sur mobile).
+  const [menuOpen, setMenuOpen] = useState(false);
   const [showNotes, setShowNotes] = useState(!!(trip?.notes));
   const [notes, setNotes] = useState(trip?.notes || '');
   const [notesTimer, setNotesTimer] = useState(null);
@@ -39,6 +44,19 @@ export default function TripEditorHeader({
     clearTimeout(notesTimer);
     setNotesTimer(setTimeout(() => onUpdate(tripId, { notes: val.trim() || null }), 800));
   };
+
+  // Des villes en attente d'une date (pending_day_offset — voir handleImport/
+  // handleImportTrip côté serveur, planning_modele_v10.sql) sans que le
+  // voyage ait de date de départ : rien ne les ancrera tant que l'utilisateur
+  // n'aura pas rempli ce champ (anchor_trip_pending_days). Halo sur le champ
+  // "Départ" pour l'indiquer — sur mobile, sur l'engrenage tant que le
+  // panneau est replié (voir CSS, .pp-editor-header--collapsed masque
+  // .pp-trip-dates-card), puis sur le champ une fois déplié ; s'il est
+  // rerepliée sans avoir choisi de date, le halo revient naturellement sur
+  // l'engrenage — aucun état supplémentaire à gérer, seule la visibilité CSS
+  // change. Disparaît de lui-même dès que trip.start_date est renseigné.
+  const needsStartDateHighlight = !trip?.start_date
+    && cities.some((c) => !c.parent_city_id && c.pending_day_offset != null);
 
   const duration = tripDurationDays(trip?.start_date, trip?.end_date);
   const totalCities = cities.length;
@@ -88,15 +106,33 @@ export default function TripEditorHeader({
             </svg>
           </h2>
         )}
+        {/* Engrenage plutôt qu'un chevron : ce bouton (mobile uniquement) révèle
+            le paramétrage du voyage (dates, partage communautaire…) — un ">"
+            vers le bas ne disait pas ce qu'il cachait. */}
         <button
           type="button"
-          className="pp-header-collapse-btn"
+          className={`pp-header-collapse-btn${headerOpen ? ' active' : ''}${needsStartDateHighlight && !headerOpen ? ' pp-needs-highlight' : ''}`}
           onClick={() => setHeaderOpen(o => !o)}
           title={headerOpen ? t('header.collapseDetailsTitle') : t('header.expandDetailsTitle')}
           aria-expanded={headerOpen}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ transform: headerOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
-            <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+        </button>
+        {/* Mobile uniquement (masqué sur ordinateur, comme le chevron) : ouvre
+            le menu des actions du voyage — voir menuOpen ci-dessus. */}
+        <button
+          type="button"
+          className="pp-header-menu-btn"
+          onClick={() => setMenuOpen(true)}
+          title={t('header.menuButtonTitle')}
+          aria-label={t('header.menuButtonTitle')}
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
           </svg>
         </button>
         <div className="pp-header-actions">
@@ -141,6 +177,16 @@ export default function TripEditorHeader({
             {t('header.exportIcalButton')}
           </button>
           <button
+            className="pp-toolbar-btn"
+            onClick={onOpenExpenses}
+            title={t('expenses.title')}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 3h16a1 1 0 011 1v16.13a.5.5 0 01-.82.38l-1.88-1.57-1.9 1.59a.5.5 0 01-.64 0L14 18.94l-1.76 1.59a.5.5 0 01-.64 0L9.8 18.94l-1.86 1.59a.5.5 0 01-.64 0L5.4 18.94l-1.88 1.57A.5.5 0 013 20.13V4a1 1 0 011-1zm2.5 5h11v2h-11V8zm0 4h11v2h-11v-2zm0 4h7v2h-7v-2z"/>
+            </svg>
+            {t('expenses.navLabel')}
+          </button>
+          <button
             className="pp-btn pp-btn--share"
             onClick={onToggleShare}
             title={t('header.shareTitle')}
@@ -155,7 +201,7 @@ export default function TripEditorHeader({
 
       {/* Dates */}
       <div className="pp-trip-dates-card">
-        <div className="pp-date-group">
+        <div className={`pp-date-group${needsStartDateHighlight ? ' pp-needs-highlight' : ''}`}>
           <label className="pp-date-label">{t('header.departureLabel')}</label>
           <input
             type="date"
@@ -307,6 +353,66 @@ export default function TripEditorHeader({
               placeholder={t('header.notesPlaceholder')}
               rows={3}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Menu des actions du voyage (mobile uniquement — le bouton "⋯" qui
+          l'ouvre n'existe pas sur ordinateur). Habillage pp-modal : devient
+          automatiquement une bottom sheet sous 768px, comme les autres modales
+          de l'écran planification. */}
+      {menuOpen && (
+        <div className="pp-modal-overlay" onClick={e => e.target === e.currentTarget && setMenuOpen(false)}>
+          <div className="pp-modal pp-header-menu-sheet">
+            <div className="pp-modal-header">
+              <h3 className="pp-modal-title">{t('header.menuTitle')}</h3>
+              <button className="pp-icon-btn" onClick={() => setMenuOpen(false)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+            <div className="pp-modal-body pp-header-menu-body">
+              <button
+                type="button"
+                className="pp-header-menu-item pp-header-menu-item--share"
+                onClick={() => { setMenuOpen(false); onToggleShare(); }}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                </svg>
+                {t('header.menuShare')}
+              </button>
+              <button
+                type="button"
+                className="pp-header-menu-item"
+                onClick={() => { setMenuOpen(false); onExportIcal(); }}
+                disabled={icalExportableCount === 0}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+                </svg>
+                {t('header.menuIcal')}
+              </button>
+              <button
+                type="button"
+                className="pp-header-menu-item"
+                onClick={() => { setMenuOpen(false); onExportPdf(); }}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+                {t('header.menuPdf')}
+              </button>
+              <button
+                type="button"
+                className="pp-header-menu-item"
+                onClick={() => { setMenuOpen(false); setShowNotes(true); setHeaderOpen(true); }}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                </svg>
+                {t('header.menuNotes')}
+              </button>
+            </div>
           </div>
         </div>
       )}

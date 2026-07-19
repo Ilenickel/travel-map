@@ -8,7 +8,7 @@ import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 // "Options" d'un voyage dans la sidebar (voir TripCard.jsx : bouton icône +
 // dropdown + overlay de fermeture au clic extérieur), réutilisé ici tel quel
 // (mêmes classes .pp-dropdown-item) plutôt que d'inventer un nouveau style.
-export default function CityMenu({ city, tripStartDate, hasPlaces, selecting, onToggleSelecting, onRename, onUpdatePlanning, onDelete }) {
+export default function CityMenu({ city, tripStartDate, hasPlaces, selecting, onToggleSelecting, onRename, onUpdatePlanning, onDelete, dateLocked = false, hasPendingContent = false, siblingPendingBaseCitiesCount = 0 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
@@ -45,11 +45,24 @@ export default function CityMenu({ city, tripStartDate, hasPlaces, selecting, on
               </svg>
               {t('city.renameTitle')}
             </button>
-            {/* Reste un bouton à popover indépendant (jours prévus + date de
-                début, facultatifs) : il doit pouvoir s'ouvrir SANS refermer ce
+            {/* Reste un bouton à popover indépendant (date de début,
+                facultative) : il doit pouvoir s'ouvrir SANS refermer ce
                 menu-ci — d'où le rendu "ligne de menu" (asMenuItem) plutôt que
-                l'icône isolée utilisée ailleurs. */}
-            <CityPlanningFieldsButton city={city} tripStartDate={tripStartDate} onUpdate={onUpdatePlanning} asMenuItem />
+                l'icône isolée utilisée ailleurs. Masqué une fois `dateLocked`
+                (ville déjà datée ET ses activités déjà réellement placées) :
+                changer la date ne ferait plus rien à ce stade (aucun moyen de
+                revenir en arrière depuis ce menu de toute façon), un item
+                grisé à vie n'apporterait rien — autant ne plus le proposer. */}
+            {!dateLocked && (
+              <CityPlanningFieldsButton
+                city={city}
+                tripStartDate={tripStartDate}
+                onUpdate={onUpdatePlanning}
+                asMenuItem
+                hasPendingContent={hasPendingContent}
+                siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
+              />
+            )}
             <button className="pp-dropdown-item pp-dropdown-item--danger" onClick={() => { onDelete(); setOpen(false); }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>

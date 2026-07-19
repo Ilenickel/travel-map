@@ -350,7 +350,7 @@ function CityTemplatesBrowser({
             <button
               type="button"
               className={`pp-btn pp-btn--sm${cartEntry?.templateId === current.id ? ' pp-btn--primary' : ' pp-btn--ghost'}`}
-              onClick={() => onChooseTemplate(cityName, current)}
+              onClick={() => onChooseTemplate(cityName, current, displayCityName)}
             >
               {cartEntry?.templateId === current.id ? `✓ ${t('tripSuggestions.chosenLabel')}` : t('tripSuggestions.chooseButton')}
             </button>
@@ -408,8 +408,8 @@ function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImpo
     i18n.language
   );
 
-  const handleChoose = (cityName, template) => {
-    const cityKey = onChooseTemplate(cityName, template, selectedCity?.existingCityId || null);
+  const handleChoose = (cityName, template, displayName) => {
+    const cityKey = onChooseTemplate(cityName, template, selectedCity?.existingCityId || null, displayName);
     setJustChosenCityKey(cityKey);
     setSelectedCity(null);
   };
@@ -633,10 +633,17 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
 
   const runImport = async (group) => {
     setImporting(true);
+    // Noms de ville traduits dans la langue du visiteur (ex. "Beijing"),
+    // envoyés en override du nom brut de l'auteur du planning ("Pékin") —
+    // sinon les villes CRÉÉES par cet import (celles qui ne remplacent pas
+    // une ville existante, voir handleImportTrip) prendraient toujours le nom
+    // brut, différent de ce qui vient d'être affiché à l'écran.
+    const cityNameOverrides = {};
+    for (const c of group.cities) cityNameOverrides[c.templateId] = getCityDisplayName({ id: c.templateId, name: c.cityName });
     const result = await callModeration('trip-templates', {
       // countryAlpha2 : nécessaire au géocodage des villes existantes pour le
       // remplacement cross-langue côté serveur (voir handleImportTrip).
-      action: 'import-trip', tripId, destinationId: dest.id, groupId: group.id, countryAlpha2,
+      action: 'import-trip', tripId, destinationId: dest.id, groupId: group.id, countryAlpha2, cityNameOverrides,
     });
     setImporting(false);
     setConfirmingId(null);
@@ -852,12 +859,14 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
                           : t('fullTripSuggestions.confirmFewerDaysText', { count: -dayMismatchFor(group) })}
                       </p>
                     )}
-                    {baseCitiesCount > 0 && <p>{t('fullTripSuggestions.confirmAppendText', { count: baseCitiesCount })}</p>}
+                    {baseCitiesCount > 0 && (
+                      <p className="pp-fulltrip-notice pp-fulltrip-notice--danger">⚠️ {t('fullTripSuggestions.confirmReplaceText', { count: baseCitiesCount })}</p>
+                    )}
                     {!hasAnyDates && <p className="pp-fulltrip-notice">🗓️ {t('fullTripSuggestions.confirmNoDatesText')}</p>}
                     <div className="pp-modal-actions">
                       <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setConfirmingId(null)} disabled={importing}>{t('common:actions.cancel')}</button>
                       <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={() => requestDiscardCart(() => runImport(group))} disabled={importing}>
-                        {importing ? <span className="pp-search-busy" /> : t('fullTripSuggestions.confirmAppendButton')}
+                        {importing ? <span className="pp-search-busy" /> : (baseCitiesCount > 0 ? t('fullTripSuggestions.confirmReplaceButton') : t('fullTripSuggestions.confirmImportButton'))}
                       </button>
                     </div>
                   </div>
@@ -933,11 +942,19 @@ export default function TripSuggestionsModal({
   // `existingCityId` résolu par CitiesTab (null si la ville n'est pas encore
   // dans le voyage) — renvoie la cityKey utilisée, pour que CitiesTab puisse
   // afficher l'écran "ajouté au panier" juste après.
-  const handleChooseTemplate = (cityName, template, existingCityId) => {
+  // `displayName` (nom traduit dans la langue du visiteur, ex. "Beijing")
+  // devient le nom stocké pour cette entrée du panier — donc aussi celui
+  // réellement écrit en base à l'import (voir handleImportCart, onAddCity) :
+  // sans ça, la ville créée portait toujours le nom brut tapé par l'auteur du
+  // planning (souvent en français, ex. "Pékin"), différent de ce que le
+  // visiteur venait de voir et choisir à l'écran. `cityName` (brut) reste
+  // utilisé pour la clé de dédoublonnage du panier (cityKeyFor), stable
+  // quelle que soit la langue d'affichage.
+  const handleChooseTemplate = (cityName, template, existingCityId, displayName) => {
     const cityKey = cityKeyFor(cityName);
     setCart((prev) => ({
       ...prev,
-      [cityKey]: { cityName, templateId: template.id, nbDays: template.nbDays, existingCityId: existingCityId || null },
+      [cityKey]: { cityName: displayName || cityName, templateId: template.id, nbDays: template.nbDays, existingCityId: existingCityId || null },
     }));
     return cityKey;
   };

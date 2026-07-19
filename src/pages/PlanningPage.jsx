@@ -156,7 +156,14 @@ function PlanningMain() {
           onDecline={declineInvite}
         />
 
-        {loading ? (
+        {loading && tripData?.trip?.id !== selectedTripId ? (
+          // Spinner uniquement lors d'un vrai changement de voyage (les données
+          // affichées ne correspondent plus encore au voyage sélectionné) — un
+          // simple rafraîchissement du voyage déjà ouvert (ex. onReloadTripData
+          // après un import de suggestion) ne doit JAMAIS démonter TripEditor :
+          // ça réinitialiserait son état local (page du pager mobile, villes
+          // repérées comme "nouvellement importées" pour s'ouvrir dépliées —
+          // voir DestinationBlock, initialCityIdsRef).
           <div className="pp-loading">
             <div className="pp-spinner" />
             <span>{t('common:loading')}</span>

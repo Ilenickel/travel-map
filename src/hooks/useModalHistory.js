@@ -45,6 +45,19 @@ function ensureListener() {
 // history.back() s'il existe une entrée à dépiler avant de quitter l'app).
 // Sans ça, ces modales (montées/démontées en pur useState, jamais via une
 // route) n'ont rien à intercepter et le bouton retour quitte l'app entière.
+// `consumeEntry()` (valeur de retour) : à appeler AVANT une navigation "réelle"
+// (react-router) déclenchée par la même action que la fermeture — ex. accepter
+// une invitation depuis NotificationPanel, qui doit à la fois fermer le panneau
+// ET amener sur /planifier?trip=... Sans lui, le cleanup normal du démontage
+// (ci-dessous) fait un history.back() différé d'un micro-tick ; comme un
+// navigate({replace:true}) modifie l'entrée COURANTE (celle poussée par ce hook
+// à l'ouverture) plutôt que d'en empiler une nouvelle, ce back() ultérieur
+// annule silencieusement la navigation en revenant à l'entrée D'AVANT
+// l'ouverture du panneau — jamais à la page visée. consumeEntry() retire
+// l'entrée de la pile ET marque pushedRef à false AVANT que le cleanup ne
+// s'exécute, pour qu'il constate qu'il n'y a plus rien à dépiler et s'abstienne
+// du history.back(). Idempotent (no-op si déjà consommée ou déjà dépilée par un
+// vrai retour arrière).
 export function useModalHistory(onClose) {
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
@@ -92,4 +105,16 @@ export function useModalHistory(onClose) {
       });
     };
   }, []); // volontairement [] : ne pousser/dépiler qu'une fois par montage logique, onCloseRef porte la valeur à jour.
+
+  return {
+    consumeEntry: () => {
+      if (!pushedRef.current) return; // déjà consommée ou dépilée par un retour arrière
+      pushedRef.current = false;
+      const i = stack.findIndex((e) => e.id === idRef.current);
+      if (i !== -1) stack.splice(i, 1);
+      // Pas de history.back() ici, contrairement au cleanup normal : l'entrée
+      // reste en place pour que le navigate() qui suit (côté appelant) puisse
+      // la réutiliser (replace) sans qu'un back() différé ne l'efface ensuite.
+    },
+  };
 }

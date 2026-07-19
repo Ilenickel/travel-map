@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { cleanupAttachmentsStorage } from '../lib/attachments';
+import { addDaysToDateStr } from '../lib/planningUtils';
 
 export function useTrips(userId) {
   const { t } = useTranslation();
@@ -96,6 +97,87 @@ export function useTrips(userId) {
     setTrips(prev => prev.map(t => t.id === tripId ? { ...t, updated_at: ts } : t));
   }, []);
 
+  // Étend trips.end_date si l'ancrage différé d'un planning importé (voir
+  // anchor_city_pending_days/anchor_trip_pending_days ci-dessous) déborde de
+  // la fin actuelle — sinon les derniers jours importés se retrouveraient
+  // datés HORS du calendrier affiché (DayView ne montre que les jours entre
+  // start_date/end_date, et une activité datée en dehors n'apparaît ni là ni
+  // dans les "non planifiées" : elle disparaît en silence). Symétrique de
+  // extendTripEndIfNeeded côté serveur (api/trip-templates.js), pour le même
+  // problème déclenché ici par un ancrage plutôt que par un import direct.
+  // `currentEndDate` : fin du voyage AVANT cet ancrage — si elle n'existait
+  // pas encore, la nouvelle fin est simplement déduite (rien "d'ajouté" à
+  // signaler) ; si elle existait déjà, les jours gagnés au-delà sont marqués
+  // (trips.import_added_days, planning_modele_v12.sql) pour le badge de
+  // DayView.
+  const extendTripEndForAnchor = useCallback(async (tripId, currentEndDate, candidateEnd) => {
+    if (!candidateEnd || (currentEndDate && candidateEnd <= currentEndDate)) return;
+    const { error } = await supabase.from('trips').update({ end_date: candidateEnd }).eq('id', tripId);
+    if (error) { console.error('[useTrips] extend end_date (ancrage):', error); return; }
+    setTrips(prev => prev.map(t => t.id === tripId ? { ...t, end_date: candidateEnd } : t));
+    if (!currentEndDate) return;
+    const addedDays = [];
+    for (let d = addDaysToDateStr(currentEndDate, 1); d <= candidateEnd; d = addDaysToDateStr(d, 1)) addedDays.push(d);
+    const { data: tripRow, error: readError } = await supabase.from('trips').select('import_added_days').eq('id', tripId).maybeSingle();
+    if (readError) {
+      // Colonne absente (planning_modele_v12.sql pas encore joué) : la fin a
+      // déjà été étendue ci-dessus, seul le badge est perdu — jamais bloquant.
+      console.error('[useTrips] read import_added_days (avez-vous joué planning_modele_v12.sql ?):', readError);
+      return;
+    }
+    const merged = [...new Set([...(tripRow?.import_added_days || []), ...addedDays])].sort();
+    const { error: markError } = await supabase.from('trips').update({ import_added_days: merged }).eq('id', tripId);
+    if (markError) console.error('[useTrips] set import_added_days (ancrage):', markError);
+  }, []);
+
+  // Étend l'ENVELOPPE de dates du voyage (start_date ET end_date) pour
+  // couvrir le contenu d'une ville qu'on vient d'ancrer individuellement
+  // (voir updateCity) — dans les DEUX sens : recule le départ si cette ville
+  // commence plus tôt que tout ce qui était déjà daté, avance la fin si elle
+  // va plus loin. Jamais l'inverse (l'enveloppe existante ne rétrécit
+  // jamais). Contrairement à l'ancrage d'un voyage ENTIER (updateTrip,
+  // anchor_trip_pending_days), où la date choisie par l'utilisateur EST par
+  // définition le jour 1 fixe de tout ce qui s'ancre en même temps, ici
+  // chaque ville est ancrée indépendamment, l'une après l'autre : rien ne
+  // garantit que la première ville datée soit la plus précoce du voyage — une
+  // ville datée ENSUITE peut très bien commencer avant. Le chevauchement
+  // avec du contenu déjà présent sur ces mêmes jours est normal, pas empêché
+  // : chaque ville garde ses propres activités, elles cohabitent simplement
+  // sur le calendrier.
+  const extendTripEnvelopeForAnchor = useCallback(async (tripId, currentStart, currentEnd, candidateStart, candidateEnd) => {
+    if (!tripId) return;
+    const hadAnyDate = !!(currentStart || currentEnd);
+    const newStart = (!currentStart || candidateStart < currentStart) ? candidateStart : currentStart;
+    const newEnd = (!currentEnd || candidateEnd > currentEnd) ? candidateEnd : currentEnd;
+    if (newStart === currentStart && newEnd === currentEnd) return;
+
+    const { error } = await supabase.from('trips').update({ start_date: newStart, end_date: newEnd }).eq('id', tripId);
+    if (error) { console.error('[useTrips] extend trip envelope (ancrage):', error); return; }
+    setTrips(prev => prev.map(t => t.id === tripId ? { ...t, start_date: newStart, end_date: newEnd } : t));
+
+    // Voyage qui n'avait ENCORE aucune date du tout : l'enveloppe est
+    // simplement déduite de ce premier contenu ancré, rien "d'ajouté" à
+    // signaler par-dessus une enveloppe qui n'existait pas.
+    if (!hadAnyDate) return;
+
+    const addedDays = [];
+    if (currentStart && newStart < currentStart) {
+      for (let d = newStart; d < currentStart; d = addDaysToDateStr(d, 1)) addedDays.push(d);
+    }
+    if (currentEnd && newEnd > currentEnd) {
+      for (let d = addDaysToDateStr(currentEnd, 1); d <= newEnd; d = addDaysToDateStr(d, 1)) addedDays.push(d);
+    }
+    if (!addedDays.length) return;
+    const { data: tripRow, error: readError } = await supabase.from('trips').select('import_added_days').eq('id', tripId).maybeSingle();
+    if (readError) {
+      console.error('[useTrips] read import_added_days (avez-vous joué planning_modele_v12.sql ?):', readError);
+      return;
+    }
+    const merged = [...new Set([...(tripRow?.import_added_days || []), ...addedDays])].sort();
+    const { error: markError } = await supabase.from('trips').update({ import_added_days: merged }).eq('id', tripId);
+    if (markError) console.error('[useTrips] set import_added_days (ancrage enveloppe):', markError);
+  }, []);
+
   // ─── Trips CRUD ───
 
   const createTrip = useCallback(async () => {
@@ -123,31 +205,45 @@ export function useTrips(userId) {
     // date ULTÉRIEUR ne re-décale rien, comme pour un voyage déjà daté).
     if (updates.start_date && tripData?.trip?.id === tripId
       && tripData.cities.some(c => !c.parent_city_id && c.pending_day_offset != null)) {
+      // Décalage réel maximal (base 0) atteint par l'ancrage de TOUT le
+      // voyage — dérivé des VRAIES activités en attente (pending_day_index)
+      // de chaque ville de base et de ses excursions rattachées : sans ça, la
+      // fin du voyage pourrait être sous-estimée et faire sortir les derniers
+      // jours importés du calendrier (datés, mais hors de la plage affichée
+      // par DayView — ni visibles, ni "non planifiés").
+      let maxOffset = 0;
+      for (const c of tripData.cities) {
+        if (c.parent_city_id || c.pending_day_offset == null) continue;
+        const ownMaxIndex = tripData.activities
+          .filter(a => a.city_id === c.id && a.pending_day_index != null)
+          .reduce((m, a) => Math.max(m, a.pending_day_index), 0);
+        if (ownMaxIndex > 0) maxOffset = Math.max(maxOffset, c.pending_day_offset + ownMaxIndex - 1);
+        for (const child of tripData.cities) {
+          if (child.parent_city_id !== c.id || child.pending_day_offset == null) continue;
+          const childMaxIndex = tripData.activities
+            .filter(a => a.city_id === child.id && a.pending_day_index != null)
+            .reduce((m, a) => Math.max(m, a.pending_day_index), 0);
+          if (childMaxIndex > 0) {
+            maxOffset = Math.max(maxOffset, c.pending_day_offset + child.pending_day_offset + childMaxIndex - 1);
+          }
+        }
+      }
+      const candidateEnd = addDaysToDateStr(updates.start_date, maxOffset);
+
       const { error: anchorError } = await supabase.rpc('anchor_trip_pending_days', {
         p_trip_id: tripId, p_start_date: updates.start_date,
       });
       if (anchorError) { console.error('anchor_trip_pending_days failed:', anchorError); return; }
-      // Date de retour déduite du contenu ancré si elle n'est pas encore
-      // renseignée : le voyage importé "fait" N jours, autant que les dates
-      // du voyage le reflètent sans re-saisie manuelle.
-      const endDate = updates.end_date !== undefined ? updates.end_date : tripData.trip.end_date;
-      if (!endDate) {
-        const totalDays = tripData.cities
-          .filter(c => !c.parent_city_id && c.pending_day_offset != null && c.planned_days)
-          .reduce((max, c) => Math.max(max, c.pending_day_offset + c.planned_days), 0);
-        if (totalDays > 0) {
-          const end = new Date(updates.start_date + 'T12:00:00');
-          end.setDate(end.getDate() + totalDays - 1);
-          const endStr = end.toISOString().slice(0, 10);
-          const { error: endError } = await supabase.from('trips').update({ end_date: endStr }).eq('id', tripId);
-          if (!endError) {
-            setTrips(prev => prev.map(t => t.id === tripId ? { ...t, end_date: endStr } : t));
-          }
-        }
+
+      // Date de fin déjà fournie explicitement dans CETTE même mise à jour
+      // (ex. saisie manuelle départ+retour en une fois) : on la respecte,
+      // jamais d'extension automatique par-dessus un choix explicite.
+      if (updates.end_date === undefined) {
+        await extendTripEndForAnchor(tripId, tripData.trip.end_date, candidateEnd);
       }
       await loadTripData(tripId);
     }
-  }, [tripData, loadTripData]);
+  }, [tripData, loadTripData, extendTripEndForAnchor]);
 
   const deleteTrip = useCallback(async (tripId) => {
     // Nettoyage Storage AVANT la suppression SQL : depuis planning_tables_v13.sql,
@@ -362,13 +458,44 @@ export function useTrips(userId) {
       || tripData.cities.some(c => c.parent_city_id === cityId && c.pending_day_offset != null)
     );
     if (hasPending) {
+      // Le décalage réel maximal se calcule sur les VRAIES activités en
+      // attente (pending_day_index) — il n'y a plus de champ "jours prévus"
+      // séparé pouvant se désynchroniser du contenu réellement importé (voir
+      // citiesForDay dans DayView.jsx, qui dérive maintenant tout des
+      // activités datées).
+      const ownMaxIndex = tripData.activities
+        .filter(a => a.city_id === cityId && a.pending_day_index != null)
+        .reduce((m, a) => Math.max(m, a.pending_day_index), 0);
+      let maxOffset = ownMaxIndex > 0 ? ownMaxIndex - 1 : 0;
+      for (const c of tripData.cities) {
+        if (c.parent_city_id !== cityId || c.pending_day_offset == null) continue;
+        const childMaxIndex = tripData.activities
+          .filter(a => a.city_id === c.id && a.pending_day_index != null)
+          .reduce((m, a) => Math.max(m, a.pending_day_index), 0);
+        if (childMaxIndex > 0) maxOffset = Math.max(maxOffset, c.pending_day_offset + childMaxIndex - 1);
+      }
+      const candidateEnd = addDaysToDateStr(updates.start_date, maxOffset);
+
       const { error: anchorError } = await supabase.rpc('anchor_city_pending_days', {
         p_city_id: cityId, p_start_date: updates.start_date,
       });
       if (anchorError) { console.error('anchor_city_pending_days failed:', anchorError); return; }
+
+      // L'enveloppe de dates du voyage (start_date/end_date) s'adapte dans
+      // les DEUX sens à cette ville qu'on vient d'ancrer — pas seulement la
+      // toute première ville datée : si le voyage avait déjà des dates (via
+      // une autre ville ancrée avant) et que celle-ci commence PLUS TÔT, le
+      // départ du voyage recule pour l'inclure ; si elle va PLUS LOIN, la fin
+      // avance — voir extendTripEnvelopeForAnchor. Le chevauchement avec le
+      // contenu déjà présent sur ces mêmes jours est normal (chaque ville
+      // garde ses propres activités, elles cohabitent simplement).
+      await extendTripEnvelopeForAnchor(
+        tripData.trip?.id, tripData.trip?.start_date || null, tripData.trip?.end_date || null,
+        updates.start_date, candidateEnd
+      );
       if (tripData.trip?.id) await loadTripData(tripData.trip.id);
     }
-  }, [tripData, loadTripData]);
+  }, [tripData, loadTripData, extendTripEnvelopeForAnchor]);
 
   const removeCity = useCallback(async (cityId) => {
     // Les excursions (daytrips) rattachées à cette ville cascadent aussi en base
