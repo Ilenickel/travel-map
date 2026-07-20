@@ -558,6 +558,12 @@ function AppInner() {
             return null;
           })()}
           onClose={() => {
+            // Referme la comparaison sur le pays qui l'a lancée (compareBase) —
+            // sauf s'il y a eu un clic vers un autre pays entre-temps, mais ce
+            // cas quitte déjà la comparaison directement via onCountryClick
+            // ci-dessous (compareBase y est réassigné), donc ce onClose ne
+            // s'applique qu'à une vraie fermeture de la comparaison.
+            openCountry(compareBase);
             setCompareBase(null);
             const url = new URL(window.location.href);
             url.searchParams.delete("compare");

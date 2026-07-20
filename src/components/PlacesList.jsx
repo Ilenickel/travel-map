@@ -451,10 +451,12 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
             {!place.isJson && (
               <div className="must-item-actions">
                 {deletingId === place.id ? (
-                  <div className="review-confirm-delete">
-                    <span className="review-confirm-msg">{t('placesList.confirmDeleteMessage')}</span>
-                    <button className="review-confirm-yes" onClick={() => handleDelete(place)}>{t('placesList.yesButton')}</button>
-                    <button className="review-confirm-no" onClick={() => setDeletingId(null)}>{t('placesList.noButton')}</button>
+                  <div className="dest-card-confirm-block">
+                    <span className="dest-card-confirm-msg">{t('placesList.confirmDeleteMessage')}</span>
+                    <div className="dest-card-confirm-btns">
+                      <button className="review-confirm-no" onClick={() => setDeletingId(null)}>{t('placesList.noButton')}</button>
+                      <button className="review-confirm-yes" onClick={() => handleDelete(place)}>{t('placesList.yesButton')}</button>
+                    </div>
                   </div>
                 ) : (
                   <>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
@@ -31,6 +32,15 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
   const infoBtnRefs = useRef({});
   const navigate = useNavigate();
 
+  // Ferme le tooltip (maintenant au clic/tap plutôt qu'au survol) dès qu'on
+  // clique ailleurs — sinon il resterait affiché indéfiniment.
+  useEffect(() => {
+    if (!tooltip) return;
+    const close = () => setTooltip(null);
+    document.addEventListener('click', close);
+    return () => document.removeEventListener('click', close);
+  }, [tooltip]);
+
   useEffect(() => {
     const ids = [...new Set(notifications.map((n) => n.from_user_id).filter(Boolean))];
     if (!ids.length) return;
@@ -53,7 +63,7 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
     } else if (notif.type === 'new_dest_review' || notif.type === 'new_own_dest_review') {
       const underscore = notif.destination_id?.indexOf('_') ?? -1;
       const destLocalId = underscore !== -1 ? notif.destination_id.slice(underscore + 1) : null;
-      let reviewId = notif.review_id ?? null;
+      let reviewId = notif.destination_review_id ?? notif.review_id ?? null;
       if (!reviewId && notif.destination_id && notif.from_user_id) {
         const { data: rev } = await supabase
           .from('destination_reviews')
@@ -144,10 +154,16 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
         </div>
       </div>
 
-      {tooltip && (
+      {tooltip && createPortal(
+        // Portail vers document.body : .notif-panel a overflow:hidden ET
+        // backdrop-filter, qui crée un nouveau contexte de positionnement
+        // pour tout descendant en position:fixed — le tooltip se
+        // positionnait/se coupait par rapport au panneau au lieu de l'écran,
+        // ce qui le rendait invisible ou mal placé.
         <div className="notif-info-tooltip" style={{ top: tooltip.y, right: window.innerWidth - tooltip.x }}>
           {t('notification.ownershipTooltip')}
-        </div>
+        </div>,
+        document.body
       )}
 
       {notifications.length === 0 ? (
@@ -255,13 +271,19 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                   <button
                     ref={el => { infoBtnRefs.current[n.id] = el; }}
                     className="notif-info-btn"
-                    onClick={(e) => e.stopPropagation()}
                     aria-label={t('notification.infoAriaLabel')}
-                    onMouseEnter={() => {
-                      const rect = infoBtnRefs.current[n.id]?.getBoundingClientRect();
-                      if (rect) setTooltip({ id: n.id, x: rect.right, y: rect.bottom + 6 });
+                    onClick={(e) => {
+                      // Bascule au clic/tap (marche sur PC et mobile) au lieu
+                      // du survol seul (onMouseEnter ne se déclenche jamais
+                      // au tap tactile — le tooltip ne s'ouvrait donc jamais
+                      // sur mobile, et semblait aussi capricieux sur PC).
+                      e.stopPropagation();
+                      setTooltip((cur) => {
+                        if (cur?.id === n.id) return null;
+                        const rect = infoBtnRefs.current[n.id]?.getBoundingClientRect();
+                        return rect ? { id: n.id, x: rect.right, y: rect.bottom + 6 } : null;
+                      });
                     }}
-                    onMouseLeave={() => setTooltip(null)}
                   >ℹ</button>
                 )}
                 <button

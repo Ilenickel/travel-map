@@ -434,8 +434,11 @@ html, body, #root { height: 100%; }
 }
 
 .country-modal {
+  position: relative;
   pointer-events: all;
-  width: min(960px, 100%);
+  /* 1100px : assez large pour que les 7 onglets (dont Recommandations) tiennent
+     sans défilement horizontal à côté de la pilule d'actions */
+  width: min(1100px, 100%);
   height: min(88vh, 880px);
   /* Bordure dégradée (padding-box/border-box) : liseré indigo en haut qui
      s'estompe, même signature que les cartes de l'écran de planification */
@@ -458,23 +461,151 @@ html, body, #root { height: 100%; }
   to   { transform: scale(1)    translateY(0);    opacity: 1; }
 }
 
-/* â”€â”€â”€ Panel Header â”€â”€â”€ */
-.panel-header {
-  position: relative;
-  height: 200px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: flex-end;
-  padding: 24px;
-  border-radius: 24px 24px 0 0;
-  overflow: hidden;
+/* â”€â”€â”€ Barre du haut : onglets (desktop) ou hamburger (mobile) +
+   pilule d'actions â”€â”€â”€ */
+/* Barre flottante par-dessus le hero (photo/dégradé) : premier enfant de
+   .panel-body (le conteneur qui défile), en position sticky — plus robuste
+   qu'un position:absolute sur un frère du conteneur scrollable (constaté :
+   se désépingle sur certaines fenêtres courtes en hauteur pendant le
+   scroll). Boîte sticky à hauteur nulle (overflow: visible) plutôt qu'un
+   margin-bottom négatif pour ne réserver aucune place dans le flux : un
+   margin négatif sur un élément sticky fausse le calcul de sa plage
+   d'ancrage dans certains navigateurs (elle se désépingle en plein milieu
+   du contenu dès que la fiche est courte — exactement le bug observé). Le
+   vrai contenu visuel (padding, fond, flex) vit dans .panel-topbar-inner.
+   Sticky a besoin d'un `top` explicite pour savoir où s'épingler. */
+.panel-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  height: 0;
+  overflow: visible;
 }
 
+.panel-topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: none;
+  transition: transform 0.25s ease;
+}
+
+/* Masquée pendant qu'on scrolle vers le bas (le hero défile avec le
+   contenu — sinon son texte finirait par passer derrière la barre
+   transparente), réaffichée en haut de la fiche ou en remontant. PC et
+   mobile : la barre reste épinglée en haut tant qu'elle est affichée
+   (position sticky sur .panel-topbar), mais pas visible en permanence. */
+.panel-topbar-inner--hidden { transform: translateY(-100%); }
+
+.panel-hamburger-btn {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* â”€â”€â”€ Tiroir hamburger (mobile) â”€â”€â”€ */
+.panel-drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 5;
+}
+
+.panel-drawer {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: min(78vw, 300px);
+  background: var(--surface);
+  border-right: 1px solid var(--border-light);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  padding: 64px 8px 16px;
+  gap: 2px;
+  overflow-y: auto;
+  animation: drawerIn 0.2s ease-out;
+}
+
+@keyframes drawerIn {
+  from { transform: translateX(-16px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+.panel-drawer-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 8px 12px 6px;
+}
+
+.panel-drawer-item {
+  background: none;
+  border: none;
+  text-align: left;
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.panel-drawer-item:hover, .panel-drawer-item:active { background: var(--surface3); color: var(--text); }
+
+/* â”€â”€â”€ Panel Header (hero) â”€â”€â”€
+   Maquette de référence : l'image occupe la droite du bandeau, lumineuse,
+   et se fond dans la surface (dégradé horizontal vers la gauche + fondu bas)
+   ; le texte (grand titre, chips, description, CTA) vit à gauche sur le fond.
+   Le hero défile avec le contenu (il est dans .panel-body). */
+.panel-header {
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  /* padding-top : dégage la barre flottante (.panel-topbar, position absolute
+     par-dessus le hero) qui ne réserve plus sa propre place dans le flux */
+  padding: 78px 32px 28px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* Version riche (onglet Aperçu) : plus haute, description + CTA en plus */
+.panel-header--full {
+  min-height: 330px;
+  align-items: flex-start;
+  padding-top: 84px;
+}
+
+/* Photo posée en carte arrondie qui remonte quasiment jusqu'en haut du
+   bandeau (juste sous la barre du haut, sans espace mort) — comme la
+   maquette : pas un fondu façon vignette ovale, une vraie carte photo. */
 .panel-header-bg {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
+  /* top/right/bottom + height/width auto ne suffisent pas à étirer une image
+     (élément remplacé) sur ses 4 côtés — il faut des dimensions explicites,
+     sinon elle garde sa taille intrinsèque et ne remplit pas la carte.
+     La photo touche les bords (haut/droite/bas) du panneau — comme la
+     maquette de référence, où elle passe derrière la barre flottante —
+     .country-modal a overflow:hidden + son propre arrondi qui la découpe. */
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
   object-fit: cover;
-  filter: brightness(0.3) saturate(1.2);
+  filter: saturate(1.05);
 }
 
 .wiki-img-placeholder.panel-header-bg {
@@ -485,9 +616,14 @@ html, body, #root { height: 100%; }
   font-size: 52px;
 }
 
+/* Fondu : la surface recouvre le bord gauche de la carte photo pour que le
+   texte s'y pose sans coupure nette. Zone de transition large (35%→85%,
+   au lieu de 40%→62%) : un fondu étroit passe presque inaperçu en nuit
+   (photo déjà sombre, faible contraste avec le fond), mais fait une
+   coupure nette et visible en jour (photo claire contre fond crème). */
 .panel-header-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(15,22,35,1) 0%, rgba(15,22,35,0.5) 45%, transparent 100%);
+  background: linear-gradient(90deg, var(--surface) 0%, var(--surface) 35%, transparent 85%);
 }
 
 .panel-close {
@@ -514,25 +650,26 @@ html, body, #root { height: 100%; }
   color: var(--text);
 }
 
-/* ─── Barre d'actions unifiée du héros (comparer / visité / favori / fermer) :
-   une seule pilule verre en haut à droite au lieu de 4 boutons flottants
-   éparpillés — les boutons y deviennent statiques et sans fond propre ─── */
+/* ─── Barre d'actions unifiée (comparer / visité / favori / fermer) : une
+   seule pilule à droite de la barre du haut (desktop et mobile) au lieu de
+   boutons flottants par-dessus l'image du hero ─── */
 .panel-actions {
-  position: absolute;
-  top: 14px;
-  right: 14px;
+  position: static;
+  margin-left: auto;
   z-index: 2;
   display: flex;
   align-items: center;
   gap: 2px;
   padding: 4px;
-  border: 1px solid transparent;
+  /* Verre translucide flouté plutôt qu'un fond plein + bordure nette : la
+     barre flotte sur la photo, un contour trop marqué faisait "pavé" au
+     lieu de se fondre dans le hero (déjà le traitement du mode mobile,
+     repris ici pour le desktop qui flotte désormais aussi sur la photo). */
+  border: 1px solid color-mix(in srgb, var(--border-light) 55%, transparent);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(10,14,24,0.72), rgba(8,12,20,0.6)) padding-box,
-    linear-gradient(150deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05) 60%) border-box;
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
   backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 16px rgba(0,0,0,0.35);
+  flex-shrink: 0;
 }
 
 .panel-actions .panel-compare-btn,
@@ -564,8 +701,7 @@ html, body, #root { height: 100%; }
 
 /* Cibles tactiles plus grandes dans la pilule sur mobile (remplace les
    anciennes règles 44px par bouton, désormais statiques dans le groupe) */
-@media (max-width: 768px) {
-  .panel-actions { top: 10px; right: 10px; }
+@media (max-width: 1024px) {
   .panel-actions .panel-visited-btn,
   .panel-actions .panel-fav-btn,
   .panel-actions .panel-close {
@@ -574,16 +710,60 @@ html, body, #root { height: 100%; }
   }
 }
 
-.panel-header-content { position: relative; z-index: 1; }
-.panel-emoji { font-size: 30px; display: block; margin-bottom: 6px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
-.panel-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 10px; }
+.panel-header-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Le texte reste dans la moitié gauche (zone fondue), l'image respire à droite */
+  width: 100%;
+  max-width: 54%;
+}
+
+/* Drapeau + nom sur la même ligne (au lieu d'un drapeau empilé au-dessus) */
+.panel-name-row { display: flex; align-items: center; gap: 25px; }
+.panel-emoji { display: inline-flex; align-items: center; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35)); }
+.panel-title { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin: 0; text-shadow: 0 1px 12px var(--surface), 0 1px 2px var(--surface); }
+.panel-header--full .panel-title { font-size: 42px; }
 
 .panel-meta {
   display: flex;
   gap: 6px;
   font-size: 12px;
-  color: rgba(241,245,249,0.6);
+  color: var(--text-muted);
   flex-wrap: wrap;
+}
+.panel-meta-chip { text-shadow: 0 1px 8px var(--surface); }
+.panel-hero-description { text-shadow: 0 1px 10px var(--surface), 0 1px 2px var(--surface); }
+
+/* Description + CTA affichés uniquement sur la section Aperçu — le texte est
+   posé sur la surface (zone fondue à gauche), pas sur l'image : pas d'ombre */
+.panel-hero-description {
+  max-width: 560px;
+  margin: 4px 0 0;
+  font-size: 13.5px;
+}
+
+.panel-hero-cta {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.panel-hero-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px rgba(99,102,241,0.5);
 }
 
 .panel-meta-chip {
@@ -594,52 +774,75 @@ html, body, #root { height: 100%; }
   backdrop-filter: blur(8px);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
-/* â”€â”€â”€ Tabs â”€â”€â”€ */
+/* â”€â”€â”€ Tabs (nichés dans .panel-topbar : plus de padding/bordure propres) â”€â”€â”€ */
 .panel-tabs {
   display: flex;
-  gap: 4px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
-  background: var(--surface);
 }
 
 .panel-tabs::-webkit-scrollbar { display: none; }
 
 .tab-btn {
+  position: relative;
   background: none;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  padding: 7px 16px;
-  border-radius: 20px;
+  border: none;
+  /* text-dim plutôt que text-muted : la barre flotte sur la photo (fond
+     sombre en nuit), un gris trop terne devient difficile à lire là-haut. */
+  color: var(--text-dim);
+  padding: 9px 8px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
   font-family: inherit;
-  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+  transition: color 0.15s, background 0.15s, font-size 0.15s;
+  /* La barre d'onglets flotte par-dessus le hero (.panel-topbar est en
+     position absolute) : les derniers onglets peuvent se retrouver sur la
+     photo brute plutôt que sur la zone fondue — halo pour rester lisible
+     quel que soit le fond, sans dépendre de la position exacte. */
+  text-shadow: 0 1px 10px var(--surface), 0 1px 3px var(--surface), 0 0 6px var(--surface);
 }
 
-.tab-btn:hover { color: var(--text-dim); background: var(--surface3); }
-/* Onglet actif : pilule en dégradé plein avec halo — se repère instantanément */
+/* Pas de pavé de fond au survol (trop lourd) : juste le texte qui grossit
+   légèrement et se souligne — le gap entre onglets (.panel-tabs) absorbe
+   le léger agrandissement sans chevaucher les voisins. */
+.tab-btn:hover:not(.active) {
+  color: var(--text-dim);
+  background: none;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+/* Onglet actif : soulignement accent discret (maquette), plus sobre que
+   l'ancienne pilule en dégradé plein */
 .tab-btn.active {
-  color: #fff;
-  border-color: rgba(255,255,255,0.12);
-  background: linear-gradient(120deg, #6366f1, #8b5cf6);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 2px 10px rgba(99,102,241,0.35);
+  color: var(--text);
+  background: none;
 }
 
-/* â”€â”€â”€ Tabs scroll indicator â”€â”€â”€ */
-.panel-tabs-wrapper {
-  position: relative;
-  flex-shrink: 0;
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  left: 10px; right: 10px; bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), #8b5cf6);
 }
 
 /* â”€â”€â”€ Panel Body â”€â”€â”€ */
 .panel-body {
   flex: 1;
+  /* Sans ça, un enfant flex avec overflow:auto peut refuser de rétrécir en
+     dessous de la hauteur de son contenu (min-height:auto par défaut) sur
+     une fenêtre courte : le scroll interne se dérègle et tout le layout
+     (topbar comprise, pourtant en position absolute) part en vrille. */
+  min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -663,10 +866,48 @@ html, body, #root { height: 100%; }
   color: var(--text-muted);
 }
 
+/* Grands titres de section de l'Aperçu ("Quand y aller ?", "Destinations
+   phares") — style éditorial de la maquette, pas les petites capitales */
+.section-title-lg {
+  font-size: 19px;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+/* En-tête "Destinations phares" + lien "Voir toutes les destinations →" */
+.dest-preview-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.panel-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.panel-link-btn:hover { text-decoration: underline; }
+
 .section-intro { font-size: 14px; line-height: 1.65; color: var(--text-dim); }
 
-/* â”€â”€â”€ Period Cards â”€â”€â”€ */
-.period-cards { display: flex; flex-direction: column; gap: 10px; }
+/* â”€â”€â”€ Period Cards : 3 cartes côte à côte sur desktop (maquette), empilées
+   automatiquement quand la place manque â”€â”€â”€ */
+.period-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
 
 .period-card {
   display: flex;
@@ -675,7 +916,7 @@ html, body, #root { height: 100%; }
   border: 1px solid var(--border);
   border-left-width: 3px;
   border-radius: 14px;
-  padding: 14px 16px;
+  padding: 16px;
   transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
@@ -698,7 +939,8 @@ html, body, #root { height: 100%; }
   overflow: hidden;
   cursor: pointer;
   position: relative;
-  aspect-ratio: 1;
+  /* Format paysage (maquette), plus aéré que l'ancien carré */
+  aspect-ratio: 16 / 10;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -731,7 +973,9 @@ html, body, #root { height: 100%; }
   flex-direction: column;
 }
 
-.dest-card-mini-name { font-size: 12px; font-weight: 700; }
+/* Couleur explicite : sans elle, hérite de var(--text) qui est presque noir
+   en thème clair — invisible sur le dégradé sombre posé sous le nom. */
+.dest-card-mini-name { font-size: 12px; font-weight: 700; color: #fff; }
 .dest-card-mini-region { font-size: 10px; color: rgba(255,255,255,0.6); }
 
 /* â”€â”€â”€ City Tabs (Weather) â”€â”€â”€ */
@@ -770,15 +1014,21 @@ html, body, #root { height: 100%; }
 .city-tab.active .city-tab-region { color: var(--accent2); }
 
 /* â”€â”€â”€ Weather Chart â”€â”€â”€ */
+.weather-chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 20px 16px 16px;
+}
+
 .weather-chart {
   display: flex;
   align-items: flex-end;
   gap: 4px;
-  height: 140px;
-  background: var(--surface2);
-  border-radius: 16px;
-  padding: 14px 12px 10px;
-  border: 1px solid var(--border);
+  height: 150px;
 }
 
 .weather-month {
@@ -786,31 +1036,47 @@ html, body, #root { height: 100%; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   justify-content: flex-end;
+  padding: 8px 2px 6px;
+  border-radius: 12px;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.weather-month:hover {
+  background: var(--surface3);
+  transform: translateY(-2px);
 }
 
 .weather-bars {
   display: flex;
-  gap: 2px;
+  gap: 3px;
   align-items: flex-end;
 }
 
 .bar {
-  width: 7px;
-  border-radius: 4px 4px 0 0;
+  width: 8px;
+  border-radius: 5px 5px 0 0;
   min-height: 4px;
   transition: height 0.5s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
 .bar-rain { background: linear-gradient(to top, #3b82f6, #7dd3fc); }
 .bar-temp { background: linear-gradient(to top, #f97316, #fb923c); }
 
-.weather-temp { font-size: 9px; font-weight: 700; color: var(--text); }
-.weather-icon { font-size: 11px; line-height: 1; }
-.weather-month-label { font-size: 8px; color: var(--text-muted); }
+.weather-temp { font-size: 11px; font-weight: 800; color: var(--text); }
+.weather-icon { font-size: 15px; line-height: 1; }
+.weather-month-label { font-size: 9px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; }
 
-.weather-legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-muted); }
+.weather-legend {
+  display: flex;
+  gap: 18px;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
 
 .legend-dot {
   display: inline-block;
@@ -823,8 +1089,18 @@ html, body, #root { height: 100%; }
 .legend-dot.rain { background: #7dd3fc; }
 .legend-dot.temp { background: #fb923c; }
 
-/* â”€â”€â”€ Destinations Grid â”€â”€â”€ */
-.dest-grid { display: flex; flex-direction: column; gap: 10px; }
+/* â”€â”€â”€ Destinations Grid â”€â”€â”€
+   Grille (pas une liste) : cartes verticales, photo à taille fixe en haut,
+   infos en dessous — sur PC comme sur mobile (l'ancienne liste horizontale
+   avec vignette qui suivait la hauteur du texte donnait des photos de
+   tailles très différentes d'une carte à l'autre selon la longueur de la
+   description). 300px = largeur minimale d'une carte avant de passer à la
+   ligne suivante. */
+.dest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
 
 .dest-card {
   background: var(--surface2);
@@ -833,25 +1109,29 @@ html, body, #root { height: 100%; }
   overflow: hidden;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .dest-card:hover {
   border-color: var(--accent);
-  transform: translateX(4px);
+  transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(99,102,241,0.12);
 }
 
+/* Taille fixe (pas align-self: stretch sur la hauteur du texte) : la photo
+   n'a plus besoin de suivre la description, donc elle reste identique sur
+   toutes les cartes quelle que soit sa longueur. */
 .dest-card-img {
-  width: 150px;
-  height: 106px;
-  object-fit: cover;
+  width: 100%;
+  height: 170px;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .wiki-img-placeholder.dest-card-img {
-  width: 150px;
-  height: 106px;
+  width: 100%;
+  height: 170px;
   flex-shrink: 0;
   background: var(--surface3);
   display: flex;
@@ -861,18 +1141,63 @@ html, body, #root { height: 100%; }
   color: var(--text-muted);
 }
 
-.dest-card-info { padding: 12px 16px; flex: 1; min-width: 0; }
+/* Colonne (pas juste un bloc) : la description prend flex:1 ci-dessous et
+   pousse mécaniquement tags + note tout en bas de la carte, quelle que soit
+   sa longueur — sans ça, sur une grille (les cartes d'une même ligne sont
+   étirées à hauteur égale), les tags/notes atterrissaient à des hauteurs
+   différentes selon la quantité de texte de chaque carte. */
+.dest-card-info { display: flex; flex-direction: column; padding: 12px 16px; flex: 1; min-width: 0; }
 
+/* Colonne (nom, puis région en dessous) plutôt qu'une ligne : avec un nom
+   long (ex. "Route de la Soie — Dunhuang & Gobi") ET une région longue
+   (ex. "Gansu / Xinjiang"), les deux se marchaient dessus côte à côte —
+   région collée/chevauchant la 2e ligne du titre. Empilé, ce risque
+   disparaît, sur PC comme sur mobile. Exception : nom + icônes
+   modifier/supprimer restent côte à côte (rien à faire wrap, pas de
+   risque de collision). */
 .dest-card-top {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   margin-bottom: 4px;
 }
+.dest-card-top:has(.dest-card-owner-actions) {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
 
-.dest-card-name { font-size: 15px; font-weight: 700; }
-.dest-card-region { font-size: 11px; color: var(--text-muted); }
-.dest-card-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
+/* PC uniquement (grille à plusieurs colonnes) : réserve une hauteur pour
+   nom + région, sinon la description ne commence pas au même endroit
+   selon la longueur du nom, quand plusieurs cartes de la même ligne de
+   grille sont étirées à hauteur égale. Sur mobile (1 seule colonne), les
+   cartes s'empilent chacune sur sa propre ligne — cet alignement inter-
+   cartes n'a pas lieu d'être, donc pas de réservation là-bas (un
+   min-height mal placé y créait un vide visible entre nom et région). */
+@media (min-width: 1025px) {
+  .dest-card-top:not(:has(.dest-card-owner-actions)) { min-height: 56px; }
+}
+
+.dest-card-name { font-size: 15px; font-weight: 700; line-height: 1.3; }
+.dest-card-region { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+/* Plus de troncature brute en JS (coupait au milieu d'un mot à 90
+   caractères) : line-clamp coupe proprement à la fin d'une ligne, et
+   s'adapte à la largeur réelle de la carte au lieu d'une longueur fixe. */
+/* Plus de plafond de lignes (idem mobile) : la photo est maintenant à
+   taille fixe, indépendante du texte — rien ne justifie de couper la
+   description avec "...". flex: 1 pousse tags/note en bas (voir
+   .dest-card-info ci-dessus). */
+.dest-card-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  display: block;
+  overflow: visible;
+  flex: 1;
+}
 
 /* â”€â”€â”€ Tags â”€â”€â”€ */
 .dest-tags { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -890,6 +1215,25 @@ html, body, #root { height: 100%; }
 /* â”€â”€â”€ Destination Detail â”€â”€â”€ */
 .dest-detail { display: flex; flex-direction: column; gap: 14px; }
 
+/* PC uniquement : sur mobile .dest-detail devient un plein écran en
+   position absolute qui recouvre déjà tout le panneau (voir le bloc
+   ≤1024px), donc l'en-tête pays est de toute façon masquée dessous — pas
+   besoin d'y toucher. Sur PC, .dest-detail reste dans le flux normal, sous
+   l'en-tête pays (photo + titre + puces) : sa propre grande photo se
+   retrouvait donc collée juste en dessous de celle du pays, deux photos
+   qui se suivaient sans raison. On masque l'en-tête pays dans ce cas
+   précis (la barre du haut avec les onglets reste, elle, toujours visible
+   — c'est un élément sticky séparé). */
+@media (min-width: 1025px) {
+  .panel-body:has(.dest-detail) .panel-header { display: none; }
+  /* L'en-tête masqué ci-dessus fournissait normalement la place pour la
+     barre du haut (sticky, ~66px) via son propre padding-top — sans lui,
+     le bouton "← Retour" se retrouvait juste derrière la barre, invisible
+     et donc inaccessible (bloqué sur la fiche destination). On rajoute
+     cette place directement sur .dest-detail. */
+  .dest-detail { padding-top: 78px; }
+}
+
 .back-btn {
   align-self: flex-start;
   background: none;
@@ -905,10 +1249,14 @@ html, body, #root { height: 100%; }
 
 .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--accent-subtle); }
 
-.dest-detail-img { width: 100%; height: 220px; object-fit: cover; border-radius: 16px; display: block; }
+/* 280px (au lieu de 220) sur PC : boîte un peu moins large/étroite par
+   rapport à la photo, donc un peu moins de recadrage — sans changer
+   l'approche (toujours object-fit: cover, taille fixe). Mobile inchangé
+   (override dédié plus bas dans le fichier). */
+.dest-detail-img { width: 100%; height: 280px; object-fit: cover; border-radius: 16px; display: block; }
 
 .wiki-img-placeholder.dest-detail-img {
-  height: 220px; border-radius: 16px; font-size: 40px;
+  height: 280px; border-radius: 16px; font-size: 40px;
 }
 .dest-detail-name { font-size: 23px; font-weight: 800; letter-spacing: -0.02em; }
 
@@ -985,13 +1333,23 @@ html, body, #root { height: 100%; }
 
 .must-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
 
-/* â”€â”€â”€ Must See List â”€â”€â”€ */
-.must-list { display: flex; flex-direction: column; gap: 8px; }
+/* â”€â”€â”€ Must See List â”€â”€â”€
+   Grille de cartes verticales (photo en grand en haut, infos en dessous) —
+   même traitement que la grille Destinations, sur PC comme sur mobile :
+   plus lisible et les photos sont bien plus grandes qu'en ligne horizontale
+   (qui les cantonnait à 260×175, souvent moins sur petit écran où l'espace
+   restant à côté de l'image finissait vide une fois le nom passé dessous). */
+.must-list {
+  display: grid;
+  /* 320px min (au lieu de 240) : force 3 colonnes sur PC au lieu de 4, les
+     cartes (et donc les photos) sont nettement plus grandes. */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
 
 .must-item {
   display: flex;
-  align-items: center;
-  gap: 0;
+  flex-direction: column;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -1005,8 +1363,8 @@ html, body, #root { height: 100%; }
 }
 
 .must-item-img {
-  width: 220px;
-  height: 150px;
+  width: 100%;
+  height: 220px;
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -1021,15 +1379,19 @@ html, body, #root { height: 100%; }
   color: var(--text-muted);
 }
 
-.wiki-img-placeholder.must-item-img { width: 220px; height: 150px; }
+.wiki-img-placeholder.must-item-img { width: 100%; height: 220px; }
 
 .must-item-name {
-  padding: 0 16px 0 28px;
+  padding: 10px 14px 4px;
   font-size: 14px;
   font-weight: 600;
   color: var(--text);
   line-height: 1.4;
 }
+/* Lieux statiques (JSON) : pas de bloc vote/suppr en dessous — le nom est
+   alors le dernier élément de la carte, avec seulement 4px de marge basse
+   (pensée pour être suivie de .must-item-actions), trop serré tout seul. */
+.must-item-name:last-child { padding-bottom: 12px; }
 
 /* ─── PlacesList ─── */
 .places-list { display: flex; flex-direction: column; gap: 10px; }
@@ -1157,8 +1519,7 @@ html, body, #root { height: 100%; }
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
-  padding-right: 12px;
+  padding: 6px 14px 12px;
   flex-shrink: 0;
 }
 .must-vote-btn {
@@ -1186,6 +1547,7 @@ html, body, #root { height: 100%; }
 }
 .must-delete-btn:hover { color: #f87171; background: rgba(248,113,113,0.1); }
 .must-delete-confirm { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
 .must-delete-msg { color: var(--text); font-size: 12px; }
 .must-delete-yes { font-size: 12px; color: #f87171; background: none; border: none; cursor: pointer; font-weight: 600; }
 .must-delete-no { font-size: 12px; color: var(--text-muted); background: none; border: none; cursor: pointer; }
@@ -1204,22 +1566,63 @@ html, body, #root { height: 100%; }
 }
 .places-load-more:hover { background: rgba(99,102,241,0.07); border-color: var(--accent); }
 
+/* Bouton "voir plus" des destinations : classe dédiée (pas .places-load-more,
+   partagée avec les Lieux à ne pas manquer) — la grille destinations est
+   bien plus large qu'une liste de lieux, un bouton width:100% y faisait un
+   pavé démesuré sur toute la largeur. Centré, largeur au contenu. */
+.dest-load-more {
+  display: block;
+  margin: 4px auto 0;
+  font-size: 13px; font-weight: 600;
+  color: var(--accent);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.dest-load-more:hover { background: rgba(99,102,241,0.07); border-color: var(--accent); }
+
 /* â”€â”€â”€ Weather Bilan â”€â”€â”€ */
-.bilan-section { display: flex; flex-direction: column; gap: 10px; }
+.bilan-section { display: flex; flex-direction: column; gap: 8px; }
+
+.bilan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
 .bilan-legend-row {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: 11px;
 }
 
-.bilan-note { margin-left: auto; font-size: 11px; color: var(--text-muted); font-style: italic; }
+.bilan-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+.bilan-chip-good { background: color-mix(in srgb, var(--green) 12%, var(--surface2)); border-color: color-mix(in srgb, var(--green) 30%, var(--border)); }
+.bilan-chip-ok   { background: color-mix(in srgb, var(--amber) 12%, var(--surface2)); border-color: color-mix(in srgb, var(--amber) 30%, var(--border)); }
+.bilan-chip-bad  { background: color-mix(in srgb, var(--red) 12%, var(--surface2)); border-color: color-mix(in srgb, var(--red) 30%, var(--border)); }
+
+.bilan-note { font-size: 11px; color: var(--text-muted); font-style: italic; }
 
 .bilan-dot {
   display: inline-block;
-  width: 10px; height: 10px;
+  width: 8px; height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -1230,7 +1633,7 @@ html, body, #root { height: 100%; }
 .bilan-table {
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   font-size: 11px;
 }
@@ -1238,51 +1641,63 @@ html, body, #root { height: 100%; }
 .bilan-header-row,
 .bilan-row {
   display: grid;
-  grid-template-columns: 110px repeat(12, 1fr);
+  /* 148px : certains pays ont des noms de ville + région longs ("Strasbourg
+     (Alsace)", "Avignon (Provence)") qui se retrouvaient tronqués au milieu
+     de la parenthèse à 120px — pas assez large pour rester lisible. */
+  grid-template-columns: 148px repeat(12, 1fr);
   align-items: center;
 }
 
 .bilan-header-row {
   border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.02);
+  background: var(--surface3);
 }
 
 .bilan-month-label {
   text-align: center;
-  padding: 7px 2px;
+  padding: 8px 2px;
   font-size: 10px;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .bilan-row {
-  border-bottom: 1px solid rgba(30, 45, 71, 0.5);
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.12s;
 }
 .bilan-row:last-child { border-bottom: none; }
-.bilan-row:hover { background: rgba(255,255,255,0.025); }
-.bilan-row-active { background: rgba(99, 102, 241, 0.06) !important; }
+.bilan-row:hover { background: var(--accent-subtle); }
+.bilan-row-active { background: var(--accent-subtle) !important; }
 
 .bilan-city-col {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 7px 10px;
-  border-right: 1px solid rgba(30, 45, 71, 0.5);
+  gap: 8px;
+  padding: 9px 12px;
+  border-right: 1px solid var(--border);
   min-width: 0;
 }
 
-.bilan-city-num {
+.bilan-city-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
   font-size: 10px;
-  font-weight: 700;
-  color: var(--accent2);
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
   flex-shrink: 0;
 }
 
 .bilan-city-name {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 700;
   color: var(--text);
   white-space: nowrap;
   overflow: hidden;
@@ -1291,14 +1706,36 @@ html, body, #root { height: 100%; }
 
 .bilan-cell {
   text-align: center;
-  padding: 5px 1px;
-  font-size: 12px;
+  padding: 4px;
   line-height: 1;
 }
 
-.bilan-good { background: rgba(16, 185, 129, 0.28); }
-.bilan-ok   { background: rgba(245, 158, 11, 0.28); }
-.bilan-bad  { background: rgba(239, 68, 68, 0.26); }
+.bilan-cell-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+/* Mode nuit (par défaut) : mélangé avec --surface2 (fond sombre) plutôt
+   qu'avec du blanc — un mélange blanc donnerait un pastel qui "brille"
+   trop fort sur le fond marine, en particulier le vert. Un peu moins
+   intense qu'en mode jour, uniquement ici. */
+.bilan-good .bilan-cell-emoji { background: color-mix(in srgb, var(--green) 32%, var(--surface2)); }
+.bilan-ok   .bilan-cell-emoji { background: color-mix(in srgb, var(--amber) 38%, var(--surface2)); }
+.bilan-bad  .bilan-cell-emoji { background: color-mix(in srgb, var(--red) 40%, var(--surface2)); }
+
+/* Mode jour : mélange avec du blanc plutôt que --surface2 — la surface
+   crème (chaude, jaune-orangée) tirait l'amber ET le rouge vers un même
+   pêche délavé, les rendant difficiles à distinguer d'un coup d'oeil.
+   Blanc neutre + pourcentages différenciés (rouge nettement plus couvrant)
+   pour garder les 3 teintes franches et éloignées les unes des autres. */
+[data-theme="light"] .bilan-good .bilan-cell-emoji { background: color-mix(in srgb, var(--green) 38%, #fff); }
+[data-theme="light"] .bilan-ok   .bilan-cell-emoji { background: color-mix(in srgb, var(--amber) 45%, #fff); }
+[data-theme="light"] .bilan-bad  .bilan-cell-emoji { background: color-mix(in srgb, var(--red) 52%, #fff); }
 
 /* â”€â”€â”€ Practical â”€â”€â”€ */
 .visa-disclaimer {
@@ -1334,9 +1771,47 @@ html, body, #root { height: 100%; }
 .practical-item:hover { border-color: var(--border-light); }
 
 .practical-icon { font-size: 22px; flex-shrink: 0; }
+.practical-icon-badge { display: contents; }
 .practical-body { display: flex; flex-direction: column; gap: 2px; }
 .practical-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
 .practical-value { font-size: 14px; font-weight: 600; }
+
+/* ─── PC : grille de tuiles (icône en badge coloré en haut, texte en dessous)
+   inspirée de la grille d'icônes de la maquette mobile ─── */
+@media (min-width: 769px) {
+  .practical-list {
+    display: grid;
+    /* auto-fit (pas auto-fill) : les colonnes vides d'une dernière ligne
+       incomplète sont supprimées au lieu de laisser un vide à droite —
+       les tuiles restantes s'étirent pour remplir la ligne proprement. */
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+  }
+  .practical-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 22px 14px;
+    border-radius: 18px;
+  }
+  .practical-icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--accent) 16%, var(--surface3));
+  }
+  .practical-icon { font-size: 24px; }
+  .practical-body { align-items: center; }
+  .practical-item:nth-child(6n+2) .practical-icon-badge { background: color-mix(in srgb, #f97316 18%, var(--surface3)); }
+  .practical-item:nth-child(6n+3) .practical-icon-badge { background: color-mix(in srgb, #14b8a6 18%, var(--surface3)); }
+  .practical-item:nth-child(6n+4) .practical-icon-badge { background: color-mix(in srgb, #a855f7 18%, var(--surface3)); }
+  .practical-item:nth-child(6n+5) .practical-icon-badge { background: color-mix(in srgb, #22c55e 18%, var(--surface3)); }
+  .practical-item:nth-child(6n+6) .practical-icon-badge { background: color-mix(in srgb, #0ea5e9 18%, var(--surface3)); }
+}
 
 /* â”€â”€â”€ Cost sub-tabs â”€â”€â”€ */
 .cost-subtabs {
@@ -1344,29 +1819,35 @@ html, body, #root { height: 100%; }
   gap: 6px;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 5px;
+  border-radius: 16px;
+  padding: 6px;
 }
 
 .cost-subtab-btn {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   background: none;
-  border: none;
-  border-radius: 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
   color: var(--text-muted);
   font-size: 13px;
-  font-weight: 600;
-  padding: 8px 10px;
+  font-weight: 700;
+  padding: 10px 10px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s;
   white-space: nowrap;
 }
 .cost-subtab-btn:hover { color: var(--text-dim); background: var(--surface3); }
 .cost-subtab-btn.active {
-  background: var(--surface);
-  color: var(--accent2);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  color: #fff;
+  border-color: rgba(255,255,255,0.14);
+  background: linear-gradient(120deg, var(--accent), #8b5cf6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 4px 14px color-mix(in srgb, var(--accent) 38%, transparent);
 }
+.cost-subtab-btn.active:hover { background: linear-gradient(120deg, var(--accent), #8b5cf6); }
 
 /* â”€â”€â”€ Cost of Living â”€â”€â”€ */
 .cost-exchange {
@@ -1375,27 +1856,37 @@ html, body, #root { height: 100%; }
   gap: 12px;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 16px;
+  border-radius: 16px;
+  padding: 10px 16px 10px 10px;
 }
 
+.cost-exchange-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface3));
+  flex-shrink: 0;
+}
 .cost-exchange-icon { font-size: 18px; }
 .cost-exchange-label { font-size: 12px; color: var(--text-muted); flex: 1; }
-.cost-exchange-value { font-size: 14px; font-weight: 700; color: var(--accent2); }
+.cost-exchange-value { font-size: 15px; font-weight: 800; color: var(--accent2); }
 
-.budget-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.budget-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 
 .budget-card {
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 12px;
+  border-radius: 18px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
   gap: 5px;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .budget-card::before {
@@ -1404,33 +1895,81 @@ html, body, #root { height: 100%; }
   top: 0; left: 0; right: 0;
   height: 3px;
   background: var(--budget-color);
-  border-radius: 16px 16px 0 0;
-  opacity: 0.8;
+  border-radius: 18px 18px 0 0;
+  opacity: 0.9;
 }
 
-.budget-card:hover { border-color: var(--border-light); }
+.budget-card:hover {
+  border-color: var(--budget-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--budget-color) 18%, transparent);
+}
 
-.budget-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--budget-color); margin-top: 4px; }
-.budget-daily { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.2; }
-.budget-desc { font-size: 10px; color: var(--text-dim); line-height: 1.4; }
+.budget-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  font-size: 17px;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  background: color-mix(in srgb, var(--budget-color) 18%, var(--surface3));
+}
+
+.budget-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--budget-color); }
+.budget-daily { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.budget-desc { font-size: 10.5px; color: var(--text-dim); line-height: 1.4; }
 
 /* â”€â”€â”€ Trip Estimate â”€â”€â”€ */
 .trip-estimate { display: flex; flex-direction: column; gap: 12px; }
 
-.trip-route {
-  font-size: 12px;
-  color: var(--text-dim);
+/* Frise de la route : chaque étape ("Pékin", "Xi'an"...) en pastille reliée
+   par une flèche, plutôt qu'une phrase brute à lire linéairement — la durée
+   entre parenthèses devient un petit badge sous le nom de la ville. */
+.trip-route-timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 2px;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 16px;
-  line-height: 1.6;
+  border-radius: 16px;
+  padding: 14px 16px;
 }
+
+.trip-route-stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px;
+  flex: 1;
+}
+
+.trip-route-stop-name { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.trip-route-stop-days {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent2);
+  background: var(--accent-subtle);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.trip-route-arrow { color: var(--text-muted); font-size: 14px; flex-shrink: 0; }
 
 .trip-budget-tabs { display: flex; gap: 6px; }
 
 .trip-budget-tab {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -1442,31 +1981,53 @@ html, body, #root { height: 100%; }
   transition: all 0.15s;
 }
 
+.trip-budget-tab-icon { font-size: 14px; }
+
 .trip-budget-tab:hover { color: var(--text-dim); border-color: var(--tab-color); background: var(--surface3); }
 .trip-budget-tab.active {
-  color: var(--tab-color);
+  color: #fff;
   border-color: var(--tab-color);
-  background: rgba(255,255,255,0.03);
+  /* Mélangé avec du noir en mode nuit : le vert "Routard" (#22c55e) en
+     remplissage plein et solide sur fond sombre lit comme un vert fluo
+     bien trop intense. Un peu de noir calme la saturation perçue sans
+     perdre la teinte. En mode jour (fond clair), la couleur pleine
+     d'origine restait lisible et n'a pas été signalée — inchangée. */
+  background: color-mix(in srgb, var(--tab-color) 78%, black);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--tab-color) 35%, transparent);
 }
+[data-theme="light"] .trip-budget-tab.active { background: var(--tab-color); }
 
 .trip-budget-card {
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--budget-color);
-  border-radius: 0 16px 16px 0;
+  border-left: 4px solid var(--budget-color);
+  border-radius: 4px 18px 18px 4px;
   overflow: hidden;
 }
 
 .trip-total {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
+  gap: 10px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--budget-color) 6%, transparent);
 }
 
-.trip-total-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
-.trip-total-value { font-size: 20px; font-weight: 800; color: var(--budget-color); }
+.trip-total-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  font-size: 15px;
+  background: color-mix(in srgb, var(--budget-color) 18%, var(--surface3));
+  flex-shrink: 0;
+}
+
+.trip-total-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; flex: 1; }
+.trip-total-value { font-size: 21px; font-weight: 800; color: var(--budget-color); }
 
 .trip-breakdown { padding: 4px 0; }
 
@@ -1474,34 +2035,88 @@ html, body, #root { height: 100%; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 9px 18px;
-  border-bottom: 1px solid rgba(30, 45, 71, 0.4);
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
   transition: background 0.1s;
 }
 
 .trip-line:last-child { border-bottom: none; }
-.trip-line:hover { background: rgba(255,255,255,0.02); }
+.trip-line:hover { background: var(--accent-subtle); }
 
 .trip-line-label { font-size: 13px; color: var(--text-dim); }
-.trip-line-amount { font-size: 13px; font-weight: 600; color: var(--text); }
+.trip-line-amount { font-size: 13px; font-weight: 700; color: var(--text); }
 
 /* â”€â”€â”€ Cost Categories â”€â”€â”€ */
-.cost-category { display: flex; flex-direction: column; gap: 8px; }
+.cost-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+/* Chaque catégorie porte sa propre teinte (--cat-color, rotation par
+   position) qui irrigue son badge, sa barre d'accent, ses pastilles de prix
+   ET le survol de ses lignes — au lieu d'un indigo générique partout, chaque
+   carte (Hébergement, Nourriture, Transport...) se reconnaît d'un coup d'oeil. */
+.cost-category {
+  --cat-color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.cost-category::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--cat-color);
+  opacity: 0.85;
+}
+
+.cost-category:hover {
+  border-color: var(--cat-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--cat-color) 16%, transparent);
+}
+
+.cost-category-grid > .cost-category:nth-child(6n+2) { --cat-color: #f97316; }
+.cost-category-grid > .cost-category:nth-child(6n+3) { --cat-color: #14b8a6; }
+.cost-category-grid > .cost-category:nth-child(6n+4) { --cat-color: #a855f7; }
+.cost-category-grid > .cost-category:nth-child(6n+5) { --cat-color: #22c55e; }
+.cost-category-grid > .cost-category:nth-child(6n+6) { --cat-color: #0ea5e9; }
 
 .cost-category-title {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  color: var(--text);
+  letter-spacing: -0.01em;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+}
+
+.cost-category-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  font-size: 16px;
+  background: color-mix(in srgb, var(--cat-color) 18%, var(--surface3));
+  flex-shrink: 0;
 }
 
 .cost-items {
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  background: var(--surface3);
   border-radius: 14px;
   overflow: hidden;
 }
@@ -1510,19 +2125,28 @@ html, body, #root { height: 100%; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 10px 14px;
   gap: 12px;
-  border-bottom: 1px solid rgba(30, 45, 71, 0.5);
+  border-bottom: 1px solid var(--border);
   transition: background 0.15s;
 }
 
 .cost-item:last-child { border-bottom: none; }
-.cost-item:hover { background: var(--accent-subtle); }
+.cost-item:hover { background: color-mix(in srgb, var(--cat-color) 10%, transparent); }
 
 .cost-item-left { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.cost-item-label { font-size: 13px; font-weight: 500; color: var(--text); }
+.cost-item-label { font-size: 13px; font-weight: 600; color: var(--text); }
 .cost-item-detail { font-size: 11px; color: var(--text-muted); }
-.cost-item-price { font-size: 13px; font-weight: 700; color: var(--accent2); white-space: nowrap; flex-shrink: 0; }
+.cost-item-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cat-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--cat-color) 16%, transparent);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
 
 /* â”€â”€â”€ Topbar favorites button â”€â”€â”€ */
 .topbar-favorites-wrapper {
@@ -2901,6 +3525,305 @@ html, body, #root { height: 100%; }
   letter-spacing: 0;
 }
 
+/* ─── Fiche pays — tablette (jusqu'à 1024px) ───
+   isMobile (CountryPanel) bascule à 1024px, pas 768px comme le reste de
+   l'app (voir useIsMobile(1024) dans CountryPanel.jsx) : le rendu tablette
+   dédié qui vivait ici accumulait les régressions car il n'était pas
+   maintenu en parallèle du rendu mobile à chaque changement. Le rendu
+   mobile (hamburger, scroll continu) s'applique donc maintenant jusqu'à
+   1024px — ce bloc reprend telles quelles les règles mobiles concernant la
+   fiche pays (extraites du bloc @media 768px partagé avec le reste de
+   l'app, qui lui reste à 768px pour tout ce qui n'est pas la fiche pays). */
+@media (max-width: 1024px) {
+  /* ── Modal fiche pays — plein écran (fini l'effet "fenêtre dans une
+     fenêtre" : plus de cadre, de bordure arrondie ni de scrollbar visible
+     façon fenêtre desktop miniature) ── */
+  .modal-wrapper { align-items: stretch; padding: 0; }
+  .country-modal {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    animation: modalInMobile 0.25s ease-out;
+  }
+
+  /* Contenu des onglets : marges réduites, les fiches respirent sur toute
+     la largeur au lieu d'être corsetées par les 22px du desktop. */
+  .tab-content { padding: 14px 12px 20px; gap: 16px; }
+  @keyframes modalInMobile {
+    from { transform: translateY(24px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  /* Barre du haut quasi invisible (maquette) : flottante par-dessus le hero,
+     sans bande de fond ni bordure — juste les boutons, lisibles grâce à un
+     léger voile dégradé en haut. */
+  .panel-topbar { height: 0; }
+  .panel-topbar-inner {
+    padding: 10px 12px 20px;
+    border-radius: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.42), transparent);
+  }
+
+  /* Hamburger : juste les 3 bandes, sans boîte autour */
+  .panel-hamburger-btn {
+    background: none;
+    border: none;
+    width: 42px;
+    height: 42px;
+    font-size: 24px;
+    color: #fff;
+    filter: drop-shadow(0 1px 6px rgba(0,0,0,0.7));
+  }
+
+  /* Pilule d'actions : verre translucide adapté au thème, posée sur l'image */
+  .panel-actions {
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    border-color: color-mix(in srgb, var(--border-light) 70%, transparent);
+    backdrop-filter: blur(10px);
+  }
+
+  .panel-drawer { padding-top: 60px; }
+
+  /* Hero mobile : l'image couvre toute la largeur (pas de découpe à droite
+     comme sur desktop) avec un fondu vertical vers la surface ; le texte
+     reprend toute la largeur. Padding haut = place pour la barre flottante. */
+  /* L'image forme une bande fixe en haut (comme la maquette) ; le texte vit
+     dans le bloc plein en dessous, sur la surface, jamais superposé à
+     l'image (illisible sinon). */
+  .panel-header {
+    min-height: 0;
+    padding: 210px 16px 20px;
+    align-items: flex-start;
+  }
+  .panel-header--full { min-height: 0; }
+  .panel-header-bg {
+    top: 0; left: 0;
+    width: 100%;
+    height: 210px;
+    border-radius: 0;
+    filter: brightness(0.85) saturate(1.1);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .panel-header-overlay {
+    top: 0; bottom: auto; left: 0; right: 0;
+    height: 210px;
+    background: linear-gradient(to top, var(--surface) 0%, transparent 45%);
+  }
+  .panel-header-content { max-width: 100%; }
+  .panel-title { font-size: 22px; }
+  .panel-header--full .panel-title { font-size: 26px; }
+  /* En-tête : 3 chips max lisibles — les suivants passeraient en 2e ligne */
+  .panel-meta { gap: 5px; }
+  .panel-meta-chip { font-size: 11px; padding: 2px 8px; }
+  .panel-meta-chip:nth-child(n+4) { display: none; }
+  .panel-hero-description {
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+  }
+  .panel-hero-cta { align-self: stretch; text-align: center; }
+
+  /* Fiche destination (clic sur une destination) : sur mobile le scroll est
+     continu (toutes les sections empilées), donc ouvrir la fiche en place
+     laissait tout le reste visible autour — confus. On la fait flotter en
+     plein écran par-dessus tout le panneau, comme une vraie sous-page avec
+     retour, au lieu de remplacer juste un bloc au milieu de la page. */
+  .dest-detail {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background: var(--surface);
+    overflow-y: auto;
+    padding: 16px 16px 24px;
+    margin: 0;
+  }
+
+  /* Comparer : version icône seule (⚖) dans la pilule, le libellé texte
+     prendrait trop de place à côté des 3 autres boutons */
+  .panel-actions .panel-compare-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 17px;
+    justify-content: center;
+  }
+  .panel-compare-label { display: none; }
+
+  /* Sections empilées (scroll continu) : chaque partie respire — vraie
+     séparation + espace généreux entre les blocs (maquette) */
+  .panel-mobile-section {
+    border-top: 1px solid var(--border);
+    margin-top: 14px;
+    padding-top: 26px;
+  }
+
+  /* En-tête de chaque section : grand titre + sous-titre (le nom de la
+     partie n'est plus porté par les onglets en scroll continu) */
+  .panel-mobile-section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .panel-mobile-section-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .panel-mobile-section-sub {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* Montage différé : squelette léger affiché tant qu'une section n'a pas
+     approché de l'écran (évite de charger destinations/avis/etc. d'un coup) */
+  .panel-section-skeleton {
+    height: 120px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 37%, var(--surface2) 63%);
+    background-size: 400% 100%;
+    animation: skeletonShimmer 1.4s ease infinite;
+  }
+
+  @keyframes skeletonShimmer {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+  }
+
+  /* "Destinations phares" + "Voir toutes les destinations →" : sur une
+     même ligne, le lien se retrouvait coupé sur petit écran. Chacun sur sa
+     propre ligne, comme le fait déjà "Destinations phares" pour son titre. */
+  .dest-preview-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+  /* Recherche destination : repliée par défaut sur mobile — petit bouton
+     recherche (icône, compact) à côté du bouton "Ajouter" en gros — le
+     clic sur la recherche bascule vers le champ de saisie réel (+ bouton
+     "+" compact à sa place), même disposition que l'état déplié. */
+  .dest-list-header--collapsed { gap: 8px; }
+  .dest-search-toggle-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; flex-shrink: 0;
+    padding: 0;
+    font-size: 16px;
+    background: var(--surface2);
+    border: 1.5px solid rgba(99,102,241,0.35);
+    border-radius: 50%;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .dest-search-wrapper { min-width: 0; }
+  /* .dest-add-community-btn-top--full DOIT être déclaré après la règle
+     compacte ci-dessous pour la surcharger (même spécificité, l'ordre de
+     déclaration tranche) — sinon le bouton "Ajouter" reste coincé à
+     36×36px et son texte s'empile sur 3 lignes (bug observé). */
+  .dest-add-community-btn-top {
+    width: 36px; height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+  .dest-add-btn-label { display: none; }
+  .dest-add-community-btn-top--full {
+    width: auto; height: auto;
+    padding: 9px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    flex: 1;
+  }
+  .dest-add-community-btn-top--full .dest-add-btn-label { display: inline; }
+
+  /* La carte destination (verticale, photo à taille fixe, description sans
+     plafond de lignes) est maintenant le comportement de base (voir plus
+     haut dans le fichier) — plus besoin de redéfinition ici, seule la
+     grille se resserre à 1 colonne min sur mobile (300px minimum par
+     carte, cf. règle de base). */
+  .dest-detail-img, .wiki-img-placeholder.dest-detail-img { height: 170px; }
+  .dest-grid-preview { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+
+  /* Budget */
+  .budget-summary { grid-template-columns: 1fr; gap: 8px; }
+
+  /* Sous-onglets coût */
+  .cost-subtabs { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+  .cost-subtabs::-webkit-scrollbar { display: none; }
+  .cost-subtab-btn { font-size: 11px; padding: 7px 6px; white-space: nowrap; flex-shrink: 0; }
+
+  /* Bilan météo : essayer de faire tenir les 12 mois + le nom complet des
+     villes sur la largeur de l'écran forçait à tronquer les noms ("Shan…")
+     et à réduire les cellules à l'illisible — on revient au défilement
+     horizontal (villes lisibles en entier, cellules à taille confortable). */
+  .bilan-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .bilan-chip { font-size: 10px; padding: 4px 8px; }
+  .bilan-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bilan-header-row, .bilan-row { min-width: 560px; }
+
+  /* Villes météo */
+  .city-tabs { flex-wrap: wrap; gap: 5px; }
+  .city-tab { padding: 6px 10px; font-size: 12px; }
+
+  /* Graphique météo par ville : reste sur une seule ligne comme avant
+     (tout resserré : barres, icônes, textes) plutôt que de passer en
+     grille sur plusieurs lignes — juste assez compact pour ne plus
+     déborder de l'écran. */
+  .weather-chart-card { padding: 14px 8px 10px; }
+  .weather-chart { gap: 1px; height: 130px; }
+  .weather-month { padding: 3px 0 2px; gap: 2px; }
+  .weather-bars { gap: 1.5px; }
+  .bar { width: 5px; }
+  .weather-icon { font-size: 10px; }
+  .weather-temp { font-size: 8px; }
+  .weather-month-label { font-size: 6.5px; letter-spacing: 0; }
+
+  /* Pratique */
+  .practical-item { padding: 10px 12px; gap: 12px; }
+  .practical-icon { font-size: 18px; }
+
+  /* Destination card : .dest-card-top (nom en colonne, région en dessous)
+     et .dest-card-name (hauteur réservée sur 2 lignes) sont maintenant le
+     comportement de base partout (voir plus haut dans le fichier) — la
+     troncature 1 ligne + ellipsis d'avant entrait en conflit avec cette
+     hauteur réservée (vide visible sous un nom tronqué sur 1 seule ligne). */
+
+  /* Prix courants */
+  .cost-category-grid { grid-template-columns: 1fr; gap: 10px; }
+  .cost-item { align-items: flex-start; gap: 8px; }
+  .cost-item-left { flex: 1; min-width: 0; }
+  .cost-item-detail { white-space: normal; word-break: break-word; }
+  .cost-item-price { flex-shrink: 0; align-self: center; white-space: nowrap; }
+
+  /* Estimation budget */
+  .trip-line { align-items: flex-start; gap: 8px; }
+  .trip-line-label { flex: 1; min-width: 0; }
+  .trip-line-amount { flex-shrink: 0; white-space: nowrap; padding-left: 4px; }
+
+  /* Frise de l'itinéraire : une seule ligne horizontale (pas de wrap ni de
+     colonne verticale), resserrée ; si le nombre d'étapes/la longueur des
+     noms de ville dépasse quand même la largeur de l'écran, défilement
+     horizontal plutôt que retour à la ligne. */
+  .trip-route-timeline {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 12px;
+    gap: 2px;
+  }
+  .trip-route-stop { flex: 0 0 auto; padding: 4px 6px; }
+  .trip-route-stop-name { font-size: 12px; }
+}
+
 /* â”€â”€â”€ Responsive mobile â”€â”€â”€ */
 /* FAB filtre mobile â€” cachÃ© sur desktop */
 .app-mobile-nav { display: none; }
@@ -3142,118 +4065,6 @@ html, body, #root { height: 100%; }
   .list-card-capital { font-size: 10px; }
   .list-card-period-chip { font-size: 9px; }
 
-  /* â”€â”€ Modal fiche pays â€” bottom sheet â”€â”€ */
-  .modal-wrapper { align-items: flex-end; padding: 0 10px 10px; }
-  .country-modal {
-    width: 100%;
-    height: 89dvh;
-    border-radius: 20px;
-    border-bottom: 1px solid var(--border-light);
-    animation: modalInMobile 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Contenu des onglets : marges réduites, les fiches respirent sur toute
-     la largeur au lieu d'être corsetées par les 22px du desktop. */
-  .tab-content { padding: 14px 12px 20px; gap: 16px; }
-  @keyframes modalInMobile {
-    from { transform: translateY(60px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-
-  /* Handle bar + header : hauteur auto pour ne pas couper les infos */
-  .panel-header {
-    height: auto;
-    min-height: 160px;
-    padding: 52px 16px 16px; /* 52px en haut = place pour les boutons âœ•/â˜† */
-    border-radius: 20px 20px 0 0;
-    align-items: flex-end;
-  }
-  .panel-header::before {
-    content: '';
-    position: absolute;
-    top: 8px; left: 50%;
-    transform: translateX(-50%);
-    width: 36px; height: 4px;
-    background: rgba(255,255,255,0.25);
-    border-radius: 2px; z-index: 2;
-  }
-  .panel-title { font-size: 20px; }
-  .panel-emoji { font-size: 20px; }
-  /* En-tête : 3 chips max lisibles — les suivants passeraient en 2e ligne et
-     remonteraient sur le titre ; le reste est déjà dans les onglets. */
-  .panel-header { min-height: 140px; }
-  .panel-meta { gap: 5px; }
-  .panel-meta-chip { font-size: 11px; padding: 2px 8px; }
-  .panel-meta-chip:nth-child(n+4) { display: none; }
-
-  /* Boutons âœ• et â˜† dans le header */
-  .panel-close { width: 44px; height: 44px; font-size: 16px; top: 12px; right: 12px; z-index: 10; }
-  .panel-fav-btn { width: 44px; height: 44px; font-size: 18px; top: 12px; right: 64px; z-index: 10; }
-  /* Comparer : version icône seule (⚖) dans la pilule, le libellé texte
-     prendrait trop de place à côté des 3 autres boutons */
-  .panel-actions .panel-compare-btn {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    font-size: 17px;
-    justify-content: center;
-  }
-  .panel-compare-label { display: none; }
-
-  /* Onglets */
-  .tab-btn { padding: 7px 10px; font-size: 12px; }
-  .panel-tabs-wrapper::after {
-    content: '›';
-    position: absolute;
-    right: 0; top: 0; bottom: 0; width: 36px;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(to right, transparent, var(--surface) 70%);
-    color: var(--text-muted); font-size: 18px;
-    pointer-events: none;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* Images */
-  .must-item-img, .wiki-img-placeholder.must-item-img { width: 120px; height: 90px; }
-  .must-item-name { font-size: 13px; padding: 0 12px 0 16px; }
-  .dest-card-img, .wiki-img-placeholder.dest-card-img { width: 100px; height: 80px; }
-  .dest-detail-img, .wiki-img-placeholder.dest-detail-img { height: 170px; }
-  .dest-grid-preview { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-
-  /* Budget */
-  .budget-summary { grid-template-columns: 1fr; gap: 8px; }
-
-  /* Sous-onglets coÃ»t */
-  .cost-subtabs { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
-  .cost-subtabs::-webkit-scrollbar { display: none; }
-  .cost-subtab-btn { font-size: 11px; padding: 7px 6px; white-space: nowrap; flex-shrink: 0; }
-
-  /* Bilan mÃ©tÃ©o */
-  .bilan-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .bilan-header-row, .bilan-row { min-width: 520px; }
-
-  /* Villes mÃ©tÃ©o */
-  .city-tabs { flex-wrap: wrap; gap: 5px; }
-  .city-tab { padding: 6px 10px; font-size: 12px; }
-
-  /* Pratique */
-  .practical-item { padding: 10px 12px; gap: 12px; }
-  .practical-icon { font-size: 18px; }
-
-  /* Destination card */
-  .dest-card-top { flex-direction: column; align-items: flex-start; gap: 2px; }
-  .dest-card-name { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-
-  /* Prix courants */
-  .cost-item { align-items: flex-start; gap: 8px; }
-  .cost-item-left { flex: 1; min-width: 0; }
-  .cost-item-detail { white-space: normal; word-break: break-word; }
-  .cost-item-price { flex-shrink: 0; align-self: center; padding-left: 6px; white-space: nowrap; }
-
-  /* Estimation budget */
-  .trip-line { align-items: flex-start; gap: 8px; }
-  .trip-line-label { flex: 1; min-width: 0; }
-  .trip-line-amount { flex-shrink: 0; white-space: nowrap; padding-left: 4px; }
 
   /* Panel favoris */
   .favorites-panel {
@@ -3264,13 +4075,13 @@ html, body, #root { height: 100%; }
   }
   .favorites-backdrop { top: 52px; }
 
-  /* Panel notifications */
+  /* Panel notifications : même traitement plein écran que .favorites-panel
+     ci-dessus (auparavant left/right:8px — une petite carte flottante avec
+     des marges, pas un vrai panneau plein écran comme le reste de l'app). */
   .notif-panel {
-    top: 62px;
-    left: 8px;
-    right: 8px;
-    width: auto;
-    max-height: calc(100dvh - 70px);
+    top: 52px; left: 0; right: 0;
+    width: 100%; border-radius: 0 0 20px 20px;
+    max-height: calc(100dvh - 52px - 68px - env(safe-area-inset-bottom, 0px));
   }
 
   /* Zoom + hint cachÃ©s */
@@ -5964,14 +6775,17 @@ html, body, #root { height: 100%; }
   border-radius: 20px;
   border: 1px solid rgba(129,140,248,0.35);
   background: linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(129,140,248,0.08) 100%);
-  color: #a5b4fc;
+  /* var(--accent2), pas une valeur fixe : #a5b4fc (lavande clair) est
+     illisible sur fond clair — quasi invisible/grisé sur le fond crème du
+     thème jour, alors qu'il ressort bien sur fond sombre. */
+  color: var(--accent2);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
 .dest-add-community-btn-top:hover {
   border-color: rgba(129,140,248,0.7);
   background: linear-gradient(135deg, rgba(99,102,241,0.28) 0%, rgba(129,140,248,0.15) 100%);
-  color: #c7d2fe;
+  color: var(--accent);
 }
 .dest-add-community-btn-top--muted {
   background: var(--surface3); color: var(--text-muted);
@@ -5979,8 +6793,25 @@ html, body, #root { height: 100%; }
 }
 .dest-add-community-btn-top--muted:hover { background: var(--surface2); opacity: 1; box-shadow: none; }
 
-/* Community badge on card */
-.dest-card-img-wrap { position: relative; }
+/* Community badge on card — le wrapper (pas l'<img> qu'il contient) est le
+   vrai enfant flex de .dest-card : c'est donc lui qui doit porter la
+   taille, sinon il se réduit à la taille intrinsèque de l'image (mauvais
+   format). Taille fixe comme .dest-card-img (photo statique) : voir plus
+   haut dans le fichier pour le pourquoi (cohérence + plus de dépendance à
+   la longueur du texte). */
+.dest-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.dest-card-img-wrap .dest-card-img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+}
 .dest-card-community-badge {
   position: absolute; top: 6px; left: 6px;
   background: rgba(0,0,0,0.6); border-radius: 50%;
@@ -6946,10 +7777,10 @@ html, body, #root { height: 100%; }
   color-scheme: light;
   --bg: #f4f1ea;
   --surface: #fbf9f4;
-  --surface2: #f0ece1;
-  --surface3: #e8e2d3;
-  --border: #e0d9c8;
-  --border-light: #cfc6b0;
+  --surface2: #f6f3ec;
+  --surface3: #efeadf;
+  --border: #e6e0d2;
+  --border-light: #d8d0bc;
   --accent: #5b5bd6;
   --accent2: #4f46e5;
   --accent-glow: rgba(91, 91, 214, 0.16);
@@ -7088,16 +7919,11 @@ html, body, #root { height: 100%; }
 [data-theme="light"] .panel-header-bg {
   filter: brightness(0.97) saturate(1.05);
 }
-[data-theme="light"] .panel-header-overlay {
-  background: linear-gradient(to top, #fbf9f4 0%, rgba(251,249,244,0.72) 40%, rgba(251,249,244,0.12) 75%, transparent 100%);
-}
+/* .panel-header-overlay utilise désormais var(--surface) : le fondu s'adapte
+   automatiquement aux deux thèmes, plus besoin d'override clair dédié. */
 [data-theme="light"] .panel-emoji { filter: drop-shadow(0 1px 4px rgba(43,38,32,0.35)); }
-[data-theme="light"] .panel-actions {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(248,245,238,0.72)) padding-box,
-    linear-gradient(150deg, rgba(43,38,32,0.16), rgba(43,38,32,0.05) 60%) border-box;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 16px rgba(43,38,32,0.18);
-}
+/* .panel-actions utilise désormais var(--surface3)/var(--border-light),
+   déjà thémées via :root[data-theme="light"] — plus besoin d'override ici. */
 [data-theme="light"] .panel-close,
 [data-theme="light"] .panel-fav-btn,
 [data-theme="light"] .panel-visited-btn,

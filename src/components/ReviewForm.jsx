@@ -125,7 +125,12 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
                 destination_name: destinationName,
                 country_code: countryCode,
                 from_user_id: user.id,
-                review_id: reviewId,
+                // destination_review_id (pas review_id) : reviewId est un id
+                // de destination_reviews, pas de reviews — review_id a une
+                // contrainte de clé étrangère vers reviews uniquement
+                // (violée sinon, erreur 23503). destination_review_id est
+                // la colonne dédiée (migration notifications_destination_review_id_v1.sql).
+                destination_review_id: reviewId,
               });
             }
           }
@@ -145,7 +150,9 @@ export default function ReviewForm({ countryCode, destinationId, destinationName
                 destination_name: destinationName,
                 country_code: countryCode,
                 from_user_id: user.id,
-                review_id: reviewId,
+                // Voir commentaire ci-dessus (destination_review_id, pas
+                // review_id).
+                destination_review_id: reviewId,
               }));
             }
           }

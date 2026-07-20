@@ -266,13 +266,10 @@ export default function CountryRecommendations({ countryCode, onNavigateCountry,
                         </span>
                         {user?.id === r.user_id && (
                           deletingId === r.id ? (
-                            <span className="reco-item-actions">
-                              <button className="reco-item-btn reco-item-btn--danger" onClick={() => handleDelete(r.id)}>
-                                {t("recommendations.confirmDelete")}
-                              </button>
-                              <button className="reco-item-btn" onClick={() => setDeletingId(null)}>
-                                {t("recommendations.cancelDelete")}
-                              </button>
+                            <span className="review-confirm-delete reco-item-actions">
+                              <span className="review-confirm-msg">{t("recommendations.confirmDeleteMessage")}</span>
+                              <button className="review-confirm-yes" onClick={() => handleDelete(r.id)}>{t("common:yes")}</button>
+                              <button className="review-confirm-no" onClick={() => setDeletingId(null)}>{t("common:no")}</button>
                             </span>
                           ) : (
                             <span className="reco-item-actions">
