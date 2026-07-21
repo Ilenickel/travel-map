@@ -275,6 +275,29 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
     setLoadingAddedDestGroups(prev => { const s = new Set(prev); s.delete(key); return s; });
   }
 
+  // Format grille (3 par ligne) à partir de 3 destinations dans le pays, sinon
+  // format liste (moins d'espace vide) — voir renderAddedDestCard ci-dessous.
+  function renderAddedDestCard(dest, countryCode, row) {
+    return (
+      <div
+        key={dest.id}
+        className={`profile-added-dest-item profile-review-item--clickable${row ? ' profile-added-dest-item--row' : ''}`}
+        onClick={() => { onOpenCountry?.(countryCode, 'destinations', { commDestId: dest.id }); onClose(); }}
+      >
+        <img src={dest.image_url} alt={dest.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
+        <div className="profile-added-dest-info">
+          <span className="profile-added-dest-name">📍 {dest.name}</span>
+          {dest.tags?.length > 0 && (
+            <div className="profile-added-dest-tags">
+              {dest.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
+            </div>
+          )}
+          <span className="profile-review-date profile-review-date--plain">{relativeTime(dest.created_at)}</span>
+        </div>
+      </div>
+    );
+  }
+
   const name = displayName || user?.email || '?';
   const initials = name[0].toUpperCase();
 
@@ -316,18 +339,31 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
         {/* Tabs — barre segmentée avec icônes */}
         <div className="profile-modal-tabs">
           <button className={`profile-modal-tab${tab === 'profile' ? ' active' : ''}`} onClick={() => setTab('profile')}>
-            <span className="profile-modal-tab-icon" aria-hidden="true">👤</span>
-            {t('profile.profileTab')}
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">👤</span>
+            </span>
+            <span className="profile-tab-label">{t('profile.profileTab')}</span>
           </button>
           <button className={`profile-modal-tab${tab === 'reviews' ? ' active' : ''}`} onClick={() => setTab('reviews')}>
-            <span className="profile-modal-tab-icon" aria-hidden="true">⭐</span>
-            {t('profile.reviewsTab')} <span className="profile-tab-count">{reviews.length + totalDestReviews}</span>
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">⭐</span>
+              <span className="profile-tab-count profile-tab-count--badge">{reviews.length + totalDestReviews}</span>
+            </span>
+            <span className="profile-tab-label">{t('profile.reviewsTab')}</span>
           </button>
           <button className={`profile-modal-tab${tab === 'destinations' ? ' active' : ''}`} onClick={() => setTab('destinations')}>
-            <span className="profile-modal-tab-icon" aria-hidden="true">📍</span>
-            {t('profile.destinationsTab')} {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">📍</span>
+              {totalAddedDests > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalAddedDests}</span>}
+            </span>
+            <span className="profile-tab-label">{t('profile.destinationsTab')}</span>
           </button>
-          <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>{t('profile.badgesTab')}</button>
+          <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">🏅</span>
+            </span>
+            <span className="profile-tab-label">{t('profile.badgesTab')}</span>
+          </button>
         </div>
 
         {/* Onglet Profil */}
@@ -425,24 +461,11 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                   {isExpanded && (
                     <>
                       {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingDestinations')}</div>}
-                      {!isGroupLoading && dests.map(dest => (
-                        <div
-                          key={dest.id}
-                          className="profile-added-dest-item profile-review-item--clickable"
-                          onClick={() => { onOpenCountry?.(countryCode, 'destinations', { commDestId: dest.id }); onClose(); }}
-                        >
-                          <img src={dest.image_url} alt={dest.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
-                          <div className="profile-added-dest-info">
-                            <span className="profile-added-dest-name">📍 {dest.name}</span>
-                            {dest.tags?.length > 0 && (
-                              <div className="profile-added-dest-tags">
-                                {dest.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
-                              </div>
-                            )}
-                            <span className="profile-review-date">{relativeTime(dest.created_at)}</span>
-                          </div>
-                        </div>
-                      ))}
+                      {!isGroupLoading && (
+                        count >= 3
+                          ? <div className="profile-added-dest-grid">{dests.map(dest => renderAddedDestCard(dest, countryCode, false))}</div>
+                          : dests.map(dest => renderAddedDestCard(dest, countryCode, true))
+                      )}
                     </>
                   )}
                 </div>
@@ -601,6 +624,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       )}
       {viewingProfile && (
         <PublicProfileModal
+          nested
           userId={viewingProfile}
           onClose={() => setViewingProfile(null)}
           onOpenCountry={(code, tab, extra) => { setViewingProfile(null); onOpenCountry?.(code, tab, extra); onClose(); }}

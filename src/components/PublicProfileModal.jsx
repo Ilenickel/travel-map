@@ -44,7 +44,7 @@ function FlagImage({ country, code }) {
   );
 }
 
-export default function PublicProfileModal({ userId: initialUserId, onClose, onOpenCountry, onFollowChange }) {
+export default function PublicProfileModal({ userId: initialUserId, onClose, onOpenCountry, onFollowChange, nested = false }) {
   const { t } = useTranslation('app');
   const { user } = useAuth();
   const [userId, setUserId] = useState(initialUserId);
@@ -200,8 +200,31 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
     return [];
   }
 
+  // Format grille (3 par ligne) à partir de 3 destinations dans le pays, sinon
+  // format liste (moins d'espace vide).
+  function renderAddedDestCard(dest, countryCode, row) {
+    return (
+      <div
+        key={dest.id}
+        className={`profile-added-dest-item profile-review-item--clickable${row ? ' profile-added-dest-item--row' : ''}`}
+        onClick={() => { onOpenCountry?.(countryCode, 'destinations', { commDestId: dest.id }); onClose(); }}
+      >
+        <img src={dest.image_url} alt={dest.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
+        <div className="profile-added-dest-info">
+          <span className="profile-added-dest-name">📍 {dest.name}</span>
+          {dest.tags?.length > 0 && (
+            <div className="profile-added-dest-tags">
+              {dest.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
+            </div>
+          )}
+          <span className="profile-review-date profile-review-date--plain">{relativeTime(dest.created_at)}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="auth-overlay">
+    <div className={`auth-overlay${nested ? ' auth-overlay--nested' : ''}`}>
       <div className="profile-modal profile-modal--public">
 
         {/* Header modernisé */}
@@ -249,22 +272,31 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
             className={`pub-profile-main-tab${mainTab === 'reviews' ? ' active' : ''}`}
             onClick={() => setMainTab('reviews')}
           >
-            {t('publicProfile.reviewsTab')}
-            {totalReviews > 0 && <span className="profile-tab-count">{totalReviews}</span>}
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">⭐</span>
+              {totalReviews > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalReviews}</span>}
+            </span>
+            <span className="profile-tab-label">{t('publicProfile.reviewsTab')}</span>
           </button>
           <button
             className={`pub-profile-main-tab${mainTab === 'destinations' ? ' active' : ''}`}
             onClick={() => setMainTab('destinations')}
           >
-            {t('publicProfile.destinationsTab')}
-            {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">📍</span>
+              {totalAddedDests > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalAddedDests}</span>}
+            </span>
+            <span className="profile-tab-label">{t('publicProfile.destinationsTab')}</span>
           </button>
           <button
             className={`pub-profile-main-tab${mainTab === 'visited' ? ' active' : ''}`}
             onClick={() => setMainTab('visited')}
           >
-            {t('publicProfile.visitedCountriesTab')}
-            {showVisited && visitedCountries.length > 0 && <span className="profile-tab-count">{visitedCountries.length}</span>}
+            <span className="profile-tab-icon-wrap">
+              <span className="profile-modal-tab-icon" aria-hidden="true">✈️</span>
+              {showVisited && visitedCountries.length > 0 && <span className="profile-tab-count profile-tab-count--badge">{visitedCountries.length}</span>}
+            </span>
+            <span className="profile-tab-label">{t('publicProfile.visitedCountriesTab')}</span>
           </button>
         </div>
 
@@ -417,24 +449,11 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
                     {isExpanded && (
                       <>
                         {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingDestinations')}</div>}
-                        {!isGroupLoading && dests.map(dest => (
-                          <div
-                            key={dest.id}
-                            className="profile-added-dest-item profile-review-item--clickable"
-                            onClick={() => { onOpenCountry?.(countryCode, 'destinations', { commDestId: dest.id }); onClose(); }}
-                          >
-                            <img src={dest.image_url} alt={dest.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
-                            <div className="profile-added-dest-info">
-                              <span className="profile-added-dest-name">📍 {dest.name}</span>
-                              {dest.tags?.length > 0 && (
-                                <div className="profile-added-dest-tags">
-                                  {dest.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{translateTag(tag, t)}</span>)}
-                                </div>
-                              )}
-                              <span className="profile-review-date">{relativeTime(dest.created_at)}</span>
-                            </div>
-                          </div>
-                        ))}
+                        {!isGroupLoading && (
+                          count >= 3
+                            ? <div className="profile-added-dest-grid">{dests.map(dest => renderAddedDestCard(dest, countryCode, false))}</div>
+                            : dests.map(dest => renderAddedDestCard(dest, countryCode, true))
+                        )}
                       </>
                     )}
                   </div>

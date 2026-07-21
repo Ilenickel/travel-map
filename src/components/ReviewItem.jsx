@@ -188,8 +188,8 @@ export default function ReviewItem({ review, currentUserId, onDelete, onEdit, on
             confirmDelete ? (
               <div className="review-confirm-delete">
                 <span className="review-confirm-msg">{t('review.deleteConfirmMessage')}</span>
-                <button className="review-confirm-yes" onClick={handleDelete} disabled={deleting}>{t('common:yes')}</button>
                 <button className="review-confirm-no" onClick={() => setConfirmDelete(false)}>{t('common:no')}</button>
+                <button className="review-confirm-yes" onClick={handleDelete} disabled={deleting}>{t('common:yes')}</button>
               </div>
             ) : (
               <>

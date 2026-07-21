@@ -1342,8 +1342,12 @@ html, body, #root { height: 100%; }
 .must-list {
   display: grid;
   /* 320px min (au lieu de 240) : force 3 colonnes sur PC au lieu de 4, les
-     cartes (et donc les photos) sont nettement plus grandes. */
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+     cartes (et donc les photos) sont nettement plus grandes. `min(320px,
+     100%)` plutôt que 320px sec : sur un tout petit écran (plus étroit que
+     320px de contenu utile une fois les marges du panneau retirées), la
+     colonne s'adapte à la largeur réelle au lieu de forcer 320px et de
+     déborder du cadre. */
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: 14px;
 }
 
@@ -4292,6 +4296,15 @@ html, body, #root { height: 100%; }
   padding: 16px;
 }
 
+/* Profil public ouvert par-dessus son propre profil (ex: depuis la liste
+   d'abonnés) : le voile sombre de la modale parente suffit déjà, en
+   superposer un deuxième assombrissait l'écran jusqu'au noir complet. */
+.auth-overlay--nested {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .auth-modal {
   position: relative;
   background: var(--surface);
@@ -5005,31 +5018,44 @@ html, body, #root { height: 100%; }
   flex-shrink: 0;
 }
 
-/* Onglets principaux du profil public (Avis / Pays visités) */
+/* Onglets principaux du profil public (Avis / Pays visités) — carte flottante
+   arrondie, séparateurs fins entre onglets, repère sur icône+texte colorés et
+   soulignement dégradé (pas de rail creusé ni de pilule pleine). */
 .pub-profile-main-tabs {
   display: flex;
-  gap: 5px;
-  margin: 12px 16px 0;
-  padding: 5px;
-  background: rgba(0,0,0,0.22);
+  align-items: stretch;
+  margin: 14px 20px 0;
+  padding: 0;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  overflow: hidden;
   flex-shrink: 0;
 }
 .pub-profile-main-tab {
   flex: 1; background: none; border: none;
-  border-radius: 10px;
-  color: var(--text-muted); font-size: 13px; font-weight: 700;
-  padding: 9px 10px; cursor: pointer; font-family: inherit;
+  color: var(--text-muted); font-size: 13px; font-weight: 600;
+  padding: 14px 10px 18px; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+  position: relative;
+  transition: color 0.15s, background 0.15s;
 }
-.pub-profile-main-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+.pub-profile-main-tab + .pub-profile-main-tab::before {
+  content: '';
+  position: absolute; left: 0; top: 24%; bottom: 24%;
+  width: 1px; background: var(--border);
+}
+.pub-profile-main-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.03); }
 .pub-profile-main-tab.active {
-  color: #fff;
-  background: linear-gradient(120deg, rgba(37,99,235,0.9), rgba(14,165,233,0.78));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 2px 9px rgba(59,130,246,0.28);
+  color: var(--accent2);
+  font-weight: 700;
+}
+.pub-profile-main-tab.active::after {
+  content: '';
+  position: absolute; left: 18px; right: 18px; bottom: 6px;
+  height: 2.5px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
 }
 
 /* Sous-onglets imbriqués (Pays / Destinations) — petite pilule secondaire */
@@ -5093,57 +5119,69 @@ html, body, #root { height: 100%; }
 .profile-modal-email { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Tabs */
-/* Barre segmentée flottante : rail creusé (ombre interne) dans lequel
-   l'onglet actif glisse en pilule dégradée — repère instantané */
+/* Carte flottante arrondie (même langage que la barre du profil public) :
+   séparateurs fins entre onglets, l'actif repéré par sa couleur, son icône
+   et un soulignement dégradé — pas de rail creusé ni de pilule pleine. */
 .profile-modal-tabs {
   display: flex;
-  gap: 5px;
-  margin: 12px 16px 0;
-  padding: 5px;
-  background: rgba(0,0,0,0.22);
+  align-items: stretch;
+  margin: 14px 20px 0;
+  padding: 0;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  overflow: hidden;
   flex-shrink: 0;
 }
 .profile-modal-tab {
   flex: 1; background: none; border: none;
-  border-radius: 10px;
-  color: var(--text-muted); font-size: 13px; font-weight: 700;
-  padding: 9px 10px; cursor: pointer; font-family: inherit;
+  color: var(--text-muted); font-size: 13px; font-weight: 600;
+  padding: 14px 10px 18px; cursor: pointer; font-family: inherit;
   display: flex; align-items: center; justify-content: center; gap: 6px;
   white-space: nowrap;
-  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+  position: relative;
+  transition: color 0.15s, background 0.15s;
 }
-.profile-modal-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+.profile-modal-tab + .profile-modal-tab::before {
+  content: '';
+  position: absolute; left: 0; top: 24%; bottom: 24%;
+  width: 1px; background: var(--border);
+}
+.profile-modal-tab:hover:not(.active) { color: var(--text-dim); background: rgba(255,255,255,0.03); }
 .profile-modal-tab.active {
-  color: #fff;
-  background: linear-gradient(120deg, rgba(37,99,235,0.9), rgba(14,165,233,0.78));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 2px 9px rgba(59,130,246,0.28);
+  color: var(--accent2);
+  font-weight: 700;
+}
+.profile-modal-tab.active::after {
+  content: '';
+  position: absolute; left: 18px; right: 18px; bottom: 6px;
+  height: 2.5px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
 }
 
+/* Sur desktop, l'enrobage icône+badge n'a pas de boîte propre (display:
+   contents) : icône et badge deviennent des items flex directs de l'onglet,
+   au même niveau que le libellé — l'ordre visuel (icône, libellé, badge) est
+   fixé via `order`, indépendamment de l'imbrication DOM (nécessaire sur
+   mobile pour poser le badge en pastille sur l'icône, voir plus bas). */
+.profile-tab-icon-wrap { display: contents; }
 .profile-modal-tab-icon {
   font-size: 13px;
   line-height: 1;
-  /* Icônes en niveaux de gris sur les onglets inactifs : elles s'allument
-     avec l'onglet, la couleur signale l'état */
-  filter: grayscale(1) opacity(0.6);
-  transition: filter 0.15s;
+  order: 1;
 }
-.profile-modal-tab:hover .profile-modal-tab-icon { filter: grayscale(0.4) opacity(0.85); }
-.profile-modal-tab.active .profile-modal-tab-icon { filter: none; }
+
+.profile-tab-label { order: 2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
 .profile-tab-count {
-  background: var(--accent-subtle); border: 1px solid rgba(99,102,241,0.25);
-  border-radius: 20px; padding: 1px 6px; font-size: 10px; color: var(--accent2);
+  order: 3;
+  background: var(--surface3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 1px 7px; font-size: 10px; font-weight: 700; color: var(--text-muted);
 }
 .profile-modal-tab.active .profile-tab-count,
 .pub-profile-main-tab.active .profile-tab-count {
-  background: rgba(255,255,255,0.25); border-color: transparent; color: #fff;
-}
-.pub-profile-main-tab .profile-tab-count {
-  font-size: 11px; padding: 2px 8px; font-weight: 700;
-  background: rgba(99,102,241,0.18); border-color: rgba(99,102,241,0.4);
+  background: var(--accent-subtle); border-color: rgba(99,102,241,0.35); color: var(--accent2);
 }
 
 /* Tab content */
@@ -5367,18 +5405,24 @@ html, body, #root { height: 100%; }
 .profile-dest-group { display: flex; flex-direction: column; gap: 8px; }
 
 /* Destinations ajoutées dans le profil */
-/* Destinations ajoutées : cartes arrondies (plus de simples lignes) avec
-   vignette plus grande — cohérentes avec les cartes d'avis au-dessus */
+/* Grille 3 colonnes (desktop) de cartes en format colonne : vignette pleine
+   largeur en haut (ratio 4:3, jamais une hauteur fixe — évite le recadrage
+   en bandeau très fin sur une cellule large), infos en dessous. Passe à 1
+   colonne sur mobile (voir bloc mobile plus bas). */
+.profile-added-dest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
 .profile-added-dest-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 12px;
+  display: flex; flex-direction: column; align-items: stretch; gap: 10px;
+  padding: 10px;
   border: 1px solid transparent;
   background:
     linear-gradient(180deg, var(--surface2), var(--surface2)) padding-box,
     linear-gradient(170deg, rgba(96,165,250,0.15), var(--border) 55%) border-box;
-  border-radius: 12px;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 14px;
+  overflow: hidden;
   transition: background 0.2s, box-shadow 0.15s, transform 0.1s;
 }
 .profile-added-dest-item:hover {
@@ -5388,19 +5432,43 @@ html, body, #root { height: 100%; }
   box-shadow: 0 5px 16px rgba(0,0,0,0.2), 0 0 12px rgba(59,130,246,0.06);
   transform: translateY(-1px);
 }
+/* Ratio fixe (4:3) plutôt qu'une taille figée : la hauteur suit la largeur
+   de la cellule, le cadrage de la photo reste donc le même quelle que soit
+   la largeur d'écran (jamais de recadrage extrême façon bandeau). */
 .profile-added-dest-img {
-  width: 68px; height: 50px; object-fit: cover; border-radius: 9px;
-  flex-shrink: 0;
+  width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-.profile-added-dest-info {
-  display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0;
+/* Format liste (desktop, 1-2 destinations dans le pays) : la grille 3
+   colonnes laisserait trop de vide à côté d'une seule carte — on revient
+   au format ligne (vignette à gauche, infos à droite) dans ce cas. */
+.profile-added-dest-item--row {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 }
+.profile-added-dest-item--row .profile-added-dest-img {
+  width: 225px; height: 175px; aspect-ratio: auto; flex-shrink: 0;
+}
+.profile-added-dest-info {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px; flex: 1; min-width: 0;
+}
+/* Titre sur 2 lignes max (plutôt qu'une troncature à la première ligne) :
+   avec une vignette aussi grande, la place ne manque pas en hauteur. */
 .profile-added-dest-name {
-  font-size: 13px; font-weight: 600; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 14px; font-weight: 700; color: var(--text);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; text-overflow: ellipsis;
+  white-space: normal; line-height: 1.25;
+  word-break: break-word;
 }
 .profile-added-dest-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+/* Date en simple texte discret, sans pilule colorée : ce n'est pas une info
+   qui doit attirer l'œil autant que le titre ou les tags. */
+.profile-review-date--plain {
+  background: none; border-radius: 0; padding: 0;
+  color: var(--text-muted); font-weight: 500;
+}
 .profile-dest-group-header {
   display: flex; align-items: center; gap: 8px;
   padding: 6px 0 10px;
@@ -5843,8 +5911,13 @@ html, body, #root { height: 100%; }
 .review-action-btn--delete { color: #9ca3af; }
 .review-action-btn--delete:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
 
-.review-confirm-delete { display: flex; align-items: center; gap: 6px; }
-.review-confirm-msg { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+/* flex-wrap + message qui peut passer à la ligne (pas de nowrap) : ce bloc
+   remplace des boutons dans un slot qui ne prévoit pas forcément une phrase
+   entière — sans ça, le message forçait sa largeur et écrasait ses voisins
+   (ex: le nom de l'auteur réduit à un mot par ligne, voir review-item-header
+   plus bas). */
+.review-confirm-delete { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.review-confirm-msg { font-size: 12px; color: var(--text-muted); white-space: normal; }
 .review-confirm-yes { padding: 3px 10px; border-radius: 6px; border: none; background: #ef4444; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; }
 .review-confirm-yes:hover { background: #dc2626; }
 .review-confirm-no { padding: 3px 10px; border-radius: 6px; border: 1px solid var(--border); background: none; color: var(--text-muted); font-size: 12px; cursor: pointer; }
@@ -6097,23 +6170,44 @@ html, body, #root { height: 100%; }
   border-bottom: 1px solid var(--border);
 }
 
+/* Carte trophée : médaillon circulaire cerclé et halo dans la couleur du
+   badge, dégradé de fond — même langage que les cartes du profil propre
+   (badge-card-own), décliné en ligne pour le profil public. */
 .badge-chip-public {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--badge-bg);
-  border: 1px solid var(--badge-color);
-  border-radius: 12px;
-  padding: 8px 12px;
+  display: flex; align-items: center; gap: 10px;
+  background:
+    radial-gradient(ellipse 130% 140% at 0% 50%, color-mix(in srgb, var(--badge-color) 16%, transparent), transparent 72%),
+    var(--surface2);
+  border: 1px solid color-mix(in srgb, var(--badge-color) 45%, transparent);
+  border-radius: 14px;
+  padding: 10px 14px;
   cursor: pointer;
-  transition: filter 0.15s;
+  transition: filter 0.15s, transform 0.1s;
   flex: 1; min-width: 120px;
+  box-shadow:
+    0 4px 16px color-mix(in srgb, var(--badge-color) 14%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.09);
 }
-.badge-chip-public:hover { filter: brightness(1.15); }
+.badge-chip-public:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-.badge-chip-icon { font-size: 22px; line-height: 1; flex-shrink: 0; }
+.badge-chip-icon {
+  width: 38px; height: 38px;
+  font-size: 19px; line-height: 1; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--badge-color) 32%, var(--surface3)), var(--surface3) 80%);
+  border: 2px solid color-mix(in srgb, var(--badge-color) 60%, transparent);
+  box-shadow: 0 0 16px -2px var(--badge-color), inset 0 1px 0 rgba(255,255,255,0.16);
+}
 .badge-chip-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .badge-chip-category { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--badge-color); }
-.badge-chip-name { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge-chip-pct { font-size: 10px; font-weight: 700; color: var(--badge-color); margin-left: auto; white-space: nowrap; background: var(--badge-bg); border-radius: 6px; padding: 2px 6px; }
+.badge-chip-name { font-size: 12.5px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge-chip-pct {
+  font-size: 10px; font-weight: 700; color: var(--badge-color); margin-left: auto; white-space: nowrap;
+  background: color-mix(in srgb, var(--badge-color) 22%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 3px 9px;
+}
 
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -7989,18 +8083,6 @@ html, body, #root { height: 100%; }
   box-shadow: 0 32px 80px rgba(43,38,32,0.3), 0 0 0 1px rgba(99,102,241,0.08);
 }
 
-/* Profil : le rail d'onglets était creusé dans du noir translucide —
-   invisible en nuit, gros bloc gris en jour. Rail papier discret. */
-[data-theme="light"] .profile-modal-tabs {
-  background: rgba(43,38,32,0.05);
-  box-shadow: inset 0 1px 3px rgba(43,38,32,0.08);
-}
-[data-theme="light"] .profile-modal-tab:hover:not(.active) {
-  background: rgba(43,38,32,0.05);
-}
-[data-theme="light"] .profile-modal-tab.active {
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 2px 9px rgba(59,130,246,0.22);
-}
 
 /* ═══════════════ Onglet Recommandations (fiche pays) ═══════════════
    "Si vous avez aimé X, vous aimerez Y" — cartes groupées par pays associé
@@ -8292,24 +8374,42 @@ html, body, #root { height: 100%; }
     overflow-y: auto;
   }
 
-  /* ── Profils (le mien + profil public) : quasi plein écran avec une fine
-     marge tout autour (préférence utilisateur : pas de vrai plein écran). ── */
-  .auth-overlay:has(.profile-modal) { padding: 10px; }
+  /* ── Profils (le mien + profil public) : plein écran comme la fiche pays,
+     avec la croix pour revenir en arrière. ── */
+  .auth-overlay:has(.profile-modal) { padding: 0; align-items: stretch; justify-content: stretch; }
   .profile-modal {
     width: 100%;
-    height: calc(100dvh - 20px);
-    max-height: calc(100dvh - 20px);
-    border-radius: 16px;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
+  /* Le liseré dégradé du haut n'a plus de sens plein écran (pas de coins
+     arrondis à souligner) : il ne reste ici qu'un filet incongru. */
+  .profile-modal::before { display: none; }
+
+  /* En-tête + onglets fixes en permanence mangeaient la moitié de l'écran
+     (gênant pour un contenu court comme les badges) : tout défile ensemble
+     (en-tête, onglets, contenu) comme un bloc normal — pas de barre épinglée
+     qui reste artificiellement collée en haut pendant le scroll. */
+  .profile-modal { overflow-y: auto; }
+  .profile-tab-content,
+  .profile-reviews-list {
+    flex: none;
+    overflow-y: visible;
+    min-height: 0;
   }
 
-  /* En-têtes compactés */
-  .profile-modal-header { padding: 14px 12px 12px; gap: 12px; }
+  /* En-têtes compactés, avec un peu d'air en haut pour ne pas coller au
+     bord de l'écran (plus de marge/coin arrondi pour amortir). */
+  .profile-modal-header { padding: 22px 12px 12px; gap: 12px; }
   .profile-modal-avatar-img,
   .profile-modal-avatar-initials { width: 48px; height: 48px; font-size: 18px; }
   /* ── Héros compact (~64px) : avatar réduit, nom sur sa ligne (le chip
      Admin passe dessous avec le compteur), bouton Abonné en petite pilule
      à droite — l'ensemble héros+badges ne doit pas manger l'écran. ── */
-  .pub-profile-hero { padding: 10px 12px; gap: 10px; align-items: center; }
+  .pub-profile-hero { padding: 20px 12px 10px; gap: 10px; align-items: center; }
   .pub-profile-avatar-img,
   .pub-profile-avatar-initials { width: 40px; height: 40px; font-size: 16px; }
   .pub-profile-name { font-size: 14.5px; }
@@ -8328,25 +8428,92 @@ html, body, #root { height: 100%; }
   .profile-modal-name-row .pub-profile-name { min-width: 0; }
   .admin-badge { font-size: 0.6rem; padding: 1px 6px; flex-shrink: 0; }
 
-  /* Onglets : rangée défilante au lieu d'onglets écrasés/coupés */
-  .profile-modal-tabs,
-  .pub-profile-main-tabs {
-    margin: 10px 10px 0;
-    overflow-x: auto;
-    scrollbar-width: none;
+  /* Onglets : de nouveau 4 (ou 3) en ligne — le 2×2 était pire. Ce qui
+     change vraiment par rapport à la version scrollable/tronquée d'origine :
+     tout ancré en haut (icône+libellé alignés identiquement sur chaque
+     onglet) et libellé qui passe à la ligne au lieu d'être coupé avec "…" —
+     jamais de nom masqué. Le badge de compteur est une pastille sur le coin
+     de l'icône plutôt qu'un élément à part qui semblait flotter sous le texte. */
+  .profile-modal-tabs {
+    margin: 18px 14px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
   }
-  .profile-modal-tabs::-webkit-scrollbar,
-  .pub-profile-main-tabs::-webkit-scrollbar { display: none; }
+  .pub-profile-main-tabs {
+    margin: 18px 14px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
   .profile-modal-tab,
   .pub-profile-main-tab {
-    flex: 1 0 auto;
-    padding: 8px 12px;
-    font-size: 12.5px;
-    white-space: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 10px 3px 14px;
+    font-size: 9.5px;
+    min-width: 0;
+    width: 100%;
+  }
+  .profile-modal-tab.active::after,
+  .pub-profile-main-tab.active::after {
+    left: 10px; right: 10px; bottom: 5px;
+  }
+  .profile-tab-icon-wrap {
+    display: inline-flex;
+    position: relative;
+    align-items: center; justify-content: center;
+  }
+  .profile-modal-tab-icon { font-size: 14px; height: 14px; display: flex; align-items: center; }
+  .profile-tab-label {
+    max-width: 100%;
+    white-space: normal; overflow: visible; text-overflow: clip;
+    line-height: 1.15;
+    text-align: center;
+  }
+  .profile-tab-count { font-size: 8px; padding: 1px 4px; }
+  /* Badge en pastille sur le coin de l'icône (façon notification), plutôt
+     qu'en dessous du texte où il avait l'air de flotter, détaché. */
+  .profile-tab-count--badge,
+  .profile-modal-tab.active .profile-tab-count--badge,
+  .pub-profile-main-tab.active .profile-tab-count--badge {
+    position: absolute; top: -4px; right: -11px;
+    min-width: 13px; height: 13px; padding: 0 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7.5px; line-height: 1; font-weight: 700;
+    /* Couleur pleine + texte blanc, fixe qu'il soit actif ou non : le rendu
+       "pilule discrète" (fond surface3 + texte text-muted) manquait de
+       contraste sur un badge aussi petit, surtout en mode nuit. */
+    background: var(--accent); border-color: transparent; color: #fff;
+    box-shadow: 0 0 0 2px var(--surface);
   }
   .profile-reviews-subtabs--nested { padding: 10px 12px; overflow-x: auto; scrollbar-width: none; }
   .profile-reviews-subtabs--nested::-webkit-scrollbar { display: none; }
   .profile-reviews-subtabs--nested .profile-reviews-subtab { flex-shrink: 0; white-space: nowrap; }
+
+  /* ── Destinations ajoutées : une seule colonne sur mobile, toujours en
+     format colonne (le choix liste/grille selon le nombre de destinations
+     ne concerne que le desktop, où il y a la largeur pour que ça compte). ── */
+  .profile-added-dest-grid { grid-template-columns: 1fr; gap: 10px; }
+  .profile-added-dest-name { font-size: 13px; }
+  .profile-added-dest-item--row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .profile-added-dest-item--row .profile-added-dest-img {
+    width: 100%; height: auto; aspect-ratio: 4 / 3;
+  }
+
+  /* ── Confirmation de suppression d'un avis (pays ou destination) : le
+     bloc confirmation (message + Oui/Non) est un frère flex-shrink:0 du nom
+     de l'auteur dans la même ligne — sur un écran étroit, son message ne
+     rentrait pas et écrasait le nom à un mot par ligne. On la fait passer
+     sur sa propre ligne pleine largeur quand elle est active. ── */
+  .review-item-header { flex-wrap: wrap; }
+  .review-item-own-actions:has(.review-confirm-delete) {
+    flex-basis: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
+  }
 
   /* ── Topbar : un vrai écart entre la recherche et le groupe de boutons
      (notif / avatar / réglages) rangés à droite. ── */

@@ -1109,8 +1109,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         {deletingDestId === selectedDest.id ? (
                           <div className="review-confirm-delete">
                             <span className="review-confirm-msg">{t("countryPanel.confirmDeleteDestination")}</span>
-                            <button className="review-confirm-yes" onClick={() => handleDeleteDest(selectedDest.id)}>{t("common:yes")}</button>
                             <button className="review-confirm-no" onClick={() => setDeletingDestId(null)}>{t("common:no")}</button>
+                            <button className="review-confirm-yes" onClick={() => handleDeleteDest(selectedDest.id)}>{t("common:yes")}</button>
                           </div>
                         ) : (
                           <>
