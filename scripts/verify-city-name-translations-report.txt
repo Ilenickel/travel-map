@@ -1,0 +1,56 @@
+=== Vérification croisée Wikipédia (FR -> EN), 325 villes ===
+
+Concordantes (nom confirmé par Wikipédia) : 311
+⚠️  DIVERGENTES (à vérifier manuellement)   : 13
+Pas de donnée Wikipédia exploitable        : 1
+Erreurs réseau/API                         : 0
+
+--- ⚠️  DIVERGENCES (nom utilisé pour la requête ≠ titre Wikipédia EN) ---
+Baie d'Halong (VNM) : requête prévue = "Halong Bay" (google_translate) | Wikipédia EN = "Hạ Long Bay"
+Edfou (EGY) : requête prévue = "Edfou" (google_translate) | Wikipédia EN = "Edfu"
+George Town (MYS) : requête prévue = "George Town" (google_translate) | Wikipédia EN = "Georgetown"
+Gili Trawangan (IDN) : requête prévue = "Gili Trawangan" (google_translate) | Wikipédia EN = "Gili Islands"
+Grenade (ESP) : requête prévue = "Granada" (override) | Wikipédia EN = "Grenade (disambiguation)"
+Ko Phi Phi (THA) : requête prévue = "Ko Phi Phi" (google_translate) | Wikipédia EN = "Phi Phi Islands"
+Koh Samui (THA) : requête prévue = "Koh Samui" (google_translate) | Wikipédia EN = "Ko Samui"
+Marrakech (MAR) : requête prévue = "Marrakech" (google_translate) | Wikipédia EN = "Marrakesh"
+Saint-Sébastien (ESP) : requête prévue = "San Sebastian" (override) | Wikipédia EN = "Saint-Sébastien"
+Sapa (VNM) : requête prévue = "Sapa" (google_translate) | Wikipédia EN = "Saba (condiment)"
+Sian Ka'an (MEX) : requête prévue = "Sian Ka'an" (google_translate) | Wikipédia EN = "Sian Kaʼan Biosphere Reserve"
+Valence (ESP) : requête prévue = "Valencia" (override) | Wikipédia EN = "Valence"
+Vienne (AUT) : requête prévue = "Vienna" (google_translate) | Wikipédia EN = "Vienne"
+
+--- Pas de donnée Wikipédia (pas forcément un problème — lieux peu notables ou noms composés) ---
+Seminyak (IDN) : requête prévue = "Seminyak" [pas de lien interlangue EN]
+
+--- Concordantes (échantillon, 30 premières) ---
+Abu Dhabi (ARE) -> "Abu Dhabi" ✓ (Wikipédia: "Abu Dhabi")
+Adélaïde (AUS) -> "Adelaide" ✓ (Wikipédia: "Adelaide")
+Agadir (MAR) -> "Agadir" ✓ (Wikipédia: "Agadir")
+Agra (IND) -> "Agra" ✓ (Wikipédia: "Agra")
+Agrigente (ITA) -> "Agrigento" ✓ (Wikipédia: "Agrigento")
+Aix-en-Provence (FRA) -> "Aix-en-Provence" ✓ (Wikipédia: "Aix-en-Provence")
+Alexandrie (EGY) -> "Alexandria" ✓ (Wikipédia: "Alexandria")
+Amsterdam (NLD) -> "Amsterdam" ✓ (Wikipédia: "Amsterdam")
+Antalya (TUR) -> "Antalya" ✓ (Wikipédia: "Antalya")
+Anvers (BEL) -> "Antwerp" ✓ (Wikipédia: "Antwerp")
+Arequipa (PER) -> "Arequipa" ✓ (Wikipédia: "Arequipa")
+Arles (FRA) -> "Arles" ✓ (Wikipédia: "Arles")
+Assouan (EGY) -> "Aswan" ✓ (Wikipédia: "Aswan")
+Athènes (GRC) -> "Athens" ✓ (Wikipédia: "Athens")
+Auschwitz (POL) -> "Auschwitz" ✓ (Wikipédia: "Auschwitz concentration camp")
+Avignon (FRA) -> "Avignon" ✓ (Wikipédia: "Avignon")
+Ayutthaya (THA) -> "Ayutthaya" ✓ (Wikipédia: "Phra Nakhon Si Ayutthaya (city)")
+Bacalar (MEX) -> "Bacalar" ✓ (Wikipédia: "Bacalar")
+Baie de Phang Nga (THA) -> "Phang Nga Bay" ✓ (Wikipédia: "Phang Nga Bay")
+Banff (CAN) -> "Banff" ✓ (Wikipédia: "Banff, Alberta")
+Bangkok (THA) -> "Bangkok" ✓ (Wikipédia: "Bangkok")
+Barcelone (ESP) -> "Barcelona" ✓ (Wikipédia: "Barcelona")
+Berlin (DEU) -> "Berlin" ✓ (Wikipédia: "Berlin")
+Berne (CHE) -> "Bern" ✓ (Wikipédia: "Bern")
+Biarritz (FRA) -> "Biarritz" ✓ (Wikipédia: "Biarritz")
+Bilbao (ESP) -> "Bilbao" ✓ (Wikipédia: "Bilbao")
+Blue Mountains (AUS) -> "Blue Mountains" ✓ (Wikipédia: "Blue Mountains")
+Bohol (PHL) -> "Bohol" ✓ (Wikipédia: "Bohol")
+Bologne (ITA) -> "Bologna" ✓ (Wikipédia: "Bologna")
+Boracay (PHL) -> "Boracay" ✓ (Wikipédia: "Boracay")

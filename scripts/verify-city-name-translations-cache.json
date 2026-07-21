@@ -1,0 +1,1640 @@
+{
+  "ARE:abu dhabi": {
+    "kind": "match",
+    "resolvedName": "Abu Dhabi",
+    "wikiEnTitle": "Abu Dhabi"
+  },
+  "AUS:adélaïde": {
+    "kind": "match",
+    "resolvedName": "Adelaide",
+    "wikiEnTitle": "Adelaide"
+  },
+  "MAR:agadir": {
+    "kind": "match",
+    "resolvedName": "Agadir",
+    "wikiEnTitle": "Agadir"
+  },
+  "IND:agra": {
+    "kind": "match",
+    "resolvedName": "Agra",
+    "wikiEnTitle": "Agra"
+  },
+  "ITA:agrigente": {
+    "kind": "match",
+    "resolvedName": "Agrigento",
+    "wikiEnTitle": "Agrigento"
+  },
+  "FRA:aix-en-provence": {
+    "kind": "match",
+    "resolvedName": "Aix-en-Provence",
+    "wikiEnTitle": "Aix-en-Provence"
+  },
+  "EGY:alexandrie": {
+    "kind": "match",
+    "resolvedName": "Alexandria",
+    "wikiEnTitle": "Alexandria"
+  },
+  "NLD:amsterdam": {
+    "kind": "match",
+    "resolvedName": "Amsterdam",
+    "wikiEnTitle": "Amsterdam"
+  },
+  "TUR:antalya": {
+    "kind": "match",
+    "resolvedName": "Antalya",
+    "wikiEnTitle": "Antalya"
+  },
+  "BEL:anvers": {
+    "kind": "match",
+    "resolvedName": "Antwerp",
+    "wikiEnTitle": "Antwerp"
+  },
+  "PER:arequipa": {
+    "kind": "match",
+    "resolvedName": "Arequipa",
+    "wikiEnTitle": "Arequipa"
+  },
+  "FRA:arles": {
+    "kind": "match",
+    "resolvedName": "Arles",
+    "wikiEnTitle": "Arles"
+  },
+  "EGY:assouan": {
+    "kind": "match",
+    "resolvedName": "Aswan",
+    "wikiEnTitle": "Aswan"
+  },
+  "GRC:athènes": {
+    "kind": "match",
+    "resolvedName": "Athens",
+    "wikiEnTitle": "Athens"
+  },
+  "POL:auschwitz": {
+    "kind": "match",
+    "resolvedName": "Auschwitz",
+    "wikiEnTitle": "Auschwitz concentration camp"
+  },
+  "FRA:avignon": {
+    "kind": "match",
+    "resolvedName": "Avignon",
+    "wikiEnTitle": "Avignon"
+  },
+  "THA:ayutthaya": {
+    "kind": "match",
+    "resolvedName": "Ayutthaya",
+    "wikiEnTitle": "Phra Nakhon Si Ayutthaya (city)"
+  },
+  "MEX:bacalar": {
+    "kind": "match",
+    "resolvedName": "Bacalar",
+    "wikiEnTitle": "Bacalar"
+  },
+  "VNM:baie d'halong": {
+    "kind": "mismatch",
+    "resolvedName": "Halong Bay",
+    "wikiEnTitle": "Hạ Long Bay",
+    "via": "google_translate"
+  },
+  "THA:baie de phang nga": {
+    "kind": "match",
+    "resolvedName": "Phang Nga Bay",
+    "wikiEnTitle": "Phang Nga Bay"
+  },
+  "CAN:banff": {
+    "kind": "match",
+    "resolvedName": "Banff",
+    "wikiEnTitle": "Banff, Alberta"
+  },
+  "THA:bangkok": {
+    "kind": "match",
+    "resolvedName": "Bangkok",
+    "wikiEnTitle": "Bangkok"
+  },
+  "ESP:barcelone": {
+    "kind": "match",
+    "resolvedName": "Barcelona",
+    "wikiEnTitle": "Barcelona"
+  },
+  "DEU:berlin": {
+    "kind": "match",
+    "resolvedName": "Berlin",
+    "wikiEnTitle": "Berlin"
+  },
+  "CHE:berne": {
+    "kind": "match",
+    "resolvedName": "Bern",
+    "wikiEnTitle": "Bern"
+  },
+  "FRA:biarritz": {
+    "kind": "match",
+    "resolvedName": "Biarritz",
+    "wikiEnTitle": "Biarritz"
+  },
+  "ESP:bilbao": {
+    "kind": "match",
+    "resolvedName": "Bilbao",
+    "wikiEnTitle": "Bilbao"
+  },
+  "AUS:blue mountains": {
+    "kind": "match",
+    "resolvedName": "Blue Mountains",
+    "wikiEnTitle": "Blue Mountains"
+  },
+  "PHL:bohol": {
+    "kind": "match",
+    "resolvedName": "Bohol",
+    "wikiEnTitle": "Bohol"
+  },
+  "ITA:bologne": {
+    "kind": "match",
+    "resolvedName": "Bologna",
+    "wikiEnTitle": "Bologna"
+  },
+  "PHL:boracay": {
+    "kind": "match",
+    "resolvedName": "Boracay",
+    "wikiEnTitle": "Boracay"
+  },
+  "FRA:bordeaux": {
+    "kind": "match",
+    "resolvedName": "Bordeaux",
+    "wikiEnTitle": "Bordeaux"
+  },
+  "USA:boston": {
+    "kind": "match",
+    "resolvedName": "Boston",
+    "wikiEnTitle": "Boston"
+  },
+  "BRA:brasília": {
+    "kind": "match",
+    "resolvedName": "Brasília",
+    "wikiEnTitle": "Brasília"
+  },
+  "AUS:brisbane": {
+    "kind": "match",
+    "resolvedName": "Brisbane",
+    "wikiEnTitle": "Brisbane"
+  },
+  "CZE:brno": {
+    "kind": "match",
+    "resolvedName": "Brno",
+    "wikiEnTitle": "Brno"
+  },
+  "BEL:bruges": {
+    "kind": "match",
+    "resolvedName": "Bruges",
+    "wikiEnTitle": "Bruges"
+  },
+  "BEL:bruxelles": {
+    "kind": "match",
+    "resolvedName": "Brussels",
+    "wikiEnTitle": "Brussels metropolitan area"
+  },
+  "HUN:budapest": {
+    "kind": "match",
+    "resolvedName": "Budapest",
+    "wikiEnTitle": "Budapest"
+  },
+  "KOR:busan": {
+    "kind": "match",
+    "resolvedName": "Busan",
+    "wikiEnTitle": "Busan"
+  },
+  "TUR:büyükada": {
+    "kind": "match",
+    "resolvedName": "Büyükada",
+    "wikiEnTitle": "Büyükada"
+  },
+  "AUS:cairns": {
+    "kind": "match",
+    "resolvedName": "Cairns",
+    "wikiEnTitle": "Cairns"
+  },
+  "MEX:cancún": {
+    "kind": "match",
+    "resolvedName": "Cancun",
+    "wikiEnTitle": "Cancún"
+  },
+  "CHN:canton": {
+    "kind": "match",
+    "resolvedName": "Canton",
+    "wikiEnTitle": "Canton (administrative division)"
+  },
+  "PER:canyon de colca": {
+    "kind": "match",
+    "resolvedName": "Colca Canyon",
+    "wikiEnTitle": "Colca Canyon"
+  },
+  "GRC:cap sounion": {
+    "kind": "match",
+    "resolvedName": "Cape Sounion",
+    "wikiEnTitle": "Sounion"
+  },
+  "FRA:carcassonne": {
+    "kind": "match",
+    "resolvedName": "Carcassonne",
+    "wikiEnTitle": "Carcassonne"
+  },
+  "GBR:cardiff": {
+    "kind": "match",
+    "resolvedName": "Cardiff",
+    "wikiEnTitle": "Cardiff"
+  },
+  "MAR:casablanca": {
+    "kind": "match",
+    "resolvedName": "Casablanca",
+    "wikiEnTitle": "Casablanca"
+  },
+  "FRA:cassis": {
+    "kind": "match",
+    "resolvedName": "Cassis",
+    "wikiEnTitle": "Cassis (disambiguation)"
+  },
+  "PHL:cebu": {
+    "kind": "match",
+    "resolvedName": "Cebu",
+    "wikiEnTitle": "Cebu (disambiguation)"
+  },
+  "CZE:český krumlov": {
+    "kind": "match",
+    "resolvedName": "Český Krumlov",
+    "wikiEnTitle": "Český Krumlov"
+  },
+  "MAR:chefchaouen": {
+    "kind": "match",
+    "resolvedName": "Chefchaouen",
+    "wikiEnTitle": "Chefchaouen"
+  },
+  "CHN:chengdu": {
+    "kind": "match",
+    "resolvedName": "Chengdu",
+    "wikiEnTitle": "Chengdu"
+  },
+  "THA:chiang mai": {
+    "kind": "match",
+    "resolvedName": "Chiang Mai",
+    "wikiEnTitle": "Chiang Mai"
+  },
+  "THA:chiang rai": {
+    "kind": "match",
+    "resolvedName": "Chiang Rai",
+    "wikiEnTitle": "Chiang Rai"
+  },
+  "USA:chicago": {
+    "kind": "match",
+    "resolvedName": "Chicago",
+    "wikiEnTitle": "Chicago"
+  },
+  "MEX:chichén itzá": {
+    "kind": "match",
+    "resolvedName": "Chichen Itza",
+    "wikiEnTitle": "Chichen Itza"
+  },
+  "CAN:chute montmorency": {
+    "kind": "match",
+    "resolvedName": "Montmorency Falls",
+    "wikiEnTitle": "Montmorency Falls"
+  },
+  "CAN:chutes du niagara": {
+    "kind": "match",
+    "resolvedName": "Niagara Falls",
+    "wikiEnTitle": "Niagara Falls"
+  },
+  "PRT:coimbra": {
+    "kind": "match",
+    "resolvedName": "Coimbra",
+    "wikiEnTitle": "Coimbra"
+  },
+  "FRA:colmar": {
+    "kind": "match",
+    "resolvedName": "Colmar",
+    "wikiEnTitle": "Colmar"
+  },
+  "DEU:cologne": {
+    "kind": "match",
+    "resolvedName": "Cologne",
+    "wikiEnTitle": "Cologne"
+  },
+  "ESP:cordoue": {
+    "kind": "match",
+    "resolvedName": "Cordoba",
+    "wikiEnTitle": "Córdoba, Spain"
+  },
+  "IRL:cork": {
+    "kind": "match",
+    "resolvedName": "Cork",
+    "wikiEnTitle": "Cork (city)"
+  },
+  "PHL:coron": {
+    "kind": "match",
+    "resolvedName": "Coron",
+    "wikiEnTitle": "Coron"
+  },
+  "POL:cracovie": {
+    "kind": "match",
+    "resolvedName": "Krakow",
+    "wikiEnTitle": "Kraków"
+  },
+  "VNM:cu chi": {
+    "kind": "match",
+    "resolvedName": "Cu Chi",
+    "wikiEnTitle": "Củ Chi district"
+  },
+  "PER:cusco": {
+    "kind": "match",
+    "resolvedName": "Cusco",
+    "wikiEnTitle": "Cusco"
+  },
+  "VNM:da nang": {
+    "kind": "match",
+    "resolvedName": "Da Nang",
+    "wikiEnTitle": "Da Nang"
+  },
+  "CHN:dali": {
+    "kind": "match",
+    "resolvedName": "Dali",
+    "wikiEnTitle": "Dali"
+  },
+  "THA:damnoen saduak": {
+    "kind": "match",
+    "resolvedName": "Damnoen Saduak",
+    "wikiEnTitle": "Damnoen Saduak district"
+  },
+  "USA:death valley": {
+    "kind": "match",
+    "resolvedName": "Death Valley",
+    "wikiEnTitle": "Death Valley (disambiguation)"
+  },
+  "IND:delhi": {
+    "kind": "match",
+    "resolvedName": "Delhi",
+    "wikiEnTitle": "Delhi"
+  },
+  "GRC:délos": {
+    "kind": "match",
+    "resolvedName": "Delos",
+    "wikiEnTitle": "Delos"
+  },
+  "KOR:dmz": {
+    "kind": "match",
+    "resolvedName": "DMZ",
+    "wikiEnTitle": "DMZ (disambiguation)"
+  },
+  "DEU:dresde": {
+    "kind": "match",
+    "resolvedName": "Dresden",
+    "wikiEnTitle": "Dresden"
+  },
+  "ARE:dubaï": {
+    "kind": "match",
+    "resolvedName": "Dubai",
+    "wikiEnTitle": "Dubai (disambiguation)"
+  },
+  "IRL:dublin": {
+    "kind": "match",
+    "resolvedName": "Dublin",
+    "wikiEnTitle": "Dublin"
+  },
+  "HRV:dubrovnik": {
+    "kind": "match",
+    "resolvedName": "Dubrovnik",
+    "wikiEnTitle": "Dubrovnik"
+  },
+  "EGY:edfou": {
+    "kind": "mismatch",
+    "resolvedName": "Edfou",
+    "wikiEnTitle": "Edfu",
+    "via": "google_translate"
+  },
+  "GBR:édimbourg": {
+    "kind": "match",
+    "resolvedName": "Edinburgh",
+    "wikiEnTitle": "Edinburgh"
+  },
+  "PHL:el nido": {
+    "kind": "match",
+    "resolvedName": "El Nido",
+    "wikiEnTitle": "El Nido, Palawan"
+  },
+  "TUR:éphèse": {
+    "kind": "match",
+    "resolvedName": "Ephesus",
+    "wikiEnTitle": "Ephesus"
+  },
+  "MAR:essaouira": {
+    "kind": "match",
+    "resolvedName": "Essaouira",
+    "wikiEnTitle": "Essaouira"
+  },
+  "USA:everglades": {
+    "kind": "match",
+    "resolvedName": "Everglades",
+    "wikiEnTitle": "Everglades"
+  },
+  "IRL:falaises de moher": {
+    "kind": "match",
+    "resolvedName": "Cliffs of Moher",
+    "wikiEnTitle": "Cliffs of Moher"
+  },
+  "MAR:fès": {
+    "kind": "match",
+    "resolvedName": "Fez",
+    "wikiEnTitle": "Fez, Morocco"
+  },
+  "ITA:florence": {
+    "kind": "match",
+    "resolvedName": "Florence",
+    "wikiEnTitle": "Florence"
+  },
+  "BRA:foz do iguaçu": {
+    "kind": "match",
+    "resolvedName": "Foz do Iguaçu",
+    "wikiEnTitle": "Foz do Iguaçu"
+  },
+  "DEU:francfort": {
+    "kind": "match",
+    "resolvedName": "Frankfurt",
+    "wikiEnTitle": "Frankfurt"
+  },
+  "JPN:fukuoka": {
+    "kind": "match",
+    "resolvedName": "Fukuoka",
+    "wikiEnTitle": "Fukuoka"
+  },
+  "PRT:funchal": {
+    "kind": "match",
+    "resolvedName": "Funchal",
+    "wikiEnTitle": "Funchal"
+  },
+  "IRL:galway": {
+    "kind": "match",
+    "resolvedName": "Galway",
+    "wikiEnTitle": "Galway"
+  },
+  "BEL:gand": {
+    "kind": "match",
+    "resolvedName": "Ghent",
+    "wikiEnTitle": "Ghent"
+  },
+  "POL:gdańsk": {
+    "kind": "match",
+    "resolvedName": "Gdańsk",
+    "wikiEnTitle": "Gdańsk"
+  },
+  "CHE:genève": {
+    "kind": "match",
+    "resolvedName": "Geneva",
+    "wikiEnTitle": "Geneva"
+  },
+  "MYS:george town": {
+    "kind": "mismatch",
+    "resolvedName": "George Town",
+    "wikiEnTitle": "Georgetown",
+    "via": "google_translate"
+  },
+  "IDN:gili trawangan": {
+    "kind": "mismatch",
+    "resolvedName": "Gili Trawangan",
+    "wikiEnTitle": "Gili Islands",
+    "via": "google_translate"
+  },
+  "EGY:gizeh": {
+    "kind": "match",
+    "resolvedName": "Giza",
+    "wikiEnTitle": "Giza"
+  },
+  "GBR:glasgow": {
+    "kind": "match",
+    "resolvedName": "Glasgow",
+    "wikiEnTitle": "Glasgow"
+  },
+  "TUR:göreme": {
+    "kind": "match",
+    "resolvedName": "Göreme",
+    "wikiEnTitle": "Göreme"
+  },
+  "USA:grand canyon": {
+    "kind": "match",
+    "resolvedName": "Grand Canyon",
+    "wikiEnTitle": "Grand Canyon"
+  },
+  "USA:grand canyon village": {
+    "kind": "match",
+    "resolvedName": "Grand Canyon Village",
+    "wikiEnTitle": "Grand Canyon Village, Arizona"
+  },
+  "CHN:grande muraille": {
+    "kind": "match",
+    "resolvedName": "Great Wall",
+    "wikiEnTitle": "Great Wall of China"
+  },
+  "AUT:graz": {
+    "kind": "match",
+    "resolvedName": "Graz",
+    "wikiEnTitle": "Graz"
+  },
+  "AUS:great ocean road": {
+    "kind": "match",
+    "resolvedName": "Great Ocean Road",
+    "wikiEnTitle": "Great Ocean Road"
+  },
+  "ESP:grenade": {
+    "kind": "mismatch",
+    "resolvedName": "Granada",
+    "wikiEnTitle": "Grenade (disambiguation)",
+    "via": "override"
+  },
+  "MYS:grottes de batu": {
+    "kind": "match",
+    "resolvedName": "Batu Caves",
+    "wikiEnTitle": "Batu Caves"
+  },
+  "MEX:guadalajara": {
+    "kind": "match",
+    "resolvedName": "Guadalajara",
+    "wikiEnTitle": "Guadalajara (disambiguation)"
+  },
+  "MEX:guanajuato": {
+    "kind": "match",
+    "resolvedName": "Guanajuato",
+    "wikiEnTitle": "Guanajuato (city)"
+  },
+  "CHN:guilin": {
+    "kind": "match",
+    "resolvedName": "Guilin",
+    "wikiEnTitle": "Guilin"
+  },
+  "KOR:gyeongju": {
+    "kind": "match",
+    "resolvedName": "Gyeongju",
+    "wikiEnTitle": "Gyeongju"
+  },
+  "CAN:halifax": {
+    "kind": "match",
+    "resolvedName": "Halifax",
+    "wikiEnTitle": "Halifax"
+  },
+  "AUT:hallstatt": {
+    "kind": "match",
+    "resolvedName": "Hallstatt",
+    "wikiEnTitle": "Hallstatt"
+  },
+  "DEU:hambourg": {
+    "kind": "match",
+    "resolvedName": "Hamburg",
+    "wikiEnTitle": "Hamburg"
+  },
+  "CHN:hangzhou": {
+    "kind": "match",
+    "resolvedName": "Hangzhou",
+    "wikiEnTitle": "Hangzhou"
+  },
+  "VNM:hanoï": {
+    "kind": "match",
+    "resolvedName": "Hanoi",
+    "wikiEnTitle": "Hanoi"
+  },
+  "JPN:hiroshima": {
+    "kind": "match",
+    "resolvedName": "Hiroshima",
+    "wikiEnTitle": "Hiroshima"
+  },
+  "VNM:ho chi minh-ville": {
+    "kind": "match",
+    "resolvedName": "Ho Chi Minh City",
+    "wikiEnTitle": "Ho Chi Minh City"
+  },
+  "VNM:hoi an": {
+    "kind": "match",
+    "resolvedName": "Hoi An",
+    "wikiEnTitle": "Hội An (city)"
+  },
+  "CHN:hong kong": {
+    "kind": "match",
+    "resolvedName": "Hong Kong",
+    "wikiEnTitle": "Hong Kong"
+  },
+  "USA:honolulu": {
+    "kind": "match",
+    "resolvedName": "Honolulu",
+    "wikiEnTitle": "Honolulu"
+  },
+  "IRL:howth": {
+    "kind": "match",
+    "resolvedName": "Howth",
+    "wikiEnTitle": "Howth"
+  },
+  "PER:huacachina": {
+    "kind": "match",
+    "resolvedName": "Huacachina",
+    "wikiEnTitle": "Huacachina"
+  },
+  "TWN:hualien": {
+    "kind": "match",
+    "resolvedName": "Hualien",
+    "wikiEnTitle": "Hualien City"
+  },
+  "VNM:hué": {
+    "kind": "match",
+    "resolvedName": "Hue",
+    "wikiEnTitle": "Huế"
+  },
+  "EGY:hurghada": {
+    "kind": "match",
+    "resolvedName": "Hurghada",
+    "wikiEnTitle": "Hurghada"
+  },
+  "HRV:hvar": {
+    "kind": "match",
+    "resolvedName": "Hvar",
+    "wikiEnTitle": "Hvar"
+  },
+  "AUT:innsbruck": {
+    "kind": "match",
+    "resolvedName": "Innsbruck",
+    "wikiEnTitle": "Innsbruck"
+  },
+  "CHE:interlaken": {
+    "kind": "match",
+    "resolvedName": "Interlaken",
+    "wikiEnTitle": "Interlaken"
+  },
+  "MEX:isla mujeres": {
+    "kind": "match",
+    "resolvedName": "Isla Mujeres",
+    "wikiEnTitle": "Isla Mujeres Municipality"
+  },
+  "TUR:istanbul": {
+    "kind": "match",
+    "resolvedName": "Istanbul",
+    "wikiEnTitle": "Istanbul"
+  },
+  "TUR:izmir": {
+    "kind": "match",
+    "resolvedName": "Izmir",
+    "wikiEnTitle": "İzmir"
+  },
+  "IND:jaipur": {
+    "kind": "match",
+    "resolvedName": "Jaipur",
+    "wikiEnTitle": "Jaipur"
+  },
+  "IDN:jakarta": {
+    "kind": "match",
+    "resolvedName": "Jakarta",
+    "wikiEnTitle": "Jakarta"
+  },
+  "CAN:jasper": {
+    "kind": "match",
+    "resolvedName": "Jasper",
+    "wikiEnTitle": "Jasper (disambiguation)"
+  },
+  "KOR:jeju": {
+    "kind": "match",
+    "resolvedName": "Jeju",
+    "wikiEnTitle": "Jeju Province"
+  },
+  "TWN:jiufen": {
+    "kind": "match",
+    "resolvedName": "Jiufen",
+    "wikiEnTitle": "Jiufen"
+  },
+  "IND:jodhpur": {
+    "kind": "match",
+    "resolvedName": "Jodhpur",
+    "wikiEnTitle": "Jodhpur"
+  },
+  "CHE:jungfraujoch": {
+    "kind": "match",
+    "resolvedName": "Jungfraujoch",
+    "wikiEnTitle": "Jungfraujoch"
+  },
+  "JPN:kamakura": {
+    "kind": "match",
+    "resolvedName": "Kamakura",
+    "wikiEnTitle": "Kamakura"
+  },
+  "CAN:kamloops": {
+    "kind": "match",
+    "resolvedName": "Kamloops",
+    "wikiEnTitle": "Kamloops"
+  },
+  "JPN:kanazawa": {
+    "kind": "match",
+    "resolvedName": "Kanazawa",
+    "wikiEnTitle": "Kanazawa"
+  },
+  "TWN:kaohsiung": {
+    "kind": "match",
+    "resolvedName": "Kaohsiung",
+    "wikiEnTitle": "Kaohsiung"
+  },
+  "USA:key west": {
+    "kind": "match",
+    "resolvedName": "Key West",
+    "wikiEnTitle": "Key West"
+  },
+  "IRL:killarney": {
+    "kind": "match",
+    "resolvedName": "Killarney",
+    "wikiEnTitle": "Killarney"
+  },
+  "THA:ko phi phi": {
+    "kind": "mismatch",
+    "resolvedName": "Ko Phi Phi",
+    "wikiEnTitle": "Phi Phi Islands",
+    "via": "google_translate"
+  },
+  "IND:kochi": {
+    "kind": "match",
+    "resolvedName": "Kochi",
+    "wikiEnTitle": "Kochi (disambiguation)"
+  },
+  "THA:koh samui": {
+    "kind": "mismatch",
+    "resolvedName": "Koh Samui",
+    "wikiEnTitle": "Ko Samui",
+    "via": "google_translate"
+  },
+  "MYS:kota kinabalu": {
+    "kind": "match",
+    "resolvedName": "Kota Kinabalu",
+    "wikiEnTitle": "Kota Kinabalu"
+  },
+  "THA:krabi": {
+    "kind": "match",
+    "resolvedName": "Krabi",
+    "wikiEnTitle": "Krabi"
+  },
+  "MYS:kuala lumpur": {
+    "kind": "match",
+    "resolvedName": "Kuala Lumpur",
+    "wikiEnTitle": "Kuala Lumpur"
+  },
+  "CHN:kunming": {
+    "kind": "match",
+    "resolvedName": "Kunming",
+    "wikiEnTitle": "Kunming"
+  },
+  "CZE:kutná hora": {
+    "kind": "match",
+    "resolvedName": "Kutná Hora",
+    "wikiEnTitle": "Kutná Hora"
+  },
+  "JPN:kyoto": {
+    "kind": "match",
+    "resolvedName": "Kyoto",
+    "wikiEnTitle": "Kyoto"
+  },
+  "GRC:la canée": {
+    "kind": "match",
+    "resolvedName": "Chania",
+    "wikiEnTitle": "Chania"
+  },
+  "NLD:la haye": {
+    "kind": "match",
+    "resolvedName": "The Hague",
+    "wikiEnTitle": "The Hague"
+  },
+  "USA:la nouvelle-orléans": {
+    "kind": "match",
+    "resolvedName": "New Orleans",
+    "wikiEnTitle": "New Orleans"
+  },
+  "IDN:labuan bajo": {
+    "kind": "match",
+    "resolvedName": "Labuan Bajo",
+    "wikiEnTitle": "Labuan Bajo"
+  },
+  "PRT:lagos": {
+    "kind": "match",
+    "resolvedName": "Lagos",
+    "wikiEnTitle": "Lagos"
+  },
+  "CAN:lake louise": {
+    "kind": "match",
+    "resolvedName": "Lake Louise",
+    "wikiEnTitle": "Lake Louise, Alberta"
+  },
+  "MYS:langkawi": {
+    "kind": "match",
+    "resolvedName": "Langkawi",
+    "wikiEnTitle": "Langkawi"
+  },
+  "USA:las vegas": {
+    "kind": "match",
+    "resolvedName": "Las Vegas",
+    "wikiEnTitle": "Las Vegas"
+  },
+  "EGY:le caire": {
+    "kind": "match",
+    "resolvedName": "Cairo",
+    "wikiEnTitle": "Cairo"
+  },
+  "BEL:liège": {
+    "kind": "match",
+    "resolvedName": "Liège",
+    "wikiEnTitle": "Liège"
+  },
+  "CHN:lijiang": {
+    "kind": "match",
+    "resolvedName": "Lijiang",
+    "wikiEnTitle": "Lijiang"
+  },
+  "PER:lima": {
+    "kind": "match",
+    "resolvedName": "Lima",
+    "wikiEnTitle": "Lima"
+  },
+  "PRT:lisbonne": {
+    "kind": "match",
+    "resolvedName": "Lisbon",
+    "wikiEnTitle": "Lisbon"
+  },
+  "GBR:liverpool": {
+    "kind": "match",
+    "resolvedName": "Liverpool",
+    "wikiEnTitle": "Liverpool"
+  },
+  "GBR:loch ness": {
+    "kind": "match",
+    "resolvedName": "Loch Ness",
+    "wikiEnTitle": "Loch Ness"
+  },
+  "HRV:lokrum": {
+    "kind": "match",
+    "resolvedName": "Lokrum",
+    "wikiEnTitle": "Lokrum"
+  },
+  "GBR:londres": {
+    "kind": "match",
+    "resolvedName": "London",
+    "wikiEnTitle": "London"
+  },
+  "USA:los angeles": {
+    "kind": "match",
+    "resolvedName": "Los Angeles",
+    "wikiEnTitle": "Los Angeles"
+  },
+  "EGY:louxor": {
+    "kind": "match",
+    "resolvedName": "Luxor",
+    "wikiEnTitle": "Luxor"
+  },
+  "CHE:lucerne": {
+    "kind": "match",
+    "resolvedName": "Lucerne",
+    "wikiEnTitle": "Lucerne"
+  },
+  "FRA:lyon": {
+    "kind": "match",
+    "resolvedName": "Lyon",
+    "wikiEnTitle": "Lyon"
+  },
+  "PER:machu picchu": {
+    "kind": "match",
+    "resolvedName": "Machu Picchu",
+    "wikiEnTitle": "Machu Picchu"
+  },
+  "ESP:madrid": {
+    "kind": "match",
+    "resolvedName": "Madrid",
+    "wikiEnTitle": "Madrid"
+  },
+  "MYS:malacca": {
+    "kind": "match",
+    "resolvedName": "Malacca",
+    "wikiEnTitle": "Malacca (disambiguation)"
+  },
+  "ESP:malaga": {
+    "kind": "match",
+    "resolvedName": "Malaga",
+    "wikiEnTitle": "Málaga"
+  },
+  "BRA:manaus": {
+    "kind": "match",
+    "resolvedName": "Manaus",
+    "wikiEnTitle": "Manaus"
+  },
+  "GBR:manchester": {
+    "kind": "match",
+    "resolvedName": "Manchester",
+    "wikiEnTitle": "Manchester"
+  },
+  "PHL:manille": {
+    "kind": "match",
+    "resolvedName": "Manila",
+    "wikiEnTitle": "Manila"
+  },
+  "PER:maras et moray": {
+    "kind": "match",
+    "resolvedName": "Maras and Moray",
+    "wikiEnTitle": "Moray (Inca ruin)"
+  },
+  "MAR:marrakech": {
+    "kind": "mismatch",
+    "resolvedName": "Marrakech",
+    "wikiEnTitle": "Marrakesh",
+    "via": "google_translate"
+  },
+  "FRA:marseille": {
+    "kind": "match",
+    "resolvedName": "Marseille",
+    "wikiEnTitle": "Marseille"
+  },
+  "AUS:melbourne": {
+    "kind": "match",
+    "resolvedName": "Melbourne",
+    "wikiEnTitle": "Melbourne"
+  },
+  "MEX:mérida": {
+    "kind": "match",
+    "resolvedName": "Merida",
+    "wikiEnTitle": "Mérida"
+  },
+  "MAR:merzouga": {
+    "kind": "match",
+    "resolvedName": "Merzouga",
+    "wikiEnTitle": "Merzouga"
+  },
+  "MEX:mexico": {
+    "kind": "match",
+    "resolvedName": "Mexico",
+    "wikiEnTitle": "Mexico City"
+  },
+  "USA:miami": {
+    "kind": "match",
+    "resolvedName": "Miami",
+    "wikiEnTitle": "Miami"
+  },
+  "ITA:milan": {
+    "kind": "match",
+    "resolvedName": "Milan",
+    "wikiEnTitle": "Milan"
+  },
+  "JPN:miyajima": {
+    "kind": "match",
+    "resolvedName": "Miyajima",
+    "wikiEnTitle": "Miyajima (disambiguation)"
+  },
+  "FRA:monaco": {
+    "kind": "match",
+    "resolvedName": "Monaco",
+    "wikiEnTitle": "Monaco"
+  },
+  "MEX:monte albán": {
+    "kind": "match",
+    "resolvedName": "Monte Albán",
+    "wikiEnTitle": "Monte Albán"
+  },
+  "FRA:montpellier": {
+    "kind": "match",
+    "resolvedName": "Montpellier",
+    "wikiEnTitle": "Montpellier"
+  },
+  "CAN:montréal": {
+    "kind": "match",
+    "resolvedName": "Montreal",
+    "wikiEnTitle": "Montreal"
+  },
+  "CHE:montreux": {
+    "kind": "match",
+    "resolvedName": "Montreux",
+    "wikiEnTitle": "Montreux"
+  },
+  "ESP:montserrat": {
+    "kind": "match",
+    "resolvedName": "Montserrat",
+    "wikiEnTitle": "Montserrat (disambiguation)"
+  },
+  "IND:mumbai": {
+    "kind": "match",
+    "resolvedName": "Mumbai",
+    "wikiEnTitle": "Mumbai"
+  },
+  "DEU:munich": {
+    "kind": "match",
+    "resolvedName": "Munich",
+    "wikiEnTitle": "Munich"
+  },
+  "CHN:mutianyu": {
+    "kind": "match",
+    "resolvedName": "Mutianyu",
+    "wikiEnTitle": "Mutianyu"
+  },
+  "VNM:my son": {
+    "kind": "match",
+    "resolvedName": "My Son",
+    "wikiEnTitle": "My Son (disambiguation)"
+  },
+  "VNM:my tho": {
+    "kind": "match",
+    "resolvedName": "My Tho",
+    "wikiEnTitle": "Mỹ Tho"
+  },
+  "GRC:mykonos": {
+    "kind": "match",
+    "resolvedName": "Mykonos",
+    "wikiEnTitle": "Mykonos"
+  },
+  "JPN:nagasaki": {
+    "kind": "match",
+    "resolvedName": "Nagasaki",
+    "wikiEnTitle": "Nagasaki"
+  },
+  "ITA:naples": {
+    "kind": "match",
+    "resolvedName": "Naples",
+    "wikiEnTitle": "Naples"
+  },
+  "JPN:nara": {
+    "kind": "match",
+    "resolvedName": "Nara",
+    "wikiEnTitle": "Nara (city)"
+  },
+  "DEU:neuschwanstein": {
+    "kind": "match",
+    "resolvedName": "Neuschwanstein",
+    "wikiEnTitle": "Neuschwanstein Castle"
+  },
+  "USA:new york": {
+    "kind": "match",
+    "resolvedName": "New York",
+    "wikiEnTitle": "New York City"
+  },
+  "CAN:niagara falls": {
+    "kind": "match",
+    "resolvedName": "Niagara Falls",
+    "wikiEnTitle": "Niagara Falls (disambiguation)"
+  },
+  "FRA:nice": {
+    "kind": "match",
+    "resolvedName": "Nice",
+    "wikiEnTitle": "Nice"
+  },
+  "VNM:ninh binh": {
+    "kind": "match",
+    "resolvedName": "Ninh Binh",
+    "wikiEnTitle": "Ninh Bình province"
+  },
+  "IDN:nusa penida": {
+    "kind": "match",
+    "resolvedName": "Nusa Penida",
+    "wikiEnTitle": "Nusa Penida"
+  },
+  "MEX:oaxaca": {
+    "kind": "match",
+    "resolvedName": "Oaxaca",
+    "wikiEnTitle": "Oaxaca (disambiguation)"
+  },
+  "USA:orlando": {
+    "kind": "match",
+    "resolvedName": "Orlando",
+    "wikiEnTitle": "Orlando"
+  },
+  "JPN:osaka": {
+    "kind": "match",
+    "resolvedName": "Osaka",
+    "wikiEnTitle": "Osaka"
+  },
+  "POL:oświęcim": {
+    "kind": "match",
+    "resolvedName": "Oświęcim",
+    "wikiEnTitle": "Oświęcim"
+  },
+  "CAN:ottawa": {
+    "kind": "match",
+    "resolvedName": "Ottawa",
+    "wikiEnTitle": "Ottawa"
+  },
+  "MAR:ouarzazate": {
+    "kind": "match",
+    "resolvedName": "Ouarzazate",
+    "wikiEnTitle": "Ouarzazate"
+  },
+  "GBR:oxford": {
+    "kind": "match",
+    "resolvedName": "Oxford",
+    "wikiEnTitle": "Oxford"
+  },
+  "ITA:palerme": {
+    "kind": "match",
+    "resolvedName": "Palermo",
+    "wikiEnTitle": "Palermo"
+  },
+  "TUR:pamukkale": {
+    "kind": "match",
+    "resolvedName": "Pamukkale",
+    "wikiEnTitle": "Pamukkale"
+  },
+  "BRA:pantanal": {
+    "kind": "match",
+    "resolvedName": "Pantanal",
+    "wikiEnTitle": "Pantanal"
+  },
+  "PER:paracas": {
+    "kind": "match",
+    "resolvedName": "Paracas",
+    "wikiEnTitle": "Paracas"
+  },
+  "BRA:paraty": {
+    "kind": "match",
+    "resolvedName": "Paraty",
+    "wikiEnTitle": "Paraty"
+  },
+  "FRA:paris": {
+    "kind": "match",
+    "resolvedName": "Paris",
+    "wikiEnTitle": "Paris"
+  },
+  "CHN:pékin": {
+    "kind": "match",
+    "resolvedName": "Beijing",
+    "wikiEnTitle": "Beijing"
+  },
+  "AUS:perth": {
+    "kind": "match",
+    "resolvedName": "Perth",
+    "wikiEnTitle": "Perth (disambiguation)"
+  },
+  "USA:philadelphie": {
+    "kind": "match",
+    "resolvedName": "Philadelphia",
+    "wikiEnTitle": "Philadelphia"
+  },
+  "VNM:phú quốc": {
+    "kind": "match",
+    "resolvedName": "Phú Quốc",
+    "wikiEnTitle": "Phú Quốc"
+  },
+  "THA:phuket": {
+    "kind": "match",
+    "resolvedName": "Phuket",
+    "wikiEnTitle": "Phuket (disambiguation)"
+  },
+  "ITA:pise": {
+    "kind": "match",
+    "resolvedName": "Pisa",
+    "wikiEnTitle": "Pisa"
+  },
+  "HRV:plitvice": {
+    "kind": "match",
+    "resolvedName": "Plitvice",
+    "wikiEnTitle": "Plitvice Lakes National Park"
+  },
+  "ITA:pompéi": {
+    "kind": "match",
+    "resolvedName": "Pompeii",
+    "wikiEnTitle": "Pompeii"
+  },
+  "PRT:porto": {
+    "kind": "match",
+    "resolvedName": "Porto",
+    "wikiEnTitle": "Porto"
+  },
+  "DEU:potsdam": {
+    "kind": "match",
+    "resolvedName": "Potsdam",
+    "wikiEnTitle": "Potsdam"
+  },
+  "CZE:prague": {
+    "kind": "match",
+    "resolvedName": "Prague",
+    "wikiEnTitle": "Prague"
+  },
+  "PER:puerto maldonado": {
+    "kind": "match",
+    "resolvedName": "Puerto Maldonado",
+    "wikiEnTitle": "Puerto Maldonado"
+  },
+  "MEX:puerto vallarta": {
+    "kind": "match",
+    "resolvedName": "Puerto Vallarta",
+    "wikiEnTitle": "Puerto Vallarta"
+  },
+  "PER:puno": {
+    "kind": "match",
+    "resolvedName": "Puno",
+    "wikiEnTitle": "Puno"
+  },
+  "CAN:québec": {
+    "kind": "match",
+    "resolvedName": "Quebec",
+    "wikiEnTitle": "Quebec"
+  },
+  "MAR:rabat": {
+    "kind": "match",
+    "resolvedName": "Rabat",
+    "wikiEnTitle": "Rabat"
+  },
+  "GRC:rhodes": {
+    "kind": "match",
+    "resolvedName": "Rhodes",
+    "wikiEnTitle": "Rhodes"
+  },
+  "BRA:rio de janeiro": {
+    "kind": "match",
+    "resolvedName": "Rio de Janeiro",
+    "wikiEnTitle": "Rio de Janeiro"
+  },
+  "ITA:rome": {
+    "kind": "match",
+    "resolvedName": "Rome",
+    "wikiEnTitle": "Rome"
+  },
+  "NLD:rotterdam": {
+    "kind": "match",
+    "resolvedName": "Rotterdam",
+    "wikiEnTitle": "Rotterdam"
+  },
+  "AUS:rottnest island": {
+    "kind": "match",
+    "resolvedName": "Rottnest Island",
+    "wikiEnTitle": "Rottnest Island"
+  },
+  "HRV:rovinj": {
+    "kind": "match",
+    "resolvedName": "Rovinj",
+    "wikiEnTitle": "Rovinj"
+  },
+  "DEU:rüdesheim": {
+    "kind": "match",
+    "resolvedName": "Rüdesheim",
+    "wikiEnTitle": "Rüdesheim"
+  },
+  "FRA:saint-émilion": {
+    "kind": "match",
+    "resolvedName": "Saint-Émilion",
+    "wikiEnTitle": "Saint-Émilion"
+  },
+  "FRA:saint-jean-de-luz": {
+    "kind": "match",
+    "resolvedName": "Saint-Jean-de-Luz",
+    "wikiEnTitle": "Saint-Jean-de-Luz"
+  },
+  "ESP:saint-sébastien": {
+    "kind": "mismatch",
+    "resolvedName": "San Sebastian",
+    "wikiEnTitle": "Saint-Sébastien",
+    "via": "override"
+  },
+  "BRA:salvador": {
+    "kind": "match",
+    "resolvedName": "Salvador",
+    "wikiEnTitle": "El Salvador"
+  },
+  "AUT:salzbourg": {
+    "kind": "match",
+    "resolvedName": "Salzburg",
+    "wikiEnTitle": "Salzburg"
+  },
+  "USA:san diego": {
+    "kind": "match",
+    "resolvedName": "San Diego",
+    "wikiEnTitle": "San Diego"
+  },
+  "USA:san francisco": {
+    "kind": "match",
+    "resolvedName": "San Francisco",
+    "wikiEnTitle": "San Francisco"
+  },
+  "GRC:santorin": {
+    "kind": "match",
+    "resolvedName": "Santorini",
+    "wikiEnTitle": "Santorini"
+  },
+  "BRA:são paulo": {
+    "kind": "match",
+    "resolvedName": "São Paulo",
+    "wikiEnTitle": "São Paulo"
+  },
+  "VNM:sapa": {
+    "kind": "mismatch",
+    "resolvedName": "Sapa",
+    "wikiEnTitle": "Saba (condiment)",
+    "via": "google_translate"
+  },
+  "JPN:sapporo": {
+    "kind": "match",
+    "resolvedName": "Sapporo",
+    "wikiEnTitle": "Sapporo"
+  },
+  "USA:sausalito": {
+    "kind": "match",
+    "resolvedName": "Sausalito",
+    "wikiEnTitle": "Sausalito, California"
+  },
+  "USA:seattle": {
+    "kind": "match",
+    "resolvedName": "Seattle",
+    "wikiEnTitle": "Seattle"
+  },
+  "ESP:ségovie": {
+    "kind": "match",
+    "resolvedName": "Segovia",
+    "wikiEnTitle": "Segovia"
+  },
+  "IDN:seminyak": {
+    "kind": "noData",
+    "resolvedName": "Seminyak",
+    "reason": "pas de lien interlangue EN"
+  },
+  "KOR:séoul": {
+    "kind": "match",
+    "resolvedName": "Seoul",
+    "wikiEnTitle": "Seoul"
+  },
+  "FRA:sète": {
+    "kind": "match",
+    "resolvedName": "Sète",
+    "wikiEnTitle": "Sète"
+  },
+  "ESP:séville": {
+    "kind": "match",
+    "resolvedName": "Seville",
+    "wikiEnTitle": "Seville"
+  },
+  "CHN:shanghai": {
+    "kind": "match",
+    "resolvedName": "Shanghai",
+    "wikiEnTitle": "Shanghai"
+  },
+  "MEX:sian ka'an": {
+    "kind": "mismatch",
+    "resolvedName": "Sian Ka'an",
+    "wikiEnTitle": "Sian Kaʼan Biosphere Reserve",
+    "via": "google_translate"
+  },
+  "PHL:siargao": {
+    "kind": "match",
+    "resolvedName": "Siargao",
+    "wikiEnTitle": "Siargao"
+  },
+  "SGP:singapour": {
+    "kind": "match",
+    "resolvedName": "Singapore",
+    "wikiEnTitle": "Singapore"
+  },
+  "PRT:sintra": {
+    "kind": "match",
+    "resolvedName": "Sintra",
+    "wikiEnTitle": "Sintra"
+  },
+  "HRV:split": {
+    "kind": "match",
+    "resolvedName": "Split",
+    "wikiEnTitle": "Split, Croatia"
+  },
+  "USA:springdale": {
+    "kind": "match",
+    "resolvedName": "Springdale",
+    "wikiEnTitle": "Springdale"
+  },
+  "FRA:strasbourg": {
+    "kind": "match",
+    "resolvedName": "Strasbourg",
+    "wikiEnTitle": "Strasbourg"
+  },
+  "THA:sukhothai": {
+    "kind": "match",
+    "resolvedName": "Sukhothai",
+    "wikiEnTitle": "Sukhothai Historical Park"
+  },
+  "TWN:sun moon lake": {
+    "kind": "match",
+    "resolvedName": "Sun Moon Lake",
+    "wikiEnTitle": "Sun Moon Lake"
+  },
+  "CHN:suzhou": {
+    "kind": "match",
+    "resolvedName": "Suzhou",
+    "wikiEnTitle": "Suzhou"
+  },
+  "AUS:sydney": {
+    "kind": "match",
+    "resolvedName": "Sydney",
+    "wikiEnTitle": "Sydney"
+  },
+  "TWN:taichung": {
+    "kind": "match",
+    "resolvedName": "Taichung",
+    "wikiEnTitle": "Taichung"
+  },
+  "TWN:tainan": {
+    "kind": "match",
+    "resolvedName": "Tainan",
+    "wikiEnTitle": "Tainan"
+  },
+  "TWN:taipei": {
+    "kind": "match",
+    "resolvedName": "Taipei",
+    "wikiEnTitle": "Taipei"
+  },
+  "MAR:tanger": {
+    "kind": "match",
+    "resolvedName": "Tangier",
+    "wikiEnTitle": "Tangier"
+  },
+  "MEX:teotihuacán": {
+    "kind": "match",
+    "resolvedName": "Teotihuacan",
+    "wikiEnTitle": "Teotihuacan"
+  },
+  "GRC:thessalonique": {
+    "kind": "match",
+    "resolvedName": "Thessaloniki",
+    "wikiEnTitle": "Thessaloniki"
+  },
+  "ITA:tivoli": {
+    "kind": "match",
+    "resolvedName": "Tivoli",
+    "wikiEnTitle": "Tivoli, Lazio"
+  },
+  "JPN:tokyo": {
+    "kind": "match",
+    "resolvedName": "Tokyo",
+    "wikiEnTitle": "Tokyo"
+  },
+  "ESP:tolède": {
+    "kind": "match",
+    "resolvedName": "Toledo",
+    "wikiEnTitle": "Toledo, Spain"
+  },
+  "CAN:toronto": {
+    "kind": "match",
+    "resolvedName": "Toronto",
+    "wikiEnTitle": "Toronto"
+  },
+  "FRA:toulouse": {
+    "kind": "match",
+    "resolvedName": "Toulouse",
+    "wikiEnTitle": "Toulouse"
+  },
+  "FRA:tours": {
+    "kind": "match",
+    "resolvedName": "Tours",
+    "wikiEnTitle": "Tours"
+  },
+  "HRV:trogir": {
+    "kind": "match",
+    "resolvedName": "Trogir",
+    "wikiEnTitle": "Trogir"
+  },
+  "MEX:tulum": {
+    "kind": "match",
+    "resolvedName": "Tulum",
+    "wikiEnTitle": "Tulum"
+  },
+  "ITA:turin": {
+    "kind": "match",
+    "resolvedName": "Turin",
+    "wikiEnTitle": "Turin"
+  },
+  "IDN:ubud": {
+    "kind": "match",
+    "resolvedName": "Ubud",
+    "wikiEnTitle": "Ubud"
+  },
+  "IND:udaipur": {
+    "kind": "match",
+    "resolvedName": "Udaipur",
+    "wikiEnTitle": "Udaipur (disambiguation)"
+  },
+  "AUS:uluru": {
+    "kind": "match",
+    "resolvedName": "Uluru",
+    "wikiEnTitle": "Uluru"
+  },
+  "NLD:utrecht": {
+    "kind": "match",
+    "resolvedName": "Utrecht",
+    "wikiEnTitle": "Utrecht"
+  },
+  "MEX:uxmal": {
+    "kind": "match",
+    "resolvedName": "Uxmal",
+    "wikiEnTitle": "Uxmal"
+  },
+  "ESP:valence": {
+    "kind": "mismatch",
+    "resolvedName": "Valencia",
+    "wikiEnTitle": "Valence",
+    "via": "override"
+  },
+  "MEX:valladolid": {
+    "kind": "match",
+    "resolvedName": "Valladolid",
+    "wikiEnTitle": "Valladolid"
+  },
+  "PER:vallée sacrée": {
+    "kind": "match",
+    "resolvedName": "Sacred Valley",
+    "wikiEnTitle": "Sacred Valley"
+  },
+  "CAN:vancouver": {
+    "kind": "match",
+    "resolvedName": "Vancouver",
+    "wikiEnTitle": "Vancouver"
+  },
+  "IND:varanasi": {
+    "kind": "match",
+    "resolvedName": "Varanasi",
+    "wikiEnTitle": "Varanasi"
+  },
+  "POL:varsovie": {
+    "kind": "match",
+    "resolvedName": "Warsaw",
+    "wikiEnTitle": "Warsaw"
+  },
+  "ITA:venise": {
+    "kind": "match",
+    "resolvedName": "Venice",
+    "wikiEnTitle": "Venice"
+  },
+  "FRA:versailles": {
+    "kind": "match",
+    "resolvedName": "Versailles",
+    "wikiEnTitle": "Versailles, Yvelines"
+  },
+  "CAN:victoria": {
+    "kind": "match",
+    "resolvedName": "Victoria",
+    "wikiEnTitle": "Victoria"
+  },
+  "AUT:vienne": {
+    "kind": "mismatch",
+    "resolvedName": "Vienna",
+    "wikiEnTitle": "Vienne",
+    "via": "google_translate"
+  },
+  "PER:vinicunca": {
+    "kind": "match",
+    "resolvedName": "Vinicunca",
+    "wikiEnTitle": "Vinicunca"
+  },
+  "USA:washington": {
+    "kind": "match",
+    "resolvedName": "Washington",
+    "wikiEnTitle": "Washington"
+  },
+  "CAN:whistler": {
+    "kind": "match",
+    "resolvedName": "Whistler",
+    "wikiEnTitle": "Whistler"
+  },
+  "POL:wieliczka": {
+    "kind": "match",
+    "resolvedName": "Wieliczka",
+    "wikiEnTitle": "Wieliczka"
+  },
+  "POL:wrocław": {
+    "kind": "match",
+    "resolvedName": "Wrocław",
+    "wikiEnTitle": "Wrocław"
+  },
+  "CHN:xi'an": {
+    "kind": "match",
+    "resolvedName": "Xi'an",
+    "wikiEnTitle": "Xi'an"
+  },
+  "IDN:yogyakarta": {
+    "kind": "match",
+    "resolvedName": "Yogyakarta",
+    "wikiEnTitle": "Yogyakarta"
+  },
+  "GBR:york": {
+    "kind": "match",
+    "resolvedName": "York",
+    "wikiEnTitle": "York"
+  },
+  "USA:yosemite valley": {
+    "kind": "match",
+    "resolvedName": "Yosemite Valley",
+    "wikiEnTitle": "Yosemite Valley, California"
+  },
+  "NLD:zaanse schans": {
+    "kind": "match",
+    "resolvedName": "Zaanse Schans",
+    "wikiEnTitle": "Zaanse Schans"
+  },
+  "HRV:zadar": {
+    "kind": "match",
+    "resolvedName": "Zadar",
+    "wikiEnTitle": "Zadar"
+  },
+  "HRV:zagreb": {
+    "kind": "match",
+    "resolvedName": "Zagreb",
+    "wikiEnTitle": "Zagreb"
+  },
+  "CHE:zermatt": {
+    "kind": "match",
+    "resolvedName": "Zermatt",
+    "wikiEnTitle": "Zermatt"
+  },
+  "CHE:zurich": {
+    "kind": "match",
+    "resolvedName": "Zurich",
+    "wikiEnTitle": "Zurich"
+  }
+}

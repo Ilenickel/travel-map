@@ -36,6 +36,53 @@ async function geocodeCityViaGeoapify(cityName, countryAlpha2, restrictToCity) {
   }
 }
 
+// Géocode une ville en demandant le résultat EN ANGLAIS (lang=en) : renvoie
+// à la fois les coordonnées ET le nom anglais canonique (properties.city).
+// Bien plus fiable que Google Translate pour convertir un exonyme en son nom
+// anglais — une autorité géographique résout le lieu puis renvoie son nom
+// anglais officiel, quelle que soit la langue d'entrée : "Sevilla"/"Séville"
+// -> "Seville", "Pékin"/"Pekín" -> "Beijing", "Grenade" -> "Granada", et
+// garde correctement "Cassis"/"Liège" que Google traduisait à tort en mots
+// communs. Sert à construire la requête Unsplash (toujours en anglais) d'une
+// ville pas encore en cache — voir api/_lib/cityImages.js.
+//
+// Non mis en cache ici : appelé seulement sur une ville RÉELLEMENT nouvelle
+// (ni en cache par nom, ni par proximité), cas rare. Les coordonnées pour le
+// matching cross-langue restent, elles, mises en cache via
+// resolveCityCoordinates ci-dessous.
+export async function geocodeCityWithEnglishName(cityName, countryAlpha2) {
+  if (!GEOAPIFY_API_KEY) return null;
+  try {
+    // Endpoint /search (pas /autocomplete) : on passe un nom de ville COMPLET,
+    // pas un préfixe en cours de frappe — /search est fait pour ça et classe
+    // ses résultats de façon plus stable (autocomplete pouvait renvoyer par
+    // intermittence une entité voisine dont le nom anglais différait).
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2)}` : '';
+    const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(cityName)}&type=city&limit=1&lang=en${filterParam}&apiKey=${GEOAPIFY_API_KEY}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const p = data.features?.[0]?.properties;
+    if (!p || p.lat == null || p.lon == null) return null;
+    // On ne retient le nom que si Geoapify a identifié une VILLE avec
+    // confiance (rank.confidence_city_level) : `result_type` s'est révélé
+    // trompeur (une vraie ville — Foix, Cassis, Liège — ressort parfois avec
+    // result_type "postcode" alors que confidence_city_level=1 la confirme
+    // bien comme ville, testé le 2026-07-21) — s'y fier aurait rejeté ces
+    // matches valides et poussé inutilement vers le repli Google Translate,
+    // le chemin le plus fragile.
+    const englishName = p.rank?.confidence_city_level === 1 ? (p.city || p.name || null) : null;
+    // Région (état/province) : capturée dans le MÊME appel (aucun coût
+    // supplémentaire), utilisée en dernier recours pour élargir la requête
+    // Unsplash si la ville elle-même n'a aucune photo exploitable — voir
+    // searchBestCityPhoto (api/_lib/cityImages.js).
+    const region = p.state || p.county || null;
+    return { lat: p.lat, lng: p.lon, englishName, region };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Résout les coordonnées d'une ville (ou d'une excursion si
  * `restrictToCity: false`), via le cache d'abord.

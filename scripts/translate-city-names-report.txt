@@ -1,0 +1,334 @@
+=== Traduction FR → EN des 325 villes éditoriales ===
+
+Traduites (changées)      : 71
+Déjà identiques FR = EN   : 254
+Échecs de traduction      : 0
+
+--- Traductions effectives (FR -> EN) ---
+Adélaïde (AUS) -> Adelaide
+Agrigente (ITA) -> Agrigento
+Alexandrie (EGY) -> Alexandria
+Anvers (BEL) -> Antwerp
+Assouan (EGY) -> Aswan
+Athènes (GRC) -> Athens
+Baie d'Halong (VNM) -> Halong Bay
+Baie de Phang Nga (THA) -> Phang Nga Bay
+Barcelone (ESP) -> Barcelona
+Berne (CHE) -> Bern
+Bologne (ITA) -> Bologna
+Bruxelles (BEL) -> Brussels
+Cancún (MEX) -> Cancun
+Canyon de Colca (PER) -> Colca Canyon
+Cap Sounion (GRC) -> Cape Sounion
+Chichén Itzá (MEX) -> Chichen Itza
+Chute Montmorency (CAN) -> Montmorency Falls
+Chutes du Niagara (CAN) -> Niagara Falls
+Cordoue (ESP) -> Cordoba
+Cracovie (POL) -> Krakow
+Délos (GRC) -> Delos
+Dresde (DEU) -> Dresden  [correction manuelle]
+Dubaï (ARE) -> Dubai
+Édimbourg (GBR) -> Edinburgh
+Éphèse (TUR) -> Ephesus
+Falaises de Moher (IRL) -> Cliffs of Moher
+Fès (MAR) -> Fez
+Francfort (DEU) -> Frankfurt
+Gand (BEL) -> Ghent
+Genève (CHE) -> Geneva
+Gizeh (EGY) -> Giza
+Grande Muraille (CHN) -> Great Wall
+Grenade (ESP) -> Granada  [correction manuelle]
+Grottes de Batu (MYS) -> Batu Caves
+Hambourg (DEU) -> Hamburg
+Hanoï (VNM) -> Hanoi
+Ho Chi Minh-Ville (VNM) -> Ho Chi Minh City
+Hué (VNM) -> Hue
+La Canée (GRC) -> Chania
+La Haye (NLD) -> The Hague
+La Nouvelle-Orléans (USA) -> New Orleans
+Le Caire (EGY) -> Cairo
+Lisbonne (PRT) -> Lisbon
+Londres (GBR) -> London
+Louxor (EGY) -> Luxor
+Manille (PHL) -> Manila
+Maras et Moray (PER) -> Maras and Moray
+Mérida (MEX) -> Merida
+Montréal (CAN) -> Montreal
+Palerme (ITA) -> Palermo
+Pékin (CHN) -> Beijing
+Philadelphie (USA) -> Philadelphia
+Pise (ITA) -> Pisa
+Pompéi (ITA) -> Pompeii
+Québec (CAN) -> Quebec
+Saint-Sébastien (ESP) -> San Sebastian  [correction manuelle]
+Salzbourg (AUT) -> Salzburg
+Santorin (GRC) -> Santorini
+Ségovie (ESP) -> Segovia
+Séoul (KOR) -> Seoul
+Séville (ESP) -> Seville
+Singapour (SGP) -> Singapore
+Tanger (MAR) -> Tangier
+Teotihuacán (MEX) -> Teotihuacan
+Thessalonique (GRC) -> Thessaloniki
+Tolède (ESP) -> Toledo
+Valence (ESP) -> Valencia  [correction manuelle]
+Vallée sacrée (PER) -> Sacred Valley
+Varsovie (POL) -> Warsaw
+Venise (ITA) -> Venice
+Vienne (AUT) -> Vienna
+
+--- Inchangées (déjà identiques en anglais, ou nom propre non traduisible) ---
+Abu Dhabi (ARE)
+Agadir (MAR)
+Agra (IND)
+Aix-en-Provence (FRA)
+Amsterdam (NLD)
+Antalya (TUR)
+Arequipa (PER)
+Arles (FRA)
+Auschwitz (POL)
+Avignon (FRA)
+Ayutthaya (THA)
+Bacalar (MEX)
+Banff (CAN)
+Bangkok (THA)
+Berlin (DEU)
+Biarritz (FRA)
+Bilbao (ESP)
+Blue Mountains (AUS)
+Bohol (PHL)
+Boracay (PHL)
+Bordeaux (FRA)
+Boston (USA)
+Brasília (BRA)
+Brisbane (AUS)
+Brno (CZE)
+Bruges (BEL)
+Budapest (HUN)
+Busan (KOR)
+Büyükada (TUR)
+Cairns (AUS)
+Canton (CHN)
+Carcassonne (FRA)
+Cardiff (GBR)
+Casablanca (MAR)
+Cassis (FRA)
+Cebu (PHL)
+Český Krumlov (CZE)
+Chefchaouen (MAR)
+Chengdu (CHN)
+Chiang Mai (THA)
+Chiang Rai (THA)
+Chicago (USA)
+Coimbra (PRT)
+Colmar (FRA)
+Cologne (DEU)
+Cork (IRL)
+Coron (PHL)
+Cu Chi (VNM)
+Cusco (PER)
+Da Nang (VNM)
+Dali (CHN)
+Damnoen Saduak (THA)
+Death Valley (USA)
+Delhi (IND)
+DMZ (KOR)
+Dublin (IRL)
+Dubrovnik (HRV)
+Edfou (EGY)
+El Nido (PHL)
+Essaouira (MAR)
+Everglades (USA)
+Florence (ITA)
+Foz do Iguaçu (BRA)
+Fukuoka (JPN)
+Funchal (PRT)
+Galway (IRL)
+Gdańsk (POL)
+George Town (MYS)
+Gili Trawangan (IDN)
+Glasgow (GBR)
+Göreme (TUR)
+Grand Canyon (USA)
+Grand Canyon Village (USA)
+Graz (AUT)
+Great Ocean Road (AUS)
+Guadalajara (MEX)
+Guanajuato (MEX)
+Guilin (CHN)
+Gyeongju (KOR)
+Halifax (CAN)
+Hallstatt (AUT)
+Hangzhou (CHN)
+Hiroshima (JPN)
+Hoi An (VNM)
+Hong Kong (CHN)
+Honolulu (USA)
+Howth (IRL)
+Huacachina (PER)
+Hualien (TWN)
+Hurghada (EGY)
+Hvar (HRV)
+Innsbruck (AUT)
+Interlaken (CHE)
+Isla Mujeres (MEX)
+Istanbul (TUR)
+Izmir (TUR)
+Jaipur (IND)
+Jakarta (IDN)
+Jasper (CAN)
+Jeju (KOR)
+Jiufen (TWN)
+Jodhpur (IND)
+Jungfraujoch (CHE)
+Kamakura (JPN)
+Kamloops (CAN)
+Kanazawa (JPN)
+Kaohsiung (TWN)
+Key West (USA)
+Killarney (IRL)
+Ko Phi Phi (THA)
+Kochi (IND)
+Koh Samui (THA)
+Kota Kinabalu (MYS)
+Krabi (THA)
+Kuala Lumpur (MYS)
+Kunming (CHN)
+Kutná Hora (CZE)
+Kyoto (JPN)
+Labuan Bajo (IDN)
+Lagos (PRT)
+Lake Louise (CAN)
+Langkawi (MYS)
+Las Vegas (USA)
+Liège (BEL)
+Lijiang (CHN)
+Lima (PER)
+Liverpool (GBR)
+Loch Ness (GBR)
+Lokrum (HRV)
+Los Angeles (USA)
+Lucerne (CHE)
+Lyon (FRA)
+Machu Picchu (PER)
+Madrid (ESP)
+Malacca (MYS)
+Malaga (ESP)
+Manaus (BRA)
+Manchester (GBR)
+Marrakech (MAR)
+Marseille (FRA)
+Melbourne (AUS)
+Merzouga (MAR)
+Mexico (MEX)
+Miami (USA)
+Milan (ITA)
+Miyajima (JPN)
+Monaco (FRA)
+Monte Albán (MEX)
+Montpellier (FRA)
+Montreux (CHE)
+Montserrat (ESP)
+Mumbai (IND)
+Munich (DEU)
+Mutianyu (CHN)
+My Son (VNM)
+My Tho (VNM)
+Mykonos (GRC)
+Nagasaki (JPN)
+Naples (ITA)
+Nara (JPN)
+Neuschwanstein (DEU)
+New York (USA)
+Niagara Falls (CAN)
+Nice (FRA)
+Ninh Binh (VNM)
+Nusa Penida (IDN)
+Oaxaca (MEX)
+Orlando (USA)
+Osaka (JPN)
+Oświęcim (POL)
+Ottawa (CAN)
+Ouarzazate (MAR)
+Oxford (GBR)
+Pamukkale (TUR)
+Pantanal (BRA)
+Paracas (PER)
+Paraty (BRA)
+Paris (FRA)
+Perth (AUS)
+Phú Quốc (VNM)
+Phuket (THA)
+Plitvice (HRV)
+Porto (PRT)
+Potsdam (DEU)
+Prague (CZE)
+Puerto Maldonado (PER)
+Puerto Vallarta (MEX)
+Puno (PER)
+Rabat (MAR)
+Rhodes (GRC)
+Rio de Janeiro (BRA)
+Rome (ITA)
+Rotterdam (NLD)
+Rottnest Island (AUS)
+Rovinj (HRV)
+Rüdesheim (DEU)
+Saint-Émilion (FRA)
+Saint-Jean-de-Luz (FRA)
+Salvador (BRA)
+San Diego (USA)
+San Francisco (USA)
+São Paulo (BRA)
+Sapa (VNM)
+Sapporo (JPN)
+Sausalito (USA)
+Seattle (USA)
+Seminyak (IDN)
+Sète (FRA)
+Shanghai (CHN)
+Sian Ka'an (MEX)
+Siargao (PHL)
+Sintra (PRT)
+Split (HRV)
+Springdale (USA)
+Strasbourg (FRA)
+Sukhothai (THA)
+Sun Moon Lake (TWN)
+Suzhou (CHN)
+Sydney (AUS)
+Taichung (TWN)
+Tainan (TWN)
+Taipei (TWN)
+Tivoli (ITA)
+Tokyo (JPN)
+Toronto (CAN)
+Toulouse (FRA)
+Tours (FRA)
+Trogir (HRV)
+Tulum (MEX)
+Turin (ITA)
+Ubud (IDN)
+Udaipur (IND)
+Uluru (AUS)
+Utrecht (NLD)
+Uxmal (MEX)
+Valladolid (MEX)
+Vancouver (CAN)
+Varanasi (IND)
+Versailles (FRA)
+Victoria (CAN)
+Vinicunca (PER)
+Washington (USA)
+Whistler (CAN)
+Wieliczka (POL)
+Wrocław (POL)
+Xi'an (CHN)
+Yogyakarta (IDN)
+York (GBR)
+Yosemite Valley (USA)
+Zaanse Schans (NLD)
+Zadar (HRV)
+Zagreb (HRV)
+Zermatt (CHE)
+Zurich (CHE)
