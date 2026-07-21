@@ -32,3 +32,8 @@ dist-ssr
 # Configuration locale créée par `vercel dev` / `vercel link`
 .vercel
 .env*
+
+# Pages générées par scripts/build-image-comparison.mjs (voir
+# docs/city-images-integration.md) — autonomes, jamais destinées à être
+# versionnées.
+scripts/output/

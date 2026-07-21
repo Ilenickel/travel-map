@@ -35,30 +35,38 @@ fichier — le projet est sur Vercel Hobby, déjà à 12/12 fonctions serverless
 
 ### Requête
 
-```
-POST /api/trip-templates
-Content-Type: application/json
+**Ne PAS faire un `fetch` brut** — le front a déjà un helper partagé pour
+tous les appels à ce fichier, `callModeration` (`src/lib/moderation.js`),
+utilisé par tous les autres écrans (voir `TripSuggestionsModal.jsx` pour un
+exemple avec l'action `suggest`). Il récupère automatiquement le token de
+session Supabase et l'ajoute au payload — pas besoin de le gérer à la main :
 
-{
-  "action": "get-city-image",
-  "authToken": "<token d'auth existant du front>",
-  "cities": [
+```js
+import { callModeration } from '../lib/moderation';
+
+const result = await callModeration('trip-templates', {
+  action: 'get-city-image',
+  cities: [
     {
-      "cityName": "Pékin",
-      "countryCode": "CHN",
-      "countryName": "China",
-      "countryAlpha2": "CN",
-      "sourceLanguage": "fr",
-      "lat": 39.9042,
-      "lng": 116.4074
-    }
-  ]
-}
+      cityName: 'Pékin',
+      countryCode: 'CHN',
+      countryName: 'China',
+      countryAlpha2: 'CN',
+      sourceLanguage: 'fr',
+      lat: 39.9042,
+      lng: 116.4074,
+    },
+  ],
+});
 ```
+
+(`callModeration('trip-templates', payload)` fait `POST /api/trip-templates`
+avec `{ ...payload, authToken }` — c'est un détail d'implémentation du
+helper, pas quelque chose à reproduire à la main.)
 
 Auth requise comme toutes les autres actions de ce fichier (anti-abus —
-`verifyUser` avant dispatch, déjà en place, rien à faire côté front sauf
-transmettre le token comme pour les autres appels de l'app).
+`verifyUser` avant dispatch, déjà en place, gérée automatiquement par
+`callModeration`).
 
 **Batch jusqu'à 8 villes par appel** (`MAX_CITY_IMAGE_BATCH`), résolues en
 parallèle côté serveur. Si un écran a besoin de plus de 8 photos (ex: liste
@@ -195,3 +203,54 @@ Concrètement : utiliser la même variable que celle envoyée aux actions
 - Ne pas prendre le nombre de likes Unsplash comme un gage de qualité — des
   photos à 800+ likes se sont révélées non représentatives, des photos à
   quelques likes se sont révélées excellentes.
+
+## 8. Outil de comparaison Unsplash vs Wikipedia (test, pas branché en prod)
+
+Piste évoquée en section 7 pour juger si Wikipedia serait une meilleure
+source qu'Unsplash — pas implémentée, seulement un outil pour comparer à
+l'œil avant de trancher.
+
+**`scripts/build-image-comparison.mjs`** génère une page HTML autonome
+(images encodées en base64, aucun serveur requis — s'ouvre directement dans
+un navigateur, se reconstruit sur n'importe quelle machine après avoir tiré
+cette branche et rempli son `.env`) qui affiche, côte à côte, la photo
+Unsplash déjà en cache et l'image d'en-tête Wikipedia pour un échantillon de
+villes de `city_images`.
+
+```bash
+# Les 25 villes avec le PLUS de likes Unsplash (grandes villes, corpus riche)
+node scripts/build-image-comparison.mjs --limit=25 --order=desc
+
+# Les 50 villes avec le MOINS de likes Unsplash (petites villes, corpus
+# pauvre — le cas qui inquiète le plus pour les villes qu'ajouteront les
+# utilisateurs plus tard)
+node scripts/build-image-comparison.mjs --limit=50 --order=asc
+
+# Chemin de sortie personnalisé (défaut : scripts/output/image-comparison.html,
+# ignoré par git — voir .gitignore)
+node scripts/build-image-comparison.mjs --limit=50 --order=asc --out=chemin/vers/page.html
+```
+
+Filtre appliqué côté Wikipedia : une image dont la source est un SVG (quasi
+toujours un drapeau/blason/carte de localisation, jamais une vraie photo)
+est explicitement écartée et affichée comme telle ("écarté (SVG)"), pas
+confondue avec un échec de téléchargement.
+
+**Piège vécu à corriger si vous retouchez ce script** : Wikimedia (le CDN
+d'images `upload.wikimedia.org`) renvoie très vite un 429 si les
+téléchargements sont faits en parallèle ou sans pause, et exige un en-tête
+`User-Agent` descriptif sur TOUS les appels (API *et* téléchargement
+d'image) sinon certaines requêtes échouent silencieusement. Le script fait
+donc les appels **en série** avec des pauses (~1,2s) — ne pas paralléliser
+sans retester, un premier essai parallèle le 2026-07-22 a fait échouer 21
+téléchargements sur 25 sans erreur explicite (juste une image manquante).
+Utilise aussi délibérément `thumbnail.source` (vignette légère) et jamais
+`originalimage.source` (pleine résolution) — un essai avec l'original a
+aussi déclenché un 429 sur seulement 25 villes.
+
+Reste à faire si Wikipedia est retenu comme source (pas commencé) : décider
+si c'est un remplacement total ou un repli intelligent (ex: Wikipedia
+d'abord, Unsplash si la page n'a pas de vraie photo), et l'implémenter dans
+`api/_lib/cityImages.js` en gardant le même contrat de réponse pour
+`get-city-image` (voir section 2) — pas de changement nécessaire côté front
+si c'est bien fait.
