@@ -3647,7 +3647,10 @@ html, body, #root { height: 100%; }
     z-index: 20;
     background: var(--surface);
     overflow-y: auto;
-    padding: 16px 16px 24px;
+    /* Recouvre .panel-topbar (z-index supérieur) : sans la safe-area ici, le
+       bouton "Retour" flotte directement sous l'encoche/l'île dynamique en
+       PWA iPhone. 0px sur Android via le fallback, donc rien n'y change. */
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 24px;
     margin: 0;
   }
 
