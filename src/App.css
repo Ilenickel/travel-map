@@ -3565,7 +3565,11 @@ html, body, #root { height: 100%; }
      léger voile dégradé en haut. */
   .panel-topbar { height: 0; }
   .panel-topbar-inner {
-    padding: 10px 12px 20px;
+    /* Fiche pays plein écran sur mobile (voir .country-modal ci-dessus) :
+       cette barre flotte directement sur l'encoche/l'île dynamique en PWA
+       iPhone sans ce padding — safe-area-inset-top vaut 0 sur Android donc
+       rien ne change de ce côté. */
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 12px 20px;
     border-radius: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.42), transparent);
   }
@@ -8388,6 +8392,12 @@ html, body, #root { height: 100%; }
   /* Le liseré dégradé du haut n'a plus de sens plein écran (pas de coins
      arrondis à souligner) : il ne reste ici qu'un filet incongru. */
   .profile-modal::before { display: none; }
+
+  /* Plein écran (comme la fiche pays) : l'en-tête et la croix de fermeture
+     flottent sinon directement sous l'encoche/l'île dynamique en PWA iPhone
+     — safe-area-inset-top vaut 0 sur Android donc rien ne change là-bas. */
+  .profile-modal-header { padding-top: calc(22px + env(safe-area-inset-top, 0px)); }
+  .profile-modal .auth-close { top: calc(14px + env(safe-area-inset-top, 0px)); }
 
   /* En-tête + onglets fixes en permanence mangeaient la moitié de l'écran
      (gênant pour un contenu court comme les badges) : tout défile ensemble
