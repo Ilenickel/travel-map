@@ -46,9 +46,13 @@ export async function checkBadgeUpgrades(userId) {
   }
 
   const [{ data: commPlaces }, { data: staticPlaces }] = await Promise.all([
-    supabase.from('destination_places').select('id').eq('user_id', userId),
+    supabase.from('destination_places').select('id, destination_id').eq('user_id', userId),
     supabase.from('static_destination_places').select('id').eq('user_id', userId),
   ]);
+  const ownDestIds = new Set((dests || []).map((d) => d.id));
+  const ownPlaceCount = (commPlaces || []).filter((p) => ownDestIds.has(p.destination_id)).length;
+  const otherPlaceCount = (commPlaces || []).filter((p) => !ownDestIds.has(p.destination_id)).length
+    + (staticPlaces || []).length;
   const allPlaceIds = [
     ...(commPlaces || []).map(p => p.id),
     ...(staticPlaces || []).map(p => p.id),
@@ -64,7 +68,7 @@ export async function checkBadgeUpgrades(userId) {
   const destinations = (dests || []).map((d) => ({
     places_count: d.destination_places?.[0]?.count ?? 0,
   }));
-  const communauteScore = computeCommunauteScore(reviewCount || 0, destinations, voteCount);
+  const communauteScore = computeCommunauteScore(reviewCount || 0, destinations, voteCount, ownPlaceCount, otherPlaceCount);
 
   const computed = {
     explorateur: computeExplorateurLevel(visitedCount || 0),
@@ -176,9 +180,13 @@ export async function loadBadgeData(userId) {
   }
 
   const [{ data: commPlaces2 }, { data: staticPlaces2 }] = await Promise.all([
-    supabase.from('destination_places').select('id').eq('user_id', userId),
+    supabase.from('destination_places').select('id, destination_id').eq('user_id', userId),
     supabase.from('static_destination_places').select('id').eq('user_id', userId),
   ]);
+  const ownDestIds2 = new Set((dests || []).map((d) => d.id));
+  const ownPlaceCount2 = (commPlaces2 || []).filter((p) => ownDestIds2.has(p.destination_id)).length;
+  const otherPlaceCount2 = (commPlaces2 || []).filter((p) => !ownDestIds2.has(p.destination_id)).length
+    + (staticPlaces2 || []).length;
   const allPlaceIds2 = [
     ...(commPlaces2 || []).map(p => p.id),
     ...(staticPlaces2 || []).map(p => p.id),
@@ -194,7 +202,7 @@ export async function loadBadgeData(userId) {
   const destinations = (dests || []).map((d) => ({
     places_count: d.destination_places?.[0]?.count ?? 0,
   }));
-  const communauteScore = computeCommunauteScore(reviewCount || 0, destinations, voteCount);
+  const communauteScore = computeCommunauteScore(reviewCount || 0, destinations, voteCount, ownPlaceCount2, otherPlaceCount2);
 
   return {
     levels: {

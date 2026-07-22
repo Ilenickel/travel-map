@@ -442,7 +442,7 @@
     "howTo": {
       "explorateur": "Marque países como visitados haciendo clic en ✈️ en la página de un país.",
       "decouverte": "¡La función de planificación de viajes llegará pronto!",
-      "communaute": "Deje reseñas sobre países y añada destinos con lugares."
+      "communaute": "Gane puntos dejando reseñas, creando un destino, añadiendo lugares y recibiendo votos."
     },
     "maxLevelReached": "Nivel máximo alcanzado",
     "allLevelsSuffix": "todos los niveles",
@@ -554,6 +554,8 @@
     "dislikeThisPlace": "No me gusta este lugar",
     "loginToVote": "Inicie sesión para votar",
     "deleteButton": "Eliminar",
+    "editButton": "Editar",
+    "saveButton": "Guardar",
     "loading": "Cargando…",
     "seeMorePlaces": "Ver más lugares"
   },

@@ -142,6 +142,114 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
   );
 }
 
+// ─── Formulaire d'édition d'un lieu (inline, dans la carte) ─────────────────
+function EditPlaceForm({ place, destType, countryCode, countryName, destName, editorialNames = [], onSaved, onCancel }) {
+  const { t } = useTranslation('app');
+  const { user } = useAuth();
+  const [name, setName] = useState(place.name);
+  const [photo, setPhoto] = useState({ file: null, preview: place.image_url });
+  const [compressing, setCompressing] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handlePhoto(e) {
+    const file = e.target.files[0]; if (!file) return; e.target.value = '';
+    setCompressing(true);
+    const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 800, useWebWorker: true });
+    setPhoto({ file: compressed, preview: URL.createObjectURL(compressed) });
+    setCompressing(false);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!name.trim() || !photo.preview) return;
+    setSubmitting(true); setError('');
+
+    let uploadedPath = null;
+    let uploadedUrl = place.image_url;
+    if (photo.file) {
+      try {
+        const prefix = destType === 'community' ? `comm_${place.destination_id?.slice(0, 8) ?? 'edit'}` : `stat_${countryCode}_edit`;
+        const { url, path } = await uploadPlacePhoto(photo.file, user.id, prefix);
+        uploadedUrl = url; uploadedPath = path;
+      } catch {
+        setError(t('placesList.photoUploadError'));
+        setSubmitting(false); return;
+      }
+    }
+
+    const { data: session } = await supabase.auth.getSession();
+    const authToken = session?.session?.access_token ?? null;
+
+    const payload = {
+      authToken,
+      placeId: place.id,
+      placeType: destType,
+      placeName: name.trim(),
+      imageUrl: uploadedUrl,
+      imagePath: uploadedPath,
+      countryName, destName,
+      editorialNames,
+    };
+
+    let result;
+    try {
+      const res = await fetch('/api/update-place', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      result = await res.json();
+    } catch {
+      result = { ok: false, reason: t('placesList.connectionFailedError') };
+    }
+
+    if (!result.ok) {
+      setError(result.reason || t('placesList.publicationFailedError'));
+      setSubmitting(false); return;
+    }
+
+    onSaved({ ...place, name: name.trim(), image_url: uploadedUrl, image_path: uploadedPath ?? place.image_path });
+  }
+
+  return (
+    <form className="must-item-edit-form" onSubmit={handleSubmit}>
+      <input
+        className="add-place-name-input"
+        value={name}
+        onChange={e => setName(e.target.value)}
+        placeholder={t('placesList.namePlaceholder')}
+        maxLength={100}
+        disabled={submitting}
+      />
+      <div className="must-edit-photo-row">
+        {photo.preview ? (
+          <div className="must-edit-photo-preview-wrap">
+            <img src={photo.preview} className="must-edit-photo-preview" alt="" />
+            {!submitting && !compressing && (
+              <button type="button" className="add-place-photo-remove"
+                onClick={() => setPhoto({ file: null, preview: null })}>✕</button>
+            )}
+          </div>
+        ) : (
+          <label className={`must-edit-photo-btn${compressing ? ' loading' : ''}`}>
+            {compressing ? <><div className="dest-form-spinner dest-form-spinner--small" /> {t('placesList.compressing')}</> : t('placesList.addPhotoButton')}
+            <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handlePhoto} disabled={compressing || submitting} />
+          </label>
+        )}
+      </div>
+      {error && <div className="add-place-error">⚠ {error}</div>}
+      <div className="add-place-actions">
+        <button type="button" className="add-place-cancel" onClick={onCancel} disabled={submitting}>{t('placesList.cancelButton')}</button>
+        <button type="submit" className="add-place-submit"
+          disabled={!name.trim() || !photo.preview || submitting || compressing}>
+          {submitting ? t('placesList.publishing') : t('placesList.saveButton')}
+        </button>
+      </div>
+    </form>
+  );
+}
+
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function PlacesList({ dest, countryCode, countryName, wikiImages = {}, wikiMeta = {} }) {
   const { t, i18n } = useTranslation('app');
@@ -183,6 +291,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   const [loading, setLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const [votingId, setVotingId] = useState(null);
   // Message transitoire affiché quand le lieu soumis s'avère être un doublon
   // (même lieu déjà proposé, potentiellement dans une autre langue) : le
@@ -396,6 +505,11 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     setShowAddForm(false);
   }
 
+  function handleSaved(updatedPlace) {
+    setPlaces(prev => prev.map(p => (p.id === updatedPlace.id ? { ...p, ...updatedPlace } : p)));
+    setEditingId(null);
+  }
+
   function handleMerged(matchedName, voted) {
     setShowAddForm(false);
     setMergeNotice({ name: matchedName, voted });
@@ -441,47 +555,65 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
           const displayName = place.isJson ? place.name : (translatedNames[place.id]?.text ?? place.name);
           return (
           <div key={place.id} className="must-item">
-            {place.isJson ? (
-              <WikiImage src={wikiImages[place.wikipedia] ?? null} meta={wikiMeta[place.wikipedia]} alt={displayName} className="must-item-img" />
+            {editingId === place.id ? (
+              <EditPlaceForm
+                place={place}
+                destType={destType}
+                countryCode={countryCode}
+                countryName={countryName}
+                destName={dest.name}
+                editorialNames={editorialNames}
+                onSaved={handleSaved}
+                onCancel={() => setEditingId(null)}
+              />
             ) : (
-              <img src={place.image_url} alt={displayName} className="must-item-img" />
-            )}
-            <span className="must-item-name">{displayName}</span>
-
-            {!place.isJson && (
-              <div className="must-item-actions">
-                {deletingId === place.id ? (
-                  <div className="dest-card-confirm-block">
-                    <span className="dest-card-confirm-msg">{t('placesList.confirmDeleteMessage')}</span>
-                    <div className="dest-card-confirm-btns">
-                      <button className="review-confirm-no" onClick={() => setDeletingId(null)}>{t('placesList.noButton')}</button>
-                      <button className="review-confirm-yes" onClick={() => handleDelete(place)}>{t('placesList.yesButton')}</button>
-                    </div>
-                  </div>
+              <>
+                {place.isJson ? (
+                  <WikiImage src={wikiImages[place.wikipedia] ?? null} meta={wikiMeta[place.wikipedia]} alt={displayName} className="must-item-img" />
                 ) : (
-                  <>
-                    <button
-                      className={`must-vote-btn must-vote-btn--up${place._votes?.myVote === 'up' ? ' voted' : ''}${!user ? ' disabled' : ''}`}
-                      disabled={!user || votingId === place.id}
-                      onClick={() => handleVote(place, 'up')}
-                      title={user ? t('placesList.likeThisPlace') : t('placesList.loginToVote')}
-                    >
-                      ▲ {place._votes?.up ?? 0}
-                    </button>
-                    <button
-                      className={`must-vote-btn must-vote-btn--down${place._votes?.myVote === 'down' ? ' voted-down' : ''}${!user ? ' disabled' : ''}`}
-                      disabled={!user || votingId === place.id}
-                      onClick={() => handleVote(place, 'down')}
-                      title={user ? t('placesList.dislikeThisPlace') : t('placesList.loginToVote')}
-                    >
-                      ▼ {place._votes?.down ?? 0}
-                    </button>
-                    {user?.id === place.user_id && (
-                      <button className="must-delete-btn" onClick={() => setDeletingId(place.id)} title={t('placesList.deleteButton')}>✕</button>
-                    )}
-                  </>
+                  <img src={place.image_url} alt={displayName} className="must-item-img" />
                 )}
-              </div>
+                <span className="must-item-name">{displayName}</span>
+
+                {!place.isJson && (
+                  <div className="must-item-actions">
+                    {deletingId === place.id ? (
+                      <div className="dest-card-confirm-block">
+                        <span className="dest-card-confirm-msg">{t('placesList.confirmDeleteMessage')}</span>
+                        <div className="dest-card-confirm-btns">
+                          <button className="review-confirm-no" onClick={() => setDeletingId(null)}>{t('placesList.noButton')}</button>
+                          <button className="review-confirm-yes" onClick={() => handleDelete(place)}>{t('placesList.yesButton')}</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <button
+                          className={`must-vote-btn must-vote-btn--up${place._votes?.myVote === 'up' ? ' voted' : ''}${!user ? ' disabled' : ''}`}
+                          disabled={!user || votingId === place.id}
+                          onClick={() => handleVote(place, 'up')}
+                          title={user ? t('placesList.likeThisPlace') : t('placesList.loginToVote')}
+                        >
+                          ▲ {place._votes?.up ?? 0}
+                        </button>
+                        <button
+                          className={`must-vote-btn must-vote-btn--down${place._votes?.myVote === 'down' ? ' voted-down' : ''}${!user ? ' disabled' : ''}`}
+                          disabled={!user || votingId === place.id}
+                          onClick={() => handleVote(place, 'down')}
+                          title={user ? t('placesList.dislikeThisPlace') : t('placesList.loginToVote')}
+                        >
+                          ▼ {place._votes?.down ?? 0}
+                        </button>
+                        {user?.id === place.user_id && (
+                          <>
+                            <button className="must-edit-btn" onClick={() => setEditingId(place.id)} title={t('placesList.editButton')}>✎</button>
+                            <button className="must-delete-btn" onClick={() => setDeletingId(place.id)} title={t('placesList.deleteButton')}>✕</button>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
           );

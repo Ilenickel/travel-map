@@ -442,7 +442,7 @@
     "howTo": {
       "explorateur": "Marquez des pays comme visités en cliquant sur ✈️ dans la fiche d'un pays.",
       "decouverte": "Fonctionnalité de planification de voyages bientôt disponible !",
-      "communaute": "Laissez des avis sur les pays et ajoutez des destinations avec des lieux."
+      "communaute": "Gagnez des points en laissant des avis, en créant une destination, en ajoutant des lieux et en recevant des votes."
     },
     "maxLevelReached": "Niveau maximum atteint",
     "allLevelsSuffix": "tous les niveaux",
@@ -554,6 +554,8 @@
     "dislikeThisPlace": "Je n'aime pas ce lieu",
     "loginToVote": "Connectez-vous pour voter",
     "deleteButton": "Supprimer",
+    "editButton": "Modifier",
+    "saveButton": "Enregistrer",
     "loading": "Chargement…",
     "seeMorePlaces": "Voir plus de lieux"
   },

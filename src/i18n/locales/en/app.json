@@ -442,7 +442,7 @@
     "howTo": {
       "explorateur": "Mark countries as visited by clicking ✈️ on a country page.",
       "decouverte": "Trip planning feature coming soon!",
-      "communaute": "Leave reviews on countries and add destinations with places."
+      "communaute": "Earn points by leaving reviews, creating a destination, adding places, and receiving votes."
     },
     "maxLevelReached": "Maximum level reached",
     "allLevelsSuffix": "all levels",
@@ -554,6 +554,8 @@
     "dislikeThisPlace": "Dislike this place",
     "loginToVote": "Log in to vote",
     "deleteButton": "Delete",
+    "editButton": "Edit",
+    "saveButton": "Save",
     "loading": "Loading…",
     "seeMorePlaces": "See more places"
   },

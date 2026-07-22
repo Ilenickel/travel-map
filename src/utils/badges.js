@@ -15,13 +15,13 @@ export const BADGE_COLORS = {
 
 export const BADGE_EXPLORATEUR = [
   badgeLevel(0, '🌱', 0,  'explorateur', 'curious'),
-  badgeLevel(1, '🧭', 2,  'explorateur', 'novice'),
-  badgeLevel(2, '🎒', 4,  'explorateur', 'adventurer'),
-  badgeLevel(3, '🗺️', 7,  'explorateur', 'explorer'),
-  badgeLevel(4, '✈️', 10, 'explorateur', 'greatTraveler'),
-  badgeLevel(5, '🌍', 15, 'explorateur', 'globetrotter'),
-  badgeLevel(6, '🧳', 20, 'explorateur', 'nomad'),
-  badgeLevel(7, '👑', 25, 'explorateur', 'legend'),
+  badgeLevel(1, '🧭', 4,  'explorateur', 'novice'),
+  badgeLevel(2, '🎒', 8,  'explorateur', 'adventurer'),
+  badgeLevel(3, '🗺️', 14,  'explorateur', 'explorer'),
+  badgeLevel(4, '✈️', 20, 'explorateur', 'greatTraveler'),
+  badgeLevel(5, '🌍', 30, 'explorateur', 'globetrotter'),
+  badgeLevel(6, '🧳', 40, 'explorateur', 'nomad'),
+  badgeLevel(7, '👑', 50, 'explorateur', 'legend'),
 ];
 
 export const BADGE_DECOUVERTE = [
@@ -36,13 +36,13 @@ export const BADGE_DECOUVERTE = [
 
 export const BADGE_COMMUNAUTE = [
   badgeLevel(0, '🌐', 0,    'communaute', 'newTraveler'),
-  badgeLevel(1, '✍️', 40,   'communaute', 'contributor'),
-  badgeLevel(2, '📖', 120,  'communaute', 'localGuide'),
-  badgeLevel(3, '🎯', 300,  'communaute', 'confirmedGuide'),
-  badgeLevel(4, '⭐', 600,  'communaute', 'expert'),
-  badgeLevel(5, '🎓', 1000, 'communaute', 'mentor'),
-  badgeLevel(6, '🤝', 1700, 'communaute', 'ambassador'),
-  badgeLevel(7, '🌎', 2500, 'communaute', 'worldReference'),
+  badgeLevel(1, '✍️', 80,   'communaute', 'contributor'),
+  badgeLevel(2, '📖', 240,  'communaute', 'localGuide'),
+  badgeLevel(3, '🎯', 600,  'communaute', 'confirmedGuide'),
+  badgeLevel(4, '⭐', 1200,  'communaute', 'expert'),
+  badgeLevel(5, '🎓', 2000, 'communaute', 'mentor'),
+  badgeLevel(6, '🤝', 3400, 'communaute', 'ambassador'),
+  badgeLevel(7, '🌎', 5000, 'communaute', 'worldReference'),
 ];
 
 // ── Fonctions de calcul ───────────────────────────────────────
@@ -64,14 +64,12 @@ export function computeDecouverteLevel() {
   return 0;
 }
 
-export function computeCommunauteScore(reviewCount, destinations, voteCount = 0) {
-  const reviewScore = reviewCount * 10;
-  const destScore = destinations.reduce((sum, d) => {
-    const places = d.places_count ?? 0;
-    return sum + 20 + Math.max(0, places - 1) * 5;
-  }, 0);
+export function computeCommunauteScore(reviewCount, destinations, voteCount = 0, ownPlaceCount = 0, otherPlaceCount = 0) {
+  const reviewScore = reviewCount * 5;
+  const destScore = destinations.length * 25;
+  const placeScore = ownPlaceCount * 5 + otherPlaceCount * 10;
   const voteScore = voteCount * 2;
-  return reviewScore + destScore + voteScore;
+  return reviewScore + destScore + placeScore + voteScore;
 }
 
 export function computeCommunauteLevel(score) {
