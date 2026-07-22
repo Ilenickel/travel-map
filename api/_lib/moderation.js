@@ -351,6 +351,60 @@ Réponds UNIQUEMENT en JSON : {"duplicate": boolean, "matchedName": "nom exact d
 }
 
 /**
+ * Choisit, parmi des résultats de géocodage candidats pour un lieu recherché,
+ * celui qui correspond réellement — à distinguer de checkSemanticDuplicate
+ * (conçu pour l'équivalence de traduction, ex. "Tour Eiffel" ↔ "Eiffel
+ * Tower") : ici il s'agit de reconnaître qu'un nom FAMILIER désigne un lieu
+ * dont le nom officiel est complètement différent (ex. "Ground Zero" pour
+ * le "National September 11 Memorial & Museum"), tout en écartant un
+ * homonyme sans rapport dont le nom colle lexicalement mais qui est un
+ * commerce/lieu quelconque (ex. "Ground Zero Museum Workshop", un atelier
+ * photo). La catégorie de chaque candidat (fournie par Geoapify) sert
+ * d'indice pour cet arbitrage.
+ * Renvoie l'index (0-based) du candidat retenu dans `candidates`, ou null.
+ */
+export async function pickPlaceAmongCandidates({ placeName, cityName, countryName, candidates }) {
+  if (!candidates || !candidates.length) return null;
+
+  const list = candidates
+    .map((c, i) => `${i + 1}. "${c.name}" (catégorie : ${c.category || 'inconnue'}) - ${c.formatted || ''}`)
+    .join('\n');
+  const location = [cityName, countryName].filter(Boolean).join(', ');
+  const system = `Tu es un expert en géographie et tourisme mondial. Un utilisateur cherche à géolocaliser un lieu touristique par son nom, dans une ville donnée. Tu reçois une liste de résultats de géocodage candidats (nom officiel, catégorie, adresse). Choisis lequel correspond RÉELLEMENT au lieu recherché.
+Tiens compte des surnoms/noms familiers : un lieu peut être recherché sous un nom familier différent de son nom officiel (ex. "Ground Zero" désigne en réalité le "National September 11 Memorial & Museum").
+Un candidat dont le nom contient les mêmes mots mais dont la catégorie est un commerce, un atelier, un magasin ou tout autre lieu sans rapport avec le lieu touristique recherché ne doit PAS être choisi juste sur la ressemblance textuelle.
+Si aucun candidat ne correspond avec certitude raisonnable, réponds match=null plutôt que de deviner.
+Réponds UNIQUEMENT en JSON : {"match": <numéro 1-based du candidat, ou null>}.`;
+
+  const userMsg = `Lieu recherché : "${placeName}"${location ? ` à ${location}` : ''}\nCandidats :\n${list}`;
+
+  let data;
+  try {
+    data = await callOpenAI('/chat/completions', {
+      model: TEXT_MODEL,
+      temperature: 0,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: userMsg },
+      ],
+    });
+  } catch {
+    return null;
+  }
+
+  let verdict;
+  try {
+    verdict = JSON.parse(data.choices?.[0]?.message?.content || '{}');
+  } catch {
+    return null;
+  }
+
+  const idx = Number(verdict.match);
+  return Number.isInteger(idx) && idx >= 1 && idx <= candidates.length ? idx - 1 : null;
+}
+
+/**
  * Modère un ensemble de textes et d'images, avec vérification optionnelle de
  * cohérence factuelle (pour les destinations communautaires).
  * @param {Object} params

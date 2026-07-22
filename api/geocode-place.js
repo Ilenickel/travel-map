@@ -11,7 +11,7 @@
 // via le cache déjà utilisé pour l'affichage — voir api/_lib/translation.js) :
 // Geoapify/OSM connaît souvent mieux un lieu sous son nom anglais.
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
-import { confirmPlaceMatch } from './_lib/geocodeConfidence.js';
+import { pickBestPlaceMatch } from './_lib/geocodeConfidence.js';
 import { extractLabelVariants } from './_lib/labelVariants.js';
 import { getTranslatedField } from './_lib/translation.js';
 
@@ -26,25 +26,32 @@ const GEOAPIFY_API_KEY = process.env.VITE_GEOAPIFY_API_KEY;
 // langue locale du pays), qui ne correspondra jamais au nom stocké si celui-ci
 // a été soumis dans une autre langue (ex. "Concession française" comparé à un
 // résultat renvoyé en anglais échouerait systématiquement le test de similarité).
+// Renvoie plusieurs candidats (pas seulement le 1er) : Geoapify classe
+// parfois un homonyme sans rapport avant le vrai lieu recherché (ex.
+// "Ground Zero" → "Ground Zero Museum Workshop", un atelier photo à Chelsea,
+// classé avant le mémorial du 11-Septembre). Se fier aveuglément au 1er
+// résultat acceptait ce genre de faux positif dès lors que son nom
+// correspondait lexicalement — voir pickBestPlaceMatch qui arbitre entre
+// les candidats renvoyés ici.
 async function geocodeViaGeoapify(text, countryAlpha2, lang) {
-  if (!GEOAPIFY_API_KEY) return null;
+  if (!GEOAPIFY_API_KEY) return [];
   try {
     // Encodage explicite : ces valeurs viennent du corps de la requête, sans
     // ça un appelant pourrait injecter des paramètres supplémentaires dans
     // l'URL Geoapify (ex. lang="fr&foo=bar").
     const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2)}` : '';
     const langParam = lang ? `&lang=${encodeURIComponent(lang)}` : '';
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(text)}&limit=1${filterParam}${langParam}&apiKey=${GEOAPIFY_API_KEY}`;
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(text)}&limit=5${filterParam}${langParam}&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
-    if (!res.ok) return null;
+    if (!res.ok) return [];
     const data = await res.json();
-    const f = data.features?.[0];
-    if (!f) return null;
-    const p = f.properties;
-    const name = p.name || p.address_line1 || p.formatted?.split(',')[0];
-    return { name, lat: p.lat, lng: p.lon };
+    return (data.features || []).map((f) => {
+      const p = f.properties;
+      const name = p.name || p.address_line1 || p.formatted?.split(',')[0];
+      return { name, lat: p.lat, lng: p.lon, category: p.category || null, formatted: p.formatted || null };
+    });
   } catch {
-    return null;
+    return [];
   }
 }
 
@@ -109,9 +116,9 @@ export default async function handler(req, res) {
     let found = null;
     for (const { text: candidate, lang: candLang } of candidates) {
       const searchText = [candidate, cityName, countryName].filter(Boolean).join(', ');
-      const r = await geocodeViaGeoapify(searchText, countryAlpha2, candLang);
-      if (!r) continue;
-      if (await confirmPlaceMatch(r.name, candidate)) { found = r; break; }
+      const results = await geocodeViaGeoapify(searchText, countryAlpha2, candLang);
+      const best = await pickBestPlaceMatch(candidate, results, { cityName, countryName });
+      if (best) { found = best; break; }
     }
 
     await admin.from('editorial_place_geocache').upsert(
@@ -147,8 +154,8 @@ export default async function handler(req, res) {
   }
 
   const searchText = [existing.name, cityName, countryName].filter(Boolean).join(', ');
-  let result = await geocodeViaGeoapify(searchText, countryAlpha2, lang);
-  let matched = result ? await confirmPlaceMatch(result.name, existing.name) : false;
+  let results = await geocodeViaGeoapify(searchText, countryAlpha2, lang);
+  let result = await pickBestPlaceMatch(existing.name, results, { cityName, countryName });
 
   // Repli anglais si la recherche dans la langue d'origine échoue : Geoapify/OSM
   // connaît souvent mieux un lieu sous son nom anglais (voir le repli identique
@@ -156,7 +163,7 @@ export default async function handler(req, res) {
   // en place pour l'affichage des lieux (voir api/_lib/translation.js) — ne
   // traduit que si pas déjà en cache, et ne coûte donc rien pour un lieu déjà
   // consulté dans cette langue par ailleurs.
-  if (!matched) {
+  if (!result) {
     try {
       const englishName = await getTranslatedField({
         admin,
@@ -168,15 +175,15 @@ export default async function handler(req, res) {
       });
       if (englishName && englishName !== existing.name) {
         const searchTextEn = [englishName, cityName, countryName].filter(Boolean).join(', ');
-        result = await geocodeViaGeoapify(searchTextEn, countryAlpha2, 'en');
-        matched = result ? await confirmPlaceMatch(result.name, englishName) : false;
+        results = await geocodeViaGeoapify(searchTextEn, countryAlpha2, 'en');
+        result = await pickBestPlaceMatch(englishName, results, { cityName, countryName });
       }
     } catch {
       // Traduction indisponible : on garde le résultat (ou l'absence de résultat) de la tentative d'origine.
     }
   }
 
-  if (!result || !matched) {
+  if (!result) {
     return res.status(200).json({ ok: true, geocoded: false });
   }
 
