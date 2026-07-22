@@ -11,6 +11,18 @@ export const ESTONIA = {
     budgetMin: 60, budgetMid: 100,
     tripMin: 900, tripMid: 2000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Estonie est la plus numérique des nations — la première au monde à avoir voté en ligne (2005), à déclarer l'accès à Internet comme droit humain, et à proposer la résidence e-citoyenne mondiale. Tallinn sa capitale est l'une des vieilles villes médiévales les mieux préservées d'Europe (UNESCO). Les forêts de bouleaux, les tourbières, les 2 000 îles et les plages de la mer Baltique complètent le tableau.",
     en: "Estonia is the most digital nation on earth — the first country in the world to vote online (2005), to declare Internet access a human right, and to offer global e-residency. Its capital, Tallinn, has one of the best-preserved medieval old towns in Europe (UNESCO). Birch forests, peat bogs, 2,000 islands and Baltic Sea beaches complete the picture.",

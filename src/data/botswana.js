@@ -11,6 +11,18 @@ export const BOTSWANA = {
     budgetMin: 100, budgetMid: 350,
     tripMin: 4000, tripMid: 12000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 2,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Botswana est le summum du safari haut de gamme : le Delta de l'Okavango, classé UNESCO, est une oasis flottante unique au monde où l'on se déplace en mokoro entre les îles aux éléphants. Chobe abrite la plus grande concentration d'éléphants d'Afrique, et le Kalahari révèle les lions noirs des sables.",
     en: "Botswana is the pinnacle of high-end safari travel: the UNESCO-listed Okavango Delta is a one-of-a-kind floating oasis where you travel by mokoro between elephant-filled islands. Chobe is home to Africa's largest concentration of elephants, while the Kalahari reveals its black-maned lions of the sands.",

@@ -11,6 +11,18 @@ export const TOGO = {
     budgetMin: 30, budgetMid: 75,
     tripMin: 1100, tripMid: 2200,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 1,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Togo est un corridor étroit entre Ghana et Bénin : Lomé et son Grand Marché des Fétiches (vaudou en plein air), les villages perchés des Tamberma sur la route des châteaux de banco (UNESCO), les cascades de Kpalimé dans la forêt tropicale, et les plages de la côte atlantique. Un pays ignoré qui récompense les curieux.",
     en: "Togo is a narrow corridor between Ghana and Benin: Lomé and its Grand Marché des Fétiches (an open-air voodoo market), the perched Tamberma villages along the mud-castle route (UNESCO), Kpalimé's waterfalls in the tropical forest, and the beaches of the Atlantic coast. An overlooked country that rewards the curious.",

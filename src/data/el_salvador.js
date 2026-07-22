@@ -11,6 +11,18 @@ export const EL_SALVADOR = {
     budgetMin: 30, budgetMid: 70,
     tripMin: 1000, tripMid: 2200,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr:
       "El Salvador, le plus petit pays d'Amérique centrale, surprend par sa densité d'expériences : Joya de Cerén, la « Pompéi américaine » classée UNESCO, les plages de surf légendaires d'El Tunco et d'El Zonte (Bitcoin Beach), et la Ruta de las Flores, village après village de gastronomie et d'artisanat.",

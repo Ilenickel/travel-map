@@ -13,6 +13,18 @@ export const SWITZERLAND = {
     tripMin: 1500,
     tripMid: 3000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 3,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "La Suisse est l'une des destinations les plus spectaculaires d'Europe, avec ses Alpes grandioses, ses lacs aux eaux limpides et ses villes soignées d'une propreté exemplaire. Pays quadrilingue au carrefour de l'Europe, elle fascine autant par ses paysages — le Cervin, la Jungfrau, le lac Léman — que par sa tradition horlogère, sa gastronomie (fromages, chocolats) et son infrastructure touristique d'excellence. Zurich, Genève, Berne et Lucerne offrent chacune une expérience urbaine unique.",
     en: "Switzerland is one of the most spectacular destinations in Europe, with its grandiose Alps, crystal-clear lakes and immaculately kept towns. A quadrilingual country at the crossroads of Europe, it fascinates as much for its landscapes — the Matterhorn, the Jungfrau, Lake Geneva — as for its watchmaking tradition, its cuisine (cheeses, chocolates) and its outstanding tourism infrastructure. Zurich, Geneva, Bern and Lucerne each offer a unique urban experience.",

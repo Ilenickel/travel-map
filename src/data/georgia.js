@@ -11,6 +11,18 @@ export const GEORGIA = {
     budgetMin: 30, budgetMid: 70,
     tripMin: 1100, tripMid: 2000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Géorgie est l'une des destinations les plus authentiques et abordables d'Europe orientale. Entre les monastères perchés dans les montagnes du Caucase, la vieille ville de Tbilissi aux maisons à balcons sculptés, les vignobles de Kakhétie et la côte Noire de Batoumi, c'est un pays qui émerveille.",
     en: "Georgia is one of Eastern Europe's most authentic and affordable destinations. Between monasteries perched in the Caucasus mountains, Tbilisi's old town with its carved wooden balconies, the vineyards of Kakheti and Batumi's Black Sea coast, it is a country that never fails to amaze.",

@@ -13,6 +13,18 @@ export const MALAYSIA = {
     tripMin: 1200,
     tripMid: 2200,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "La Malaisie est une mosaïque de cultures (malaises, chinoises, indiennes, dayak) au sein d'une nature luxuriante. Des tours Petronas de Kuala Lumpur aux forêts de Bornéo où vivent les orangs-outans, en passant par les plages de Langkawi et les collines de Cameron, le pays offre une diversité époustouflante.",
     en: "Malaysia is a mosaic of cultures (Malay, Chinese, Indian, Dayak) set within lush nature. From the Petronas Towers of Kuala Lumpur to the Bornean forests where orangutans live, by way of the beaches of Langkawi and the Cameron Highlands, the country offers breathtaking diversity.",

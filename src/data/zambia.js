@@ -11,6 +11,18 @@ export const ZAMBIA = {
     budgetMin: 50, budgetMid: 130,
     tripMin: 1800, tripMid: 4000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "La Zambie est la Rolls-Royce des safaris africains : le South Luangwa (fondateur du walking safari), le Kafue, les plaines d'inondation du Liuwa — et les chutes Victoria (Mosi-oa-Tunya, 'la fumée qui gronde'), classées UNESCO, partagées avec le Zimbabwe. Un pays sans masse touristique, avec une faune abondante et les lodges de safari les plus exclusifs d'Afrique.",
     en: "Zambia is the Rolls-Royce of African safaris: South Luangwa (birthplace of the walking safari), Kafue, the Liuwa floodplains — and Victoria Falls (Mosi-oa-Tunya, 'the smoke that thunders'), a UNESCO site shared with Zimbabwe. A country free of mass tourism, with abundant wildlife and Africa's most exclusive safari lodges.",

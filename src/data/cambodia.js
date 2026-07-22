@@ -13,6 +13,18 @@ export const CAMBODIA = {
     tripMin: 900,
     tripMid: 1800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Cambodge est le pays d'Angkor, l'un des plus grands sites archéologiques du monde. Au-delà des temples khmers, il offre des plages encore sauvages, le Mékong et le lac Tonlé Sap, et une culture empreinte de sérénité bouddhiste malgré un passé traumatique avec les Khmers rouges.",
     en: "Cambodia is the land of Angkor, one of the world's greatest archaeological sites. Beyond its Khmer temples, it offers still-unspoiled beaches, the Mekong and Tonlé Sap Lake, and a culture steeped in Buddhist serenity despite the traumatic legacy of the Khmer Rouge.",

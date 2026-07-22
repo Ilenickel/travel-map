@@ -11,6 +11,18 @@ export const GUATEMALA = {
     budgetMin: 35, budgetMid: 80,
     tripMin: 1200, tripMid: 2800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Guatemala concentre l'essence de l'Amérique centrale : Antigua, joyau colonial classé UNESCO, le lac Atitlán cerné de volcans — l'un des plus beaux du monde — et Tikal, cité maya surgissant de la jungle péténère. Un pays surprenant, peu cher et profondément authentique.",
     en: "Guatemala captures the essence of Central America: Antigua, a UNESCO-listed colonial gem; Lake Atitlán ringed by volcanoes — one of the most beautiful in the world — and Tikal, a Maya city rising from the Petén jungle. A surprising, affordable and deeply authentic country.",

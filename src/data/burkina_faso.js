@@ -11,6 +11,18 @@ export const BURKINA_FASO = {
     budgetMin: 35, budgetMid: 80,
     tripMin: 1300, tripMid: 2500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Burkina Faso est un pays enclavé du Sahel longtemps réputé pour son hospitalité légendaire, le FESPACO (plus grand festival de cinéma africain), les masques sacrés Mossi, la falaise de Banfora avec ses cascades et hippotragues, et les sites de la Comoé. Attention : la situation sécuritaire au nord et à l'est est très dégradée depuis 2019 — vérifier les avis aux voyageurs AVANT tout départ.",
     en: "Burkina Faso is a landlocked Sahelian country long known for its legendary hospitality, FESPACO (Africa's biggest film festival), sacred Mossi masks, the Banfora escarpment with its waterfalls and roan antelopes, and the sites of the Comoé region. Warning: the security situation in the north and east has seriously deteriorated since 2019 — check official travel advisories BEFORE any departure.",

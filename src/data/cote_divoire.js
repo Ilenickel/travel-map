@@ -11,6 +11,18 @@ export const COTE_DIVOIRE = {
     budgetMin: 50, budgetMid: 100,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Côte d'Ivoire est la première économie d'Afrique de l'Ouest : Abidjan sa métropole ultramoderne surnommée 'Paris de l'Afrique', la basilique Notre-Dame de la Paix de Yamoussoukro (la plus grande église du monde), les forêts primaires du Parc de Taï (UNESCO) avec chimpanzés, et les villages Senoufo du nord aux masques sacrés Poro.",
     en: "Ivory Coast is West Africa's leading economy: Abidjan, its ultramodern metropolis nicknamed the 'Paris of Africa'; Yamoussoukro's Basilica of Our Lady of Peace, the largest church in the world; the primary forests of Taï National Park (UNESCO) with chimpanzees; and the Senoufo villages of the north with their sacred Poro masks.",

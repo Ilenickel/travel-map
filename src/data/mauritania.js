@@ -11,6 +11,18 @@ export const MAURITANIA = {
     budgetMin: 40, budgetMid: 80,
     tripMin: 850, tripMid: 1700,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Mauritanie est un immense pays saharien entre mer et désert, peu visité mais d'une beauté saisissante. Les villes caravanières de Chinguetti et Ouadane (UNESCO), le plateau de l'Adrar avec ses dunes et ses gorges, et le banc d'Arguin (UNESCO), sanctuaire mondial des oiseaux migrateurs, composent un itinéraire inoubliable pour les aventuriers.",
     en: "Mauritania is a vast Saharan country between sea and desert, seldom visited but strikingly beautiful. The caravan towns of Chinguetti and Ouadane (UNESCO), the Adrar plateau with its dunes and gorges, and the Banc d'Arguin (UNESCO), a world sanctuary for migratory birds, form an unforgettable route for adventurers.",

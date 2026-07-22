@@ -13,6 +13,18 @@ export const MYANMAR = {
     tripMin: 1100,
     tripMid: 2200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Myanmar (Birmanie) est une destination d'une beauté et d'une profondeur spirituelle exceptionnelles : la plaine de Bagan avec ses milliers de temples bouddhistes, le lac Inle et ses pêcheurs sur pirogues, Mandalay et ses monastères. Note : vérifiez les conseils aux voyageurs avant de partir en raison de la situation politique.",
     en: "Myanmar (Burma) is a destination of exceptional beauty and spiritual depth: the plain of Bagan with its thousands of Buddhist temples, Inle Lake and its canoe fishermen, Mandalay and its monasteries. Note: check travel advisories before departure due to the political situation.",

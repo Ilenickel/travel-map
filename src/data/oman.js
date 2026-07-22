@@ -11,6 +11,18 @@ export const OMAN = {
     budgetMin: 55, budgetMid: 120,
     tripMin: 1800, tripMid: 3500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Oman est le pays le plus authentique et sûr du Golfe. Déserts de sable fins (Wahiba), montagnes vertigineuses (Jebel Akhdar), côtes sauvages où pondent les tortues marines, vieilles fortresses et la chaleur légendaire de l'hospitalité omanaise.",
     en: "Oman is the most authentic and safe country in the Gulf. Fine desert sands (Wahiba), dizzying mountains (Jebel Akhdar), wild coastlines where sea turtles nest, old fortresses and the legendary warmth of Omani hospitality.",

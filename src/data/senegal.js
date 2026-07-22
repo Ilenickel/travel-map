@@ -11,6 +11,18 @@ export const SENEGAL = {
     budgetMin: 40, budgetMid: 80,
     tripMin: 1200, tripMid: 2500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La « Teranga » (hospitalité en wolof) est l'âme du Sénégal. Dakar et son île de Gorée (UNESCO), les plages paradisiaques de la Casamance, le parc de la Niokolo-Koba et les lacs roses surprenants font de ce pays le premier choix pour l'Afrique de l'Ouest francophone.",
     en: "'Teranga' (hospitality in Wolof) is the soul of Senegal. Dakar and its Gorée Island (UNESCO), the idyllic beaches of Casamance, Niokolo-Koba National Park and the surprising pink lakes make this country the top choice for French-speaking West Africa.",

@@ -11,6 +11,18 @@ export const DOMINICAN_REPUBLIC = {
     budgetMin: 50, budgetMid: 130,
     tripMin: 1500, tripMid: 3800,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "La République Dominicaine offre la diversité des Grandes Antilles dans un seul pays : Punta Cana et ses 23 km de plage de cocotiers, Samaná et ses baleines à bosse (janvier–mars), la Zona Colonial de Saint-Domingue classée UNESCO — première ville européenne des Amériques — et Las Terrenas, la Côte d'Azur des Caraïbes.",
     en: "The Dominican Republic brings together the diversity of the Greater Antilles in a single country: Punta Cana and its 23 km of palm-lined beaches, Samaná and its humpback whales (January–March), Santo Domingo's UNESCO-listed Colonial Zone — the first European city in the Americas — and Las Terrenas, the French Riviera of the Caribbean.",

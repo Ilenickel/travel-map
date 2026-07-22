@@ -11,6 +11,18 @@ export const BURUNDI = {
     budgetMin: 30, budgetMid: 60,
     tripMin: 800, tripMid: 1600,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Burundi est l'un des pays les plus petits et les plus denses d'Afrique, niché entre les Grands Lacs et les hauts plateaux de l'Afrique de l'Est. Le lac Tanganyika, deuxième lac le plus profond au monde et le plus long lac d'eau douce de la planète, est la principale attraction avec ses eaux cristallines et ses plages au bord desquelles les hippos se prélassent. Le pays est réputé pour ses tambourinaires intore, classés au patrimoine immatériel de l'UNESCO.",
     en: "Burundi is one of Africa's smallest and most densely populated countries, tucked between the Great Lakes and the highlands of East Africa. Lake Tanganyika, the world's second-deepest lake and the longest freshwater lake on Earth, is the country's main draw, with crystal-clear waters and beaches where hippos laze nearby. The country is also famous for its Intore drummers, recognised on UNESCO's Intangible Cultural Heritage list.",

@@ -8,6 +8,18 @@ export const PAKISTAN = {
   currency: { fr: "Roupie pakistanaise (PKR)", en: "Pakistani rupee (PKR)", es: "Rupia pakistaní (PKR)" },
   timezone: "UTC+5",
   filter: { budgetMin: 30, budgetMid: 65, tripMin: 750, tripMid: 1600 },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Pakistan est l'un des grands secrets du tourisme mondial, injustement boudé par les voyageurs en raison d'une mauvaise réputation sécuritaire. Pourtant, il abrite cinq des quatorze sommets de plus de 8 000 mètres, dont le K2, des sites archéologiques parmi les plus anciens du monde (Mohenjo-daro, Harappa), et Lahore, l'une des plus fastueuses villes moghoules d'Asie. La Karakoram Highway, surnommée la 'huitième merveille du monde', traverse des paysages montagneux d'une beauté irréelle jusqu'à la frontière chinoise.",
     en: "Pakistan is one of the great secrets of world tourism, unfairly shunned by travellers due to a poor security reputation. Yet it is home to five of the fourteen peaks over 8,000 metres, including K2, some of the world's oldest archaeological sites (Mohenjo-daro, Harappa), and Lahore, one of the most magnificent Mughal cities in Asia. The Karakoram Highway, dubbed the 'eighth wonder of the world', crosses mountain landscapes of surreal beauty all the way to the Chinese border.",

@@ -11,6 +11,18 @@ export const GUINEA = {
     budgetMin: 30, budgetMid: 65,
     tripMin: 750, tripMid: 1600,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Surnommée le « château d'eau de l'Afrique de l'Ouest », la Guinée est un pays de contrastes saisissants. Le Fouta Djalon, un plateau montagneux aux cascades spectaculaires et villages peuls, contraste avec la capitale côtière de Conakry et les forêts denses du sud abritant chimpanzés et hippopotames. Les monts Nimba, classés à l'UNESCO, témoignent d'une biodiversité exceptionnelle.",
     en: "Nicknamed the \"water tower of West Africa,\" Guinea is a country of striking contrasts. Fouta Djallon, a mountainous plateau of spectacular waterfalls and Fulani villages, contrasts with the coastal capital of Conakry and the dense southern forests that shelter chimpanzees and hippos. The UNESCO-listed Nimba Mountains testify to exceptional biodiversity.",

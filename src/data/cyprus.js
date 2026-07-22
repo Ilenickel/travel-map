@@ -11,6 +11,18 @@ export const CYPRUS = {
     budgetMin: 55, budgetMid: 100,
     tripMin: 750, tripMid: 1500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Chypre est la troisième plus grande île de la Méditerranée, berceau légendaire d'Aphrodite et carrefour de civilisations entre Orient et Occident. Ses plages de sable doré, ses vestiges antiques classés UNESCO à Paphos, ses villages de montagne dans les Troodos et ses vins réputés en font une destination d'une richesse exceptionnelle. L'île reste divisée depuis 1974 entre la République de Chypre au sud et la partie nord sous contrôle turc.",
     en: "Cyprus is the third-largest island in the Mediterranean, the legendary birthplace of Aphrodite and a crossroads of civilizations between East and West. Its golden-sand beaches, UNESCO-listed ancient remains in Paphos, mountain villages in the Troodos and renowned wines make it an exceptionally rich destination. The island has remained divided since 1974 between the Republic of Cyprus in the south and the Turkish-controlled northern part.",

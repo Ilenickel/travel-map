@@ -11,6 +11,18 @@ export const BELGIUM = {
     budgetMin: 75, budgetMid: 145,
     tripMin: 1000, tripMid: 2000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Belgique est un petit pays au cœur de l'Europe, célèbre pour ses chocolats, ses bières artisanales et ses frites. De Bruges la médiévale à Gand la bohème, en passant par Bruxelles capitale de l'UE, le pays regorge de trésors architecturaux flamands et wallons. Les Ardennes offrent un contraste naturel avec les villes animées de la côte nord.",
     en: "Belgium is a small country at the heart of Europe, famous for its chocolate, craft beers and fries. From medieval Bruges to bohemian Ghent, via Brussels, capital of the EU, the country is full of Flemish and Walloon architectural treasures. The Ardennes offer a natural contrast to the lively cities of the northern coast.",

@@ -11,6 +11,18 @@ export const LIBYA = {
     budgetMin: 50, budgetMid: 120,
     tripMin: 2000, tripMid: 4000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Libye abrite certains des sites antiques les mieux conservés du monde méditerranéen : Leptis Magna (UNESCO), la cité romaine la plus complète d'Afrique, Sabratha avec son théâtre sur la Méditerranée, et Cyrène la cité grecque (UNESCO). Le Fezzan et ses dunes du Sahara (oasis de Ghadamès, UNESCO) complètent un pays d'une richesse archéologique stupéfiante. Situation sécuritaire très instable — voyage déconseillé.",
     en: "Libya is home to some of the best-preserved ancient sites in the Mediterranean world: Leptis Magna (UNESCO), Africa's most complete Roman city, Sabratha with its theatre facing the Mediterranean, and Cyrene, the Greek city (UNESCO). The Fezzan and its Sahara dunes (Ghadamès oasis, UNESCO) complete a country of astonishing archaeological wealth. Security situation is highly unstable — travel is discouraged.",

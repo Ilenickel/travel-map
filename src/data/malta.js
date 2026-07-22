@@ -11,6 +11,18 @@ export const MALTA = {
     budgetMin: 60, budgetMid: 110,
     tripMin: 800, tripMid: 1600,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Malte est un archipel méditerranéen de trois îles habitées (Malte, Gozo et Comino) dont l'histoire s'étend sur 7 000 ans. La Valette, plus petite capitale de l'UE et classée UNESCO, regorge d'églises baroques et de palais des Chevaliers de Saint-Jean. Les temples mégalithiques de Malte sont les plus anciennes structures autoportantes du monde, antérieures de 1 000 ans aux pyramides d'Égypte.",
     en: "Malta is a Mediterranean archipelago of three inhabited islands (Malta, Gozo and Comino) whose history spans 7,000 years. Valletta, the EU's smallest capital and a UNESCO World Heritage Site, is packed with baroque churches and palaces of the Knights of St John. Malta's megalithic temples are the oldest free-standing structures in the world, predating the pyramids of Egypt by 1,000 years.",

@@ -11,6 +11,18 @@ export const ITALY = {
     budgetMin: 60, budgetMid: 130,
     tripMin: 1800, tripMid: 3500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 3,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 3,
+  },
   description: {
     fr: "L'Italie est le pays du dolce vita : Rome la Ville Éternelle, Florence et la Renaissance, Venise et ses canaux, la côte amalfitaine, la Sicile et sa cuisine aux influences méditerranéennes. Le plus grand concentré de patrimoine UNESCO au monde.",
     en: "Italy is the land of la dolce vita: Rome the Eternal City, Florence and the Renaissance, Venice and its canals, the Amalfi Coast, Sicily and its Mediterranean-influenced cuisine. The largest concentration of UNESCO heritage in the world.",

@@ -8,6 +8,18 @@ export const AFGHANISTAN = {
   currency: { fr: "Afghani (AFN)", en: "Afghani (AFN)", es: "Afgani (AFN)" },
   timezone: "UTC+4:30",
   filter: { budgetMin: 40, budgetMid: 80, tripMin: 900, tripMid: 1800 },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "L'Afghanistan est une terre de contrastes dramatiques, où les majestueuses montagnes de l'Hindu Kush plongent vers des déserts brûlants et des vallées verdoyantes. Carrefour historique de la Route de la Soie, il a vu passer Alexandre le Grand, les armées de Gengis Khan et les caravanes de marchands reliant l'Orient et l'Occident. Depuis la prise du pouvoir par les talibans en août 2021, le pays est effectivement fermé au tourisme international et classé en zone rouge absolue par l'ensemble des gouvernements occidentaux.",
     en: "Afghanistan is a land of dramatic contrasts, where the majestic Hindu Kush mountains plunge into scorching deserts and lush valleys. A historic crossroads of the Silk Road, it has seen Alexander the Great, Genghis Khan's armies and merchant caravans travelling between East and West. Since the Taliban takeover in August 2021, the country has effectively been closed to international tourism and is classified as an absolute red zone by all Western governments.",

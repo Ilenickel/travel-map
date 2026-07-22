@@ -13,6 +13,18 @@ export const CHILE = {
     tripMin: 1900,
     tripMid: 3600,
   },
+  criteria: {
+    unesco: 2,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 3,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Chili est un pays-ruban de 4 300 km de long entre les Andes et le Pacifique : du désert d'Atacama le plus aride au monde aux glaciers de Patagonie, en passant par les vignobles et Santiago cosmopolite. Un pays d'extrêmes à l'infrastructure touristique excellente.",
     en: "Chile is a ribbon-shaped country stretching 4,300 km between the Andes and the Pacific: from the world's driest Atacama Desert to the glaciers of Patagonia, by way of vineyards and cosmopolitan Santiago. A country of extremes with excellent tourist infrastructure.",

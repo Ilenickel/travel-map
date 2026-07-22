@@ -11,6 +11,18 @@ export const WESTERN_SAHARA = {
     budgetMin: 30, budgetMid: 60,
     tripMin: 700, tripMid: 1400,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 0,
+    architecture: 0,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 0,
+    plage: 1,
+  },
   description: {
     fr: "Le Sahara Occidental est un territoire disputé dont le statut politique reste non résolu depuis la décolonisation espagnole en 1976 : le Maroc en contrôle la quasi-totalité, tandis que le Front Polisario (soutenu par l'Algérie) administre les camps de réfugiés en Algérie. Malgré ce contexte complexe, Dakhla est devenue une capitale mondiale du kitesurf et de la planche à voile, et les paysages désertiques de l'Atlantique saharien sont d'une beauté saisissante.",
     en: "Western Sahara is a disputed territory whose political status has remained unresolved since Spanish decolonisation in 1976: Morocco controls nearly all of it, while the Polisario Front (backed by Algeria) administers refugee camps in Algeria. Despite this complex context, Dakhla has become a world capital of kitesurfing and windsurfing, and the desert landscapes of the Saharan Atlantic coast are strikingly beautiful.",

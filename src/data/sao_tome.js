@@ -11,6 +11,18 @@ export const SAO_TOME = {
     budgetMin: 80, budgetMid: 180,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 1,
+    ski: 0,
+    ville: 0,
+    plage: 2,
+  },
   description: {
     fr: "São Tomé-et-Príncipe est un minuscule archipel de deux îles volcanique dans le golfe de Guinée, à l'équateur : des forêts tropicales primaires couvertes de brume, des plantations de cacao parmi les meilleures au monde (Claudio Corallo), des plages désertes spectaculaires, et une culture créole luso-africaine unique. Un des pays les moins visités au monde, préservé et authentique.",
     en: "São Tomé and Príncipe is a tiny volcanic two-island archipelago in the Gulf of Guinea, on the equator: primary rainforests shrouded in mist, some of the best cocoa plantations in the world (Claudio Corallo), spectacular deserted beaches, and a unique Luso-African Creole culture. One of the least-visited countries in the world, preserved and authentic.",

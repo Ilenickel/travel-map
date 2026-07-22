@@ -11,6 +11,18 @@ export const MEXICO = {
     budgetMin: 35, budgetMid: 85,
     tripMin: 1400, tripMid: 2800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "Le Mexique est une mosaïque de civilisations : pyramides aztèques et mayas, colonial baroque d'Oaxaca et San Cristóbal, plages turquoise de Cancún et de la Riviera Maya, cuisine classée UNESCO, tequila et mariachis. Un pays d'une richesse culturelle infinie.",
     en: "Mexico is a mosaic of civilisations: Aztec and Maya pyramids, baroque colonial architecture in Oaxaca and San Cristóbal, turquoise beaches in Cancún and the Riviera Maya, UNESCO-listed cuisine, tequila and mariachis. A country of endless cultural richness.",

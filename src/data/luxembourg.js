@@ -11,6 +11,18 @@ export const LUXEMBOURG = {
     budgetMin: 90, budgetMid: 170,
     tripMin: 1150, tripMid: 2400,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "Le Grand-Duché de Luxembourg est l'un des plus petits pays d'Europe et pourtant l'un des plus riches. Sa capitale, classée au patrimoine mondial de l'UNESCO pour ses fortifications, mêle architecture médiévale et institutions européennes modernes. Au-delà de la capitale, la région de la Moselle offre de beaux vignobles, le château de Vianden domine les Ardennes luxembourgeoises, et le Mullerthal est surnommé la 'Petite Suisse luxembourgeoise'.",
     en: "The Grand Duchy of Luxembourg is one of the smallest countries in Europe, yet one of the richest. Its capital, a UNESCO World Heritage site for its fortifications, blends medieval architecture with modern European institutions. Beyond the capital, the Moselle region offers beautiful vineyards, Vianden Castle overlooks the Luxembourg Ardennes, and the Mullerthal is nicknamed 'Luxembourg's Little Switzerland'.",

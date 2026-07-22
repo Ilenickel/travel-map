@@ -8,6 +8,18 @@ export const BRUNEI = {
   currency: { fr: "Dollar de Brunéi (BND)", en: "Brunei dollar (BND)", es: "Dólar de Brunéi (BND)" },
   timezone: "UTC+8",
   filter: { budgetMin: 60, budgetMid: 120, tripMin: 1000, tripMid: 2200 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Brunéi est un minuscule sultanat souverain niché sur l'île de Bornéo, l'un des États les plus riches du monde grâce à ses immenses réserves pétrolières. Cette richesse se reflète dans ses mosquées aux dômes dorés spectaculaires, ses palais royaux et son architecture de prestige, mais aussi dans la conservation de vastes forêts tropicales primaires. Kampong Ayer, le plus grand village sur pilotis du monde habité en permanence, offre un contraste saisissant avec l'opulence royale environnante.",
     en: "Brunei is a tiny sovereign sultanate tucked away on the island of Borneo, one of the richest states in the world thanks to its vast oil reserves. This wealth is reflected in its spectacular golden-domed mosques, royal palaces and grand architecture, but also in the preservation of vast stretches of primary rainforest. Kampong Ayer, the world's largest permanently inhabited stilt village, offers a striking contrast to the surrounding royal opulence.",

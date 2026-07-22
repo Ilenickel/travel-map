@@ -11,6 +11,18 @@ export const COMOROS = {
     budgetMin: 50, budgetMid: 120,
     tripMin: 1800, tripMid: 3500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Les Comores sont un archipel volcanique de l'océan Indien entre Madagascar et le Mozambique : le Karthala (2 361m, l'un des plus grands cratères actifs du monde), les plages de sable blanc et les récifs coralliens préservés, et une culture swahili-arabe unique. L'une des destinations les moins touristiques au monde, encore hors des sentiers battus — une Zanzibar sans les foules.",
     en: "The Comoros are a volcanic archipelago in the Indian Ocean between Madagascar and Mozambique: Karthala (2,361 m, home to one of the world's largest active craters), white-sand beaches, unspoilt coral reefs, and a unique Swahili-Arab culture. One of the least touristy destinations in the world, still far off the beaten track — a Zanzibar without the crowds.",

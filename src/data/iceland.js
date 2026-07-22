@@ -11,6 +11,18 @@ export const ICELAND = {
     budgetMin: 80, budgetMid: 160,
     tripMin: 2200, tripMid: 4000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "L'Islande est une destination de bout du monde, terra d'aurores boréales, de geysers, de volcans actifs, de glaciers immenses et de cascades spectaculaires. Le pays du feu et de la glace, avec Reykjavik la capitale la plus nordique du monde, offre des paysages d'une beauté surnaturelle.",
     en: "Iceland is an end-of-the-world destination, a land of northern lights, geysers, active volcanoes, immense glaciers and spectacular waterfalls. The land of fire and ice, with Reykjavik as the world's northernmost capital, offers landscapes of almost supernatural beauty.",

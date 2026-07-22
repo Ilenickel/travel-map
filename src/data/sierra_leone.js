@@ -11,6 +11,18 @@ export const SIERRA_LEONE = {
     budgetMin: 35, budgetMid: 70,
     tripMin: 800, tripMid: 1700,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 0,
+    plage: 2,
+  },
   description: {
     fr: "La Sierra Leone est une destination en pleine renaissance touristique, avec des plages parmi les plus belles d'Afrique de l'Ouest encore presque désertes. Freetown et son coton-tree centenaire, l'île de Tiwai (sanctuaire de l'hippopotame pygmée et des colobes), les plages de Tokeh et River No. 2, et le sanctuaire de chimpanzés de Tacugama composent un itinéraire naturel exceptionnel.",
     en: "Sierra Leone is a destination undergoing a tourism renaissance, with some of the most beautiful beaches in West Africa still almost deserted. Freetown and its centuries-old cotton tree, Tiwai Island (sanctuary of the pygmy hippopotamus and colobus monkeys), the beaches of Tokeh and River No. 2, and the Tacugama chimpanzee sanctuary make up an exceptional natural itinerary.",

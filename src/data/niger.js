@@ -11,6 +11,18 @@ export const NIGER = {
     budgetMin: 30, budgetMid: 60,
     tripMin: 750, tripMid: 1500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Niger était l'une des destinations d'aventure les plus fascinantes du Sahara : Agadez, cité médiévale classée à l'UNESCO, les montagnes de l'Aïr et le désert du Ténéré avec ses dunes monumentales, et le parc W pour la faune sahélienne. Suite au coup d'état militaire de juillet 2023 et à l'instabilité sécuritaire persistante, le pays est actuellement déconseillé aux voyageurs.",
     en: "Niger used to be one of the most fascinating adventure destinations in the Sahara: Agadez, a medieval UNESCO-listed city, the Aïr mountains and the Ténéré desert with its monumental dunes, and W National Park for Sahelian wildlife. Following the military coup of July 2023 and ongoing security instability, the country is currently advised against for travellers.",

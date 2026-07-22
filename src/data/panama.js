@@ -11,6 +11,18 @@ export const PANAMA = {
     budgetMin: 50, budgetMid: 100,
     tripMin: 1600, tripMid: 3500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Panama, carrefour du monde depuis 1914, est bien plus que son canal légendaire : le Casco Viejo classé UNESCO, les paradis caribéens des îles Kuna Yala et Bocas del Toro, et une biodiversité exceptionnelle (Darién) font de ce trait d'union entre deux continents une destination de voyage d'exception.",
     en: "Panama, a crossroads of the world since 1914, is far more than its legendary canal: the UNESCO-listed Casco Viejo, the Caribbean paradises of the Kuna Yala islands and Bocas del Toro, and exceptional biodiversity (Darién) make this link between two continents an outstanding travel destination.",

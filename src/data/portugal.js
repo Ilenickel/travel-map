@@ -11,6 +11,18 @@ export const PORTUGAL = {
     budgetMin: 45, budgetMid: 120,
     tripMin: 1400, tripMid: 2700,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 3,
+    plage: 3,
+  },
   description: {
     fr: "Le Portugal séduit par sa douceur de vivre : Lisbonne avec ses tramways et ses azulejos, le fado mélancolique, les plages de l'Algarve, le vin de Porto et les monastères manuélins de Sintra. Un pays accessible, chaleureux et riche en histoire.",
     en: "Portugal charms with its easy-going lifestyle: Lisbon with its trams and azulejo tiles, melancholic fado music, the beaches of the Algarve, Port wine, and the Manueline monasteries of Sintra. An accessible, warm country steeped in history.",

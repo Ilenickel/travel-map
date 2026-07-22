@@ -11,6 +11,18 @@ export const ALGERIA = {
     budgetMin: 40, budgetMid: 90,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "L'Algérie est le plus grand pays d'Afrique et l'un des moins visités : la Casbah d'Alger (UNESCO) avec ses maisons ottomanes, Ghardaïa et la vallée du M'Zab (UNESCO), les dunes dorées du Grand Erg Occidental dans le Sahara, les ruines romaines de Timgad et Djémila (UNESCO), et les gorges des Aures. Un pays aux dimensions continentales et à l'hospitalité légendaire.",
     en: "Algeria is the largest country in Africa and one of the least visited: the Casbah of Algiers (UNESCO) with its Ottoman houses, Ghardaïa and the M'Zab valley (UNESCO), the golden dunes of the Grand Erg Occidental in the Sahara, the Roman ruins of Timgad and Djémila (UNESCO), and the Aures gorges. A country of continental scale and legendary hospitality.",

@@ -11,6 +11,18 @@ export const JAMAICA = {
     budgetMin: 60, budgetMid: 130,
     tripMin: 1800, tripMid: 4000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "La Jamaïque est l'âme des Caraïbes : berceau du reggae et de Bob Marley, des Blue Mountains (le meilleur café du monde), des couchers de soleil légendaires de Negril et des plages animées de Montego Bay. Une île vibrante, colorée et profondément musicale qui définit la culture caribéenne.",
     en: "Jamaica is the soul of the Caribbean: the birthplace of reggae and Bob Marley, home to the Blue Mountains and their world-class coffee, Negril's legendary sunsets and the lively beaches of Montego Bay. It is a vibrant, colourful and deeply musical island that defines Caribbean culture.",

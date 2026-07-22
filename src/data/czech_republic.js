@@ -11,6 +11,18 @@ export const CZECH_REPUBLIC = {
     budgetMin: 55, budgetMid: 95,
     tripMin: 900, tripMid: 2000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Tchéquie est dominée par Prague — l'une des villes les plus belles et les mieux préservées d'Europe : le Pont Charles, le Château de Prague, le quartier juif de Josefov, la Vieille Ville avec son horloge astronomique. Mais au-delà de Prague : Český Krumlov (château baroque UNESCO), Brno, les champs de houblon de Bohême et la bière Pilsner (inventée ici en 1842).",
     en: "The Czech Republic is defined by Prague — one of the most beautiful and best-preserved cities in Europe: Charles Bridge, Prague Castle, the Jewish quarter of Josefov, and the Old Town with its astronomical clock. But beyond Prague lie Český Krumlov (a UNESCO-listed Baroque castle town), Brno, Bohemia's hop fields, and Pilsner beer, which was invented here in 1842.",

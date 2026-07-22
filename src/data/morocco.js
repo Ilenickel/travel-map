@@ -11,6 +11,18 @@ export const MOROCCO = {
     budgetMin: 30, budgetMid: 70,
     tripMin: 1100, tripMid: 2200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 3,
+    desert: 3,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Maroc est un royaume de contrastes saisissants : les médinas millénaires de Fès et Marrakech, les dunes dorées du Sahara, les vallées verdoyantes du Haut Atlas, les plages d'Essaouira et la cuisine aux épices envoûtantes. À seulement 3h de Paris.",
     en: "Morocco is a kingdom of striking contrasts: the centuries-old medinas of Fès and Marrakech, the golden dunes of the Sahara, the lush valleys of the High Atlas, the beaches of Essaouira and a cuisine of captivating spices. Just 3 hours from Paris.",

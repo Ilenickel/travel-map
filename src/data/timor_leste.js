@@ -8,6 +8,18 @@ export const TIMOR_LESTE = {
   currency: { fr: "Dollar américain (USD)", en: "US Dollar (USD)", es: "Dólar estadounidense (USD)" },
   timezone: "UTC+9",
   filter: { budgetMin: 40, budgetMid: 80, tripMin: 900, tripMid: 1900 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 1,
+    ski: 0,
+    ville: 0,
+    plage: 2,
+  },
   description: {
     fr: "Le Timor oriental est le plus jeune État d'Asie du Sud-Est, ayant acquis son indépendance en 2002 après des décennies d'occupation indonésienne et une guerre de libération douloureuse. Ce petit pays de la mer de Timor recèle pourtant des trésors naturels exceptionnels : ses eaux marines comptent parmi les mieux préservées au monde, avec la plus haute biodiversité de poissons jamais recensée autour de l'île d'Atauro. Authentique et encore peu développé touristiquement, le Timor oriental offre une immersion rare dans un pays en pleine construction.",
     en: "East Timor is the youngest state in Southeast Asia, having gained independence in 2002 after decades of Indonesian occupation and a painful war of liberation. Yet this small country on the Timor Sea holds exceptional natural treasures: its waters rank among the best-preserved in the world, with the highest fish biodiversity ever recorded around Atauro Island. Authentic and still barely developed for tourism, East Timor offers a rare immersion into a nation still being built.",

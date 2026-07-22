@@ -8,6 +8,18 @@ export const HAITI = {
   currency: { fr: "Gourde haïtienne (HTG)", en: "Haitian gourde (HTG)", es: "Gourde haitiana (HTG)" },
   timezone: "UTC-5",
   filter: { budgetMin: 35, budgetMid: 70, tripMin: 850, tripMid: 1800 },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Haïti, première république noire du monde fondée en 1804 après une révolution d'esclaves unique dans l'histoire, possède un patrimoine culturel extraordinaire mêlant influences africaines, françaises et taïnos. Le pays abrite des sites classés UNESCO comme la Citadelle Laferrière et le Sans-Souci, témoignages d'une grandeur passée. ⚠️ AVERTISSEMENT SÉCURITÉ : En raison de la violence des gangs et de l'instabilité politique extrême depuis 2021, le voyage en Haïti est fortement déconseillé par la plupart des gouvernements — consultez impérativement les avis officiels avant tout projet de visite.",
     en: "Haiti, the world's first Black republic, founded in 1804 after a slave revolution unique in history, has an extraordinary cultural heritage blending African, French and Taíno influences. The country is home to UNESCO-listed sites such as the Citadelle Laferrière and Sans-Souci, reminders of a former grandeur. ⚠️ SECURITY WARNING: Because of gang violence and extreme political instability since 2021, travel to Haiti is strongly discouraged by most governments — be sure to consult official advisories before planning any visit.",

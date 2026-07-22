@@ -11,6 +11,18 @@ export const SAUDI_ARABIA = {
     budgetMin: 60, budgetMid: 130,
     tripMin: 2000, tripMid: 4000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "L'Arabie Saoudite s'ouvre progressivement au tourisme international depuis 2019. Sites nabatéens d'AlUla (Hégra), déserts infinis, vieille Djeddah inscrite à l'UNESCO, modernité de Riyad et douceur de la mer Rouge — un pays qui surprend et dépasse les clichés.",
     en: "Saudi Arabia has been gradually opening up to international tourism since 2019. The Nabataean sites of AlUla (Hegra), endless deserts, UNESCO-listed old Jeddah, the modernity of Riyadh and the mild Red Sea coast — a country that surprises and defies the clichés.",

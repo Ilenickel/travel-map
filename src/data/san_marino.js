@@ -11,6 +11,18 @@ export const SAN_MARINO = {
     budgetMin: 80, budgetMid: 150,
     tripMin: 800, tripMid: 1600,
   },
+  criteria: {
+    unesco: 2,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 0,
+    plage: 0,
+  },
   description: {
     fr: "Saint-Marin est le plus ancien État républicain du monde encore existant, fondé selon la tradition en 301 après J.-C. sur le mont Titano en Émilie-Romagne. Ce micro-État de seulement 61 km² est entièrement enclavé dans le territoire italien, à quelques kilomètres de Rimini et de la mer Adriatique. Son centre historique médiéval inscrit à l'UNESCO et ses trois tours emblématiques offrent des panoramas à couper le souffle sur la plaine du Pô et l'Adriatique.",
     en: "San Marino is the oldest still-existing republican state in the world, traditionally founded in 301 AD on Mount Titano in Emilia-Romagna. This micro-state of just 61 km² is entirely enclosed within Italian territory, a few kilometres from Rimini and the Adriatic Sea. Its UNESCO-listed medieval historic centre and three iconic towers offer breathtaking views over the Po plain and the Adriatic.",

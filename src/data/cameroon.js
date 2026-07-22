@@ -11,6 +11,18 @@ export const CAMEROON = {
     budgetMin: 45, budgetMid: 100,
     tripMin: 1800, tripMid: 3500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Cameroun est surnommé 'l'Afrique en miniature' : désert du Sahara au nord avec le lac Tchad, savane, forêt tropicale dense du bassin du Congo (gorilles et chimpanzés), côte atlantique avec le mont Cameroun (4 095m, volcan actif), et la diversité culturelle de 300 ethnies. Douala sa métropole, Kribi et ses plages, et le Nord avec les Kirdi et les sultanats peuls.",
     en: "Cameroon is nicknamed 'Africa in miniature': Sahara desert in the north with Lake Chad, savannah, dense Congo Basin rainforest (home to gorillas and chimpanzees), an Atlantic coastline with Mount Cameroon (4,095m, an active volcano), and the cultural diversity of 300 ethnic groups. Douala its metropolis, Kribi and its beaches, and the North with the Kirdi people and Fulani sultanates.",

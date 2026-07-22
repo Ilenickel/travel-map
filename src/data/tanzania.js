@@ -11,6 +11,18 @@ export const TANZANIA = {
     budgetMin: 60, budgetMid: 200,
     tripMin: 3000, tripMid: 6000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "La Tanzanie concentre les plus grands spectacles naturels d'Afrique : le Serengeti avec la Grande Migration, le Ngorongoro (caldeira la plus dense en faune au monde), le toit de l'Afrique Kilimandjaro, et les plages idylliques de Zanzibar. Un pays d'exception.",
     en: "Tanzania is home to Africa's greatest natural spectacles: the Serengeti with the Great Migration, Ngorongoro (the caldera with the highest concentration of wildlife on Earth), the Roof of Africa Kilimanjaro, and Zanzibar's idyllic beaches. An exceptional country.",

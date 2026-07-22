@@ -13,6 +13,18 @@ export const BRAZIL = {
     tripMin: 1800,
     tripMid: 3500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "Le Brésil est le géant de l'Amérique du Sud, pays de la samba, du carnaval et de l'Amazonie. Ses plages mythiques de Rio, sa forêt tropicale immense, ses chutes d'Iguazú et sa culture afro-brésilienne vibrante en font l'une des destinations les plus riches du monde.",
     en: "Brazil is the giant of South America, the land of samba, Carnival and the Amazon. Rio's legendary beaches, its vast rainforest, the Iguazú Falls and its vibrant Afro-Brazilian culture make it one of the world's richest travel destinations.",

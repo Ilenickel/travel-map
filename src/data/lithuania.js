@@ -11,6 +11,18 @@ export const LITHUANIA = {
     budgetMin: 45, budgetMid: 85,
     tripMin: 800, tripMid: 1800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "La Lituanie est le plus grand et le plus méconnu des États baltes : Vilnius et son extraordinaire vieille ville baroque (UNESCO, la plus grande vieille ville baroque du nord de l'Europe), la flèche de sable de Courlande (UNESCO, la plus grande dune migratrice d'Europe), Kaunas et son Art Déco interwar unique, et Trakai et son château rouge sur une île lacustre.",
     en: "Lithuania is the largest and least known of the Baltic states: Vilnius with its extraordinary baroque old town (UNESCO, the largest baroque old town in Northern Europe), the sandy Curonian Spit (UNESCO, Europe's largest migrating dune), Kaunas with its unique interwar Art Deco, and Trakai with its red castle on a lake island.",

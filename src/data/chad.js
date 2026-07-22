@@ -11,6 +11,18 @@ export const CHAD = {
     budgetMin: 45, budgetMid: 90,
     tripMin: 1000, tripMid: 2200,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Tchad est une destination d'aventure hors des sentiers battus, offrant le plateau de l'Ennedi (UNESCO) avec ses arches de grès et ses peintures rupestres sahariennes, et le parc de Zakouma qui abrite l'une des dernières grandes concentrations d'éléphants d'Afrique centrale. Pays enclavé entre désert et savane, il demande une bonne préparation logistique.",
     en: "Chad is an off-the-beaten-path adventure destination, offering the Ennedi Plateau (UNESCO) with its sandstone arches and Saharan rock art, and Zakouma National Park, home to one of the last great concentrations of elephants in Central Africa. A landlocked country between desert and savanna, it requires solid logistical preparation.",

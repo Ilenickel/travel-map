@@ -13,6 +13,18 @@ export const GERMANY = {
     tripMin: 950,
     tripMid: 1900,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 1,
+  },
   description: {
     fr: "L'Allemagne est un pays d'une grande diversité culturelle et paysagère, alliant métropoles dynamiques, forêts profondes, châteaux féeriques et villages médiévaux préservés. Berlin, capitale réunifiée, incarne à elle seule l'histoire tourmentée et le renouveau créatif du XXe siècle. La Bavière, avec ses Alpes imposantes, ses bières légendaires et son architecture baroque, offre un contraste saisissant avec le nord industriel et la vallée du Rhin.",
     en: "Germany is a country of remarkable cultural and scenic diversity, blending dynamic metropolises, deep forests, fairy-tale castles and preserved medieval villages. Berlin, the reunified capital, embodies on its own the turbulent history and creative renewal of the 20th century. Bavaria, with its imposing Alps, legendary beers and baroque architecture, offers a striking contrast with the industrial north and the Rhine valley.",

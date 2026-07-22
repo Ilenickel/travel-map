@@ -11,6 +11,18 @@ export const CROATIA = {
     budgetMin: 65, budgetMid: 120,
     tripMin: 1000, tripMid: 2500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "La Croatie est une révélation adriatique : 1 778km de côte avec des eaux turquoise cristallines, plus de 1 000 îles dont Hvar, Brač et Korčula, la vieille ville de Dubrovnik (UNESCO, 'la perle de l'Adriatique'), les lacs de Plitvice (UNESCO, cascades turquoise en forêt), et Split avec le palais de Dioclétien habité depuis 1 700 ans. La destination méditerranéenne la plus en vogue d'Europe.",
     en: "Croatia is an Adriatic revelation: 1,778 km of coastline with crystal-clear turquoise waters, more than 1,000 islands including Hvar, Brač and Korčula, Dubrovnik's old town (UNESCO, the 'Pearl of the Adriatic'), the Plitvice Lakes (UNESCO, turquoise waterfalls in the forest), and Split with Diocletian's Palace still inhabited after 1,700 years. Europe's trendiest Mediterranean destination.",

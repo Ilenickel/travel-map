@@ -13,6 +13,18 @@ export const LAOS = {
     tripMin: 1000,
     tripMid: 2000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Laos est le joyau paisible de l'Asie du Sud-Est, souvent surnommé « l'âme du Mékong ». Luang Prabang et ses temples dorés, les grottes de Pak Ou, les chutes de Kuang Si et le plateau des Bolavens séduisent les voyageurs en quête d'authenticité et de sérénité.",
     en: "Laos is the peaceful jewel of Southeast Asia, often nicknamed 'the soul of the Mekong'. Luang Prabang with its golden temples, the Pak Ou caves, the Kuang Si waterfalls and the Bolaven Plateau charm travellers seeking authenticity and serenity.",

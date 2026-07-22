@@ -8,6 +8,18 @@ export const FRENCH_GUIANA = {
   currency: { fr: "Euro (EUR)", en: "Euro (EUR)", es: "Euro (EUR)" },
   timezone: "UTC-3",
   filter: { budgetMin: 60, budgetMid: 120, tripMin: 700, tripMid: 1600 },
+  criteria: {
+    unesco: 2,
+    nature: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
+    randonnee: 2, // idem
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Guyane française est un département et région d'outre-mer français situé sur la côte nord-est de l'Amérique du Sud, bordant l'Équateur. Couverte à plus de 90 % par la forêt amazonienne, elle abrite l'une des biodiversités les plus riches de la planète avec jaguars, tapirs, harpies féroces et caïmans. Elle est aussi le site du Centre Spatial Guyanais de Kourou, d'où sont lancées les fusées Ariane — une juxtaposition unique entre haute technologie et nature sauvage préservée.",
     en: "French Guiana is a French overseas department and region on the north-eastern coast of South America, close to the Equator. Covered by more than 90% Amazon rainforest, it is home to one of the richest biodiversities on the planet, with jaguars, tapirs, harpy eagles and caimans. It is also home to the Guiana Space Centre in Kourou, where Ariane rockets are launched — a unique juxtaposition of high technology and unspoiled wilderness.",

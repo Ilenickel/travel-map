@@ -11,6 +11,18 @@ export const GABON = {
     budgetMin: 80, budgetMid: 180,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Gabon est le sanctuaire de la forêt équatoriale d'Afrique centrale : 80% du territoire couvert par la forêt primaire, 13 parcs nationaux abritant gorilles des plaines, éléphants de forêt, hippopotames de mer sur les plages de Loango, et les mandrills (les plus grandes colonies mondiales au Parc de la Lopé). Un des pays les mieux préservés d'Afrique, peu touristique mais d'une richesse naturelle stupéfiante.",
     en: "Gabon is the sanctuary of Central Africa's equatorial rainforest: 80% of the country is covered in primary forest, and its 13 national parks shelter lowland gorillas, forest elephants, hippos on Loango's beaches, and mandrills, including the world's largest colonies in Lopé National Park. One of Africa's best-preserved countries, it remains little visited yet astonishingly rich in nature.",

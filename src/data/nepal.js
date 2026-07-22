@@ -13,6 +13,18 @@ export const NEPAL = {
     tripMin: 1300,
     tripMid: 2600,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Népal est le toit du monde : 8 des 14 sommets de plus de 8 000 m y sont concentrés, dont l'Everest (8 849 m). Au-delà du trekking légendaire (Annapurna, Everest Base Camp), les temples hindous et bouddhistes de Katmandou, les rhinocéros du parc national de Chitwan et les lumières spirituelles de Pokhara en font une destination d'exception.",
     en: "Nepal is the roof of the world: 8 of the 14 peaks above 8,000 m are found here, including Everest (8,849 m). Beyond the legendary trekking (Annapurna, Everest Base Camp), the Hindu and Buddhist temples of Kathmandu, the rhinos of Chitwan National Park and the spiritual light of Pokhara make it an exceptional destination.",

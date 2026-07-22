@@ -13,6 +13,18 @@ export const PARAGUAY = {
     tripMin: 1100,
     tripMid: 2000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Paraguay est l'une des destinations les plus méconnues et authentiques d'Amérique du Sud. Pays bilingue espagnol-guaraní, il fascine par ses missions jésuites du XVIIe siècle, sa nature sauvage (Pantanal paraguayen, Chaco) et sa culture singulière. Très abordable et peu touristique.",
     en: "Paraguay is one of the most little-known and authentic destinations in South America. A bilingual Spanish-Guaraní country, it fascinates with its 17th-century Jesuit missions, wild nature (Paraguayan Pantanal, Chaco) and unique culture. Very affordable and off the tourist trail.",

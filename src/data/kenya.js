@@ -11,6 +11,18 @@ export const KENYA = {
     budgetMin: 50, budgetMid: 150,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Kenya est le berceau du safari africain : Masai Mara et sa Grande Migration, amboseli avec les éléphants devant le Kilimandjaro, côte swahilie de Mombasa et culture Maasai vivante. Un pays qui définit l'Afrique sauvage.",
     en: "Kenya is the birthplace of the African safari: Masai Mara and its Great Migration, Amboseli with elephants roaming before Kilimanjaro, the Swahili coast around Mombasa and a living Maasai culture. A country that defines wild Africa.",

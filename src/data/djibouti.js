@@ -11,6 +11,18 @@ export const DJIBOUTI = {
     budgetMin: 55, budgetMid: 140,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Djibouti est un petit pays de la Corne de l'Afrique aux paysages lunaires : le lac Assal (153m sous le niveau de la mer, point le plus bas d'Afrique et deuxième le plus salé au monde après la mer Morte), le lac Abbé et ses cheminées de vapeur, les requins baleines du golfe de Tadjourah (novembre à janvier), et la dive sur le légendaire site du Ghoubbet.",
     en: "Djibouti is a small country in the Horn of Africa with lunar landscapes: Lake Assal (153m below sea level, the lowest point in Africa and the second saltiest place in the world after the Dead Sea), Lake Abbé and its steam chimneys, the whale sharks of the Gulf of Tadjourah (November to January), and diving at the legendary Ghoubbet site.",

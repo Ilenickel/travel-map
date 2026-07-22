@@ -11,6 +11,18 @@ export const ROMANIA = {
     budgetMin: 35, budgetMid: 70,
     tripMin: 800, tripMid: 1800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "La Roumanie est la grande surprise d'Europe de l'Est : la Transylvanie avec ses forteresses saxonnes médiévales et le château de Bran (Dracula), le delta du Danube (UNESCO, plus grand delta d'Europe), les monastères peints de Bucovine (UNESCO), les Carpates avec ours et loups sauvages, et Bucarest avec son architecture Art Nouveau et son absurde Palais du Parlement — le deuxième plus grand bâtiment du monde.",
     en: "Romania is the great surprise of Eastern Europe: Transylvania with its medieval Saxon fortresses and Bran Castle (Dracula), the Danube Delta (UNESCO, the largest delta in Europe), the painted monasteries of Bucovina (UNESCO), the Carpathians with wild bears and wolves, and Bucharest with its Art Nouveau architecture and its absurd Palace of the Parliament — the second-largest building in the world.",

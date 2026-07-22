@@ -11,6 +11,18 @@ export const ERITREA = {
     budgetMin: 30, budgetMid: 80,
     tripMin: 1200, tripMid: 2500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "L'Érythrée est l'une des destinations les plus isolées du monde : Asmara la capitale a été classée UNESCO en 2017 pour son incroyable concentration d'architecture Art déco et Futuriste italienne (années 1930), préservée à l'identique comme un musée à ciel ouvert. La côte mer Rouge (Massawa, Dahlak) et les hauts plateaux du Tigrigna complètent un pays mystérieux, peu touristique, à l'hospitalité préservée.",
     en: "Eritrea is one of the most isolated destinations in the world: its capital Asmara was listed as a UNESCO World Heritage Site in 2017 for its extraordinary concentration of Italian Art Deco and Futurist architecture from the 1930s, preserved almost unchanged like an open-air museum. The Red Sea coast (Massawa, Dahlak) and the Tigrinya highlands complete a mysterious, little-visited country with deeply preserved hospitality.",

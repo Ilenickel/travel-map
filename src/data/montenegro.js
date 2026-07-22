@@ -11,6 +11,18 @@ export const MONTENEGRO = {
     budgetMin: 45, budgetMid: 85,
     tripMin: 800, tripMid: 1800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Monténégro est la destination surprenante des Balkans : la baie de Kotor (UNESCO, fjord méditerranéen avec vieille ville médiévale vénitienne), les plages de Budva et Sveti Stefan, le parc national de Durmitor (UNESCO, canyons et lacs glaciaires), et Podgorica — une capitale abordable entre mer et montagne. Petit pays entre Croatie et Albanie, encore préservé des foules.",
     en: "Montenegro is the Balkans' surprising destination: the Bay of Kotor (UNESCO, a Mediterranean fjord with a medieval Venetian old town), the beaches of Budva and Sveti Stefan, Durmitor National Park (UNESCO, canyons and glacial lakes), and Podgorica — an affordable capital between sea and mountains. A small country between Croatia and Albania, still spared from the crowds.",

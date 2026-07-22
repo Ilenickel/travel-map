@@ -13,6 +13,18 @@ export const GUYANA = {
     tripMin: 1700,
     tripMid: 3000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Guyana est l'unique pays anglophone d'Amérique du Sud, une terre de jungle primaire quasi-intacte couvrant 80% du territoire. Chutes de Kaieteur (cinq fois Niagara), tepuys, jaguars et une biodiversité exceptionnelle en font une destination d'écotourisme de premier plan pour les aventuriers.",
     en: "Guyana is the only English-speaking country in South America, a land of almost untouched primary rainforest covering 80% of the territory. Kaieteur Falls (five times taller than Niagara), tepuis, jaguars and exceptional biodiversity make it a leading ecotourism destination for adventurers.",

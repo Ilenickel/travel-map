@@ -8,6 +8,18 @@ export const KUWAIT = {
   currency: { fr: "Dinar koweïtien (KWD)", en: "Kuwaiti Dinar (KWD)", es: "Dinar kuwaití (KWD)" },
   timezone: "UTC+3",
   filter: { budgetMin: 80, budgetMid: 160, tripMin: 1200, tripMid: 2500 },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 0,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Koweït est un petit État du Golfe persique à la richesse pétrolière colossale, dont la capitale offre un mélange saisissant d'architecture moderniste audacieuse et de traditions bédouines profondément ancrées. Destination méconnue des touristes européens, il possède un patrimoine culturel authentique — souqs animés, musées de qualité mondiale et pêche aux perles ancestrale — que l'opulence pétrolière n'a pas effacé. Le pays connaît des étés extrêmes (dépassant souvent 45°C) qui le rendent idéal à visiter uniquement en hiver.",
     en: "Kuwait is a small Gulf state with colossal oil wealth, whose capital offers a striking mix of bold modernist architecture and deeply rooted Bedouin traditions. A destination largely unknown to European tourists, it holds an authentic cultural heritage — bustling souks, world-class museums and ancestral pearl diving — that oil wealth has not erased. The country experiences extreme summers (often exceeding 45°C), making it a destination best visited only in winter.",

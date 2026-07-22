@@ -11,6 +11,18 @@ export const HUNGARY = {
     budgetMin: 45, budgetMid: 85,
     tripMin: 800, tripMid: 1800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Hongrie est dominée par Budapest — l'une des plus belles capitales d'Europe, construite sur les deux rives du Danube : Buda (châteaux et collines) et Pest (grands boulevards et cafés Art Nouveau). Les bains thermaux (Budapest est assise sur 118 sources chaudes), le lac Balaton, la puszta (steppe) et les vins de Tokaj et d'Eger font de la Hongrie une destination riche et abordable.",
     en: "Hungary is dominated by Budapest — one of Europe's most beautiful capitals, built on both banks of the Danube: Buda (castles and hills) and Pest (grand boulevards and Art Nouveau cafés). The thermal baths (Budapest sits on 118 hot springs), Lake Balaton, the puszta (steppe) and the wines of Tokaj and Eger make Hungary a rich and affordable destination.",

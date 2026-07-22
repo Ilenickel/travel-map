@@ -11,6 +11,18 @@ export const SOUTH_AFRICA = {
     budgetMin: 45, budgetMid: 100,
     tripMin: 2000, tripMid: 4000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 3,
+    ski: 2,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "L'Afrique du Sud est la destination africaine la plus complète : safaris dans le Kruger (Big Five), Cap de Bonne Espérance sauvage, vignobles de Stellenbosch, Garden Route spectaculaire et les plages de la côte du KwaZulu-Natal. Le tout avec une infrastructure touristique parmi les meilleures du continent.",
     en: "South Africa is the most complete African destination: safaris in Kruger (Big Five), the wild Cape of Good Hope, Stellenbosch vineyards, the spectacular Garden Route and the beaches of the KwaZulu-Natal coast. All with some of the best tourism infrastructure on the continent.",

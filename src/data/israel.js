@@ -11,6 +11,18 @@ export const ISRAEL = {
     budgetMin: 60, budgetMid: 130,
     tripMin: 2000, tripMid: 3800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Israël concentre en un territoire minuscule trois des lieux saints les plus importants de l'humanité (Jérusalem), la mer Morte à −430 m, les plages de Tel Aviv, le désert du Néguev et des sites archéologiques uniques. Une destination d'une richesse culturelle exceptionnelle.",
     en: "Israel packs into a tiny territory three of humanity's most important holy sites (in Jerusalem), the Dead Sea at 430 metres below sea level, Tel Aviv's beaches, the Negev Desert and a remarkable range of archaeological sites. It is an exceptionally rich cultural destination.",

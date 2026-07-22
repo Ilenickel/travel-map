@@ -11,6 +11,18 @@ export const ANDORRA = {
     budgetMin: 70, budgetMid: 130,
     tripMin: 900, tripMid: 1700,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Andorre est une principauté co-dirigée par la France et l'Espagne, nichée dans les Pyrénées à plus de 1 000 mètres d'altitude. Malgré sa superficie de 468 km², elle offre un domaine skiable parmi les plus grands de la péninsule ibérique avec Grandvalira, des randonnées estivales spectaculaires et un statut de paradis du shopping hors taxes qui attire des millions de visiteurs chaque année. Des églises romanes du XIe siècle témoignent d'un riche patrimoine médiéval.",
     en: "Andorra is a principality co-ruled by France and Spain, nestled in the Pyrenees at over 1,000 metres of altitude. Despite its small size of 468 km², it boasts one of the largest ski areas in the Iberian Peninsula with Grandvalira, spectacular summer hiking, and a tax-free shopping paradise status that draws millions of visitors every year. Eleventh-century Romanesque churches bear witness to a rich medieval heritage.",

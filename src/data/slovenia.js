@@ -11,6 +11,18 @@ export const SLOVENIA = {
     budgetMin: 60, budgetMid: 110,
     tripMin: 900, tripMid: 2000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Slovénie est le pays le plus vert d'Europe : 60% du territoire couvert par la forêt, le lac de Bled (château médiéval sur île au milieu d'un lac vert émeraude dans les Alpes juliennes), les grottes de Postojna (les plus visitées d'Europe), le parc national du Triglav et ses 2 864m, la côte adriatique de Piran, et Ljubljana — une capitale à vélo au bord de la Ljubljanica.",
     en: "Slovenia is Europe's greenest country: 60% of its territory covered by forest, Lake Bled (a medieval castle on an island in the middle of an emerald-green lake in the Julian Alps), the Postojna Caves (the most visited in Europe), Triglav National Park with its 2,864m peak, the Adriatic coastline of Piran, and Ljubljana — a cycling capital on the banks of the Ljubljanica.",

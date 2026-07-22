@@ -11,6 +11,18 @@ export const REUNION = {
     budgetMin: 80, budgetMid: 160,
     tripMin: 1800, tripMid: 3500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 1,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Réunion est une île volcanique française de l'océan Indien : le Piton de la Fournaise (l'un des volcans les plus actifs du monde avec des éruptions quasi annuelles), les trois cirques de montagne (Cilaos, Mafate, Salazie — classés UNESCO Parc national), les ravines et forêts tropicales de liane, et la côte ouest avec ses plages et son lagon protégé. Un territoire français avec une cuisine créole exceptionnelle.",
     en: "Réunion Island is a French volcanic island in the Indian Ocean: Piton de la Fournaise (one of the most active volcanoes in the world, erupting almost yearly), the three mountain cirques (Cilaos, Mafate, Salazie — UNESCO-listed national park), ravines and tropical liana forests, and the west coast with its beaches and protected lagoon. A French territory with exceptional Creole cuisine.",

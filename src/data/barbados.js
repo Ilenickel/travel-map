@@ -8,6 +8,18 @@ export const BARBADOS = {
   currency: { fr: "Dollar de la Barbade (BBD)", en: "Barbadian dollar (BBD)", es: "Dólar de Barbados (BBD)" },
   timezone: "UTC-4",
   filter: { budgetMin: 80, budgetMid: 160, tripMin: 1600, tripMid: 3000 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Barbade est une île des Petites Antilles réputée pour ses plages de sable blanc, ses eaux cristallines et son excellence gastronomique dans un cadre caribéen sophistiqué. Berceau du rhum (la distillerie Mount Gay, fondée en 1703, est la plus ancienne du monde encore en activité), l'île possède une identité culturelle forte mêlant héritage britannique et afro-caribéen. Bridgetown, la capitale, est inscrite au patrimoine mondial de l'UNESCO, et la Barbade est l'une des destinations les mieux organisées et les plus stables des Caraïbes.",
     en: "Barbados is an island in the Lesser Antilles known for its white-sand beaches, crystal-clear waters and outstanding food scene in a refined Caribbean setting. The birthplace of rum (the Mount Gay distillery, founded in 1703, is the oldest in the world still in operation), the island has a strong cultural identity blending British and Afro-Caribbean heritage. Bridgetown, the capital, is a UNESCO World Heritage Site, and Barbados is one of the best-organised and most stable destinations in the Caribbean.",

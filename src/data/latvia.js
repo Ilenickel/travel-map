@@ -11,6 +11,18 @@ export const LATVIA = {
     budgetMin: 50, budgetMid: 90,
     tripMin: 900, tripMid: 1900,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "La Lettonie est le cœur des États baltes : Riga, sa capitale, possède le plus grand ensemble d'architecture Art Nouveau d'Europe (800 bâtiments classés UNESCO) et une Vieille Ville médiévale hanséatique. Les plages de sable de Jūrmala (35km de côte), les châteaux de Gauja et la forêt primaire de Slītere font de la Lettonie une destination nature et culture abordable.",
     en: "Latvia is the heart of the Baltic states: Riga, its capital, boasts Europe's largest collection of Art Nouveau architecture (800 UNESCO-listed buildings) and a medieval Hanseatic Old Town. The sandy beaches of Jūrmala (35km of coastline), the castles of Gauja and the primeval Slītere forest make Latvia an affordable nature and culture destination.",

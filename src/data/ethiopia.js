@@ -11,6 +11,18 @@ export const ETHIOPIA = {
     budgetMin: 40, budgetMid: 100,
     tripMin: 1500, tripMid: 3500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "L'Éthiopie est le berceau de l'humanité et une civilisation millénaire à part : Lalibela et ses 11 églises monolithiques taillées dans le roc (UNESCO), la Dépression de Danakil — l'endroit le plus chaud et inhospitalier de la planète —, les tribus Mursi et Hamar de la vallée de l'Omo et le monastère insulaire du lac Tana. Un voyage hors du temps.",
     en: "Ethiopia is the cradle of humankind and a singular millennia-old civilisation: Lalibela and its 11 monolithic churches carved into rock (UNESCO), the Danakil Depression — the hottest and most inhospitable place on the planet —, the Mursi and Hamar tribes of the Omo Valley, and the island monastery on Lake Tana. A journey out of time.",

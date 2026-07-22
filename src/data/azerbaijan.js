@@ -11,6 +11,18 @@ export const AZERBAIJAN = {
     budgetMin: 30, budgetMid: 65,
     tripMin: 1200, tripMid: 2200,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 1,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "L'Azerbaïdjan, « Pays du Feu », surprend avec sa capitale Bakou aux tours flammes ultramodernes surplombant une vieille ville médiévale classée à l'UNESCO. Au-delà, des villages de montagne préservés, les forêts de Sheki et des feux naturels éternels font de ce pays du Caucase une découverte authentique.",
     en: "Azerbaijan, the “Land of Fire”, captivates with its capital Baku, where ultra-modern Flame Towers rise above a UNESCO-listed medieval old town. Beyond the capital, preserved mountain villages, the forests of Sheki and eternal natural flames make this Caucasus country an authentic and surprising destination.",

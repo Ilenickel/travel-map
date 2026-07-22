@@ -11,6 +11,18 @@ export const LIBERIA = {
     budgetMin: 35, budgetMid: 70,
     tripMin: 850, tripMid: 1700,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Libéria, seul pays d'Afrique subsaharienne jamais colonisé par une puissance européenne, a été fondé en 1847 par des esclaves affranchis américains. Le parc national de Sapo, l'un des derniers grands blocs de forêt primaire d'Afrique de l'Ouest, abrite éléphants de forêt, hippopotames pygmées et chimpanzés. Ses plages atlantiques sauvages et son histoire unique en font une destination pour explorateurs.",
     en: "Liberia, the only country in sub-Saharan Africa never colonised by a European power, was founded in 1847 by freed American slaves. Sapo National Park, one of the last great blocks of primary forest in West Africa, is home to forest elephants, pygmy hippos and chimpanzees. Its wild Atlantic beaches and unique history make it a destination for explorers.",

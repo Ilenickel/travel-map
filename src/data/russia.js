@@ -11,6 +11,18 @@ export const RUSSIA = {
     budgetMin: 50, budgetMid: 95,
     tripMin: 800, tripMid: 1800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 1,
+    ski: 2,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Russie est le plus grand pays du monde, couvrant onze fuseaux horaires et offrant une diversité de paysages et de cultures exceptionnelle, des palais dorés de Saint-Pétersbourg aux rives sauvages du lac Baïkal. Ses grandes villes fascinent par la richesse de leur patrimoine tsariste et soviétique, leurs musées de classe mondiale et leur scène gastronomique et artistique dynamique. ⚠️ En raison du conflit en Ukraine et des sanctions internationales, les voyages en Russie depuis la France sont fortement déconseillés et logistiquement très difficiles depuis 2022.",
     en: "Russia is the largest country in the world, spanning eleven time zones and offering exceptional diversity of landscapes and cultures, from the golden palaces of Saint Petersburg to the wild shores of Lake Baikal. Its great cities fascinate with the richness of their tsarist and Soviet heritage, world-class museums and a dynamic food and arts scene. ⚠️ Due to the conflict in Ukraine and international sanctions, travel to Russia from France is strongly discouraged and logistically very difficult since 2022.",

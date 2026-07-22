@@ -8,6 +8,18 @@ export const SAMOA = {
   currency: { fr: "Tala samoan (WST)", en: "Samoan tala (WST)", es: "Tala samoano (WST)" },
   timezone: "UTC+13",
   filter: { budgetMin: 50, budgetMid: 100, tripMin: 1600, tripMid: 3000 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 0,
+    plage: 2,
+  },
   description: {
     fr: "Les Samoa, souvent appelées le « Cœur du Polynésie », sont un archipel préservé où la culture fa'a Samoa (la manière samoane de vivre) imprègne chaque aspect du quotidien. Avec ses tranchées océaniques spectaculaires, ses chutes d'eau vertigineuses et ses plages parmi les plus belles du Pacifique, Samoa offre une authenticité rare dans un cadre naturel à couper le souffle. Robert Louis Stevenson, auteur de L'Île au trésor, y choisit de finir sa vie, séduit par la beauté et la générosité du peuple samoan.",
     en: "Samoa, often called the 'Heart of Polynesia', is a preserved archipelago where the fa'a Samoa culture (the Samoan way of life) permeates every aspect of daily life. With its spectacular ocean trenches, dizzying waterfalls and some of the finest beaches in the Pacific, Samoa offers rare authenticity in a breathtaking natural setting. Robert Louis Stevenson, author of Treasure Island, chose to end his life here, seduced by the beauty and generosity of the Samoan people.",

@@ -11,6 +11,18 @@ export const AUSTRALIA = {
     budgetMin: 80, budgetMid: 180,
     tripMin: 2600, tripMid: 5000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 3,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "L'Australie est un continent à elle seule : Sydney et son Opéra iconique, la Grande Barrière de Corail du Queensland, Uluru le rocher sacré, les kangourous et koalas de la brousse, Melbourne et sa scène gastronomique. Un pays immense, à l'autre bout du monde, pour des aventures inoubliables.",
     en: "Australia is a continent in its own right: Sydney and its iconic Opera House, the Great Barrier Reef in Queensland, the sacred rock of Uluru, kangaroos and koalas in the bush, and Melbourne with its foodie scene. A vast country, on the other side of the world, for unforgettable adventures.",

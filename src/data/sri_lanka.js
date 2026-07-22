@@ -13,6 +13,18 @@ export const SRI_LANKA = {
     tripMin: 1200,
     tripMid: 2400,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Sri Lanka, « Perle de l'Océan Indien », concentre sur une petite île une diversité extraordinaire : temples bouddhistes à rocher (Sigiriya), safaris à éléphants (Yala), plages de la côte sud, collines de thé de Nuwara Eliya et sites UNESCO. Une destination complète et accessible en 2 semaines.",
     en: "Sri Lanka, the 'Pearl of the Indian Ocean', packs extraordinary diversity onto a small island: rock temples (Sigiriya), elephant safaris (Yala), south coast beaches, the tea hills of Nuwara Eliya and UNESCO sites. A complete destination that fits into a 2-week trip.",

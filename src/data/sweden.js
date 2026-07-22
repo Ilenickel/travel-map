@@ -11,6 +11,18 @@ export const SWEDEN = {
     budgetMin: 100, budgetMid: 180,
     tripMin: 1500, tripMid: 3500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 3,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Suède offre une nature sauvage immense : l'archipel de Stockholm (30 000 îles), la Laponie suédoise avec ses aurores boréales et ses rennes, les forêts de pins infinies, et les lacs de l'intérieur. Stockholm est l'une des capitales les plus belles d'Europe — construite sur 14 îles. Le pays de l'IKEA, d'ABBA, du design et du fika (pause café rituelle).",
     en: "Sweden offers immense wild nature: the Stockholm archipelago (30,000 islands), Swedish Lapland with its northern lights and reindeer, endless pine forests, and inland lakes. Stockholm is one of the most beautiful capitals in Europe — built across 14 islands. The land of IKEA, ABBA, design and fika (the ritual coffee break).",

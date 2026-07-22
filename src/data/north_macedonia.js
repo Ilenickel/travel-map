@@ -11,6 +11,18 @@ export const NORTH_MACEDONIA = {
     budgetMin: 30, budgetMid: 60,
     tripMin: 600, tripMid: 1200,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Macédoine du Nord est le secret le mieux gardé des Balkans : le lac d'Ohrid (double UNESCO — patrimoine naturel et culturel, l'un des plus vieux lacs d'Europe), les monastères byzantins des XIe–XIVe siècles dans la campagne, Skopje et son centre baroque néoclassique surprenant, et Mavrovo — le parc national alpin à 90 minutes de la capitale.",
     en: "North Macedonia is the Balkans' best-kept secret: Lake Ohrid (a double UNESCO site — natural and cultural heritage, one of the oldest lakes in Europe), 11th–14th-century Byzantine monasteries scattered across the countryside, Skopje with its surprising neoclassical baroque centre, and Mavrovo — the alpine national park just 90 minutes from the capital.",

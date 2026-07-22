@@ -11,6 +11,18 @@ export const SERBIA = {
     budgetMin: 35, budgetMid: 65,
     tripMin: 700, tripMid: 1500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "La Serbie est la grande inconnue des Balkans : Belgrade, ville à la fois balkanique et européenne, avec sa forteresse de Kalemegdan, sa scène nocturne légendaire sur les bateaux-discothèques de la Sava (splavovi), les monastères médiévaux d'Oplenac et Žiča dans la campagne serbe, Novi Sad et son festival EXIT, les gorges des Portes de Fer (Đerdap) sur le Danube.",
     en: "Serbia is the great unknown of the Balkans: Belgrade, a city both Balkan and European, with its Kalemegdan Fortress, its legendary nightlife on the Sava river's floating clubs (splavovi), the medieval monasteries of Oplenac and Žiča in the Serbian countryside, Novi Sad and its EXIT festival, and the Iron Gates gorge (Đerdap) on the Danube.",

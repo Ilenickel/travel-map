@@ -8,6 +8,18 @@ export const KAZAKHSTAN = {
   currency: { fr: "Tenge kazakhstanais (KZT)", en: "Kazakhstani Tenge (KZT)", es: "Tenge kazajo (KZT)" },
   timezone: "UTC+5 / UTC+6",
   filter: { budgetMin: 40, budgetMid: 80, tripMin: 900, tripMid: 1900 },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Kazakhstan est le neuvième pays du monde par sa superficie, une immensité de steppes dorées, de déserts ocre et de montagnes enneigées qui s'étire de la mer Caspienne aux confins de la Chine. Berceau de la civilisation nomade des Kazakhs, il conserve une tradition millénaire d'élevage, d'hospitalité et de culture équestre tout en affichant les gratte-ciels futuristes de sa capitale ultramoderne Astana. Les villes de la Route de la Soie — Turkestan, Taraz — témoignent d'une autre histoire, celle des caravanes et des empires.",
     en: "Kazakhstan is the ninth largest country in the world, a vast expanse of golden steppes, ochre deserts and snow-capped mountains stretching from the Caspian Sea to the edge of China. Cradle of the nomadic Kazakh civilisation, it preserves an age-old tradition of herding, hospitality and equestrian culture while boasting the futuristic skyscrapers of its ultramodern capital Astana. The Silk Road cities — Turkestan, Taraz — bear witness to another history, that of caravans and empires.",

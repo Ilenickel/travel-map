@@ -8,6 +8,18 @@ export const IRAN = {
   currency: { fr: "Rial iranien (IRR) / Toman", en: "Iranian rial (IRR) / toman", es: "Rial iraní (IRR) / tomán" },
   timezone: "UTC+3:30",
   filter: { budgetMin: 35, budgetMid: 70, tripMin: 800, tripMid: 1700 },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "L'Iran est l'un des berceaux de la civilisation mondiale, héritier de l'Empire perse et de millennia d'art, de poésie et d'architecture raffinée. De la splendeur turquoise des mosquées d'Ispahan aux ruines majestueuses de Persépolis, en passant par les jardins parfumés de Shiraz, ce pays offre une richesse culturelle sans égale. Malgré les tensions géopolitiques, les voyageurs qui s'y aventurent découvrent un peuple d'une hospitalité légendaire et des paysages d'une diversité étonnante.",
     en: "Iran is one of the cradles of world civilisation, heir to the Persian Empire and to millennia of art, poetry and refined architecture. From the turquoise splendour of Isfahan's mosques to the majestic ruins of Persepolis and the fragrant gardens of Shiraz, the country offers an unmatched cultural richness. Despite geopolitical tensions, travellers who venture there discover legendary hospitality and remarkably varied landscapes.",

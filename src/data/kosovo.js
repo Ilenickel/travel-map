@@ -11,6 +11,18 @@ export const KOSOVO = {
     budgetMin: 30, budgetMid: 55,
     tripMin: 600, tripMid: 1100,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
+    randonnee: 2, // idem
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "Le Kosovo est le plus jeune État d'Europe, ayant déclaré son indépendance de la Serbie en 2008, reconnue par plus d'une centaine de pays dont la France. Ce petit pays des Balkans offre une mosaïque culturelle fascinante où coexistent héritages ottoman, serbe et albanais dans des paysages montagneux spectaculaires. Le tourisme y est encore confidentiel, ce qui en fait une destination authentique et abordable pour les voyageurs curieux.",
     en: "Kosovo is Europe's youngest state, having declared independence from Serbia in 2008, recognised by more than a hundred countries including France. This small Balkan country offers a fascinating cultural mosaic where Ottoman, Serbian and Albanian heritage coexist amid spectacular mountain landscapes. Tourism remains niche here, making it an authentic and affordable destination for curious travellers.",

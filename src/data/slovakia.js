@@ -11,6 +11,18 @@ export const SLOVAKIA = {
     budgetMin: 45, budgetMid: 80,
     tripMin: 800, tripMid: 1700,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "La Slovaquie est la perle méconnue d'Europe centrale : les Hautes Tatras (les Alpes les plus au nord-est d'Europe, 2 655m), les châteaux médiévaux en ruines sur les collines (plus de 180 châteaux par km² — record d'Europe), les gorges du Paradis slovaque, Bratislava et sa Vieille Ville baroque à 1h de Vienne. Un pays abordable à la nature extraordinaire.",
     en: "Slovakia is the little-known gem of Central Europe: the High Tatras (Europe's north-easternmost Alps, 2,655m), ruined medieval castles on the hills (over 180 castles — a European density record), the gorges of the Slovak Paradise, and Bratislava with its baroque Old Town just an hour from Vienna. An affordable country with extraordinary nature.",

@@ -11,6 +11,18 @@ export const ALBANIA = {
     budgetMin: 30, budgetMid: 60,
     tripMin: 600, tripMid: 1200,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "L'Albanie est la dernière frontière balkanique : une côte adriatique et ionique encore préservée (la Riviera albanaise avec ses eaux turquoise), Berat et Gjirokastër (deux villes ottomanes UNESCO), le lac d'Ohrid partagé avec la Macédoine du Nord, les montagnes maudites (Alpes albanaises) au nord — un pays qui sort d'un isolement de 50 ans et offre une authenticité rare.",
     en: "Albania is the Balkans' last frontier: a still-unspoiled Adriatic and Ionian coastline (the Albanian Riviera with its turquoise waters), Berat and Gjirokastër (two UNESCO Ottoman towns), Lake Ohrid shared with North Macedonia, and the Accursed Mountains (Albanian Alps) in the north — a country emerging from 50 years of isolation that offers rare authenticity.",

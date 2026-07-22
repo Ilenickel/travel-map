@@ -8,6 +8,18 @@ export const BAHAMAS = {
   currency: { fr: "Dollar des Bahamas (BSD)", en: "Bahamian dollar (BSD)", es: "Dólar bahameño (BSD)" },
   timezone: "UTC-5",
   filter: { budgetMin: 100, budgetMid: 200, tripMin: 1800, tripMid: 3500 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "L'archipel des Bahamas s'étend sur plus de 700 îles et îlots dispersés entre la Floride et Cuba, offrant certaines des eaux les plus transparentes et les plus colorées du monde, des bleus électriques aux turquoises éclatants. Nassau, la capitale animée, mêle resorts luxueux, culture junkanoo et histoire coloniale, tandis que les îles extérieures (Out Islands) comme les Exumas ou Eleuthera offrent une solitude paradisiaque à quelques minutes d'avion. Les Bahamas sont aussi réputées pour leur faune marine exceptionnelle : requins des récifs, raies, dauphins sauvages et les célèbres cochons nageurs d'Exuma.",
     en: "The Bahamian archipelago stretches across more than 700 islands and cays scattered between Florida and Cuba, offering some of the clearest and most vividly coloured waters in the world, from electric blues to dazzling turquoise. Nassau, the lively capital, blends luxury resorts, Junkanoo culture and colonial history, while the Out Islands such as the Exumas and Eleuthera offer blissful seclusion just a short flight away. The Bahamas are also renowned for their exceptional marine life: reef sharks, rays, wild dolphins and Exuma's famous swimming pigs.",

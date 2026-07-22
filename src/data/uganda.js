@@ -11,6 +11,18 @@ export const UGANDA = {
     budgetMin: 60, budgetMid: 180,
     tripMin: 2500, tripMid: 7000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "L'Ouganda, « la perle de l'Afrique » selon Churchill, est le pays des gorilles de Bwindi et des chimpanzés de Nyungwe. Avec plus de 1 000 espèces d'oiseaux (premier pays africain), la source du Nil Blanc à Jinja, les chutes Murchison et les lions grimpeurs d'Ishasha, c'est la destination de la biodiversité absolue.",
     en: "Uganda, \"the pearl of Africa\" according to Churchill, is the land of the Bwindi gorillas and Nyungwe chimpanzees. With over 1,000 bird species (Africa's top country), the source of the White Nile in Jinja, Murchison Falls and the tree-climbing lions of Ishasha, it is the ultimate biodiversity destination.",

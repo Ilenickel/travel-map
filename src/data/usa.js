@@ -11,6 +11,18 @@ export const USA = {
     budgetMin: 80, budgetMid: 180,
     tripMin: 2500, tripMid: 4500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 2,
+    desert: 2,
+    safari: 2,
+    ski: 3,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "Les États-Unis offrent une diversité vertigineuse : New York et ses gratte-ciels, les parcs nationaux géants (Yellowstone, Grand Canyon, Yosemite), la Route 66, les plages de Miami, Hollywood à Los Angeles et la Nouvelle-Orléans au son du jazz. Un voyage sans fin dans un pays-continent.",
     en: "The United States offers dizzying diversity: New York and its skyscrapers, giant national parks (Yellowstone, Grand Canyon, Yosemite), Route 66, the beaches of Miami, Hollywood in Los Angeles, and New Orleans to the sound of jazz. An endless journey across a continent-sized country.",

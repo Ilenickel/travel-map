@@ -8,6 +8,18 @@ export const BAHRAIN = {
   currency: { fr: "Dinar bahreïni (BHD)", en: "Bahraini dinar (BHD)", es: "Dinar baréiní (BHD)" },
   timezone: "UTC+3",
   filter: { budgetMin: 75, budgetMid: 150, tripMin: 1100, tripMid: 2400 },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 0,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Bahreïn, archipel de 33 îles au cœur du Golfe persique, est l'un des plus petits États du monde mais aussi l'un des plus riches de son histoire. Longtemps carrefour commercial entre la Mésopotamie et la civilisation de l'Indus, il fut le cœur de la civilisation Dilmun et le premier grand centre de pêche aux perles du monde islamique. Aujourd'hui hub bancaire et financier du Golfe, il est aussi le seul État pétrolier à avoir développé une scène culturelle et artistique contemporaine dynamique.",
     en: "Bahrain, an archipelago of 33 islands in the heart of the Persian Gulf, is one of the smallest states in the world, but also one of the richest in history. Long a trading crossroads between Mesopotamia and the Indus civilisation, it was the heart of the Dilmun civilisation and the first major pearl-diving centre in the Islamic world. Today a banking and financial hub of the Gulf, it is also the only oil state to have developed a vibrant contemporary cultural and artistic scene.",

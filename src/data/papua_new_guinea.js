@@ -8,6 +8,18 @@ export const PAPUA_NEW_GUINEA = {
   currency: { fr: "Kina papouan (PGK)", en: "Papua New Guinean kina (PGK)", es: "Kina papú (PGK)" },
   timezone: "UTC+10",
   filter: { budgetMin: 60, budgetMid: 130, tripMin: 1500, tripMid: 3000 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Papouasie-Nouvelle-Guinée est l'un des pays les plus diversifiés au monde, avec plus de 800 langues parlées et des cultures ancestrales préservées dans des highlands isolés. Ses paysages extraordinaires vont des récifs coralliens turquoise aux forêts tropicales denses et aux sommets enneigés, comme le mont Wilhelm (4 509 m). C'est une destination pour voyageurs aventuriers cherchant une immersion authentique loin des sentiers battus.",
     en: "Papua New Guinea is one of the most diverse countries in the world, with over 800 spoken languages and ancestral cultures preserved in isolated highlands. Its extraordinary landscapes range from turquoise coral reefs to dense rainforests and snow-capped peaks like Mount Wilhelm (4,509 m). It's a destination for adventurous travellers seeking authentic immersion off the beaten path.",

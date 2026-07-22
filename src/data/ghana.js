@@ -11,6 +11,18 @@ export const GHANA = {
     budgetMin: 50, budgetMid: 100,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Ghana est le pays d'Afrique de l'Ouest le plus stable et accueillant pour le tourisme : berceaux de la traite négrière avec les châteaux coloniaux de Cape Coast et Elmina (UNESCO), forêts tropicales et primates sauvages du parc de Kakum, tissage du kente à Kumasi capitale des Ashanti, et une scène musicale (highlife, afrobeats) rayonnant sur toute l'Afrique.",
     en: "Ghana is West Africa's most stable and welcoming country for tourism: a cradle of the slave trade with the colonial castles of Cape Coast and Elmina (UNESCO), tropical forests and wild primates in Kakum National Park, kente weaving in Kumasi, capital of the Ashanti, and a music scene (highlife, afrobeats) that shines across the continent.",

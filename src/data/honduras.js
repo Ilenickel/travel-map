@@ -11,6 +11,18 @@ export const HONDURAS = {
     budgetMin: 30, budgetMid: 80,
     tripMin: 1200, tripMid: 2800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Honduras est la destination confidentielle d'Amérique centrale : Copán, l'une des grandes cités mayas classée UNESCO, les îles Bay Islands aux récifs parmi les plus riches de la Mésoamérique — et Utila, paradis mondial de la certification de plongée à petit prix.",
     en: "Honduras is Central America's under-the-radar destination: Copán, one of the great UNESCO-listed Maya cities; the Bay Islands, with some of the richest reefs in Mesoamerica; and Utila, a world-famous bargain destination for dive certification.",

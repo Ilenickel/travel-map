@@ -11,6 +11,18 @@ export const PERU = {
     budgetMin: 35, budgetMid: 90,
     tripMin: 1600, tripMid: 3000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Pérou est le cœur de l'Amérique andine : Machu Picchu la cité inca au-dessus des nuages, Cusco la capitale inca, la mer de dunes de Huacachina, le lac Titicaca le plus haut du monde et la gastronomie péruvienne parmi les meilleures au monde.",
     en: "Peru is the heart of Andean America: Machu Picchu, the Inca city above the clouds, Cusco the Inca capital, the sea of dunes at Huacachina, Lake Titicaca the highest in the world, and Peruvian cuisine, among the best in the world.",

@@ -11,6 +11,18 @@ export const CUBA = {
     budgetMin: 50, budgetMid: 120,
     tripMin: 1500, tripMid: 3500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "Cuba est une capsule temporelle : voitures américaines des années 50, musique de salsa et son dans les ruelles de la Havane, plages vierges de Varadero et de Cayo Coco, Trinidad coloniale classée UNESCO et la vallée de Viñales, ses mogotes calcaires et ses plantations de tabac. Un pays unique, figé et fascinant.",
     en: "Cuba is a time capsule: 1950s American cars, salsa and son music drifting through Havana's streets, untouched beaches in Varadero and Cayo Coco, UNESCO-listed colonial Trinidad, and the Viñales Valley with its limestone mogotes and tobacco plantations. A unique country, frozen in time and utterly captivating.",

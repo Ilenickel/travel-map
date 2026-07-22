@@ -11,6 +11,18 @@ export const THAILAND = {
     budgetMin: 25, budgetMid: 70,
     tripMin: 1200, tripMid: 2500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 2,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "La Thaïlande enchante avec ses temples dorés, ses plages de sable blanc, sa gastronomie épicée et son hospitalité légendaire. Entre la frénésie de Bangkok, la sérénité de Chiang Mai et les îles turquoise du Sud, c'est une destination qui comble tous les voyageurs.",
     en: "Thailand enchants with its golden temples, white sand beaches, spicy cuisine and legendary hospitality. Between the frenzy of Bangkok, the serenity of Chiang Mai and the turquoise islands of the South, it's a destination that satisfies every traveller.",

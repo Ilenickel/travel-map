@@ -11,6 +11,18 @@ export const MONGOLIA = {
     budgetMin: 50, budgetMid: 110,
     tripMin: 1800, tripMid: 3500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "La Mongolie est l'un des derniers grands espaces vierges de la planète. Steppes infinies, désert de Gobi aux dunes chantantes, yourtes de nomades, chevaux sauvages et nuits sous une voûte céleste sans pollution lumineuse — une aventure incomparable pour ceux qui cherchent l'essentiel.",
     en: "Mongolia is one of the last great untouched wilderness areas on the planet. Endless steppes, the Gobi Desert with its singing dunes, nomad yurts, wild horses and nights under a light-pollution-free sky — an unrivalled adventure for those seeking the essentials.",

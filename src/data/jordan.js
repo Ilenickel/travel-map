@@ -11,6 +11,18 @@ export const JORDAN = {
     budgetMin: 40, budgetMid: 90,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Jordanie est un joyau du Moyen-Orient : Pétra, cité nabatéenne taillée dans la roche rose, le désert de Wadi Rum aux teintes martiennes, la mer Morte où l'on flotte sans effort et les ruines romaines de Jérash. Un pays ouvert, sûr et accueillant.",
     en: "Jordan is a jewel of the Middle East: Petra, a Nabataean city carved into pink rock, the Mars-like hues of Wadi Rum desert, the Dead Sea where you float effortlessly, and the Roman ruins of Jerash. An open, safe and welcoming country.",

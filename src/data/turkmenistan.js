@@ -8,6 +8,18 @@ export const TURKMENISTAN = {
   currency: { fr: "Manat turkmène (TMT)", en: "Turkmenistan Manat (TMT)", es: "Manat turcomano (TMT)" },
   timezone: "UTC+5",
   filter: { budgetMin: 50, budgetMid: 100, tripMin: 1000, tripMid: 2200 },
+  criteria: {
+    unesco: 2,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Turkménistan est l'un des pays les plus fermés et les plus mystérieux du monde, souvent comparé à la Corée du Nord pour son isolement délibéré et son culte de la personnalité présidentiel. Pourtant, ceux qui parviennent à y entrer découvrent un pays fascinant : la capitale Achgabat, recouverte de marbre blanc à perte de vue, figure dans le Livre Guinness des Records, et le cratère de gaz de Darvaza — surnommé la 'Porte de l'Enfer' — brûle dans le désert du Karakoum depuis plus de 50 ans.",
     en: "Turkmenistan is one of the most closed-off and mysterious countries in the world, often compared to North Korea for its deliberate isolation and presidential personality cult. Yet those who manage to enter discover a fascinating country: the capital Ashgabat, covered in white marble as far as the eye can see, features in the Guinness Book of Records, and the Darvaza gas crater — nicknamed the 'Gate to Hell' — has been burning in the Karakum desert for over 50 years.", es: "Turkmenistán es uno de los países más cerrados y misteriosos del mundo, a menudo comparado con Corea del Norte por su aislamiento deliberado y su culto a la personalidad presidencial. Sin embargo, quienes logran entrar descubren un país fascinante: la capital, Asjabad, recubierta de mármol blanco hasta donde alcanza la vista, figura en el Libro Guinness de los Récords, y el cráter de gas de Darvaza —apodado la 'Puerta del Infierno'— arde en el desierto de Karakum desde hace más de 50 años.",

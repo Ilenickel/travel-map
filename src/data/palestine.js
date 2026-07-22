@@ -8,6 +8,18 @@ export const PALESTINE = {
   currency: { fr: "Shekel israélien (ILS) / Dinar jordanien (JOD)", en: "Israeli Shekel (ILS) / Jordanian Dinar (JOD)", es: "Séquel israelí (ILS) / Dinar jordano (JOD)" },
   timezone: "UTC+2 (UTC+3 en été)",
   filter: { budgetMin: 50, budgetMid: 100, tripMin: 950, tripMid: 2000 },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Palestine est une terre chargée d'une histoire millénaire, berceau de trois religions monothéistes et de civilisations parmi les plus anciennes du monde. Les Territoires palestiniens de Cisjordanie abritent des sites d'une importance spirituelle et archéologique exceptionnelle — Bethléem, Jéricho, Hébron — accessibles aux touristes dans un contexte politique complexe. Gaza, soumise à un blocus depuis 2007 et dévastée par les conflits successifs, n'est actuellement pas accessible aux voyageurs étrangers.",
     en: "Palestine is a land steeped in millennia of history, the birthplace of three monotheistic religions and some of the world's oldest civilisations. The Palestinian Territories of the West Bank host sites of exceptional spiritual and archaeological importance — Bethlehem, Jericho, Hebron — accessible to tourists within a complex political context. Gaza, under blockade since 2007 and devastated by successive conflicts, is not currently accessible to foreign travellers.",

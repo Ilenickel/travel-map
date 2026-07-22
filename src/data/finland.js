@@ -11,6 +11,18 @@ export const FINLAND = {
     budgetMin: 100, budgetMid: 180,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "La Finlande est le 'pays de mille lacs' (il y en a 188 000) et de la forêt profonde. Helsinki, la capitale la plus au nord de l'UE, est une ville design et multiculturelle. En Laponie, Rovaniemi (ville officielle du Père Noël) et Saariselkä offrent les meilleures aurores boréales et safaris en motoneige d'Europe. Le sauna y est une institution culturelle fondamentale.",
     en: "Finland is the 'land of a thousand lakes' (there are actually 188,000 of them) and deep forests. Helsinki, the northernmost capital in the EU, is a design-driven, multicultural city. In Lapland, Rovaniemi (the official hometown of Santa Claus) and Saariselkä offer Europe's best northern lights and snowmobile safaris. Sauna is a fundamental part of the country's culture.",

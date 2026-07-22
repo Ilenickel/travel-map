@@ -11,6 +11,18 @@ export const BHUTAN = {
     budgetMin: 200, budgetMid: 350,
     tripMin: 3000, tripMid: 5500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Bhoutan est le dernier royaume bouddhiste de l'Himalaya, mesurant son succès au « Bonheur National Brut » plutôt qu'au PIB. Monastères perchés à flanc de falaise, rizières en terrasses, forêts vierges et une culture tibétaine intacte — une destination hors du temps, accessible mais unique.",
     en: "Bhutan is the last Buddhist kingdom in the Himalayas, measuring its success by “Gross National Happiness” rather than GDP. Cliffside monasteries, terraced rice fields, pristine forests and an unspoilt Tibetan culture make it a timeless destination—accessible, yet truly unique.",

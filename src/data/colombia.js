@@ -13,6 +13,18 @@ export const COLOMBIA = {
     tripMin: 1400,
     tripMid: 2600,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "La Colombie est l'une des destinations les plus en vogue d'Amérique latine, mêlant Caraïbes turquoise, Amazonie, Andes verdoyantes et villes colorées. De Cartagena coloniale à Medellín l'innovante, en passant par la Vallée de Cocora, le pays offre une incroyable diversité.",
     en: "Colombia is one of Latin America's trendiest destinations, blending turquoise Caribbean shores, the Amazon, lush Andes and colourful cities. From colonial Cartagena to innovative Medellín, via the Cocora Valley, the country offers remarkable diversity.",

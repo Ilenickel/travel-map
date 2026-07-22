@@ -11,6 +11,18 @@ export const UKRAINE = {
     budgetMin: 30, budgetMid: 60,
     tripMin: 600, tripMid: 1200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "L'Ukraine est un pays d'Europe orientale riche en histoire, culture et paysages variés, des plaines fertiles aux montagnes des Carpates. Avant le déclenchement de la guerre en 2022, ses villes mêlaient architecture baroque, héritage soviétique et vie culturelle vibrante. ⚠️ En raison du conflit armé en cours depuis février 2022, tout voyage en Ukraine est fortement déconseillé, à l'exception de certaines zones de l'ouest considérées comme moins exposées.",
     en: "Ukraine is an Eastern European country rich in history, culture and varied landscapes, from fertile plains to the Carpathian mountains. Before the war broke out in 2022, its cities blended baroque architecture, Soviet heritage and vibrant cultural life. ⚠️ Due to the armed conflict ongoing since February 2022, all travel to Ukraine is strongly discouraged, with the exception of certain western areas considered less exposed.",

@@ -11,6 +11,18 @@ export const CENTRAL_AFRICAN_REPUBLIC = {
     budgetMin: 50, budgetMid: 100,
     tripMin: 1000, tripMid: 2200,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "La République Centrafricaine est l'une des destinations les plus sauvages et les moins visitées d'Afrique, un pays de savanes et de forêts denses au cœur géographique du continent. La réserve de Dzanga-Sangha abrite l'une des plus importantes concentrations de grands singes et d'éléphants de forêt au monde. En raison d'une situation sécuritaire très difficile, seule la région du sud-ouest reste accessible aux voyageurs expérimentés accompagnés de guides.",
     en: "The Central African Republic is one of Africa's wildest and least-visited destinations, a land of savannas and dense forests at the geographical heart of the continent. The Dzanga-Sangha reserve is home to one of the world's largest concentrations of great apes and forest elephants. Because of a very difficult security situation, only the south-western region remains accessible to experienced travellers accompanied by guides.",

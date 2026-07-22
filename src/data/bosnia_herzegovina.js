@@ -11,6 +11,18 @@ export const BOSNIA_HERZEGOVINA = {
     budgetMin: 35, budgetMid: 65,
     tripMin: 700, tripMid: 1500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "La Bosnie-Herzégovine est un carrefour de civilisations unique en Europe : Sarajevo, ville où l'Orient rencontre l'Occident (l'unique capitale européenne avec une mosquée, une cathédrale orthodoxe, une église catholique et une synagogue à 500m les unes des autres), Mostar et son pont ottoman (Stari Most, UNESCO), les chutes de Kravice et les canyons de la Neretva.",
     en: "Bosnia and Herzegovina is a unique crossroads of civilisations in Europe: Sarajevo, where East meets West (the only European capital with a mosque, an Orthodox cathedral, a Catholic church and a synagogue all within 500 metres of one another), Mostar and its Ottoman bridge (Stari Most, UNESCO), the Kravice waterfalls and the Neretva canyons.",

@@ -11,6 +11,18 @@ export const SOUTH_SUDAN = {
     budgetMin: 60, budgetMid: 120,
     tripMin: 1200, tripMid: 2500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 0,
+    plage: 0,
+  },
   description: {
     fr: "Le Soudan du Sud est le pays le plus jeune du monde, indépendant depuis 2011, et l'une des destinations les moins visitées de la planète. Il abrite le Sudd, l'une des plus grandes zones humides d'eau douce du monde et un sanctuaire d'oiseaux migrateurs exceptionnel. Le parc national de Boma accueille l'une des plus grandes migrations de mammifères terrestres sur Terre, souvent comparée au Serengeti mais encore quasi inconnue du grand public.",
     en: "South Sudan is the youngest country in the world, independent since 2011, and one of the least-visited destinations on the planet. It is home to the Sudd, one of the largest freshwater wetlands in the world and an exceptional sanctuary for migratory birds. Boma National Park hosts one of the largest land mammal migrations on Earth, often compared to the Serengeti yet still almost unknown to the general public.",

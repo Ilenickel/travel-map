@@ -11,6 +11,18 @@ export const MALI = {
     budgetMin: 40, budgetMid: 90,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Mali abrite certains des sites les plus fascinants d'Afrique : Tombouctou la légendaire cité du désert (UNESCO), les falaises de Bandiagara pays Dogon (UNESCO), la mosquée de Djenné en banco (la plus grande au monde, UNESCO), et Bamako capitale musicale avec le blues du désert Touareg. Attention : situation sécuritaire extrêmement dégradée depuis 2012 — le voyage au Mali est déconseillé sauf zones très limitées.",
     en: "Mali is home to some of Africa's most fascinating sites: Timbuktu, the legendary desert city (UNESCO), the Bandiagara cliffs of Dogon country (UNESCO), the mud-brick Great Mosque of Djenné (the largest in the world, UNESCO), and Bamako, a musical capital known for Tuareg desert blues. Warning: the security situation has been extremely degraded since 2012 — travel to Mali is discouraged except in very limited areas.",

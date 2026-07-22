@@ -11,6 +11,18 @@ export const TURKEY = {
     budgetMin: 30, budgetMid: 75,
     tripMin: 1200, tripMid: 2200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "La Turquie est un pont entre Orient et Occident, entre antiquité et modernité. Istanbul avec ses mosquées et bazars, la Cappadoce avec ses cheminées de fée, les côtes turquoise de la Méditerranée et les ruines grecques d'Éphèse — un pays de richesses infinies.",
     en: "Turkey is a bridge between East and West, between antiquity and modernity. Istanbul with its mosques and bazaars, Cappadocia with its fairy chimneys, the turquoise coasts of the Mediterranean and the Greek ruins of Ephesus — a country of endless riches.", es: "Turquía es un puente entre Oriente y Occidente, entre la antigüedad y la modernidad. Estambul con sus mezquitas y bazares, Capadocia con sus chimeneas de hadas, las costas turquesas del Mediterráneo y las ruinas griegas de Éfeso: un país de riquezas infinitas.",

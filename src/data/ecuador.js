@@ -13,6 +13,18 @@ export const ECUADOR = {
     tripMin: 1500,
     tripMid: 2800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Équateur est un concentré de merveilles naturelles : les Galápagos (sanctuaire de la faune unique), la cordillère des Andes avec ses volcans géants, l'Amazonie primaire et la côte Pacifique. Quito, capitale coloniale UNESCO, est l'une des plus belles d'Amérique latine.",
     en: "Ecuador is a compact showcase of natural wonders: the Galápagos (a sanctuary for unique wildlife), the Andes with their giant volcanoes, pristine Amazon rainforest and the Pacific coast. Quito, a UNESCO-listed colonial capital, is one of the most beautiful cities in Latin America.",

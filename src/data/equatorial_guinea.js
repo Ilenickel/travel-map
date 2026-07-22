@@ -11,6 +11,18 @@ export const EQUATORIAL_GUINEA = {
     budgetMin: 60, budgetMid: 120,
     tripMin: 1200, tripMid: 2800,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Guinée Équatoriale est l'un des pays les moins visités et les plus méconnus d'Afrique, composé d'une partie continentale et de l'île de Bioko dans le golfe de Guinée. Enrichie par ses ressources pétrolières depuis les années 1990, elle possède une architecture coloniale espagnole préservée et des écosystèmes forestiers remarquables avec des tortues marines et des primates endémiques. L'obtention du visa est strictement réglementée, ce qui en fait une destination confidentielle pour voyageurs aguerris.",
     en: "Equatorial Guinea is one of Africa's least visited and least known countries, made up of a mainland region and Bioko Island in the Gulf of Guinea. Enriched by oil resources since the 1990s, it features well-preserved Spanish colonial architecture and remarkable forest ecosystems home to sea turtles and endemic primates. Visa access is tightly regulated, making it a discreet destination for seasoned travellers.",

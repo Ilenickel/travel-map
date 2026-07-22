@@ -11,6 +11,18 @@ export const ARMENIA = {
     budgetMin: 25, budgetMid: 55,
     tripMin: 1000, tripMid: 1800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "L'Arménie, berceau du christianisme (301 ap. J.-C.), fascine par ses monastères médiévaux perchés dans des gorges profondes, son lac Sévan aux teintes cobalt, l'ombre du mont Ararat sur Erevan et une culture du café et du cognac incomparables.",
     en: "Armenia, the cradle of Christianity (301 AD), captivates with its medieval monasteries perched in deep gorges, cobalt-hued Lake Sevan, the shadow of Mount Ararat over Yerevan, and an unrivalled coffee and cognac culture.",

@@ -11,6 +11,18 @@ export const ZIMBABWE = {
     budgetMin: 80, budgetMid: 220,
     tripMin: 2500, tripMid: 7000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Zimbabwe recèle deux des merveilles naturelles africaines : les chutes Victoria, classées UNESCO, la plus grande cascade du monde par volume d'eau et brume visible à 40 km, et le mystérieux Grand Zimbabwe, ruines médiévales témoignant d'un empire africain disparu. Hwange abrite 40 000 éléphants.",
     en: "Zimbabwe holds two of Africa's natural wonders: Victoria Falls, a UNESCO site and the world's largest waterfall by water volume, its mist visible from 40 km away, and the mysterious Great Zimbabwe, medieval ruins bearing witness to a vanished African empire. Hwange is home to 40,000 elephants.",

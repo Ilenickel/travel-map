@@ -11,6 +11,18 @@ export const REPUBLIC_OF_CONGO = {
     budgetMin: 50, budgetMid: 100,
     tripMin: 1000, tripMid: 2300,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "La République du Congo, souvent appelée Congo-Brazzaville, est un pays d'Afrique centrale recouvert à 60% de forêt tropicale dense. En face de Kinshasa sur les rives du fleuve Congo, Brazzaville est l'une des deux capitales les plus proches du monde. Le pays abrite le parc national d'Odzala-Kokoua, l'un des derniers refuges des gorilles des plaines occidentales et des éléphants de forêt.",
     en: "The Republic of the Congo, often called Congo-Brazzaville, is a Central African country covered 60% by dense rainforest. Facing Kinshasa on the banks of the Congo River, Brazzaville is one of the two closest capital cities in the world. The country is home to Odzala-Kokoua National Park, one of the last refuges of western lowland gorillas and forest elephants.",

@@ -8,6 +8,18 @@ export const FIJI = {
   currency: { fr: "Dollar fidjien (FJD)", en: "Fijian dollar (FJD)", es: "Dólar fiyiano (FJD)" },
   timezone: "UTC+12",
   filter: { budgetMin: 70, budgetMid: 150, tripMin: 1800, tripMid: 3500 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "Les Fidji forment un archipel de 333 îles au cœur du Pacifique Sud, réputé pour ses plages de sable blanc, ses eaux cristallines et sa chaleur humaine légendaire — le fameux 'Bula !' accueille chaque visiteur avec un sourire sincère. Au-delà des resorts luxueux, les Fidji offrent une culture mélanésienne vivante, des villages traditionnels et des récifs coralliens parmi les plus beaux du monde. L'archipel est une destination idéale pour les plongeurs, les amateurs de voile et ceux en quête de tranquillité insulaire.",
     en: "Fiji is an archipelago of 333 islands in the heart of the South Pacific, famed for its white-sand beaches, crystal-clear waters and legendary warmth — the famous 'Bula!' welcomes every visitor with a genuine smile. Beyond its luxurious resorts, Fiji offers a vibrant Melanesian culture, traditional villages and some of the world's most beautiful coral reefs. The archipelago is an ideal destination for divers, sailing enthusiasts and anyone seeking island tranquillity.",

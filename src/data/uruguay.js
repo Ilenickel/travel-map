@@ -13,6 +13,18 @@ export const URUGUAY = {
     tripMin: 1800,
     tripMid: 3200,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Uruguay est la petite perle méconnue de l'Amérique du Sud : pays stable, sûr et progressiste avec un art de vivre détendu. Entre Montevideo bohème, les plages branchées de Punta del Este et les estancias gauchières, il séduit par son authenticité et sa qualité de vie.",
     en: "Uruguay is South America's little-known gem: a stable, safe and progressive country with a relaxed way of life. Between bohemian Montevideo, the trendy beaches of Punta del Este and gaucho estancias, it charms with its authenticity and quality of life.",

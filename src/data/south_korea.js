@@ -11,6 +11,18 @@ export const SOUTH_KOREA = {
     budgetMin: 40, budgetMid: 90,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "La Corée du Sud fascine par sa capacité à marier tradition millénaire et modernité ultra-connectée. Palais dynastiques, temples bouddhistes dans la montagne, gastronomie unique (bibimbap, barbecue, kimchi), K-pop et culture pop en font une destination inoubliable.",
     en: "South Korea fascinates with its ability to blend age-old tradition with hyper-connected modernity. Dynastic palaces, Buddhist temples in the mountains, unique cuisine (bibimbap, barbecue, kimchi), K-pop and pop culture make it an unforgettable destination.",

@@ -11,6 +11,18 @@ export const UAE = {
     budgetMin: 80, budgetMid: 200,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "Les Émirats Arabes Unis incarnent le luxe et la modernité au cœur du désert. Entre les gratte-ciels de Dubaï, la grande mosquée d'Abou Dabi, les dunes dorées du désert et les souks parfumés d'épices, les EAU offrent un contraste fascinant entre tradition et futurisme.",
     en: "The United Arab Emirates embody luxury and modernity in the heart of the desert. Between Dubai's skyscrapers, Abu Dhabi's grand mosque, the golden desert dunes and spice-scented souks, the UAE offers a fascinating contrast between tradition and futurism.",

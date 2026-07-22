@@ -8,6 +8,18 @@ export const LEBANON = {
   currency: { fr: "Livre libanaise (LBP)", en: "Lebanese Pound (LBP)", es: "Libra libanesa (LBP)" },
   timezone: "UTC+2 (UTC+3 en été)",
   filter: { budgetMin: 50, budgetMid: 100, tripMin: 900, tripMid: 2000 },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Liban est un pays aux multiples visages, condensant en moins de 11 000 km² une diversité géographique, culturelle et religieuse stupéfiante. Ses ruines phéniciennes et romaines, ses marchés animés, sa cuisine reconnue comme l'une des meilleures du monde arabe et sa scène artistique vibrante en faisaient l'une des destinations les plus séduisantes du Moyen-Orient. Depuis 2019, le pays est plongé dans une crise économique et politique sans précédent, mais continue d'attirer des visiteurs attirés par son âme extraordinaire.",
     en: "Lebanon is a country of many faces, packing an astonishing geographical, cultural and religious diversity into less than 11,000 km². Its Phoenician and Roman ruins, bustling markets, cuisine recognised as one of the best in the Arab world, and vibrant arts scene made it one of the most appealing destinations in the Middle East. Since 2019, the country has been mired in an unprecedented economic and political crisis, but continues to draw visitors captivated by its extraordinary soul.",

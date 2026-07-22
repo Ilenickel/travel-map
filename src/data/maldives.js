@@ -11,6 +11,18 @@ export const MALDIVES = {
     budgetMin: 100, budgetMid: 160,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "Les Maldives sont la quintessence du paradis tropical : 1 200 îles coralliennes aux lagons turquoise, sable blanc immaculé et biodiversité marine exceptionnelle. Destination emblématique des bungalows sur pilotis et de la plongée avec requins-baleines et raies manta.",
     en: "The Maldives are the quintessential tropical paradise: 1,200 coral islands with turquoise lagoons, pristine white sand and exceptional marine biodiversity. An iconic destination for overwater bungalows and diving with whale sharks and manta rays.",

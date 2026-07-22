@@ -11,6 +11,18 @@ export const ANGOLA = {
     budgetMin: 60, budgetMid: 130,
     tripMin: 1200, tripMid: 2800,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "L'Angola est un pays d'une richesse naturelle extraordinaire : chutes de Kalandula parmi les plus grandes d'Afrique, désert du Namibe au sud, parc national de Kissama et architecture coloniale portugaise de Luanda. Après des décennies de guerre civile terminée en 2002, le pays reconstruit peu à peu son infrastructure touristique.",
     en: "Angola is a country of extraordinary natural wealth: the Kalandula Falls, among the largest in Africa, the Namibe Desert in the south, Kissama National Park and Luanda's Portuguese colonial architecture. After decades of civil war that ended in 2002, the country is gradually rebuilding its tourism infrastructure.",

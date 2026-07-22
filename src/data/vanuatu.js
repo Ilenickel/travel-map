@@ -8,6 +8,18 @@ export const VANUATU = {
   currency: { fr: "Vatu vanuatuan (VUV)", en: "Vanuatu Vatu (VUV)", es: "Vatu de Vanuatu (VUV)" },
   timezone: "UTC+11",
   filter: { budgetMin: 60, budgetMid: 120, tripMin: 1800, tripMid: 3200 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 0,
+    plage: 2,
+  },
   description: {
     fr: "Le Vanuatu est un archipel de 80 îles mélanésiennes offrant une des expériences Pacifique les plus authentiques et aventureuses qui soit. L'île de Tanna abrite le Yasur, l'un des volcans les plus accessibles et les plus actifs au monde, où l'on peut observer les éruptions depuis le bord du cratère au coucher du soleil. Le pays préserve une culture kastom vivante, avec des cérémonies traditionnelles, le saut de gaul (ancêtre du saut à l'élastique) et un statut de Patrimoine mondial de l'UNESCO pour le Domaine de Roi Mata.",
     en: "Vanuatu is an archipelago of 80 Melanesian islands offering one of the most authentic and adventurous Pacific experiences around. Tanna Island is home to Mount Yasur, one of the most accessible and active volcanoes in the world, where you can watch eruptions from the crater's edge at sunset. The country preserves a living kastom culture, with traditional ceremonies, land diving (naghol, the ancestor of bungee jumping) and a UNESCO World Heritage status for the Chief Roi Mata's Domain.",

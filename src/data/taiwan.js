@@ -11,6 +11,18 @@ export const TAIWAN = {
     budgetMin: 35, budgetMid: 80,
     tripMin: 1400, tripMid: 2800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Taïwan est le « trésor de la Chine » : cuisine de rue exceptionnelle, marchés nocturnes animés, temples bouddhistes parfumés d'encens, montagnes sauvages, gorges spectaculaires (Taroko) et l'accueil le plus chaleureux d'Asie.",
     en: "Taiwan is the 'treasure of China': exceptional street food, lively night markets, incense-scented Buddhist temples, wild mountains, spectacular gorges (Taroko) and the warmest welcome in Asia.",

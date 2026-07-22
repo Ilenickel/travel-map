@@ -13,6 +13,18 @@ export const SINGAPORE = {
     tripMin: 2000,
     tripMid: 3500,
   },
+  criteria: {
+    unesco: 2,
+    nature: 1,
+    randonnee: 0,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 3,
+    plage: 1,
+  },
   description: {
     fr: "Singapour est une cité-État futuriste au carrefour de l'Asie du Sud-Est, mosaïque de cultures chinoises, malaises et indiennes. Propreté légendaire, gastronomie de rue mondialement reconnue (hawker centres), jardins verticaux et Supertrees sont la signature de ce joyau ultramoderne et sûr.",
     en: "Singapore is a futuristic city-state at the crossroads of Southeast Asia, a mosaic of Chinese, Malay and Indian cultures. Legendary cleanliness, world-renowned street food (hawker centres), vertical gardens and Supertrees are the signature of this ultramodern, safe gem.",

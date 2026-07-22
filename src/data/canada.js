@@ -11,6 +11,18 @@ export const CANADA = {
     budgetMin: 80, budgetMid: 170,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 2,
+    ski: 3,
+    ville: 2,
+    plage: 1,
+  },
   description: {
     fr: "Le Canada, deuxième plus grand pays au monde, offre une nature spectaculaire à chaque province : Rocheuses enneigées d'Alberta, côtes sauvages de Colombie-Britannique, villes cosmopolites de Toronto et Montréal, et la francophonie vivante du Québec. Un pays aux espaces infinis et à l'hospitalité légendaire.",
     en: "Canada, the second-largest country in the world, offers spectacular nature in every province: the snow-capped Rockies of Alberta, the wild coastlines of British Columbia, the cosmopolitan cities of Toronto and Montreal, and the vibrant French-speaking culture of Quebec. A country of endless space and legendary hospitality.",

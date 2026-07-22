@@ -13,6 +13,18 @@ export const UK = {
     tripMin: 1150,
     tripMid: 2400,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 1,
+  },
   description: {
     fr: "Le Royaume-Uni est une destination fascinante qui conjugue une histoire millénaire, une culture pop influente et des paysages d'une beauté sauvage. Londres, l'une des villes les plus cosmopolites du monde, côtoie les campagnes verdoyantes du Cotswolds, les Highlands écossais brumeux et les côtes dramatiques du Pays de Galles. Des châteaux normands aux pubs chaleureux, en passant par les musées gratuits et les théâtres du West End, le pays ne manque jamais de surprendre.",
     en: "The United Kingdom is a fascinating destination that combines centuries of history, an influential pop culture and landscapes of wild beauty. London, one of the world's most cosmopolitan cities, sits alongside the green countryside of the Cotswolds, the misty Scottish Highlands and the dramatic coasts of Wales. From Norman castles to cosy pubs, free museums to West End theatres, the country never fails to surprise.",

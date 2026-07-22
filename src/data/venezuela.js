@@ -13,6 +13,18 @@ export const VENEZUELA = {
     tripMin: 1500,
     tripMid: 2800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Venezuela possède l'une des plus grandes biodiversités au monde : le Salto Ángel (plus haute chute du monde), les tepuys de la Gran Sabana, les Llanos (plaines à jaguar et anaconda) et les plages des Caraïbes. Attention : la situation politique et économique est instable — vérifiez impérativement les derniers conseils aux voyageurs du ministère des Affaires étrangères avant tout départ.",
     en: "Venezuela has one of the greatest biodiversities in the world: Angel Falls (the world's highest waterfall), the tepuis of the Gran Sabana, the Llanos (plains with jaguars and anacondas) and Caribbean beaches. Warning: the political and economic situation is unstable — be sure to check the latest travel advisories from the Foreign Ministry before departing.",

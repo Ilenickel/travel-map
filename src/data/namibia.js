@@ -11,6 +11,18 @@ export const NAMIBIA = {
     budgetMin: 60, budgetMid: 130,
     tripMin: 2500, tripMid: 5000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 3,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Namibie est le pays des superlatifs désertiques : Sossusvlei et ses dunes de sable rouge qui touchent les étoiles, le canyon de Fish River (2e au monde), le désert du Namib (le plus vieux au monde) et la faune du parc d'Etosha. Une destination pour les amoureux des grands espaces.",
     en: "Namibia is a land of desert superlatives: Sossusvlei with its red sand dunes reaching for the stars, Fish River Canyon (the world's 2nd largest), the Namib Desert (the world's oldest) and the wildlife of Etosha National Park. A destination for lovers of wide open spaces.",

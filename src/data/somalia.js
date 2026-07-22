@@ -11,6 +11,18 @@ export const SOMALIA = {
     budgetMin: 60, budgetMid: 120,
     tripMin: 1200, tripMid: 2500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 0,
+    plage: 1,
+  },
   description: {
     fr: "La Somalie abrite des merveilles souvent ignorées : les peintures rupestres de Laas Geel, parmi les mieux conservées au monde, la côte du Somaliland avec ses plages immaculées, et Berbera, ancien port caravanier. Le Somaliland (autoproclamé indépendant depuis 1991) est la partie la plus accessible et la plus sûre du pays, tandis que Mogadiscio se reconstruit timidement après des décennies de conflit.",
     en: "Somalia is home to often-overlooked wonders: the Laas Geel rock paintings, among the best preserved in the world, the Somaliland coast with its pristine beaches, and Berbera, a former caravan port. Somaliland (self-declared independent since 1991) is the most accessible and safest part of the country, while Mogadishu is tentatively rebuilding after decades of conflict.",

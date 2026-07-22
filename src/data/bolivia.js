@@ -17,6 +17,18 @@ export const BOLIVIA = {
     tripMin: 1200,
     tripMid: 2200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "La Bolivie est l'un des pays les plus authentiques et abordables d'Amérique du Sud. Entre le Salar d'Uyuni (plus grand désert de sel du monde), La Paz perchée à 3 650 m, le lac Titicaca et l'Amazonie, c'est une destination d'une diversité extraordinaire à petit budget.",
     en: "Bolivia is one of the most authentic and affordable countries in South America. Between the Uyuni Salt Flat (the largest salt desert in the world), La Paz perched at 3,650 m, Lake Titicaca and the Amazon, it offers extraordinary diversity on a small budget.",

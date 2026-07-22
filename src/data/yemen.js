@@ -8,6 +8,18 @@ export const YEMEN = {
   currency: { fr: "Rial yéménite (YER)", en: "Yemeni Rial (YER)", es: "Rial yemení (YER)" },
   timezone: "UTC+3",
   filter: { budgetMin: 50, budgetMid: 100, tripMin: 1000, tripMid: 2200 },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Yémen est un pays d'une richesse historique et naturelle exceptionnelle, berceau de la civilisation sudarabique et gardien de sites classés au patrimoine mondial de l'UNESCO. Ses vieilles villes aux tours de pisé, ses paysages désertiques et l'île enchanteresse de Socotra en faisaient autrefois l'une des destinations les plus fascinantes de la péninsule arabique. Depuis 2015, le pays est plongé dans un conflit armé dévastateur qui le rend actuellement inaccessible aux voyageurs.",
     en: "Yemen is a country of exceptional historical and natural richness, cradle of South Arabian civilisation and guardian of UNESCO World Heritage sites. Its old cities with mud-brick towers, desert landscapes and the enchanting island of Socotra once made it one of the most fascinating destinations on the Arabian Peninsula. Since 2015, the country has been plunged into a devastating armed conflict that currently makes it inaccessible to travellers.",

@@ -11,6 +11,18 @@ export const SEYCHELLES = {
     budgetMin: 150, budgetMid: 230,
     tripMin: 3000, tripMid: 7000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 0,
+    plage: 3,
+  },
   description: {
     fr: "Les Seychelles sont l'archipel le plus exclusif de l'océan Indien : 115 îles granitiques et coralliennes aux plages de granit rose exceptionnelles (Anse Source d'Argent classée plus belle plage du monde), eaux turquoise d'une clarté absolue, tortues géantes d'Aldabra (UNESCO, plus grande population mondiale), et la valée de Mai (UNESCO) avec le coco de mer — le fruit le plus grand du règne végétal.",
     en: "Seychelles is the most exclusive archipelago in the Indian Ocean: 115 granite and coral islands with exceptional pink granite beaches (Anse Source d'Argent, ranked the most beautiful beach in the world), turquoise waters of absolute clarity, giant Aldabra tortoises (UNESCO, the world's largest population), and the Vallée de Mai (UNESCO) with the coco de mer — the largest fruit in the plant kingdom.",

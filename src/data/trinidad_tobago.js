@@ -8,6 +8,18 @@ export const TRINIDAD_TOBAGO = {
   currency: { fr: "Dollar de Trinité-et-Tobago (TTD)", en: "Trinidad and Tobago Dollar (TTD)", es: "Dólar de Trinidad y Tobago (TTD)" },
   timezone: "UTC-4",
   filter: { budgetMin: 55, budgetMid: 110, tripMin: 1200, tripMid: 2500 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Trinité-et-Tobago est un double joyau des Caraïbes situé juste au sud de la ceinture cyclonique, alliant la vibrance culturelle de Trinidad — berceau du Carnaval et du steelpan — à la sérénité naturelle de Tobago et ses récifs coralliens intacts. Trinidad est une mosaïque de cultures africaines, indiennes, chinoises et européennes, reflétée dans sa gastronomie unique et ses fêtes légendaires. Tobago, plus tranquille, offre des plages vierges, des tortues marines et des forêts primaires parmi les mieux préservées des Caraïbes.",
     en: "Trinidad and Tobago is a twin Caribbean gem sitting just south of the hurricane belt, combining Trinidad's cultural vibrancy — birthplace of Carnival and the steelpan — with Tobago's natural serenity and unspoiled coral reefs. Trinidad is a mosaic of African, Indian, Chinese and European cultures, reflected in its unique cuisine and legendary festivities. Tobago, quieter, offers pristine beaches, sea turtles and some of the best-preserved primary forests in the Caribbean.", es: "Trinidad y Tobago es una doble joya del Caribe situada justo al sur del cinturón de huracanes, que combina la vibrante cultura de Trinidad —cuna del Carnaval y del steelpan— con la serenidad natural de Tobago y sus arrecifes de coral intactos. Trinidad es un mosaico de culturas africanas, indias, chinas y europeas, reflejado en su gastronomía única y sus fiestas legendarias. Tobago, más tranquila, ofrece playas vírgenes, tortugas marinas y algunos de los bosques primarios mejor conservados del Caribe.",

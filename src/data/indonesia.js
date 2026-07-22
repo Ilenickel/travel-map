@@ -11,6 +11,18 @@ export const INDONESIA = {
     budgetMin: 20, budgetMid: 60,
     tripMin: 1000, tripMid: 2000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "L'Indonésie est le plus grand archipel du monde avec 17 000 îles. Bali, île des dieux aux temples et rizières en terrasses, Komodo et ses dragons, Lombok et ses plages vierges, et les orangs-outans de Bornéo forment un pays d'une biodiversité époustouflante.",
     en: "Indonesia is the world's largest archipelago, spanning 17,000 islands. Bali, the island of the gods with its temples and rice terraces, Komodo and its dragons, Lombok and its untouched beaches, and the orangutans of Borneo come together in a country of breathtaking biodiversity.",

@@ -13,6 +13,18 @@ export const NETHERLANDS = {
     tripMin: 1050,
     tripMid: 2100,
   },
+  criteria: {
+    unesco: 2,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "Les Pays-Bas sont une destination surprenante de diversité malgré leur petite taille, alliant une capitale cosmopolite et bohème à des tulipiers à perte de vue, des moulins à vent iconiques et des villes historiques médiévales. Amsterdam, avec ses canaux du XVIIe siècle, ses musées de rang mondial et son architecture unique, est l'une des villes les plus visitées d'Europe. La culture du vélo, l'hospitalité chaleureuse et la liberté d'esprit hollandaise en font une destination attachante et accessible.",
     en: "The Netherlands is a surprisingly diverse destination despite its small size, combining a cosmopolitan, bohemian capital with tulip fields as far as the eye can see, iconic windmills and medieval historic towns. Amsterdam, with its 17th-century canals, world-class museums and unique architecture, is one of the most visited cities in Europe. Bike culture, warm hospitality and the Dutch free spirit make it an endearing and accessible destination.",

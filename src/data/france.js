@@ -13,6 +13,18 @@ export const FRANCE = {
     tripMin: 1100,
     tripMid: 2000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 3,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "La France est l'une des destinations touristiques les plus visitées au monde, alliant patrimoine historique exceptionnel, gastronomie renommée et paysages variés. Des plages de la Côte d'Azur aux sommets alpins, en passant par les châteaux de la Loire et les vignobles bordelais, le pays offre une diversité remarquable. Paris, ville lumière, reste l'un des centres culturels et artistiques les plus importants de la planète.",
     en: "France is one of the most visited tourist destinations in the world, combining exceptional historical heritage, renowned cuisine and varied landscapes. From the beaches of the French Riviera to the Alpine peaks, via the Loire Valley châteaux and Bordeaux vineyards, the country offers remarkable diversity. Paris, the City of Light, remains one of the most important cultural and artistic centres on the planet.",

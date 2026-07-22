@@ -13,6 +13,18 @@ export const ARGENTINA = {
     tripMin: 1800,
     tripMid: 3500,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 2,
+    ski: 3,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Argentine est un pays d'immenses contrastes, des glaciers de Patagonie aux vignobles de Mendoza, en passant par la vibrante Buenos Aires et les chutes d'Iguazú. Terre du tango, du mate et de l'asado, elle offre une richesse culturelle et naturelle extraordinaire.",
     en: "Argentina is a land of immense contrasts, from the glaciers of Patagonia to the vineyards of Mendoza, via vibrant Buenos Aires and the Iguazú Falls. Home of the tango, mate and asado, it offers extraordinary cultural and natural richness.",

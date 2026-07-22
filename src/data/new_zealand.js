@@ -8,6 +8,18 @@ export const NEW_ZEALAND = {
   currency: { fr: "Dollar néo-zélandais (NZD)", en: "New Zealand dollar (NZD)", es: "Dólar neozelandés (NZD)" },
   timezone: "UTC+12",
   filter: { budgetMin: 80, budgetMid: 160, tripMin: 2000, tripMid: 3500 },
+  criteria: {
+    unesco: 2,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 3,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "La Nouvelle-Zélande est l'une des destinations naturelles les plus époustouflantes de la planète, offrant en deux îles une diversité de paysages qui va des fjords vertigineux aux volcans actifs, des vignobles ensoleillés aux glaciers côtiers. Rendue mondialement célèbre par les décors du Seigneur des Anneaux, elle séduit aussi par sa culture maorie vivante, ses sports d'aventure extrêmes et une infrastructure touristique de grande qualité. L'île du Sud concentre les paysages les plus spectaculaires tandis que l'île du Nord mêle chaleur humaine, géothermie et histoire biculturelle.",
     en: "New Zealand is one of the most breathtaking natural destinations on the planet, spread across two islands offering a diversity of landscapes ranging from towering fjords to active volcanoes, sunlit vineyards to coastal glaciers. Made world-famous by the Lord of the Rings settings, it also charms with its living Māori culture, extreme adventure sports and top-quality tourist infrastructure. The South Island concentrates the most spectacular scenery, while the North Island blends warmth, geothermal wonders and bicultural history.",

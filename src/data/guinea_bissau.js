@@ -15,6 +15,18 @@ export const GUINEA_BISSAU = {
     budgetMin: 25, budgetMid: 55,
     tripMin: 700, tripMid: 1400,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Guinée-Bissau est l'une des destinations les plus secrètes d'Afrique de l'Ouest. L'archipel des Bijagos, réserve de biosphère de l'UNESCO composée de 88 îles habitées d'espèces rares, est un paradis pour les amateurs de nature sauvage. Entre hippopotames pygmées, lamantins, tortues marines et villages animistes aux rites ancestraux, ce petit pays lusophone réserve des découvertes exceptionnelles.",
     en: "Guinea-Bissau is one of West Africa's best-kept secrets. The Bijagós Archipelago, a UNESCO biosphere reserve made up of 88 islands inhabited by rare species, is a paradise for lovers of untamed nature. Between pygmy hippos, manatees, sea turtles and animist villages with ancestral rites, this small Portuguese-speaking country promises exceptional discoveries.",

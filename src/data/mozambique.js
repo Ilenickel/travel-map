@@ -11,6 +11,18 @@ export const MOZAMBIQUE = {
     budgetMin: 35, budgetMid: 75,
     tripMin: 1200, tripMid: 2800,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Mozambique déroule 2 500 km de côte sur l'océan Indien : l'archipel de Bazaruto (UNESCO) avec ses dunes et ses dugongs, l'archipel des Quirimbas avec ses dhows et ses récifs préservés, et Vilanculos comme base de plongée. Un pays peu fréquenté au sablé doux, marqué par la culture swahili et une hospitalité sincère. À combiner avec les parcs animaliers du Gorongosa.",
     en: "Mozambique unfurls 2,500 km of Indian Ocean coastline: the Bazaruto Archipelago (UNESCO) with its dunes and dugongs, the Quirimbas Archipelago with its dhows and pristine reefs, and Vilanculos as a diving base. A little-visited country with soft sand, shaped by Swahili culture and genuine hospitality. Best combined with the wildlife parks of Gorongosa.",

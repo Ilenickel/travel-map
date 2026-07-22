@@ -8,6 +8,18 @@ export const SYRIA = {
   currency: { fr: "Livre syrienne (SYP)", en: "Syrian pound (SYP)", es: "Libra siria (SYP)" },
   timezone: "UTC+3",
   filter: { budgetMin: 40, budgetMid: 80, tripMin: 900, tripMid: 1800 },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "La Syrie fut pendant des millénaires l'un des carrefours les plus riches de l'histoire humaine, croisant les civilisations phénicienne, grecque, romaine, byzantine et islamique. Ses sites classés à l'UNESCO — la vieille ville de Damas, la citadelle d'Alep, Palmyre — comptaient parmi les merveilles du monde antique. Depuis le déclenchement de la guerre civile en 2011, le pays reste dans une situation d'instabilité profonde malgré la fin des combats majeurs dans certaines zones.",
     en: "For millennia, Syria was one of the richest crossroads in human history, where Phoenician, Greek, Roman, Byzantine and Islamic civilisations met. Its UNESCO-listed sites — the old city of Damascus, the citadel of Aleppo, Palmyra — ranked among the wonders of the ancient world. Since the outbreak of civil war in 2011, the country remains deeply unstable despite the end of major fighting in some areas.",

@@ -8,6 +8,18 @@ export const KYRGYZSTAN = {
   currency: { fr: "Som kirghiz (KGS)", en: "Kyrgyzstani Som (KGS)", es: "Som kirguís (KGS)" },
   timezone: "UTC+6",
   filter: { budgetMin: 25, budgetMid: 55, tripMin: 700, tripMid: 1500 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Kirghizistan est l'un des joyaux cachés d'Asie centrale, avec ses montagnes spectaculaires, ses lacs d'altitude cristallins et sa culture nomade préservée. Traversé par les anciennes routes de la Soie, ce pays offre des paysages sauvages à couper le souffle et une hospitalité légendaire. Les yourtes, les chevaux et les steppes infinies composent un tableau authentique loin du tourisme de masse.",
     en: "Kyrgyzstan is one of Central Asia's hidden gems, with its spectacular mountains, crystal-clear high-altitude lakes and preserved nomadic culture. Crossed by the ancient Silk Road, this country offers breathtaking wild landscapes and legendary hospitality. Yurts, horses and endless steppes make up an authentic picture far from mass tourism.",

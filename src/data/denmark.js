@@ -11,6 +11,18 @@ export const DENMARK = {
     budgetMin: 110, budgetMid: 190,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Danemark est le pays du 'hygge' (bien-être douillet), du design scandinave, de Noma (plusieurs fois meilleur restaurant du monde), et de Hamlet (château d'Elseneur). Copenhague est la capitale vélo d'Europe, avec ses canaux de Nyhavn, ses marchés de street food de Reffen, ses musées de design et le parc de Tivoli. Le Danemark inclut aussi les Îles Féroé et le Groenland.",
     en: "Denmark is the land of hygge (cosy wellbeing), Scandinavian design, Noma (several times named the world's best restaurant), and Hamlet (Elsinore Castle). Copenhagen is Europe's cycling capital, with the Nyhavn canals, Reffen's street food markets, design museums and Tivoli Gardens. Denmark also includes the Faroe Islands and Greenland.",

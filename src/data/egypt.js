@@ -11,6 +11,18 @@ export const EGYPT = {
     budgetMin: 30, budgetMid: 70,
     tripMin: 1100, tripMid: 2000,
   },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 3,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Égypte est le pays des pharaons et de l'une des plus grandes civilisations de l'Histoire. Les pyramides de Gizeh, la magie du Sphinx, les temples de Louxor et Karnak sur le Nil, la mer Rouge cristalline d'Hurghada et Charm el-Cheikh — une destination d'exception.",
     en: "Egypt is the land of the pharaohs and one of the greatest civilisations in history. The pyramids of Giza, the magic of the Sphinx, the temples of Luxor and Karnak on the Nile, and the crystal-clear Red Sea of Hurghada and Sharm el-Sheikh — an exceptional destination.",

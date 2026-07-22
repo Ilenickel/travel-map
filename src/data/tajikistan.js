@@ -8,6 +8,18 @@ export const TAJIKISTAN = {
   currency: { fr: "Somoni tadjik (TJS)", en: "Tajikistani Somoni (TJS)", es: "Somoni tayiko (TJS)" },
   timezone: "UTC+5",
   filter: { budgetMin: 30, budgetMid: 60, tripMin: 750, tripMid: 1500 },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Tadjikistan est le pays le plus montagneux d'Asie centrale, un royaume de pic enneigés, de cols vertigineux et de vallées reculées où persistent des traditions millénaires. La Route du Pamir — l'une des grandes aventures routières du monde — traverse des paysages lunaires à plus de 4 000 mètres d'altitude, longeant le corridor du Wakhan et la frontière afghane. Malgré sa pauvreté, le pays offre une hospitalité extraordinaire et une nature sauvage d'une beauté à couper le souffle.",
     en: "Tajikistan is the most mountainous country in Central Asia, a realm of snow-capped peaks, dizzying passes and remote valleys where age-old traditions endure. The Pamir Highway — one of the world's great road adventures — crosses moon-like landscapes above 4,000 metres, running along the Wakhan Corridor and the Afghan border. Despite its poverty, the country offers extraordinary hospitality and breathtakingly beautiful wilderness.",

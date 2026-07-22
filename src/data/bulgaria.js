@@ -11,6 +11,18 @@ export const BULGARIA = {
     budgetMin: 35, budgetMid: 65,
     tripMin: 700, tripMid: 1600,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Bulgarie est l'une des meilleures valeurs d'Europe : la côte de la mer Noire avec ses plages de sable et ses eaux chaudes (27°C en été), les villes médiévales de Veliko Tarnovo et Plovdiv (capitale européenne de la culture 2019), le monastère de Rila (UNESCO), les Balkans avec leurs villages roses de Koprivshtitsa, et le vin local parmi les meilleurs d'Europe de l'Est.",
     en: "Bulgaria is one of Europe's best-value destinations: the Black Sea coast with its sandy beaches and warm waters (27°C in summer), the medieval cities of Veliko Tarnovo and Plovdiv (European Capital of Culture 2019), the Rila Monastery (UNESCO), the Balkan Mountains with their pink-hued villages like Koprivshtitsa, and local wine that ranks among the best in Eastern Europe.",

@@ -11,6 +11,18 @@ export const SPAIN = {
     budgetMin: 50, budgetMid: 120,
     tripMin: 1500, tripMid: 2800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 3,
+  },
   description: {
     fr: "L'Espagne séduit par sa diversité : Barcelone et Gaudí, Madrid et ses musées de classe mondiale, le flamenco d'Andalousie, les plages de la Costa del Sol, les tapas et la sangria, les paysages lunaires de Grenade et Séville.",
     en: "Spain charms with its diversity: Barcelona and Gaudí, Madrid and its world-class museums, flamenco in Andalusia, the beaches of the Costa del Sol, tapas and sangria, and the moon-like landscapes around Granada and Seville.",

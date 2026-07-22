@@ -11,6 +11,18 @@ export const INDIA = {
     budgetMin: 25, budgetMid: 70,
     tripMin: 1200, tripMid: 2400,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Inde est un subcontinent d'une richesse infinie : le Taj Mahal d'Agra, les ghats sacrés de Varanasi, les palais du Rajasthan, les plages de Goa, les backwaters du Kerala et la cuisine aux épices mille et un. Un voyage qui change une vie.",
     en: "India is a subcontinent of infinite richness: the Taj Mahal in Agra, the sacred ghats of Varanasi, the palaces of Rajasthan, the beaches of Goa, the backwaters of Kerala, and cuisine spiced a thousand ways. A journey that changes a life.",

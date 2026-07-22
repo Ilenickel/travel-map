@@ -13,6 +13,18 @@ export const AUSTRIA = {
     tripMin: 950,
     tripMid: 1900,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 3,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "L'Autriche est un joyau au cœur de l'Europe, où la grandeur impériale des Habsbourg se mêle à des paysages alpins à couper le souffle. Vienne, ancienne capitale d'un immense empire, déborde de palais baroques, de cafés mythiques et d'une vie musicale inégalée — de Mozart à Beethoven, de Klimt à Schiele. Salzbourg, Innsbruck et les lacs du Salzkammergut complètent un tableau d'une extraordinaire richesse culturelle et naturelle.",
     en: "Austria is a jewel at the heart of Europe, where the imperial grandeur of the Habsburgs blends with breathtaking Alpine landscapes. Vienna, the former capital of a vast empire, overflows with baroque palaces, legendary cafés and an unmatched musical heritage — from Mozart to Beethoven, from Klimt to Schiele. Salzburg, Innsbruck and the lakes of the Salzkammergut complete a picture of extraordinary cultural and natural richness.",

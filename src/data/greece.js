@@ -11,6 +11,18 @@ export const GREECE = {
     budgetMin: 50, budgetMid: 100,
     tripMin: 1500, tripMid: 2800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "La Grèce est le berceau de la civilisation occidentale. Entre l'Acropole d'Athènes, les monastères des Météores, les îles cycladiques aux maisons blanches (Santorin, Mykonos) et les plages cristallines de Crète, elle conjugue patrimoine antique et beauté méditerranéenne.",
     en: "Greece is the cradle of Western civilisation. Between the Acropolis of Athens, the monasteries of Meteora, the white-washed Cycladic islands (Santorini, Mykonos) and the crystal-clear beaches of Crete, it combines ancient heritage with Mediterranean beauty.",

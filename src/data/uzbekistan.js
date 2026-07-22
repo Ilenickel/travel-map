@@ -11,6 +11,18 @@ export const UZBEKISTAN = {
     budgetMin: 30, budgetMid: 65,
     tripMin: 1200, tripMid: 2200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 0,
+  },
   description: {
     fr: "L'Ouzbékistan est le cœur de la Route de la Soie. Samarcande, Boukhara et Khiva sont des villes-musées à ciel ouvert, avec leurs mosaïques de faïence turquoise, leurs minarets et leurs médersas du XIVe siècle. Une destination qui touche à l'absolu.",
     en: "Uzbekistan is the heart of the Silk Road. Samarkand, Bukhara and Khiva are open-air museum cities, with their turquoise tile mosaics, minarets and 14th-century madrasas. A destination that borders on the sublime.",

@@ -11,6 +11,18 @@ export const SUDAN = {
     budgetMin: 35, budgetMid: 70,
     tripMin: 850, tripMid: 1800,
   },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Soudan possédait l'une des destinations archéologiques les plus extraordinaires du monde : les pyramides nubiennes de Méroé (plus nombreuses qu'en Égypte), les temples de Jebel Barkal et la culture nubienne millénaire. Depuis avril 2023, le pays est plongé dans une guerre civile dévastatrice qui rend tout voyage impossible et constitue l'une des pires crises humanitaires mondiales.",
     en: "Sudan was home to one of the most extraordinary archaeological destinations in the world: the Nubian pyramids of Meroë (more numerous than in Egypt), the temples of Jebel Barkal and a millennia-old Nubian culture. Since April 2023, the country has been plunged into a devastating civil war that makes travel impossible and constitutes one of the world's worst humanitarian crises.",

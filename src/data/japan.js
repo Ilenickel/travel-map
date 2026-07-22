@@ -11,6 +11,18 @@ export const JAPAN = {
     budgetMin: 40, budgetMid: 100,  // €/jour (conservé pour référence)
     tripMin: 2200, tripMid: 4400,   // budget total voyage (3 semaines)
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 3,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "Le Japon est un archipel d'Asie de l'Est mêlant traditions millénaires et modernité. Entre temples bouddhistes, cerisiers en fleurs, gastronomie raffinée et technologie de pointe, il offre une expérience de voyage incomparable.",
     en: "Japan is an East Asian archipelago blending centuries-old traditions with modernity. Between Buddhist temples, cherry blossoms, refined cuisine and cutting-edge technology, it offers an unrivalled travel experience.",

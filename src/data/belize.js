@@ -11,6 +11,18 @@ export const BELIZE = {
     budgetMin: 60, budgetMid: 120,
     tripMin: 1800, tripMid: 3800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Belize est la perle de la Mésoamérique : le Great Blue Hole, trou bleu légendaire classé UNESCO, et la deuxième barrière de corail au monde. Jungle maya, jaguars du parc Cockscomb, ruines de Caracol et atolls caraïbes paradisiaques composent un pays-nature à taille humaine.",
     en: "Belize is the jewel of Mesoamerica: home to the legendary UNESCO-listed Great Blue Hole and the world's second-largest barrier reef. Maya jungle, jaguars in Cockscomb Park, the ruins of Caracol and idyllic Caribbean atolls make up a compact country devoted to nature.",

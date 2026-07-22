@@ -11,6 +11,18 @@ export const GAMBIA = {
     budgetMin: 40, budgetMid: 90,
     tripMin: 1300, tripMid: 2800,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "La Gambie est le plus petit pays d'Afrique continentale : un corridor de 50km de large autour du fleuve Gambie, enclavé dans le Sénégal. Réputée pour ses plages ensoleillées sur l'Atlantique (tourisme balnéaire nord-européen), son observation ornithologique exceptionnelle (560 espèces), les chimpanzés du Parc national de la Réserve de Kiang West et les sites historiques de la traite négrière sur l'île de Kunta Kinteh (UNESCO).",
     en: "Gambia is the smallest country on mainland Africa: a 50-km-wide corridor wrapped around the Gambia River and entirely surrounded by Senegal. It is known for its sunny Atlantic beaches (a favourite with northern European beachgoers), outstanding birdwatching (560 species), the chimpanzees of Kiang West National Park, and the historic slave trade sites on Kunta Kinteh Island (UNESCO).",

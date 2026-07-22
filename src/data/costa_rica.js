@@ -11,6 +11,18 @@ export const COSTA_RICA = {
     budgetMin: 50, budgetMid: 120,
     tripMin: 1800, tripMid: 4500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Le Costa Rica, malgré ses 0,03% de la surface terrestre, abrite 5% de la biodiversité mondiale. Forêts nuageuses de Monteverde, volcan Arenal, tortues de Tortuguero, singes paresseux de Manuel Antonio — et 99% d'électricité renouvelable. La destination éco-tourisme par excellence.",
     en: "Despite covering just 0.03% of the Earth's surface, Costa Rica is home to 5% of the world's biodiversity. Monteverde's cloud forests, Arenal Volcano, Tortuguero's turtles, Manuel Antonio's sloths — plus 99% renewable electricity. The ultimate ecotourism destination.",

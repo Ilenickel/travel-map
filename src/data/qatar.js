@@ -8,6 +8,18 @@ export const QATAR = {
   currency: { fr: "Riyal qatarien (QAR)", en: "Qatari riyal (QAR)", es: "Rial catarí (QAR)" },
   timezone: "UTC+3",
   filter: { budgetMin: 90, budgetMid: 180, tripMin: 1300, tripMid: 2800 },
+  criteria: {
+    unesco: 1,
+    nature: 1,
+    randonnee: 0,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 3,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "Le Qatar est une petite péninsule du Golfe persique devenue en quelques décennies l'une des nations les plus riches du monde grâce à ses gigantesques réserves de gaz naturel. Doha, sa capitale tentaculaire, impressionne par son skyline futuriste, ses musées de classe mondiale et son souq Waqif restauré avec soin. Hôte de la Coupe du monde de football 2022, le Qatar a investi massivement dans son infrastructure touristique tout en cherchant à préserver les traditions bédouines de sa culture ancestrale.",
     en: "Qatar is a small Persian Gulf peninsula that became, in a few decades, one of the richest nations in the world thanks to its gigantic natural gas reserves. Doha, its sprawling capital, impresses with its futuristic skyline, world-class museums and carefully restored Souq Waqif. Host of the 2022 FIFA World Cup, Qatar has invested massively in its tourism infrastructure while seeking to preserve the Bedouin traditions of its ancestral culture.",

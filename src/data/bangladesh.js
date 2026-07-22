@@ -8,6 +8,18 @@ export const BANGLADESH = {
   currency: { fr: "Taka bangladais (BDT)", en: "Bangladeshi Taka (BDT)", es: "Taka bangladesí (BDT)" },
   timezone: "UTC+6",
   filter: { budgetMin: 25, budgetMid: 55, tripMin: 700, tripMid: 1500 },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "Le Bangladesh est l'une des destinations les plus sous-estimées d'Asie du Sud, un pays de rivières, de deltas et de forêts tropicales d'une richesse écologique exceptionnelle. Des Sundarbans, plus grande mangrove du monde et dernier refuge du tigre du Bengale, à la plus longue plage naturelle de la planète à Cox's Bazar, le pays offre des expériences uniques. Son architecture moghole à Dhaka et ses jardins de thé à Sylhet complètent un tableau d'une diversité surprenante.",
     en: "Bangladesh is one of South Asia's most underrated destinations, a country of rivers, deltas and tropical forests of exceptional ecological richness. From the Sundarbans, the world's largest mangrove forest and last refuge of the Bengal tiger, to the longest natural beach on the planet at Cox's Bazar, the country offers unique experiences. Its Mughal architecture in Dhaka and tea gardens in Sylhet complete a strikingly diverse picture.",

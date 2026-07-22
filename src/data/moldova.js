@@ -11,6 +11,18 @@ export const MOLDOVA = {
     budgetMin: 25, budgetMid: 50,
     tripMin: 550, tripMid: 1000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "La Moldavie est l'un des pays les moins visités d'Europe, coincé entre la Roumanie et l'Ukraine, avec une identité culturelle riche mêlant influences roumaines, russes et ottomanes. C'est le paradis des amateurs de vin : le pays abrite certaines des plus grandes caves souterraines du monde. La capitale Chișinău offre un mélange étonnant d'architecture soviétique et de joie de vivre méditerranéenne.",
     en: "Moldova is one of the least visited countries in Europe, wedged between Romania and Ukraine, with a rich cultural identity blending Romanian, Russian and Ottoman influences. It's a paradise for wine lovers: the country is home to some of the largest underground wine cellars in the world. The capital Chișinău offers a surprising mix of Soviet architecture and Mediterranean-style joie de vivre.",

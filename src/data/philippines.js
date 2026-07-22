@@ -13,6 +13,18 @@ export const PHILIPPINES = {
     tripMin: 1300,
     tripMid: 2500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 3,
+  },
   description: {
     fr: "L'archipel des Philippines compte plus de 7 100 îles baignées par des eaux parmi les plus riches en biodiversité marine au monde. Des rizières en terrasses de Banaue aux lagons de Palawan, des volcans d'Albay aux plages d'El Nido, c'est l'une des destinations les plus spectaculaires d'Asie du Sud-Est.",
     en: "The Philippine archipelago has over 7,100 islands surrounded by some of the most marine-biodiverse waters in the world. From the Banaue rice terraces to the lagoons of Palawan, from the Albay volcanoes to the beaches of El Nido, it's one of the most spectacular destinations in Southeast Asia.",

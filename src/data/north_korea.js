@@ -8,6 +8,18 @@ export const NORTH_KOREA = {
   currency: { fr: "Won nord-coréen (KPW)", en: "North Korean won (KPW)", es: "Won norcoreano (KPW)" },
   timezone: "UTC+9",
   filter: { budgetMin: 150, budgetMid: 250, tripMin: 2500, tripMid: 4000 },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "La Corée du Nord est la destination la plus fermée et la plus mystérieuse du monde, accessible uniquement via des circuits touristiques strictement encadrés par des guides gouvernementaux. Derrière le rideau de fer, le pays révèle une architecture monumentale d'inspiration soviétique, des paysages naturels intacts et une culture profondément singulière façonnée par des décennies d'isolement. Visiter la RPDC est une expérience radicalement différente de tout autre voyage, qui soulève des questions éthiques profondes.",
     en: "North Korea is the most closed-off and mysterious destination in the world, accessible only through tour packages strictly supervised by government guides. Behind the iron curtain, the country reveals monumental Soviet-inspired architecture, unspoiled natural landscapes and a deeply singular culture shaped by decades of isolation. Visiting the DPRK is a radically different experience from any other trip, one that raises profound ethical questions.",

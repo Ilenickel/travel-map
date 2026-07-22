@@ -11,6 +11,18 @@ export const LIECHTENSTEIN = {
     budgetMin: 120, budgetMid: 200,
     tripMin: 1400, tripMid: 2500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Liechtenstein est l'un des six États doublement enclavés au monde, coincé entre la Suisse et l'Autriche, et le seul pays au monde à partager un nom avec sa famille régnante. Cette principauté de 37 000 habitants est connue pour son château médiéval dominant Vaduz, sa production viticole surprenante sur les pentes du Rhin, et son statut de paradis fiscal attirant de nombreuses holdings internationales. La nature grandiose des Alpes rhétiques offre de superbes randonnées et ski.",
     en: "Liechtenstein is one of only six doubly landlocked states in the world, wedged between Switzerland and Austria, and the only country to share its name with its ruling family. This principality of 37,000 people is known for its medieval castle overlooking Vaduz, its surprising wine production on the slopes above the Rhine, and its status as a tax haven attracting numerous international holding companies. The grandiose nature of the Rhaetian Alps offers superb hiking and skiing.",

@@ -11,6 +11,18 @@ export const IRELAND = {
     budgetMin: 85, budgetMid: 160,
     tripMin: 1100, tripMid: 2200,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "L'Irlande est une île d'émeraude au caractère sauvage, connue pour ses falaises spectaculaires, ses pubs chaleureux et sa tradition de contes et de musique celtique. Dublin mêle patrimoine victorien, culture littéraire (Joyce, Beckett, Wilde) et scène nocturne animée autour du Temple Bar. Les paysages du Connemara, de l'anneau du Kerry et des falaises de Moher offrent des panoramas d'une beauté saisissante.",
     en: "Known as the Emerald Isle for its wild, green character, Ireland is famous for its dramatic cliffs, welcoming pubs and deep tradition of storytelling and Celtic music. Dublin blends Victorian heritage, a literary legacy shaped by Joyce, Beckett and Wilde, and a lively nightlife scene around Temple Bar. The landscapes of Connemara, the Ring of Kerry and the Cliffs of Moher deliver breathtaking views at every turn.",

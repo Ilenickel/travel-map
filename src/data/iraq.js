@@ -8,6 +8,18 @@ export const IRAQ = {
   currency: { fr: "Dinar irakien (IQD)", en: "Iraqi dinar (IQD)", es: "Dinar iraquí (IQD)" },
   timezone: "UTC+3",
   filter: { budgetMin: 45, budgetMid: 90, tripMin: 950, tripMid: 2000 },
+  criteria: {
+    unesco: 3,
+    nature: 1,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 2,
+    desert: 2,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "L'Irak est le berceau de la civilisation mésopotamienne, la « Terre entre les deux fleuves » où l'humanité a inventé l'écriture, les premières villes et les premières lois. Ses sites archéologiques — Babylone, Ur, Ninive — témoignent de millénaires d'histoire que peu de pays au monde peuvent égaler. Après des décennies de conflits, le pays amorce une timide ouverture touristique, notamment dans la région autonome du Kurdistan irakien, considérée comme relativement sûre.",
     en: "Iraq is the cradle of Mesopotamian civilisation, the 'land between the two rivers' where humanity invented writing, the first cities and the first laws. Its archaeological sites — Babylon, Ur and Nineveh — bear witness to millennia of history matched by very few countries. After decades of conflict, the country is cautiously opening to tourism, especially in the autonomous Kurdistan Region, which is generally considered the safest part of Iraq for visitors.",

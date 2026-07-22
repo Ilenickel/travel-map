@@ -15,6 +15,18 @@ export const DRC = {
     budgetMin: 45, budgetMid: 95,
     tripMin: 1000, tripMid: 2500,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 1,
+    plage: 1,
+  },
   description: {
     fr: "La République Démocratique du Congo est le deuxième plus grand pays d'Afrique, abritant l'une des forêts tropicales les plus riches du monde et le célèbre fleuve Congo. C'est le seul endroit au monde où l'on peut observer à la fois les gorilles de montagne et les bonobos dans leur habitat naturel. Malgré les défis sécuritaires dans l'est du pays, l'ouest et Kinshasa offrent des expériences culturelles et naturelles uniques.",
     en: "The Democratic Republic of the Congo is Africa's second-largest country, home to one of the world's richest rainforests and the legendary Congo River. It is the only place on Earth where you can observe both mountain gorillas and bonobos in their natural habitat. Despite the security challenges in the east of the country, the west and Kinshasa offer unique cultural and natural experiences.",

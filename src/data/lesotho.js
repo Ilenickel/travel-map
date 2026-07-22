@@ -11,6 +11,18 @@ export const LESOTHO = {
     budgetMin: 35, budgetMid: 70,
     tripMin: 800, tripMid: 1600,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Lesotho est surnommé le « Royaume dans le ciel » : entièrement enclavé dans l'Afrique du Sud, c'est le seul pays au monde dont la totalité du territoire se trouve au-dessus de 1 000 mètres d'altitude. Ce petit royaume montagnard offre des randonnées à poney uniques dans les Montagnes du Maluti, le majestueux col de Sani et une culture basotho authentique restée à l'écart du tourisme de masse.",
     en: "Lesotho is nicknamed the 'Kingdom in the Sky': entirely landlocked within South Africa, it is the only country in the world whose entire territory lies above 1,000 metres altitude. This small mountain kingdom offers unique pony trekking in the Maluti Mountains, the majestic Sani Pass and an authentic Basotho culture that has remained off the mass tourism trail.",

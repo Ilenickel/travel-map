@@ -11,6 +11,18 @@ export const RWANDA = {
     budgetMin: 60, budgetMid: 150,
     tripMin: 3000, tripMid: 6000,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 3,
+    ski: 0,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "Le Rwanda, « pays des mille collines », s'est réinventé en modèle de développement africain. Kigali, ville la plus propre d'Afrique, et le parc des Volcans — dernier refuge des gorilles de montagne — font du Rwanda une destination d'exception, à la fois émouvante et inspirante.",
     en: "Rwanda, the 'land of a thousand hills', has reinvented itself as a model of African development. Kigali, Africa's cleanest city, and Volcanoes National Park — the last refuge of the mountain gorillas — make Rwanda an exceptional destination, both moving and inspiring.",

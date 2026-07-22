@@ -11,6 +11,18 @@ export const CHINA = {
     budgetMin: 35, budgetMid: 90,
     tripMin: 1600, tripMid: 3200,
   },
+  criteria: {
+    unesco: 3,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 3,
+    architecture: 3,
+    desert: 2,
+    safari: 0,
+    ski: 2,
+    ville: 3,
+    plage: 2,
+  },
   description: {
     fr: "La Chine est un monde à elle seule : Grande Muraille, Cité Interdite, paysages karstiques de Guilin, armée de terre cuite de Xi'an, et la frénésie de Shanghai. Cinq mille ans de civilisation à explorer dans un pays de contrastes saisissants.",
     en: "China is a world unto itself: the Great Wall, the Forbidden City, the karst landscapes of Guilin, the Terracotta Army of Xi'an, and the frenzy of Shanghai. Five thousand years of civilisation to explore in a country of striking contrasts.",

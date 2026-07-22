@@ -8,6 +8,18 @@ export const SURINAME = {
   currency: { fr: "Dollar surinamais (SRD)", en: "Surinamese dollar (SRD)", es: "Dólar surinamés (SRD)" },
   timezone: "UTC-3",
   filter: { budgetMin: 40, budgetMid: 80, tripMin: 1000, tripMid: 2200 },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 2,
+    ski: 0,
+    ville: 0,
+    plage: 1,
+  },
   description: {
     fr: "Le Suriname est le pays le plus boisé du monde, avec plus de 93 % de son territoire couvert par la forêt amazonienne tropicale, dont l'essentiel est protégé et quasi vierge. Ancienne colonie néerlandaise, il présente un mélange culturel unique en Amérique du Sud : Hindoustans, Javanais, Marrons africains, Amérindiens, Créoles et Chinois cohabitent dans une harmonie remarquable. Paramaribo, sa capitale, est inscrite au patrimoine mondial de l'UNESCO pour son centre historique colonial néerlandais parfaitement préservé.",
     en: "Suriname is the most forested country in the world, with over 93% of its territory covered by tropical Amazon rainforest, most of it protected and nearly untouched. A former Dutch colony, it presents a unique cultural mix in South America: Hindustanis, Javanese, African Maroons, Amerindians, Creoles and Chinese coexist in remarkable harmony. Paramaribo, its capital, is a UNESCO World Heritage site for its perfectly preserved Dutch colonial historic centre.",

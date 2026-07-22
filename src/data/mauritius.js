@@ -11,6 +11,18 @@ export const MAURITIUS = {
     budgetMin: 80, budgetMid: 170,
     tripMin: 2000, tripMid: 6000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 3,
+  },
   description: {
     fr: "L'île Maurice est le paradis de l'océan Indien : lagons turquoise protégés par la 3e plus grande barrière de corail du monde, plages de sable blanc encerclées de cocotiers, Blue Bay Marine Park (UNESCO), couleurs de la Terre des 7 couleurs et culture créole métissée, indienne et française.",
     en: "Mauritius is the Indian Ocean's paradise: turquoise lagoons protected by the world's 3rd largest coral reef, white sand beaches ringed with coconut palms, Blue Bay Marine Park (UNESCO), the colours of the Seven Coloured Earths, and a blended Creole, Indian and French culture.",

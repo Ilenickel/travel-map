@@ -11,6 +11,18 @@ export const BELARUS = {
     budgetMin: 35, budgetMid: 65,
     tripMin: 650, tripMid: 1200,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 1,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 1,
+    plage: 0,
+  },
   description: {
     fr: "La Biélorussie est un pays d'Europe de l'Est encore peu touristique, marqué par son passé soviétique et ses paysages de forêts et lacs immenses. Minsk, capitale entièrement reconstruite après la Seconde Guerre mondiale, étonne par ses imposants boulevards staliniens et son atmosphère à part. ⚠️ Le régime d'Alexandre Loukachenko et la répression politique depuis 2020 rendent le voyage très déconseillé pour les ressortissants européens.",
     en: "Belarus is a little-visited country in Eastern Europe, shaped by its Soviet past and vast landscapes of forests and lakes. Minsk, a capital entirely rebuilt after the Second World War, stands out for its imposing Stalinist boulevards and singular atmosphere. ⚠️ Alexander Lukashenko's regime and the political repression since 2020 make travel highly inadvisable for European nationals.",

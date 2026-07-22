@@ -11,6 +11,18 @@ export const MADAGASCAR = {
     budgetMin: 40, budgetMid: 80,
     tripMin: 2000, tripMid: 4000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 3,
+    randonnee: 2,
+    gastronomie: 1,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2,
+  },
   description: {
     fr: "Madagascar, « la Grande Île », est l'une des destinations les plus uniques au monde : 90% de sa faune et flore sont endémiques. Lémuriens dans les forêts, baobabs géants de l'allée des Baobabs, caméléons multicolores et plages sauvages de Nosy Be. Un autre monde.",
     en: "Madagascar, 'the Great Island', is one of the most unique destinations in the world: 90% of its flora and fauna are endemic. Lemurs in the forests, giant baobabs along the Avenue of the Baobabs, multicoloured chameleons and wild beaches at Nosy Be. A world apart.",

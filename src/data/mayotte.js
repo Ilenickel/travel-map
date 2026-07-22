@@ -11,6 +11,18 @@ export const MAYOTTE = {
     budgetMin: 70, budgetMid: 165,
     tripMin: 1500, tripMid: 3000,
   },
+  criteria: {
+    unesco: 1,
+    nature: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 1,
+    desert: 0,
+    safari: 0,
+    ski: 0,
+    ville: 1,
+    plage: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
+  },
   description: {
     fr: "Mayotte est un département français de l'océan Indien entre les Comores et Madagascar : le deuxième plus grand lagon du monde (1 100 km²), protégé par la seule double barrière de corail de l'océan Indien, avec dauphins, tortues vertes, requins-baleines, dugongs et raies manta. L'île au lagon, encore méconnue, offre une plongée et un snorkeling d'exception à prix euro.",
     en: "Mayotte is a French overseas department in the Indian Ocean between the Comoros and Madagascar: the world's second-largest lagoon (1,100 km²), protected by the Indian Ocean's only double coral barrier reef, home to dolphins, green turtles, whale sharks, dugongs and manta rays. Still little known, this lagoon island offers exceptional diving and snorkelling at euro prices.",

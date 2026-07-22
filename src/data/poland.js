@@ -11,6 +11,18 @@ export const POLAND = {
     budgetMin: 45, budgetMid: 85,
     tripMin: 800, tripMid: 1800,
   },
+  criteria: {
+    unesco: 2,
+    nature: 2,
+    randonnee: 2,
+    gastronomie: 2,
+    architecture: 2,
+    desert: 0,
+    safari: 0,
+    ski: 2,
+    ville: 2,
+    plage: 2,
+  },
   description: {
     fr: "La Pologne est une révélation en Europe centrale : Cracovie et son centre médiéval intact (UNESCO), Auschwitz-Birkenau (mémorial UNESCO), Varsovie et son incroyable reconstruction à l'identique après la WWII, la forêt primaire de Białowieża avec ses bisons européens (UNESCO), et Gdańsk sur la mer Baltique. Un pays à la cuisine généreuse (pierogi, żurek, bigos) et à l'hospitalité sincère.",
     en: "Poland is a revelation in Central Europe: Kraków and its intact medieval centre (UNESCO), Auschwitz-Birkenau (UNESCO memorial), Warsaw and its incredible identical reconstruction after WWII, the Białowieża primeval forest with its European bison (UNESCO), and Gdańsk on the Baltic Sea. A country with generous cuisine (pierogi, żurek, bigos) and sincere hospitality.",
