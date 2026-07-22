@@ -184,7 +184,7 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
     const payload = {
       authToken,
       placeId: place.id,
-      placeType: destType,
+      destType,
       placeName: name.trim(),
       imageUrl: uploadedUrl,
       imagePath: uploadedPath,
@@ -194,7 +194,7 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
 
     let result;
     try {
-      const res = await fetch('/api/update-place', {
+      const res = await fetch('/api/add-place', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

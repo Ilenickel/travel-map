@@ -1,6 +1,8 @@
-// Ajoute un lieu à ne pas manquer sur une destination (statique ou communautaire).
+// Ajoute (ou modifie, si `placeId` est fourni) un lieu à ne pas manquer sur
+// une destination (statique ou communautaire). Un seul endpoint pour les deux
+// afin de rester sous la limite de fonctions serverless du plan Vercel Hobby.
 // Le client a déjà uploadé la photo dans Storage avant d'appeler cet endpoint.
-// La modération IA (texte + image) est effectuée ici avant l'insertion.
+// La modération IA (texte + image) est effectuée ici avant l'insertion/mise à jour.
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { moderateContent, checkPlaceCoherence, ModerationUnavailableError } from './_lib/moderation.js';
 import { findDuplicatePlace, registerAutoVote } from './_lib/placeDuplicates.js';
@@ -55,6 +57,8 @@ export default async function handler(req, res) {
   const body = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
   const {
     authToken,
+    // Présent uniquement en mode édition (modification d'un lieu existant).
+    placeId = null,
     // Type de destination : 'community' | 'static'
     destType,
     // Pour 'community' :
@@ -65,7 +69,7 @@ export default async function handler(req, res) {
     staticDestName = null,
     countryName = null,   // nom du pays en clair (pour la vérification géographique)
     destName = null,      // nom de la destination (community ou static)
-    // Lieu à ajouter
+    // Lieu à ajouter/modifier
     placeName = '',
     imageUrl = '',
     imagePath = null,
@@ -74,6 +78,7 @@ export default async function handler(req, res) {
     editorialNames = [],
   } = body;
 
+  const isEdit = !!placeId;
   const trimmedName = typeof placeName === 'string' ? placeName.trim() : '';
   const trimmedUrl = typeof imageUrl === 'string' ? imageUrl.trim() : '';
 
@@ -81,11 +86,11 @@ export default async function handler(req, res) {
     await cleanupPhoto(admin, imagePath);
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
-  if (destType === 'community' && !destinationId) {
+  if (destType === 'community' && !isEdit && !destinationId) {
     await cleanupPhoto(admin, imagePath);
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
-  if (destType === 'static' && (!countryCode || !staticDestId)) {
+  if (destType === 'static' && !isEdit && (!countryCode || !staticDestId)) {
     await cleanupPhoto(admin, imagePath);
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
@@ -96,8 +101,33 @@ export default async function handler(req, res) {
     return res.status(401).json({ ok: false, reason: 'Session expirée, veuillez vous reconnecter.' });
   }
 
+  // En édition, la ligne existante fournit les identifiants de destination
+  // (le client n'a besoin d'envoyer que placeId + placeType).
+  let existingPlace = null;
+  const editTable = destType === 'community' ? 'destination_places' : 'static_destination_places';
+  if (isEdit) {
+    const { data } = await admin
+      .from(editTable)
+      .select('id, user_id, image_path, destination_id, country_code, static_dest_id')
+      .eq('id', placeId)
+      .maybeSingle();
+
+    if (!data) {
+      await cleanupPhoto(admin, imagePath);
+      return res.status(404).json({ ok: false, reason: 'Lieu introuvable.' });
+    }
+    if (data.user_id !== user.id) {
+      await cleanupPhoto(admin, imagePath);
+      return res.status(403).json({ ok: false, reason: 'Action non autorisée.' });
+    }
+    existingPlace = data;
+  }
+
   const resolvedDestName = destName || staticDestName || null;
-  const country = countryName ? { code: countryCode, name: countryName } : null;
+  const resolvedDestinationId = isEdit ? existingPlace.destination_id : destinationId;
+  const resolvedCountryCode = isEdit ? existingPlace.country_code : countryCode;
+  const resolvedStaticDestId = isEdit ? existingPlace.static_dest_id : staticDestId;
+  const country = countryName ? { code: resolvedCountryCode, name: countryName } : null;
 
   // Modération texte + image
   try {
@@ -139,9 +169,11 @@ export default async function handler(req, res) {
   // (mustSee, sans ligne DB donc `id: null`, pas de vote possible dessus) :
   // pas de nouvelle ligne créée, le soumissionnaire est compté comme votant
   // pour le lieu existant plutôt que de perdre silencieusement sa contribution.
-  const dbPlaces = destType === 'community'
-    ? (await admin.from('destination_places').select('id, name').eq('destination_id', destinationId)).data || []
-    : (await admin.from('static_destination_places').select('id, name').eq('country_code', countryCode).eq('static_dest_id', String(staticDestId))).data || [];
+  let dbPlacesQuery = destType === 'community'
+    ? admin.from('destination_places').select('id, name').eq('destination_id', resolvedDestinationId)
+    : admin.from('static_destination_places').select('id, name').eq('country_code', resolvedCountryCode).eq('static_dest_id', String(resolvedStaticDestId));
+  if (isEdit) dbPlacesQuery = dbPlacesQuery.neq('id', placeId);
+  const dbPlaces = (await dbPlacesQuery).data || [];
   const editorialPlaces = (Array.isArray(editorialNames) ? editorialNames : [])
     .filter((e) => e && typeof e.name === 'string' && e.name.trim())
     .map((e) => ({ id: null, name: e.name, matchName: typeof e.matchName === 'string' ? e.matchName : e.name }));
@@ -150,6 +182,9 @@ export default async function handler(req, res) {
   const dup = await findDuplicatePlace(trimmedName, existingPlaces);
   if (dup.duplicate) {
     await cleanupPhoto(admin, imagePath);
+    if (isEdit) {
+      return res.status(200).json({ ok: false, reason: `Ce lieu existe déjà (« ${dup.matchedName} »).` });
+    }
     // `matchedPlaceId` est null pour un doublon éditorial figé (mustSee, pas
     // de ligne DB) : rien à voter dessus, contrairement à un doublon communautaire.
     const voted = dup.matchedPlaceId != null;
@@ -157,6 +192,31 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true, merged: true, matchedName: dup.matchedName, placeId: dup.matchedPlaceId, voted });
   }
 
+  // ─── Édition : mise à jour de la ligne existante ───────────────────────
+  if (isEdit) {
+    const oldPhotoPath = imagePath ? existingPlace.image_path : null;
+
+    const { error } = await admin
+      .from(editTable)
+      .update({
+        name: trimmedName,
+        image_url: trimmedUrl,
+        image_path: imagePath ?? existingPlace.image_path,
+      })
+      .eq('id', placeId);
+
+    if (error) {
+      console.error('[add-place] update:', error);
+      await cleanupPhoto(admin, imagePath);
+      return res.status(500).json({ ok: false, reason: "Le lieu n'a pas pu être mis à jour." });
+    }
+
+    if (oldPhotoPath) await cleanupPhoto(admin, oldPhotoPath);
+
+    return res.status(200).json({ ok: true, placeId });
+  }
+
+  // ─── Ajout ──────────────────────────────────────────────────────────────
   if (destType === 'community') {
     const { data: newPlace, error } = await admin
       .from('destination_places')
