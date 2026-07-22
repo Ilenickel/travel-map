@@ -106,12 +106,16 @@ export default async function handler(req, res) {
   let existingPlace = null;
   const editTable = destType === 'community' ? 'destination_places' : 'static_destination_places';
   if (isEdit) {
-    const { data } = await admin
+    const editColumns = destType === 'community'
+      ? 'id, user_id, image_path, destination_id'
+      : 'id, user_id, image_path, country_code, static_dest_id';
+    const { data, error: fetchErr } = await admin
       .from(editTable)
-      .select('id, user_id, image_path, destination_id, country_code, static_dest_id')
+      .select(editColumns)
       .eq('id', placeId)
       .maybeSingle();
 
+    if (fetchErr) console.error('[add-place] fetch existing:', fetchErr);
     if (!data) {
       await cleanupPhoto(admin, imagePath);
       return res.status(404).json({ ok: false, reason: 'Lieu introuvable.' });
