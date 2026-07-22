@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration, formatPrice } from '../../lib/planningUtils';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 import { CURRENCY_SYMBOLS, eurToInputValue, inputValueToEur } from '../../lib/currency';
 import { useSettings } from '../../context/SettingsContext';
 import { COUNTRIES } from '../../data/index';
@@ -48,6 +49,7 @@ export default function ActivityItem({
   const [cost, setCost] = useState(eurToInputValue(act.cost));
   const [groupId, setGroupId] = useState(act.group_id || null);
   const [showGroupPicker, setShowGroupPicker] = useState(false);
+  const groupPickerRef = useScrollIntoViewOnOpen(showGroupPicker);
   // Le champ date s'ouvre pré-rempli à la date de début du voyage (pour éviter à
   // l'utilisateur de faire défiler 30 mois dans le sélecteur), mais ça reste une
   // valeur purement visuelle tant qu'il n'a pas lui-même modifié le champ : sinon
@@ -455,7 +457,7 @@ export default function ActivityItem({
                 {showGroupPicker && groups?.length > 0 && (
                   <>
                     <div className="pp-backdrop-overlay" onClick={() => setShowGroupPicker(false)} />
-                    <div className="pp-quick-group-picker">
+                    <div className="pp-quick-group-picker" ref={groupPickerRef}>
                       <div className="pp-quick-group-label">{t('activity.assignGroupLabel')}</div>
                       <button
                         className={`pp-quick-group-opt${!act.group_id ? ' active' : ''}`}

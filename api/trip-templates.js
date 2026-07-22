@@ -714,7 +714,7 @@ async function handleListCities(admin, body, res) {
 
   const { data: templates } = await admin
     .from('trip_templates')
-    .select('id, city_name, city_lat, city_lng, uses_count')
+    .select('id, city_name, city_lat, city_lng, uses_count, is_editorial')
     .eq('country_code', countryCode)
     .eq('is_public', true)
     .is('parent_template_id', null);
@@ -744,6 +744,14 @@ async function handleListCities(admin, body, res) {
   let cities = clusters.map((c) => ({
     cityName: c.representative.city_name,
     representativeTemplateId: c.representative.id,
+    // Nécessaire au client pour savoir s'il doit traduire ce nom de ville
+    // quand la langue affichée est le français (voir useCityNameTranslations,
+    // src/lib/translateContent.js) : un modèle ÉDITORIAL est toujours saisi
+    // en français par l'équipe (rien à traduire pour un visiteur FR), mais un
+    // modèle communautaire (is_editorial=false) peut avoir été saisi dans
+    // n'importe quelle langue par son auteur — "Beijing" par un visiteur
+    // anglophone doit quand même s'afficher "Pékin" pour un visiteur FR.
+    isEditorial: c.representative.is_editorial,
     templateCount: c.templateCount,
     totalUses: c.totalUses,
     _lat: c.representative.city_lat,
@@ -780,9 +788,12 @@ async function handleListCities(admin, body, res) {
   }
 
   cities.sort((a, b) => b.totalUses - a.totalUses);
-  // _lat/_lng ne servaient qu'au matching serveur ci-dessus : jamais utiles au
-  // client, pas besoin de les faire voyager dans la réponse.
-  const citiesForClient = cities.map(({ _lat, _lng, ...rest }) => rest);
+  // _lat/_lng renommés en lat/lng (pas supprimés) : le client en a besoin
+  // pour get-city-image (voir useCityImages, TripSuggestionsModal.jsx) —
+  // sans coordonnées connues, chaque ville affichée dans l'onglet "Villes"
+  // forçait un géocodage serveur supplémentaire au lieu de les réutiliser,
+  // celles-ci étant déjà résolues juste au-dessus.
+  const citiesForClient = cities.map(({ _lat, _lng, ...rest }) => ({ ...rest, lat: _lat, lng: _lng }));
 
   return res.status(200).json({ ok: true, cities: citiesForClient });
 }

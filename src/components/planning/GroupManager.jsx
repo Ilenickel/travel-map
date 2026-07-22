@@ -3,6 +3,7 @@ import { Droppable, Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { getDaysBetween, formatDateShort, kMeansActivities, estimateGeoClusterCount, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
 import { NATIVE_GROUP_DRAG_TYPE } from './DayView';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 
 const GROUP_COLORS = [
   '#6366f1','#f59e0b','#10b981','#3b82f6',
@@ -12,8 +13,11 @@ const GROUP_COLORS = [
 function DayDropdown({ trip, onSelect, onClose }) {
   const { t } = useTranslation();
   const days = getDaysBetween(trip?.start_date, trip?.end_date);
+  // `true` constant : ce composant n'est monté QUE quand le dropdown est
+  // ouvert — son montage EST l'ouverture (même raisonnement que DaytripCard).
+  const dropdownRef = useScrollIntoViewOnOpen(true);
   return (
-    <div className="pp-group-day-dropdown">
+    <div className="pp-group-day-dropdown" ref={dropdownRef}>
       {days.length === 0 ? (
         <div className="pp-group-day-empty">{t('day.addDatesTitle')}</div>
       ) : (
@@ -35,6 +39,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
   const [showDays, setShowDays] = useState(false);
   const [showColors, setShowColors] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const colorsDropdownRef = useScrollIntoViewOnOpen(showColors);
 
   const groupActivities = activities.filter(a => a.group_id === group.id);
   const count = groupActivities.length;
@@ -77,7 +82,7 @@ function GroupRow({ group, activities, trip, onUpdate, onRemove, onAssignToDay, 
               {showColors && (
                 <>
                   <div className="pp-backdrop-overlay" onClick={() => setShowColors(false)} />
-                  <div className="pp-group-colors">
+                  <div className="pp-group-colors" ref={colorsDropdownRef}>
                     {GROUP_COLORS.map(c => (
                       <button
                         key={c}

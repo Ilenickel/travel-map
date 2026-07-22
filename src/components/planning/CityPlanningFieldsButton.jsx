@@ -1,5 +1,6 @@
 import { useState, useRef, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 
 // Bouton discret (icône calendrier) ouvrant un petit popover pour choisir la
 // date de début d'une ville/excursion déjà ajoutée — facultative, elle sert
@@ -21,6 +22,9 @@ export default function CityPlanningFieldsButton({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
+  // Réf DISTINCTE de wrapRef (déjà utilisé pour le calcul de décalage
+  // horizontal ci-dessous) : porte le popover lui-même, pas son wrapper.
+  const scrollRef = useScrollIntoViewOnOpen(open);
   // Le popover s'ouvre normalement aligné à droite (right:0 en CSS), pensé
   // pour un déclencheur en bout de ligne — mais ce bouton n'est PAS le
   // dernier de .pp-city-actions (CityMenu "⋮" le suit), donc son bord droit
@@ -60,12 +64,12 @@ export default function CityPlanningFieldsButton({
 
   // Position gauche clampée dans le viewport, mesurée à l'ouverture —
   // POPOVER_WIDTH DOIT correspondre exactement à la largeur CSS fixe de
-  // .pp-city-planning-popover (width: 250px, pas juste min-width : avec une
+  // .pp-city-planning-popover (width: 300px, pas juste min-width : avec une
   // largeur variable selon le contenu, ce calcul pouvait sous-estimer la
   // largeur réelle et laisser déborder le popover quand même).
   useLayoutEffect(() => {
     if (!open || !wrapRef.current) return;
-    const POPOVER_WIDTH = 250;
+    const POPOVER_WIDTH = 300;
     const MARGIN = 12;
     const rect = wrapRef.current.getBoundingClientRect();
     // Position par défaut (right:0 en CSS) : bord droit du popover collé au
@@ -120,6 +124,7 @@ export default function CityPlanningFieldsButton({
           <div className="pp-backdrop-overlay" onClick={() => setOpen(false)} />
           <div
             className="pp-city-planning-popover"
+            ref={scrollRef}
             style={popoverOffsetLeft != null ? { left: popoverOffsetLeft, right: 'auto' } : undefined}
             onClick={(e) => e.stopPropagation()}
           >

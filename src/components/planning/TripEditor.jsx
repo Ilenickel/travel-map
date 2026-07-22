@@ -587,7 +587,16 @@ export default function TripEditor({
             </div>
 
             {showCountryPicker ? (
-              <div className="pp-country-picker-wrap pp-country-picker-wrap--panel">
+              // Sur mobile, ce wrapper devient une feuille plein écran (voir
+              // CSS, @media max-width:768px) — le clic sur le fond visible
+              // autour de la feuille la ferme, même comportement que les
+              // autres popups de l'app (.pp-modal-overlay). Sans effet sur
+              // ordinateur où le wrapper reste le petit panneau intégré
+              // habituel (le clic sur son propre fond n'y est pas atteignable).
+              <div
+                className="pp-country-picker-wrap pp-country-picker-wrap--panel"
+                onClick={(e) => e.target === e.currentTarget && setShowCountryPicker(false)}
+              >
                 <CountryPicker
                   alreadyAdded={alreadyAdded}
                   onSelect={handleCountrySelect}

@@ -6,6 +6,8 @@ import { countryAlpha2FromEmoji, formatDuration, TRIP_CRITERIA } from '../../lib
 import { CriteriaFilterChips, CriteriaIndicators } from './SuggestionCriteria';
 import { useActivityNameTranslations, useCityNameTranslations } from '../../lib/translateContent';
 import { useActivityPhoto } from '../../hooks/useActivityPhoto';
+import { useCityImages } from '../../hooks/useCityImages';
+import { scrollIntoViewSoon } from '../../hooks/useScrollIntoViewOnOpen';
 import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 import DaysStepper from './DaysStepper';
 import CitySearchInput from './CitySearchInput';
@@ -27,6 +29,45 @@ import { useToast } from '../../context/ToastContext';
 
 const SLOT_ICON = { matin: '🌅', 'apres-midi': '☀️', soir: '🌆' };
 const SLOT_ORDER = ['matin', 'apres-midi', 'soir'];
+
+// Contexte pays passé à useCityImages (voir docs/city-images-integration.md) :
+// nom anglais + alpha2 dérivés de COUNTRIES pour affiner la résolution Unsplash
+// d'une ville pas encore en cache. sourceLanguage 'fr' : les noms de villes des
+// suggestions éditoriales sont stockés en français (nom SOURCE), quel que soit
+// l'affichage.
+function cityImageContext(countryCode) {
+  const country = COUNTRIES[countryCode];
+  return {
+    countryCode,
+    countryName: country?.name?.en || null,
+    countryAlpha2: countryAlpha2FromEmoji(country?.emoji),
+    sourceLanguage: 'fr',
+  };
+}
+
+// Habillage visuel d'une ville : sa photo si résolue, sinon un fond neutre
+// (gradient + initiale) — JAMAIS de photo de remplacement générique (décision
+// produit ferme, voir docs/city-images-integration.md §1/§5). `variant`
+// contrôle juste la taille/forme via le CSS.
+// `thumbUrl` (vignette Unsplash légère, ~200px de large) suffit pour les
+// petites cartes de la grille "Villes" ; étirée sur le hero pleine largeur
+// (ou les grandes cartes "en attente d'import") elle rendait floue — ces deux
+// formats utilisent donc `imageUrl` (pleine résolution, voir docs/city-images-
+// integration.md §2 : "image_url pour un affichage en grand").
+const LARGE_MEDIA_VARIANTS = new Set(['hero', 'featured']);
+
+function CityMedia({ image, name, variant = 'card', children }) {
+  const initial = (name || '?').trim().charAt(0).toUpperCase();
+  const src = image ? (LARGE_MEDIA_VARIANTS.has(variant) ? (image.imageUrl || image.thumbUrl) : image.thumbUrl) : null;
+  return (
+    <div className={`pp-citymedia pp-citymedia--${variant}${image ? '' : ' pp-citymedia--empty'}`}>
+      {src
+        ? <img className="pp-citymedia-img" src={src} alt="" loading="lazy" />
+        : <span className="pp-citymedia-initial" aria-hidden="true">{initial}</span>}
+      {children}
+    </div>
+  );
+}
 
 function groupBySlot(activities) {
   return SLOT_ORDER
@@ -112,7 +153,7 @@ function buildCityTimeline(template) {
 // — changer de ville doit repartir de filtres vides, la durée souhaitée à
 // Tokyo n'est pas forcément celle souhaitée à Osaka.
 function CityTemplatesBrowser({
-  dest, cityName, representativeTemplateId, hasExistingActivities, cartEntry, onChooseTemplate, onBack,
+  dest, cityName, representativeTemplateId, cityIsEditorial, hasExistingActivities, cartEntry, onChooseTemplate, onBack,
 }) {
   const { t, i18n } = useTranslation();
   const toast = useToast();
@@ -134,16 +175,21 @@ function CityTemplatesBrowser({
   // ci-dessous), jamais la version traduite, pour rester cohérent avec ce qui
   // est réellement stocké en base.
   const getCityDisplayName = useCityNameTranslations(
-    representativeTemplateId ? [{ id: representativeTemplateId, name: cityName }] : [],
+    representativeTemplateId ? [{ id: representativeTemplateId, name: cityName, isEditorial: cityIsEditorial }] : [],
     i18n.language
   );
   const displayCityName = representativeTemplateId
-    ? getCityDisplayName({ id: representativeTemplateId, name: cityName })
+    ? getCityDisplayName({ id: representativeTemplateId, name: cityName, isEditorial: cityIsEditorial })
     : cityName;
 
-  const toggleCriterion = (key) => {
-    setCriteria((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);
-  };
+  const [searching, setSearching] = useState(false);
+  // Ancrage pour le défilement automatique vers les résultats après une
+  // recherche (voir fetchTemplates) — sans lui, sur mobile où le bouton
+  // "Rechercher" reste en haut de l'écran une fois le clavier des filtres
+  // refermé, les premiers résultats apparaissaient hors du cadre visible :
+  // rien ne semblait s'être passé tant qu'on n'avait pas pensé à scroller
+  // soi-même (signalé le 2026-07-22).
+  const resultsRef = useRef(null);
 
   // Jeton de requête : sans lui, changer `flex`/`nbDays`/`criteria` pendant
   // qu'un `loadMore` est en vol pouvait faire résoudre ce dernier APRÈS la
@@ -152,23 +198,46 @@ function CityTemplatesBrowser({
   // liste affichée, la mélangeant avec des résultats incohérents entre eux.
   const requestIdRef = useRef(0);
 
-  const fetchTemplates = async () => {
+  // `overrides` : mêmes filtres que l'état actuel sauf ceux explicitement
+  // remplacés — sert à relancer une recherche déjà lancée avec une valeur
+  // de critère qui vient tout juste de changer, avant que le re-render qui
+  // mettrait `criteria` à jour n'ait eu lieu (voir handleToggleCriterion,
+  // même raisonnement que FullTripTab.runSearch ci-dessous).
+  const fetchTemplates = async (overrides = {}) => {
+    const params = { nbDays, flex, criteria, ...overrides };
     const myRequestId = ++requestIdRef.current;
-    setTemplates(null);
+    setSearching(true);
     const result = await callModeration('trip-templates', {
-      action: 'suggest', countryCode: dest.country_code, cityName, countryAlpha2, plannedDays: nbDays, nbDaysFlex: flex, criteria,
+      action: 'suggest', countryCode: dest.country_code, cityName, countryAlpha2, plannedDays: params.nbDays, nbDaysFlex: params.flex, criteria: params.criteria,
     });
+    // Vérifié AVANT setSearching(false) : sinon une réponse périmée (une
+    // recherche plus récente déjà lancée entre-temps) pouvait éteindre le
+    // spinner alors que CETTE recherche plus récente est encore en vol —
+    // trouvé en TNR le 2026-07-23. Une requête périmée laisse `searching`
+    // tel quel (toujours à true si la nouvelle recherche est en cours,
+    // celle-ci gère elle-même son propre passage à false à sa résolution).
     if (myRequestId !== requestIdRef.current) return; // une recherche plus récente a pris le relais
+    setSearching(false);
     if (!result.ok) toast?.error(result.reason || t('tripSuggestions.loadError'));
     setTemplates(result.ok ? (result.templates || []) : []);
     setHasMore(result.ok ? !!result.hasMore : false);
     setIndex(0);
+    scrollIntoViewSoon(resultsRef);
   };
 
-  useEffect(() => {
-    fetchTemplates();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cityName, nbDays, flex, criteria]);
+  // Recherche déclenchée EXPLICITEMENT par un bouton (voir le rendu plus
+  // bas), plus automatiquement à l'ouverture — l'ancien comportement partait
+  // chercher TOUS les plannings de la ville dès l'ouverture, avant même que
+  // le visiteur ait pu choisir une durée ou un critère. Une fois une première
+  // recherche lancée, cocher/décocher un critère relance automatiquement
+  // (comme le fait déjà l'onglet "Planning complet", voir FullTripTab.
+  // handleToggleCriterion) — seuls durée/tolérance nécessitent de recliquer
+  // sur "Rechercher", pour éviter une requête à chaque clic sur le stepper.
+  const toggleCriterion = (key) => {
+    const next = criteria.includes(key) ? criteria.filter((k) => k !== key) : [...criteria, key];
+    setCriteria(next);
+    if (templates !== null) fetchTemplates({ criteria: next });
+  };
 
   const loadMore = async () => {
     // Pas d'incrément ici : "charger plus" prolonge la recherche EN COURS,
@@ -250,10 +319,24 @@ function CityTemplatesBrowser({
       </div>
       <CriteriaFilterChips selected={criteria} onToggle={toggleCriterion} />
 
-      {templates === null ? (
-        <p className="pp-trip-suggestions-photos-loading"><span className="pp-search-busy" /> {t('common:loading')}</p>
-      ) : templates.length === 0 ? (
-        <div className="pp-trip-suggestions-filtered-empty">
+      {/* Recherche déclenchée à la demande (pas automatiquement à l'ouverture) :
+          laisse le temps de choisir une durée/des critères avant de lancer la
+          requête, plutôt que de renvoyer d'emblée TOUS les plannings partagés
+          de la ville — voir fetchTemplates ci-dessus. Reste visible même après
+          une première recherche : c'est ce qui permet de relancer après avoir
+          changé la durée (seuls les critères se relancent tout seuls, voir
+          toggleCriterion). */}
+      <button type="button" className="pp-fulltrip-search-btn" onClick={() => fetchTemplates()} disabled={searching}>
+        {searching ? <span className="pp-search-busy" /> : (
+          <>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            {t('fullTripSuggestions.searchButton')}
+          </>
+        )}
+      </button>
+
+      {templates === null ? null : templates.length === 0 ? (
+        <div className="pp-trip-suggestions-filtered-empty" ref={resultsRef}>
           <p>{t('tripSuggestions.filteredEmptyText')}</p>
         </div>
       ) : (
@@ -261,8 +344,10 @@ function CityTemplatesBrowser({
           {/* Bandeau "planning" repositionné ici, juste avant les plannings
               qu'il décrit, plutôt qu'en haut de la fenêtre où il pouvait
               s'afficher même sur des écrans sans aucun planning visible
-              (ex. l'écran de confirmation panier de CitiesTab). */}
-          <p className="pp-trip-suggestions-disclaimer">{t('tripSuggestions.disclaimer')}</p>
+              (ex. l'écran de confirmation panier de CitiesTab). Porte aussi
+              la réf de défilement automatique (resultsRef) : premier élément
+              visible juste après une recherche, voir fetchTemplates. */}
+          <p className="pp-trip-suggestions-disclaimer" ref={resultsRef}>{t('tripSuggestions.disclaimer')}</p>
           {photosLoading && (
             <p className="pp-trip-suggestions-photos-loading">
               <span className="pp-search-busy" /> {t('tripSuggestions.photosLoading')}
@@ -347,9 +432,12 @@ function CityTemplatesBrowser({
                 {t('tripSuggestions.replaceNoticeText', { city: displayCityName })}
               </p>
             )}
+            {/* Toujours en évidence (fond plein), même avant sélection — l'ancien
+                style "ghost" par défaut le faisait passer pour une action
+                secondaire alors que c'est l'action principale de cet écran. */}
             <button
               type="button"
-              className={`pp-btn pp-btn--sm${cartEntry?.templateId === current.id ? ' pp-btn--primary' : ' pp-btn--ghost'}`}
+              className={`pp-btn pp-btn--sm pp-trip-suggestions-choose-btn${cartEntry?.templateId === current.id ? ' pp-trip-suggestions-choose-btn--chosen' : ''}`}
               onClick={() => onChooseTemplate(cityName, current, displayCityName)}
             >
               {cartEntry?.templateId === current.id ? `✓ ${t('tripSuggestions.chosenLabel')}` : t('tripSuggestions.chooseButton')}
@@ -368,7 +456,7 @@ function CityTemplatesBrowser({
 // (existingCityId) se fait entièrement côté serveur par géocodage (voir
 // handleListCities, api/trip-templates.js), pas par comparaison locale avec
 // les villes du voyage — ce composant n'a donc pas besoin de les recevoir.
-function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImportCart }) {
+function CitiesTab({ dest, activities, cart, onChooseTemplate, onRemoveFromCart, importing, onImportCart }) {
   const { t, i18n } = useTranslation();
   const toast = useToast();
   const [citiesList, setCitiesList] = useState(null); // null = pas encore chargé
@@ -404,8 +492,16 @@ function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImpo
   // d'une ville. `cityName` brut (non traduit) reste ce qui identifie la
   // ville pour le reste du flux (choix, panier, import).
   const getCityDisplayName = useCityNameTranslations(
-    (citiesList || []).map((c) => ({ id: c.representativeTemplateId, name: c.cityName })),
+    (citiesList || []).map((c) => ({ id: c.representativeTemplateId, name: c.cityName, isEditorial: c.isEditorial })),
     i18n.language
+  );
+
+  // Photos des villes : nom SOURCE brut (c.cityName, jamais le libellé
+  // traduit) + lat/lng connus (renvoyés par list-cities) → cache Supabase
+  // quasi instantané, voir docs/city-images-integration.md.
+  const { getCityImage } = useCityImages(
+    (citiesList || []).map((c) => ({ cityName: c.cityName, lat: c.lat, lng: c.lng })),
+    cityImageContext(dest.country_code)
   );
 
   const handleChoose = (cityName, template, displayName) => {
@@ -444,6 +540,7 @@ function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImpo
         dest={dest}
         cityName={selectedCity.cityName}
         representativeTemplateId={selectedCity.representativeTemplateId}
+        cityIsEditorial={selectedCity.isEditorial}
         hasExistingActivities={selectedCity.existingCityId ? activities.some((a) => a.city_id === selectedCity.existingCityId) : false}
         cartEntry={cart[cityKey]}
         onChooseTemplate={handleChoose}
@@ -459,47 +556,73 @@ function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImpo
   const chosenCities = (citiesList || []).filter((c) => !!cart[cityKeyFor(c.cityName)]);
   const otherCities = (citiesList || []).filter((c) => !cart[cityKeyFor(c.cityName)]);
 
-  const renderCityItem = (c) => {
+  // Carte-photo d'une ville : la photo (ou habillage neutre) porte le nom en
+  // surimpression ; l'état (choisie / déjà dans le voyage) est indiqué par un
+  // médaillon coché et un pied de carte. `featured` = grande carte de la
+  // section "en attente d'import" (voir maquette "Cartes interactives").
+  //
+  // Structure en DEUX boutons distincts (pas un seul englobant tout) : le
+  // HTML interdit un <button> à l'intérieur d'un autre <button> — nécessaire
+  // ici car une ville déjà choisie a maintenant sa propre croix de retrait
+  // (pp-citycard-remove), qui doit rester cliquable indépendamment du reste
+  // de la carte (qui ouvre le détail de la ville) sans déclencher les deux à
+  // la fois.
+  const renderCityCard = (c, featured) => {
     const cityKey = cityKeyFor(c.cityName);
     const chosen = !!cart[cityKey];
     const alreadyInTrip = !!c.existingCityId;
+    const image = getCityImage(c.cityName);
+    const displayName = getCityDisplayName({ id: c.representativeTemplateId, name: c.cityName, isEditorial: c.isEditorial });
     return (
-      <li key={c.cityName}>
-        <button
-          type="button"
-          className={`pp-trip-suggestions-city-item${chosen ? ' pp-trip-suggestions-city-item--chosen' : ''}`}
-          onClick={() => setSelectedCity(c)}
-        >
-          <span className="pp-trip-suggestions-city-item-avatar" aria-hidden="true">{chosen ? '✓' : '🏙️'}</span>
-          <span className="pp-trip-suggestions-city-item-main">
-            <span className="pp-trip-suggestions-city-item-name">{getCityDisplayName({ id: c.representativeTemplateId, name: c.cityName })}</span>
-            {alreadyInTrip && (
-              // Même traitement que le badge "Sélectionnée" (pp-trip-suggestions-city-item-check) :
-              // le texte en toutes lettres écrasait le nom de la ville sur
-              // mobile (vu avec des noms courts type "B"/"X" tronqués à une
-              // lettre) — icône seule sur mobile, icône + texte sur desktop.
-              <span className="pp-trip-suggestions-city-item-already" title={t('tripSuggestions.alreadyInTrip')}>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
-                <span className="pp-trip-suggestions-city-item-already-label">{t('tripSuggestions.alreadyInTrip')}</span>
-              </span>
-            )}
-          </span>
-          <span className="pp-trip-suggestions-city-item-badge-slot">
-            {chosen && (
-              <span className="pp-trip-suggestions-city-item-check" title={t('tripSuggestions.citySelectedBadge')}>
+      <div
+        key={c.cityName}
+        className={`pp-citycard${featured ? ' pp-citycard--featured' : ''}${chosen ? ' pp-citycard--chosen' : ''}`}
+      >
+        <button type="button" className="pp-citycard-open" onClick={() => setSelectedCity(c)}>
+          <CityMedia image={image} name={displayName} variant={featured ? 'featured' : 'card'}>
+            <span className="pp-citymedia-scrim" aria-hidden="true" />
+            <span className="pp-citycard-name">{displayName}</span>
+          </CityMedia>
+          <span className="pp-citycard-foot">
+            {chosen ? (
+              <span className="pp-citycard-status pp-citycard-status--chosen">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>
-                {/* Sur mobile, tout .pp-trip-suggestions-city-item-badge-slot
-                    (le parent) est masqué — pas cette classe -label
-                    directement — car l'avatar de gauche est déjà vert/coché
-                    lui aussi : le badge entier devient redondant, pas
-                    seulement son texte trop large. */}
-                <span className="pp-trip-suggestions-city-item-check-label">{t('tripSuggestions.citySelectedBadge')}</span>
+                {t('tripSuggestions.citySelectedBadge')}
+              </span>
+            ) : alreadyInTrip ? (
+              <span className="pp-citycard-status pp-citycard-status--already">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+                {t('tripSuggestions.alreadyInTrip')}
+              </span>
+            ) : (
+              <span className="pp-citycard-status pp-citycard-status--go">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
               </span>
             )}
           </span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".5"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
         </button>
-      </li>
+        {chosen && (
+          <span className="pp-citycard-check" title={t('tripSuggestions.citySelectedBadge')} aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2 9 19.2 20 8.2l-1.5-1.5z"/></svg>
+          </span>
+        )}
+        {chosen && (
+          // Retire la ville du panier SANS ouvrir son détail (stopPropagation
+          // inutile ici : ce bouton est un FRÈRE de pp-citycard-open, pas un
+          // enfant, les deux clics ne peuvent déjà pas se déclencher l'un
+          // l'autre) — voir handleRemoveFromCart (composant racine), qui met
+          // à jour `cart` partagé entre les deux onglets.
+          <button
+            type="button"
+            className="pp-citycard-remove"
+            onClick={() => onRemoveFromCart(cityKey)}
+            title={t('tripSuggestions.removeFromCartTitle', { city: displayName })}
+            aria-label={t('tripSuggestions.removeFromCartTitle', { city: displayName })}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        )}
+      </div>
     );
   };
 
@@ -509,24 +632,177 @@ function CitiesTab({ dest, activities, cart, onChooseTemplate, importing, onImpo
       {chosenCities.length > 0 && (
         <div className="pp-trip-suggestions-city-group">
           <span className="pp-trip-suggestions-city-group-label">{t('tripSuggestions.selectedCitiesHeading', { count: chosenCities.length })}</span>
-          <ul className="pp-trip-suggestions-city-list">{chosenCities.map(renderCityItem)}</ul>
+          <div className="pp-citycards-grid pp-citycards-grid--featured">{chosenCities.map((c) => renderCityCard(c, true))}</div>
         </div>
       )}
       <div className="pp-trip-suggestions-city-group">
         {chosenCities.length > 0 && otherCities.length > 0 && (
           <span className="pp-trip-suggestions-city-group-label">{t('tripSuggestions.otherCitiesHeading')}</span>
         )}
-        <ul className="pp-trip-suggestions-city-list">
-          {otherCities.map(renderCityItem)}
-          {citiesList === null && (
-            <li className="pp-trip-suggestions-city-list-empty"><span className="pp-search-busy" /> {t('common:loading')}</li>
-          )}
-          {citiesList !== null && citiesList.length === 0 && (
-            <li className="pp-trip-suggestions-city-list-empty">{t('tripSuggestions.noCitiesYet')}</li>
-          )}
-        </ul>
+        {citiesList === null ? (
+          <p className="pp-trip-suggestions-city-list-empty"><span className="pp-search-busy" /> {t('common:loading')}</p>
+        ) : citiesList.length === 0 ? (
+          <p className="pp-trip-suggestions-city-list-empty">{t('tripSuggestions.noCitiesYet')}</p>
+        ) : (
+          <div className="pp-citycards-grid">{otherCities.map((c) => renderCityCard(c, false))}</div>
+        )}
       </div>
     </div>
+  );
+}
+
+// Chaîne de villes en surimpression sur le hero, sur une seule ligne qui
+// défile horizontalement (voir FullTripTab plus bas pour le contexte complet
+// de ce choix). Isolée dans son propre composant car elle a besoin de
+// MESURER le DOM (scrollWidth/scrollLeft vs largeur visible) pour savoir
+// dans quel sens elle peut défiler — les chevrons ne doivent s'afficher QUE
+// quand ils servent à quelque chose : ni au repos sur une chaîne qui tient
+// déjà entièrement (trompeur, laisse croire à des villes manquantes), ni du
+// mauvais côté une fois qu'on a commencé à glisser.
+//
+// Les chevrons sont de VRAIS boutons cliquables (scrollBy programmatique),
+// pas seulement un indice visuel : au doigt (mobile), glisser directement
+// sur la photo fonctionne nativement, mais à la souris (PC) rien ne permet
+// de faire défiler une rangée horizontale sans molette Maj ni trackpad —
+// sans bouton cliquable, le chevron n'était qu'une promesse non tenue
+// (signalé le 2026-07-22 : "ça ne fait rien sur PC").
+function HeroChainScroll({ group, getCityDisplayName, t }) {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // 1px de marge : sur certains navigateurs, un contenu qui tient tout
+    // juste peut renvoyer scrollWidth = clientWidth + 1 par arrondi de
+    // sous-pixel, faisant apparaître un chevron pour rien.
+    const measure = () => {
+      setCanScrollLeft(el.scrollLeft > 1);
+      setCanScrollRight(el.scrollWidth > el.scrollLeft + el.clientWidth + 1);
+    };
+
+    // Double requestAnimationFrame (pas measure() synchrone dans l'effet) :
+    // sur ordinateur, la modale (.pp-suggestions-modal) et les cartes
+    // (.pp-fulltrip-card) ont des animations d'entrée CSS et une mise en page
+    // plus complexe (grille de champs, largeurs en %) qu'un simple écran
+    // mobile plein cadre — mesurer AU MONTAGE, avant que ce premier reflow ne
+    // soit totalement stabilisé, pouvait renvoyer un clientWidth pas encore
+    // définitif (chevron jamais affiché même quand ça débordait vraiment,
+    // signalé le 2026-07-22 : "marche sur mobile, pas sur PC"). Deux rAF
+    // laissent le temps à TOUT le layout de la frame précédente de se poser
+    // avant de mesurer — un seul peut encore tomber pendant le même cycle de
+    // rendu sur certains navigateurs.
+    let raf2 = null;
+    const raf1 = requestAnimationFrame(() => { raf2 = requestAnimationFrame(measure); });
+
+    // ResizeObserver : la largeur de la carte peut changer après le premier
+    // rendu (redimensionnement de la fenêtre, rotation mobile, ouverture/
+    // fermeture du panneau carte à côté de la modale). "scroll" : glisser au
+    // doigt sur mobile doit aussi faire réapparaître/disparaître les
+    // chevrons en cours de route, pas seulement au montage.
+    let ro;
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(measure);
+      ro.observe(el);
+    }
+    el.addEventListener('scroll', measure, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(raf1);
+      if (raf2 != null) cancelAnimationFrame(raf2);
+      ro?.disconnect();
+      el.removeEventListener('scroll', measure);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group.cities.length]);
+
+  // Avance/recule d'à peu près la largeur visible du bandeau (moins une
+  // marge pour garder la ville coupée en bord d'écran visible au pas
+  // suivant, repère utile pour se situer dans la chaîne).
+  //
+  // Animation JS maison (requestAnimationFrame + easing), PAS
+  // `scrollBy({behavior:'smooth'})` : le lissage natif du navigateur s'est
+  // révélé peu fiable d'un navigateur à l'autre — Safari ne l'anime pas
+  // toujours quand il est déclenché depuis un clic JS (saut instantané), et
+  // sa durée n'est de toute façon pas réglable (signalé le 2026-07-22 : "ça
+  // ne fait pas glisser… en cliquant"). Une animation manuelle garantit le
+  // même rendu, sur PC comme sur mobile, quel que soit le navigateur.
+  const scrollAnimRef = useRef(null);
+  const scrollByStep = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    if (scrollAnimRef.current) cancelAnimationFrame(scrollAnimRef.current);
+
+    const DURATION_MS = 380;
+    const start = el.scrollLeft;
+    const delta = dir * (el.clientWidth - 60);
+    // Bornes réelles du scroll : évite de demander une position au-delà de ce
+    // qui existe (scrollLeft se clampe tout seul en fin d'anim, mais borner
+    // ici évite une fin d'animation qui "cogne" contre la limite).
+    const max = el.scrollWidth - el.clientWidth;
+    const target = Math.max(0, Math.min(max, start + delta));
+    const startTime = performance.now();
+    // ease-in-out cubique — accélère puis ralentit, plus naturel qu'une
+    // vitesse constante pour un déplacement aussi court.
+    const easeInOutCubic = (p) => (p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2);
+
+    const step = (now) => {
+      const progress = Math.min(1, (now - startTime) / DURATION_MS);
+      el.scrollLeft = start + (target - start) * easeInOutCubic(progress);
+      if (progress < 1) scrollAnimRef.current = requestAnimationFrame(step);
+      else scrollAnimRef.current = null;
+    };
+    scrollAnimRef.current = requestAnimationFrame(step);
+  };
+
+  // Anime en cours annulée si le composant se démonte (changement d'onglet
+  // en plein clic) — sinon requestAnimationFrame continuerait d'écrire sur
+  // un élément DOM détaché sans que personne ne l'arrête.
+  useEffect(() => () => { if (scrollAnimRef.current) cancelAnimationFrame(scrollAnimRef.current); }, []);
+
+  return (
+    <>
+      {canScrollLeft && (
+        <button
+          type="button"
+          className="pp-fulltrip-hero-fade pp-fulltrip-hero-fade--left"
+          onClick={() => scrollByStep(-1)}
+          aria-label={t('tripSuggestions.scrollCitiesLeftLabel')}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+      )}
+      <div className="pp-fulltrip-hero-chain" ref={scrollRef}>
+        {group.cities.map((city, i) => (
+          <Fragment key={city.templateId}>
+            {i > 0 && <span className="pp-fulltrip-hero-arrow" aria-hidden="true">→</span>}
+            <span className="pp-fulltrip-hero-city">
+              <span className="pp-fulltrip-hero-city-name">{getCityDisplayName({ id: city.templateId, name: city.cityName, isEditorial: group.isEditorial })}</span>
+              <span className="pp-fulltrip-hero-city-days">{t('fullTripSuggestions.cityDays', { count: city.nbDays })}</span>
+              {city.daytrips.length > 0 && (
+                // Le nom de l'excursion est affiché directement (pas juste
+                // un compteur "🧭 1") : le visiteur voit de quoi il s'agit
+                // sans avoir à déplier le détail jour par jour.
+                <span className="pp-fulltrip-hero-city-daytrips" title={t('tripSuggestions.includesDaytrips', { count: city.daytrips.length, names: city.daytrips.map((d) => d.cityName).join(', ') })}>
+                  🧭 {city.daytrips.map((d) => getCityDisplayName({ id: d.id, name: d.cityName, isEditorial: group.isEditorial })).join(', ')}
+                </span>
+              )}
+            </span>
+          </Fragment>
+        ))}
+      </div>
+      {canScrollRight && (
+        <button
+          type="button"
+          className="pp-fulltrip-hero-fade pp-fulltrip-hero-fade--right"
+          onClick={() => scrollByStep(1)}
+          aria-label={t('tripSuggestions.scrollCitiesRightLabel')}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+        </button>
+      )}
+    </>
   );
 }
 
@@ -552,6 +828,10 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
   const [confirmingId, setConfirmingId] = useState(null);
   const [importing, setImporting] = useState(false);
   const [formCollapsed, setFormCollapsed] = useState(false);
+  // Même correctif que CityTemplatesBrowser ci-dessus : défilement automatique
+  // vers les résultats après une recherche, sinon rien ne semble s'être passé
+  // sur un écran mobile qui n'a pas déjà les résultats dans le cadre visible.
+  const resultsRef = useRef(null);
 
   const expandedGroup = (groups || []).find((g) => g.id === expandedId) || null;
   const collectGroupActivities = (group) => (group?.cities || []).flatMap((city) => [
@@ -564,8 +844,26 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
   // que CitiesTab/CityTemplatesBrowser ci-dessus, appliquée à toutes les
   // villes de tous les groupes affichés (pas seulement le groupe déplié : la
   // chaîne de villes est visible sur CHAQUE carte, avant même de la déplier).
-  const allGroupCities = (groups || []).flatMap((g) => g.cities.map((c) => ({ id: c.templateId, name: c.cityName })));
+  // Inclut aussi les villes d'excursion (daytrips), pas seulement les villes
+  // de base : leur nom est affiché tel quel dans le badge du hero (voir plus
+  // bas), il doit donc être traduit lui aussi, pas juste celui des villes
+  // principales de la chaîne.
+  // isEditorial vit sur le GROUPE (pas sur chaque ville membre — non renvoyé
+  // par suggest-trip) : un groupe éditorial n'a que des membres éditoriaux et
+  // inversement (même auteur, même partage), c'est donc un indicateur fiable
+  // par ville — voir needsCityTranslation, src/lib/translateContent.js.
+  const allGroupCities = (groups || []).flatMap((g) => g.cities.flatMap((c) => [
+    { id: c.templateId, name: c.cityName, isEditorial: g.isEditorial },
+    ...c.daytrips.map((d) => ({ id: d.id, name: d.cityName, isEditorial: g.isEditorial })),
+  ]));
   const getCityDisplayName = useCityNameTranslations(allGroupCities, i18n.language);
+
+  // Photo d'en-tête (hero) de chaque itinéraire : celle de sa 1re ville, nom
+  // SOURCE brut (jamais le libellé traduit). suggest-trip ne renvoie pas de
+  // lat/lng dans le payload → on ne les fournit pas, le backend géocode (villes
+  // éditoriales quasi toujours déjà en cache). Voir docs/city-images-integration.md.
+  const heroCities = (groups || []).map((g) => g.cities[0]).filter(Boolean).map((c) => ({ cityName: c.cityName }));
+  const { getCityImage } = useCityImages(heroCities, cityImageContext(dest.country_code));
 
   const toggleCriterion = (key) => {
     setCriteria((prev) => prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]);
@@ -592,6 +890,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
     setSearchedMustCities(params.mustCities);
     setMustCitiesResolved(result.ok ? (result.mustCitiesResolved || []) : []);
     setExpandedId(null);
+    scrollIntoViewSoon(resultsRef);
   };
 
   const loadMore = async () => {
@@ -639,7 +938,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
     // une ville existante, voir handleImportTrip) prendraient toujours le nom
     // brut, différent de ce qui vient d'être affiché à l'écran.
     const cityNameOverrides = {};
-    for (const c of group.cities) cityNameOverrides[c.templateId] = getCityDisplayName({ id: c.templateId, name: c.cityName });
+    for (const c of group.cities) cityNameOverrides[c.templateId] = getCityDisplayName({ id: c.templateId, name: c.cityName, isEditorial: group.isEditorial });
     const result = await callModeration('trip-templates', {
       // countryAlpha2 : nécessaire au géocodage des villes existantes pour le
       // remplacement cross-langue côté serveur (voir handleImportTrip).
@@ -758,13 +1057,13 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
 
       {groups !== null && !searching && (
         groups.length === 0 ? (
-          <div className="pp-fulltrip-empty">
+          <div className="pp-fulltrip-empty" ref={resultsRef}>
             <span className="pp-fulltrip-empty-icon">🗺️</span>
             <p>{searchedNbDays != null ? t('fullTripSuggestions.emptyText', { days: searchedNbDays }) : t('fullTripSuggestions.emptyTextAnyDuration')}</p>
             {unresolvedMustCities.map((city) => (<p key={city} className="pp-fulltrip-empty-sub">{t('fullTripSuggestions.mustCityNotFound', { city })}</p>))}
           </div>
         ) : (
-          <div className="pp-fulltrip-results">
+          <div className="pp-fulltrip-results" ref={resultsRef}>
             <p className="pp-trip-suggestions-disclaimer">{t('tripSuggestions.disclaimer')}</p>
             {unresolvedMustCities.map((city) => (<p key={city} className="pp-fulltrip-notice">{t('fullTripSuggestions.mustCityNotFound', { city })}</p>))}
             {noneMatchesMustCity && <p className="pp-fulltrip-notice">{t('fullTripSuggestions.noneWithMustCity', { city: searchedMustCities.join(', ') })}</p>}
@@ -772,6 +1071,15 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
               <div key={group.id} className="pp-fulltrip-card">
                 <div className="pp-fulltrip-card-header">
                   <span className="pp-fulltrip-days-badge">📅 {t('fullTripSuggestions.totalDays', { count: group.totalDays })}</span>
+                  {/* Nombre de villes TOUJOURS visible ici, hors de la photo — la
+                      chaîne en surimpression défile sur une seule ligne (voir plus
+                      bas) et rien n'indiquait qu'il y avait plus de villes à voir
+                      sans repérer que "2j + 2j" ne totalisait pas la durée
+                      affichée : ce badge donne le compte total d'un coup d'œil,
+                      sans dépendre de faire défiler quoi que ce soit. */}
+                  {group.cities.length > 1 && (
+                    <span className="pp-fulltrip-days-badge">🏙 {t('destination.citiesCount', { count: group.cities.length })}</span>
+                  )}
                   <span className="pp-trip-suggestions-uses-badge">🔥 {t('tripSuggestions.usesCount', { count: group.usesCount })}</span>
                   {group.matchedMustCities.length > 0 && (
                     <span className="pp-fulltrip-mustcity-badge">✓ {t('fullTripSuggestions.containsCity', { city: group.matchedMustCities.join(', ') })}</span>
@@ -792,26 +1100,42 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
                   </div>
                 )}
 
-                <div className="pp-fulltrip-cities">
-                  {group.cities.map((city, i) => (
-                    <Fragment key={city.templateId}>
-                      {i > 0 && <span className="pp-fulltrip-city-arrow">→</span>}
-                      <span className="pp-fulltrip-city">
-                        <span className="pp-fulltrip-city-name">{getCityDisplayName({ id: city.templateId, name: city.cityName })}</span>
-                        <span className="pp-fulltrip-city-days">{t('fullTripSuggestions.cityDays', { count: city.nbDays })}</span>
-                        {city.daytrips.length > 0 && (
-                          <span className="pp-fulltrip-city-daytrips" title={t('tripSuggestions.includesDaytrips', { count: city.daytrips.length, names: city.daytrips.map((d) => d.cityName).join(', ') })}>
-                            🧭 {city.daytrips.length}
-                          </span>
-                        )}
-                      </span>
-                    </Fragment>
-                  ))}
+                {/* Hero : photo de la 1re ville (habillage neutre si aucune),
+                    chaîne d'itinéraire en surimpression — SUR UNE SEULE LIGNE
+                    qui défile horizontalement (jamais de retour à la ligne) :
+                    un itinéraire à 6 villes et plus provoquait des
+                    chevauchements et des flèches orphelines en fin de ligne
+                    dès qu'on repassait à plusieurs lignes (voir capture
+                    terrain 2026-07-22) — une seule ligne qui glisse, façon
+                    rangée horizontale, n'a jamais ce problème quel que soit
+                    le nombre de villes. Voir HeroChainScroll pour le chevron
+                    d'indice, affiché seulement quand ça déborde réellement. */}
+                <div className="pp-fulltrip-hero">
+                  <CityMedia
+                    image={getCityImage(group.cities[0]?.cityName)}
+                    name={group.cities[0] ? getCityDisplayName({ id: group.cities[0].templateId, name: group.cities[0].cityName, isEditorial: group.isEditorial }) : ''}
+                    variant="hero"
+                  >
+                    <span className="pp-citymedia-scrim pp-citymedia-scrim--strong" aria-hidden="true" />
+                    <HeroChainScroll group={group} getCityDisplayName={getCityDisplayName} t={t} />
+                  </CityMedia>
                 </div>
 
-                <button type="button" className={`pp-fulltrip-expand-btn${expandedId === group.id ? ' pp-fulltrip-expand-btn--open' : ''}`} onClick={() => setExpandedId((id) => (id === group.id ? null : group.id))}>
-                  {expandedId === group.id ? t('fullTripSuggestions.hideDetail') : t('fullTripSuggestions.showDetail')}
-                </button>
+                <div className="pp-fulltrip-actions-row">
+                  <button type="button" className={`pp-fulltrip-expand-btn${expandedId === group.id ? ' pp-fulltrip-expand-btn--open' : ''}`} onClick={() => setExpandedId((id) => (id === group.id ? null : group.id))}>
+                    {expandedId === group.id ? t('fullTripSuggestions.hideDetail') : t('fullTripSuggestions.showDetail')}
+                  </button>
+                  {confirmingId !== group.id && (
+                    <button className="pp-btn pp-btn--primary pp-btn--sm pp-fulltrip-import-btn" onClick={() => handleImportClick(group)} disabled={importing}>
+                      {importing ? <span className="pp-search-busy" /> : (
+                        <>
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                          {t('fullTripSuggestions.importButton')}
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
 
                 {expandedId === group.id && (
                   <div className="pp-fulltrip-detail">
@@ -822,7 +1146,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
                       <div key={city.templateId} className="pp-fulltrip-detail-city">
                         <div className="pp-fulltrip-detail-city-name">
                           <span className="pp-fulltrip-detail-city-icon" aria-hidden="true">🏙</span>
-                          <span className="pp-fulltrip-detail-city-label">{getCityDisplayName({ id: city.templateId, name: city.cityName })}</span>
+                          <span className="pp-fulltrip-detail-city-label">{getCityDisplayName({ id: city.templateId, name: city.cityName, isEditorial: group.isEditorial })}</span>
                           {city.dayOffset > 0 && <span className="pp-fulltrip-detail-offset">{t('fullTripSuggestions.fromDay', { day: city.dayOffset + 1 })}</span>}
                         </div>
                         {buildCityTimeline(city).map((dayGroup, gi) => (
@@ -850,7 +1174,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
                   </div>
                 )}
 
-                {confirmingId === group.id ? (
+                {confirmingId === group.id && (
                   <div className="pp-trip-suggestions-confirm">
                     {dayMismatchFor(group) !== 0 && (
                       <p className="pp-fulltrip-notice">
@@ -869,12 +1193,6 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
                         {importing ? <span className="pp-search-busy" /> : (baseCitiesCount > 0 ? t('fullTripSuggestions.confirmReplaceButton') : t('fullTripSuggestions.confirmImportButton'))}
                       </button>
                     </div>
-                  </div>
-                ) : (
-                  <div className="pp-fulltrip-card-actions">
-                    <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={() => handleImportClick(group)} disabled={importing}>
-                      {importing ? <span className="pp-search-busy" /> : t('fullTripSuggestions.importButton')}
-                    </button>
                   </div>
                 )}
               </div>
@@ -959,6 +1277,20 @@ export default function TripSuggestionsModal({
     return cityKey;
   };
 
+  // Retire une ville du panier sans quitter la fenêtre (croix sur la carte,
+  // voir CitiesTab) — auparavant la seule façon de "changer d'avis" sur une
+  // ville déjà choisie était de fermer TOUTE la popup, ce qui perdait aussi
+  // les autres villes déjà sélectionnées. `cart` vit ici (pas dans CitiesTab),
+  // donc ce retrait est immédiatement visible dans les DEUX onglets et
+  // survit à un aller-retour entre eux, comme un ajout au panier.
+  const handleRemoveFromCart = (cityKey) => {
+    setCart((prev) => {
+      const next = { ...prev };
+      delete next[cityKey];
+      return next;
+    });
+  };
+
   const handleImportCart = async () => {
     setImporting(true);
     // Import séquentiel (pas Promise.all) : plusieurs imports concurrents sur
@@ -1035,6 +1367,7 @@ export default function TripSuggestionsModal({
               activities={activities}
               cart={cart}
               onChooseTemplate={handleChooseTemplate}
+              onRemoveFromCart={handleRemoveFromCart}
               importing={importing}
               onImportCart={handleImportCart}
             />

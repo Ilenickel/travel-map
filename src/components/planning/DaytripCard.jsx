@@ -10,12 +10,17 @@ import SelectionActionBar from './SelectionActionBar';
 import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 import { useSettings } from '../../context/SettingsContext';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 
 function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
   const { t } = useTranslation();
   const days = getDaysBetween(tripStartDate, tripEndDate);
+  // `true` constant : ce composant n'est monté QUE quand le dropdown est
+  // ouvert (voir showDays côté parent) — son montage EST l'ouverture, l'effet
+  // du hook (dépendance [isOpen]) se déclenche donc une fois, au montage.
+  const dropdownRef = useScrollIntoViewOnOpen(true);
   return (
-    <div className="pp-group-day-dropdown">
+    <div className="pp-group-day-dropdown" ref={dropdownRef}>
       {days.length === 0 ? (
         <div className="pp-group-day-empty">{t('day.addDatesTitle')}</div>
       ) : (
@@ -51,6 +56,7 @@ export default function DaytripCard({
   // invisibles (PC), soit permanentes sans lien avec les villes (tactile),
   // jamais cohérentes avec le menu consolidé des villes de base.
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuDropdownRef = useScrollIntoViewOnOpen(menuOpen);
   // Sélection multiple (lieux uniquement) — même mécanique que CityBlock.jsx.
   const [selecting, setSelecting] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
@@ -179,7 +185,7 @@ export default function DaytripCard({
           {menuOpen && (
             <>
               <div className="pp-backdrop-overlay" onClick={() => setMenuOpen(false)} />
-              <div className="pp-city-menu-dropdown">
+              <div className="pp-city-menu-dropdown" ref={menuDropdownRef}>
                 {dtPlaces.length > 0 && (
                   <button
                     className="pp-dropdown-item"

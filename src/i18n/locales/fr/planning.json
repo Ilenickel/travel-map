@@ -167,6 +167,8 @@
     "editorialNoticeText": "Pas issu d'un voyage réel — il peut être moins précis que les suggestions de la communauté.",
     "prevLabel": "Suggestion précédente",
     "nextLabel": "Suggestion suivante",
+    "scrollCitiesLeftLabel": "Voir les villes précédentes",
+    "scrollCitiesRightLabel": "Voir les villes suivantes",
     "goToLabel": "Aller à la suggestion {{count}}",
     "usesCount_one": "Importé {{count}} fois",
     "usesCount_other": "Importé {{count}} fois",
@@ -206,6 +208,7 @@
     "selectedCitiesHeading_other": "{{count}} villes en attente d'import",
     "otherCitiesHeading": "Autres villes",
     "citySelectedBadge": "Sélectionnée",
+    "removeFromCartTitle": "Retirer {{city}} de la sélection",
     "loadError": "Impossible de charger les suggestions pour le moment. Réessayez dans un instant.",
     "importCartError": "Échec de l'import pour : {{cities}}. Réessayez dans un instant."
   },

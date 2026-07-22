@@ -167,6 +167,8 @@
     "editorialNoticeText": "Not from a real trip — it may be less precise than community suggestions.",
     "prevLabel": "Previous suggestion",
     "nextLabel": "Next suggestion",
+    "scrollCitiesLeftLabel": "See previous cities",
+    "scrollCitiesRightLabel": "See next cities",
     "goToLabel": "Go to suggestion {{count}}",
     "usesCount_one": "Imported {{count}} time",
     "usesCount_other": "Imported {{count}} times",
@@ -206,6 +208,7 @@
     "selectedCitiesHeading_other": "{{count}} cities pending import",
     "otherCitiesHeading": "Other cities",
     "citySelectedBadge": "Selected",
+    "removeFromCartTitle": "Remove {{city}} from selection",
     "loadError": "Couldn't load suggestions right now. Please try again shortly.",
     "importCartError": "Import failed for: {{cities}}. Please try again shortly."
   },

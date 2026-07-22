@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getDaysBetween, formatDateShort } from '../../lib/planningUtils';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 
 // Barre d'actions groupées pour la sélection multiple (CityBlock/DaytripCard) —
 // réutilise volontairement les mêmes classes CSS que les menus "planifier sur un
@@ -13,6 +14,8 @@ export default function SelectionActionBar({
   const { t } = useTranslation();
   const [showGroups, setShowGroups] = useState(false);
   const [showDays, setShowDays] = useState(false);
+  const groupsDropdownRef = useScrollIntoViewOnOpen(showGroups);
+  const daysDropdownRef = useScrollIntoViewOnOpen(showDays);
   const days = getDaysBetween(tripStartDate, tripEndDate);
 
   return (
@@ -31,7 +34,7 @@ export default function SelectionActionBar({
             {showGroups && (
               <>
                 <div className="pp-backdrop-overlay" onClick={() => setShowGroups(false)} />
-                <div className="pp-group-day-dropdown">
+                <div className="pp-group-day-dropdown" ref={groupsDropdownRef}>
                   <button className="pp-group-day-opt" onClick={() => { onAssignGroup(null); setShowGroups(false); }}>
                     <span className="pp-group-chip-dot" style={{ background: 'var(--border-light)' }} />
                     <span>{t('common:none')}</span>
@@ -61,7 +64,7 @@ export default function SelectionActionBar({
           {showDays && (
             <>
               <div className="pp-backdrop-overlay" onClick={() => setShowDays(false)} />
-              <div className="pp-group-day-dropdown">
+              <div className="pp-group-day-dropdown" ref={daysDropdownRef}>
                 {days.map((d, i) => (
                   <button key={d} className="pp-group-day-opt" onClick={() => { onAssignDay(d); setShowDays(false); }}>
                     <span className="pp-group-day-num">{t('day.short', { n: i + 1 })}</span>

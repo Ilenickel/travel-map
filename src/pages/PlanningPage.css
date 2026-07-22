@@ -341,7 +341,22 @@ button.pp-sidebar-toggle {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   padding: 16px 20px;
-  flex-shrink: 0;
+  /* flex-shrink:1 (pas 0) + min-height:0 : sur un écran PC pas assez haut, un
+     en-tête bien rempli (dates + stats + partage communautaire + critères +
+     notes) pouvait dépasser la hauteur de la fenêtre — .pp-editor étant
+     overflow:hidden (voir plus haut), rien ne défilait alors nulle part, et
+     .pp-editor-split (le reste de l'écran : villes/groupes/jours) se
+     retrouvait écrasé sur une toute petite bande. Même bug, même remède que
+     celui déjà appliqué côté mobile ci-dessous (.pp-editor-header:not(.pp-
+     editor-header--collapsed)) : sans min-height:0 explicite, un flex-item
+     ne rétrécit jamais sous la hauteur de son contenu (confirmé par ce même
+     correctif mobile), overflow-y:auto resterait inopérant. Impact nul sur
+     un écran assez haut : le header garde sa taille naturelle tant qu'il y a
+     la place, .pp-editor-split (flex:1, flex-basis 0%) absorbe déjà tout
+     l'espace restant en priorité. */
+  flex-shrink: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .pp-trip-title-row {
@@ -2063,24 +2078,42 @@ button.pp-sidebar-toggle {
    tant qu'on n'a rien changé — re-sélectionner la même date dans le
    calendrier natif ne déclenche aucun événement. Ce bouton confirme
    explicitement la date déjà visible, sans avoir à passer par un autre jour. */
+/* flex-wrap (pas nowrap) : le champ date natif garde sa largeur CONFORTABLE
+   (jamais compressé en dessous), le bouton "Confirmer" passe simplement à la
+   ligne suivante si les deux ne tiennent pas côte à côte. Avant ce correctif,
+   .pp-date-input était en flex:1 + min-width:0 pour rester sur une seule
+   ligne avec le bouton — ça évitait bien de déborder du popover, mais
+   compressait le widget natif au point d'écraser son icône calendrier contre
+   le dernier chiffre de l'année (signalé le 2026-07-23, PC et mobile). Un
+   champ de date ne doit JAMAIS être forcé sous sa largeur confortable —
+   toujours donner la priorité au widget natif, laisser le reste s'adapter
+   autour, jamais l'inverse (même leçon que .pp-trip-dates-card sur mobile). */
 .pp-city-start-date-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
 }
-/* Le champ date natif n'a pas de largeur fixée : il prend sa largeur
-   intrinsèque (variable selon navigateur/OS — le widget mobile Android/iOS
-   est nettement plus large qu'un input desktop), qui additionnée à celle du
-   bouton "Confirmer" ci-dessous pouvait dépasser les ~220px de contenu
-   disponibles dans le popover (250px de large, moins son padding) : sans
-   pouvoir rétrécir (min-width:auto par défaut sur un enfant flex), le champ
-   poussait le bouton hors du popover au lieu de partager la ligne avec lui.
-   flex + min-width:0 le rend compressible comme les autres champs de l'app. */
-.pp-city-start-date-row .pp-date-input {
-  flex: 1;
-  min-width: 0;
+/* margin-left:auto (pas justify-content sur la ligne) : pousse UNIQUEMENT ce
+   bouton au bord droit de la ligne où il atterrit, qu'il partage la ligne du
+   champ date (cas courant) ou se retrouve seul sur une seconde ligne (écran
+   vraiment très étroit) — justify-content sur .pp-city-start-date-row aurait
+   aussi poussé le champ date à droite, ce qui n'est pas voulu : lui doit
+   rester à gauche, aligné sous le libellé.
+   Padding/police RÉDUITS par rapport à .pp-btn--sm standard (12px/13px) :
+   un input date natif (largeur intrinsèque ~150-190px selon navigateur, pas
+   pilotable en CSS) + un bouton pleine taille dépassaient de peu la largeur
+   du popover selon le navigateur — calculé au plus juste, ça repassait sur
+   deux lignes à la moindre variation (signalé deux fois de suite le
+   2026-07-23). Un bouton plus compact laisse une vraie marge plutôt que de
+   coller exactement à la limite. */
+.pp-city-start-date-confirm {
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0 9px;
+  font-size: 12px;
 }
-.pp-city-start-date-confirm { white-space: nowrap; flex-shrink: 0; }
 /* Rien n'est enregistré tant que ce bouton n'est pas cliqué (voir
    CityPlanningFieldsButton) : désactivé tant que le brouillon local ne
    diffère pas encore de la valeur réellement enregistrée. */
@@ -2135,15 +2168,17 @@ button.pp-sidebar-toggle {
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   z-index: 120;
   padding: 12px 14px;
-  /* Largeur FIXE (pas juste min-width) : le contenu (champ date natif +
-     bouton "Confirmer" sur une même ligne, jamais de retour à la ligne — voir
-     .pp-city-start-date-confirm, white-space:nowrap) a besoin d'environ
-     230-240px selon le navigateur pour tenir sans déborder de la carte. Une
-     largeur figée et connue est aussi ce sur quoi se base le calcul JS de
-     repositionnement (CityPlanningFieldsButton, POPOVER_WIDTH) : avec un
-     simple min-width, le popover pouvait s'élargir au-delà de ce que JS avait
-     anticipé et déborder quand même. */
-  width: 250px;
+  /* Largeur FIXE (pas juste min-width) : une largeur figée et connue est ce
+     sur quoi se base le calcul JS de repositionnement (CityPlanningFieldsButton,
+     POPOVER_WIDTH, doit rester égal à cette valeur) — avec un simple
+     min-width, le popover pouvait s'élargir au-delà de ce que JS avait
+     anticipé et déborder quand même. Élargi de 250 à 300px (+ bouton
+     "Confirmer" rendu plus compact, voir .pp-city-start-date-confirm) pour
+     que le champ date (jamais compressé, voir .pp-city-start-date-row) ET
+     le bouton tiennent côte à côte avec une vraie marge, pas calculé au plus
+     juste — le passage à la ligne (flex-wrap) reste le filet de sécurité
+     pour un écran vraiment très étroit, pas le comportement normal. */
+  width: 300px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -2642,27 +2677,39 @@ button.pp-sidebar-toggle {
 
   .pp-editor { padding: 16px 16px 40px; }
 
-  /* Dates compactes sur mobile : Départ et Retour côte à côte (chacun la moitié
-     de la largeur), au lieu d'un empilement vertical qui mangeait tout l'écran. */
+  /* Départ/Retour EMPILÉS sur mobile (pas côte à côte) : la tentative
+     précédente de les mettre côte à côte (chacun ~50% de largeur, avec
+     min-width:auto pour éviter que le widget natif déborde — voir l'ancien
+     commentaire ici) réglait le débordement mais pas un second problème :
+     l'estimation de largeur minimale du navigateur pour un <input
+     type="date"> natif se base sur son PLACEHOLDER ("jj/mm/aaaa"), pas sur
+     la VRAIE valeur affichée une fois une date choisie (ex. "16 août 2026",
+     bien plus long) — la boîte se figeait donc à une largeur suffisante pour
+     le placeholder mais trop juste pour la date réelle, qu'iOS Safari
+     TRONQUE plutôt que de faire déborder ou réajuster (signalé le
+     2026-07-23 : "la date affichée n'est pas en entière"). Un empilement
+     donne à chaque champ toute la largeur de la carte, quelle que soit la
+     longueur du format de date rendu par l'OS/la langue — plus aucune marge
+     d'erreur à calculer. */
   .pp-trip-dates-card {
+    flex-direction: column;
+    align-items: stretch;
     gap: 8px;
     padding: 10px 12px;
   }
 
   .pp-date-group {
-    /* PAS de min-width:0 ici (c'était le bug) : un <input type="date">
-       natif refuse de se peindre sous sa largeur intrinsèque (icône +
-       jj/mm/aaaa) — min-width:0 autorisait le flex-item à être calculé plus
-       étroit que ça, et le widget natif débordait de sa boîte par-dessus le
-       champ voisin au lieu de s'y contenir (constaté sur iPhone 14). En
-       laissant le min-width par défaut (auto = taille du contenu), le
-       flex-wrap hérité de la règle de base empile Départ/Retour sur deux
-       lignes si la largeur dispo est trop juste, plutôt que de forcer un
-       côte-à-côte impossible à peindre proprement. */
-    flex: 1 1 auto;
+    width: 100%;
   }
 
-  .pp-date-input {
+  /* Portée limitée à .pp-trip-dates-card (départ/retour du voyage) : un
+     .pp-date-input non scopé ici s'appliquait à TOUS les champs date du site
+     en mobile, y compris le popover "Date de début" d'une ville
+     (CityPlanningFieldsButton) — width:100% y écrasait tout l'espace prévu
+     pour le bouton "Confirmer" à côté, le forçant sur une seconde ligne même
+     quand le popover avait largement la place pour les deux côte à côte
+     (signalé le 2026-07-23). */
+  .pp-trip-dates-card .pp-date-input {
     width: 100%;
     box-sizing: border-box;
   }
@@ -4412,6 +4459,13 @@ button.pp-sidebar-toggle {
 
 .pp-group-name-input {
   flex: 1;
+  /* Sans min-width:0, un <input> flex:1 garde sa largeur minimale
+     intrinsèque par défaut (~200px, pas liée à son contenu) — la ligne
+     refusait alors de rétrécir sous cette taille, poussant les icônes
+     d'actions (calendrier/renommer/supprimer) hors du cadre de la carte
+     plutôt que de laisser le champ de saisie rétrécir (signalé le
+     2026-07-23, PC : "les icônes sortent du cadre" en renommant un groupe). */
+  min-width: 0;
   background: var(--surface3);
   border: 1px solid var(--accent);
   border-radius: 5px;
@@ -5590,6 +5644,44 @@ button.pp-sidebar-toggle {
      barre. Il n'est plus en position:fixed, donc il défile avec sa page au
      balayage (plus besoin de le masquer via [data-page]) et ne recouvre jamais
      le contenu de la planif. */
+
+  /* Sélecteur de pays ("+ Ajouter un pays") : sur ordinateur c'est un petit
+     panneau intégré en bas du panneau villes (fonctionne bien, jamais de
+     clavier à l'écran) — sur mobile, ce même panneau s'ouvrait littéralement
+     là où il est dans la page, souvent tout en bas, avec sa liste plafonnée
+     à 220px de haut ; dès que le clavier apparaissait pour taper un nom de
+     pays, il ne restait presque plus de hauteur visible au-dessus de lui, et
+     le premier résultat de la liste (220px, déjà courte) se retrouvait
+     à peine visible (signalé le 2026-07-22). Transformé en feuille plein
+     écran (même famille visuelle que .pp-modal mobile, poignée en moins —
+     ce n'est pas une vraie modale React, juste habillée pareil en CSS) :
+     hauteur pilotée par le clavier via 100dvh (le navigateur réduit
+     automatiquement la hauteur visuelle quand le clavier occupe l'écran),
+     liste qui prend tout l'espace restant au lieu d'un plafond fixe. */
+  .pp-country-picker-wrap--panel {
+    position: fixed;
+    inset: 0;
+    z-index: 210;
+    display: flex;
+    align-items: flex-end;
+    background: rgba(0,0,0,0.55);
+    padding: 0;
+    border: none;
+    border-radius: 0;
+  }
+  .pp-country-picker-wrap--panel .pp-country-picker {
+    width: 100%;
+    max-height: 90dvh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px 20px 0 0;
+  }
+  .pp-country-picker-wrap--panel .pp-country-list {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
 
   .pp-add-city-btn {
     padding: 8px 12px;
@@ -7655,6 +7747,7 @@ button.pp-sidebar-toggle {
 .pp-fulltrip-search-btn {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   width: 100%;
+  margin-bottom: 14px;
   border: none; border-radius: 10px;
   padding: 12px 18px;
   background: var(--accent);
@@ -7800,8 +7893,13 @@ button.pp-sidebar-toggle {
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   border-radius: 6px; padding: 1px 6px;
 }
+/* Affiche le NOM de l'excursion (ex. "🧭 Leshan"), pas juste un compteur —
+   peut dépasser la largeur d'une pastille compacte, d'où le text-overflow
+   plutôt qu'un retour à la ligne qui casserait l'alignement de la pilule. */
 .pp-fulltrip-city-daytrips {
   display: inline-flex; align-items: center;
+  max-width: 130px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-size: 10.5px; font-weight: 700; color: #fbbf24;
   background: rgba(245,158,11,0.14);
   border: 1px solid rgba(245,158,11,0.35);
@@ -8239,6 +8337,40 @@ button.pp-sidebar-toggle {
 .pp-suggestions-modal { max-width: 720px; }
 .pp-suggestions-modal-body { display: flex; flex-direction: column; gap: 12px; }
 
+/* Sur mobile, un VRAI plein écran (100dvh, coins carrés, sans bord de fond
+   visible) plutôt que la feuille à 95dvh avec coins arrondis des autres
+   popups (partage, fin de voyage…) : ce sous-écran a son propre système de
+   navigation interne (onglets Villes/Planning complet, retour dans le détail
+   d'une ville) — le laisser ressembler à "encore une popup par-dessus la
+   page" ne rendait pas évident qu'on venait de changer d'espace de travail
+   (signalé le 2026-07-22 : "il faut qu'on soit sur un écran à part"). Seule
+   cette modale est concernée (sélecteur .pp-suggestions-modal, pas la règle
+   générique .pp-modal) — partage/fin de voyage/etc. gardent leur habillage
+   feuille habituel, non demandé ici. */
+@media (max-width: 768px) {
+  .pp-suggestions-modal.pp-modal {
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    padding-top: 0;
+  }
+  .pp-suggestions-modal.pp-modal::before { display: none; } /* pas de poignée de glissement : rien à "glisser pour fermer" sur un plein écran */
+  .pp-modal-overlay:has(> .pp-suggestions-modal) {
+    padding: 0;
+    align-items: stretch;
+  }
+  /* Bouton fermer (✕ du header) agrandi et davantage contrasté : c'est
+     désormais la SEULE façon de quitter cet écran (plus de tap-en-dehors
+     possible, il n'y a plus de "dehors" visible) — doit être trouvé
+     immédiatement, pas juste une petite icône parmi d'autres. */
+  .pp-suggestions-modal .pp-modal-header .pp-icon-btn {
+    width: 38px; height: 38px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+}
+
 .pp-trip-suggestions-cities-tab {
   display: flex;
   flex-direction: column;
@@ -8445,6 +8577,316 @@ button.pp-sidebar-toggle {
   max-width: 400px;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   Refonte immersive des suggestions — photos de villes (useCityImages) sur
+   des cartes-photo (onglet "Villes") et un hero d'itinéraire (onglet
+   "Planning complet"). Voir maquettes "Carte immersive" / "Cartes
+   interactives" (2026-07-22) et docs/city-images-integration.md.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Habillage visuel d'une ville : sa photo (object-fit cover) OU un fond neutre
+   gradient + initiale — JAMAIS de photo de remplacement générique (décision
+   produit ferme). Trois formats selon l'emplacement (card/featured/hero). */
+.pp-citymedia {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface3);
+}
+.pp-citymedia--card { aspect-ratio: 4 / 3; }
+.pp-citymedia--featured { aspect-ratio: 3 / 2; }
+.pp-citymedia--hero { aspect-ratio: 40 / 15; min-height: 148px; }
+.pp-citymedia-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.pp-citymedia--empty {
+  background:
+    radial-gradient(ellipse 120% 120% at 15% 10%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 60%),
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 30%, var(--surface3)), color-mix(in srgb, #a855f7 26%, var(--surface2)));
+}
+.pp-citymedia-initial {
+  font-size: 30px; font-weight: 800; letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+.pp-citymedia--featured .pp-citymedia-initial,
+.pp-citymedia--hero .pp-citymedia-initial { font-size: 42px; }
+/* Voile sombre en bas : garantit la lisibilité du nom/chaîne en surimpression
+   quelle que soit la photo (claire ou chargée). */
+.pp-citymedia-scrim {
+  position: absolute; inset: 0; z-index: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.74) 0%, rgba(0,0,0,0.12) 55%, transparent 100%);
+  pointer-events: none;
+}
+.pp-citymedia-scrim--strong {
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.34) 45%, rgba(0,0,0,0.08) 100%);
+}
+
+/* ── Onglet "Villes" : grille de cartes-photo ────────────────────────────── */
+.pp-citycards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+/* Villes déjà choisies (en attente d'import) : cartes plus grandes, en tête. */
+.pp-citycards-grid--featured { grid-template-columns: repeat(2, 1fr); }
+
+/* Conteneur (pas un bouton) : porte le cadre/fond/hover de la carte, mais
+   contient DEUX boutons frères (pp-citycard-open + pp-citycard-remove) — le
+   HTML interdit un <button> dans un <button>, nécessaire depuis l'ajout de
+   la croix de retrait (voir JSX). */
+.pp-citycard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface2);
+  transition: transform 0.16s, border-color 0.16s, box-shadow 0.2s;
+}
+.pp-citycard:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.22);
+}
+/* Sélection nettement plus lisible qu'un simple liseré (2px pleine teinte
+   verte + fond légèrement teinté, pas juste une ombre interne discrète) —
+   doit se voir d'un coup d'œil dans la grille, surtout la section "en
+   attente d'import" (retour du 2026-07-22 : "rendre plus claire la
+   sélection"). */
+.pp-citycard--chosen {
+  border: 2px solid #10b981;
+  background: color-mix(in srgb, #10b981 8%, var(--surface2));
+}
+.pp-citycard--chosen:hover { border-color: #34d399; }
+
+.pp-citycard-open {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pp-citycard-name {
+  position: absolute; z-index: 1;
+  left: 12px; right: 12px; bottom: 10px;
+  color: #fff;
+  font-size: 15px; font-weight: 800; line-height: 1.15;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.65);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pp-citycard--featured .pp-citycard-name { font-size: 18px; }
+/* Coché : à GAUCHE (comme la maquette de référence) — la croix de retrait
+   prend le côté droit, symétrique, voir .pp-citycard-remove plus bas. */
+.pp-citycard-check {
+  position: absolute; z-index: 2;
+  top: 10px; left: 10px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: #06281c;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  pointer-events: none;
+}
+/* Croix de retrait : seule façon, avant cet ajout, de changer d'avis sur une
+   ville déjà choisie était de fermer TOUTE la fenêtre de suggestions (retour
+   du 2026-07-22). Bouton à part entière (pas juste visuel) — voir
+   handleRemoveFromCart, qui vit dans le composant racine et retire la ville
+   du panier PARTAGÉ entre les deux onglets (persiste à un aller-retour). */
+.pp-citycard-remove {
+  position: absolute; z-index: 2;
+  top: 10px; right: 10px;
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.pp-citycard-remove:hover { background: rgba(239,68,68,0.9); transform: scale(1.08); }
+.pp-citycard-remove:focus-visible { outline: 2px solid rgba(255,255,255,0.85); outline-offset: 1px; }
+.pp-citycard-foot {
+  display: flex; align-items: center;
+  padding: 8px 12px;
+  min-height: 34px;
+}
+.pp-citycard-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 700;
+}
+.pp-citycard-status--chosen { color: #10b981; }
+.pp-citycard-status--already {
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.02em; font-size: 10.5px;
+}
+.pp-citycard-status--go { margin-left: auto; color: var(--text-muted); opacity: 0.6; }
+.pp-citycard:hover .pp-citycard-status--go { color: var(--accent2); opacity: 1; }
+
+/* ── Onglet "Planning complet" : hero d'itinéraire ───────────────────────── */
+.pp-fulltrip-hero {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.pp-fulltrip-hero .pp-citymedia { border-radius: 0; }
+/* Chaîne des villes en surimpression, en bas du hero — SUR UNE SEULE LIGNE
+   qui défile horizontalement (overflow-x + nowrap), jamais de retour à la
+   ligne : avec un itinéraire à 6 villes et plus, un flex-wrap classique
+   provoquait des chevauchements et des flèches orphelines en fin de ligne,
+   surtout sur mobile étroit (vu en test terrain 2026-07-22) — une rangée qui
+   glisse, façon Netflix, n'a jamais ce problème quel que soit le nombre de
+   villes, tout en gardant le texte SUR la photo (l'intérêt de l'avoir). */
+.pp-fulltrip-hero-chain {
+  position: absolute; z-index: 1;
+  left: 0; right: 0; bottom: 0;
+  display: flex; align-items: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 4px 18px;
+  /* padding SANS marge supplémentaire réservée pour les boutons (juste le
+     confort visuel habituel, comme haut/bas) : réserver une marge fixe plus
+     large ici réduisait la largeur réellement disponible pour le contenu,
+     ce qui pouvait déclencher un FAUX débordement (chevron affiché alors que
+     3 villes tenaient très bien sans cette réserve — signalé le 2026-07-22).
+     Les boutons .pp-fulltrip-hero-fade se superposent simplement en dégradé
+     sur les derniers pixels du contenu quand ils sont affichés (voir plus
+     bas) — acceptable, ils ne cachent qu'un dégradé de fond de photo. */
+  padding: 14px 16px;
+}
+.pp-fulltrip-hero-chain::-webkit-scrollbar { display: none; }
+.pp-fulltrip-hero-city {
+  display: flex; flex-direction: column; gap: 1px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.pp-fulltrip-hero-city-name {
+  color: #fff; font-size: 15px; font-weight: 800; line-height: 1.15;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.7);
+}
+.pp-fulltrip-hero-city-days {
+  color: rgba(255,255,255,0.86); font-size: 11.5px; font-weight: 600;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+}
+/* Affiche le NOM de l'excursion (ex. "🧭 Leshan"), pas juste un compteur —
+   sur une ligne qui défile, pas besoin de tronquer : le nom entier reste
+   toujours accessible en glissant. */
+.pp-fulltrip-hero-city-daytrips {
+  display: inline-flex; align-items: center; gap: 3px;
+  margin-top: 2px;
+  align-self: flex-start;
+  font-size: 10px; font-weight: 700; color: #fff;
+  background: rgba(245,158,11,0.9);
+  border-radius: 999px; padding: 1px 7px;
+  white-space: nowrap;
+}
+.pp-fulltrip-hero-arrow {
+  align-self: flex-start; margin-top: 1px; flex-shrink: 0;
+  color: rgba(255,255,255,0.9); font-size: 15px; font-weight: 800;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+}
+/* Voile dégradé + chevron, en VRAI BOUTON cliquable (pas juste un indice
+   visuel) : au doigt (mobile), glisser directement sur la photo suffit, mais
+   à la souris (PC) rien ne permet de faire défiler une rangée horizontale
+   sans molette Maj/trackpad — sans bouton fonctionnel, le chevron n'était
+   qu'une promesse non tenue (signalé le 2026-07-22 : "ça ne fait rien sur
+   PC"). N'apparaît que dans le sens où il sert VRAIMENT à quelque chose
+   (voir canScrollLeft/canScrollRight, mesurés par scrollLeft/scrollWidth
+   réels, pas juste "il y a plus d'une ville") — jamais affiché sur une
+   chaîne déjà entièrement visible, ni du mauvais côté une fois qu'on a
+   glissé (signalé le même jour : "aussi là où il n'y a pas besoin de
+   défiler"). */
+.pp-fulltrip-hero-fade {
+  position: absolute; z-index: 2; top: 0; bottom: 0;
+  width: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; padding: 0; cursor: pointer;
+  font-family: inherit;
+  /* Sans ça, un tap sur mobile (WebKit/Chrome Android) couvre TOUTE la zone
+     cliquable d'un aplat bleu translucide par défaut le temps du tap — sur un
+     bouton aussi grand (toute la hauteur du hero), ça se voyait comme un
+     gros carré bleu disgracieux par-dessus la photo (signalé le 2026-07-22).
+     outline: none + :focus-visible ci-dessous : le focus clavier reste
+     visible (accessibilité), seul le retour visuel du TAP tactile disparaît. */
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.pp-fulltrip-hero-fade:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.85);
+  outline-offset: -2px;
+}
+.pp-fulltrip-hero-fade--right {
+  right: 0;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.6));
+}
+.pp-fulltrip-hero-fade--left {
+  left: 0;
+  background: linear-gradient(to left, transparent, rgba(0,0,0,0.6));
+}
+.pp-fulltrip-hero-fade svg {
+  color: rgba(255,255,255,0.95);
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));
+}
+/* Pas de survol animé séparé (transform: scale) : entrerait en conflit avec
+   le va-et-vient déjà en boucle sur la même propriété transform, l'un
+   écrasant l'autre à chaque frame — la couleur/curseur du bouton suffit à
+   indiquer l'interactivité au survol. */
+.pp-fulltrip-hero-fade--right svg { animation: pp-fulltrip-hero-fade-nudge 1.8s ease-in-out infinite; }
+.pp-fulltrip-hero-fade--left svg { animation: pp-fulltrip-hero-fade-nudge-left 1.8s ease-in-out infinite; }
+/* Léger va-et-vient — pas une simple icône statique — pour attirer l'œil une
+   fois sans être agaçant en continu (amplitude minime, pas une animation de
+   loading). Suspendu au survol (voir :hover ci-dessus qui prend le relais). */
+@keyframes pp-fulltrip-hero-fade-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+@keyframes pp-fulltrip-hero-fade-nudge-left {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+
+.pp-fulltrip-actions-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-wrap: wrap;
+}
+.pp-fulltrip-import-btn { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Mobile : grilles resserrées et actions en pleine largeur — la fenêtre passe
+   en bottom-sheet plein écran (voir .pp-modal générique mobile), les cartes et
+   le hero gagnent à respirer moins horizontalement. */
+@media (max-width: 768px) {
+  .pp-citycards-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .pp-citycards-grid--featured { grid-template-columns: 1fr; }
+  .pp-citymedia--hero { aspect-ratio: 40 / 21; min-height: 130px; }
+  .pp-citycard-name { font-size: 14px; }
+  .pp-citycard--featured .pp-citycard-name { font-size: 16px; }
+  .pp-fulltrip-hero-city-name { font-size: 13px; }
+  .pp-fulltrip-hero-chain { gap: 3px 14px; padding: 12px 16px; }
+  .pp-fulltrip-actions-row { flex-direction: column-reverse; align-items: stretch; }
+  .pp-fulltrip-actions-row .pp-fulltrip-expand-btn,
+  .pp-fulltrip-actions-row .pp-fulltrip-import-btn {
+    width: 100%; justify-content: center;
+  }
+}
+
+
 /* Dialogue "panier perdu" : empilé au-dessus du reste de la fenêtre de
    suggestions (scrim propre, z-index supérieur à .pp-modal-overlay standard
    qui reste à 200 — voir la fenêtre englobante). */
@@ -8490,6 +8932,33 @@ button.pp-sidebar-toggle {
    bouton "Choisir ce planning" — pas un état de confirmation séparé. */
 .pp-trip-suggestions-choose-row { align-items: center; }
 .pp-trip-suggestions-replace-notice { flex: 1; min-width: 0; margin: 0; text-align: left; }
+
+/* Bouton principal de la fiche planning — toujours plein (jamais "ghost"),
+   c'est l'action que cet écran existe pour faire accomplir. Vire au vert
+   "choisi" une fois sélectionné, même recette que les autres marqueurs
+   d'état "choisi/coché" de cette fenêtre (.pp-citycard-check etc.). */
+.pp-trip-suggestions-choose-btn {
+  background: var(--accent);
+  border: 1px solid transparent;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(99,102,241,0.35);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.pp-trip-suggestions-choose-btn:hover {
+  background: #4f52e0;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.45);
+  transform: translateY(-1px);
+}
+.pp-trip-suggestions-choose-btn--chosen {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: #06281c;
+  box-shadow: 0 2px 10px rgba(16,185,129,0.35);
+}
+.pp-trip-suggestions-choose-btn--chosen:hover {
+  background: linear-gradient(135deg, #2fcf90, #0ea975);
+  box-shadow: 0 4px 16px rgba(16,185,129,0.4);
+}
 
 /* Sur mobile, la note et le bouton côte à côte se compressaient mutuellement
    (note en colonne étroite de 3-4 mots par ligne) : on empile — note en

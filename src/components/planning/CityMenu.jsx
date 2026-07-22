@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 
 // Menu "⋯" unique par ville : remplace la rangée d'icônes d'action (sélection
 // multiple, renommer, jours & nuits sur place, supprimer) qui restait
@@ -11,6 +12,7 @@ import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 export default function CityMenu({ city, tripStartDate, hasPlaces, selecting, onToggleSelecting, onRename, onUpdatePlanning, onDelete, dateLocked = false, hasPendingContent = false, siblingPendingBaseCitiesCount = 0 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const dropdownRef = useScrollIntoViewOnOpen(open);
 
   return (
     <div className="pp-city-menu-wrap" onClick={(e) => e.stopPropagation()}>
@@ -27,7 +29,7 @@ export default function CityMenu({ city, tripStartDate, hasPlaces, selecting, on
       {open && (
         <>
           <div className="pp-backdrop-overlay" onClick={() => setOpen(false)} />
-          <div className="pp-city-menu-dropdown">
+          <div className="pp-city-menu-dropdown" ref={dropdownRef}>
             {hasPlaces && (
               <button
                 className="pp-dropdown-item"
