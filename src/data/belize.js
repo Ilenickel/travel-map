@@ -129,7 +129,6 @@ export const BELIZE = {
         { name: { fr: "Hol Chan Marine Reserve — snorkel coraux", en: "Hol Chan Marine Reserve — coral snorkelling", es: "Hol Chan Marine Reserve — esnórquel entre corales" }, wikipedia: "Hol_Chan_Marine_Reserve" },
         { name: { fr: "Shark Ray Alley — nage avec raies & requins", en: "Shark Ray Alley — swim with rays & sharks", es: "Shark Ray Alley — nado con rayas y tiburones" }, wikipedia: "File:Nurse Shark (Ginglymostoma cirratum) (36552532791).jpg" },
         { name: { fr: "Caye Caulker — plage No Shoes, No Shirts", en: "Caye Caulker — laid-back “No Shoes, No Shirts” beach vibe", es: "Caye Caulker — playa de ambiente relajado “No Shoes, No Shirts”" }, wikipedia: "Caye_Caulker" },
-        { name: { fr: "San Pedro — vie nocturne & fruits de mer", en: "San Pedro — nightlife & seafood", es: "San Pedro — vida nocturna y marisco" }, wikipedia: "File:Barrier Reef Drive, San Pedro Town, Belize.jpg" },
       ],
     },
     {

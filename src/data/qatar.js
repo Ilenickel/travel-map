@@ -84,7 +84,6 @@ export const QATAR = {
       mustSee: [
         { name: { fr: "Marché aux faucons — tradition de fauconnerie patrimoine immatériel de l'UNESCO", en: "Falcon market — falconry tradition, UNESCO intangible heritage", es: "Mercado de halcones — tradición cetrera, patrimonio inmaterial de la UNESCO" }, wikipedia: "File:1 raróg.jpg" },
         { name: { fr: "Marché aux épices — parfums, encens et épices du Golfe", en: "Spice market — perfumes, incense and Gulf spices", es: "Mercado de especias — perfumes, incienso y especias del Golfo" }, wikipedia: "File:Souq Waqif, Doha, Catar, 2013-08-05, DD 82.JPG" },
-        { name: { fr: "Restaurants traditionnels — machbous, harees et luqaimat", en: "Traditional restaurants — machbous, harees and luqaimat", es: "Restaurantes tradicionales — machbous, harees y luqaimat" }, wikipedia: "File:Doha Dinner Bayt Sharq 03.jpg" },
       ],
     },
     {

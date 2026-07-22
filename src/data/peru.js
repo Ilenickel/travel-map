@@ -158,7 +158,6 @@ export const PERU = {
         { name: { fr: "Quartier Miraflores & Barranco", en: "Miraflores & Barranco districts", es: "Barrios de Miraflores y Barranco" }, wikipedia: "Miraflores_District,_Lima" },
         { name: { fr: "Musée Larco — collections précolumbiennes", en: "Larco Museum — pre-Columbian collections", es: "Museo Larco — colecciones precolombinas" }, wikipedia: "Larco_Museum" },
         { name: { fr: "Huaca Pucllana — pyramide inca en ville", en: "Huaca Pucllana — Inca pyramid in the city", es: "Huaca Pucllana — pirámide inca en la ciudad" }, wikipedia: "Huaca_Pucllana" },
-        { name: { fr: "Ceviche à Lima — expérience culinaire", en: "Ceviche in Lima — a culinary experience", es: "Ceviche en Lima — experiencia culinaria" }, wikipedia: "Ceviche" },
       ],
     },
     {

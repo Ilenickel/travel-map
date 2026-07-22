@@ -131,7 +131,6 @@ export const MALAYSIA = {
       mustSee: [
         { name: { fr: "Tours Petronas", en: "Petronas Towers", es: "Torres Petronas" }, wikipedia: "File:Petronas Panorama II.jpg" },
         { name: "Batu Caves", wikipedia: "Batu_Caves" },
-        { name: { fr: "Jalan Alor (rue gastronomique)", en: "Jalan Alor (food street)", es: "Jalan Alor (calle gastronómica)" }, wikipedia: "File:Jalan_Alor_in_Kuala_Lumpur_during_Corona_virus_lockdown.jpg" },
         { name: "Menara KL Tower", wikipedia: "File:Kuala_Lumpur_Malaysia_Menara-Kuala-Lumpur-02.jpg" },
       ],
     },

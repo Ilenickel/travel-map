@@ -90,7 +90,6 @@ export const GAMBIA = {
       tags: ["Plage", "Détente"],
       mustSee: [
         { name: { fr: "Plage de Kololi — la plus belle plage de Gambie", en: "Kololi Beach — the most beautiful beach in Gambia", es: "Playa de Kololi — la playa más bonita de Gambia" }, wikipedia: "Kololi" },
-        { name: { fr: "Strip de Senegambia — restaurants, bars et vie nocturne", en: "Senegambia Strip — restaurants, bars and nightlife", es: "Senegambia Strip — restaurantes, bares y vida nocturna" }, wikipedia: "File:GambiaSenegambiaHotel067_(11853073665).jpg" },
         { name: { fr: "Craft Market de Bakau — artisanat local", en: "Bakau Craft Market — local handicrafts", es: "Mercado de artesanía de Bakau — artesanía local" }, wikipedia: "Bakau" },
         { name: { fr: "Crocodile Pool de Kachikally — crocodiles sacrés", en: "Kachikally Crocodile Pool — sacred crocodiles", es: "Estanque de cocodrilos de Kachikally — cocodrilos sagrados" }, wikipedia: "File:Gambia Kachikally 0002.jpg" },
       ],

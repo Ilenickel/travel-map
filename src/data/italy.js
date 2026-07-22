@@ -306,7 +306,6 @@ export const ITALY = {
         { name: { fr: "Ruines de Pompéi — ville romaine figée par le Vésuve", en: "Ruins of Pompeii — Roman city frozen by Vesuvius", es: "Ruinas de Pompeya — ciudad romana congelada por el Vesubio" }, wikipedia: "File:Composition ruins Pompeii.jpg" },
         { name: { fr: "Mont Vésuve — volcan actif surplombant la baie de Naples", en: "Mount Vesuvius — active volcano overlooking the Bay of Naples", es: "Monte Vesubio — volcán activo sobre la bahía de Nápoles" }, wikipedia: "File:Mount Vesuvius Araucaria.jpg" },
         { name: { fr: "Musée Archéologique National de Naples — trésors de Pompéi", en: "National Archaeological Museum of Naples — treasures from Pompeii", es: "Museo Arqueológico Nacional de Nápoles — tesoros de Pompeya" }, wikipedia: "File:(Venice)_Mithras_slaying_the_bull_in_the_Museo_archeologico_nazionale..jpg" },
-        { name: { fr: "Pizza napoletana — une vraie Margherita da Michele", en: "Pizza napoletana — a real Margherita at Da Michele", es: "Pizza napoletana — una auténtica Margherita en Da Michele" }, wikipedia: "File:Punch Neapolitan Pizza Margherita.jpg" },
       ],
     },
   ],

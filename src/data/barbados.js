@@ -137,7 +137,6 @@ export const BARBADOS = {
       wikipedia: "Oistins",
       tags: ["Plage", "Gastronomie", "Nightlife"],
       mustSee: [
-        { name: { fr: "Fish Fry d'Oistins (vendredi soir) — grillades, rhum et soca", en: "Oistins Fish Fry (Friday night) — grilled food, rum and soca", es: "Fish Fry de Oistins (viernes noche) — parrillada, ron y soca" }, wikipedia: "Oistins" },
         { name: { fr: "Miami Beach & Accra Beach — plages familiales de la côte sud", en: "Miami Beach & Accra Beach — family-friendly south coast beaches", es: "Miami Beach y Accra Beach — playas familiares de la costa sur" }, wikipedia: "File:Borla Beach Accra.jpg" },
         { name: { fr: "Holetown (St. James) — premier établissement européen (1627)", en: "Holetown (St. James) — first European settlement (1627)", es: "Holetown (St. James) — primer asentamiento europeo (1627)" }, wikipedia: "File:Holetown, Saint James, Barbados-001.jpg" },
         { name: { fr: "Barbados Wildlife Reserve — tortues, singes verts et cerfs libres", en: "Barbados Wildlife Reserve — turtles, green monkeys and free-roaming deer", es: "Barbados Wildlife Reserve — tortugas, monos verdes y ciervos en libertad" }, wikipedia: "Barbados_Wildlife_Reserve" },

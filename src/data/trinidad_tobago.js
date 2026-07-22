@@ -81,7 +81,7 @@ export const TRINIDAD_TOBAGO = {
       mustSee: [
         { name: { fr: "Carnaval de Trinidad — fête de rue mondiale (fév/mars)", en: "Trinidad Carnival — world-famous street festival (Feb/Mar)", es: "Carnaval de Trinidad — fiesta callejera de fama mundial (feb/mar)" }, wikipedia: "Trinidad_and_Tobago_Carnival" },
         { name: { fr: "Queen's Park Savannah — parc central et architecture coloniale", en: "Queen's Park Savannah — central park and colonial architecture", es: "Queen's Park Savannah — parque central y arquitectura colonial" }, wikipedia: "Queen's_Park_Savannah" },
-        { name: { fr: "Marché de Chaguanas — centre commercial et gastronomique indo-trinidadien", en: "Chaguanas Market — Indo-Trinidadian shopping and food hub", es: "Mercado de Chaguanas — centro comercial y gastronómico indotrinitense" }, wikipedia: "Chaguanas" },
+        { name: { fr: "Marché de Chaguanas — centre commercial indo-trinidadien", en: "Chaguanas Market — Indo-Trinidadian shopping hub", es: "Mercado de Chaguanas — centro comercial indotrinitense" }, wikipedia: "Chaguanas" },
       ],
     },
     {

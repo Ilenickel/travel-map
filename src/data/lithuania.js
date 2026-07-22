@@ -145,7 +145,6 @@ export const LITHUANIA = {
       mustSee: [
         { name: { fr: "Château de l'île de Trakai — brique rouge sur le lac Galvė", en: "Trakai Island Castle — red brick on Lake Galvė", es: "Castillo de la isla de Trakai — ladrillo rojo sobre el lago Galvė" }, wikipedia: "Trakai_Island_Castle" },
         { name: { fr: "Kayak ou paddle sur le lac autour du château", en: "Kayaking or paddleboarding on the lake around the castle", es: "Kayak o paddle surf en el lago alrededor del castillo" }, wikipedia: "Trakai" },
-        { name: { fr: "Kibinas (chausson karaïte) dans un restaurant traditionnel", en: "Kibinas (Karaite pastry) at a traditional restaurant", es: "Kibinas (empanadilla caraíta) en un restaurante tradicional" }, wikipedia: "Kibinai" },
         { name: { fr: "Péninsule de Trakai — vue sur 30 lacs depuis la colline", en: "Trakai Peninsula — view over 30 lakes from the hill", es: "Península de Trakai — vistas de 30 lagos desde la colina" }, wikipedia: "Trakai" },
       ],
     },
@@ -164,7 +163,6 @@ export const LITHUANIA = {
         { name: { fr: "Laisvės Alėja — boulevard Art Déco de 1,7km (piéton)", en: "Laisvės Alėja — 1.7km Art Deco boulevard (pedestrian)", es: "Laisvės Alėja — bulevar Art Déco de 1,7km (peatonal)" }, wikipedia: "File:Laisvės alėja, Kaunas.jpg" },
         { name: { fr: "Musée Čiurlionis — peintre symboliste et compositeur lituanien", en: "Čiurlionis Museum — Lithuanian symbolist painter and composer", es: "Museo Čiurlionis — pintor simbolista y compositor lituano" }, wikipedia: "File:M. K. Ciurlionis National Art Museum (2018).jpg" },
         { name: { fr: "Château de Kaunas (XIVe s.) au confluent du Neris et Némunas", en: "Kaunas Castle (14th c.) at the confluence of the Neris and Nemunas rivers", es: "Castillo de Kaunas (s. XIV) en la confluencia del Neris y el Nemunas" }, wikipedia: "Kaunas_Castle" },
-        { name: { fr: "Marché Halės turgus — vie quotidienne et cuisine lituanienne", en: "Halės turgus market — everyday life and Lithuanian cuisine", es: "Mercado Halės turgus — vida cotidiana y cocina lituana" }, wikipedia: "File:Hales Market - panoramio.jpg" },
       ],
     },
   ],

@@ -120,7 +120,6 @@ export const MALI = {
       tags: ["UNESCO", "Culture", "Nature"],
       mustSee: [
         { name: { fr: "Village de Sangha — porte d'entrée du pays Dogon", en: "Sangha village — gateway to Dogon country", es: "Pueblo de Sangha — puerta de entrada al país dogón" }, wikipedia: "File:ASangha 03.JPG" },
-        { name: { fr: "Danse des masques Dogon (fêtes et funérailles)", en: "Dogon mask dance (festivals and funerals)", es: "Danza de máscaras dogón (fiestas y funerales)" }, wikipedia: "Dogon_people" },
         { name: { fr: "Cases Tellem dans les falaises (XIIe–XVe s.)", en: "Tellem huts in the cliffs (12th–15th c.)", es: "Cabañas tellem en los acantilados (siglos XII–XV)" }, wikipedia: "Tellem" },
         { name: { fr: "Trek entre villages accrochés aux falaises (2–5 jours)", en: "Trek between cliffside villages (2–5 days)", es: "Trekking entre pueblos aferrados a los acantilados (2–5 días)" }, wikipedia: "Bandiagara_Escarpment" },
       ],

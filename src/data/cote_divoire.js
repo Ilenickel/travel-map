@@ -164,7 +164,6 @@ export const COTE_DIVOIRE = {
       mustSee: [
         { name: { fr: "Quartier France — maisons coloniales classées UNESCO", en: "France district — UNESCO-listed colonial houses", es: "Barrio Francia — casas coloniales declaradas UNESCO" }, wikipedia: "File:Mairie de Grand-Bassam façade avant.jpg" },
         { name: { fr: "Musée National du Costume", en: "National Costume Museum", es: "Museo Nacional del Traje" }, wikipedia: "File:Mairie de Grand-Bassam portail.jpg" },
-        { name: { fr: "Plage de Grand-Bassam — détente et fruits de mer", en: "Grand-Bassam Beach — relaxation and seafood", es: "Playa de Grand-Bassam — relax y marisco" }, wikipedia: "File:Grand Bassam ap 003.jpg" },
         { name: { fr: "Rue des Boutiques coloniales restaurées", en: "Street of restored colonial shops", es: "Calle de las tiendas coloniales restauradas" }, wikipedia: "File:Grand-Bassam women.jpg" },
       ],
     },

@@ -164,7 +164,6 @@ export const DOMINICAN_REPUBLIC = {
       mustSee: [
         { name: { fr: "Playa Bonita — la plus belle plage de Las Terrenas", en: "Playa Bonita — Las Terrenas' most beautiful beach", es: "Playa Bonita — la playa más bonita de Las Terrenas" }, wikipedia: "File:Las Terrenas beach 7.JPG" },
         { name: { fr: "Plage aux Champignons — formations coralliennes", en: "Mushroom Beach — coral formations", es: "Playa de los Hongos — formaciones coralinas" }, wikipedia: "File:Photo LFILT.jpg" },
-        { name: { fr: "Gastronomie franco-caribéenne — rue principale", en: "French-Caribbean dining — main street", es: "Gastronomía franco-caribeña — calle principal" }, wikipedia: "File:Las-Terrenas.jpg" },
       ],
     },
   ],

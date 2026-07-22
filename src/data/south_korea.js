@@ -156,7 +156,6 @@ export const SOUTH_KOREA = {
       tags: ["Plage", "Gastronomie", "Ville"],
       mustSee: [
         { name: { fr: "Village culturel de Gamcheon", en: "Gamcheon Culture Village", es: "Aldea cultural de Gamcheon" }, wikipedia: "Gamcheon_Culture_Village" },
-        { name: { fr: "Marché Jagalchi — fruits de mer", en: "Jagalchi Market — seafood", es: "Mercado de Jagalchi — marisco" }, wikipedia: "Jagalchi_Market" },
         { name: { fr: "Plage de Haeundae", en: "Haeundae Beach", es: "Playa de Haeundae" }, wikipedia: "Haeundae_Beach" },
         { name: "Temple Haedong Yonggungsa", wikipedia: "Haedong_Yonggungsa" },
       ],

@@ -128,7 +128,6 @@ export const SLOVAKIA = {
       mustSee: [
         { name: { fr: "Château de Bratislava — vue sur le Danube, Autriche et Hongrie", en: "Bratislava Castle — views over the Danube, Austria and Hungary", es: "Castillo de Bratislava — vistas al Danubio, Austria y Hungría" }, wikipedia: "Bratislava_Castle" },
         { name: { fr: "Vieille Ville baroque — rues Michael et Hlavné námestie", en: "Baroque Old Town — Michalská street and Hlavné námestie", es: "Casco antiguo barroco — calle Michalská y Hlavné námestie" }, wikipedia: "Old_Town,_Bratislava" },
-        { name: { fr: "UFO Bridge — restaurant sur le pont du Danube avec vue panoramique", en: "UFO Bridge — restaurant on the Danube bridge with panoramic views", es: "UFO Bridge — restaurante en el puente del Danubio con vistas panorámicas" }, wikipedia: "File:Most SNP, Bratislava (by Pudelek).JPG" },
         { name: { fr: "Ruines du Devin Castle — falaise au confluent Danube–Morava", en: "Devín Castle ruins — cliff at the Danube-Morava confluence", es: "Ruinas del castillo de Devín — acantilado en la confluencia Danubio-Morava" }, wikipedia: "Devín_Castle" },
       ],
     },

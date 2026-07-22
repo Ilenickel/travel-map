@@ -144,7 +144,6 @@ export const NORTH_KOREA = {
       mustSee: [
         { name: { fr: "Stade de Rungrado — plus grand stade du monde (114 000 places)", en: "Rungrado Stadium — the world's largest (114,000 seats)", es: "Estadio Rungrado — el más grande del mundo (114.000 asientos)" }, wikipedia: "Rungrado_1st_of_May_Stadium" },
         { name: { fr: "Fresque humaine — mosaïque vivante de 20 000 enfants avec des cartes", en: "Human mural — living mosaic of 20,000 children with cards", es: "Mural humano — mosaico viviente de 20.000 niños con tarjetas" }, wikipedia: "Arirang_Mass_Games" },
-        { name: { fr: "Chorégraphies de masse — gymnastes et danseurs synchronisés", en: "Mass choreography — synchronised gymnasts and dancers", es: "Coreografías de masas — gimnastas y bailarines sincronizados" }, wikipedia: "Arirang_Mass_Games" },
         { name: { fr: "Feux d'artifice de clôture — finale pyrotechnique spectaculaire", en: "Closing fireworks — spectacular pyrotechnic finale", es: "Fuegos artificiales de clausura — final pirotécnico espectacular" }, wikipedia: "Arirang_Mass_Games" },
       ],
     },

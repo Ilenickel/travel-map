@@ -111,7 +111,6 @@ export const SLOVENIA = {
         { name: { fr: "Île de Bled en pletna — église baroque du XVIIe siècle", en: "Bled Island by pletna — 17th-century baroque church", es: "Isla de Bled en pletna — iglesia barroca del siglo XVII" }, wikipedia: "File:Bled Overview.JPG" },
         { name: { fr: "Château de Bled (XIe s.) — vue plongeante sur le lac", en: "Bled Castle (11th century) — sweeping view over the lake", es: "Castillo de Bled (s. XI) — vista panorámica sobre el lago" }, wikipedia: "Bled_Castle" },
         { name: { fr: "Vintgar Gorge — canyon de 1,6km à 4km de Bled", en: "Vintgar Gorge — a 1.6km canyon 4km from Bled", es: "Garganta de Vintgar — cañón de 1,6km a 4km de Bled" }, wikipedia: "Vintgar_Gorge" },
-        { name: { fr: "Kremšnita (crème à la vanille) au café Park — recette originale depuis 1953", en: "Kremšnita (vanilla cream cake) at Café Park — original recipe since 1953", es: "Kremšnita (tarta de crema) en el café Park — receta original desde 1953" }, wikipedia: "Lake_Bled" },
       ],
     },
     {

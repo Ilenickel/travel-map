@@ -161,7 +161,6 @@ export const SWEDEN = {
       wikipedia: "Gothenburg",
       tags: ["Gastronomie", "Plage", "UNESCO", "Architecture"],
       mustSee: [
-        { name: { fr: "Marché de Feskekorka — fruits de mer frais de Bohuslän", en: "Feskekôrka market — fresh Bohuslän seafood", es: "Mercado de Feskekôrka — marisco fresco de Bohuslän" }, wikipedia: "File:00 3022 Göteborg - Markthallen.jpg" },
         { name: { fr: "Gravures rupestres de Tanum — art de l'Âge du Bronze (UNESCO)", en: "Tanum rock carvings — Bronze Age art (UNESCO)", es: "Grabados rupestres de Tanum — arte de la Edad del Bronce (UNESCO)" }, wikipedia: "Rock_Carvings_in_Tanum" },
         { name: { fr: "Archipel de Bohuslän — kayak entre les îlots granitiques", en: "Bohuslän archipelago — kayaking among the granite islets", es: "Archipiélago de Bohuslän — kayak entre los islotes graníticos" }, wikipedia: "File:Bohuslän 2017.jpg" },
         { name: { fr: "Universeum — grand aquarium de Scandinavie", en: "Universeum — Scandinavia's great aquarium", es: "Universeum — gran acuario de Escandinavia" }, wikipedia: "Universeum" },

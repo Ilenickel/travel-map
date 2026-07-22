@@ -149,7 +149,6 @@ export const SRI_LANKA = {
       mustSee: [
         { name: { fr: "Temple de la Dent (Sri Dalada)", en: "Temple of the Tooth (Sri Dalada)", es: "Templo del Diente (Sri Dalada)" }, wikipedia: "Temple_of_the_Tooth" },
         { name: { fr: "Jardin botanique de Peradeniya", en: "Peradeniya Royal Botanic Gardens", es: "Jardín botánico de Peradeniya" }, wikipedia: "Royal_Botanic_Gardens,_Peradeniya" },
-        { name: { fr: "Danses kandyennes", en: "Kandyan dances", es: "Danzas kandyanas" }, wikipedia: "Kandyan_dance" },
         { name: { fr: "Lac de Kandy", en: "Kandy Lake", es: "Lago de Kandy" }, wikipedia: "Kandy_Lake" },
       ],
     },

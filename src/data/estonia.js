@@ -111,7 +111,7 @@ export const ESTONIA = {
         { name: { fr: "Place de l'Hôtel de Ville de Tallinn (XIVe s.) et tour Raekoja", en: "Tallinn Town Hall Square (14th century) and Raekoja Tower", es: "Plaza del Ayuntamiento de Tallin (s. XIV) y torre Raekoja" }, wikipedia: "Tallinn_Town_Hall" },
         { name: { fr: "Toompea — colline avec château, parlement, cathédrale orthodoxe", en: "Toompea — hill with the castle, parliament and Orthodox cathedral", es: "Toompea — colina con castillo, parlamento y catedral ortodoxa" }, wikipedia: "Toompea" },
         { name: { fr: "Muraille médiévale — tours Kiek in de Kök et chemin de ronde", en: "Medieval city wall — Kiek in de Kök towers and the ramparts walk", es: "Muralla medieval — torres Kiek in de Kök y camino de ronda" }, wikipedia: "File:City wall Towers Tallinn 2015.jpg" },
-        { name: { fr: "Quartier Telliskivi — culture alternative et street food", en: "Telliskivi district — alternative culture and street food", es: "Barrio de Telliskivi — cultura alternativa y comida callejera" }, wikipedia: "Telliskivi_Creative_City" },
+        { name: { fr: "Quartier Telliskivi — culture alternative", en: "Telliskivi district — alternative culture", es: "Barrio de Telliskivi — cultura alternativa" }, wikipedia: "Telliskivi_Creative_City" },
       ],
     },
     {

@@ -165,7 +165,6 @@ export const ROMANIA = {
         { name: { fr: "Palais du Parlement (Ceaușescu) — visite guidée obligatoire", en: "Palace of the Parliament (Ceaușescu) — guided tour mandatory", es: "Palacio del Parlamento (Ceaușescu) — visita guiada obligatoria" }, wikipedia: "Palace_of_the_Parliament" },
         { name: { fr: "Musée du Village — 300 maisons paysannes en plein air", en: "Village Museum — 300 open-air peasant houses", es: "Museo del Pueblo — 300 casas campesinas al aire libre" }, wikipedia: "Dimitrie_Gusti_National_Village_Museum" },
         { name: { fr: "Calea Victoriei — boulevard Art Nouveau et palais Belle Époque", en: "Calea Victoriei — Art Nouveau boulevard and Belle Époque palaces", es: "Calea Victoriei — bulevar Art Nouveau y palacios de la Belle Époque" }, wikipedia: "Calea_Victoriei" },
-        { name: { fr: "Quartier de Floreasca — terrasses, restaurants, vie de nuit", en: "Floreasca district — terraces, restaurants, nightlife", es: "Barrio de Floreasca — terrazas, restaurantes, vida nocturna" }, wikipedia: "File:Bis Sofia Floreasca 62.jpg" },
       ],
     },
   ],

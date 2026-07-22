@@ -162,10 +162,9 @@ export const EL_SALVADOR = {
       wikipedia: "File:RUTA DE LAS FLORES EN ATACO. - panoramio.jpg",
       tags: ["Culture", "Gastronomie", "Shopping"],
       mustSee: [
-        { name: { fr: "Juayúa — festival gastronomique (week-ends)", en: "Juayúa — food festival (weekends)", es: "Juayúa — festival gastronómico (fines de semana)" }, wikipedia: "Juayúa" },
         { name: { fr: "Nahuizalco — artisanat en rotin et bois", en: "Nahuizalco — rattan and wood crafts", es: "Nahuizalco — artesanía de mimbre y madera" }, wikipedia: "Nahuizalco" },
-        { name: { fr: "Ataco — murales géants & café de spécialité", en: "Ataco — giant murals & specialty coffee", es: "Ataco — murales gigantes y café de especialidad" }, wikipedia: "Concepción_de_Ataco" },
-        { name: { fr: "Apaneca — plantations de café et ULM", en: "Apaneca — coffee plantations and microlights", es: "Apaneca — plantaciones de café y ultraligeros" }, wikipedia: "Apaneca" },
+        { name: { fr: "Ataco — murales géants", en: "Ataco — giant murals", es: "Ataco — murales gigantes" }, wikipedia: "Concepción_de_Ataco" },
+        { name: { fr: "Apaneca — ULM et paysages de montagne", en: "Apaneca — microlights and mountain scenery", es: "Apaneca — ultraligeros y paisajes de montaña" }, wikipedia: "Apaneca" },
       ],
     },
   ],

@@ -126,7 +126,6 @@ export const CUBA = {
       tags: ["UNESCO", "Histoire", "Culture"],
       mustSee: [
         { name: { fr: "Plaza Mayor & Église de la Santísima Trinidad", en: "Plaza Mayor & Church of the Holy Trinity", es: "Plaza Mayor e Iglesia de la Santísima Trinidad" }, wikipedia: "File:Trinidad_(Kuba)_03.jpg" },
-        { name: { fr: "Salsa sur les escaliers de la Casa de la Música", en: "Salsa on the Casa de la Música steps", es: "Salsa en las escaleras de la Casa de la Música" }, wikipedia: "Trinidad,_Cuba" },
         { name: { fr: "Cascades Topes de Collantes (randonnée)", en: "Topes de Collantes waterfalls (hiking)", es: "Cascadas de Topes de Collantes (senderismo)" }, wikipedia: "File:Cuba_2013-01-27_(8554174568).jpg" },
         { name: { fr: "Valle de los Ingenios (UNESCO) — anciens moulins", en: "Valle de los Ingenios (UNESCO) — former sugar mills", es: "Valle de los Ingenios (UNESCO) — antiguos ingenios azucareros" }, wikipedia: "File:Valle_de_los_ingenios2.jpg" },
       ],

@@ -160,7 +160,6 @@ export const BURUNDI = {
       tags: ["Culture", "UNESCO", "Tradition"],
       mustSee: [
         { name: { fr: "Spectacle des tambourinaires d'Ingoma à Gishora", en: "Ingoma drummers performance in Gishora", es: "Espectáculo de los tamborileros ingoma en Gishora" }, wikipedia: "Royal_Drummers_of_Burundi" },
-        { name: { fr: "Danse Intore — guerriers en tenues traditionnelles", en: "Intore dance — warriors in traditional dress", es: "Danza intore — guerreros con trajes tradicionales" }, wikipedia: "Intore" },
         { name: { fr: "Musée national de Gitega — histoire royale du Burundi", en: "National Museum of Gitega — Burundi's royal history", es: "Museo Nacional de Gitega — historia real de Burundi" }, wikipedia: "File:BU Gitega (1).jpg" },
         { name: { fr: "Palais royal de Gitega — ancienne résidence des rois", en: "Royal Palace of Gitega — former residence of the kings", es: "Palacio real de Gitega — antigua residencia de los reyes" }, wikipedia: "Gitega" },
       ],

@@ -111,10 +111,6 @@ export const FIJI = {
           wikipedia: "File:Limestone ceiling inside the Sawa-i-Lau Caves, Fiji.jpg",
         },
         {
-          name: { fr: "Village de Nabukeru — cérémonie du kava et danse meke traditionnelle", en: "Nabukeru village — kava ceremony and traditional meke dance", es: "Pueblo de Nabukeru — ceremonia del kava y danza meke tradicional" },
-          wikipedia: "File:Yasawa3.jpeg",
-        },
-        {
           name: { fr: "Plage de Naviti — snorkeling avec tortues marines", en: "Naviti Beach — snorkelling with sea turtles", es: "Playa de Naviti — esnórquel con tortugas marinas" },
           wikipedia: "File:Beach on Naviti island, Yasawa Islands, Fiji (1) - August 2016.jpg",
         },

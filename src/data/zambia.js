@@ -160,7 +160,7 @@ export const ZAMBIA = {
       tags: ["Ville", "Aventure", "Nature", "Safari", "Gastronomie", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Safari en canoë sur le Zambèze — éléphants traversant le fleuve", en: "Canoe safari on the Zambezi — elephants crossing the river", es: "Safari en canoa por el Zambeze — elefantes cruzando el río" }, wikipedia: "Lower_Zambezi_National_Park" },
-        { name: { fr: "Soweto Market Lusaka — artisanat et cuisine zambienne", en: "Soweto Market Lusaka — Zambian crafts and cuisine", es: "Soweto Market de Lusaka — artesanía y cocina zambiana" }, wikipedia: "File:Fast Food in Lusaka 10.jpg" },
+        { name: { fr: "Soweto Market Lusaka — artisanat local", en: "Soweto Market Lusaka — local crafts", es: "Soweto Market de Lusaka — artesanía local" }, wikipedia: "File:Fast Food in Lusaka 10.jpg" },
         { name: { fr: "Marché Kalingalinga — peintures et sculptures lusaka", en: "Kalingalinga Market — Lusaka paintings and sculptures", es: "Mercado Kalingalinga — pinturas y esculturas de Lusaka" }, wikipedia: "File:Kalingalinga.jpg" },
       ],
     },

@@ -345,7 +345,6 @@ export const FRANCE = {
       tags: ["Gastronomie", "Culture", "Histoire", "UNESCO", "Architecture", "Ville"],
       mustSee: [
         { name: { fr: "Vieux Lyon & traboules — quartier Renaissance classé UNESCO", en: "Old Lyon & traboules — UNESCO-listed Renaissance district", es: "El casco antiguo de Lyon y las traboules — barrio renacentista Patrimonio UNESCO" }, wikipedia: "Vieux_Lyon" },
-        { name: { fr: "Halles Paul Bocuse — temple de la gastronomie lyonnaise", en: "Halles Paul Bocuse — temple of Lyonnaise gastronomy", es: "Halles Paul Bocuse — templo de la gastronomía de Lyon" }, wikipedia: "File:Halles de Lyon-Paul Bocuse 001.jpg" },
         { name: { fr: "Basilique Notre-Dame de Fourvière — surplombant la ville", en: "Notre-Dame de Fourvière Basilica — overlooking the city", es: "Basílica de Notre-Dame de Fourvière — con vistas a la ciudad" }, wikipedia: "Basilica_of_Notre-Dame_de_Fourvière" },
         { name: { fr: "Théâtre des Célestins", en: "Célestins Theatre", es: "Teatro de los Célestins" }, wikipedia: "File:Théâtre des Célestins 2015.jpg" },
       ],

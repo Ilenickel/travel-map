@@ -109,7 +109,6 @@ export const ANGOLA = {
       tags: ["Ville", "Culture", "Architecture", "Histoire"],
       mustSee: [
         { name: { fr: "Fortaleza de São Miguel — forteresse portugaise du XVIe siècle", en: "Fortaleza de São Miguel — 16th-century Portuguese fortress", es: "Fortaleza de São Miguel — fortaleza portuguesa del siglo XVI" }, wikipedia: "File:Luanda-SMiguelFort2.jpg" },
-        { name: { fr: "Ilha do Cabo — presqu'île aux restaurants de fruits de mer", en: "Ilha do Cabo — peninsula with seafood restaurants", es: "Ilha do Cabo — península con restaurantes de marisco" }, wikipedia: "File:Luanda Bay and Ilha de Luanda.jpg" },
         { name: { fr: "Museu Nacional de Antropologia — collections ethnographiques", en: "Museu Nacional de Antropologia — ethnographic collections", es: "Museu Nacional de Antropologia — colecciones etnográficas" }, wikipedia: "File:Pic stock-geo ph-mm-manila-ermita-rizal park-old finance bldg. (national museum annex) (2014) a0001.JPG" },
         { name: { fr: "Marginal de Luanda — promenade en bord de mer rénovée", en: "Marginal de Luanda — renovated seafront promenade", es: "Marginal de Luanda — paseo marítimo renovado" }, wikipedia: "Luanda" },
       ],

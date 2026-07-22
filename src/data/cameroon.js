@@ -146,7 +146,6 @@ export const CAMEROON = {
         { name: { fr: "Chutes de la Lobé — chutes tombant directement dans l'océan", en: "Lobé Falls — waterfalls plunging directly into the ocean", es: "Cataratas de Lobé — caídas que se precipitan directamente en el océano" }, wikipedia: "File:Les chutes de la lobé kribi cameroon1.jpg" },
         { name: { fr: "Plages de Kribi — sable blanc et palmiers", en: "Kribi beaches — white sand and palm trees", es: "Playas de Kribi — arena blanca y palmeras" }, wikipedia: "Kribi" },
         { name: { fr: "Rencontre avec les Pygmées Baka (forêt)", en: "Meeting the Baka Pygmies (forest)", es: "Encuentro con los pigmeos baka (selva)" }, wikipedia: "File:Baka Drf Dja.JPG" },
-        { name: { fr: "Pêche et fruits de mer frais sur la plage", en: "Fishing and fresh seafood on the beach", es: "Pesca y marisco fresco en la playa" }, wikipedia: "File:Couché du soleil kribi.jpg" },
       ],
     },
     {
@@ -162,7 +161,6 @@ export const CAMEROON = {
       tags: ["Histoire", "Culture", "Shopping", "Montagne"],
       mustSee: [
         { name: { fr: "Palais du Sultan des Bamoun à Foumban + musée", en: "Bamoun Sultan's Palace in Foumban + museum", es: "Palacio del sultán bamún en Foumban + museo" }, wikipedia: "Foumban" },
-        { name: { fr: "Chefferie de Bafut et danse Abakwa sacrée", en: "Bafut chiefdom and the sacred Abakwa dance", es: "Jefatura de Bafut y danza sagrada Abakwa" }, wikipedia: "File:Bafut Palace - EcoVillage - Cameroon.JPG" },
         { name: { fr: "Marché de Foumban — bronzes, masques et tissus", en: "Foumban market — bronzes, masks and fabrics", es: "Mercado de Foumban — bronces, máscaras y tejidos" }, wikipedia: "File:Cameroon - Foumban market.jpg" },
       ],
     },

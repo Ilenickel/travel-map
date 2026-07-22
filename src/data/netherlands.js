@@ -175,10 +175,6 @@ export const NETHERLANDS = {
           wikipedia: "File:Delft 21 April 2013 07.jpg",
         },
         {
-          name: { fr: "Markthal de Rotterdam — halle couverte avec fresque géante et restaurants", en: "Rotterdam Markthal — covered market hall with a giant mural and restaurants", es: "Markthal de Róterdam — mercado cubierto con un mural gigante y restaurantes" },
-          wikipedia: "File:Markthal-Rotterdam.jpg",
-        },
-        {
           name: { fr: "Maisons cubes de Rotterdam (Kubuswoning) — icônes du design néerlandais", en: "Rotterdam cube houses (Kubuswoning) — icons of Dutch design", es: "Casas cubo de Róterdam (Kubuswoning) — íconos del diseño neerlandés" },
           wikipedia: "File:Rotterdam Cube House street view.jpg",
         },

@@ -110,7 +110,6 @@ export const POLAND = {
       mustSee: [
         { name: { fr: "Rynek Główny — plus grande place médiévale d'Europe", en: "Rynek Główny — largest medieval square in Europe", es: "Rynek Główny — la mayor plaza medieval de Europa" }, wikipedia: "File:Empty_Old_Town_Market_Square_in_Kraków_during_the_COVID-19_pandemic_in_Poland,_April_2020.jpg" },
         { name: { fr: "Château royal du Wawel avec la crypte des rois de Pologne", en: "Wawel Royal Castle with the crypt of Polish kings", es: "Castillo real de Wawel con la cripta de los reyes de Polonia" }, wikipedia: "Wawel_Castle" },
-        { name: { fr: "Kazimierz — quartier juif historique et restaurants", en: "Kazimierz — historic Jewish quarter and restaurants", es: "Kazimierz — barrio judío histórico y restaurantes" }, wikipedia: "File:Medieval_market_square,_Wolnica_Square,_Kazimierz,_Kraków,_Poland.jpg" },
         { name: { fr: "Mine de sel de Wieliczka (UNESCO) — cathédrale souterraine", en: "Wieliczka Salt Mine (UNESCO) — underground cathedral", es: "Mina de sal de Wieliczka (UNESCO) — catedral subterránea" }, wikipedia: "File:Wieliczka-daVinci.jpg" },
       ],
     },

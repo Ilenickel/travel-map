@@ -244,7 +244,6 @@ export const JAPAN = {
       mustSee: [
         { name: "Dotonbori", wikipedia: "File:Osaka_Dotonbori_Ebisu_Bridge.jpg" },
         { name: { fr: "Château d'Osaka", en: "Osaka Castle", es: "Castillo de Osaka" }, wikipedia: "Osaka_Castle" },
-        { name: { fr: "Takoyaki & street food", en: "Takoyaki & street food", es: "Takoyaki y street food" }, wikipedia: "Takoyaki" },
         { name: { fr: "Tour Tsutenkaku — Shinsekai", en: "Tsutenkaku Tower — Shinsekai", es: "Torre Tsutenkaku — Shinsekai" }, wikipedia: "File:Shinsekai and Tsutenkaku Tower.jpg" },
       ],
     },
@@ -316,7 +315,6 @@ export const JAPAN = {
         { name: { fr: "Plage d'Emeraude d'Ishigaki", en: "Ishigaki Emerald Beach", es: "Playa Esmeralda de Ishigaki" }, wikipedia: "File:Kabira Bay Ishigaki Island21bs5s4410.jpg" },
         { name: { fr: "Snorkeling dans les récifs de Kerama", en: "Snorkelling in the Kerama reefs", es: "Buceo con tubo en los arrecifes de Kerama" }, wikipedia: "File:Kerama Island - 6081216280.jpg" },
         { name: { fr: "Parc national de Yanbaru", en: "Yanbaru National Park", es: "Parque nacional de Yanbaru" }, wikipedia: "Yambaru_National_Park" },
-        { name: { fr: "Festival Eisa — danse traditionnelle", en: "Eisa Festival — traditional dance", es: "Festival Eisa — danza tradicional" }, wikipedia: "File:Eisa parade of Osu Summer Festival.jpg" },
       ],
     },
   ],

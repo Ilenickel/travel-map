@@ -78,7 +78,6 @@ export const PAPUA_NEW_GUINEA = {
         { name: { fr: "Guerriers Huli Wigmen — perruques rituelles et parures traditionnelles", en: "Huli Wigmen warriors — ritual wigs and traditional adornments", es: "Guerreros Huli Wigmen — pelucas rituales y adornos tradicionales" }, wikipedia: "Huli_people" },
         { name: { fr: "Marché de Tari — échanges locaux et artisanat des highlands", en: "Tari Market — local trade and highland crafts", es: "Mercado de Tari — comercio local y artesanía de las tierras altas" }, wikipedia: "File:Huli huli (8084262832).jpg" },
         { name: { fr: "Festival Sing-Sing de Goroka — rassemblement de 100+ tribus en août", en: "Goroka Sing-Sing Festival — a gathering of 100+ tribes in August", es: "Festival Sing-Sing de Goroka — reunión de más de 100 tribus en agosto" }, wikipedia: "File:Goroka Show - Lastra.jpg" },
-        { name: { fr: "Mt. Hagen Cultural Show — danses et costumes traditionnels", en: "Mt. Hagen Cultural Show — traditional dances and costumes", es: "Mt. Hagen Cultural Show — danzas y trajes tradicionales" }, wikipedia: "File:(Mount_Hagen_cultural_show_in_Papua_New_Guinea)_-_DPLA_-_7857cec288cce6e6407b34026296b200.jpg" },
       ],
     },
     {

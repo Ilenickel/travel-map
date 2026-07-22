@@ -50,7 +50,7 @@ export const SPAIN = {
         en: "Perfect everywhere in Spain: the sea still warm in the south, pleasant temperatures, grape harvest in Rioja, fewer tourists.",
         es: "Perfecto en toda España: mar todavía cálido en el sur, temperaturas agradables, vendimia en La Rioja, menos turistas.",
       },
-      icon: "🍇",
+          { name: { fr: "San Sebastián (Donostia) — plage de La Concha", en: "San Sebastián (Donostia) — La Concha beach", es: "San Sebastián (Donostia) — playa de La Concha" }, wikipedia: "File:San Sebastian Zurriola beach 1190579.jpg" },
     },
     {
       months: { fr: "Juillet – Août", en: "July – August", es: "Julio – Agosto" },

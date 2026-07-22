@@ -141,7 +141,6 @@ export const ESWATINI = {
       wikipedia: "File:Mantenga nature reserve (37097743884).jpg",
       tags: ["Culture", "Tradition", "Shopping"],
       mustSee: [
-        { name: { fr: "Danses traditionnelles swazies — spectacles quotidiens", en: "Traditional Swazi dances — daily performances", es: "Danzas tradicionales suazis — espectáculos diarios" }, wikipedia: "File:Mantenga nature reserve (37097743884).jpg" },
         { name: { fr: "Chutes de Mantenga — cascade dans le canyon", en: "Mantenga Falls — waterfall in the gorge", es: "Cataratas de Mantenga — cascada en el cañón" }, wikipedia: "File:Mantenga nature reserve (37097743884).jpg" },
         { name: { fr: "Ngwenya Glass — fabrique de verre recyclé mondialement connue", en: "Ngwenya Glass — world-famous recycled glass workshop", es: "Ngwenya Glass — fábrica de vidrio reciclado mundialmente conocida" }, wikipedia: "File:Glass Elephant.jpg" },
       ],

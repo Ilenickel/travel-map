@@ -142,7 +142,7 @@ export const SWITZERLAND = {
           wikipedia: "Klein_Matterhorn",
         },
         {
-          name: { fr: "Bahnhofstrasse de Zermatt — rue principale animée avec boutiques et restaurants", en: "Zermatt's Bahnhofstrasse — lively main street with shops and restaurants", es: "Bahnhofstrasse de Zermatt — animada calle principal con tiendas y restaurantes" },
+          name: { fr: "Bahnhofstrasse de Zermatt — rue principale animée", en: "Zermatt's Bahnhofstrasse — lively main street", es: "Bahnhofstrasse de Zermatt — animada calle principal" },
           wikipedia: "File:Zermatt 20190717 202516.jpg",
         },
       ],

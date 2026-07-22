@@ -156,7 +156,6 @@ export const ICELAND = {
       mustSee: [
         { name: { fr: "Hallgrímskirkja — cathédrale emblématique", en: "Hallgrímskirkja — iconic cathedral", es: "Hallgrímskirkja — catedral emblemática" }, wikipedia: "Hallgrímskirkja" },
         { name: "Blue Lagoon", wikipedia: "Blue_Lagoon_(geothermal_spa)" },
-        { name: { fr: "Old Harbour & marché alimentaire", en: "Old Harbour & food hall", es: "Old Harbour y mercado gastronómico" }, wikipedia: "File:Reykjavik old harbour (6046082168).jpg" },
         { name: { fr: "Musée national d'Islande", en: "National Museum of Iceland", es: "Museo Nacional de Islandia" }, wikipedia: "National_Museum_of_Iceland" },
       ],
     },
