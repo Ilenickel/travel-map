@@ -130,21 +130,76 @@ export async function resolveQueryCityName(admin, cityName, countryCode, sourceL
 // à searchBestCityPhoto si la ville elle-même n'a aucune photo exploitable.
 // null si le nom n'a jamais pu être confirmé par un géocodage (override ou
 // repli texte pur, sans coordonnées associées).
+// Clé du cache de CONFIRMATION (distincte du cache de traduction brute
+// resolveQueryCityName ci-dessus) : une fois qu'un nom a été confirmé par le
+// géocodeur une fois, on ne le revérifie plus JAMAIS — un incident réseau
+// ponctuel sur Geoapify (timeout, 5xx) pendant cette vérification ne doit
+// jamais pouvoir refaire retomber une ville déjà résolue sur son nom
+// d'origine. Constaté le 2026-07-23 : "Pékin" avait sa traduction "Beijing"
+// en cache depuis le 20/07, mais la vérification géocodeur était rejouée à
+// chaque run — un aléa réseau ponctuel a suffi à la faire échouer une fois,
+// malgré un correctif déjà en place et vérifié juste avant.
+const CONFIRMED_NAME_CONTENT_TYPE = 'city_image_query_confirmed';
+
+async function getCachedConfirmedName(admin, cityName, countryCode) {
+  const contentId = `${countryCode}:${cityName.trim().toLowerCase()}`;
+  const { data } = await admin
+    .from('translations')
+    .select('translated_text, source_language')
+    .match({ content_type: CONFIRMED_NAME_CONTENT_TYPE, content_id: contentId, field: 'city_name', language: 'en' })
+    .maybeSingle();
+  if (!data) return null;
+  const [name, region] = data.translated_text.split('||');
+  return { name, region: region || null };
+}
+
+async function cacheConfirmedName(admin, cityName, countryCode, name, region) {
+  const contentId = `${countryCode}:${cityName.trim().toLowerCase()}`;
+  await admin.from('translations').upsert(
+    {
+      content_type: CONFIRMED_NAME_CONTENT_TYPE,
+      content_id: contentId,
+      field: 'city_name',
+      language: 'en',
+      translated_text: `${name}||${region || ''}`,
+      source_hash: 'confirmed',
+      translated_at: new Date().toISOString(),
+    },
+    { onConflict: 'content_type,content_id,field,language' }
+  );
+}
+
+// `confirmed: false` UNIQUEMENT sur le repli final (traduction non vérifiable
+// par le géocodeur) — signale à l'appelant (resolveCityImage) de NE PAS
+// mettre le résultat Unsplash en cache de façon permanente, pour qu'une
+// ville tapée par un utilisateur (pas dans cityNameOverrides.js) dont la
+// résolution échoue une fois (aléa réseau ou nom réellement introuvable) soit
+// retentée au prochain appel plutôt que de rester bloquée sur une recherche
+// dans la mauvaise langue pour toujours — constaté le 2026-07-23.
 export async function resolveEnglishCityNameForQuery(admin, cityName, countryCode, countryAlpha2, sourceLanguage = 'fr') {
   const override = cityNameQueryOverride(cityName, countryCode);
-  if (override) return { name: override, region: null };
+  if (override) return { name: override, region: null, confirmed: true };
+
+  const cachedConfirmed = await getCachedConfirmedName(admin, cityName, countryCode);
+  if (cachedConfirmed) return { ...cachedConfirmed, confirmed: true };
 
   const geo = await geocodeCityWithEnglishName(cityName, countryAlpha2);
-  if (geo?.englishName) return { name: geo.englishName, region: geo.region };
+  if (geo?.englishName) {
+    await cacheConfirmedName(admin, cityName, countryCode, geo.englishName, geo.region);
+    return { name: geo.englishName, region: geo.region, confirmed: true };
+  }
 
   const translated = await resolveQueryCityName(admin, cityName, countryCode, sourceLanguage);
-  if (translated.trim().toLowerCase() === cityName.trim().toLowerCase()) return { name: translated, region: null }; // rien traduit, rien à vérifier
+  if (translated.trim().toLowerCase() === cityName.trim().toLowerCase()) return { name: translated, region: null, confirmed: true }; // rien traduit, rien à vérifier
 
   const verify = await geocodeCityWithEnglishName(translated, countryAlpha2);
-  if (verify?.englishName) return { name: verify.englishName, region: verify.region }; // confirmé par le géocodeur, encore mieux : nom canonique
+  if (verify?.englishName) {
+    await cacheConfirmedName(admin, cityName, countryCode, verify.englishName, verify.region); // confirmé par le géocodeur, encore mieux : nom canonique
+    return { name: verify.englishName, region: verify.region, confirmed: true };
+  }
 
   console.error(`[cityImages] traduction "${cityName}" -> "${translated}" non confirmée par le géocodeur (probable erreur de traduction) — repli sur le nom d'origine.`);
-  return { name: cityName, region: null };
+  return { name: cityName, region: null, confirmed: false };
 }
 
 // Appel Unsplash bas niveau, exporté pour être réutilisé tel quel par
@@ -414,7 +469,12 @@ export async function resolveCityImage(admin, cityName, countryCode, { countryNa
   try {
     const en = await ensureEnglish();
     const result = await searchBestCityPhoto(en.name, countryName || null, en.region);
-    await upsertCityImageCache(admin, cityName, countryCode, result, coords);
+    // Pas de cache permanent si le nom anglais n'a pas pu être confirmé (voir
+    // resolveEnglishCityNameForQuery) : la photo trouvée peut être dans la
+    // mauvaise langue (repli sur le nom d'origine) — mieux vaut réessayer au
+    // prochain appel qu'enfermer une ville utilisateur dans ce résultat pour
+    // toujours.
+    if (en.confirmed !== false) await upsertCityImageCache(admin, cityName, countryCode, result, coords);
     return { fromCache: false, city_name: cityName, country_code: countryCode, ...result };
   } catch (err) {
     console.error(`[cityImages] résolution "${cityName}" (${countryCode}) :`, err.message);

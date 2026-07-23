@@ -443,7 +443,9 @@ export async function fetchPlaceSuggestions(query, cityHint, countryAlpha2) {
   if (query.length < 2) return [];
   const q = cityHint ? `${query} ${cityHint}` : query;
   try {
-    const filterParam = countryAlpha2 ? `&filter=countrycode:${countryAlpha2}` : '';
+    // Geoapify rejette (400) le filtre countrycode si la valeur n'est pas en
+    // minuscules — bug identique corrigé dans api/_lib/cityGeocode.js le 2026-07-22.
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${countryAlpha2.toLowerCase()}` : '';
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&lang=${currentGeoLang()}&limit=8${filterParam}&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
     if (!res.ok) return [];

@@ -322,22 +322,22 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     loadUserDests();
   }, [countryCode, destRefreshKey]);
 
-  // Traduction en lot des noms/descriptions des destinations communautaires
-  // dans la langue active (cache serveur, voir api/get-translated-content.js).
+  // Traduction en lot des descriptions des destinations communautaires dans
+  // la langue active (cache serveur, voir api/get-translated-content.js).
+  // Le NOM, lui, n'est plus traduit (2026-07-23) : c'est un nom propre (ex:
+  // "Playa Larga"), pas du texte descriptif — Google Translate le traduisait
+  // littéralement, même souci que les noms de lieux ("High Line" -> "Ligne
+  // Haute", voir api/get-place-suggestions.js pour l'historique).
   useEffect(() => {
     if (!userDestinations.length) { setTranslatedUserDestinations([]); return; }
     const lang = i18n.language;
     let cancelled = false;
     (async () => {
-      const items = userDestinations.flatMap((d) => [
-        { contentType: 'user_destination', contentId: d.id, field: 'name', sourceText: d.name },
-        { contentType: 'user_destination', contentId: d.id, field: 'description', sourceText: d.description },
-      ]);
+      const items = userDestinations.map((d) => ({ contentType: 'user_destination', contentId: d.id, field: 'description', sourceText: d.description }));
       const result = await fetchTranslatedFields(items, lang);
       if (cancelled) return;
       setTranslatedUserDestinations(userDestinations.map((d) => ({
         ...d,
-        name: result[translationKey('user_destination', d.id, 'name')] ?? d.name,
         description: result[translationKey('user_destination', d.id, 'description')] ?? d.description,
       })));
     })();

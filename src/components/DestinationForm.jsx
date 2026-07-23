@@ -81,7 +81,11 @@ export default function DestinationForm({
     const validationError = validateImageFile(file);
     if (validationError) { setError(validationError); return; }
     setCompressingSlot('dest');
-    const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1200, useWebWorker: true });
+    // 1920 (pas 1200) : cette photo sert AUSSI de bannière plein écran en vue
+    // détaillée (.dest-detail-img, pleine largeur) — 1200px, pensé pour la
+    // carte, paraissait mou une fois affiché en grand sur un écran haute
+    // densité (Retina). Constaté le 2026-07-23.
+    const compressed = await imageCompression(file, { maxSizeMB: 0.8, maxWidthOrHeight: 1920, useWebWorker: true });
     setDestImage({ file: compressed, preview: URL.createObjectURL(compressed), url: null });
     setCompressingSlot(null);
   }
@@ -91,7 +95,9 @@ export default function DestinationForm({
     const validationError = validateImageFile(file);
     if (validationError) { setError(validationError); return; }
     setCompressingSlot(idx);
-    const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 800, useWebWorker: true });
+    // 1600/0.5 (pas 800/0.3) : même ajustement que handleDestImage ci-dessus,
+    // ces photos de lieux sont affichées bien plus grandes qu'avant.
+    const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1600, useWebWorker: true });
     setPlaces(prev => prev.map((p, i) => i === idx ? { ...p, file: compressed, preview: URL.createObjectURL(compressed), url: null } : p));
     setCompressingSlot(null);
   }

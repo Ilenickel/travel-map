@@ -50,6 +50,14 @@ export default async function handler(req, res) {
     for (const p of data || []) places.push({ id: p.id, type: 'static', name: p.name, lat: p.lat, lng: p.lng, imageUrl: p.image_url || null });
   }
 
+  // Traduction : compromis assumé (2026-07-23) — un nom de lieu est souvent
+  // un nom propre ("High Line") que Google Translate traduit littéralement à
+  // tort ("Ligne Haute"), MAIS sans traduction un nom entré dans une langue
+  // rare par un contributeur reste illisible pour tous les autres visiteurs.
+  // La lisibilité cross-langue l'emporte : on retraduit, en acceptant le
+  // risque résiduel d'un nom propre mal traduit (pas de garde-fou géocodeur
+  // fiable possible ici, contrairement aux villes — voir cityNameOverrides.js
+  // — un lieu précis n'est pas vérifiable de la même façon).
   let translatedPlaces;
   try {
     translatedPlaces = await Promise.all(

@@ -22,19 +22,28 @@ const EARTH_RADIUS_KM = 6371;
 async function geocodeCityViaGeoapify(cityName, countryAlpha2, restrictToCity) {
   if (!GEOAPIFY_API_KEY) return null;
   try {
-    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2)}` : '';
+    // Geoapify rejette (400) le filtre countrycode si la valeur n'est pas en
+    // minuscules — testé le 2026-07-22, cause silencieuse du repli sur le nom
+    // français (l'erreur HTTP était avalée sans log avant ce correctif).
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2.toLowerCase())}` : '';
     const typeParam = restrictToCity ? '&type=city' : '';
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(cityName)}${typeParam}&limit=1${filterParam}&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`[cityGeocode] Geoapify autocomplete "${cityName}" -> HTTP ${res.status}`);
+      return null;
+    }
     const data = await res.json();
     const p = data.features?.[0]?.properties;
     if (!p) return null;
     return { lat: p.lat, lng: p.lon };
-  } catch {
+  } catch (err) {
+    console.error(`[cityGeocode] Geoapify autocomplete "${cityName}" -> ${err.message}`);
     return null;
   }
 }
+
+function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 
 // Géocode une ville en demandant le résultat EN ANGLAIS (lang=en) : renvoie
 // à la fois les coordonnées ET le nom anglais canonique (properties.city).
@@ -50,17 +59,32 @@ async function geocodeCityViaGeoapify(cityName, countryAlpha2, restrictToCity) {
 // (ni en cache par nom, ni par proximité), cas rare. Les coordonnées pour le
 // matching cross-langue restent, elles, mises en cache via
 // resolveCityCoordinates ci-dessous.
-export async function geocodeCityWithEnglishName(cityName, countryAlpha2) {
+// `attempt` (interne) : un retry après une courte pause sur erreur réseau/HTTP
+// — Geoapify (plan gratuit) renvoie parfois un 429/timeout transitoire sous
+// une rafale de requêtes rapprochées (ex: script bulk qui enchaîne les
+// villes toutes les ~250ms sans pause dédiée, contrairement à Unsplash qui a
+// sa propre gestion de quota). Sans retry, cette erreur transitoire était
+// interprétée à tort comme "traduction non confirmée" et repliait
+// silencieusement sur le nom d'origine (constaté le 2026-07-22 : Geoapify
+// géocodait "Barcelona" sans problème en isolation, mais échouait en rafale
+// pendant le run réel).
+export async function geocodeCityWithEnglishName(cityName, countryAlpha2, attempt = 0) {
   if (!GEOAPIFY_API_KEY) return null;
   try {
     // Endpoint /search (pas /autocomplete) : on passe un nom de ville COMPLET,
     // pas un préfixe en cours de frappe — /search est fait pour ça et classe
     // ses résultats de façon plus stable (autocomplete pouvait renvoyer par
     // intermittence une entité voisine dont le nom anglais différait).
-    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2)}` : '';
+    // Geoapify rejette (400) le filtre countrycode si la valeur n'est pas en
+    // minuscules — voir la même correction sur geocodeCityViaGeoapify ci-dessus.
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2.toLowerCase())}` : '';
     const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(cityName)}&type=city&limit=1&lang=en${filterParam}&apiKey=${GEOAPIFY_API_KEY}`;
-    const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
-    if (!res.ok) return null;
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) {
+      if (attempt < 2) { await sleep(1000 * (attempt + 1)); return geocodeCityWithEnglishName(cityName, countryAlpha2, attempt + 1); }
+      console.error(`[cityGeocode] Geoapify search "${cityName}" -> HTTP ${res.status} (après ${attempt} retries)`);
+      return null;
+    }
     const data = await res.json();
     const p = data.features?.[0]?.properties;
     if (!p || p.lat == null || p.lon == null) return null;
@@ -78,7 +102,9 @@ export async function geocodeCityWithEnglishName(cityName, countryAlpha2) {
     // searchBestCityPhoto (api/_lib/cityImages.js).
     const region = p.state || p.county || null;
     return { lat: p.lat, lng: p.lon, englishName, region };
-  } catch {
+  } catch (err) {
+    if (attempt < 2) { await sleep(1000 * (attempt + 1)); return geocodeCityWithEnglishName(cityName, countryAlpha2, attempt + 1); }
+    console.error(`[cityGeocode] Geoapify search "${cityName}" -> ${err.message} (après ${attempt} retries)`);
     return null;
   }
 }

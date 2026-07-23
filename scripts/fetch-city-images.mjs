@@ -412,7 +412,14 @@ process.on('uncaughtException', (err) => {
 process.on('SIGINT', () => {
   log('■ Interrompu (Ctrl+C) — progression sauvegardée, relancer le script reprendra où il s\'est arrêté.');
   writeStatus({ state: 'interrupted' });
-  process.exitCode = 0;
+  // process.exit() forcé (pas seulement exitCode) : SANS ça, un Ctrl+C pendant
+  // la pause de 61 min (pauseForQuota) ne tue PAS réellement le process — le
+  // setTimeout de la pause reste actif dans la boucle d'évènements, qui ne se
+  // vide donc jamais toute seule. Le script continue de tourner en arrière-
+  // plan (zombie) avec le code chargé au démarrage, invisible dans le
+  // terminal, et un relancement ultérieur tourne alors EN PARALLÈLE du zombie
+  // — double consommation du quota Unsplash réel, constaté le 2026-07-23.
+  process.exit(0);
 });
 
 // process.exitCode plutôt que process.exit() : un exit forcé juste après un
