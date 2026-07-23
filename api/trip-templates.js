@@ -19,6 +19,7 @@
 import { getAdminClient, verifyUser, verifyTripAccess } from './_lib/supabaseAdmin.js';
 import { resolveCityCoordinates, distanceKm, SAME_CITY_RADIUS_KM } from './_lib/cityGeocode.js';
 import { resolveCityImage } from './_lib/cityImages.js';
+import { resolveCountryImage } from './_lib/countryImages.js';
 
 const BUCKET = 'trip-attachments';
 const MAX_SUGGEST_RESULTS = 5;
@@ -1420,6 +1421,35 @@ async function handleGetCityImage(admin, body, res) {
   return res.status(200).json({ ok: true, images });
 }
 
+// action: 'get-country-image' — photo représentative d'un PAYS (cache Supabase
+// country_images, sinon Unsplash à la volée) : voir api/_lib/countryImages.js
+// pour la logique, partagée avec scripts/fetch-country-images.mjs (import
+// initial en masse des 185 pays). Sert de fond aux cartes de voyage.
+//
+// Batch (`countries`) plutôt qu'un pays à la fois, même raison que
+// get-city-image : l'écran d'accueil affiche plusieurs voyages d'un coup. Par
+// pays : `countryCode` (alpha-3, requis) + `countryName` (nom ANGLAIS, ex
+// "Japan" — facultatif mais nécessaire pour résoudre un pays pas encore en
+// cache ; le front le connaît via COUNTRIES[code].name.en).
+const MAX_COUNTRY_IMAGE_BATCH = 12;
+
+async function handleGetCountryImage(admin, body, res) {
+  const { countries } = body;
+  if (!Array.isArray(countries) || !countries.length) {
+    return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
+  }
+  const batch = countries
+    .slice(0, MAX_COUNTRY_IMAGE_BATCH)
+    .filter((c) => c?.countryCode);
+
+  const images = await Promise.all(batch.map(async (c) => ({
+    countryCode: c.countryCode,
+    image: await resolveCountryImage(admin, c.countryCode, c.countryName || null),
+  })));
+
+  return res.status(200).json({ ok: true, images });
+}
+
 // ════════════════════════════════════════════════════════════════
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -1451,6 +1481,7 @@ export default async function handler(req, res) {
   if (action === 'import') return handleImport(admin, user, body, res);
   if (action === 'import-trip') return handleImportTrip(admin, user, body, res);
   if (action === 'get-city-image') return handleGetCityImage(admin, body, res);
+  if (action === 'get-country-image') return handleGetCountryImage(admin, body, res);
   return res.status(400).json({ ok: false, reason: 'Action invalide.' });
 }
 

@@ -3831,6 +3831,26 @@ html, body, #root { height: 100%; }
   .bilan-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .bilan-header-row, .bilan-row { min-width: 560px; }
 
+  /* Colonne des noms de villes fixe pendant le défilement horizontal du
+     tableau (sticky sur l'axe X uniquement, via le conteneur overflow-x du
+     tableau) — elle ne reste pas à l'écran quand on scroll la page
+     verticalement, puisque le tableau défile normalement avec la page. */
+  .bilan-city-col {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--surface2);
+  }
+  .bilan-header-row .bilan-city-col { background: var(--surface3); }
+  /* accent-subtle est une couleur translucide (pensée pour se superposer au
+     fond de la ligne) : appliquée seule sur la colonne fixe, elle laisse
+     transparaître ce qu'il y a derrière (carte, page) au lieu du fond du
+     tableau, d'où l'effet de pavé blanc décroché. On la superpose donc en
+     dégradé au-dessus d'un fond opaque pour reproduire le même rendu. */
+  .bilan-row-active .bilan-city-col {
+    background: linear-gradient(var(--accent-subtle), var(--accent-subtle)), var(--surface2);
+  }
+
   /* Villes météo */
   .city-tabs { flex-wrap: wrap; gap: 5px; }
   .city-tab { padding: 6px 10px; font-size: 12px; }

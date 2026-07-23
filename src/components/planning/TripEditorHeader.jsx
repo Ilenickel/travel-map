@@ -7,7 +7,7 @@ export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities, lodgings = [],
   onUpdate, onToggleShare, onOpenExpenses,
   onExportPdf, onExportIcal,
-  onToggleAutoShareTemplate,
+  onToggleAutoShareTemplate, onBack,
 }) {
   const { t } = useTranslation();
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
@@ -86,6 +86,20 @@ export default function TripEditorHeader({
   return (
     <div className={`pp-editor-header${headerOpen ? '' : ' pp-editor-header--collapsed'}`}>
       <div className="pp-trip-title-row">
+        {onBack && (
+          <button
+            type="button"
+            className="pp-editor-back-btn"
+            onClick={onBack}
+            title={t('home.backButton')}
+            aria-label={t('home.backButton')}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+            </svg>
+            <span className="pp-editor-back-label">{t('home.backButton')}</span>
+          </button>
+        )}
         {editingTitle ? (
           <input
             className="pp-trip-title-input"

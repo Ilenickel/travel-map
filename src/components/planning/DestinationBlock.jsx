@@ -2,15 +2,22 @@ import { useState, useRef } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
-import { namesMatch } from '../../lib/planningUtils';
+import { namesMatch, countryAlpha2FromEmoji } from '../../lib/planningUtils';
+import { useCityImages } from '../../hooks/useCityImages';
+import { useCountryImages } from '../../hooks/useCountryImages';
 import CityBlock from './CityBlock';
 import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 import TripSuggestionsModal from './TripSuggestionsModal';
 
-export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
-  const { t } = useTranslation();
+export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, isMobile = false, mobileCityDetailId = null, onOpenCityDetail, onCloseCityDetail, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
+  const { t, i18n } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
+  // Replié : n'affiche que l'en-tête (image + nom + compteurs) — utile surtout
+  // avec plusieurs pays dans le même voyage, pour ne pas avoir à faire défiler
+  // tout le contenu d'un pays qu'on ne consulte pas en ce moment (demande du
+  // 2026-07-23). Déplié par défaut (voyage à un seul pays, cas le plus courant).
+  const [collapsed, setCollapsed] = useState(false);
   // Ville déjà présente dans cette destination et qu'on tente de rajouter :
   // on n'insère pas silencieusement un doublon, on demande confirmation
   // (dialogue léger, même charte que pp-discard-confirm-modal ci-dessous).
@@ -68,6 +75,31 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
 
   const flag = COUNTRIES[dest.country_code]?.emoji || '🌍';
 
+  // Vignettes photo des villes de base ET des excursions (l'onglet Excursions
+  // du détail mobile en affiche aussi, voir CityBlock) — mêmes règles que les
+  // suggestions (useCityImages), batché ici pour TOUTE la destination, puis
+  // distribué à chaque CityBlock. sourceLanguage = langue du site (les villes
+  // sont tapées par l'utilisateur, pas des noms éditoriaux FR) — best-effort,
+  // le serveur canonicalise de toute façon le nom via le géocodeur.
+  const country = COUNTRIES[dest.country_code];
+  const { getCityImage } = useCityImages(
+    destCities.map((c) => ({ cityName: c.name })),
+    {
+      countryCode: dest.country_code,
+      countryName: country?.name?.en || null,
+      countryAlpha2: countryAlpha2FromEmoji(country?.emoji),
+      sourceLanguage: i18n.language,
+    }
+  );
+  // Image du pays (même backend que les cartes de l'accueil, voir
+  // useCountryImages/Phase 1) pour l'en-tête du pays — restylé comme une ligne
+  // de ville (image + nom + compteurs) plutôt que le gros bandeau dégradé
+  // d'avant, à la demande du 2026-07-23.
+  const { getCountryImage } = useCountryImages([
+    { countryCode: dest.country_code, countryName: country?.name?.en || null },
+  ]);
+  const countryImage = getCountryImage(dest.country_code);
+
   // Création directe, comme pour une excursion (voir CityBlock, addingDaytrip) :
   // l'étape intermédiaire "jours prévus + date de début" (NewCityOptionsForm)
   // a disparu avec le champ "jours prévus" lui-même — la durée réelle d'une
@@ -89,13 +121,89 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
   };
   const cancelAddDuplicate = () => setPendingDuplicateName(null);
 
+  // ─── Mobile : mode DÉTAIL d'une ville (liste → tap → détail plein écran) ───
+  // Quand une ville est ouverte en détail, seul le bloc de la destination qui la
+  // contient s'affiche, réduit à cette seule ville (prise en charge du retour
+  // par CityBlock). Les autres destinations se masquent (return null) pour un
+  // vrai plein écran, sans header pays / sélecteur de mode / autres villes.
+  const detailCity = isMobile && mobileCityDetailId
+    ? baseCities.find((c) => c.id === mobileCityDetailId)
+    : null;
+  if (isMobile && mobileCityDetailId && !detailCity) return null;
+  if (detailCity) {
+    return (
+      <div className="pp-destination pp-destination--detail">
+        <CityBlock
+          city={detailCity}
+          activities={activities}
+          groups={groups}
+          lodgings={lodgings}
+          tripId={tripId}
+          countryCode={dest.country_code}
+          countryName={dest.country_name}
+          index={0}
+          tripStartDate={tripStartDate}
+          tripEndDate={tripEndDate}
+          siblingPendingBaseCitiesCount={pendingBaseCitiesCount}
+          daytrips={daytripsByParent[detailCity.id] || []}
+          cityImage={getCityImage(detailCity.name)}
+          getCityImage={getCityImage}
+          isMobile
+          mobileDetailOpen
+          onCloseDetail={onCloseCityDetail}
+          onRemove={(id) => { onRemoveCity(id); onCloseCityDetail?.(); }}
+          onRename={onRenameCity}
+          onAddActivity={onAddActivity}
+          onAddDaytrip={onAddDaytrip}
+          onAssignCityToDay={onAssignCityToDay}
+          onRemoveActivity={onRemoveActivity}
+          onRemoveActivities={onRemoveActivities}
+          onUpdateActivity={onUpdateActivity}
+          onDuplicateActivity={onDuplicateActivity}
+          onAssignActivityToGroup={onAssignActivityToGroup}
+          onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+          onAssignActivitiesToDay={onAssignActivitiesToDay}
+          onAddLodging={onAddLodging}
+          onUpdateLodging={onUpdateLodging}
+          onRemoveLodging={onRemoveLodging}
+          onReloadTripData={onReloadTripData}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="pp-destination">
-      <div className="pp-destination-header">
-        <div className="pp-destination-flag"><CountryFlag emoji={flag} size={26} /></div>
+      <div
+        className={`pp-destination-header${countryImage?.imageUrl ? ' has-image' : ''}`}
+        style={countryImage?.imageUrl ? { backgroundImage: `url(${countryImage.thumbUrl || countryImage.imageUrl})` } : undefined}
+        onClick={() => setCollapsed((c) => !c)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setCollapsed((c) => !c); } }}
+      >
+        <div className="pp-destination-header-shade" />
+        <button
+          className="pp-icon-btn pp-icon-btn--danger pp-destination-remove-btn"
+          onClick={(e) => { e.stopPropagation(); onRemove(dest.id); }}
+          title={t('destination.removeTitle')}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </button>
+        <svg
+          className="pp-destination-chevron"
+          width="26" height="26" viewBox="0 0 24 24" fill="currentColor"
+          style={{ transform: collapsed ? 'rotate(-90deg)' : 'none' }}
+        >
+          <path d="M7 10l5 5 5-5z"/>
+        </svg>
         <div className="pp-destination-info">
-          <span className="pp-destination-eyebrow">{t('destination.eyebrow')}</span>
-          <h3 className="pp-destination-name">{dest.country_name}</h3>
+          <div className="pp-destination-title">
+            <CountryFlag emoji={flag} size={20} />
+            <h3 className="pp-destination-name">{dest.country_name}</h3>
+          </div>
           <div className="pp-destination-stats">
             <span className="pp-dest-stat">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
@@ -107,17 +215,9 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
             </span>
           </div>
         </div>
-        <button
-          className="pp-icon-btn pp-icon-btn--danger"
-          onClick={() => onRemove(dest.id)}
-          title={t('destination.removeTitle')}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-          </svg>
-        </button>
       </div>
 
+      {collapsed ? null : <>
       {/* Sélecteur "Manuel / Suggestions de voyages" — même présentation à
           deux cartes qu'avant la fenêtre unifiée. "Manuel" ne fait que
           refléter l'état par défaut (le panneau en dessous est toujours
@@ -208,6 +308,10 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
                   countryName={dest.country_name}
                   startExpanded={!initialCityIdsRef.current.has(city.id)}
                   index={idx}
+                  cityImage={getCityImage(city.name)}
+                  isMobile={isMobile}
+                  mobileDetailOpen={false}
+                  onOpenDetail={onOpenCityDetail}
                   tripStartDate={tripStartDate}
                   tripEndDate={tripEndDate}
                   // Cette ville elle-même comptée si elle est pending (voir
@@ -280,6 +384,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           </div>
         )}
       </div>
+      </>}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import PlaceSearchInput from './PlaceSearchInput';
 import { formatDateShort, lodgingNights, formatPrice } from '../../lib/planningUtils';
@@ -187,22 +188,23 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
   const priceLabel = formatPrice(lodging.price);
   const { count: attachmentCount } = useAttachmentsCount(lodging.id);
 
-  if (editing) {
-    return (
-      <div className="pp-lodging-card pp-activity--editing">
-        <LodgingForm
-          initial={lodging}
-          cityName={cityName}
-          tripStartDate={tripStartDate}
-          tripEndDate={tripEndDate}
-          onSave={fields => { onUpdate(lodging.id, fields); setEditing(false); }}
-          onCancel={() => setEditing(false)}
-        />
-      </div>
-    );
-  }
-
   return (
+    <>
+    {editing && createPortal(
+      <div className="pp-modal-overlay" onClick={(e) => e.target === e.currentTarget && setEditing(false)}>
+        <div className="pp-modal pp-activity-edit-modal">
+          <LodgingForm
+            initial={lodging}
+            cityName={cityName}
+            tripStartDate={tripStartDate}
+            tripEndDate={tripEndDate}
+            onSave={fields => { onUpdate(lodging.id, fields); setEditing(false); }}
+            onCancel={() => setEditing(false)}
+          />
+        </div>
+      </div>,
+      document.body
+    )}
     <div className="pp-lodging-card" onClick={() => setEditing(true)} role="button" tabIndex={0}>
       <span className="pp-lodging-icon">🏨</span>
       <div className="pp-lodging-content">
@@ -257,6 +259,7 @@ function LodgingCard({ lodging, cityName, tripStartDate, tripEndDate, onUpdate, 
         </svg>
       </button>
     </div>
+    </>
   );
 }
 

@@ -7,6 +7,13 @@ import { addDaysToDateStr } from '../lib/planningUtils';
 export function useTrips(userId) {
   const { t } = useTranslation();
   const [trips, setTrips] = useState([]);
+  // Agrégats par voyage pour les cartes de l'écran d'accueil (comptage léger,
+  // pas le contenu complet chargé par loadTripData) : { [tripId]: { cities,
+  // activities, done, countries: [{ code, name }] } }. Résolu en 3 requêtes
+  // groupées (.in sur tous les tripIds) plutôt qu'un chargement complet par
+  // voyage — l'accueil peut afficher beaucoup de voyages, on ne veut ni leurs
+  // activités détaillées ni un aller-retour par carte.
+  const [tripStats, setTripStats] = useState({});
   const [selectedTripId, setSelectedTripId] = useState(null);
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,11 +44,55 @@ export function useTrips(userId) {
       .filter((t, i, arr) => arr.findIndex(x => x.id === t.id) === i)
       .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
     setTrips(all);
+    loadTripStats(all.map(t => t.id));
   }, [userId]);
+
+  // Agrégats des cartes d'accueil (voir tripStats plus haut). Villes de BASE
+  // uniquement (parent_city_id null — les excursions ne comptent pas comme des
+  // étapes), activités hors transport (cohérent avec le compteur de l'en-tête),
+  // et pays ordonnés par position (le 1er sert d'image de fond à la carte).
+  // `cityNames` : noms ordonnés par position, pour l'affichage "Beijing,
+  // Chengdu, Shanghai…" des cartes (voir HomeTripCard) — la troncature visuelle
+  // (ellipsis CSS) se charge de gérer le cas "beaucoup de villes" sans qu'on
+  // ait à limiter le nombre ici.
+  const loadTripStats = useCallback(async (tripIds) => {
+    if (!tripIds || !tripIds.length) { setTripStats({}); return; }
+    const [{ data: cities }, { data: acts }, { data: dests }] = await Promise.all([
+      supabase.from('trip_cities').select('trip_id, parent_city_id, name, position').in('trip_id', tripIds),
+      supabase.from('trip_activities').select('trip_id, category, is_done').in('trip_id', tripIds),
+      supabase.from('trip_destinations').select('trip_id, country_code, country_name, position').in('trip_id', tripIds),
+    ]);
+    const stats = {};
+    const ensure = (id) => (stats[id] ||= { cities: 0, cityNames: [], activities: 0, done: 0, countries: [] });
+    const citiesByTrip = {};
+    for (const c of cities || []) {
+      if (c.parent_city_id) continue;
+      ensure(c.trip_id).cities++;
+      (citiesByTrip[c.trip_id] ||= []).push(c);
+    }
+    for (const id in citiesByTrip) {
+      stats[id].cityNames = citiesByTrip[id].sort((a, b) => a.position - b.position).map((c) => c.name);
+    }
+    for (const a of acts || []) {
+      if (a.category === 'transport') continue;
+      const s = ensure(a.trip_id);
+      s.activities++;
+      if (a.is_done) s.done++;
+    }
+    const destsByTrip = {};
+    for (const d of dests || []) (destsByTrip[d.trip_id] ||= []).push(d);
+    for (const id in destsByTrip) {
+      ensure(id).countries = destsByTrip[id]
+        .sort((a, b) => a.position - b.position)
+        .map(d => ({ code: d.country_code, name: d.country_name }));
+    }
+    setTripStats(stats);
+  }, []);
 
   useEffect(() => {
     if (!userId) {
       setTrips([]);
+      setTripStats({});
       setTripData(null);
       setSelectedTripId(null);
       return;
@@ -885,7 +936,7 @@ export function useTrips(userId) {
   }, [tripData]);
 
   return {
-    trips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
+    trips, tripStats, reloadTrips: loadTrips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,

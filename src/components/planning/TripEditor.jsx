@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
+import useIsMobile from '../../hooks/useIsMobile';
+import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 import { useAuth } from '../../context/AuthContext';
 import { AttachmentsCountProvider } from '../../context/AttachmentsCountContext';
 import TripEditorHeader from './TripEditorHeader';
@@ -25,7 +28,7 @@ export default function TripEditor({
   onDuplicateActivity, onUndoLastDelete,
   onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignGroupToDay, onAssignCityToDay, onAssignActivitiesToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
-  onLeaveTrip, onReloadTripData,
+  onLeaveTrip, onReloadTripData, onBack,
 }) {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -128,6 +131,7 @@ export default function TripEditor({
     mapAutoOpenedRef.current = false;
     setMapOpen(false);
     setMapCollapsed(false);
+    setMobileCityDetailId(null); // changer de voyage referme tout détail de ville ouvert
   }, [tripId]);
   useEffect(() => {
     if (mapAutoOpenedRef.current) return;
@@ -163,6 +167,12 @@ export default function TripEditor({
   // villes, importer un planning, dater une ville). Sans effet sur ordinateur
   // (la piste est en display:contents, tout est visible).
   const [page, setPage] = useState(0);
+  const isMobile = useIsMobile();
+  // Mobile uniquement : ville ouverte en "détail plein écran" dans la page
+  // Villes (liste → tap → détail, voir CityBlock/DestinationBlock). null = on
+  // affiche la liste des villes. Sans effet sur ordinateur (les villes s'y
+  // déplient sur place, ce champ n'est jamais lu).
+  const [mobileCityDetailId, setMobileCityDetailId] = useState(null);
   const splitRef = useRef(null);
   // true pendant un drag @hello-pangea/dnd : le geste appartient alors au drag
   // d'une carte, il ne doit jamais déclencher un changement de page en plus.
@@ -175,7 +185,40 @@ export default function TripEditor({
   // l'utilisateur sur la page où il a lancé l'import (souvent déjà Villes,
   // mais pas garanti). Sans effet sur ordinateur, où tout est déjà visible.
   const VILLES_PAGE = 0;
-  const goToCitiesPageIfMobile = () => { if (pagerActive()) setPage(VILLES_PAGE); };
+  // Après un import de suggestion(s) : on revient à la LISTE des villes (referme
+  // tout détail ouvert) pour montrer les villes ajoutées/changées.
+  const goToCitiesPageIfMobile = () => { if (pagerActive()) { setPage(VILLES_PAGE); setMobileCityDetailId(null); } };
+  // Quitter la page Villes (balayage / barre de nav basse) referme le détail de
+  // ville : au retour sur Villes on retrouve la liste, pas un détail orphelin.
+  useEffect(() => {
+    if (page !== VILLES_PAGE) setMobileCityDetailId(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+  // Filet de sécurité : la ville ouverte en détail peut disparaître par un
+  // autre biais que le bouton supprimer de son propre menu (import qui
+  // remplace les villes de la destination — voir TripSuggestionsModal
+  // "confirmReplaceText" —, Ctrl+Z, rechargement après action d'un autre
+  // membre du voyage…). Sans ce filet, DestinationBlock ne trouve plus la
+  // ville correspondant à un id resté en mémoire et masque TOUT (aucune
+  // destination ne correspond) : la page Villes resterait vide, sans bouton
+  // retour ni "Ajouter un pays", un vrai cul-de-sac pour l'utilisateur.
+  useEffect(() => {
+    if (mobileCityDetailId && !cities.some((c) => c.id === mobileCityDetailId)) {
+      setMobileCityDetailId(null);
+    }
+  }, [cities, mobileCityDetailId]);
+  // Sur mobile, en scrollant la liste des pays/villes (page Villes), le
+  // chrome autour se masque pour laisser le maximum de place à la liste —
+  // l'en-tête du voyage (titre, en haut) ET le bas de l'écran (bouton
+  // "Ajouter un pays" + barre de navigation) réapparaissent dès qu'on
+  // remonte, même mécanique que le détail d'une ville (useHeaderScrollHide,
+  // demande du 2026-07-23 : "globalement pour voir les différentes villes sur
+  // mobile on a qu'une toute petite partie"). N'a aucun effet ordinateur (le
+  // scroll n'y déclenche jamais handleVillesListScroll côté JSX) ni sur les
+  // autres pages du pager (villesChromeHidden n'est lu que combiné à
+  // `page === VILLES_PAGE` plus bas).
+  const { hidden: villesChromeHiddenRaw, onScroll: onVillesListScroll, containerRef: villesListRef } = useHeaderScrollHide();
+  const villesChromeHidden = villesChromeHiddenRaw && isMobile && page === VILLES_PAGE && !mobileCityDetailId;
   // Pages du pager mobile, dans l'ordre : 0 Villes, 1 Jours, 2 Jour J, 3 Carte
   // (si ouverte), puis Dépenses en dernière page (index 3 ou 4 selon la carte —
   // toujours pageCount - 1). Le panneau Groupes n'existe pas sur mobile (masqué
@@ -240,7 +283,13 @@ export default function TripEditor({
       // à l'horizontale (typiquement en glissant une activité vers une autre
       // colonne/journée), le geste était détourné en changement de page avant
       // même que le drag n'ait pu s'enclencher.
-      if (e.target.closest?.('.pp-map-panel, input, textarea, [contenteditable], [data-rfd-drag-handle-draggable-id]')) return;
+      // .pp-city--detail (détail plein écran ville/excursion) exclu en bloc :
+      // ni sa bande d'onglets (scroll horizontal propre, cf. .pp-detail-tabbar)
+      // ni rien d'autre à l'intérieur ne doit jamais déclencher un changement
+      // de page — ce n'est pas une page du pager, juste un écran fixe avec son
+      // propre bouton retour (signalé le 2026-07-23 : scroller la bande
+      // d'onglets jusqu'au bout faisait atterrir sur la page Jours).
+      if (e.target.closest?.('.pp-map-panel, input, textarea, [contenteditable], [data-rfd-drag-handle-draggable-id], .pp-city--detail')) return;
       const t = e.touches[0];
       startX = t.clientX; startY = t.clientY;
       horizontal = null; tracking = true;
@@ -490,6 +539,11 @@ export default function TripEditor({
   return (
     <AttachmentsCountProvider tripId={tripId}>
     <div className="pp-editor">
+      {/* Masquée entièrement (pas seulement au scroll) tant qu'une ville/
+          excursion est ouverte en détail sur mobile : ce sont des infos du
+          VOYAGE (titre, réglages, partage), pas de la ville affichée —
+          demande du 2026-07-23. */}
+      {!(isMobile && mobileCityDetailId) && (
       <TripEditorHeader
         trip={trip}
         tripId={tripId}
@@ -504,7 +558,9 @@ export default function TripEditor({
         onExportIcal={() => downloadTripIcs({ trip, cities, activities, lodgings })}
         lodgings={lodgings}
         onToggleAutoShareTemplate={(checked) => onUpdateTrip(tripId, { auto_share_template: checked })}
+        onBack={onBack}
       />
+      )}
 
       {dayModeActive ? (
         <TripDayModeView
@@ -543,8 +599,8 @@ export default function TripEditor({
               Sur ordinateur, display:contents la rend transparente pour le layout. */}
           <div className="pp-pager-track" data-page={page} style={{ '--pp-page': page }}>
           {/* ── Panneau villes ── */}
-          <div className="pp-city-panel">
-            <div className="pp-city-panel-dests">
+          <div className={`pp-city-panel${mobileCityDetailId ? ' pp-city-panel--detail' : ''}`}>
+            <div className="pp-city-panel-dests" ref={villesListRef} onScroll={onVillesListScroll}>
               {sortedDests.length === 0 ? (
                 <div className="pp-empty-destinations">
                   <div className="pp-empty-destinations-icon">🌍</div>
@@ -562,6 +618,10 @@ export default function TripEditor({
                     tripId={tripId}
                     tripStartDate={trip?.start_date || null}
                     tripEndDate={trip?.end_date || null}
+                    isMobile={isMobile}
+                    mobileCityDetailId={mobileCityDetailId}
+                    onOpenCityDetail={setMobileCityDetailId}
+                    onCloseCityDetail={() => setMobileCityDetailId(null)}
                     onRemove={onRemoveDestination}
                     onAddCity={onAddCity}
                     onAddDaytrip={onAddDaytrip}
@@ -586,6 +646,14 @@ export default function TripEditor({
               )}
             </div>
 
+            {/* Masqué pendant qu'une ville est ouverte en détail sur mobile
+                (le détail prend tout l'écran) — sinon "Ajouter un pays"
+                resterait visible sous la fiche de la ville. Se masque AUSSI
+                (translate, voir CSS) en scrollant la liste des pays/villes
+                vers le bas, comme la barre de navigation basse ci-dessous —
+                même signal villesChromeHidden pour les deux. */}
+            {!(isMobile && mobileCityDetailId) && (
+            <div className={`pp-city-panel-bottom${villesChromeHidden && !showCountryPicker ? ' pp-city-panel-bottom--hidden' : ''}`}>
             {showCountryPicker ? (
               // Sur mobile, ce wrapper devient une feuille plein écran (voir
               // CSS, @media max-width:768px) — le clic sur le fond visible
@@ -593,16 +661,26 @@ export default function TripEditor({
               // autres popups de l'app (.pp-modal-overlay). Sans effet sur
               // ordinateur où le wrapper reste le petit panneau intégré
               // habituel (le clic sur son propre fond n'y est pas atteignable).
-              <div
-                className="pp-country-picker-wrap pp-country-picker-wrap--panel"
-                onClick={(e) => e.target === e.currentTarget && setShowCountryPicker(false)}
-              >
-                <CountryPicker
-                  alreadyAdded={alreadyAdded}
-                  onSelect={handleCountrySelect}
-                  onClose={() => setShowCountryPicker(false)}
-                />
-              </div>
+              // Sur mobile, portalée vers <body> : sinon, restée DANS
+              // .pp-city-panel (qui a overflow:hidden), la feuille se faisait
+              // rogner à la hauteur du panneau et la barre de nav basse (rendue
+              // ailleurs dans le DOM, donc jamais rognée) apparaissait par-dessus
+              // (signalé le 2026-07-23).
+              (() => {
+                const picker = (
+                  <div
+                    className="pp-country-picker-wrap pp-country-picker-wrap--panel"
+                    onClick={(e) => e.target === e.currentTarget && setShowCountryPicker(false)}
+                  >
+                    <CountryPicker
+                      alreadyAdded={alreadyAdded}
+                      onSelect={handleCountrySelect}
+                      onClose={() => setShowCountryPicker(false)}
+                    />
+                  </div>
+                );
+                return isMobile ? createPortal(picker, document.body) : picker;
+              })()
             ) : (
               <button className="pp-add-dest-btn pp-add-dest-btn--panel" onClick={() => setShowCountryPicker(true)}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -610,6 +688,8 @@ export default function TripEditor({
                 </svg>
                 {t('country.addTitle')}
               </button>
+            )}
+            </div>
             )}
           </div>
 
@@ -777,10 +857,16 @@ export default function TripEditor({
           Carte (ouvre la carte à la demande) et Dépenses à droite. Chaque
           onglet porte sa cible et son état actif : les index de pages bougent
           avec la carte (Dépenses est toujours la dernière), un simple
-          `page === i` ne suffit plus. */}
-      <nav className="pp-mobile-nav" aria-label={t('editor.navLabel')}>
+          `page === i` ne suffit plus.
+          Masquée entièrement tant qu'un détail de ville/excursion est ouvert
+          (mobileCityDetailId) : cet écran plein n'a pas sa propre nav — le seul
+          moyen d'en sortir est son propre bouton retour (voir CityBlock/
+          DaytripCard), demande du 2026-07-23 ("la barre d'action disparaît sur
+          cet écran jusqu'à ce qu'on retourne en arrière"). */}
+      {!mobileCityDetailId && (
+      <nav className={`pp-mobile-nav${villesChromeHidden ? ' pp-mobile-nav--hidden' : ''}`} aria-label={t('editor.navLabel')}>
         {[
-          { icon: '🌍', label: t('editor.navCities'), go: () => setPage(0), isActive: page === 0 },
+          { icon: '🌍', label: t('editor.navCities'), go: () => { setPage(0); setMobileCityDetailId(null); }, isActive: page === 0 },
           { icon: '📅', label: t('editor.navDays'), go: () => setPage(1), isActive: page === 1 },
           { primary: true, label: t('header.dayModeButton'), go: () => setPage(JOURJ_PAGE), isActive: page === JOURJ_PAGE },
           { icon: '🗺️', label: t('header.mapButton'), go: openMap, isActive: showMapPage && page === JOURJ_PAGE + 1 },
@@ -819,6 +905,7 @@ export default function TripEditor({
           </button>
         ))}
       </nav>
+      )}
 
       {shareOpen && (
         <TripShareModal

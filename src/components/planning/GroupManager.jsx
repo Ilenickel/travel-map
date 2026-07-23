@@ -239,49 +239,59 @@ export default function GroupManager({ tripId, groups, activities, cities, trip,
       .filter(Boolean);
 
     setDetecting(true);
-    // Remplace les groupes issus d'une détection précédente plutôt que d'en empiler de nouveaux
-    await onClearAutoGroups(tripId);
+    // try/finally : sans lui, une erreur réseau/Supabase pendant la détection
+    // (onClearAutoGroups, onAddGroup, onAssignActivityToGroup — tous des appels
+    // réseau) laissait `detecting` bloqué à `true` pour de bon (le bouton
+    // restant grisé indéfiniment, jusqu'à rechargement de la page) — signalé
+    // le 2026-07-23 : "le bouton Détecter des zones est toujours grisé".
+    try {
+      // Remplace les groupes issus d'une détection précédente plutôt que d'en empiler de nouveaux
+      await onClearAutoGroups(tripId);
 
-    let activityIdToCluster;
-    if (cityPoints.length >= 2) {
-      const k = estimateGeoClusterCount(cityPoints, { maxK: Math.min(GROUP_COLORS.length, cityPoints.length) });
-      const clusteredCities = kMeansActivities(cityPoints, k);
-      const cityIdToCluster = Object.fromEntries(clusteredCities.map(c => [c.id, c.cluster]));
-      activityIdToCluster = Object.fromEntries(geoActs.map(a => [a.id, cityIdToCluster[baseCityIdFor[a.city_id]]]));
-    } else {
-      // Repli si les villes ne sont pas connues (voyage sans `cities`
-      // renseignées) : clustering par activité comme avant.
-      const k = estimateGeoClusterCount(
-        geoActs.map(a => ({ lat: a.place_lat, lng: a.place_lng })),
-        { maxK: Math.min(GROUP_COLORS.length, Math.floor(geoActs.length / 2) || 1) }
-      );
-      const clustered = kMeansActivities(geoActs.map(a => ({ id: a.id, lat: a.place_lat, lng: a.place_lng })), k);
-      activityIdToCluster = Object.fromEntries(clustered.map(p => [p.id, p.cluster]));
-    }
-
-    // .filter(Number.isInteger) : une activité dont la ville n'est plus dans
-    // `cities` (état encore désynchronisé juste après une suppression de
-    // ville, par ex.) résout en `undefined` — sans ce filtre, Math.max
-    // incluait cette valeur, tombait sur NaN, et l'auto-détection ne créait
-    // alors SILENCIEUSEMENT aucun groupe (GROUP_COLORS.slice(0, NaN) = [],
-    // boucle 0..NaN jamais exécutée) tout en ayant déjà effacé les groupes
-    // précédents via onClearAutoGroups ci-dessus.
-    const clusterValues = Object.values(activityIdToCluster).filter(Number.isInteger);
-    if (!clusterValues.length) { setDetecting(false); return; }
-    const k = Math.max(...clusterValues) + 1;
-    const clusterColors = GROUP_COLORS.slice(0, k);
-    let created = 0;
-    for (let ci = 0; ci < k; ci++) {
-      const actIds = geoActs.filter(a => activityIdToCluster[a.id] === ci).map(a => a.id);
-      if (!actIds.length) continue;
-      const g = await onAddGroup(tripId, t('group.autoZoneName', { n: created + 1 }), clusterColors[ci], { isAuto: true });
-      if (g) {
-        created += 1;
-        await Promise.all(actIds.map(id => onAssignActivityToGroup(id, g.id)));
+      let activityIdToCluster;
+      if (cityPoints.length >= 2) {
+        const k = estimateGeoClusterCount(cityPoints, { maxK: Math.min(GROUP_COLORS.length, cityPoints.length) });
+        const clusteredCities = kMeansActivities(cityPoints, k);
+        const cityIdToCluster = Object.fromEntries(clusteredCities.map(c => [c.id, c.cluster]));
+        activityIdToCluster = Object.fromEntries(geoActs.map(a => [a.id, cityIdToCluster[baseCityIdFor[a.city_id]]]));
+      } else {
+        // Repli si les villes ne sont pas connues (voyage sans `cities`
+        // renseignées) : clustering par activité comme avant.
+        const k = estimateGeoClusterCount(
+          geoActs.map(a => ({ lat: a.place_lat, lng: a.place_lng })),
+          { maxK: Math.min(GROUP_COLORS.length, Math.floor(geoActs.length / 2) || 1) }
+        );
+        const clustered = kMeansActivities(geoActs.map(a => ({ id: a.id, lat: a.place_lat, lng: a.place_lng })), k);
+        activityIdToCluster = Object.fromEntries(clustered.map(p => [p.id, p.cluster]));
       }
+
+      // .filter(Number.isInteger) : une activité dont la ville n'est plus dans
+      // `cities` (état encore désynchronisé juste après une suppression de
+      // ville, par ex.) résout en `undefined` — sans ce filtre, Math.max
+      // incluait cette valeur, tombait sur NaN, et l'auto-détection ne créait
+      // alors SILENCIEUSEMENT aucun groupe (GROUP_COLORS.slice(0, NaN) = [],
+      // boucle 0..NaN jamais exécutée) tout en ayant déjà effacé les groupes
+      // précédents via onClearAutoGroups ci-dessus.
+      const clusterValues = Object.values(activityIdToCluster).filter(Number.isInteger);
+      if (!clusterValues.length) return;
+      const k = Math.max(...clusterValues) + 1;
+      const clusterColors = GROUP_COLORS.slice(0, k);
+      let created = 0;
+      for (let ci = 0; ci < k; ci++) {
+        const actIds = geoActs.filter(a => activityIdToCluster[a.id] === ci).map(a => a.id);
+        if (!actIds.length) continue;
+        const g = await onAddGroup(tripId, t('group.autoZoneName', { n: created + 1 }), clusterColors[ci], { isAuto: true });
+        if (g) {
+          created += 1;
+          await Promise.all(actIds.map(id => onAssignActivityToGroup(id, g.id)));
+        }
+      }
+      setExpanded(true);
+    } catch (err) {
+      console.error('[GroupManager] auto-détection des zones :', err);
+    } finally {
+      setDetecting(false);
     }
-    setDetecting(false);
-    setExpanded(true);
   };
 
   const geoActsCount = activities.filter(a => a.place_lat && a.place_lng).length;

@@ -248,6 +248,10 @@
     "reorderTitle": "Réordonner la ville",
     "expandTitle": "Développer",
     "collapseTitle": "Réduire",
+    "backToList": "Retour aux villes",
+    "backToCity": "Retour à {{city}}",
+    "daytripsCount_one": "{{count}} excursion",
+    "daytripsCount_other": "{{count}} excursions",
     "eyebrow": "Ville",
     "costTitle": "Coût des activités et trajets de {{city}} (hors hébergements et excursions)",
     "renameTitle": "Renommer la ville",
@@ -456,6 +460,26 @@
     "optionsTitle": "Options",
     "confirmDeleteButton": "Confirmer la suppression",
     "leaveTripButton": "Quitter le voyage"
+  },
+  "cityTabs": {
+    "activities": "Activités",
+    "lodgings": "Hébergements",
+    "transports": "Transports",
+    "excursions": "Excursions",
+    "addPlaceButton": "Ajouter un lieu",
+    "addLodgingButton": "Ajouter un hébergement",
+    "addTrajetButton": "Ajouter un trajet",
+    "addExcursionButton": "Ajouter une excursion",
+    "emptyLodgings": "Aucun hébergement — ajoutez-en un ci-dessous",
+    "emptyTrajets": "Aucun trajet — ajoutez-en un ci-dessous",
+    "emptyExcursions": "Aucune excursion — ajoutez-en une ci-dessous"
+  },
+  "home": {
+    "subtitle_one": "{{count}} voyage",
+    "subtitle_other": "{{count}} voyages",
+    "newTrip": "Nouveau voyage",
+    "activitiesProgress": "{{done}}/{{total}} activités",
+    "backButton": "Mes voyages"
   },
   "map": {
     "emptyHint": "Ajoutez des lieux via la recherche pour les voir sur la carte",

@@ -248,6 +248,10 @@
     "reorderTitle": "Reordenar la ciudad",
     "expandTitle": "Expandir",
     "collapseTitle": "Contraer",
+    "backToList": "Volver a las ciudades",
+    "backToCity": "Volver a {{city}}",
+    "daytripsCount_one": "{{count}} excursión",
+    "daytripsCount_other": "{{count}} excursiones",
     "eyebrow": "Ciudad",
     "costTitle": "Coste de las actividades y trayectos de {{city}} (sin alojamiento ni excursiones)",
     "renameTitle": "Renombrar la ciudad",
@@ -456,6 +460,26 @@
     "optionsTitle": "Opciones",
     "confirmDeleteButton": "Confirmar eliminación",
     "leaveTripButton": "Abandonar el viaje"
+  },
+  "cityTabs": {
+    "activities": "Actividades",
+    "lodgings": "Alojamientos",
+    "transports": "Transportes",
+    "excursions": "Excursiones",
+    "addPlaceButton": "Añadir un lugar",
+    "addLodgingButton": "Añadir un alojamiento",
+    "addTrajetButton": "Añadir un transporte",
+    "addExcursionButton": "Añadir una excursión",
+    "emptyLodgings": "Ningún alojamiento — añada uno abajo",
+    "emptyTrajets": "Ningún transporte — añada uno abajo",
+    "emptyExcursions": "Ninguna excursión — añada una abajo"
+  },
+  "home": {
+    "subtitle_one": "{{count}} viaje",
+    "subtitle_other": "{{count}} viajes",
+    "newTrip": "Nuevo viaje",
+    "activitiesProgress": "{{done}}/{{total}} actividades",
+    "backButton": "Mis viajes"
   },
   "map": {
     "emptyHint": "Añada lugares mediante la búsqueda para verlos en el mapa",

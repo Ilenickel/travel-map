@@ -12,12 +12,39 @@ import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
 import CityMenu from './CityMenu';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
+import MobileDetailHeader from './MobileDetailHeader';
+import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 import { sumCosts, formatPrice } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
+
+// Vignette photo de la ville (résolue en amont par DestinationBlock via
+// useCityImages, passée en prop `cityImage`) — repli sur une pastille avec
+// icône si pas (encore) de photo, pour ne jamais laisser un carré vide.
+function CityThumb({ cityImage, size }) {
+  if (cityImage?.imageUrl) {
+    return (
+      <img
+        className="pp-city-thumb"
+        src={cityImage.thumbUrl || cityImage.imageUrl}
+        alt=""
+        draggable={false}
+        style={size ? { width: size, height: size } : undefined}
+      />
+    );
+  }
+  return (
+    <span className="pp-city-thumb pp-city-thumb--placeholder" style={size ? { width: size, height: size } : undefined}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+      </svg>
+    </span>
+  );
+}
 
 export default function CityBlock({
   city, activities, groups, lodgings, tripId, index, tripStartDate, tripEndDate, daytrips = [],
   countryCode, countryName, startExpanded = false, siblingPendingBaseCitiesCount = 0,
+  cityImage = null, getCityImage, isMobile = false, mobileDetailOpen = false, onOpenDetail, onCloseDetail,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
   onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
@@ -36,13 +63,21 @@ export default function CityBlock({
   // toujours. Exception : une ville qu'on vient d'ajouter (startExpanded, posé
   // par DestinationBlock) s'ouvre directement — on l'ajoute pour y travailler.
   // Évalué une seule fois au montage : un redimensionnement en cours de route
-  // ne replie pas une ville qu'on vient d'ouvrir.
+  // ne replie pas une ville qu'on vient d'ouvrir. N'est utilisé QUE sur
+  // ordinateur : sur mobile, l'affichage du corps est piloté par le mode détail
+  // (mobileDetailOpen), pas par ce repli.
   const [collapsed, setCollapsed] = useState(() => !startExpanded && window.matchMedia('(max-width: 768px)').matches);
   // Sélection multiple (lieux uniquement, pas les trajets) : cocher plusieurs
   // cartes pour les assigner à un groupe, les déplacer sur un jour, ou les
   // supprimer en une fois — cf. SelectionActionBar.
   const [selecting, setSelecting] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
+  // Détail mobile uniquement : onglet actif (Activités/Hébergements/
+  // Transports/Excursions) et excursion ouverte EN PLUS (navigation récursive
+  // — voir plus bas, "openDaytripId").
+  const [activeTab, setActiveTab] = useState('activities');
+  const [openDaytripId, setOpenDaytripId] = useState(null);
+  const { hidden: headerHidden, onScroll: onDetailScroll, containerRef: detailBodyRef } = useHeaderScrollHide();
 
   const cityActivities = activities
     .filter(a => a.city_id === city.id)
@@ -51,6 +86,7 @@ export default function CityBlock({
   // lieux, ils se noient au milieu et cassent la lecture "ce qu'on va voir".
   const placeActivities = cityActivities.filter(a => a.category !== 'transport');
   const trajetActivities = cityActivities.filter(a => a.category === 'transport');
+  const cityLodgings = (lodgings || []).filter(l => l.city_id === city.id);
   // Lieux ET trajets de la ville (un billet de train a un prix aussi), mais pas
   // les excursions rattachées : chaque DaytripCard affiche son propre total,
   // comme pour les compteurs "X lieux" — sinon les chiffres ne se recouperaient
@@ -95,6 +131,15 @@ export default function CityBlock({
     });
   };
 
+  // Appui long sur un lieu (voir ActivityItem.jsx) : entre en sélection
+  // multiple ET sélectionne d'un coup l'élément qu'on vient de presser — geste
+  // universel des applis mobiles, découvrable sans passer par le menu ⋯
+  // (demande du 2026-07-23).
+  const handleLongPressSelect = (actId) => {
+    setSelecting(true);
+    setSelectedIds(new Set([actId]));
+  };
+
   // Ne garde que les ids qui existent encore réellement parmi les lieux affichés
   // (filet de sécurité si un lieu a disparu par un autre biais pendant la sélection).
   const validSelectedIds = placeActivities.filter(a => selectedIds.has(a.id)).map(a => a.id);
@@ -118,123 +163,385 @@ export default function CityBlock({
     setAddingPlace(false);
   };
 
-  return (
-    <Draggable draggableId={`city-${city.id}`} index={index}>
-      {(cityProvided, citySnapshot) => (
-        <div
-          ref={cityProvided.innerRef}
-          {...cityProvided.draggableProps}
-          className={`pp-city${citySnapshot.isDragging ? ' pp-city--dragging' : ''}`}
-        >
-          <div className="pp-city-header">
-            <div className="pp-city-drag" {...cityProvided.dragHandleProps} title={t('city.reorderTitle')}>
-              <svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor" opacity=".3">
-                <circle cx="3" cy="3" r="1.5"/><circle cx="9" cy="3" r="1.5"/>
-                <circle cx="3" cy="8" r="1.5"/><circle cx="9" cy="8" r="1.5"/>
-                <circle cx="3" cy="13" r="1.5"/><circle cx="9" cy="13" r="1.5"/>
-              </svg>
-            </div>
+  // ── Compteur "X lieux" + coût, réutilisés dans les 2 en-têtes (bureau /
+  //    ligne mobile) ──
+  const countBadge = (
+    <span className="pp-city-count">{t('place.count', { count: placeActivities.length })}</span>
+  );
+  const costBadge = cityCost != null && (
+    <span className="pp-city-cost" title={t('city.costTitle', { city: city.name })}>
+      💰 {formatPrice(cityCost)}
+    </span>
+  );
 
-            <button
-              className="pp-city-collapse"
-              onClick={() => setCollapsed(c => !c)}
-              title={collapsed ? t('city.expandTitle') : t('city.collapseTitle')}
-            >
-              <svg
-                width="14" height="14"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                style={{ transform: collapsed ? 'rotate(-90deg)' : 'none', transition: 'transform 0.2s' }}
-              >
-                <path d="M7 10l5 5 5-5z"/>
-              </svg>
-            </button>
+  // Champ "à dater" (halo) + menu ville (renommer / jours & nuits / supprimer /
+  // sélection) — même bloc d'actions dans l'en-tête bureau et l'en-tête détail
+  // mobile.
+  const actions = (
+    <div className="pp-city-actions">
+      {hasPendingContent && (
+        <CityPlanningFieldsButton
+          city={city}
+          tripStartDate={tripStartDate}
+          onUpdate={onRename}
+          highlight
+          hasPendingContent
+          siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
+        />
+      )}
+      <CityMenu
+        city={city}
+        tripStartDate={tripStartDate}
+        hasPlaces={placeActivities.length > 0}
+        selecting={selecting}
+        onToggleSelecting={toggleSelecting}
+        onRename={() => setEditing(true)}
+        onUpdatePlanning={onRename}
+        onDelete={() => onRemove(city.id)}
+        hasPendingContent={hasPendingContent}
+        siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
+        dateLocked={!!city.start_date && cityActivities.some(a => a.visit_date != null)}
+      />
+    </div>
+  );
 
-            <span className="pp-city-pin">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{color:'var(--accent2)',opacity:.7}}>
-                <path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/>
-              </svg>
-            </span>
+  const nameEl = editing ? (
+    <input
+      className="pp-city-name-input"
+      value={cityName}
+      onChange={e => setCityName(e.target.value)}
+      onBlur={saveRename}
+      onKeyDown={e => { if (e.key === 'Enter') saveRename(); if (e.key === 'Escape') cancelRename(); }}
+      autoFocus
+    />
+  ) : (
+    <span className="pp-city-name" onDoubleClick={() => setEditing(true)}>
+      <span className="pp-city-name-text">{city.name}</span>
+    </span>
+  );
 
-            {editing ? (
-              <input
-                className="pp-city-name-input"
-                value={cityName}
-                onChange={e => setCityName(e.target.value)}
-                onBlur={saveRename}
-                onKeyDown={e => { if (e.key === 'Enter') saveRename(); if (e.key === 'Escape') cancelRename(); }}
-                autoFocus
-              />
-            ) : (
-              <span className="pp-city-name" onDoubleClick={() => setEditing(true)}>
-                <span className="pp-city-name-text">{city.name}</span>
-              </span>
-            )}
+  // ── Corps de la ville pour l'ORDINATEUR (lieux / hébergements / excursions /
+  //    trajets empilés + un seul "+ Ajouter" combiné) — inchangé, seul le
+  //    détail MOBILE ci-dessous a été réorganisé en onglets. ──
+  const body = (
+    <div className="pp-city-body">
+      {/* Suggestions de lieux déjà connus pour cette ville (n'ajoute rien tout
+          seul — d'où sa place à part, en haut du corps). */}
+      <div className="pp-suggest-row">
+        <PlaceSuggestionsButton
+          cityName={city.name}
+          countryCode={countryCode}
+          countryName={countryName}
+          tripId={tripId}
+          cityId={city.id}
+          existingActivityNames={cityActivities.map(a => a.name)}
+          onAddActivity={onAddActivity}
+        />
+      </div>
 
-            <span className="pp-city-count">
-              {t('place.count', { count: placeActivities.length })}
-            </span>
-
-            {cityCost != null && (
-              <span className="pp-city-cost" title={t('city.costTitle', { city: city.name })}>
-                💰 {formatPrice(cityCost)}
-              </span>
-            )}
-
-            <div className="pp-city-actions">
-              {/* Planning importé "à dater" : les activités de la ville gardent
-                  leur jour relatif (pending_day_index) tant qu'aucune date de
-                  début n'est choisie POUR CETTE VILLE — l'icône calendrier
-                  ressort alors de son menu, avec un halo clignotant, jusqu'à ce
-                  que la date soit posée (l'ancrage fait le reste, voir
-                  anchor_city_pending_days). */}
-              {hasPendingContent && (
-                <CityPlanningFieldsButton
-                  city={city}
-                  tripStartDate={tripStartDate}
-                  onUpdate={onRename}
-                  highlight
-                  hasPendingContent
-                  siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
-                />
-              )}
-              {/* Menu unique remplaçant les 4 icônes d'action toujours visibles
-                  (sélection, renommer, jours & nuits, supprimer) — voir CityMenu.jsx */}
-              <CityMenu
-                city={city}
+      {selecting && validSelectedIds.length > 0 && (
+        <SelectionActionBar
+          count={validSelectedIds.length}
+          groups={groups}
+          tripStartDate={tripStartDate}
+          tripEndDate={tripEndDate}
+          onAssignGroup={handleAssignGroup}
+          onAssignDay={handleAssignDay}
+          onDelete={handleDeleteSelection}
+          onCancel={toggleSelecting}
+        />
+      )}
+      <Droppable droppableId={`activities-${city.id}`}>
+        {(provided, snapshot) => (
+          <ul
+            className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {placeActivities.map((act, idx) => (
+              <ActivityItem
+                key={act.id}
+                act={act}
+                index={idx}
                 tripStartDate={tripStartDate}
-                hasPlaces={placeActivities.length > 0}
-                selecting={selecting}
-                onToggleSelecting={toggleSelecting}
-                onRename={() => setEditing(true)}
-                onUpdatePlanning={onRename}
-                onDelete={() => onRemove(city.id)}
-                hasPendingContent={hasPendingContent}
-                siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
-                // Une fois la ville datée ET ses activités réellement placées
-                // sur le calendrier (plus rien en attente à ancrer), changer
-                // cette date ne déplace plus rien : les activités gardent
-                // leur propre visit_date, seul le champ lui-même changerait,
-                // créant un décalage trompeur entre "date affichée" et
-                // "activités réellement là". Le champ est alors grisé —
-                // jamais tant que la ville est vide (une date posée à
-                // l'avance reste utile pour un futur import) ou encore en
-                // attente d'ancrage (voir le halo ci-dessus, mutuellement
-                // exclusif avec cet état).
-                dateLocked={!!city.start_date && cityActivities.some(a => a.visit_date != null)}
+                groups={groups}
+                onRemove={onRemoveActivity}
+                onUpdate={onUpdateActivity}
+                onDuplicate={onDuplicateActivity}
+                onAssignToGroup={onAssignActivityToGroup}
+                selectable={selecting}
+                selected={selectedIds.has(act.id)}
+                onToggleSelect={toggleSelected}
+                onLongPressSelect={handleLongPressSelect}
+                dragDisabled={selecting}
               />
-            </div>
-          </div>
+            ))}
+            {provided.placeholder}
+            {placeActivities.length === 0 && !snapshot.isDraggingOver && (
+              <li className="pp-activities-empty">{t('place.emptyList')}</li>
+            )}
+          </ul>
+        )}
+      </Droppable>
 
-          {!collapsed && (
-            <div className="pp-city-body">
-              {/* Distinct du menu "+ Ajouter" en bas de bloc : ceci ne fait que
-                  suggérer des lieux déjà connus pour cette ville, pas les
-                  ajouter directement — d'où sa place à part, en haut du bloc.
-                  Les plannings complets importables (multi-jours), eux, vivent
-                  désormais dans la fenêtre unifiée ouverte au niveau du pays
-                  (bouton "Suggestions pour…" de DestinationBlock), voir
-                  TripSuggestionsModal.jsx — pas ici. */}
+      {addingPlace && (
+        <div className="pp-add-place-wrap">
+          <PlaceSearchInput
+            cityHint={city.name}
+            onSelect={handlePlaceSelect}
+            onManualAdd={handleManualAdd}
+            placeholder={t('place.searchPlaceholder', { city: city.name })}
+            autoFocus
+          />
+          <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingPlace(false)}>
+            {t('common:actions.cancel')}
+          </button>
+        </div>
+      )}
+
+      <LodgingSection
+        city={city}
+        lodgings={lodgings}
+        tripId={tripId}
+        tripStartDate={tripStartDate}
+        tripEndDate={tripEndDate}
+        adding={addingLodging}
+        onCloseAdd={() => setAddingLodging(false)}
+        onAddLodging={onAddLodging}
+        onUpdateLodging={onUpdateLodging}
+        onRemoveLodging={onRemoveLodging}
+      />
+
+      {daytrips.length > 0 && (
+        <div className="pp-daytrips-list">
+          {daytrips.map(dt => (
+            <DaytripCard
+              key={dt.id}
+              city={dt}
+              activities={activities}
+              groups={groups}
+              lodgings={lodgings}
+              tripId={tripId}
+              tripStartDate={tripStartDate}
+              onRemove={onRemove}
+              onRename={onRename}
+              onAddActivity={onAddActivity}
+              onRemoveActivity={onRemoveActivity}
+              onRemoveActivities={onRemoveActivities}
+              onUpdateActivity={onUpdateActivity}
+              onDuplicateActivity={onDuplicateActivity}
+              onAssignActivityToGroup={onAssignActivityToGroup}
+              onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+              onAssignActivitiesToDay={onAssignActivitiesToDay}
+              onAssignCityToDay={onAssignCityToDay}
+              onAddLodging={onAddLodging}
+              onUpdateLodging={onUpdateLodging}
+              onRemoveLodging={onRemoveLodging}
+              tripEndDate={tripEndDate}
+            />
+          ))}
+        </div>
+      )}
+
+      {addingDaytrip && (
+        <div className="pp-add-city-wrap">
+          <CitySearchInput
+            onSelect={name => { onAddDaytrip(tripId, city.destination_id, city.id, name); setAddingDaytrip(false); }}
+            onManual={name => { onAddDaytrip(tripId, city.destination_id, city.id, name); setAddingDaytrip(false); }}
+            placeholder={t('city.addDaytripSearchPlaceholder')}
+            autoFocus
+          />
+          <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingDaytrip(false)}>{t('common:actions.cancel')}</button>
+        </div>
+      )}
+
+      {trajetActivities.length > 0 && (
+        <div className="pp-trajets-section">
+          <div className="pp-trajets-section-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+            </svg>
+            {t('trajetsSection.label')} <span>({trajetActivities.length})</span>
+          </div>
+          <Droppable droppableId={`trajets-${city.id}`}>
+            {(provided, snapshot) => (
+              <ul
+                className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {trajetActivities.map((act, idx) => (
+                  <ActivityItem
+                    key={act.id}
+                    act={act}
+                    index={idx}
+                    tripStartDate={tripStartDate}
+                    groups={groups}
+                    onRemove={onRemoveActivity}
+                    onUpdate={onUpdateActivity}
+                    onAssignToGroup={onAssignActivityToGroup}
+                  />
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </div>
+      )}
+
+      {addingTrajet && (
+        <TrajetAddInput
+          onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
+          onClose={() => setAddingTrajet(false)}
+        />
+      )}
+
+      <AddMenu
+        items={[
+          {
+            key: 'place',
+            tone: 'indigo',
+            icon: (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            ),
+            label: t('addMenu.place'),
+            desc: t('addMenu.placeDesc'),
+            onSelect: () => setAddingPlace(true),
+          },
+          {
+            key: 'lodging',
+            tone: 'emerald',
+            icon: (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
+              </svg>
+            ),
+            label: t('addMenu.lodging'),
+            desc: t('addMenu.lodgingDesc'),
+            onSelect: () => setAddingLodging(true),
+          },
+          {
+            key: 'daytrip',
+            tone: 'amber',
+            icon: (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
+              </svg>
+            ),
+            label: t('addMenu.daytrip'),
+            desc: t('addMenu.daytripDesc'),
+            onSelect: () => setAddingDaytrip(true),
+          },
+          {
+            key: 'trajet',
+            tone: 'blue',
+            icon: (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
+              </svg>
+            ),
+            label: t('addMenu.trajet'),
+            desc: t('addMenu.trajetDesc'),
+            onSelect: () => setAddingTrajet(true),
+          },
+        ]}
+      />
+    </div>
+  );
+
+  // ─── Mobile : DÉTAIL plein écran d'une ville (liste → tap → détail) ───
+  // Hors DnD (pas de Draggable) : les listes gardent leurs propres droppables
+  // de lieux/trajets, qui n'ont besoin que du DragDropContext ancêtre
+  // (TripEditor), pas d'un Droppable de villes parent. Le réordonnancement des
+  // villes se fait depuis la liste, pas depuis le détail.
+  //
+  // Réorganisé en ONGLETS (Activités/Hébergements/Transports/Excursions) —
+  // un seul type de contenu affiché à la fois, chacun avec son propre bouton
+  // d'ajout contextuel — plutôt que tout empiler dans une longue page comme sur
+  // ordinateur : évite les sections imbriquées (activités+trajets DANS une
+  // excursion DANS la ville) qui se répétaient à chaque niveau. Voir demande du
+  // 2026-07-23 ("évite les zones dans les zones dans les zones").
+  if (isMobile && mobileDetailOpen) {
+    // Excursion ouverte DEPUIS l'onglet Excursions de cette ville (navigation
+    // récursive) : remplace tout l'écran par le détail de CETTE excursion
+    // (même composant DaytripCard, son propre mode détail mobile — voir ce
+    // fichier), avec un retour qui referme SEULEMENT l'excursion (revient sur
+    // l'onglet Excursions de la ville, pas sur la liste des villes).
+    const openDaytrip = openDaytripId ? daytrips.find(dt => dt.id === openDaytripId) : null;
+    if (openDaytripId && !openDaytrip) {
+      // Filet de sécurité (excursion supprimée par un autre biais pendant
+      // qu'elle était affichée) : referme au lieu de laisser un écran vide.
+      setOpenDaytripId(null);
+    } else if (openDaytrip) {
+      return (
+        <DaytripCard
+          city={openDaytrip}
+          activities={activities}
+          groups={groups}
+          lodgings={lodgings}
+          tripId={tripId}
+          tripStartDate={tripStartDate}
+          tripEndDate={tripEndDate}
+          cityImage={getCityImage?.(openDaytrip.name)}
+          isMobile
+          mobileDetailOpen
+          onCloseDetail={() => setOpenDaytripId(null)}
+          onRemove={(id) => { onRemove(id); setOpenDaytripId(null); }}
+          onRename={onRename}
+          onAddActivity={onAddActivity}
+          onRemoveActivity={onRemoveActivity}
+          onRemoveActivities={onRemoveActivities}
+          onUpdateActivity={onUpdateActivity}
+          onDuplicateActivity={onDuplicateActivity}
+          onAssignActivityToGroup={onAssignActivityToGroup}
+          onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+          onAssignActivitiesToDay={onAssignActivitiesToDay}
+          onAssignCityToDay={onAssignCityToDay}
+          onAddLodging={onAddLodging}
+          onUpdateLodging={onUpdateLodging}
+          onRemoveLodging={onRemoveLodging}
+        />
+      );
+    }
+
+    const tabs = [
+      {
+        key: 'activities', label: t('cityTabs.activities'), count: placeActivities.length, tone: 'indigo',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>,
+      },
+      {
+        key: 'lodgings', label: t('cityTabs.lodgings'), count: cityLodgings.length, tone: 'emerald',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>,
+      },
+      {
+        key: 'transports', label: t('cityTabs.transports'), count: trajetActivities.length, tone: 'blue',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/></svg>,
+      },
+      {
+        key: 'excursions', label: t('cityTabs.excursions'), count: daytrips.length, tone: 'amber',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>,
+      },
+    ];
+
+    return (
+      <div className="pp-city pp-city--detail">
+        <MobileDetailHeader
+          hidden={headerHidden}
+          image={cityImage}
+          onBack={onCloseDetail}
+          backLabel={t('city.backToList')}
+          name={nameEl}
+          badges={[countBadge, costBadge].filter(Boolean)}
+          menu={actions}
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+        <div className="pp-detail-body" ref={detailBodyRef} onScroll={onDetailScroll}>
+          {activeTab === 'activities' && (
+            <div className="pp-detail-tab-content">
               <div className="pp-suggest-row">
                 <PlaceSuggestionsButton
                   cityName={city.name}
@@ -280,7 +587,8 @@ export default function CityBlock({
                         selectable={selecting}
                         selected={selectedIds.has(act.id)}
                         onToggleSelect={toggleSelected}
-                        dragDisabled={selecting}
+                        onLongPressSelect={handleLongPressSelect}
+                        dragDisabled
                       />
                     ))}
                     {provided.placeholder}
@@ -291,7 +599,7 @@ export default function CityBlock({
                 )}
               </Droppable>
 
-              {addingPlace && (
+              {addingPlace ? (
                 <div className="pp-add-place-wrap">
                   <PlaceSearchInput
                     cityHint={city.name}
@@ -304,11 +612,19 @@ export default function CityBlock({
                     {t('common:actions.cancel')}
                   </button>
                 </div>
+              ) : (
+                <button className="pp-add-menu-btn" onClick={() => setAddingPlace(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addPlaceButton')}
+                </button>
               )}
+            </div>
+          )}
 
-              {/* Hébergements de la ville : entité à part (dates de séjour, prix,
-                  lien de réservation), pas une activité — voir LodgingSection.
-                  L'ajout est piloté par le menu "+ Ajouter" en bas de bloc. */}
+          {activeTab === 'lodgings' && (
+            <div className="pp-detail-tab-content">
               <LodgingSection
                 city={city}
                 lodgings={lodgings}
@@ -321,40 +637,93 @@ export default function CityBlock({
                 onUpdateLodging={onUpdateLodging}
                 onRemoveLodging={onRemoveLodging}
               />
-
-              {/* Excursions à la journée rattachées à cette ville */}
-              {daytrips.length > 0 && (
-                <div className="pp-daytrips-list">
-                  {daytrips.map(dt => (
-                    <DaytripCard
-                      key={dt.id}
-                      city={dt}
-                      activities={activities}
-                      groups={groups}
-                      lodgings={lodgings}
-                      tripId={tripId}
-                      tripStartDate={tripStartDate}
-                      onRemove={onRemove}
-                      onRename={onRename}
-                      onAddActivity={onAddActivity}
-                      onRemoveActivity={onRemoveActivity}
-                      onRemoveActivities={onRemoveActivities}
-                      onUpdateActivity={onUpdateActivity}
-                      onDuplicateActivity={onDuplicateActivity}
-                      onAssignActivityToGroup={onAssignActivityToGroup}
-                      onAssignActivitiesToGroup={onAssignActivitiesToGroup}
-                      onAssignActivitiesToDay={onAssignActivitiesToDay}
-                      onAssignCityToDay={onAssignCityToDay}
-                      onAddLodging={onAddLodging}
-                      onUpdateLodging={onUpdateLodging}
-                      onRemoveLodging={onRemoveLodging}
-                      tripEndDate={tripEndDate}
-                    />
-                  ))}
-                </div>
+              {cityLodgings.length === 0 && !addingLodging && (
+                <p className="pp-activities-empty">{t('cityTabs.emptyLodgings')}</p>
               )}
+              {!addingLodging && (
+                <button className="pp-add-menu-btn" onClick={() => setAddingLodging(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addLodgingButton')}
+                </button>
+              )}
+            </div>
+          )}
 
-              {addingDaytrip && (
+          {activeTab === 'transports' && (
+            <div className="pp-detail-tab-content">
+              <Droppable droppableId={`trajets-${city.id}`}>
+                {(provided, snapshot) => (
+                  <ul
+                    className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {trajetActivities.map((act, idx) => (
+                      <ActivityItem
+                        key={act.id}
+                        act={act}
+                        index={idx}
+                        tripStartDate={tripStartDate}
+                        groups={groups}
+                        onRemove={onRemoveActivity}
+                        onUpdate={onUpdateActivity}
+                        onAssignToGroup={onAssignActivityToGroup}
+                        dragDisabled
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+              {trajetActivities.length === 0 && (
+                <p className="pp-activities-empty">{t('cityTabs.emptyTrajets')}</p>
+              )}
+              {addingTrajet ? (
+                <TrajetAddInput
+                  onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
+                  onClose={() => setAddingTrajet(false)}
+                />
+              ) : (
+                <button className="pp-add-menu-btn" onClick={() => setAddingTrajet(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addTrajetButton')}
+                </button>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'excursions' && (
+            <div className="pp-detail-tab-content">
+              {daytrips.length === 0 && !addingDaytrip && (
+                <p className="pp-activities-empty">{t('cityTabs.emptyExcursions')}</p>
+              )}
+              {daytrips.length > 0 && (
+                <ul className="pp-detail-daytrip-list">
+                  {daytrips.map((dt) => {
+                    const dtActs = activities.filter(a => a.city_id === dt.id);
+                    const dtPlaces = dtActs.filter(a => a.category !== 'transport').length;
+                    return (
+                      <li key={dt.id}>
+                        <button type="button" className="pp-detail-daytrip-row" onClick={() => setOpenDaytripId(dt.id)}>
+                          <CityThumb cityImage={getCityImage?.(dt.name)} size={48} />
+                          <span className="pp-detail-daytrip-texts">
+                            <span className="pp-detail-daytrip-name">{dt.name}</span>
+                            <span className="pp-city-row-sub">{t('place.count', { count: dtPlaces })}</span>
+                          </span>
+                          <svg className="pp-city-row-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+                          </svg>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              {addingDaytrip ? (
                 <div className="pp-add-city-wrap">
                   <CitySearchInput
                     onSelect={name => { onAddDaytrip(tripId, city.destination_id, city.id, name); setAddingDaytrip(false); }}
@@ -364,107 +733,120 @@ export default function CityBlock({
                   />
                   <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingDaytrip(false)}>{t('common:actions.cancel')}</button>
                 </div>
+              ) : (
+                <button className="pp-add-menu-btn" onClick={() => setAddingDaytrip(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addExcursionButton')}
+                </button>
               )}
-
-              {/* Trajets — section à part en bas, pour ne pas se mélanger aux lieux
-                  ni aux excursions (les deux listes peuvent déjà être longues) */}
-              {trajetActivities.length > 0 && (
-                <div className="pp-trajets-section">
-                  <div className="pp-trajets-section-label">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
-                    </svg>
-                    {t('trajetsSection.label')} <span>({trajetActivities.length})</span>
-                  </div>
-                  <Droppable droppableId={`trajets-${city.id}`}>
-                    {(provided, snapshot) => (
-                      <ul
-                        className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                      >
-                        {trajetActivities.map((act, idx) => (
-                          <ActivityItem
-                            key={act.id}
-                            act={act}
-                            index={idx}
-                            tripStartDate={tripStartDate}
-                            groups={groups}
-                            onRemove={onRemoveActivity}
-                            onUpdate={onUpdateActivity}
-                            onAssignToGroup={onAssignActivityToGroup}
-                          />
-                        ))}
-                        {provided.placeholder}
-                      </ul>
-                    )}
-                  </Droppable>
-                </div>
-              )}
-
-              {addingTrajet && (
-                <TrajetAddInput
-                  onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
-                  onClose={() => setAddingTrajet(false)}
-                />
-              )}
-
-              {/* Menu unique remplaçant les 4 boutons d'ajout empilés (lieu,
-                  hébergement, excursion, trajet) qui alourdissaient chaque ville */}
-              <AddMenu
-                items={[
-                  {
-                    key: 'place',
-                    tone: 'indigo',
-                    icon: (
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                      </svg>
-                    ),
-                    label: t('addMenu.place'),
-                    desc: t('addMenu.placeDesc'),
-                    onSelect: () => setAddingPlace(true),
-                  },
-                  {
-                    key: 'lodging',
-                    tone: 'emerald',
-                    icon: (
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
-                      </svg>
-                    ),
-                    label: t('addMenu.lodging'),
-                    desc: t('addMenu.lodgingDesc'),
-                    onSelect: () => setAddingLodging(true),
-                  },
-                  {
-                    key: 'daytrip',
-                    tone: 'amber',
-                    icon: (
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
-                      </svg>
-                    ),
-                    label: t('addMenu.daytrip'),
-                    desc: t('addMenu.daytripDesc'),
-                    onSelect: () => setAddingDaytrip(true),
-                  },
-                  {
-                    key: 'trajet',
-                    tone: 'blue',
-                    icon: (
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/>
-                      </svg>
-                    ),
-                    label: t('addMenu.trajet'),
-                    desc: t('addMenu.trajetDesc'),
-                    onSelect: () => setAddingTrajet(true),
-                  },
-                ]}
-              />
             </div>
           )}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Mobile : LIGNE de la liste des villes (tap → ouvre le détail) ───
+  if (isMobile) {
+    return (
+      <Draggable draggableId={`city-${city.id}`} index={index}>
+        {(cityProvided, citySnapshot) => (
+          <div
+            ref={cityProvided.innerRef}
+            {...cityProvided.draggableProps}
+            className={`pp-city pp-city--row${citySnapshot.isDragging ? ' pp-city--dragging' : ''}`}
+          >
+            <div
+              className="pp-city-row"
+              onClick={() => onOpenDetail?.(city.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenDetail?.(city.id); } }}
+            >
+              <div className="pp-city-drag" {...cityProvided.dragHandleProps} onClick={(e) => e.stopPropagation()} title={t('city.reorderTitle')}>
+                <svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor" opacity=".3">
+                  <circle cx="3" cy="3" r="1.5"/><circle cx="9" cy="3" r="1.5"/>
+                  <circle cx="3" cy="8" r="1.5"/><circle cx="9" cy="8" r="1.5"/>
+                  <circle cx="3" cy="13" r="1.5"/><circle cx="9" cy="13" r="1.5"/>
+                </svg>
+              </div>
+              <CityThumb cityImage={cityImage} size={64} />
+              <div className="pp-city-row-texts">
+                <span className="pp-city-row-name">{city.name}</span>
+                <span className="pp-city-row-sub">
+                  {t('place.count', { count: placeActivities.length })}
+                  {daytrips.length > 0 && <> · {t('city.daytripsCount', { count: daytrips.length })}</>}
+                  {cityCost != null && <> · 💰 {formatPrice(cityCost)}</>}
+                </span>
+              </div>
+              {hasPendingContent && (
+                <div onClick={(e) => e.stopPropagation()}>
+                  <CityPlanningFieldsButton
+                    city={city}
+                    tripStartDate={tripStartDate}
+                    onUpdate={onRename}
+                    highlight
+                    hasPendingContent
+                    siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
+                  />
+                </div>
+              )}
+              <svg className="pp-city-row-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+              </svg>
+            </div>
+          </div>
+        )}
+      </Draggable>
+    );
+  }
+
+  // ─── Ordinateur : bloc classique repliable (inchangé, + vignette) ───
+  return (
+    <Draggable draggableId={`city-${city.id}`} index={index}>
+      {(cityProvided, citySnapshot) => (
+        <div
+          ref={cityProvided.innerRef}
+          {...cityProvided.draggableProps}
+          className={`pp-city${citySnapshot.isDragging ? ' pp-city--dragging' : ''}`}
+        >
+          <div className="pp-city-header">
+            <div className="pp-city-drag" {...cityProvided.dragHandleProps} title={t('city.reorderTitle')}>
+              <svg width="12" height="16" viewBox="0 0 12 16" fill="currentColor" opacity=".3">
+                <circle cx="3" cy="3" r="1.5"/><circle cx="9" cy="3" r="1.5"/>
+                <circle cx="3" cy="8" r="1.5"/><circle cx="9" cy="8" r="1.5"/>
+                <circle cx="3" cy="13" r="1.5"/><circle cx="9" cy="13" r="1.5"/>
+              </svg>
+            </div>
+
+            <button
+              className="pp-city-collapse"
+              onClick={() => setCollapsed(c => !c)}
+              title={collapsed ? t('city.expandTitle') : t('city.collapseTitle')}
+            >
+              <svg
+                width="14" height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                style={{ transform: collapsed ? 'rotate(-90deg)' : 'none', transition: 'transform 0.2s' }}
+              >
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+
+            <CityThumb cityImage={cityImage} size={56} />
+
+            {nameEl}
+
+            {countBadge}
+            {costBadge}
+
+            {actions}
+          </div>
+
+          {!collapsed && body}
         </div>
       )}
     </Draggable>
