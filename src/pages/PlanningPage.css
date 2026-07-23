@@ -5486,6 +5486,90 @@
      prend le relais, comme pour le reste du contenu de cette page. */
   .pp-day-unplanned-list { max-height: none; overflow-y: visible; }
 
+  /* ─── Vue Jours mobile : timeline verticale à gauche (2026-07-23, Phase 3) ──
+     La liste multi-jours et le drag&drop restent inchangés — on ajoute juste,
+     à gauche de chaque jour, une pastille colorée J1/J2… reliée par un trait
+     vertical continu. Desktop non concerné (branche isMobile de DayView). */
+  .pp-day-timeline { display: flex; flex-direction: column; gap: 12px; }
+  .pp-day-timeline-row { display: flex; gap: 10px; align-items: stretch; }
+  .pp-day-timeline-node {
+    flex: 0 0 34px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  /* Trait de liaison : court sur toute la hauteur de la ligne + le gap qui la
+     suit, pour rejoindre sans rupture la pastille de la ligne suivante. */
+  .pp-day-timeline-node::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: -12px;
+    width: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  /* Le trait commence à la 1re pastille (pas au-dessus) et s'arrête à la
+     dernière — centre de pastille = margin-top 6 + rayon 17 = 23px. */
+  .pp-day-timeline-row:first-child .pp-day-timeline-node::before { top: 23px; }
+  .pp-day-timeline-row:last-child .pp-day-timeline-node::before { bottom: calc(100% - 23px); }
+  .pp-day-timeline-circle {
+    position: relative;
+    z-index: 1;
+    margin-top: 6px;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    background: var(--node-color, var(--accent));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+  .pp-day-timeline-circle--unplanned { background: #6b7280; font-size: 15px; }
+  .pp-day-timeline-body { flex: 1; min-width: 0; }
+  /* La carte de jour ne porte plus sa propre marge : l'espacement entre jours
+     vient du gap de .pp-day-timeline (sinon double espace). */
+  .pp-day-timeline-body .pp-day-section { margin: 0; }
+
+  /* En-tête UNIQUE du jour (date/ville/compteur), hors boîte, aligné avec la
+     pastille de la timeline — remplace l'ancien doublon avec l'en-tête interne
+     de DaySection (masqué via hideHeader, voir DayView.jsx). Alignement
+     vertical avec le centre de la pastille (margin-top 6 + rayon 17 = 23px,
+     moins ~la moitié de la hauteur de cette ligne de texte). */
+  .pp-day-timeline-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    padding: 4px 2px 8px;
+  }
+  .pp-day-timeline-date { font-size: 13.5px; font-weight: 800; color: var(--text); }
+
+  /* Créneaux matin/après-midi/soir : la structure Droppable reste nécessaire
+     au drag&drop (chaque créneau doit rester une cible de drop distincte pour
+     que l'heure par défaut se déduise du créneau visé), mais la présentation
+     "carte dans la carte" est retirée — juste un libellé fin + un séparateur,
+     demande explicite du 2026-07-23 ("des cases dans des cases dans des
+     cases"). Le survol pendant un drag garde son fond teinté (règles
+     .pp-day-slot--X .pp-day-slot-drop--over plus bas, non touchées). */
+  .pp-day-timeline-body .pp-day-slots { gap: 0; padding: 2px 2px 0; }
+  .pp-day-timeline-body .pp-day-slot {
+    border: none;
+    border-radius: 0;
+    background: none;
+    border-top: 1px solid var(--border);
+  }
+  .pp-day-timeline-body .pp-day-slot:first-child { border-top: none; }
+  .pp-day-timeline-body .pp-day-slot-header { padding: 8px 4px 4px; background: none !important; }
+  .pp-day-timeline-body .pp-day-slot-drop { padding: 0 4px 8px; }
+
   /* Vue Jours : lignes d'activité denses — la pastille de couleur est déjà
      portée par la barre de groupe et le chip horaire, le point est masqué. */
   .pp-day-section-header { padding: 10px 12px; gap: 10px; }

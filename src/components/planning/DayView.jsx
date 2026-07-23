@@ -387,8 +387,11 @@ export default function DayView({
   });
 
   // Rendu d'un jour (identique desktop/mobile) — factorisé pour être réutilisé
-  // dans la timeline mobile sans dupliquer la longue liste de props.
-  const renderDaySection = (day, dayIdx) => {
+  // dans la timeline mobile sans dupliquer la longue liste de props. hideHeader
+  // : la timeline mobile affiche déjà l'info du jour à côté de la pastille
+  // (voir plus bas), donc masque la boîte d'en-tête interne de DaySection pour
+  // ne pas la répéter — desktop ne passe jamais ce paramètre (reste true).
+  const renderDaySection = (day, dayIdx, hideHeader = false) => {
     const dayActs = activities.filter(a => a.visit_date === day);
     const libreActs = dayActs.filter(a => !a.visit_time);
     const travelSegments = buildTravelSegments(
@@ -421,6 +424,7 @@ export default function DayView({
         onResizeStart={beginResize}
         resize={resize}
         onCutHere={cutStretchHere}
+        hideHeader={hideHeader}
       />
     );
   };
@@ -484,21 +488,50 @@ export default function DayView({
               </div>
             </div>
           )}
-          {days.map((day, dayIdx) => (
-            <div className="pp-day-timeline-row" key={day}>
-              <div className="pp-day-timeline-node">
-                <div
-                  className="pp-day-timeline-circle"
-                  style={{ '--node-color': DAY_COLORS[dayIdx % DAY_COLORS.length] }}
-                >
-                  {t('day.short', { n: dayIdx + 1 })}
+          {days.map((day, dayIdx) => {
+            const dayActs = activities.filter(a => a.visit_date === day);
+            const totalDay = dayActs.length;
+            const doneDay = dayActs.filter(a => a.is_done).length;
+            const dayCityLabels = citiesForDay(cities, dayActs);
+            const importedDay = (trip.import_added_days || []).includes(day);
+            return (
+              <div className="pp-day-timeline-row" key={day}>
+                <div className="pp-day-timeline-node">
+                  <div
+                    className="pp-day-timeline-circle"
+                    style={{ '--node-color': DAY_COLORS[dayIdx % DAY_COLORS.length] }}
+                  >
+                    {t('day.short', { n: dayIdx + 1 })}
+                  </div>
+                </div>
+                <div className="pp-day-timeline-body">
+                  {/* En-tête UNIQUE du jour, hors boîte, juste à côté de la
+                      pastille — évite le doublon avec l'en-tête interne de
+                      DaySection (masqué ici via hideHeader, signalé le
+                      2026-07-23 "on a deux fois l'info du jour"). */}
+                  <div className="pp-day-timeline-header">
+                    <span className="pp-day-timeline-date">{formatDayLabel(day)}</span>
+                    {dayCityLabels.length > 0 && (
+                      <span className="pp-day-cities-badge" title={t('dayView.cityForDayTitle')}>
+                        📍 {dayCityLabels.join(' · ')}
+                      </span>
+                    )}
+                    {importedDay && (
+                      <span className="pp-day-imported-badge" title={t('dayView.importedDayTitle')}>
+                        📥 {t('dayView.importedDayBadge')}
+                      </span>
+                    )}
+                    {totalDay > 0 && (
+                      <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={t('dayView.doneCountTitle', { done: doneDay, total: totalDay, count: doneDay })}>
+                        {doneDay}/{totalDay}
+                      </span>
+                    )}
+                  </div>
+                  {renderDaySection(day, dayIdx, true)}
                 </div>
               </div>
-              <div className="pp-day-timeline-body">
-                {renderDaySection(day, dayIdx)}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     );
@@ -635,7 +668,7 @@ function citiesForDay(cities, dayActs) {
 function DaySection({
   day, dayIdx, importedDay = false, dayActs = [], totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
-  onResizeStart, resize, onCutHere,
+  onResizeStart, resize, onCutHere, hideHeader = false,
 }) {
   const { t } = useTranslation();
   const libreDrop = useNativeDropTarget(
@@ -658,30 +691,37 @@ function DaySection({
 
   return (
     <div className="pp-day-section">
-      <div className="pp-day-section-header">
-        <div className="pp-day-num">{t('day.short', { n: dayIdx + 1 })}</div>
-        <div className="pp-day-info">
-          <span className="pp-day-label">{formatDayLabel(day)}</span>
-          {dayCityLabels.length > 0 && (
-            <span className="pp-day-cities-badge" title={t('dayView.cityForDayTitle')}>
-              📍 {dayCityLabels.join(' · ')}
-            </span>
-          )}
-          {/* Jour ajouté automatiquement parce qu'un voyage importé était plus
-              long que les dates du voyage (voir handleImportTrip) : signalé,
-              sinon l'extension passerait pour une erreur de saisie de dates. */}
-          {importedDay && (
-            <span className="pp-day-imported-badge" title={t('dayView.importedDayTitle')}>
-              📥 {t('dayView.importedDayBadge')}
-            </span>
-          )}
-          {totalDay > 0 && (
-            <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={t('dayView.doneCountTitle', { done: doneDay, total: totalDay, count: doneDay })}>
-              {doneDay}/{totalDay}
-            </span>
-          )}
+      {/* hideHeader (rail mobile, DayView) : cette même info (jour, ville(s),
+          compteur) est déjà affichée UNE FOIS, hors boîte, juste à côté de la
+          pastille de la timeline — la répéter ici ferait doublon (signalé le
+          2026-07-23, "on a deux fois l'info du jour"). Desktop : toujours
+          affiché, hideHeader jamais passé à true. */}
+      {!hideHeader && (
+        <div className="pp-day-section-header">
+          <div className="pp-day-num">{t('day.short', { n: dayIdx + 1 })}</div>
+          <div className="pp-day-info">
+            <span className="pp-day-label">{formatDayLabel(day)}</span>
+            {dayCityLabels.length > 0 && (
+              <span className="pp-day-cities-badge" title={t('dayView.cityForDayTitle')}>
+                📍 {dayCityLabels.join(' · ')}
+              </span>
+            )}
+            {/* Jour ajouté automatiquement parce qu'un voyage importé était plus
+                long que les dates du voyage (voir handleImportTrip) : signalé,
+                sinon l'extension passerait pour une erreur de saisie de dates. */}
+            {importedDay && (
+              <span className="pp-day-imported-badge" title={t('dayView.importedDayTitle')}>
+                📥 {t('dayView.importedDayBadge')}
+              </span>
+            )}
+            {totalDay > 0 && (
+              <span className={`pp-day-count${doneDay === totalDay ? ' pp-day-count--complete' : ''}`} title={t('dayView.doneCountTitle', { done: doneDay, total: totalDay, count: doneDay })}>
+                {doneDay}/{totalDay}
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Où l'on dort CETTE nuit (check_in <= jour < check_out) — informatif
           uniquement, l'édition se fait dans la ville (panneau Villes) */}
