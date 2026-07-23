@@ -740,6 +740,7 @@ export default function TripEditor({
               activities={activities}
               groups={groups}
               lodgings={lodgings}
+              isMobile={isMobile}
               onAssignGroupToDay={onAssignGroupToDay}
               onAssignCityToDay={onAssignCityToDay}
               onRemoveActivity={onRemoveActivity}

@@ -195,8 +195,12 @@ function DaySlot({
   );
 }
 
+// Couleurs des pastilles de la timeline mobile (J1 bleu, J2 violet, …) —
+// cyclées par index de jour. Mobile uniquement (voir branche isMobile).
+const DAY_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b', '#ec4899', '#14b8a6', '#f97316'];
+
 export default function DayView({
-  trip, destinations, cities, activities, groups = [], lodgings = [], onAssignGroupToDay, onAssignCityToDay,
+  trip, destinations, cities, activities, groups = [], lodgings = [], isMobile = false, onAssignGroupToDay, onAssignCityToDay,
   onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
 }) {
   const { t } = useTranslation();
@@ -381,6 +385,124 @@ export default function DayView({
       }
     }
   });
+
+  // Rendu d'un jour (identique desktop/mobile) — factorisé pour être réutilisé
+  // dans la timeline mobile sans dupliquer la longue liste de props.
+  const renderDaySection = (day, dayIdx) => {
+    const dayActs = activities.filter(a => a.visit_date === day);
+    const libreActs = dayActs.filter(a => !a.visit_time);
+    const travelSegments = buildTravelSegments(
+      sortActsByTimeThenPosition(dayActs.filter(a => a.visit_time))
+    );
+    return (
+      <DaySection
+        key={day}
+        day={day}
+        dayIdx={dayIdx}
+        importedDay={(trip.import_added_days || []).includes(day)}
+        dayActs={dayActs}
+        totalDay={dayActs.length}
+        doneDay={dayActs.filter(a => a.is_done).length}
+        nightLodgings={lodgingsForNight(lodgings, day)}
+        slotActs={daySlotActs[day]}
+        slotOverflow={daySlotOverflow[day]}
+        travelSegments={travelSegments}
+        libreActs={libreActs}
+        cities={cities}
+        destinations={destinations}
+        groups={groups}
+        tripStartDate={trip.start_date}
+        onAssignGroupToDay={onAssignGroupToDay}
+        onAssignCityToDay={onAssignCityToDay}
+        onRemoveActivity={onRemoveActivity}
+        onUpdateActivity={onUpdateActivity}
+        onDuplicateActivity={onDuplicateActivity}
+        onAssignActivityToGroup={onAssignActivityToGroup}
+        onResizeStart={beginResize}
+        resize={resize}
+        onCutHere={cutStretchHere}
+      />
+    );
+  };
+
+  // ─── Mobile : MÊME liste multi-jours + drag&drop, avec une timeline verticale
+  // à gauche (pastilles J1/J2… colorées reliées par un trait). Le desktop reste
+  // la liste simple, strictement inchangée (branche ci-dessous). ──────────────
+  if (isMobile) {
+    return (
+      <div className="pp-day-view pp-day-view--timeline">
+        <div className="pp-day-timeline">
+          {unplanned.length > 0 && (
+            <div className="pp-day-timeline-row">
+              <div className="pp-day-timeline-node">
+                <div className="pp-day-timeline-circle pp-day-timeline-circle--unplanned">?</div>
+              </div>
+              <div className="pp-day-timeline-body">
+                <div className="pp-day-section pp-day-section--unplanned">
+                  <button
+                    type="button"
+                    className="pp-day-section-header pp-day-section-header--toggle"
+                    onClick={() => setUnplannedOpen(o => !o)}
+                    aria-expanded={unplannedOpen}
+                  >
+                    <div className="pp-day-info">
+                      <span className="pp-day-label">{t('dayView.unplannedLabel')}</span>
+                      <span className="pp-day-count">{t('dayView.unplannedCount', { count: unplanned.length })}</span>
+                      {!unplannedOpen && <span className="pp-day-section-hint">{t('dayView.clickToShow')}</span>}
+                    </div>
+                    <svg
+                      className={`pp-day-section-chevron${unplannedOpen ? ' pp-day-section-chevron--open' : ''}`}
+                      width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+                    >
+                      <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+                    </svg>
+                  </button>
+                  <Droppable droppableId="day-unplanned">
+                    {(provided, snapshot) => {
+                      const isOver = snapshot.isDraggingOver || unplannedDrop.isNativeOver;
+                      const forceOpen = unplannedOpen || isOver;
+                      return (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          {...unplannedDrop.handlers}
+                          className={`pp-day-activities pp-day-unplanned-list${isOver ? ' pp-day-activities--over' : ''}${forceOpen ? '' : ' pp-day-activities--collapsed'}`}
+                        >
+                          {forceOpen && unplanned.map((act, idx) => (
+                            <ActivityItem
+                              key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
+                              cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
+                              onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
+                            />
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      );
+                    }}
+                  </Droppable>
+                </div>
+              </div>
+            </div>
+          )}
+          {days.map((day, dayIdx) => (
+            <div className="pp-day-timeline-row" key={day}>
+              <div className="pp-day-timeline-node">
+                <div
+                  className="pp-day-timeline-circle"
+                  style={{ '--node-color': DAY_COLORS[dayIdx % DAY_COLORS.length] }}
+                >
+                  {t('day.short', { n: dayIdx + 1 })}
+                </div>
+              </div>
+              <div className="pp-day-timeline-body">
+                {renderDaySection(day, dayIdx)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pp-day-view">
