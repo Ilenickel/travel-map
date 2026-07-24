@@ -1004,8 +1004,14 @@ html, body { overflow-x: hidden; }
 .dest-card-mini-region { font-size: 10px; color: rgba(255,255,255,0.6); }
 
 /* â”€â”€â”€ City Tabs (Weather) â”€â”€â”€ */
+/* Grille (pas flex+wrap) : avec flex, chaque bouton garde sa largeur propre
+   (nom de ville plus ou moins long), donc le nombre par ligne variait de
+   façon incohérente selon les noms ("parfois une ville par ligne, parfois
+   deux" — 2026-07-24). Une grille à colonnes égales impose 1 colonne sur
+   petit écran puis autant que la largeur disponible le permet, sans hasard. */
 .city-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 6px;
 }
 
@@ -3891,7 +3897,7 @@ html, body { overflow-x: hidden; }
   }
 
   /* Villes météo */
-  .city-tabs { flex-wrap: wrap; gap: 5px; }
+  .city-tabs { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 5px; }
   .city-tab { padding: 6px 10px; font-size: 12px; }
 
   /* Graphique météo par ville : reste sur une seule ligne comme avant
@@ -5452,9 +5458,13 @@ html, body { overflow-x: hidden; }
   color: var(--accent2);
   text-transform: uppercase; letter-spacing: 0.08em;
 }
+/* Grille (pas flex+wrap) : le nombre de pays par ligne s'adapte à la largeur
+   disponible plutôt que d'être figé (1 sur mobile, forcé par la règle mobile
+   ci-dessous) — 2-3 par ligne sur tablette dès que la place le permet
+   (2026-07-24). */
 .visited-countries-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 8px;
 }
 .visited-country-chip {
@@ -8805,7 +8815,7 @@ html, body { overflow-x: hidden; }
 
   /* ── Pays visités : une vraie liste, un pays par ligne — le mélange
      1 ou 2 chips par ligne était inesthétique. ── */
-  .visited-countries-grid { flex-direction: column; gap: 6px; }
+  .visited-countries-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
   .visited-country-chip { width: 100%; border-radius: 12px; }
 }
 

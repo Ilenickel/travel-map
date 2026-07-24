@@ -4889,17 +4889,13 @@
     justify-content: flex-start;
   }
 
-  /* Stats sur une seule ligne qui défile horizontalement plutôt que 2-3 lignes
-     de pilules empilées. */
+  /* Stats sur plusieurs lignes si besoin (2026-07-24 : le défilement
+     horizontal précédent masquait des pilules sans aucun indice visuel
+     qu'il y en avait plus à voir — "on n'a pas toutes les infos"). */
   .pp-trip-stats {
-    flex-wrap: nowrap;
-    overflow-x: auto;
     margin-top: 10px;
-    padding-bottom: 2px;
-    scrollbar-width: none;
   }
-  .pp-trip-stats::-webkit-scrollbar { display: none; }
-  .pp-stat-pill { flex-shrink: 0; white-space: nowrap; }
+  .pp-stat-pill { white-space: nowrap; }
 
   /* ── Compression verticale majeure : la topbar Triply/Accueil disparaît
      (le lien Accueil vit dans la barre "Mes voyages"), le bandeau des
@@ -5600,7 +5596,6 @@
   .pp-day-num { width: 30px; height: 30px; font-size: 11px; border-radius: 9px; }
   .pp-day-slots { padding: 0; }
   .pp-day-slot-drop { padding: 5px 6px 6px; }
-  .pp-day-slot-hint { display: none; }
   .pp-day-libre { padding: 8px 10px 10px; }
   /* Haut/droite >= le border-radius de la carte (10px), sinon les boutons
      dupliquer/supprimer (calés en haut à droite, toujours visibles au
@@ -9982,6 +9977,16 @@
 .pp-detail-header--hidden {
   max-height: 0;
   opacity: 0;
+}
+/* Filet de sécurité (2026-07-24) : le popover de date de ville
+   (.pp-city-planning-popover) est en position:absolute sous son bouton, qui
+   se trouve tout en bas du hero — sans ce filet, si jamais il dépassait de la
+   hauteur réelle de ce header (~200px), overflow:hidden le rognerait sans
+   aucun moyen de le voir. Ce n'est déclenché QUE quand le popover existe
+   réellement dans le DOM (donc ouvert) : aucun impact sur l'animation de
+   repli du header (.pp-detail-header--hidden) ni sur rien d'autre. */
+.pp-detail-header:has(.pp-city-planning-popover) {
+  overflow: visible;
 }
 
 .pp-detail-hero {
