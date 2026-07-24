@@ -68,9 +68,25 @@ async function reserveQuota(admin, chars) {
 // que si un signal français est présent). Le jour où la langue de rédaction
 // réelle est connue et stockée par contenu, ce raccourci devra être remplacé
 // par cette vraie donnée plutôt que par une devinette sur le texte.
+// Repéré le 2026-07-24 : une simple liste de mots-outils français (le, la,
+// et, dans...) ne suffit PAS à couvrir des tags courts style "Nom +
+// adjectif" ("Ville cyberpunk", "Ville lumière") qui ne contiennent AUCUN
+// mot grammatical à reconnaître — d'où l'inversion de la logique : on part
+// du principe que c'est du français (vrai à 100% aujourd'hui, un seul
+// contributeur francophone) SAUF preuve contraire évidente (marqueur propre
+// à une autre langue : ñ/¿/¡ espagnol, ä/ö/ü/ß allemand, script non latin).
+// Cette inversion est un compromis assumé pour aujourd'hui : elle protège
+// contre les langues clairement identifiables par leurs caractères propres,
+// mais PAS contre un texte anglais/espagnol sans caractère distinctif (ex.
+// "Cyberpunk city" pourrait être re-deviné comme français à tort). À
+// remplacer dès qu'une vraie langue de rédaction par contenu est connue.
 function looksFrench(text) {
-  if (/[àâçéèêëîïôùûüÿœ]/i.test(text)) return true;
-  return /\b(le|la|les|un|une|des|du|de|et|est|dans|avec|pour|sur|au|aux)\b/i.test(text);
+  // Marqueurs d'une AUTRE langue clairement identifiable : dans ce cas
+  // seulement, on renonce au forçage `fr`.
+  if (/[ñ¿¡]/i.test(text)) return false; // espagnol
+  if (/[äöüß]/i.test(text)) return false; // allemand
+  if (/[^\u0000-\u024F\s]/.test(text)) return false; // script non latin (CJK, cyrillique, arabe...)
+  return true;
 }
 
 async function callGoogleTranslate(text, targetLanguage, sourceLanguage) {
