@@ -9,6 +9,7 @@ import { countryAlpha2FromEmoji, matchingStaticDestinations, namesMatch } from '
 import { useWikipediaImages } from '../../hooks/useWikipediaImages';
 import { formatWikiAttribution } from '../../lib/wikiAttribution';
 import WikiImage from '../WikiImage';
+import useIsMobile from '../../hooks/useIsMobile';
 
 // Bouton "X lieux conseillés" affiché après l'ajout d'une ville en planification.
 // Interroge les lieux communautaires + statiques déjà connus pour la
@@ -63,6 +64,15 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
   // Réf de la liste déroulante : sert à positionner l'aperçu photo, rendu
   // dans un portail vers <body> (voir plus bas).
   const listRef = useRef(null);
+  // Réf du bouton déclencheur — sert à positionner la liste elle-même une
+  // fois portalée vers <body> (voir plus bas).
+  const triggerRef = useRef(null);
+  // Sur mobile, la vraie photo en 42px était trop petite pour rien y voir et
+  // décalait/repoussait le texte à la ligne selon sa forme — remplacée par
+  // une icône fixe uniforme (signalé le 2026-07-24, "l'affichage des photos
+  // est inutile... ça décale tout le texte"). L'aperçu grand format au tap
+  // reste inchangé.
+  const isMobile = useIsMobile(1024);
   const countryAlpha2 = countryAlpha2FromEmoji(COUNTRIES[countryCode]?.emoji);
 
   // Photos des lieux éditoriaux via Wikipédia/Commons (même source que les
@@ -141,18 +151,32 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
 
   return (
     <div className="pp-place-suggestions">
-      <button className="pp-place-suggestions-btn" onClick={() => setOpen((o) => !o)}>
+      <button ref={triggerRef} className="pp-place-suggestions-btn" onClick={() => setOpen((o) => !o)}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
         </svg>
         {t('placeSuggestions.button', { count: places.length })}
       </button>
-      {open && (
-        <ul
-          ref={listRef}
-          className="pp-search-dropdown pp-place-suggestions-dropdown"
-          onMouseLeave={() => setHoveredId(null)}
-        >
+      {open && triggerRef.current && createPortal(
+        <>
+          <div className="pp-backdrop-overlay" onClick={() => setOpen(false)} />
+          <ul
+            ref={listRef}
+            className="pp-search-dropdown pp-place-suggestions-dropdown pp-place-suggestions-dropdown--portal"
+            style={(() => {
+              // Portalée vers <body> (pas un enfant normal du bouton) : sinon,
+              // rognée par le premier ancêtre à overflow limité sur son
+              // chemin — ici .pp-detail-body (scroll de l'onglet Activités),
+              // qui coupe net la liste dès que le contenu au-dessus est trop
+              // court pour lui laisser assez de hauteur (signalé le
+              // 2026-07-23, "on ne voit pas le composant entier"). Même
+              // technique que l'aperçu photo juste en dessous, position
+              // calculée depuis le bouton déclencheur.
+              const rect = triggerRef.current.getBoundingClientRect();
+              return { position: 'fixed', left: rect.left, top: rect.bottom + 4, width: rect.width, zIndex: 200 };
+            })()}
+            onMouseLeave={() => setHoveredId(null)}
+          >
           {places.map((place) => {
             // Source de vérité unique = les activités réellement présentes dans
             // la ville (persiste après un remontage du composant, et redevient
@@ -166,18 +190,59 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
                 onMouseEnter={() => setHoveredId(place.id)}
               >
                 {/* Vignette tactile (masquée sur desktop via CSS, où l'aperçu
-                    grand format au survol prend le relais) */}
-                {previewSrcFor(place) && (
-                  <WikiImage
-                    className="pp-place-suggestions-thumb"
-                    src={previewSrcFor(place)}
-                    alt=""
-                    meta={previewMetaFor(place)}
-                  />
-                )}
+                    grand format au survol prend le relais) — TOUJOURS rendue,
+                    avec un repli générique si aucune photo n'est résolue :
+                    avant, l'absence de photo faisait disparaître la vignette
+                    entière, ne laissant aucun repère visuel qu'il pouvait y
+                    en avoir une (signalé le 2026-07-23, "aucun moyen de voir
+                    les photos"). Un tap dessus ouvre l'aperçu en grand — plus
+                    besoin de survol (desktop) ni d'appui long pour le
+                    découvrir. Sur mobile, l'icône est placée APRÈS le texte
+                    (entre le nom et "Ajouter"), pas avant — demande du
+                    2026-07-24. */}
+                {!isMobile && (previewSrcFor(place) ? (
+                  <button
+                    type="button"
+                    className="pp-place-suggestions-thumb-btn"
+                    onClick={(e) => { e.stopPropagation(); setHoveredId((id) => (id === place.id ? null : place.id)); }}
+                    title={t('placeSuggestions.previewImageAlt', { name: place.name })}
+                  >
+                    <WikiImage
+                      className="pp-place-suggestions-thumb"
+                      src={previewSrcFor(place)}
+                      alt=""
+                      meta={previewMetaFor(place)}
+                    />
+                  </button>
+                ) : (
+                  <span className="pp-place-suggestions-thumb pp-place-suggestions-thumb--placeholder" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>
+                    </svg>
+                  </span>
+                ))}
                 <div className="pp-search-item-text">
                   <span className="pp-search-item-name">{place.name}</span>
                 </div>
+                {isMobile && previewSrcFor(place) && (
+                  <button
+                    type="button"
+                    className="pp-place-suggestions-thumb pp-place-suggestions-thumb--icon"
+                    // Set direct (pas un toggle) : sur mobile, le tap déclenche
+                    // d'abord un mouseenter synthétique (onMouseEnter du <li>,
+                    // qui fixe déjà hoveredId=place.id) PUIS le click — un
+                    // toggle repartait donc aussitôt à null et annulait
+                    // l'ouverture au premier tap, il fallait taper 2 fois
+                    // (signalé le 2026-07-24). La fermeture reste possible via
+                    // le fond de l'aperçu plein écran (overlay cliquable).
+                    onClick={(e) => { e.stopPropagation(); setHoveredId(place.id); }}
+                    title={t('placeSuggestions.previewImageAlt', { name: place.name })}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                    </svg>
+                  </button>
+                )}
                 <button
                   className="pp-btn pp-btn--ghost pp-btn--sm"
                   disabled={added || addingId === place.id}
@@ -194,7 +259,9 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
               </li>
             );
           })}
-        </ul>
+          </ul>
+        </>,
+        document.body
       )}
       {open && (() => {
         // Aperçu photo grand format du lieu survolé, affiché à côté de la
@@ -209,6 +276,37 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
         const hoveredPlace = places.find((p) => p.id === hoveredId);
         const previewSrc = hoveredPlace ? previewSrcFor(hoveredPlace) : null;
         if (!previewSrc || !listRef.current) return null;
+        // Mobile (pas de survol utile, aperçu ouvert par TAP sur la vignette,
+        // voir plus haut) : centré en overlay plein écran avec un fond
+        // cliquable pour fermer, plutôt que positionné "à côté de la liste"
+        // (calcul pensé pour desktop, n'a pas de sens sur un écran étroit —
+        // signalé le 2026-07-23, "aucune solution pour voir les photos").
+        // 1024 (pas 768) — même seuil que le reste de l'app depuis le
+        // 2026-07-23 : resté à 768 ici, une tablette (survol tactile
+        // inutilisable) retombait sur l'aperçu positionné "à côté de la
+        // liste" pensé pour la souris, seul vrai moyen de voir une photo cassé.
+        const isMobileViewport = window.innerWidth <= 1024;
+        if (isMobileViewport) {
+          return createPortal(
+            <div className="pp-place-suggestions-preview-overlay" onClick={() => setHoveredId(null)}>
+              <div className="pp-place-suggestions-preview pp-place-suggestions-preview--mobile" onClick={(e) => e.stopPropagation()}>
+                <img
+                  src={previewSrc}
+                  alt={t('placeSuggestions.previewImageAlt', { name: hoveredPlace.name })}
+                  className="pp-place-suggestions-preview-img"
+                  decoding="async"
+                />
+                <span className="pp-place-suggestions-preview-name">{hoveredPlace.name}</span>
+                {formatWikiAttribution(previewMetaFor(hoveredPlace), tApp) && (
+                  <span className="pp-place-suggestions-preview-credit">
+                    {formatWikiAttribution(previewMetaFor(hoveredPlace), tApp)}
+                  </span>
+                )}
+              </div>
+            </div>,
+            document.body
+          );
+        }
         const rect = listRef.current.getBoundingClientRect();
         const PREVIEW_WIDTH = 340;
         // À droite de la liste par défaut ; bascule à gauche si le bord de

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
@@ -37,19 +37,18 @@ export function activitiesInSlot(activities, date, slotKey) {
   );
 }
 
-// Types de données pour le drag-and-drop natif HTML5 (glisser un groupe/excursion
-// ENTIER vers un jour). Volontairement indépendant de @hello-pangea/dnd, qui gère
+// Type de données pour le drag-and-drop natif HTML5 (glisser une excursion
+// ENTIÈRE vers un jour). Volontairement indépendant de @hello-pangea/dnd, qui gère
 // lui le drag des lieux individuels : les deux systèmes utilisent des événements
 // navigateur différents et ne se marchent jamais dessus.
-export const NATIVE_GROUP_DRAG_TYPE = 'application/x-triply-group';
 export const NATIVE_DAYTRIP_DRAG_TYPE = 'application/x-triply-daytrip';
 
-function useNativeDropTarget(onDropGroup, onDropCity) {
+function useNativeDropTarget(onDropCity) {
   const [isNativeOver, setIsNativeOver] = useState(false);
 
   const isRelevant = (e) => {
     const types = e.dataTransfer?.types;
-    return !!types && (types.includes(NATIVE_GROUP_DRAG_TYPE) || types.includes(NATIVE_DAYTRIP_DRAG_TYPE));
+    return !!types && types.includes(NATIVE_DAYTRIP_DRAG_TYPE);
   };
 
   return {
@@ -66,10 +65,8 @@ function useNativeDropTarget(onDropGroup, onDropCity) {
         if (!isRelevant(e)) return;
         e.preventDefault();
         setIsNativeOver(false);
-        const groupId = e.dataTransfer.getData(NATIVE_GROUP_DRAG_TYPE);
         const cityId = e.dataTransfer.getData(NATIVE_DAYTRIP_DRAG_TYPE);
-        if (groupId) onDropGroup(groupId);
-        else if (cityId) onDropCity(cityId);
+        if (cityId) onDropCity(cityId);
       },
     },
   };
@@ -127,14 +124,13 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
 
 function DaySlot({
   slot, droppableId, acts, overflow, cities, destinations, groups, day, tripStartDate,
-  onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
+  onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resizingActId, resizeHighlight, onCutHere, travelSegments = {},
 }) {
   const { t } = useTranslation();
   const sorted = sortActsByTimeThenPosition(acts);
 
   const { isNativeOver, handlers } = useNativeDropTarget(
-    groupId => onAssignGroupToDay(groupId, day, slot.defaultTime),
     cityId => onAssignCityToDay(cityId, day, slot.defaultTime),
   );
 
@@ -199,8 +195,21 @@ function DaySlot({
 // cyclées par index de jour. Mobile uniquement (voir branche isMobile).
 const DAY_COLORS = ['#6366f1', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b', '#ec4899', '#14b8a6', '#f97316'];
 
+// Icône engrenage incrustée dans le texte "Cliquez sur ⚙ pour définir les
+// dates…" (dayView.noDatesNotice, via <Trans>) — même tracé que le bouton de
+// paramétrage du voyage (TripEditorHeader, .pp-header-collapse-btn), pour
+// que l'utilisateur reconnaisse visuellement le bouton à cliquer plutôt que
+// de devoir deviner ce que "la partie paramétrage" désigne.
+const SETTINGS_GEAR_ICON = (
+  <span className="pp-inline-gear-icon" aria-hidden="true">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+    </svg>
+  </span>
+);
+
 export default function DayView({
-  trip, destinations, cities, activities, groups = [], lodgings = [], isMobile = false, onAssignGroupToDay, onAssignCityToDay,
+  trip, destinations, cities, activities, groups = [], lodgings = [], isMobile = false, onAssignCityToDay,
   onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
 }) {
   const { t } = useTranslation();
@@ -210,7 +219,6 @@ export default function DayView({
   const unplanned = activities.filter(a => !a.visit_date).sort((a, b) => a.position - b.position);
 
   const unplannedDrop = useNativeDropTarget(
-    groupId => onAssignGroupToDay(groupId, null, null),
     cityId => onAssignCityToDay(cityId, null, null),
   );
 
@@ -315,7 +323,7 @@ export default function DayView({
           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" opacity=".4">
             <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
           </svg>
-          <p>{t('dayView.noDatesNotice')}</p>
+          <p><Trans i18nKey="dayView.noDatesNotice" components={{ icon: SETTINGS_GEAR_ICON }} /></p>
         </div>
         {activities.length > 0 && (
           <Droppable droppableId="day-unplanned">
@@ -415,7 +423,6 @@ export default function DayView({
         destinations={destinations}
         groups={groups}
         tripStartDate={trip.start_date}
-        onAssignGroupToDay={onAssignGroupToDay}
         onAssignCityToDay={onAssignCityToDay}
         onRemoveActivity={onRemoveActivity}
         onUpdateActivity={onUpdateActivity}
@@ -430,11 +437,24 @@ export default function DayView({
   };
 
   // ─── Mobile : MÊME liste multi-jours + drag&drop, avec une timeline verticale
-  // à gauche (pastilles J1/J2… colorées reliées par un trait). Le desktop reste
-  // la liste simple, strictement inchangée (branche ci-dessous). ──────────────
-  if (isMobile) {
-    return (
+  // à gauche (pastilles J1/J2… colorées reliées par un trait). Rendue pour
+  // toutes les tailles d'écran depuis le 2026-07-24 (test demandé : même
+  // traitement sur ordinateur qu'en mobile/tablette, plus de branche séparée
+  // par isMobile) — voir aussi PlanningPage.css, .pp-day-timeline-body
+  // .pp-day-section (grosse carte retirée) et .pp-day-cities-badge (nom de
+  // ville en texte coloré plutôt qu'en badge). ──────────────
+  return (
       <div className="pp-day-view pp-day-view--timeline">
+        {/* Visible sur toutes les tailles d'écran (2026-07-24 : remontée sur
+            mobile/tablette aussi, où elle était masquée avant l'unification
+            des deux rendus). Icône ampoule "astuce" (pas la flèche d'avant,
+            retirée puis redemandée sous une autre forme le 2026-07-24). */}
+        <div className="pp-day-view-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="pp-day-view-hint-icon">
+            <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
+          </svg>
+          {t('dayView.hint')}
+        </div>
         <div className="pp-day-timeline">
           {unplanned.length > 0 && (
             <div className="pp-day-timeline-row">
@@ -495,12 +515,13 @@ export default function DayView({
             const dayCityLabels = citiesForDay(cities, dayActs);
             const importedDay = (trip.import_added_days || []).includes(day);
             return (
-              <div className="pp-day-timeline-row" key={day}>
+              <div
+                className="pp-day-timeline-row"
+                key={day}
+                style={{ '--node-color': DAY_COLORS[dayIdx % DAY_COLORS.length] }}
+              >
                 <div className="pp-day-timeline-node">
-                  <div
-                    className="pp-day-timeline-circle"
-                    style={{ '--node-color': DAY_COLORS[dayIdx % DAY_COLORS.length] }}
-                  >
+                  <div className="pp-day-timeline-circle">
                     {t('day.short', { n: dayIdx + 1 })}
                   </div>
                 </div>
@@ -535,119 +556,6 @@ export default function DayView({
         </div>
       </div>
     );
-  }
-
-  return (
-    <div className="pp-day-view">
-      <div className="pp-day-view-hint">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" opacity=".5">
-          <path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/>
-        </svg>
-        {t('dayView.hint')}
-      </div>
-
-      {unplanned.length > 0 && (
-        <div className="pp-day-section pp-day-section--unplanned">
-          <button
-            type="button"
-            className="pp-day-section-header pp-day-section-header--toggle"
-            onClick={() => setUnplannedOpen(o => !o)}
-            aria-expanded={unplannedOpen}
-          >
-            <div className="pp-day-num pp-day-num--unplanned">?</div>
-            <div className="pp-day-info">
-              <span className="pp-day-label">{t('dayView.unplannedLabel')}</span>
-              <span className="pp-day-count">{t('dayView.unplannedCount', { count: unplanned.length })}</span>
-              {!unplannedOpen && <span className="pp-day-section-hint">{t('dayView.clickToShow')}</span>}
-            </div>
-            <svg
-              className={`pp-day-section-chevron${unplannedOpen ? ' pp-day-section-chevron--open' : ''}`}
-              width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
-            >
-              <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
-            </svg>
-          </button>
-          <Droppable droppableId="day-unplanned">
-            {(provided, snapshot) => {
-              // Le conteneur reste toujours monté avec sa géométrie réelle (jamais
-              // display:none) : sinon, replié, il n'aurait plus aucune surface et
-              // deviendrait indétectable comme cible de drop par @hello-pangea/dnd
-              // et par le drag natif HTML5 (groupe/excursion).
-              const isOver = snapshot.isDraggingOver || unplannedDrop.isNativeOver;
-              const forceOpen = unplannedOpen || isOver;
-              return (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  {...unplannedDrop.handlers}
-                  className={`pp-day-activities pp-day-unplanned-list${isOver ? ' pp-day-activities--over' : ''}${forceOpen ? '' : ' pp-day-activities--collapsed'}`}
-                >
-                  {forceOpen && unplanned.map((act, idx) => (
-                    <ActivityItem
-                      key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
-                      cities={cities} destinations={destinations} groups={groups} tripStartDate={trip.start_date}
-                      onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </div>
-              );
-            }}
-          </Droppable>
-        </div>
-      )}
-
-      {days.map((day, dayIdx) => {
-        const dayActs = activities.filter(a => a.visit_date === day);
-        const totalDay = dayActs.length;
-        const doneDay = dayActs.filter(a => a.is_done).length;
-        const libreActs = dayActs.filter(a => !a.visit_time);
-        const nightLodgings = lodgingsForNight(lodgings, day);
-        // Temps de trajet entre activités horodatées consécutives de la journée —
-        // dérivé des activités à chaque rendu, donc recalculé automatiquement à
-        // chaque déplacement, changement d'heure ou de lieu. Doit utiliser EXACTEMENT
-        // le même tri que celui affiché par créneau (sortActsByTimeThenPosition) :
-        // un tri différent (ex. comparaison de chaînes brutes sur visit_time, qui ne
-        // départage pas les égalités par position) désynchronise les paires "from/to"
-        // des cartes réellement adjacentes à l'écran — la distance affichée se
-        // retrouve alors au-dessus de la mauvaise activité, ou manque entre deux
-        // cartes visuellement consécutives.
-        const travelSegments = buildTravelSegments(
-          sortActsByTimeThenPosition(dayActs.filter(a => a.visit_time))
-        );
-
-        return (
-          <DaySection
-            key={day}
-            day={day}
-            dayIdx={dayIdx}
-            importedDay={(trip.import_added_days || []).includes(day)}
-            dayActs={dayActs}
-            totalDay={totalDay}
-            doneDay={doneDay}
-            nightLodgings={nightLodgings}
-            slotActs={daySlotActs[day]}
-            slotOverflow={daySlotOverflow[day]}
-            travelSegments={travelSegments}
-            libreActs={libreActs}
-            cities={cities}
-            destinations={destinations}
-            groups={groups}
-            tripStartDate={trip.start_date}
-            onAssignGroupToDay={onAssignGroupToDay}
-            onAssignCityToDay={onAssignCityToDay}
-            onRemoveActivity={onRemoveActivity}
-            onUpdateActivity={onUpdateActivity}
-            onDuplicateActivity={onDuplicateActivity}
-            onAssignActivityToGroup={onAssignActivityToGroup}
-            onResizeStart={beginResize}
-            resize={resize}
-            onCutHere={cutStretchHere}
-          />
-        );
-      })}
-    </div>
-  );
 }
 
 // Confort visuel : quelle(s) ville(s) correspondent à ce jour, déduit
@@ -667,12 +575,11 @@ function citiesForDay(cities, dayActs) {
 
 function DaySection({
   day, dayIdx, importedDay = false, dayActs = [], totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
-  onAssignGroupToDay, onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
+  onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere, hideHeader = false,
 }) {
   const { t } = useTranslation();
   const libreDrop = useNativeDropTarget(
-    groupId => onAssignGroupToDay(groupId, day, null),
     cityId => onAssignCityToDay(cityId, day, null),
   );
 
@@ -757,7 +664,6 @@ function DaySection({
             destinations={destinations}
             groups={groups}
             tripStartDate={tripStartDate}
-            onAssignGroupToDay={onAssignGroupToDay}
             onAssignCityToDay={onAssignCityToDay}
             onRemoveActivity={onRemoveActivity}
             onUpdateActivity={onUpdateActivity}

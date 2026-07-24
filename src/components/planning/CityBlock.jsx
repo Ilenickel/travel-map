@@ -14,7 +14,7 @@ import CityMenu from './CityMenu';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 import MobileDetailHeader from './MobileDetailHeader';
 import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
-import { sumCosts, formatPrice } from '../../lib/planningUtils';
+import { sumCosts, formatPrice, kMeansActivities, estimateGeoClusterCount, GROUP_COLORS } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
 
 // Vignette photo de la ville (résolue en amont par DestinationBlock via
@@ -46,7 +46,8 @@ export default function CityBlock({
   countryCode, countryName, startExpanded = false, siblingPendingBaseCitiesCount = 0,
   cityImage = null, getCityImage, isMobile = false, mobileDetailOpen = false, onOpenDetail, onCloseDetail,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
-  onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
+  onAssignActivityToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
+  onAddGroup, onClearAutoGroups,
   onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
   const { t } = useTranslation();
@@ -57,6 +58,8 @@ export default function CityBlock({
   const [addingLodging, setAddingLodging] = useState(false);
   const [editing, setEditing] = useState(false);
   const [cityName, setCityName] = useState(city.name);
+  const [detectingZones, setDetectingZones] = useState(false);
+  const [zoneMsg, setZoneMsg] = useState(null);
   // Repliée d'entrée sur mobile (même seuil que le pager, cf. TripEditor) : la
   // page Villes y liste tout le voyage sur un petit écran — dépliées, deux ou
   // trois villes suffisent à noyer l'écran. Sur ordinateur, dépliée comme
@@ -144,10 +147,6 @@ export default function CityBlock({
   // (filet de sécurité si un lieu a disparu par un autre biais pendant la sélection).
   const validSelectedIds = placeActivities.filter(a => selectedIds.has(a.id)).map(a => a.id);
 
-  const handleAssignGroup = (groupId) => {
-    if (validSelectedIds.length) onAssignActivitiesToGroup(validSelectedIds, groupId);
-  };
-
   const handleAssignDay = (date) => {
     if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
   };
@@ -163,45 +162,141 @@ export default function CityBlock({
     setAddingPlace(false);
   };
 
+  // Détection de zones par proximité, scopée à CETTE ville (+ ses excursions
+  // rattachées) : cliquer sur "Grouper par proximité" pour Pékin ne doit
+  // jamais toucher les pastilles déjà posées sur Shanghai. Clustering direct
+  // sur les points d'activités individuels (pas d'ancrage par ville comme
+  // l'ancien algorithme trip-wide, inutile ici puisqu'on est déjà dans une
+  // seule ville) — une excursion, géographiquement éloignée, forme
+  // naturellement son propre cluster.
+  const cityIds = [city.id, ...daytrips.map(dt => dt.id)];
+  const geoActs = activities.filter(a => cityIds.includes(a.city_id) && a.place_lat && a.place_lng);
+
+  const handleAutoDetectZones = async () => {
+    if (geoActs.length < 3 || detectingZones) return;
+    setDetectingZones(true);
+    try {
+      await onClearAutoGroups(tripId, cityIds);
+      // maxK = floor(nb lieux / 2) plafonnait le nombre de zones possibles
+      // AVANT même que l'algorithme de distance n'ait sa chance : avec 4
+      // lieux, maxK tombait à 2, donc jamais essayé à 3 ou 4 zones — Temple
+      // du Ciel (~2,7km de Tian'anmen, au-dessus du seuil minSeparationKm)
+      // se retrouvait quand même fusionné, aucun rapport avec le seuil de
+      // distance (signalé le 2026-07-24, "l'algo c'est bien mais c'est pas
+      // lui qui rentre en compte sur le site" — en réalité c'était CET
+      // appel qui l'empêchait d'agir). maxK = nombre de lieux (plafonné à la
+      // palette de couleurs) : laisse estimateGeoClusterCount décider
+      // librement, sa propre logique de fusion (minSeparationKm) reste le
+      // seul frein contre un excès de petites zones.
+      const k = estimateGeoClusterCount(
+        geoActs.map(a => ({ lat: a.place_lat, lng: a.place_lng })),
+        { maxK: Math.min(GROUP_COLORS.length, geoActs.length) }
+      );
+      const clustered = kMeansActivities(geoActs.map(a => ({ id: a.id, lat: a.place_lat, lng: a.place_lng })), k);
+      const activityIdToCluster = Object.fromEntries(clustered.map(p => [p.id, p.cluster]));
+      const clusterValues = Object.values(activityIdToCluster).filter(Number.isInteger);
+      if (!clusterValues.length) return;
+      const kFinal = Math.max(...clusterValues) + 1;
+      const clusterColors = GROUP_COLORS.slice(0, kFinal);
+      let created = 0;
+      for (let ci = 0; ci < kFinal; ci++) {
+        const actIds = geoActs.filter(a => activityIdToCluster[a.id] === ci).map(a => a.id);
+        if (!actIds.length) continue;
+        const g = await onAddGroup(tripId, t('group.autoZoneName', { n: created + 1 }), clusterColors[ci], { isAuto: true });
+        if (g) {
+          created += 1;
+          await Promise.all(actIds.map(id => onAssignActivityToGroup(id, g.id)));
+        }
+      }
+      // Seul retour visible de cette action (sinon juste une pastille de
+      // couleur discrète sur les lieux, dont on ne comprend pas l'origine
+      // sans explication) — demande du 2026-07-24. Bulle locale sous le
+      // bouton plutôt que le toast global : sur PC celui-ci s'affiche tout
+      // en bas au centre de l'écran, hors du champ de vision (signalé le
+      // 2026-07-24, "on le voit pas").
+      setZoneMsg({ type: 'success', text: t('city.autoDetectZonesSuccess', { count: created }) });
+    } catch (err) {
+      console.error('[CityBlock] auto-détection des zones :', err);
+      setZoneMsg({ type: 'error', text: t('city.autoDetectZonesError') });
+    } finally {
+      setDetectingZones(false);
+      setTimeout(() => setZoneMsg(null), 4000);
+    }
+  };
+
   // ── Compteur "X lieux" + coût, réutilisés dans les 2 en-têtes (bureau /
   //    ligne mobile) ──
   const countBadge = (
-    <span className="pp-city-count">{t('place.count', { count: placeActivities.length })}</span>
+    <span key="count" className="pp-city-count">{t('place.count', { count: placeActivities.length })}</span>
   );
   const costBadge = cityCost != null && (
-    <span className="pp-city-cost" title={t('city.costTitle', { city: city.name })}>
+    <span key="cost" className="pp-city-cost" title={t('city.costTitle', { city: city.name })}>
       💰 {formatPrice(cityCost)}
     </span>
   );
 
-  // Champ "à dater" (halo) + menu ville (renommer / jours & nuits / supprimer /
-  // sélection) — même bloc d'actions dans l'en-tête bureau et l'en-tête détail
-  // mobile.
-  const actions = (
-    <div className="pp-city-actions">
-      {hasPendingContent && (
+  // Date de début (ville déjà datée ET ses activités déjà réellement placées
+  // = plus aucun intérêt à la changer depuis ici, voir CityPlanningFieldsButton).
+  const dateLocked = !!city.start_date && cityActivities.some(a => a.visit_date != null);
+
+  // Sélection multiple + détection de zones + date de début : boutons
+  // VISIBLES (pas cachés dans le menu ⋯) — les garder dans un sous-menu ne
+  // montrait pas que ces fonctions existaient (demande du 2026-07-24). Le
+  // bouton de date n'existe plus qu'une fois (avant : une version surlignée
+  // ici + une autre planquée dans le menu ⋯ quand c'était nécessaire —
+  // doublon inutile, signalé le 2026-07-24).
+  const extraActions = (
+    <>
+      {!dateLocked && (
         <CityPlanningFieldsButton
           city={city}
           tripStartDate={tripStartDate}
           onUpdate={onRename}
-          highlight
-          hasPendingContent
+          highlight={hasPendingContent}
+          hasPendingContent={hasPendingContent}
           siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
         />
       )}
-      <CityMenu
-        city={city}
-        tripStartDate={tripStartDate}
-        hasPlaces={placeActivities.length > 0}
-        selecting={selecting}
-        onToggleSelecting={toggleSelecting}
-        onRename={() => setEditing(true)}
-        onUpdatePlanning={onRename}
-        onDelete={() => onRemove(city.id)}
-        hasPendingContent={hasPendingContent}
-        siblingPendingBaseCitiesCount={siblingPendingBaseCitiesCount}
-        dateLocked={!!city.start_date && cityActivities.some(a => a.visit_date != null)}
-      />
+      {placeActivities.length > 0 && (
+        <button
+          type="button"
+          className={`pp-icon-btn pp-icon-btn--feature${selecting ? ' pp-icon-btn--active' : ''}`}
+          onClick={toggleSelecting}
+          title={selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </button>
+      )}
+      {geoActs.length >= 3 && (
+        <span className="pp-zone-msg-anchor">
+          <button
+            type="button"
+            className="pp-icon-btn pp-icon-btn--feature"
+            onClick={handleAutoDetectZones}
+            disabled={detectingZones}
+            title={t('city.autoDetectZonesTitle')}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+            </svg>
+          </button>
+          {zoneMsg && (
+            <span className={`pp-zone-msg pp-zone-msg--${zoneMsg.type}`} role="status">{zoneMsg.text}</span>
+          )}
+        </span>
+      )}
+    </>
+  );
+
+  const cityMenu = <CityMenu onRename={() => setEditing(true)} onDelete={() => onRemove(city.id)} />;
+
+  // Bureau : tout groupé dans une seule rangée d'icônes (voir .pp-city-actions).
+  const actions = (
+    <div className="pp-city-actions">
+      {extraActions}
+      {cityMenu}
     </div>
   );
 
@@ -242,10 +337,8 @@ export default function CityBlock({
       {selecting && validSelectedIds.length > 0 && (
         <SelectionActionBar
           count={validSelectedIds.length}
-          groups={groups}
           tripStartDate={tripStartDate}
           tripEndDate={tripEndDate}
-          onAssignGroup={handleAssignGroup}
           onAssignDay={handleAssignDay}
           onDelete={handleDeleteSelection}
           onCancel={toggleSelecting}
@@ -331,7 +424,6 @@ export default function CityBlock({
               onUpdateActivity={onUpdateActivity}
               onDuplicateActivity={onDuplicateActivity}
               onAssignActivityToGroup={onAssignActivityToGroup}
-              onAssignActivitiesToGroup={onAssignActivitiesToGroup}
               onAssignActivitiesToDay={onAssignActivitiesToDay}
               onAssignCityToDay={onAssignCityToDay}
               onAddLodging={onAddLodging}
@@ -496,7 +588,6 @@ export default function CityBlock({
           onUpdateActivity={onUpdateActivity}
           onDuplicateActivity={onDuplicateActivity}
           onAssignActivityToGroup={onAssignActivityToGroup}
-          onAssignActivitiesToGroup={onAssignActivitiesToGroup}
           onAssignActivitiesToDay={onAssignActivitiesToDay}
           onAssignCityToDay={onAssignCityToDay}
           onAddLodging={onAddLodging}
@@ -534,7 +625,8 @@ export default function CityBlock({
           backLabel={t('city.backToList')}
           name={nameEl}
           badges={[countBadge, costBadge].filter(Boolean)}
-          menu={actions}
+          menu={cityMenu}
+          titleActions={extraActions}
           tabs={tabs}
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -557,10 +649,8 @@ export default function CityBlock({
               {selecting && validSelectedIds.length > 0 && (
                 <SelectionActionBar
                   count={validSelectedIds.length}
-                  groups={groups}
                   tripStartDate={tripStartDate}
                   tripEndDate={tripEndDate}
-                  onAssignGroup={handleAssignGroup}
                   onAssignDay={handleAssignDay}
                   onDelete={handleDeleteSelection}
                   onCancel={toggleSelecting}
@@ -772,17 +862,28 @@ export default function CityBlock({
                   <circle cx="3" cy="13" r="1.5"/><circle cx="9" cy="13" r="1.5"/>
                 </svg>
               </div>
-              <CityThumb cityImage={cityImage} size={64} />
+              <CityThumb cityImage={cityImage} size={84} />
               <div className="pp-city-row-texts">
                 <span className="pp-city-row-name">{city.name}</span>
                 <span className="pp-city-row-sub">
-                  {t('place.count', { count: placeActivities.length })}
-                  {daytrips.length > 0 && <> · {t('city.daytripsCount', { count: daytrips.length })}</>}
-                  {cityCost != null && <> · 💰 {formatPrice(cityCost)}</>}
+                  {/* Chips séparées (pas un seul texte au fil de l'eau) : sur
+                      un petit écran, le retour à la ligne pouvait tomber en
+                      plein milieu d'un séparateur " · ", laissant un point
+                      isolé tout seul sur sa propre ligne (signalé le
+                      2026-07-23, "que tout se monte dessus"). Chaque chip est
+                      insécable, le retour à la ligne ne peut plus se faire
+                      qu'ENTRE deux chips entières. */}
+                  <span className="pp-city-row-sub-chip">{t('place.count', { count: placeActivities.length })}</span>
+                  {daytrips.length > 0 && (
+                    <span className="pp-city-row-sub-chip">{t('city.daytripsCount', { count: daytrips.length })}</span>
+                  )}
+                  {cityCost != null && (
+                    <span className="pp-city-row-sub-chip">💰 {formatPrice(cityCost)}</span>
+                  )}
                 </span>
               </div>
               {hasPendingContent && (
-                <div onClick={(e) => e.stopPropagation()}>
+                <div className="pp-city-row-planning-badge" onClick={(e) => e.stopPropagation()}>
                   <CityPlanningFieldsButton
                     city={city}
                     tripStartDate={tripStartDate}
@@ -827,7 +928,7 @@ export default function CityBlock({
               title={collapsed ? t('city.expandTitle') : t('city.collapseTitle')}
             >
               <svg
-                width="14" height="14"
+                width="20" height="20"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 style={{ transform: collapsed ? 'rotate(-90deg)' : 'none', transition: 'transform 0.2s' }}
@@ -836,12 +937,15 @@ export default function CityBlock({
               </svg>
             </button>
 
-            <CityThumb cityImage={cityImage} size={56} />
+            <CityThumb cityImage={cityImage} size={96} />
 
-            {nameEl}
-
-            {countBadge}
-            {costBadge}
+            <div className="pp-city-title-stack">
+              {nameEl}
+              <span className="pp-city-badges-row">
+                {countBadge}
+                {costBadge}
+              </span>
+            </div>
 
             {actions}
           </div>

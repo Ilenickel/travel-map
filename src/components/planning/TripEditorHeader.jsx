@@ -13,9 +13,11 @@ export default function TripEditorHeader({
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
-  // Mobile uniquement (le bouton et les règles CSS associées n'existent que sous
-  // 768px) : l'en-tête complet (dates, stats, actions, notes) mangeait tout
-  // l'écran d'un téléphone — replié par défaut, il se réduit à la ligne du titre.
+  // Replié par défaut, mobile ET ordinateur désormais (demande du 2026-07-24,
+  // "laisser plus de marge" à la colonne Villes) : l'en-tête complet — dates,
+  // stats, actions, notes — cède sa place tant qu'on n'a pas cliqué sur
+  // l'engrenage. Le halo ci-dessous (needsStartDateHighlight) pousse à
+  // l'ouvrir tant qu'aucune date n'est renseignée.
   const [headerOpen, setHeaderOpen] = useState(false);
   // Mobile uniquement aussi (bouton "⋯" masqué sur ordinateur) : les actions
   // Partager / Agenda / PDF / Notes vivaient uniquement dans l'en-tête déplié —
@@ -45,18 +47,19 @@ export default function TripEditorHeader({
     setNotesTimer(setTimeout(() => onUpdate(tripId, { notes: val.trim() || null }), 800));
   };
 
-  // Des villes en attente d'une date (pending_day_offset — voir handleImport/
-  // handleImportTrip côté serveur, planning_modele_v10.sql) sans que le
-  // voyage ait de date de départ : rien ne les ancrera tant que l'utilisateur
-  // n'aura pas rempli ce champ (anchor_trip_pending_days). Halo sur le champ
-  // "Départ" pour l'indiquer — sur mobile, sur l'engrenage tant que le
+  // Halo tant que le voyage n'a pas ses deux dates (départ ET retour) — élargi
+  // le 2026-07-24 : avant, seulement après un import en attente d'ancrage
+  // (pending_day_offset) ; maintenant tout voyage sans dates pousse à ouvrir
+  // le panneau de paramétrage, dates ou pas d'import en cours (la vue par
+  // jour comme les zones "à dater" en dépendent de toute façon). Halo sur le
+  // champ "Départ" pour l'indiquer — sur mobile ET ordinateur (l'en-tête est
+  // replié par défaut sur les deux désormais), sur l'engrenage tant que le
   // panneau est replié (voir CSS, .pp-editor-header--collapsed masque
   // .pp-trip-dates-card), puis sur le champ une fois déplié ; s'il est
   // rerepliée sans avoir choisi de date, le halo revient naturellement sur
   // l'engrenage — aucun état supplémentaire à gérer, seule la visibilité CSS
-  // change. Disparaît de lui-même dès que trip.start_date est renseigné.
-  const needsStartDateHighlight = !trip?.start_date
-    && cities.some((c) => !c.parent_city_id && c.pending_day_offset != null);
+  // change. Disparaît de lui-même dès que les deux dates sont renseignées.
+  const needsStartDateHighlight = !trip?.start_date || !trip?.end_date;
 
   const duration = tripDurationDays(trip?.start_date, trip?.end_date);
   const totalCities = cities.length;
@@ -156,27 +159,31 @@ export default function TripEditorHeader({
               Carte (désormais automatique, voir TripEditor) et Jour J (déplacé
               dans l'en-tête de la colonne Jours) ne sont plus ici. */}
           <button
-            className={`pp-toolbar-btn${showNotes ? ' active' : ''}`}
+            className={`pp-toolbar-btn pp-toolbar-btn--flat pp-toolbar-btn--notes${showNotes ? ' active' : ''}`}
             onClick={() => setShowNotes(n => !n)}
             title={t('header.notesButtonTitle')}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-            </svg>
+            <span className="pp-toolbar-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+              </svg>
+            </span>
             {t('header.notesButton')}
           </button>
           <button
-            className="pp-toolbar-btn"
+            className="pp-toolbar-btn pp-toolbar-btn--flat pp-toolbar-btn--pdf"
             onClick={onExportPdf}
             title={t('header.exportPdfTitle')}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-            </svg>
+            <span className="pp-toolbar-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+              </svg>
+            </span>
             {t('header.exportPdfButton')}
           </button>
           <button
-            className="pp-toolbar-btn"
+            className="pp-toolbar-btn pp-toolbar-btn--flat pp-toolbar-btn--agenda"
             onClick={onExportIcal}
             disabled={icalExportableCount === 0}
             title={icalExportableCount === 0
@@ -185,19 +192,23 @@ export default function TripEditorHeader({
                 : t('header.icalNoneTitle'))
               : t('header.icalExportTitle')}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
-            </svg>
+            <span className="pp-toolbar-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+              </svg>
+            </span>
             {t('header.exportIcalButton')}
           </button>
           <button
-            className="pp-toolbar-btn"
+            className="pp-toolbar-btn pp-toolbar-btn--flat pp-toolbar-btn--expenses"
             onClick={onOpenExpenses}
             title={t('expenses.title')}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M4 3h16a1 1 0 011 1v16.13a.5.5 0 01-.82.38l-1.88-1.57-1.9 1.59a.5.5 0 01-.64 0L14 18.94l-1.76 1.59a.5.5 0 01-.64 0L9.8 18.94l-1.86 1.59a.5.5 0 01-.64 0L5.4 18.94l-1.88 1.57A.5.5 0 013 20.13V4a1 1 0 011-1zm2.5 5h11v2h-11V8zm0 4h11v2h-11v-2zm0 4h7v2h-7v-2z"/>
-            </svg>
+            <span className="pp-toolbar-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 3h16a1 1 0 011 1v16.13a.5.5 0 01-.82.38l-1.88-1.57-1.9 1.59a.5.5 0 01-.64 0L14 18.94l-1.76 1.59a.5.5 0 01-.64 0L9.8 18.94l-1.86 1.59a.5.5 0 01-.64 0L5.4 18.94l-1.88 1.57A.5.5 0 013 20.13V4a1 1 0 011-1zm2.5 5h11v2h-11V8zm0 4h11v2h-11v-2zm0 4h7v2h-7v-2z"/>
+              </svg>
+            </span>
             {t('expenses.navLabel')}
           </button>
           <button

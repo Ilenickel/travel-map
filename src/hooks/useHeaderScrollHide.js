@@ -49,9 +49,16 @@ export function useHeaderScrollHide() {
   }, []);
 
   const onScroll = (e) => {
-    const top = e.currentTarget.scrollTop;
+    const el = e.currentTarget;
+    const top = el.scrollTop;
     const delta = top - lastScrollTopRef.current;
-    if (top <= 0) {
+    // Tout en bas (à 2px près, tolérance sub-pixel) : réaffiche aussi, même si
+    // le dernier geste était vers le bas — sinon la barre resterait masquée
+    // une fois arrivé en fin de liste, sans remonter d'abord pour la
+    // retrouver (demande du 2026-07-23, "l'afficher à nouveau... en étant
+    // tout en bas").
+    const atBottom = el.scrollHeight - top - el.clientHeight <= 2;
+    if (top <= 0 || atBottom) {
       setHidden(false);
       lastScrollTopRef.current = top;
     } else if (delta > SCROLL_HIDE_THRESHOLD) {

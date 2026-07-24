@@ -47,7 +47,6 @@ export default function ActivityItem({
   // avec "pas de coût renseigné". La valeur du champ est exprimée dans la
   // devise d'affichage (conversion depuis l'EUR stocké).
   const [cost, setCost] = useState(eurToInputValue(act.cost));
-  const [groupId, setGroupId] = useState(act.group_id || null);
   const [showGroupPicker, setShowGroupPicker] = useState(false);
   const groupPickerRef = useScrollIntoViewOnOpen(showGroupPicker);
   // Le champ date s'ouvre pré-rempli à la date de début du voyage (pour éviter à
@@ -74,9 +73,8 @@ export default function ActivityItem({
       setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
       setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
       setCost(eurToInputValue(act.cost));
-      setGroupId(act.group_id || null);
     }
-  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, act.group_id, editing, currency]);
+  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, editing, currency]);
 
   const toggleAllDay = () => {
     setAllDay(a => {
@@ -119,9 +117,6 @@ export default function ActivityItem({
       duration_minutes: isTransport && totalMinutes > 0 ? totalMinutes : null,
       cost: parsedCost,
     });
-    if (groupId !== act.group_id && onAssignToGroup) {
-      onAssignToGroup(act.id, groupId);
-    }
     setEditing(false);
   };
 
@@ -136,7 +131,6 @@ export default function ActivityItem({
     setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
     setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
     setCost(eurToInputValue(act.cost));
-    setGroupId(act.group_id || null);
     setEditing(false);
   };
 
@@ -246,6 +240,12 @@ export default function ActivityItem({
     clearLongPressTimer();
     longPressStartRef.current = null;
   };
+  // Pas d'équivalent souris (essayé puis retiré le 2026-07-24) : contrairement
+  // au tactile, @hello-pangea/dnd arme un drag à la souris dès le moindre
+  // mouvement, et le micro-tremblement naturel de la main pendant un appui
+  // maintenu suffit presque toujours à le déclencher avant nos 480ms — sur
+  // ordinateur, la sélection multiple démarre uniquement via le menu "⋯" de
+  // la ville (bouton "Sélectionner").
   // L'appui long a déjà déclenché la sélection : le "click" de compatibilité
   // que les navigateurs tactiles émettent quand même juste après ne doit pas
   // EN PLUS ouvrir l'édition (startEditing) — capturé puis réarmé aussitôt.
@@ -400,32 +400,6 @@ export default function ActivityItem({
                   </div>
                 </div>
               </div>
-
-              {/* Zone (group) */}
-              {groups && groups.length > 0 && (
-                <div className="pp-group-picker-field">
-                  <label className="pp-group-picker-label">{t('activity.groupLabel')}</label>
-                  <div className="pp-group-chips">
-                    <button
-                      className={`pp-group-chip${!groupId ? ' active' : ''}`}
-                      onClick={() => setGroupId(null)}
-                    >
-                      {t('common:none')}
-                    </button>
-                    {groups.map(g => (
-                      <button
-                        key={g.id}
-                        className={`pp-group-chip${groupId === g.id ? ' active' : ''}`}
-                        style={{ '--group-color': g.color }}
-                        onClick={() => setGroupId(g.id)}
-                      >
-                        <span className="pp-group-chip-dot" style={{ background: g.color }} />
-                        {g.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               <textarea
                 className="pp-activity-note-input"

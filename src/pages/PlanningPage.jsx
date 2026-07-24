@@ -104,7 +104,7 @@ function PlanningMain() {
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
     addActivity, updateActivity, removeActivity, removeActivities, reorderActivities,
     duplicateActivity, undoLastDelete,
-    addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignActivitiesToGroup, assignGroupToDay, assignCityToDay, assignActivitiesToDay,
+    addGroup, clearAutoGroups, assignActivityToGroup, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
   } = useTrips(user?.id);
 
@@ -182,11 +182,7 @@ function PlanningMain() {
             onUndoLastDelete={undoLastDelete}
             onAddGroup={addGroup}
             onClearAutoGroups={clearAutoGroups}
-            onUpdateGroup={updateGroup}
-            onRemoveGroup={removeGroup}
             onAssignActivityToGroup={assignActivityToGroup}
-            onAssignActivitiesToGroup={assignActivitiesToGroup}
-            onAssignGroupToDay={assignGroupToDay}
             onAssignCityToDay={assignCityToDay}
             onAssignActivitiesToDay={assignActivitiesToDay}
             onAddLodging={addLodging}

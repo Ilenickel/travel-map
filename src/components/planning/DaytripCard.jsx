@@ -41,7 +41,7 @@ export default function DaytripCard({
   city, activities, groups, lodgings, tripId, tripStartDate, tripEndDate,
   cityImage = null, isMobile = false, mobileDetailOpen = false, onCloseDetail,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
-  onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAssignCityToDay,
+  onAssignActivityToGroup, onAssignActivitiesToDay, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
   const [addingPlace, setAddingPlace] = useState(false);
@@ -120,10 +120,6 @@ export default function DaytripCard({
   };
 
   const validSelectedIds = dtPlaces.filter(a => selectedIds.has(a.id)).map(a => a.id);
-
-  const handleAssignGroup = (groupId) => {
-    if (validSelectedIds.length) onAssignActivitiesToGroup(validSelectedIds, groupId);
-  };
 
   const handleAssignDay = (date) => {
     if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
@@ -265,10 +261,8 @@ export default function DaytripCard({
               {selecting && validSelectedIds.length > 0 && (
                 <SelectionActionBar
                   count={validSelectedIds.length}
-                  groups={groups}
                   tripStartDate={tripStartDate}
                   tripEndDate={tripEndDate}
-                  onAssignGroup={handleAssignGroup}
                   onAssignDay={handleAssignDay}
                   onDelete={handleDeleteSelection}
                   onCancel={toggleSelecting}
@@ -459,10 +453,8 @@ export default function DaytripCard({
           {selecting && validSelectedIds.length > 0 && (
             <SelectionActionBar
               count={validSelectedIds.length}
-              groups={groups}
               tripStartDate={tripStartDate}
               tripEndDate={tripEndDate}
-              onAssignGroup={handleAssignGroup}
               onAssignDay={handleAssignDay}
               onDelete={handleDeleteSelection}
               onCancel={toggleSelecting}

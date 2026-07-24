@@ -111,14 +111,13 @@
     "costInputTitle": "Prix de l'activité (billet, entrée, repas…) — laissez vide si inconnu",
     "priceTitle": "Prix de l'activité",
     "infoToggleTitle": "Afficher/masquer les détails",
-    "groupLabel": "Groupe",
     "notePlaceholder": "Note (horaires, infos, adresse…)",
     "attachmentCount_one": "{{count}} pièce jointe",
     "attachmentCount_other": "{{count}} pièces jointes",
     "resizeHandleTitle": "Glisser vers le bas pour étirer sur les créneaux (ou jours) suivants",
-    "groupTitleWithName": "Groupe : {{name}} — cliquer pour changer",
-    "groupTitleAssign": "Cliquer pour assigner un groupe",
-    "assignGroupLabel": "Assigner un groupe",
+    "groupTitleWithName": "Zone : {{name}} — cliquer pour changer",
+    "groupTitleAssign": "Cliquer pour assigner une zone",
+    "assignGroupLabel": "Assigner une zone",
     "duplicateTitle": "Dupliquer (ou survoler la carte + Ctrl+C)",
     "removeFromPlanningTitle": "Retirer de la planification (reste disponible dans la ville)",
     "deleteTitle": "Supprimer"
@@ -137,7 +136,6 @@
   "selection": {
     "count_one": "{{count}} sélectionné",
     "count_other": "{{count}} sélectionnés",
-    "groupDropdown": "Groupe ▾",
     "moveToDayDropdown": "Déplacer vers un jour ▾"
   },
   "place": {
@@ -256,6 +254,9 @@
     "costTitle": "Coût des activités et trajets de {{city}} (hors hébergements et excursions)",
     "renameTitle": "Renommer la ville",
     "deleteTitle": "Supprimer la ville",
+    "autoDetectZonesTitle": "Grouper les lieux par proximité",
+    "autoDetectZonesSuccess": "Lieux regroupés par proximité ({{count}} zone(s) créée(s))",
+    "autoDetectZonesError": "Le regroupement par proximité a échoué",
     "addPlaceOrActivityButton": "Ajouter un lieu ou activité",
     "addDaytripSearchPlaceholder": "Chercher une ville pour l'excursion… (ou Entrée pour ajouter)",
     "addDaytripButton": "Ajouter une excursion à la journée",
@@ -282,7 +283,9 @@
     "citiesCount_other": "{{count}} villes",
     "removeTitle": "Retirer ce pays du voyage",
     "addCityButton": "Ajouter une ville",
-    "suggestButton": "Suggestions pour {{country}}"
+    "suggestButton": "Suggestions pour {{country}}",
+    "menuTitle": "Options du pays",
+    "addCountryHint": "Vous pourrez ajouter un autre pays depuis le menu ⋯ d'une destination."
   },
   "country": {
     "addTitle": "Ajouter un pays",
@@ -314,23 +317,7 @@
     "addButton": "Ajouter un hébergement"
   },
   "group": {
-    "hideActivitiesTitle": "Masquer les lieux (glisser la carte pour tout planifier sur un jour)",
-    "showActivitiesTitle": "Voir les lieux du groupe (glisser la carte pour tout planifier sur un jour)",
-    "dragToPlanTitle": "Glisser pour tout planifier sur un jour",
-    "changeColorTitle": "Changer la couleur",
-    "renameHintTitle": "Double-clic pour renommer",
-    "planGroupOnDayTitle": "Planifier tous les lieux de ce groupe sur un jour",
-    "deleteGroupTitle": "Supprimer le groupe",
-    "removeFromGroupTitle": "Retirer du groupe",
-    "emptyDropHint": "Glissez un lieu ici",
-    "defaultName": "Groupe {{n}}",
-    "autoZoneName": "Zone {{n}}",
-    "header": "Groupes d'activité",
-    "emptyHint": "Regroupez vos lieux par quartier ou thème. Cliquez sur le point coloré d'un lieu pour l'assigner.",
-    "newGroupButton": "Nouveau groupe",
-    "autoDetectTitle": "Détecter automatiquement des zones par regroupement géographique ({{count}} lieux géolocalisés)",
-    "autoDetectButton": "Détecter des zones",
-    "columnHint": "Regroupez vos lieux par quartier ou secteur : chaque zone colore ses points sur la carte et peut être posée sur un jour d'un coup. « Détecter des zones » les crée automatiquement par regroupement géographique."
+    "autoZoneName": "Zone {{n}}"
   },
   "attachments": {
     "sizeKo": "{{value}} Ko",
@@ -364,7 +351,7 @@
     "continuationChip": "↳ suite ({{from}})",
     "cutHereTitle": "Arrêter l'activité juste avant ce créneau (retire celui-ci et tous les suivants)",
     "dropHere": "Glissez ici",
-    "noDatesNotice": "Définissez des dates pour voir la vue par jour et planifier vos activités par créneaux.",
+    "noDatesNotice": "Cliquez sur <icon/> pour définir les dates du voyage et avoir accès à la vue par jour, afin de planifier vos activités par créneaux.",
     "activitiesCount": "Activités ({{count}})",
     "hint": "Glissez un lieu vers un créneau (Matin / Après-midi / Soir) pour le planifier, ou tirez la poignée en bas d'une activité planifiée pour l'étirer sur les créneaux — voire les jours — suivants",
     "unplannedLabel": "Non planifiées",
@@ -402,7 +389,7 @@
     "mapButton": "Carte",
     "closeMapTitle": "Fermer la carte",
     "showMapTitle": "Afficher la carte",
-    "dayModeButton": "Jour J",
+    "dayModeButton": "Voir Jour J",
     "dayModeNeedDatesTitle": "Définissez des dates de voyage pour utiliser le mode Jour J",
     "dayModeBackTitle": "Revenir au planning complet",
     "dayModeEnterTitle": "Mode Jour J : affiche seulement les activités du jour en cours",
@@ -541,7 +528,6 @@
     "hideMapToRailTitle": "Masquer la carte",
     "navLabel": "Navigation entre les volets",
     "navCities": "Villes",
-    "navGroups": "Groupes",
     "navDays": "Jours"
   },
   "expenses": {

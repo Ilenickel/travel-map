@@ -10,7 +10,6 @@ import TripEditorHeader from './TripEditorHeader';
 import DestinationBlock from './DestinationBlock';
 import CountryPicker from './CountryPicker';
 import DayView, { activitiesInSlot } from './DayView';
-import GroupManager from './GroupManager';
 import MapPanel from './MapPanel';
 import TripShareModal from './TripShareModal';
 import TripPrintView from './TripPrintView';
@@ -26,7 +25,7 @@ export default function TripEditor({
   onAddCity, onAddDaytrip, onRemoveCity, onRenameCity, onReorderCities,
   onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onReorderActivities,
   onDuplicateActivity, onUndoLastDelete,
-  onAddGroup, onClearAutoGroups, onUpdateGroup, onRemoveGroup, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignGroupToDay, onAssignCityToDay, onAssignActivitiesToDay,
+  onAddGroup, onClearAutoGroups, onAssignActivityToGroup, onAssignCityToDay, onAssignActivitiesToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
   onLeaveTrip, onReloadTripData, onBack,
 }) {
@@ -167,7 +166,13 @@ export default function TripEditor({
   // villes, importer un planning, dater une ville). Sans effet sur ordinateur
   // (la piste est en display:contents, tout est visible).
   const [page, setPage] = useState(0);
-  const isMobile = useIsMobile();
+  // 1024 (pas le défaut 768) — même convention que CountryPanel.jsx : une
+  // tablette en portrait (iPad Pro compris, 1024px) reçoit la vue mobile
+  // (peaufinée sur toute cette session), pas la vue PC à 3 colonnes qui n'a
+  // pas la place d'y tenir proprement (noms de ville tronqués "Che...",
+  // signalé le 2026-07-23). En paysage (bien plus large), la même tablette
+  // repasse naturellement en vue PC.
+  const isMobile = useIsMobile(1024);
   // Mobile uniquement : ville ouverte en "détail plein écran" dans la page
   // Villes (liste → tap → détail, voir CityBlock/DestinationBlock). null = on
   // affiche la liste des villes. Sans effet sur ordinateur (les villes s'y
@@ -178,7 +183,9 @@ export default function TripEditor({
   // d'une carte, il ne doit jamais déclencher un changement de page en plus.
   const rbdDraggingRef = useRef(false);
 
-  const pagerActive = () => window.matchMedia('(max-width: 768px)').matches;
+  // Même seuil que useIsMobile(1024) plus haut — sinon ce check ponctuel se
+  // désynchronise du isMobile "officiel" (signalé le 2026-07-23, tablette).
+  const pagerActive = () => window.matchMedia('(max-width: 1024px)').matches;
   // Après un import de suggestion(s) (voir DestinationBlock/TripSuggestionsModal),
   // les villes viennent d'apparaître/changer : sur mobile, on ramène sur la
   // page Villes (0) pour les montrer directement, plutôt que de laisser
@@ -217,13 +224,30 @@ export default function TripEditor({
   // scroll n'y déclenche jamais handleVillesListScroll côté JSX) ni sur les
   // autres pages du pager (villesChromeHidden n'est lu que combiné à
   // `page === VILLES_PAGE` plus bas).
-  const { hidden: villesChromeHiddenRaw, onScroll: onVillesListScroll, containerRef: villesListRef } = useHeaderScrollHide();
+  const { hidden: villesChromeHiddenRaw, onScroll: onVillesListScrollRaw, containerRef: villesListRef } = useHeaderScrollHide();
   const villesChromeHidden = villesChromeHiddenRaw && isMobile && page === VILLES_PAGE && !mobileCityDetailId;
+  // Même garde que onJoursScroll plus bas : ignore ce scroll pendant un drag
+  // (reorder de ville) actif, pour ne pas re-rendre toute la page à chaque
+  // tick d'auto-scroll de @hello-pangea/dnd.
+  const onVillesListScroll = (e) => { if (!rbdDraggingRef.current) onVillesListScrollRaw(e); };
+  // Même mécanique pour la page Jours (timeline verticale) : la barre de
+  // navigation basse se masque aussi en scrollant cette page vers le bas, se
+  // réaffiche en remontant OU en arrivant tout en bas (voir useHeaderScrollHide,
+  // demande du 2026-07-23). JOURS_PAGE = 1 (Villes=0, Jours=1, JourJ=2).
+  const JOURS_PAGE = 1;
+  const { hidden: joursChromeHiddenRaw, onScroll: onJoursScrollRaw, containerRef: joursContentRef } = useHeaderScrollHide();
+  const joursChromeHidden = joursChromeHiddenRaw && isMobile && page === JOURS_PAGE;
+  // .pp-content-panel est AUSSI le conteneur de scroll que @hello-pangea/dnd
+  // auto-scrolle pendant un glisser-déposer proche des bords : sans ce garde,
+  // chaque tick de cet auto-scroll déclenchait ce handler (setState → re-rendu
+  // de tout l'arbre de la page Jours en pleine seconde de drag), ce qui cassait
+  // le drag&drop des activités (cartes qui ne se déposaient plus). rbdDraggingRef
+  // (déjà utilisé plus bas pour ignorer le geste de swipe pendant un drag) sert
+  // ici au même usage : ignorer complètement ce scroll tant qu'un drag est actif.
+  const onJoursScroll = (e) => { if (!rbdDraggingRef.current) onJoursScrollRaw(e); };
   // Pages du pager mobile, dans l'ordre : 0 Villes, 1 Jours, 2 Jour J, 3 Carte
   // (si ouverte), puis Dépenses en dernière page (index 3 ou 4 selon la carte —
-  // toujours pageCount - 1). Le panneau Groupes n'existe pas sur mobile (masqué
-  // en CSS, .pp-groups-panel) : la gestion fine des groupes reste un usage
-  // ordinateur, l'assignation à un groupe passe par les menus des activités.
+  // toujours pageCount - 1).
   // Jour J est toujours présente (contrairement à la Carte, qui n'existe comme
   // page que si mapOpen) : sur ordinateur elle n'a pas besoin d'un bouton
   // dédié, mais sur mobile c'est justement l'usage le plus fréquent
@@ -254,7 +278,7 @@ export default function TripEditor({
   // au contenu plutôt que de basculer proprement vers la page Jour J du pager.
   useEffect(() => {
     if (!dayModeActive) return;
-    const mq = window.matchMedia('(max-width: 768px)');
+    const mq = window.matchMedia('(max-width: 1024px)');
     const handleChange = (e) => {
       if (!e.matches) return;
       setDayModeActive(false);
@@ -337,19 +361,24 @@ export default function TripEditor({
   }, []);
 
   const closeMap = () => { setMapOpen(false); setMapOverlay(false); };
-  // Entre 769 et 900px, le panneau "carte à côté" est masqué en CSS (et le bouton
-  // pour passer en superposition est dedans) : la superposition est donc le seul
-  // mode carte visible à ces largeurs. Sous 768px en revanche, la carte a sa
-  // propre page dans le pager — on y amène directement l'utilisateur.
+  // Devenu inatteignable depuis que pagerActive() est passé à 1024px (avant
+  // 768px, voir plus haut, "tablette reçoit la vue mobile") : sideMapHidden
+  // (900px) est maintenant un sous-ensemble strict de pagerActive, donc le
+  // "else if" ci-dessous ne se déclenche plus jamais — pas un bug, juste
+  // devenu redondant (pagerActive couvre déjà tout ce cas via le pager
+  // mobile). Conservé tel quel plutôt que retiré, pour ne pas devoir
+  // retoucher aussi le CSS @media 900px qui masque encore le panneau "carte
+  // à côté" (sans conséquence, ce panneau n'est de toute façon plus affiché
+  // ainsi sous 1024px).
   const sideMapHidden = () => window.matchMedia('(max-width: 900px)').matches;
   const openMap = () => {
     setMapOpen(true);
     if (pagerActive()) setPage(JOURJ_PAGE + 1); // Carte = page suivant Jour J
     else if (sideMapHidden()) setMapOverlay(true);
   };
-  // Réduire la superposition : sous 768px on retombe sur la page carte du pager ;
-  // entre 769 et 900px la carte "à côté" n'existe pas, réduire la laisserait
-  // ouverte mais invisible — on la ferme complètement.
+  // Réduire la superposition : sous 1024px on retombe sur la page carte du
+  // pager (cas normal désormais, y compris pour l'ancienne plage
+  // intermédiaire 769-900px, voir sideMapHidden ci-dessus).
   const collapseOverlay = () => {
     if (pagerActive()) setMapOverlay(false);
     else if (sideMapHidden()) closeMap();
@@ -634,7 +663,8 @@ export default function TripEditor({
                     onUpdateActivity={onUpdateActivity}
                     onDuplicateActivity={onDuplicateActivity}
                     onAssignActivityToGroup={onAssignActivityToGroup}
-                    onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+                    onAddGroup={onAddGroup}
+                    onClearAutoGroups={onClearAutoGroups}
                     onAssignActivitiesToDay={onAssignActivitiesToDay}
                     onAddLodging={onAddLodging}
                     onUpdateLodging={onUpdateLodging}
@@ -693,32 +723,19 @@ export default function TripEditor({
             )}
           </div>
 
-          {/* ── Panneau groupes d'activité ── */}
-          <div className="pp-groups-panel">
-            <GroupManager
-              tripId={tripId}
-              groups={groups}
-              activities={activities}
-              cities={cities}
-              trip={trip}
-              onAddGroup={onAddGroup}
-              onClearAutoGroups={onClearAutoGroups}
-              onUpdateGroup={onUpdateGroup}
-              onRemoveGroup={onRemoveGroup}
-              onAssignGroupToDay={onAssignGroupToDay}
-              onAssignActivityToGroup={onAssignActivityToGroup}
-            />
-          </div>
-
           {/* ── Panneau jours ── */}
-          <div className={`pp-content-panel${mapOpen ? ' pp-content-panel--narrowed' : ''}`}>
+          <div
+            className={`pp-content-panel${mapOpen ? ' pp-content-panel--narrowed' : ''}`}
+            ref={joursContentRef}
+            onScroll={onJoursScroll}
+          >
             {/* Bouton "Jour J" — vivait dans l'en-tête du voyage, il a migré ici
                 (en-tête de LA colonne qu'il concerne) : masqué sur mobile (CSS),
                 où la page dédiée du pager (JOURJ_PAGE) fait déjà ce rôle. */}
             <div className="pp-content-panel-header">
               <button
                 type="button"
-                className={`pp-toolbar-btn pp-toolbar-btn--dayj${dayModeActive ? ' active' : ''}`}
+                className={`pp-btn pp-btn--share pp-btn--dayj${dayModeActive ? ' active' : ''}`}
                 onClick={toggleDayMode}
                 disabled={!trip?.start_date || !trip?.end_date}
                 title={
@@ -741,7 +758,6 @@ export default function TripEditor({
               groups={groups}
               lodgings={lodgings}
               isMobile={isMobile}
-              onAssignGroupToDay={onAssignGroupToDay}
               onAssignCityToDay={onAssignCityToDay}
               onRemoveActivity={onRemoveActivity}
               onUpdateActivity={onUpdateActivity}
@@ -865,7 +881,7 @@ export default function TripEditor({
           DaytripCard), demande du 2026-07-23 ("la barre d'action disparaît sur
           cet écran jusqu'à ce qu'on retourne en arrière"). */}
       {!mobileCityDetailId && (
-      <nav className={`pp-mobile-nav${villesChromeHidden ? ' pp-mobile-nav--hidden' : ''}`} aria-label={t('editor.navLabel')}>
+      <nav className={`pp-mobile-nav${(villesChromeHidden || joursChromeHidden) ? ' pp-mobile-nav--hidden' : ''}`} aria-label={t('editor.navLabel')}>
         {[
           { icon: '🌍', label: t('editor.navCities'), go: () => { setPage(0); setMobileCityDetailId(null); }, isActive: page === 0 },
           { icon: '📅', label: t('editor.navDays'), go: () => setPage(1), isActive: page === 1 },

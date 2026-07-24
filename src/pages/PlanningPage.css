@@ -342,8 +342,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: 110px;
-  padding: 14px 16px;
+  min-height: 138px;
+  padding: 16px 18px;
   border-radius: 16px;
   cursor: pointer;
   background-size: cover;
@@ -407,12 +407,12 @@
 .pp-destination-title {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   min-width: 0;
 }
 
 .pp-destination-name {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #fff;
@@ -460,7 +460,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 13px 16px 13px 13px;
+  padding: 7px 16px 7px 13px;
   cursor: default;
   background: linear-gradient(90deg, rgba(99,102,241,0.14), rgba(99,102,241,0.04) 70%);
   border-bottom: 1px solid var(--border);
@@ -1393,9 +1393,17 @@
 .pp-place-suggestions-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
 }
+/* flex:1 sur le texte plutôt que justify-content:space-between sur la ligne :
+   avec 3 enfants (icône/texte/bouton "Ajouter"), space-between répartissait
+   l'espace restant en 2 interstices égaux, ce qui centrait visuellement un
+   nom COURT ("Dujiangyan") alors qu'un nom long semblait, lui, collé à
+   gauche — décalage entre les lignes signalé le 2026-07-24. Le texte prend
+   maintenant toute la place disponible et reste toujours aligné à gauche,
+   juste après l'icône ; le bouton garde sa taille naturelle et se retrouve
+   poussé à droite. */
+.pp-place-suggestions-item .pp-search-item-text { flex: 1; }
 
 /* Aperçu photo grand format du lieu de suggestion survolé : rendu dans un
    portail vers <body> (voir PlaceSuggestionsButton) car la colonne voisine
@@ -1439,10 +1447,31 @@
   font-weight: 600;
   color: var(--text);
 }
-/* Mobile / écrans étroits : pas de place à droite de la liste (et pas de
-   vrai survol au doigt) — l'aperçu est simplement masqué. */
-@media (max-width: 768px) {
-  .pp-place-suggestions-preview { display: none; }
+/* Mobile / écrans étroits : pas de place à côté de la liste (et pas de vrai
+   survol au doigt) — cet aperçu POSITIONNÉ (desktop) est masqué ; la variante
+   --mobile (overlay centré, ouverte par tap sur la vignette) reste affichée,
+   voir plus bas dans ce fichier. */
+@media (max-width: 1024px) {
+  .pp-place-suggestions-preview:not(.pp-place-suggestions-preview--mobile) { display: none; }
+}
+
+/* Overlay plein écran de l'aperçu photo mobile (tap sur la vignette d'un
+   lieu suggéré) — remplace le survol, impossible au doigt (signalé le
+   2026-07-23, "aucun moyen de voir les photos"). */
+.pp-place-suggestions-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(6, 9, 15, 0.65);
+}
+.pp-place-suggestions-preview--mobile {
+  position: static;
+  width: min(340px, 100%);
+  max-height: 80vh;
 }
 
 /* Suggestions de planning (planning-modèle communautaire, branche planModel) :
@@ -1531,7 +1560,7 @@
   border-radius: 3px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Sur un écran étroit, les deux flèches à 34px chacune + leurs marges
      mangeaient une bonne partie de la largeur dispo, écrasant la carte de
      planning au milieu. Elles passent en petits boutons superposés sur les
@@ -2145,6 +2174,16 @@
 
 .pp-empty-destinations-icon { font-size: 32px; opacity: 0.4; }
 
+/* Remplace le bandeau "Ajouter un pays" une fois au moins un pays présent
+   (voir TripEditor.jsx) — en flux normal, jamais flottant : ne réserve donc
+   aucun espace vide en trop en bas de liste. */
+.pp-add-country-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 4px 12px 2px;
+}
+
 .pp-empty-destinations p {
   font-size: 14px;
   color: var(--text-muted);
@@ -2455,7 +2494,7 @@
 }
 
 /* ─── Responsive (tablet) ─── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pp-layout {
     flex-direction: column;
   }
@@ -2630,6 +2669,36 @@
   box-shadow: 0 2px 8px rgba(99,102,241,0.35);
 }
 
+/* ─── Variante plate (en-tête voyage : Notes/PDF/Agenda/Dépenses) ───
+   Pas de pilule/contour, juste l'icône colorée + le texte (2e passage le
+   2026-07-24 — la 1ère version en boîte grise était encore trop chargée) :
+   n'affecte QUE ces 4 boutons (le bouton "Jour J" de la colonne Jours a
+   depuis migré vers .pp-btn--share, voir plus bas). */
+.pp-toolbar-btn--flat {
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+}
+.pp-toolbar-btn--flat:hover:not(:disabled) { color: var(--text); background: none; }
+.pp-toolbar-btn--flat.active { background: none; box-shadow: none; color: var(--accent2); }
+
+/* Icône colorée, une teinte différente par action — rend ces 4 boutons
+   repérables au coup d'œil plutôt que du texte gris uniforme (signalé le
+   2026-07-24, PC : boutons trop peu visibles). Couleur portée par l'icône
+   seule, aucun fond/contour autour. */
+.pp-toolbar-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pp-toolbar-btn--notes .pp-toolbar-btn-icon { color: #f59e0b; }
+.pp-toolbar-btn--pdf .pp-toolbar-btn-icon { color: #38bdf8; }
+.pp-toolbar-btn--agenda .pp-toolbar-btn-icon { color: #a78bfa; }
+.pp-toolbar-btn--expenses .pp-toolbar-btn-icon { color: #34d399; }
+
 /* ─── Partager — CTA distincte, dégradé pour se démarquer du groupe toggle ─── */
 .pp-btn--share {
   background: linear-gradient(135deg, #818cf8, #a78bfa);
@@ -2643,6 +2712,20 @@
 .pp-btn--share:hover {
   box-shadow: 0 4px 16px rgba(129,140,248,0.45);
   transform: translateY(-1px);
+}
+
+/* Bouton "Jour J" (colonne Jours) — même CTA dégradée que "Partager"/Inviter,
+   pour mettre cette fonctionnalité en évidence au lieu du bouton discret
+   d'avant (demande du 2026-07-24). */
+.pp-btn--dayj:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.pp-btn--dayj.active {
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+  box-shadow: 0 2px 10px rgba(109,40,217,0.4);
 }
 
 .pp-date-arrow {
@@ -2779,32 +2862,36 @@
   border-color: var(--accent) !important;
 }
 
+/* Nom + badges ("N lieux"/coût) empilés en permanence, sous le nom — même
+   principe que le pays (nom + nb de villes) ou le détail mobile (nom au-
+   dessus, badges dessous). Fixe plutôt que conditionné à la largeur : les
+   tentatives d'alignement calculé au pixel selon la largeur du conteneur
+   (vignette visible ou non, seuils différents) étaient trop fragiles et
+   fausses selon l'écran réel (signalé le 2026-07-24, plusieurs allers-retours
+   — "si tu n'arrives pas à adapter ça en fonction de la taille alors mets cet
+   affichage tout le temps"). */
+.pp-city-title-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+.pp-city-title-stack .pp-city-name { flex: none; }
+/* min-width:0 + flex-wrap : sur un panneau très resserré, ces badges
+   débordaient de leur colonne et venaient chevaucher les icônes d'action à
+   droite au lieu de passer à la ligne (signalé le 2026-07-24, "les 3 boutons
+   montent sur les infos et les badges"). */
+.pp-city-badges-row { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+
 /* En-tête de ville : sous ~380px de large DE LA CARTE (pas du viewport — le
    panneau villes peut être squeezé par la carte/les groupes sur un écran
-   large), le badge "VILLE" cesse de voler de la place au nom, qui peut enfin
-   se tronquer proprement au lieu de tomber à 0px. */
+   large), compaction supplémentaire des badges/actions. */
 @container (max-width: 380px) {
   .pp-city-header { gap: 6px; }
   .pp-city-count { font-size: 10px; padding: 2px 7px; }
   .pp-city-cost { font-size: 10px; padding: 2px 7px; }
   .pp-city-actions { gap: 2px; }
-}
-
-/* En dessous, même compacté, le chip coût (le plus volumineux des éléments
-   fixes) laisse le nom à 0px de large : secondaire face au nom de la ville,
-   il cède la place plutôt que de la lui voler. */
-@container (max-width: 300px) {
-  .pp-city-cost { display: none; }
-}
-
-/* Sous ~260px de large DE LA CARTE, même sans le chip coût, le badge "N lieux"
-   (flex-shrink: 0, largeur fixe) continue de river de la place pendant que le
-   nom de la ville, seul élément flexible restant, tombe presque à 0px et se
-   tronque sévèrement (ex. "Shanghai" réduit à "Shang…" sur un petit
-   téléphone) — secondaire face au nom, il cède la place à son tour (les lieux
-   restent comptables en dépliant la ville). */
-@container (max-width: 260px) {
-  .pp-city-count { display: none; }
 }
 
 /* ─── Activity view layout fix ─── */
@@ -3187,6 +3274,27 @@
   max-width: 300px;
 }
 
+/* Icône engrenage incrustée dans le texte (voir DayView.jsx,
+   dayView.noDatesNotice) : petite pastille à l'accent pour qu'elle se
+   reconnaisse comme "le bouton à cliquer" (même famille visuelle que
+   .pp-header-collapse-btn.active) plutôt qu'une simple icône décorative. */
+.pp-inline-gear-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--accent-subtle);
+  color: var(--accent2);
+  /* middle (pas -5px) : vertical-align se comporte de façon peu fiable sur
+     un display:inline-flex selon les navigateurs — l'icône se retrouvait
+     visuellement détachée de la ligne de texte au lieu d'alignée avec elle
+     (signalé le 2026-07-24). */
+  vertical-align: middle;
+  margin: 0 1px;
+}
+
 .pp-day-section {
   position: relative;
   background: var(--surface);
@@ -3198,6 +3306,117 @@
 }
 
 .pp-day-section:hover { border-color: var(--border-light); box-shadow: 0 6px 22px rgba(0,0,0,0.26); }
+
+/* ─── Vue Jours en timeline (bande colorée J1/J2… + nom de ville en couleur,
+   sans carte autour) — TEST demandé le 2026-07-24 : appliquer sur ordinateur
+   le même traitement que mobile/tablette (auparavant scopé à
+   @media max-width:1024px, "Desktop non concerné"), en enlevant en plus la
+   grosse carte autour de chaque jour pour ne garder que le nom de ville en
+   texte coloré plutôt qu'un badge. Non scopé par media query : s'applique
+   maintenant à toutes les tailles d'écran, DayView.jsx ne branche plus sur
+   isMobile pour choisir entre les deux rendus. ─── */
+.pp-day-timeline { display: flex; flex-direction: column; gap: 12px; }
+.pp-day-timeline-row { display: flex; gap: 10px; align-items: stretch; }
+.pp-day-timeline-node {
+  flex: 0 0 34px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+/* Trait de liaison : court sur toute la hauteur de la ligne + le gap qui la
+   suit, pour rejoindre sans rupture la pastille de la ligne suivante. */
+.pp-day-timeline-node::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: -12px;
+  width: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+/* Le trait commence à la 1re pastille (pas au-dessus) et s'arrête à la
+   dernière — centre de pastille = margin-top 6 + rayon 17 = 23px. */
+.pp-day-timeline-row:first-child .pp-day-timeline-node::before { top: 23px; }
+.pp-day-timeline-row:last-child .pp-day-timeline-node::before { bottom: calc(100% - 23px); }
+.pp-day-timeline-circle {
+  position: relative;
+  z-index: 1;
+  margin-top: 6px;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--node-color, var(--accent));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+.pp-day-timeline-circle--unplanned { background: #6b7280; font-size: 15px; }
+.pp-day-timeline-body { flex: 1; min-width: 0; }
+/* Plus de carte (fond/bordure/ombre) autour du contenu du jour : juste les
+   créneaux posés à plat, l'espacement entre jours vient du gap de
+   .pp-day-timeline (sinon double espace avec la marge de .pp-day-section). */
+/* :not(.pp-day-section--unplanned) : le retrait de la carte ne concerne que
+   les JOURS — "Non Planifiées" n'est pas un jour mais une liste dépliable à
+   part, elle garde sa carte (fond/bordure/pointillés) pour rester
+   identifiable comme un bloc à part entière, pas du texte flottant sans
+   contour (signalé le 2026-07-24, "je n'aime pas le nouvel affichage" —
+   c'est le fond/style de la carte qui posait problème une fois aplati). */
+.pp-day-timeline-body .pp-day-section:not(.pp-day-section--unplanned) {
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.pp-day-timeline-body .pp-day-section:not(.pp-day-section--unplanned):hover { border-color: transparent; box-shadow: none; }
+.pp-day-timeline-body .pp-day-section--unplanned { margin: 0; }
+
+/* En-tête UNIQUE du jour (date/ville/compteur), hors boîte, aligné avec la
+   pastille de la timeline — remplace l'ancien doublon avec l'en-tête interne
+   de DaySection (masqué via hideHeader, voir DayView.jsx). Alignement
+   vertical avec le centre de la pastille (margin-top 6 + rayon 17 = 23px,
+   moins ~la moitié de la hauteur de cette ligne de texte). */
+.pp-day-timeline-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 4px 2px 8px;
+}
+/* Couleur héritée du jour (--node-color posé sur .pp-day-timeline-row, voir
+   DayView.jsx) : relie visuellement la date à la pastille de la timeline,
+   au lieu d'un texte noir plat sans lien avec elle. */
+.pp-day-timeline-date {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  text-transform: capitalize;
+  color: var(--node-color, var(--text));
+}
+/* Badge ville : revenu à la pilule neutre (2e retour le 2026-07-24 — le nom
+   de ville coloré par jour, essayé un temps, ne convenait pas). Mêmes
+   pilules que .pp-day-count mais fond neutre var(--surface2) plutôt que
+   var(--surface) — utilisées ici sur le fond de page directement (hors
+   carte), il leur fallait un peu plus de matière pour ne pas paraître
+   flottantes/sans contraste. */
+.pp-day-timeline-header .pp-day-cities-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 9px;
+  opacity: 1;
+}
+.pp-day-timeline-header .pp-day-count { background: var(--surface2); }
 
 .pp-day-section--unplanned {
   border-style: dashed;
@@ -3315,6 +3534,39 @@
    actions de ce conteneur, elle doit être visible D'EMBLÉE, pas seulement au
    survol. Seule CETTE icône est concernée, pas le reste de .pp-city-actions. */
 .pp-city-actions:has(.pp-icon-btn--pulse) { opacity: 1; }
+/* Sélection multiple / détection de zones : mêmes raisons que le halo de
+   date ci-dessus — rester visibles en permanence sur PC (pas seulement au
+   survol) pour que leur existence se voie sans avoir à survoler chaque
+   ville, plus une teinte accent pour qu'elles ressortent (demande du
+   2026-07-24). */
+.pp-city-actions:has(.pp-icon-btn--feature) { opacity: 1; }
+.pp-icon-btn--feature {
+  color: var(--text);
+  border-color: transparent;
+  background: transparent;
+}
+
+/* Confirmation de la détection de zones : ancrée juste sous SON bouton, pas
+   le toast global (position fixe en bas d'écran, hors du champ de vision
+   sur un grand écran PC — signalé le 2026-07-24, "on le voit pas"). */
+.pp-zone-msg-anchor { position: relative; display: inline-flex; }
+.pp-zone-msg {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--surface2, #1c2333);
+  border: 1px solid var(--border);
+  color: var(--text);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+.pp-zone-msg--success { border-color: color-mix(in srgb, #22c55e 55%, var(--border)); }
+.pp-zone-msg--error { border-color: color-mix(in srgb, #ef4444 55%, var(--border)); }
 /* hover:hover uniquement : sur tactile, il n'y a pas de survol pour révéler
    quoi que ce soit — .pp-city-actions reste visible en permanence via la
    règle @media (hover:none) plus bas (préexistante), et ces icônes (dont le
@@ -3322,12 +3574,12 @@
    ici. Sans cette garde, le menu "⋯" de la ville disparaissait purement et
    simplement sur mobile (aucun survol possible pour le faire réapparaître). */
 @media (hover: hover) {
-  .pp-city-actions .pp-icon-btn:not(.pp-icon-btn--pulse) { opacity: 0; transition: opacity 0.15s; }
-  .pp-city:hover .pp-city-actions .pp-icon-btn:not(.pp-icon-btn--pulse) { opacity: 1; }
+  .pp-city-actions .pp-icon-btn:not(.pp-icon-btn--pulse):not(.pp-icon-btn--feature) { opacity: 0; transition: opacity 0.15s; }
+  .pp-city:hover .pp-city-actions .pp-icon-btn:not(.pp-icon-btn--pulse):not(.pp-icon-btn--feature) { opacity: 1; }
 }
 
 .pp-icon-btn--pulse {
-  color: var(--accent);
+  color: var(--text);
   animation: pp-pulse-halo 1.6s ease-out infinite;
 }
 @keyframes pp-pulse-halo {
@@ -3704,20 +3956,66 @@
    .pp-pager-track (piste translatée au balayage) n'existe que pour le mobile :
    en display:contents ici, elle est transparente pour le layout — les panneaux
    restent des colonnes directes du flex .pp-editor-split, exactement comme
-   avant son ajout. La barre de navigation basse et le chevron de repli de
-   l'en-tête sont masqués. Cf. @media (max-width: 768px) pour leur activation. */
+   avant son ajout. La barre de navigation basse est masquée. Cf.
+   @media (max-width: 1024px) pour son activation. */
 .pp-pager-track { display: contents; }
 .pp-mobile-nav { display: none; }
-.pp-header-collapse-btn { display: none; }
-/* Bouton "⋯" (menu des actions du voyage) : mobile uniquement, comme le
-   chevron — sur ordinateur chaque action reste un bouton direct de l'en-tête. */
+/* Bouton "⋯" (menu des actions du voyage) : mobile uniquement — sur
+   ordinateur chaque action reste un bouton direct de l'en-tête. Le chevron
+   de repli reste lui visible aussi sur ordinateur (voir plus bas,
+   .pp-header-collapse-btn) : sur un écran bas (laptop), il permet de replier
+   dates/stats/partage pour redonner de la hauteur à la colonne Villes,
+   toujours coincée en dessous d'un bandeau fixe non scrollable sinon
+   (signalé le 2026-07-24). */
 .pp-header-menu-btn { display: none; }
 
-/* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte */
+/* ─── Chevron de repli de l'en-tête (aussi sur ordinateur) ───
+   Repris du style mobile (voir @media max-width:768px plus bas pour sa
+   variante taille réduite) : bouton neutre, marqué à l'accent une fois actif. */
+.pp-header-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pp-header-collapse-btn:hover { background: var(--surface3); color: var(--text); }
+.pp-header-collapse-btn.active {
+  color: var(--accent2);
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+.pp-header-collapse-btn.pp-needs-highlight {
+  border-color: var(--accent2);
+  animation: pp-halo-pulse 1.8s ease-out infinite;
+}
+
+/* Replié : dates, stats, partage communautaire et notes disparaissent — la
+   rangée d'actions (Notes/PDF/Agenda/Dépenses/Partager) reste visible, elle
+   ne prend pas assez de hauteur pour justifier de la cacher aussi. */
+.pp-editor-header--collapsed .pp-trip-dates-card,
+.pp-editor-header--collapsed .pp-trip-stats,
+.pp-editor-header--collapsed .pp-trip-notes,
+.pp-editor-header--collapsed .pp-share-template-section {
+  display: none;
+}
+.pp-editor-header--collapsed .pp-trip-title-row { margin-bottom: 0; }
+
+/* Panneau villes (gauche) — plus généreux, avec ET sans carte ouverte. Élargi
+   depuis la suppression de la colonne Groupes (l'espace qu'elle occupait lui
+   revient), puis encore élargi au détriment de la colonne Jours (demande du
+   2026-07-24). */
 .pp-city-panel {
-  width: 30%;
-  min-width: 260px;
-  max-width: 560px;
+  width: 50%;
+  min-width: 300px;
+  max-width: 960px;
   /* Sans flex-shrink:0, ce panneau ne pouvait jamais céder de place sur un écran
      serré : villes/groupes/carte restaient rigides à leur % plein pendant que
      l'excédent qui ne rentait pas était juste coupé (overflow:hidden), plutôt que
@@ -3750,7 +4048,7 @@
 .pp-city-panel-bottom {
   flex-shrink: 0;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Overlay flottant (PAS un enfant flex normal) : un précédent essai
      l'animait via max-height, un vrai changement de boîte dans le flux — ça
      agrandissait .pp-city-panel-dests juste en dessous à chaque repli, ce qui
@@ -3763,20 +4061,42 @@
   .pp-city-panel { position: relative; }
   .pp-city-panel-bottom {
     position: absolute;
-    left: 0;
-    right: 0;
+    /* Conteneur INVISIBLE (pas de fond/ombre/rayon) : juste un repère de
+       position, même emplacement qu'avant (même espace par rapport à la
+       barre du bas) — la "zone blanche" autour du bouton, c'était CE
+       conteneur, pas le bouton lui-même (signalé le 2026-07-23). L'opacité
+       nécessaire pour ne pas laisser la liste défilante "traverser" par
+       transparence (voir plus bas) est reportée sur le bouton
+       .pp-add-dest-btn--panel, qui épouse sa propre forme au lieu d'un grand
+       rectangle autour. */
+    left: 12px;
+    right: 12px;
     bottom: calc(68px + env(safe-area-inset-bottom, 0px));
     transition: transform 0.25s ease, opacity 0.2s ease;
-    /* Fond opaque + z-index : sans ça, la liste défilante en dessous (dont le
-       flux passe sous cet overlay absolute) se voit "traverser" la barre
-       quand on remonte (signalé le 2026-07-23). */
     z-index: 5;
-    background: var(--surface);
-    padding-top: 8px;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.18);
+    /* Isolation de calque GPU : un artefact de rendu Chrome bien connu laisse
+       un fin liseré noir résiduel sur un élément animé en `transform` quand
+       son calque de composition n'est pas figé à l'avance — disparaissait dès
+       l'ouverture de DevTools (le repaint forcé par le panneau corrige le
+       symptôme sans corriger la cause), signalé le 2026-07-23. */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  /* Tablette (600-1024px) : même largeur/position que .pp-mobile-nav (640px,
+     centrée) — ce bouton flotte juste au-dessus de la barre et doit suivre
+     sa largeur, pas rester étiré bord à bord (demande du 2026-07-23, "ce
+     bouton est supposé faire la taille de la barre de navigation"). bottom
+     aussi relevé pour dégager la barre agrandie sur cette plage (même
+     valeur que .pp-city-panel, voir plus bas). */
+  @media (min-width: 600px) {
+    .pp-city-panel-bottom {
+      max-width: 640px;
+      margin: 0 auto;
+      bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    }
   }
   .pp-city-panel-bottom--hidden {
-    transform: translateY(120%);
+    transform: translateY(120%) translateZ(0);
     opacity: 0;
     pointer-events: none;
   }
@@ -3785,28 +4105,6 @@
      dans ce fichier, réglé à 76px pour cette même raison (la dernière carte
      ne doit jamais se retrouver cachée dessous quand il est affiché). */
 }
-
-/* Panneau groupes d'activité — colonne dédiée, indépendante du panneau villes, avec
-   son propre défilement : un grand nombre de groupes ne peut donc plus jamais pousser
-   ni cacher le panneau villes (le plus important), quelle que soit sa longueur.
-   En %, comme le panneau villes, avec un plafond nettement relevé (420px, du même
-   ordre de grandeur que le plafond du panneau villes à 560px) : le panneau planif,
-   seul en flex:1, absorbe automatiquement la différence et se réduit d'autant. */
-.pp-groups-panel {
-  width: 18%;
-  min-width: 220px;
-  max-width: 460px;
-  flex-shrink: 1;
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.pp-groups-panel::-webkit-scrollbar { width: 4px; }
-.pp-groups-panel::-webkit-scrollbar-track { background: transparent; }
-.pp-groups-panel::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
 
 /* Panneau jours (droite) — prend l'espace restant (plus robuste que des % fixes qui
    doivent sommer à 100 avec les deux autres colonnes). Le plafond ne sert que de
@@ -3818,7 +4116,10 @@
   overflow-y: auto;
   padding: 18px 22px 40px;
   min-width: 300px;
-  max-width: 1500px;
+  /* Plafonné plus bas qu'avant (1500→1100) : la vue Jours ne doit plus
+     dominer l'écran face à la colonne Villes, volontairement élargie côté
+     .pp-city-panel (demande du 2026-07-24). */
+  max-width: 1100px;
   margin: 0 auto;
   transition: flex 0.3s ease;
 }
@@ -3826,7 +4127,7 @@
 .pp-content-panel--narrowed {
   flex: 1 1 0;
   min-width: 260px;
-  max-width: 1500px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -3902,22 +4203,24 @@
   backdrop-filter: blur(6px);
   border: 1px solid var(--border-light);
   border-radius: 8px;
-  color: var(--text-dim);
+  /* Couleur fixe (pas var(--text-dim), qui peut être sombre en thème clair) :
+     le fond de ce bouton reste TOUJOURS sombre, quel que soit le thème de
+     l'appli (il doit rester lisible sur la carte Leaflet) — une icône sombre
+     dessus devenait invisible en thème clair (signalé le 2026-07-24). */
+  color: rgba(255,255,255,0.85);
   cursor: pointer;
   transition: color 0.15s, background 0.15s;
 }
-.pp-map-overlay-toggle:hover { color: var(--text); background: rgba(20,20,26,0.95); }
+.pp-map-overlay-toggle:hover { color: #fff; background: rgba(20,20,26,0.95); }
 
 /* Répartition qui change selon la présence de la carte (utile surtout sur petit
    écran — sur grand écran les max-width ci-dessus sont déjà atteints, donc rien
-   ne change visuellement) : carte fermée, villes/groupes profitent du surplus ;
-   carte ouverte (à côté), elle prend sa part (30% cf. ci-dessus) et villes cède
-   un peu. En superposition, la carte sort du flux (position: fixed) et n'occupe
-   plus de place dans la rangée : on exclut ce cas (:not(:has(...--overlay))),
-   sinon villes/groupes resteraient réduits pour rien, laissant un vide inutile. */
-.pp-editor-split:has(.pp-map-panel):not(:has(.pp-map-panel--overlay)) .pp-city-panel { width: 27%; }
-.pp-editor-split:not(:has(.pp-map-panel)) .pp-groups-panel,
-.pp-editor-split:has(.pp-map-panel--overlay) .pp-groups-panel { width: 24%; }
+   ne change visuellement) : carte fermée, villes profitent du surplus ; carte
+   ouverte (à côté), elle prend sa part et villes cède un peu. En superposition,
+   la carte sort du flux (position: fixed) et n'occupe plus de place dans la
+   rangée : on exclut ce cas (:not(:has(...--overlay))), sinon villes resterait
+   réduit pour rien, laissant un vide inutile. */
+.pp-editor-split:has(.pp-map-panel):not(:has(.pp-map-panel--overlay)) .pp-city-panel { width: 40%; }
 
 .pp-map-panel-inner {
   flex: 1;
@@ -3980,6 +4283,17 @@
   padding: 12px;
   font-size: 13px;
   border-radius: 10px;
+  /* Pas de bordure (ni dashed ni solid) : un contour ici ressortait comme un
+     liseré clair disgracieux (signalé le 2026-07-23). Padding/margin
+     inchangés : même espacement qu'avant par rapport à la barre du bas. */
+  border: none;
+  /* Fond opaque porté par le BOUTON lui-même (pas par le conteneur, qui est
+     maintenant transparent, voir .pp-city-panel-bottom) : sans un minimum
+     d'opacité ici, la liste défilante en dessous "traverse" par
+     transparence quand on remonte (signalé le 2026-07-23). Épouse la forme
+     du bouton plutôt qu'un grand rectangle englobant. */
+  background: var(--surface);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.14);
 }
 
 /* ─── DayView — droppable day slots ─── */
@@ -4006,7 +4320,21 @@
   padding: 9px 14px;
   margin-bottom: 4px;
 }
-.pp-day-view-hint svg { flex-shrink: 0; opacity: 1 !important; }
+.pp-day-view-hint-icon { flex-shrink: 0; opacity: 0.85; }
+
+/* PC uniquement (mobile/tablette inchangés, demande explicite du
+   2026-07-24) : la version d'origine se voyait mal sur grand écran — fond et
+   bordure trop discrets, texte trop proche de l'accent déjà utilisé partout
+   ailleurs. Fond plus marqué + texte plein var(--text) pour ressortir. */
+@media (min-width: 1025px) {
+  .pp-day-view-hint {
+    background: linear-gradient(90deg, rgba(129,140,248,0.16), rgba(192,132,252,0.07));
+    border-color: rgba(129,140,248,0.32);
+    color: var(--text);
+    font-weight: 600;
+  }
+  .pp-day-view-hint-icon { color: var(--accent2); opacity: 1; }
+}
 
 .pp-day-activity-group-bar {
   width: 3px;
@@ -4024,245 +4352,7 @@
   flex-shrink: 0;
 }
 
-/* ─── Zones / groupes ─── */
-.pp-groups {
-  flex-shrink: 0;
-}
-
-.pp-groups-toggle {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 14px 16px;
-  background:
-    radial-gradient(ellipse 120% 100% at 0% 0%, rgba(129,140,248,0.14) 0%, transparent 65%),
-    var(--surface);
-  border: none;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s;
-}
-
-.pp-groups-toggle svg:first-child {
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  padding: 4px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: rgba(129,140,248,0.16);
-  color: var(--accent2);
-}
-
-.pp-groups-toggle:hover { background: rgba(129,140,248,0.06); }
-
-.pp-groups-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent-subtle);
-  color: var(--accent2);
-  border-radius: 10px;
-  padding: 1px 6px;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.pp-groups-body {
-  padding: 12px 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pp-groups-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  text-align: center;
-  font-size: 12.5px;
-  color: var(--text-muted);
-  padding: 22px 14px;
-  line-height: 1.5;
-  background: var(--surface2);
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-}
-
-.pp-groups-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 6px;
-}
-
-.pp-group-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-left: 4px solid color-mix(in srgb, var(--group-color, var(--accent)) 70%, transparent);
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.1s;
-}
-
-/* Le `transform` posé par :hover crée un nouveau contexte d'empilement pour la
-   ligne survolée. Or pour cliquer une option du dropdown (qui flotte SOUS la
-   ligne, par-dessus la ligne suivante), la souris doit forcément traverser la
-   ligne du groupe suivant — qui devient donc survolée à son tour. Sans z-index
-   explicite ici, cette ligne suivante (plus tard dans le DOM, son propre
-   contexte d'empilement gagnant à égalité de z-index) passe visuellement
-   au-dessus de TOUT le sous-arbre de la ligne d'origine, y compris son
-   dropdown ouvert (z-index:120 mais interne à SON contexte à elle) : le menu
-   semble "passer derrière" dès qu'on ramène la souris dessus pour cliquer. */
-.pp-group-row:has(.pp-group-day-dropdown) { z-index: 50; }
-
-.pp-group-row:hover {
-  border-color: var(--border-light);
-  background: var(--surface3);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-  transform: translateY(-1px);
-}
-
-.pp-group-swatch {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  cursor: pointer;
-  border: 2px solid rgba(255,255,255,0.2);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--group-color, var(--accent)) 18%, transparent);
-  transition: transform 0.15s;
-}
-.pp-group-swatch:hover { transform: scale(1.15); }
-
-.pp-group-name {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-}
-
-.pp-group-name-input {
-  flex: 1;
-  /* Sans min-width:0, un <input> flex:1 garde sa largeur minimale
-     intrinsèque par défaut (~200px, pas liée à son contenu) — la ligne
-     refusait alors de rétrécir sous cette taille, poussant les icônes
-     d'actions (calendrier/renommer/supprimer) hors du cadre de la carte
-     plutôt que de laisser le champ de saisie rétrécir (signalé le
-     2026-07-23, PC : "les icônes sortent du cadre" en renommant un groupe). */
-  min-width: 0;
-  background: var(--surface3);
-  border: 1px solid var(--accent);
-  border-radius: 5px;
-  padding: 3px 7px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  font-family: inherit;
-  outline: none;
-}
-
-.pp-group-count {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-dim);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 3px 8px;
-  flex-shrink: 0;
-}
-
-.pp-group-actions {
-  display: flex;
-  gap: 2px;
-  flex-shrink: 0;
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-.pp-group-row:hover .pp-group-actions { opacity: 1; }
-/* Le menu "planifier sur un jour" est un DESCENDANT de .pp-group-actions :
-   sans cette règle, dès que la souris quitte .pp-group-row (ex. pour cliquer
-   une option du menu, qui s'affiche sous la ligne donc hors de sa zone de
-   survol), tout .pp-group-actions repasse à opacity:0 — le menu ouvert
-   devient invisible (mais reste cliquable), donnant l'impression qu'il
-   "passe derrière" les autres groupes. */
-.pp-group-actions:has(.pp-group-day-dropdown) { opacity: 1; }
-
-.pp-group-colors {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  z-index: 120;
-  padding: 8px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  width: 164px;
-}
-
-.pp-group-colors--inline {
-  position: static;
-  box-shadow: none;
-  border: none;
-  padding: 4px 0;
-  background: transparent;
-}
-
-.pp-group-color-btn {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: transform 0.12s, border-color 0.12s;
-}
-.pp-group-color-btn:hover { transform: scale(1.2); }
-.pp-group-color-btn.active { border-color: #fff; }
-
-.pp-group-create {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.pp-group-create-actions {
-  display: flex;
-  gap: 6px;
-}
-
+/* ─── Menu "planifier sur un jour" (DaytripCard/SelectionActionBar) ─── */
 .pp-group-day-dropdown {
   position: absolute;
   top: calc(100% + 4px);
@@ -4347,8 +4437,8 @@
   position: relative;
 }
 /* .pp-group-day-dropdown s'ouvre normalement aligné à droite (right:0), pensé
-   pour un déclencheur seul en bout de ligne (GroupManager/DaytripCard). Ici les
-   boutons Groupe/Jour sont en début de rangée : aligner à droite le ferait
+   pour un déclencheur seul en bout de ligne (DaytripCard). Ici le bouton
+   "Déplacer vers un jour" est en début de rangée : aligner à droite le ferait
    déborder hors écran à gauche. */
 .pp-selection-dropdown-wrap .pp-group-day-dropdown {
   left: 0;
@@ -4361,57 +4451,7 @@
   border-color: rgba(239,68,68,0.3);
 }
 
-/* ─── Groupe picker dans ActivityItem ─── */
-.pp-group-picker-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.pp-group-picker-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-}
-
-.pp-group-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.pp-group-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--surface3);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 3px 9px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
-}
-.pp-group-chip:hover { background: var(--surface); color: var(--text); }
-.pp-group-chip.active {
-  background: color-mix(in srgb, var(--group-color, var(--accent)) 12%, transparent);
-  border-color: var(--group-color, var(--accent));
-  color: var(--group-color, var(--accent2));
-}
-
-.pp-group-chip-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-/* Chip groupe dans la vue activité */
+/* Chip zone dans la vue activité (vue jour) */
 .pp-chip--group {
   background: color-mix(in srgb, var(--group-color, var(--accent)) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--group-color, var(--accent)) 30%, transparent);
@@ -4769,7 +4809,7 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pp-pending-invites { align-items: stretch; padding: 14px 16px 0; }
   .pp-pending-invite {
     max-width: none;
@@ -4790,7 +4830,7 @@
   .pp-map-panel--overlay { display: flex; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* 100vh inclut la zone masquée par la barre d'adresse des navigateurs mobiles :
      le bas de l'app serait coupé d'autant. 100dvh suit la hauteur réellement
      visible (les navigateurs trop vieux pour dvh gardent la ligne 100vh). */
@@ -4890,6 +4930,16 @@
   /* Le chevron porte déjà le margin-left:auto qui pousse la paire à droite :
      le "⋯" se colle juste après lui (gap de la ligne de titre). */
   .pp-header-menu-btn { margin-left: 0; }
+  /* Plage tablette (600-1024px) : titre + boutons ⚙/⋯ trop petits sur un
+     grand écran tactile (demande du 2026-07-23, "encore pire", "le nom du
+     voyage est minuscule"). */
+  @media (min-width: 600px) {
+    .pp-trip-title { font-size: 24px; }
+    .pp-editor-back-btn { width: 44px; height: 44px; }
+    .pp-header-collapse-btn, .pp-header-menu-btn { width: 46px; height: 46px; }
+    .pp-header-collapse-btn svg, .pp-header-menu-btn svg { width: 22px; height: 22px; }
+  }
+
   /* Engrenage "paramétrage du voyage" ouvert : marqué à l'accent, sinon rien
      n'indiquerait que le panneau déplié vient de lui. */
   .pp-header-collapse-btn.active {
@@ -5138,16 +5188,30 @@
     overflow-x: hidden;
   }
 
-  /* Pas de page Groupes sur mobile : la gestion fine des groupes reste un
-     usage ordinateur (l'assignation à un groupe passe par les menus des
-     activités). Le panneau reste monté (GroupManager), juste jamais affiché —
-     les pages restantes du pager se renumérotent d'elles-mêmes (flex). */
-  .pp-groups-panel { display: none; }
-
   /* padding-bottom = hauteur de la barre flottante : le panneau (hauteur bornée)
      laisse défiler la liste en interne et épingle le bouton "Ajouter un pays"
      juste au-dessus de la barre, sans jamais recouvrir le contenu. */
-  .pp-city-panel { display: flex; padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  /* PAS de padding-bottom dynamique selon villesChromeHidden : déjà tenté et
+     explicitement évité (changer une valeur de boîte du FLUX pendant le
+     scroll fait bouger la hauteur scrollable au moment même où on évalue
+     "a-t-on atteint le bas ?", boucle de clignotement sans fin, reproduit
+     puis annulé le 2026-07-23). Réserve volontairement PETITE (pas la
+     hauteur complète de .pp-mobile-nav) : réserver 68px pleins créait une
+     bande blanche bien visible dès que la barre se masque au scroll — la
+     barre est une pilule FLOTTANTE translucide (pas un bandeau opaque plein
+     écran), un léger chevauchement avec le tout dernier élément de la liste
+     au repos est un compromis largement plus discret qu'une bande vide
+     figée (signalé le 2026-07-23, "je ne veux PAS de la bande blanche"). */
+  .pp-city-panel { display: flex; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  /* Tablette (600-1024px) : la barre du bas est nettement plus grande ici
+     (voir .pp-mobile-nav-btn plus bas) — 16px de réserve ne suffit plus,
+     "Ajouter un pays" passait carrément SOUS la barre (signalé le
+     2026-07-23), pas juste un léger chevauchement acceptable comme sur
+     téléphone. Valeur statique (toujours pas dynamique, même raison
+     qu'au-dessus). */
+  @media (min-width: 600px) {
+    .pp-city-panel { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+  }
   /* Détail plein écran d'une ville/excursion ouvert : plus de barre de
      navigation basse à dégager (TripEditor la démonte entièrement) — le
      détail gère lui-même le padding bas de sa zone de contenu défilante
@@ -5177,15 +5241,25 @@
     padding-bottom: 72px;
   }
 
-  /* "Ajouter un pays" est un overlay ABSOLUTE (voir .pp-city-panel-bottom,
-     plus haut dans ce fichier — pas un frère en flux normal) qui se masque
-     en scrollant vers le bas : réserver toute sa hauteur ici laissait un
-     grand vide permanent en bas de liste une fois la barre masquée (signalé
-     le 2026-07-23). L'overlay étant maintenant opaque (voir plus haut), il
-     peut couvrir brièvement la fin de liste quand il réapparaît (en
-     remontant) sans effet de superposition visuelle moche — on ne réserve
-     donc qu'une petite marge de confort, pas sa hauteur totale. */
-  .pp-city-panel-dests { padding-bottom: 24px; }
+  /* "Ajouter un pays" (.pp-city-panel-bottom) ET la nav basse (.pp-mobile-nav)
+     sont des overlays ABSOLUTE/FIXED (pas des frères en flux normal) qui se
+     réaffichent maintenant aussi en arrivant tout en bas du scroll (voir
+     useHeaderScrollHide, "atBottom") — PAS seulement pendant qu'on scrolle.
+     Une réserve trop petite (24px, essayé le 2026-07-23) laissait donc les
+     deux barres recouvrir "Ajouter une ville" et le bas de la dernière ville
+     une fois VRAIMENT arrivé en bout de liste, aucun moyen de les faire
+     disparaître pour voir le contenu caché dessous. Il faut réserver leur
+     hauteur réelle CUMULÉE : nav (bottom 14px + ~50px de hauteur) + overlay
+     posé au-dessus (bottom 68px + ~64px de hauteur) ≈ 132px, + marge. */
+  .pp-city-panel-dests { padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
+  /* Tablette (600-1024px) : nav basse ET pilule "Ajouter un pays" sont
+     toutes deux agrandies sur cette plage (voir plus haut/bas dans ce
+     fichier) — 140px (calculé sur les tailles téléphone) ne suffisait plus,
+     "Ajouter une ville" repassait caché dessous même sans scroller (signalé
+     le 2026-07-23). */
+  @media (min-width: 600px) {
+    .pp-city-panel-dests { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px)); }
+  }
 
   /* Page 4 : la carte (le display:none hérité du bloc 900px est annulé — ici
      elle a sa propre page). La superposition plein écran reste accessible via
@@ -5212,6 +5286,12 @@
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     left: 12px;
     right: 12px;
+    /* Largeur plafonnée + centrée : même correctif que .app-mobile-nav
+       (App.css) — étirée sur toute la largeur d'une tablette sinon (seuil
+       mobile relevé à 1024px le 2026-07-23), "moche parce qu'il y a trop de
+       place". 640px (pas 420px, trop petit ensuite). */
+    max-width: 640px;
+    margin: 0 auto;
     z-index: 95;
     background: rgba(18, 22, 34, 0.9);
     backdrop-filter: blur(18px) saturate(1.3);
@@ -5221,12 +5301,16 @@
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
     padding: 5px 6px;
     transition: transform 0.25s ease, opacity 0.25s ease;
+    /* Voir .pp-city-panel-bottom (même fichier) pour le contexte : correctif
+       du liseré noir résiduel sur élément transform. */
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   /* Masquée en scrollant la liste des pays/villes vers le bas (voir
      villesChromeHidden, TripEditor.jsx) — laisse le maximum de hauteur à la
      liste sur un petit écran, réapparaît dès qu'on remonte. */
   .pp-mobile-nav--hidden {
-    transform: translateY(calc(100% + 20px));
+    transform: translateY(calc(100% + 20px)) translateZ(0);
     opacity: 0;
     pointer-events: none;
   }
@@ -5333,6 +5417,16 @@
     box-shadow:
       0 4px 16px rgba(99, 102, 241, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  /* Plage tablette (600-1024px) : même correctif que .app-mobile-nav
+     (App.css) — icônes/texte trop petits sur un grand écran tactile
+     (demande du 2026-07-23, "c'est ridicule"). */
+  @media (min-width: 600px) {
+    .pp-mobile-nav { padding: 8px 10px; }
+    .pp-mobile-nav-btn { font-size: 12px; gap: 4px; padding: 8px 0 10px; }
+    .pp-mobile-nav-icon { font-size: 24px; }
+    .pp-mobile-nav-primary-icon { width: 68px; height: 68px; }
   }
 
   /* ── Noms longs (activités, trajets, hébergements) ── Le flex-wrap des
@@ -5486,89 +5580,14 @@
      prend le relais, comme pour le reste du contenu de cette page. */
   .pp-day-unplanned-list { max-height: none; overflow-y: visible; }
 
-  /* ─── Vue Jours mobile : timeline verticale à gauche (2026-07-23, Phase 3) ──
-     La liste multi-jours et le drag&drop restent inchangés — on ajoute juste,
-     à gauche de chaque jour, une pastille colorée J1/J2… reliée par un trait
-     vertical continu. Desktop non concerné (branche isMobile de DayView). */
-  .pp-day-timeline { display: flex; flex-direction: column; gap: 12px; }
-  .pp-day-timeline-row { display: flex; gap: 10px; align-items: stretch; }
-  .pp-day-timeline-node {
-    flex: 0 0 34px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-  /* Trait de liaison : court sur toute la hauteur de la ligne + le gap qui la
-     suit, pour rejoindre sans rupture la pastille de la ligne suivante. */
-  .pp-day-timeline-node::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    bottom: -12px;
-    width: 2px;
-    background: var(--border);
-    z-index: 0;
-  }
-  /* Le trait commence à la 1re pastille (pas au-dessus) et s'arrête à la
-     dernière — centre de pastille = margin-top 6 + rayon 17 = 23px. */
-  .pp-day-timeline-row:first-child .pp-day-timeline-node::before { top: 23px; }
-  .pp-day-timeline-row:last-child .pp-day-timeline-node::before { bottom: calc(100% - 23px); }
-  .pp-day-timeline-circle {
-    position: relative;
-    z-index: 1;
-    margin-top: 6px;
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 800;
-    color: #fff;
-    background: var(--node-color, var(--accent));
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  }
-  .pp-day-timeline-circle--unplanned { background: #6b7280; font-size: 15px; }
-  .pp-day-timeline-body { flex: 1; min-width: 0; }
-  /* La carte de jour ne porte plus sa propre marge : l'espacement entre jours
-     vient du gap de .pp-day-timeline (sinon double espace). */
-  .pp-day-timeline-body .pp-day-section { margin: 0; }
-
-  /* En-tête UNIQUE du jour (date/ville/compteur), hors boîte, aligné avec la
-     pastille de la timeline — remplace l'ancien doublon avec l'en-tête interne
-     de DaySection (masqué via hideHeader, voir DayView.jsx). Alignement
-     vertical avec le centre de la pastille (margin-top 6 + rayon 17 = 23px,
-     moins ~la moitié de la hauteur de cette ligne de texte). */
-  .pp-day-timeline-header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px 8px;
-    padding: 4px 2px 8px;
-  }
-  .pp-day-timeline-date { font-size: 13.5px; font-weight: 800; color: var(--text); }
-
-  /* Créneaux matin/après-midi/soir : la structure Droppable reste nécessaire
-     au drag&drop (chaque créneau doit rester une cible de drop distincte pour
-     que l'heure par défaut se déduise du créneau visé), mais la présentation
-     "carte dans la carte" est retirée — juste un libellé fin + un séparateur,
-     demande explicite du 2026-07-23 ("des cases dans des cases dans des
-     cases"). Le survol pendant un drag garde son fond teinté (règles
-     .pp-day-slot--X .pp-day-slot-drop--over plus bas, non touchées). */
-  .pp-day-timeline-body .pp-day-slots { gap: 0; padding: 2px 2px 0; }
-  .pp-day-timeline-body .pp-day-slot {
-    border: none;
-    border-radius: 0;
-    background: none;
-    border-top: 1px solid var(--border);
-  }
-  .pp-day-timeline-body .pp-day-slot:first-child { border-top: none; }
-  .pp-day-timeline-body .pp-day-slot-header { padding: 8px 4px 4px; background: none !important; }
-  .pp-day-timeline-body .pp-day-slot-drop { padding: 0 4px 8px; }
+  /* Créneaux matin/après-midi/soir : la case (bordure + fond) qui les délimite
+     est RESTAURÉE — l'aplatissement total (v4) rendait les 3 zones invisibles
+     pendant un étirement, on ne voyait plus où l'activité allait atterrir
+     (signalé le 2026-07-23, "on ne voit plus les différentes zones quand on
+     étire une activité"). Seule la case du JOUR (en-tête dupliqué) reste
+     supprimée (hideHeader, inchangé) — la demande explicite était de ne pas la
+     remettre, juste les créneaux. Styles hérités de .pp-day-slot de base
+     (bordures colorées par créneau), aucune règle à réécrire ici. */
 
   /* Vue Jours : lignes d'activité denses — la pastille de couleur est déjà
      portée par la barre de groupe et le chip horaire, le point est masqué. */
@@ -5579,7 +5598,7 @@
      de ville. */
   .pp-day-info { flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
   .pp-day-num { width: 30px; height: 30px; font-size: 11px; border-radius: 9px; }
-  .pp-day-slots { padding: 7px 8px 0; }
+  .pp-day-slots { padding: 0; }
   .pp-day-slot-drop { padding: 5px 6px 6px; }
   .pp-day-slot-hint { display: none; }
   .pp-day-libre { padding: 8px 10px 10px; }
@@ -5636,10 +5655,6 @@
      (elle partait s'afficher sur la première page, semblant "planter"). */
   .pp-map-overlay-toggle { display: none; }
 
-  /* Vue Jours : le bandeau d'explication du drag est du remplissage sur un
-     petit écran. */
-  .pp-day-view-hint { display: none; }
-
   /* ── Écran de connexion (gate) : sur un petit écran la carte est plus haute
      que la fenêtre — elle doit défiler, pas être coupée. margin:auto garde le
      centrage vertical quand il reste de la place. */
@@ -5662,7 +5677,7 @@
   display: flex;
   flex-direction: column;
   gap: 7px;
-  padding: 9px 11px 0;
+  padding: 0;
 }
 
 .pp-day-slot {
@@ -5743,10 +5758,16 @@
   font-weight: 700;
 }
 
+/* Contraste renforcé (2026-07-24, accessibilité — "difficile à voir pour une
+   personne malvoyante") : garde la couleur du créneau (héritée de
+   .pp-day-slot--matin/apres-midi/soir .pp-day-slot-header, pas de `color`
+   propre ici) plutôt qu'un gris neutre plat — juste rendu bien plus opaque
+   qu'avant (0.6 → 0.92 ; un aplat à 1 aurait été trop criard face au texte
+   déjà en majuscules du créneau). */
 .pp-day-slot-hint {
-  font-size: 11px;
-  font-weight: 500;
-  opacity: 0.6;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.92;
   font-style: italic;
   text-transform: none;
   letter-spacing: 0;
@@ -5899,19 +5920,6 @@
   border: 1.5px solid rgba(255,255,255,0.2);
 }
 
-/* ─── GroupManager mini swatches dans le toggle collapsed ─── */
-.pp-groups-swatches {
-  display: flex;
-  gap: 3px;
-  align-items: center;
-}
-.pp-groups-swatch-mini {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
 /* ─── Légende carte ─── */
 .pp-map-legend {
   position: absolute;
@@ -6026,7 +6034,7 @@
    Placé après les règles de base ci-dessus pour gagner la cascade (même
    spécificité, sinon les règles desktop non gardées par media query les
    emporteraient sur mobile). */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pp-map-legend {
     max-width: 45%;
     pointer-events: auto;
@@ -6128,85 +6136,6 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--accent2);
-}
-
-/* ─── Drop de lieu sur un groupe (assignation sans quitter la ville) ─── */
-.pp-group-row-wrap {
-  border-radius: 8px;
-  transition: background 0.15s, box-shadow 0.15s;
-}
-.pp-group-row-wrap.pp-group-row--over {
-  background: color-mix(in srgb, var(--group-color, var(--accent)) 16%, var(--surface2));
-  box-shadow: inset 0 0 0 1.5px var(--group-color, var(--accent));
-}
-
-.pp-groups-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* Toute la carte est glissable en drag natif HTML5 (vers le calendrier) */
-.pp-group-row { cursor: grab; }
-.pp-group-row:active { cursor: grabbing; }
-
-.pp-group-activities {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 6px 8px 8px 28px;
-  min-height: 8px;
-}
-
-.pp-group-activity-chip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface3);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 5px 9px;
-  font-size: 13px;
-  color: var(--text-dim);
-  cursor: grab;
-}
-.pp-group-activity-chip:active { cursor: grabbing; }
-.pp-group-activity-chip--dragging {
-  border-color: var(--group-color, var(--accent));
-  background: var(--accent-subtle);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-}
-
-.pp-group-activity-icon { font-size: 13px; flex-shrink: 0; }
-.pp-group-activity-name {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.pp-group-activity-remove {
-  flex-shrink: 0;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 2px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  opacity: 0.6;
-  transition: opacity 0.15s, color 0.15s, background 0.15s;
-}
-.pp-group-activity-chip:hover .pp-group-activity-remove { opacity: 1; }
-.pp-group-activity-remove:hover { color: var(--red); background: rgba(239,68,68,0.12); }
-
-.pp-group-activities-empty {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-style: italic;
-  padding: 4px 2px;
 }
 
 /* ─── Excursions à la journée (day trips) ─── */
@@ -6528,17 +6457,45 @@
   .pp-city-actions,
   .pp-activity-del,
   .pp-activity-duplicate,
-  .pp-group-actions,
   .pp-day-activity-resize-handle,
   .pp-day-activity-cut-btn {
     opacity: 1;
   }
 
   /* La poignée d'étirement reste donc en permanence visible ici (pas de survol
-     pour la révéler à la demande) : sans plus d'espace entre les cartes, elle
-     se retrouve collée à la carte ou au connecteur de distance suivant. */
+     pour la révéler à la demande) : espace agrandi entre les cartes pour loger
+     la zone tactile SANS empiéter sur le texte de la carte (voir plus bas).
+     Réduit de 26px (bien trop, décalait visuellement la poignée loin de sa
+     carte — surtout combiné à l'indicateur de trajet inséré dans ce même
+     espace pour l'activité suivante, signalé le 2026-07-23 "rendu visuel
+     horrible et incompréhensible") à une valeur qui garde la poignée
+     visuellement collée à sa carte. */
   .pp-day-slot-drop { gap: 14px; }
 
+  /* Zone tactile réelle agrandie (10px → 20px), presque entièrement DANS le
+     gap entre les cartes plutôt que par-dessus le contenu de la carte : un
+     premier essai (juste `height` augmentée, `bottom` inchangé) empiétait sur
+     la carte elle-même et bloquait le tap pour ouvrir l'édition (signalé le
+     2026-07-23, "on ne peut plus cliquer sur les activités"). Décalage réduit
+     (-20px → -8px) : la poignée doit rester visuellement ATTACHÉE à sa carte,
+     pas flotter au milieu d'un grand espace vide.
+     `width` restreinte + centrée (héritait `left:0; right:0` de la règle de
+     base, sur toute la largeur) : cette bande pleine largeur, même fine,
+     recouvrait le bas de CHAQUE carte et interceptait le doigt dès qu'on
+     saisissait une activité près du bas pour la réordonner — le
+     glisser-déposer normal démarrait alors un étirement à la place, environ
+     une fois sur deux (signalé le 2026-07-24, "le drag&drop ne marche
+     quasiment pas sur mobile"). Réduite à une bande centrée, alignée sur la
+     poignée visible (32px) : le reste de la largeur de la carte redevient
+     saisissable normalement. */
+  .pp-day-activity-resize-handle {
+    height: 20px;
+    bottom: -8px;
+    left: 50%;
+    right: auto;
+    width: 110px;
+    transform: translateX(-50%);
+  }
 }
 
 /* ── Détails repliés, dépliés au tap (équivalent tactile du survol desktop,
@@ -6568,9 +6525,7 @@
 
   .pp-info-toggle { display: inline-flex; }
 
-  /* Vignette des suggestions de lieux : remplace l'aperçu photo au survol. */
-  .pp-place-suggestions-thumb { display: block; }
-  .pp-place-suggestions-preview { display: none; }
+  .pp-place-suggestions-preview:not(.pp-place-suggestions-preview--mobile) { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -6970,6 +6925,14 @@
   border-color: #10b981;
   box-shadow: 0 0 0 3px rgba(16,185,129,0.18);
 }
+.pp-lodging-notes-input {
+  /* Le placeholder ("Note (n° de réservation, petit-déjeuner, code
+     d'entrée…)") tient sur 2-3 lignes selon la largeur — rows={2} seul le
+     coupait net en bas, et la poignée de redimensionnement native débordait
+     du coin arrondi (aspect "déchiré", signalé le 2026-07-23). */
+  min-height: 64px;
+  resize: vertical;
+}
 .pp-lodging-name-input {
   font-size: 15px;
   font-weight: 700;
@@ -7302,9 +7265,9 @@
 }
 .pp-dest-mode-card {
   position: relative;
-  display: flex; align-items: center; gap: 11px;
+  display: flex; align-items: center; gap: 13px;
   text-align: left;
-  padding: 13px 14px;
+  padding: 17px 18px;
   border: 1px solid var(--border);
   border-radius: 15px;
   background: rgba(255,255,255,0.03);
@@ -7315,19 +7278,20 @@
 .pp-dest-mode-card:hover { border-color: var(--border-light); transform: translateY(-1px); }
 .pp-dest-mode-icon {
   flex: 0 0 auto;
-  width: 36px; height: 36px;
-  border-radius: 12px;
+  width: 44px; height: 44px;
+  border-radius: 13px;
   display: flex; align-items: center; justify-content: center;
   background: rgba(148,163,184,0.12);
   color: var(--text-dim);
+  font-size: 18px;
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
 }
-.pp-dest-mode-texts { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.pp-dest-mode-title { font-size: 13px; font-weight: 800; color: var(--text); letter-spacing: 0.01em; }
-.pp-dest-mode-desc { font-size: 11.5px; line-height: 1.35; color: var(--text-dim); }
+.pp-dest-mode-texts { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.pp-dest-mode-title { font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: 0.01em; }
+.pp-dest-mode-desc { font-size: 12.5px; line-height: 1.4; color: var(--text-dim); }
 .pp-dest-mode-radio {
   flex: 0 0 auto;
-  width: 16px; height: 16px;
+  width: 18px; height: 18px;
   border-radius: 50%;
   border: 2px solid var(--border-light);
   transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
@@ -7794,14 +7758,36 @@
 
 /* Mobile : cartes de mode empilées, corps de champs en colonne — aucune règle
    desktop existante modifiée, uniquement ces nouvelles classes. */
-@media (max-width: 768px) {
-  /* Sélecteur de mode : une carte par ligne (côte à côte elles débordaient
-     de l'écran étroit), description conservée mais compactée — c'est elle
-     qui explique la différence entre les deux modes. */
-  .pp-dest-mode { grid-template-columns: 1fr; gap: 6px; }
-  .pp-dest-mode-card { padding: 8px 10px; gap: 8px; }
-  .pp-dest-mode-title { font-size: 12.5px; }
-  .pp-dest-mode-desc { font-size: 10.5px; line-height: 1.3; }
+@media (max-width: 1024px) {
+  /* Sélecteur de mode : les 2 cartes restent côte à côte même sur téléphone
+     étroit (demande du 2026-07-23, "même sur petit écran c'est dur de les
+     passer sur la même ligne ?") — carte réorganisée en colonne (icône au-
+     dessus du titre, au lieu d'icône à gauche + texte à droite) pour tenir
+     dans la moitié de la largeur, description masquée (elle expliquait la
+     différence entre les 2 modes, mais n'a plus la place ; les titres
+     "Planification manuelle"/"Suggestions de voyages" restent assez
+     explicites seuls). */
+  .pp-dest-mode { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .pp-dest-mode-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px 8px;
+    gap: 6px;
+  }
+  .pp-dest-mode-title { font-size: 12px; line-height: 1.25; }
+  .pp-dest-mode-desc { display: none; }
+  .pp-dest-mode-radio { position: absolute; top: 8px; right: 8px; }
+  /* Tablette (600-1024px) : assez de place pour les 2 cartes côte à côte
+     (comme sur PC) — empilées en pleine largeur, elles s'étiraient de façon
+     disgracieuse ("tout étiré c'est très moche", signalé le 2026-07-23). */
+  @media (min-width: 600px) {
+    .pp-dest-mode { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pp-dest-mode-card { padding: 18px 20px; gap: 14px; }
+    .pp-dest-mode-title { font-size: 16px; }
+    .pp-dest-mode-desc { font-size: 13px; line-height: 1.4; }
+    .pp-dest-mode-icon { width: 34px; height: 34px; font-size: 17px; }
+  }
   .pp-dest-mode-icon { width: 26px; height: 26px; font-size: 13px; }
   .pp-fulltrip-fieldbox-body { flex-direction: column; align-items: flex-start; gap: 8px; }
   .pp-fulltrip-mustcity-input { min-width: 0; width: 100%; }
@@ -7930,7 +7916,7 @@
 
 /* Poignée des bottom sheets mobiles : visible aussi sur le thème clair
    (le blanc translucide du thème sombre y serait invisible). */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   [data-theme="light"] .pp-modal::before { background: rgba(43,38,32,0.22); }
 }
 
@@ -7967,6 +7953,55 @@
   object-fit: cover;
   flex-shrink: 0;
 }
+/* Bouton qui enveloppe la vignette quand une photo existe (tap = ouvrir
+   l'aperçu en grand, voir PlaceSuggestionsButton.jsx) — pas de style de
+   bouton natif, juste un conteneur cliquable. */
+.pp-place-suggestions-thumb-btn {
+  display: none;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.pp-place-suggestions-thumb-btn .pp-place-suggestions-thumb { display: block; }
+/* Repli générique quand aucune photo n'est résolue : avant, rien ne
+   s'affichait du tout (pas de repère visuel qu'une photo pouvait exister
+   ailleurs) — signalé le 2026-07-23. */
+/* Icône fixe remplaçant la vraie photo sur mobile (voir
+   PlaceSuggestionsButton.jsx) : la vignette réelle en 42px était trop petite
+   pour rien y voir et sa forme variable (portrait/paysage) décalait le texte
+   à côté selon les lieux — une icône uniforme ne bouge jamais (signalé le
+   2026-07-24, "ça décale tout le texte"). Le tap ouvre toujours l'aperçu
+   grand format, inchangé. Œil plutôt que photo/appareil : l'ancienne icône
+   ressemblait à "ajouter une photo depuis mon répertoire" alors qu'il s'agit
+   juste de VOIR l'aperçu existant (signalé le 2026-07-24, "on dirait qu'on
+   va ajouter une photo"). Cercle plus petit et discret plutôt qu'un carré
+   plein façon bouton, pour ne plus avoir l'air d'une action d'ajout. */
+.pp-place-suggestions-thumb--icon {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  background: var(--surface2);
+}
+.pp-place-suggestions-thumb--icon:hover,
+.pp-place-suggestions-thumb--icon:active {
+  color: var(--accent2);
+  border-color: color-mix(in srgb, var(--accent2) 45%, var(--border));
+}
+.pp-place-suggestions-thumb--placeholder {
+  align-items: center;
+  justify-content: center;
+  color: var(--accent2);
+  background: rgba(129, 140, 248, 0.16);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+}
 /* La vignette est désormais un wrapper WikiImage (badge crédit ⓘ) : dans
    42px la bulle de crédit serait illisible si elle restait rognée par
    l'overflow du wrapper — on la laisse déborder au-dessus de la liste, et
@@ -7983,6 +8018,19 @@
   bottom: 46px;
   width: max-content;
   max-width: 240px;
+}
+/* Vignette des suggestions de lieux : remplace l'aperçu photo au survol sur
+   mobile/tablette. Placée ICI (après les règles de base ci-dessus, pas
+   avant comme précédemment) : à spécificité égale, une règle plus TARDIVE
+   dans le fichier gagne toujours la cascade, peu importe qu'elle soit dans
+   un @media ou non — la version précédente de cette règle, placée avant les
+   règles de base display:none, se faisait donc silencieusement écraser
+   (signalé le 2026-07-24, "toujours aucun moyen de voir les photos"). */
+@media (max-width: 1024px) {
+  .pp-place-suggestions-thumb { display: block; }
+  .pp-place-suggestions-thumb-btn { display: block; }
+  .pp-place-suggestions-thumb--placeholder { display: flex; }
+  .pp-place-suggestions-thumb--icon { display: flex; }
 }
 
 /* ─── Menu "⋯" par ville (CityMenu) ── */
@@ -8058,7 +8106,7 @@
    cette modale est concernée (sélecteur .pp-suggestions-modal, pas la règle
    générique .pp-modal) — partage/fin de voyage/etc. gardent leur habillage
    feuille habituel, non demandé ici. */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pp-suggestions-modal.pp-modal {
     height: 100dvh;
     max-height: 100dvh;
@@ -8582,7 +8630,7 @@
 /* Mobile : grilles resserrées et actions en pleine largeur — la fenêtre passe
    en bottom-sheet plein écran (voir .pp-modal générique mobile), les cartes et
    le hero gagnent à respirer moins horizontalement. */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pp-citycards-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .pp-citycards-grid--featured { grid-template-columns: 1fr; }
   .pp-citymedia--hero { aspect-ratio: 40 / 21; min-height: 130px; }
@@ -8674,7 +8722,7 @@
 /* Sur mobile, la note et le bouton côte à côte se compressaient mutuellement
    (note en colonne étroite de 3-4 mots par ligne) : on empile — note en
    pleine largeur au-dessus, bouton en dessous. Aucun changement sur PC. */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pp-trip-suggestions-choose-row { flex-direction: column; align-items: stretch; }
   .pp-trip-suggestions-replace-notice { flex: none; }
 }
@@ -8729,11 +8777,13 @@
   backdrop-filter: blur(6px);
   border: 1px solid var(--border-light);
   border-radius: 8px;
-  color: var(--text-dim);
+  /* Voir .pp-map-overlay-toggle : couleur fixe pour rester visible sur la
+     carte quel que soit le thème de l'appli. */
+  color: rgba(255,255,255,0.85);
   cursor: pointer;
   transition: color 0.15s, background 0.15s;
 }
-.pp-map-collapse-toggle:hover { color: var(--text); background: rgba(20,20,26,0.95); }
+.pp-map-collapse-toggle:hover { color: #fff; background: rgba(20,20,26,0.95); }
 .pp-map-panel-mount { flex: 1; display: flex; min-height: 0; }
 .pp-map-panel-mount--hidden { visibility: hidden; pointer-events: none; }
 
@@ -8761,7 +8811,7 @@
 .pp-trip-notes-card-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 .pp-trip-notes-card-title { font-size: 12.5px; font-weight: 800; color: var(--text); letter-spacing: 0.01em; }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Le bouton Jour J de la colonne Jours n'a pas sa place sur mobile : le
      pager y a déjà sa propre page dédiée (JOURJ_PAGE) et sa barre de
      navigation basse (.pp-mobile-nav). */
@@ -9618,29 +9668,129 @@
 .pp-home-empty-title { margin: 0; font-size: 18px; font-weight: 700; color: var(--text); }
 .pp-home-empty-sub { margin: 0 0 8px; font-size: 14px; color: var(--text-dim); }
 
-/* ─── Bouton retour (en-tête de l'éditeur plein écran) ─── */
+/* ─── Bouton retour (en-tête de l'éditeur plein écran) ───
+   Style "fil d'Ariane" plutôt qu'un bouton en boîte : plus discret que le
+   titre du voyage (la vraie vedette de la ligne), séparé de lui par une
+   marge nette + un liseré vertical plutôt que collé à 4px (signalé le
+   2026-07-24, "le bouton Mes voyages est trop proche du reste"). */
 .pp-editor-back-btn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
-  margin-right: 4px;
-  padding: 6px 10px 6px 6px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface);
-  color: var(--text);
+  margin-right: 18px;
+  padding: 6px 8px 6px 4px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--text-dim);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 .pp-editor-back-btn:hover {
-  background: color-mix(in srgb, var(--surface) 60%, var(--border));
-  border-color: color-mix(in srgb, #818cf8 40%, var(--border));
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+/* Liseré vertical après le bouton, à mi-hauteur de la marge qu'il porte déjà
+   (margin-right) : sépare visuellement "navigation" (retour) de "titre du
+   voyage" sans ajouter de conteneur/wrapper supplémentaire. */
+.pp-editor-back-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -9px;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  background: var(--border);
 }
 
-@media (max-width: 768px) {
+/* ─── Ligne de la liste des villes (mobile ET tablette) ───────────────────
+   Règles GLOBALES (pas dans un @media) : ce composant n'est rendu QUE quand
+   isMobile est vrai côté JS (voir CityBlock.jsx), un état qui ne correspond
+   pas forcément à une largeur sous les 768px de la media query ci-dessous
+   (tablette). Ces règles étaient coincées dans ce @media : sur tablette,
+   rien ne s'appliquait — texte collé sans espace ("7 lieux1 excursion"),
+   signalé le 2026-07-23. Le flex-wrap fait le travail tout seul, quelle que
+   soit la largeur réelle : espacé si la place le permet, resserré/replié
+   seulement si elle manque. */
+.pp-city-row {
+  display: flex;
+  /* flex-start (pas center) : avec le nom/sous-texte qui peuvent maintenant
+     passer sur plusieurs lignes, centrer verticalement écrasait le badge
+     "à dater" et le chevron n'importe où au milieu de la carte au lieu de
+     rester alignés en haut, propres (signalé le 2026-07-23, "tout se monte
+     dessus"). */
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.pp-city-row .pp-city-drag { display: flex; align-items: center; align-self: center; }
+.pp-city-row-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  /* Un peu d'air en haut pour s'aligner visuellement au centre de la photo
+     (84px) même quand le nom tient sur une seule ligne. */
+  padding-top: 2px;
+}
+.pp-city-row-name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  /* Pas de nowrap/ellipsis : "Chengdu" se faisait couper en "Che…" une fois
+     la photo agrandie (moins de place restante) — le nom complet doit
+     toujours rester lisible, quitte à passer sur 2 lignes (signalé le
+     2026-07-23, "PROBLEME MAJEUR"). */
+  white-space: normal;
+  line-height: 1.2;
+}
+.pp-city-row-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* row-gap ET column-gap (pas juste row-gap) : sans espacement horizontal,
+     deux chips sur la même ligne se touchaient ("7 lieux1 excursion",
+     signalé le 2026-07-23 sur tablette où le flex ne s'appliquait même pas
+     du tout). */
+  gap: 3px 10px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+/* Chip insécable, SANS séparateur "·" : la place restante à côté d'une
+   photo de 84px est trop étroite pour que les chips tiennent souvent sur la
+   même ligne sur un petit écran — un point placé en ::before se retrouvait
+   alors orphelin en tout début de ligne repliée, comme une ponctuation
+   égarée (signalé le 2026-07-23, "décalage entre les champs, c'est pas
+   pro"). Un simple espacement régulier (liste de tags) reste propre, replié
+   ou non — et sur tablette (plus de place), le gap ci-dessus les étale
+   naturellement sur une seule ligne sans rien resserrer inutilement. */
+.pp-city-row-sub-chip { white-space: nowrap; }
+.pp-city-row-chevron {
+  flex-shrink: 0;
+  align-self: center;
+  color: var(--text-dim);
+  opacity: 0.55;
+}
+/* Recentré indépendamment du texte (qui peut passer sur 2 lignes) : sinon,
+   avec .pp-city-row en align-items:flex-start, ce badge remontait tout en
+   haut de la carte, à la même hauteur que le nom — au point de le
+   chevaucher visuellement (signalé le 2026-07-23, "l'icône de planif est
+   sur le nom"). */
+.pp-city-row-planning-badge {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+@media (max-width: 1024px) {
   .pp-home {
     /* Bas : safe-area-bottom (barre de geste iPhone) en plus des 40px déjà
        prévus — sans elle, la dernière rangée de cartes/le bouton "Nouveau
@@ -9667,9 +9817,13 @@
   .pp-home-card-title { font-size: 15px; }
   .pp-home-add-card { min-height: 150px; }
   /* Le libellé texte du bouton retour prend trop de place sur l'étroit
-     bandeau titre du téléphone — on garde la seule flèche. */
+     bandeau titre du téléphone — on garde la seule flèche. Le liseré
+     séparateur (voir .pp-editor-back-btn::after, pensé pour l'espace large
+     de l'en-tête ordinateur) et sa marge sont retirés ici : sur ce bandeau
+     déjà serré, ils grignoteraient de la place pour rien. */
   .pp-editor-back-label { display: none; }
-  .pp-editor-back-btn { padding: 6px; }
+  .pp-editor-back-btn { padding: 6px; margin-right: 4px; }
+  .pp-editor-back-btn::after { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -9684,6 +9838,21 @@
   border-radius: 9px;
   object-fit: cover;
   background: var(--surface);
+}
+/* Très petit écran (mode responsive étroit type devtools, <400px) : la
+   photo (84px, taille fixée en style inline — d'où !important, seul moyen
+   de la primer ici) laisse trop peu de place au reste de la ligne (nom,
+   badge planif, chevron), qui se retrouve compressé au point de sembler se
+   chevaucher (signalé le 2026-07-24, "les icônes de planif rentrent dans le
+   texte"). */
+@media (max-width: 400px) {
+  .pp-city-row .pp-city-thumb { width: 56px !important; height: 56px !important; }
+}
+/* En-tête bureau uniquement : plus d'air entre la vignette (agrandie) et le
+   nom de la ville que le `gap` générique de .pp-city-header (partagé avec le
+   chevron/menu) — demande du 2026-07-24. */
+.pp-city-header .pp-city-thumb {
+  margin-right: 10px;
 }
 .pp-city-thumb--placeholder {
   display: inline-flex;
@@ -9701,44 +9870,6 @@
    c'est justement là que la Phase 2 doit montrer l'image. */
 @container (max-width: 380px) {
   .pp-city-header .pp-city-thumb { display: none; }
-}
-
-/* ─── Ligne de la liste des villes (mobile) ─── */
-.pp-city-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  cursor: pointer;
-}
-.pp-city-row .pp-city-drag { display: flex; align-items: center; }
-.pp-city-row-texts {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  flex: 1;
-  min-width: 0;
-}
-.pp-city-row-name {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pp-city-row-sub {
-  font-size: 12.5px;
-  color: var(--text-dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.pp-city-row-chevron {
-  flex-shrink: 0;
-  color: var(--text-dim);
-  opacity: 0.55;
 }
 
 /* ─── En-tête du détail d'une ville (mobile) ─── */
@@ -9815,7 +9946,12 @@
   padding: 0;
 }
 
-.pp-city--detail {
+/* Sélecteur composé (.pp-city.pp-city--detail, spécificité 0,2,0) et non
+   .pp-city--detail seul (0,1,0) : à spécificité égale avec .pp-city de base
+   (ligne ~434), ce reset restait fragile face à l'ordre des règles — l'ombre
+   portée de la carte ("filet noir" en bas de l'écran ville/excursion)
+   persistait visuellement malgré ce reset (signalé le 2026-07-23). */
+.pp-city.pp-city--detail {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -9925,6 +10061,39 @@
 }
 .pp-detail-hero-menu svg { width: 17px; height: 17px; }
 
+/* Boutons descendus au niveau du badge "X lieux" (sélection multiple,
+   détection de zones, date de début) — même traitement visuel que ceux du
+   menu du haut (fond opaque + flou, lisible sur la photo), en un peu plus
+   petit pour rester au gabarit des badges voisins. */
+.pp-detail-hero-title-actions .pp-icon-btn,
+.pp-detail-hero-title-actions .pp-city-planning-popover-wrap .pp-icon-btn {
+  width: 32px;
+  height: 32px;
+  background: rgba(10, 14, 22, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  border-radius: 10px;
+}
+.pp-detail-hero-title-actions svg { width: 14px; height: 14px; }
+.pp-detail-hero-title-actions .pp-icon-btn--pulse {
+  background: color-mix(in srgb, var(--accent) 55%, rgba(10, 14, 22, 0.55));
+  border: 1.5px solid color-mix(in srgb, var(--accent) 80%, transparent);
+  color: #fff;
+}
+/* Plage tablette (600-1024px) : boutons trop petits sur un grand écran
+   tactile — même correctif que .pp-header-collapse-btn/.pp-header-menu-btn
+   plus haut (demande du 2026-07-24). */
+@media (min-width: 600px) {
+  .pp-detail-hero-title-actions .pp-icon-btn,
+  .pp-detail-hero-title-actions .pp-city-planning-popover-wrap .pp-icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+  .pp-detail-hero-title-actions svg { width: 19px; height: 19px; }
+}
+
 /* Bouton "à dater" (pending_day_offset) : le rappelait à peine dans ce
    contexte — mon override ci-dessus (color:#fff, plus spécifique que
    .pp-icon-btn--pulse seul) éteignait sa teinte accent, et l'anneau pulsé
@@ -9947,13 +10116,33 @@
   100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
 }
 
-.pp-detail-hero-titles {
+/* Ligne name+badges (gauche) / actions (droite) — la ligne elle-même porte
+   le padding/position déplacés depuis .pp-detail-hero-titles, qui n'est
+   plus qu'une des deux colonnes de cette ligne (demande du 2026-07-24,
+   descendre les boutons d'action au niveau du badge "X lieux"). */
+.pp-detail-hero-title-row {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
   padding: 0 16px 14px;
+}
+.pp-detail-hero-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  /* Aligné sur la ligne des badges (pas le nom, plus haut) : même hauteur
+     que .pp-detail-hero-badges juste au-dessus dans la colonne voisine. */
+  padding-bottom: 1px;
+}
+.pp-detail-hero-titles {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 /* Nom bien plus visible : "le nom de la ville en plus gros" (2026-07-23). */
 .pp-detail-hero-name {

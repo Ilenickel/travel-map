@@ -10,7 +10,7 @@ import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 import TripSuggestionsModal from './TripSuggestionsModal';
 
-export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, isMobile = false, mobileCityDetailId = null, onOpenCityDetail, onCloseCityDetail, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
+export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, isMobile = false, mobileCityDetailId = null, onOpenCityDetail, onCloseCityDetail, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddGroup, onClearAutoGroups, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
   const { t, i18n } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
   // Replié : n'affiche que l'en-tête (image + nom + compteurs) — utile surtout
@@ -161,7 +161,8 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           onUpdateActivity={onUpdateActivity}
           onDuplicateActivity={onDuplicateActivity}
           onAssignActivityToGroup={onAssignActivityToGroup}
-          onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+          onAddGroup={onAddGroup}
+          onClearAutoGroups={onClearAutoGroups}
           onAssignActivitiesToDay={onAssignActivitiesToDay}
           onAddLodging={onAddLodging}
           onUpdateLodging={onUpdateLodging}
@@ -176,7 +177,12 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
     <div className="pp-destination">
       <div
         className={`pp-destination-header${countryImage?.imageUrl ? ' has-image' : ''}`}
-        style={countryImage?.imageUrl ? { backgroundImage: `url(${countryImage.thumbUrl || countryImage.imageUrl})` } : undefined}
+        // `imageUrl` (Unsplash urls.regular, ~1080px) plutôt que `thumbUrl`
+        // (urls.small, ~400px) : ce bandeau plein largeur affichait la
+        // version miniature, étirée et pixelisée sur un grand écran
+        // (signalé le 2026-07-24). thumbUrl reste réservé aux usages
+        // réellement petits (ex. cartes voyage de l'accueil, TripsHome.jsx).
+        style={countryImage?.imageUrl ? { backgroundImage: `url(${countryImage.imageUrl})` } : undefined}
         onClick={() => setCollapsed((c) => !c)}
         role="button"
         tabIndex={0}
@@ -201,7 +207,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
         </svg>
         <div className="pp-destination-info">
           <div className="pp-destination-title">
-            <CountryFlag emoji={flag} size={20} />
+            <CountryFlag emoji={flag} size={30} />
             <h3 className="pp-destination-name">{dest.country_name}</h3>
           </div>
           <div className="pp-destination-stats">
@@ -332,7 +338,8 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
                   onUpdateActivity={onUpdateActivity}
                   onDuplicateActivity={onDuplicateActivity}
                   onAssignActivityToGroup={onAssignActivityToGroup}
-                  onAssignActivitiesToGroup={onAssignActivitiesToGroup}
+                  onAddGroup={onAddGroup}
+                  onClearAutoGroups={onClearAutoGroups}
                   onAssignActivitiesToDay={onAssignActivitiesToDay}
                   onAddLodging={onAddLodging}
                   onUpdateLodging={onUpdateLodging}

@@ -1,0 +1,13 @@
+{
+  "pid": 16760,
+  "startedAt": "2026-07-23T15:38:44.091Z",
+  "state": "done",
+  "totalQueue": 2,
+  "done": 2,
+  "found": 2,
+  "notFound": 0,
+  "errors": 0,
+  "currentCountry": null,
+  "pausedUntil": null,
+  "updatedAt": "2026-07-23T15:38:44.816Z"
+}

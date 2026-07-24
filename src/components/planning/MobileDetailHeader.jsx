@@ -11,7 +11,7 @@
 // visibles sans avoir à faire défiler la bande — ce qui évitait aussi le
 // scroll horizontal qui se faisait détourner en changement de page (pager).
 export default function MobileDetailHeader({
-  hidden, image, onBack, backLabel, name, badges, menu, extra, tabs, activeTab, onTabChange,
+  hidden, image, onBack, backLabel, name, badges, menu, titleActions, extra, tabs, activeTab, onTabChange,
 }) {
   const mediaStyle = image?.imageUrl ? { backgroundImage: `url(${image.imageUrl})` } : undefined;
 
@@ -24,10 +24,17 @@ export default function MobileDetailHeader({
             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
           </svg>
         </button>
+        {/* Le "⋯" (menu) reste en haut, à côté du retour — les autres actions
+            (sélection, détection de zones, date) descendent au niveau du
+            badge "X lieux" via titleActions, sur la même ligne à droite
+            (demande du 2026-07-24). */}
         <div className="pp-detail-hero-menu">{menu}</div>
-        <div className="pp-detail-hero-titles">
-          <div className="pp-detail-hero-name">{name}</div>
-          {badges?.length > 0 && <div className="pp-detail-hero-badges">{badges}</div>}
+        <div className="pp-detail-hero-title-row">
+          <div className="pp-detail-hero-titles">
+            <div className="pp-detail-hero-name">{name}</div>
+            {badges?.length > 0 && <div className="pp-detail-hero-badges">{badges}</div>}
+          </div>
+          {titleActions && <div className="pp-detail-hero-title-actions">{titleActions}</div>}
         </div>
       </div>
       {extra && <div className="pp-detail-hero-extra">{extra}</div>}

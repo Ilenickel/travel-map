@@ -808,9 +808,17 @@ export function useTrips(userId) {
     return data;
   }, [tripData]);
 
-  // Supprime tous les groupes marqués "auto" (avant une nouvelle détection de zones)
-  const clearAutoGroups = useCallback(async (tripId) => {
-    const autoGroupIds = (tripData?.groups || []).filter(g => g.is_auto).map(g => g.id);
+  // Supprime les groupes marqués "auto" avant une nouvelle détection de zones —
+  // scopée à `cityIds` (une ville + ses excursions rattachées) pour ne jamais
+  // toucher aux zones déjà détectées sur une autre ville du voyage.
+  const clearAutoGroups = useCallback(async (tripId, cityIds) => {
+    const autoGroupIds = (tripData?.groups || [])
+      .filter(g => g.is_auto)
+      .filter(g => {
+        const members = (tripData?.activities || []).filter(a => a.group_id === g.id);
+        return members.length > 0 && members.every(a => cityIds.includes(a.city_id));
+      })
+      .map(g => g.id);
     if (!autoGroupIds.length) return;
     const { error } = await supabase.from('trip_groups').delete().in('id', autoGroupIds);
     if (error) { console.error('clearAutoGroups failed:', error); return; }
@@ -825,44 +833,12 @@ export function useTrips(userId) {
     setLastDeletedItem(prev => (prev && prev.activities.some(a => autoGroupIds.includes(a.group_id))) ? null : prev);
   }, [tripData]);
 
-  const updateGroup = useCallback(async (groupId, updates) => {
-    const { error } = await supabase.from('trip_groups').update(updates).eq('id', groupId);
-    if (error) { console.error('updateGroup failed:', error); return; }
-    setTripData(prev => prev ? {
-      ...prev, groups: (prev.groups || []).map(g => g.id === groupId ? { ...g, ...updates } : g),
-    } : prev);
-  }, []);
-
-  const removeGroup = useCallback(async (groupId) => {
-    const { error } = await supabase.from('trip_groups').delete().eq('id', groupId);
-    if (error) { console.error('removeGroup failed:', error); return; }
-    setTripData(prev => prev ? {
-      ...prev,
-      groups: (prev.groups || []).filter(g => g.id !== groupId),
-      activities: prev.activities.map(a => a.group_id === groupId ? { ...a, group_id: null } : a),
-    } : prev);
-    setLastDeletedItem(prev => (prev && prev.activities.some(a => a.group_id === groupId)) ? null : prev);
-  }, []);
-
   const assignActivityToGroup = useCallback(async (actId, groupId) => {
     const val = groupId || null;
     const { error } = await supabase.from('trip_activities').update({ group_id: val }).eq('id', actId);
     if (error) { console.error('assignActivityToGroup failed:', error); return; }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => a.id === actId ? { ...a, group_id: val } : a),
-    } : prev);
-  }, []);
-
-  // Assignation groupée (sélection multiple) — même requête que assignGroupToDay/
-  // assignCityToDay, juste paramétrée par une liste d'ids choisie à la main plutôt
-  // que par "tout un groupe" ou "toute une ville".
-  const assignActivitiesToGroup = useCallback(async (ids, groupId) => {
-    if (!ids?.length) return;
-    const val = groupId || null;
-    const { error } = await supabase.from('trip_activities').update({ group_id: val }).in('id', ids);
-    if (error) { console.error('assignActivitiesToGroup failed:', error); return; }
-    setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, group_id: val } : a),
     } : prev);
   }, []);
 
@@ -874,16 +850,6 @@ export function useTrips(userId) {
       ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
     } : prev);
   }, []);
-
-  const assignGroupToDay = useCallback(async (groupId, date, time = null) => {
-    const groupActs = (tripData?.activities || []).filter(a => a.group_id === groupId);
-    if (!groupActs.length) return;
-    const ids = groupActs.map(a => a.id);
-    await supabase.from('trip_activities').update({ visit_date: date, visit_time: time, pending_day_index: null }).in('id', ids);
-    setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
-    } : prev);
-  }, [tripData]);
 
   // ─── Lodgings CRUD (hébergements par ville) ───
 
@@ -942,7 +908,7 @@ export function useTrips(userId) {
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
     addActivity, updateActivity, removeActivity, removeActivities, reorderActivities,
     duplicateActivity, undoLastDelete, canUndo: !!lastDeletedItem,
-    addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignActivitiesToGroup, assignGroupToDay, assignCityToDay, assignActivitiesToDay,
+    addGroup, clearAutoGroups, assignActivityToGroup, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
   };
 }
