@@ -18,6 +18,8 @@
 // à ce que l'utilisateur a réellement glissé sur son calendrier.
 import { getAdminClient, verifyUser, verifyTripAccess } from './_lib/supabaseAdmin.js';
 import { resolveCityCoordinates, distanceKm, SAME_CITY_RADIUS_KM } from './_lib/cityGeocode.js';
+import { resolveCityImage } from './_lib/cityImages.js';
+import { resolveCountryImage } from './_lib/countryImages.js';
 
 const BUCKET = 'trip-attachments';
 const MAX_SUGGEST_RESULTS = 5;
@@ -713,7 +715,7 @@ async function handleListCities(admin, body, res) {
 
   const { data: templates } = await admin
     .from('trip_templates')
-    .select('id, city_name, city_lat, city_lng, uses_count')
+    .select('id, city_name, city_lat, city_lng, uses_count, is_editorial')
     .eq('country_code', countryCode)
     .eq('is_public', true)
     .is('parent_template_id', null);
@@ -743,6 +745,14 @@ async function handleListCities(admin, body, res) {
   let cities = clusters.map((c) => ({
     cityName: c.representative.city_name,
     representativeTemplateId: c.representative.id,
+    // Nécessaire au client pour savoir s'il doit traduire ce nom de ville
+    // quand la langue affichée est le français (voir useCityNameTranslations,
+    // src/lib/translateContent.js) : un modèle ÉDITORIAL est toujours saisi
+    // en français par l'équipe (rien à traduire pour un visiteur FR), mais un
+    // modèle communautaire (is_editorial=false) peut avoir été saisi dans
+    // n'importe quelle langue par son auteur — "Beijing" par un visiteur
+    // anglophone doit quand même s'afficher "Pékin" pour un visiteur FR.
+    isEditorial: c.representative.is_editorial,
     templateCount: c.templateCount,
     totalUses: c.totalUses,
     _lat: c.representative.city_lat,
@@ -779,9 +789,12 @@ async function handleListCities(admin, body, res) {
   }
 
   cities.sort((a, b) => b.totalUses - a.totalUses);
-  // _lat/_lng ne servaient qu'au matching serveur ci-dessus : jamais utiles au
-  // client, pas besoin de les faire voyager dans la réponse.
-  const citiesForClient = cities.map(({ _lat, _lng, ...rest }) => rest);
+  // _lat/_lng renommés en lat/lng (pas supprimés) : le client en a besoin
+  // pour get-city-image (voir useCityImages, TripSuggestionsModal.jsx) —
+  // sans coordonnées connues, chaque ville affichée dans l'onglet "Villes"
+  // forçait un géocodage serveur supplémentaire au lieu de les réutiliser,
+  // celles-ci étant déjà résolues juste au-dessus.
+  const citiesForClient = cities.map(({ _lat, _lng, ...rest }) => ({ ...rest, lat: _lat, lng: _lng }));
 
   return res.status(200).json({ ok: true, cities: citiesForClient });
 }
@@ -1344,6 +1357,100 @@ async function handleImportTrip(admin, user, body, res) {
 }
 
 // ════════════════════════════════════════════════════════════════
+// action: 'get-city-image' — photo de ville (cache Supabase city_images,
+// sinon Unsplash à la volée) : voir api/_lib/cityImages.js pour la logique
+// de résolution, partagée avec scripts/fetch-city-images.mjs (import initial
+// en masse des villes éditoriales).
+//
+// Batch (`cities`) plutôt qu'une ville à la fois : les écrans de suggestion
+// affichent plusieurs villes d'un coup (voir handleSuggest/handleSuggestTrip/
+// handleListCities ci-dessus), un aller-retour unique évite une rafale de
+// requêtes HTTP séquentielles côté front. Résolues EN PARALLÈLE (Promise.all)
+// pour rester rapide même si plusieurs villes ne sont pas encore en cache et
+// déclenchent un appel Unsplash live — une fonction serverless a un temps
+// d'exécution limité (10s sur le plan Hobby Vercel), d'où aussi le plafond
+// MAX_CITY_IMAGE_BATCH ci-dessous.
+//
+// Par ville :
+//  - `countryName` (nom anglais du pays, ex: "Austria") : FACULTATIF mais
+//    fortement recommandé — sans lui la requête Unsplash se limite au nom de
+//    ville seul (moins précis, voir cityImages.js). Le front le connaît déjà
+//    (COUNTRIES depuis src/data/index.js), pas besoin de le résoudre ici.
+//  - `countryAlpha2` (ex: "AT") : facultatif, affine le géocodage utilisé
+//    pour le matching cross-langue (voir cityImages.js).
+//  - `lat`/`lng` (facultatifs) : coordonnées déjà connues côté appelant. À
+//    fournir pour une ville éditoriale si le front les a (trip_templates les
+//    connaît) — évite un géocodage et rend le matching cross-langue
+//    bulletproof. Sinon la ville est géocodée côté serveur (cache permanent).
+//  - `sourceLanguage` : INDICE de langue du `cityName` fourni. 'fr' par
+//    défaut — c'est TOUJOURS la bonne valeur pour une ville venant d'une
+//    suggestion éditoriale (cityName = trip_templates.city_name, toujours en
+//    français, JAMAIS le libellé traduit affiché à l'écran — voir
+//    cityNameOverrides.js). Pour une ville tapée à la main par un
+//    utilisateur, passer la langue du site (ex: 'es' pour "Sevilla"). Ce
+//    n'est qu'un indice, jamais bloquant : la résolution passe d'abord par le
+//    géocodeur (nom anglais canonique, indépendant de sourceLanguage — voir
+//    resolveEnglishCityNameForQuery dans cityImages.js), sourceLanguage ne
+//    sert qu'au repli Google Translate si le géocodeur échoue. La requête
+//    Unsplash reste toujours en anglais quoi qu'il arrive, et la cohérence
+//    cross-langue est garantie par le matching géographique, pas par cet
+//    indice.
+const MAX_CITY_IMAGE_BATCH = 8;
+
+async function handleGetCityImage(admin, body, res) {
+  const { cities } = body;
+  if (!Array.isArray(cities) || !cities.length) {
+    return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
+  }
+  const batch = cities
+    .slice(0, MAX_CITY_IMAGE_BATCH)
+    .filter((c) => c?.cityName && c?.countryCode);
+
+  const images = await Promise.all(batch.map(async (c) => ({
+    cityName: c.cityName,
+    countryCode: c.countryCode,
+    image: await resolveCityImage(admin, c.cityName, c.countryCode, {
+      countryName: c.countryName || null,
+      countryAlpha2: c.countryAlpha2 || null,
+      sourceLanguage: c.sourceLanguage || 'fr',
+      lat: typeof c.lat === 'number' ? c.lat : null,
+      lng: typeof c.lng === 'number' ? c.lng : null,
+    }),
+  })));
+
+  return res.status(200).json({ ok: true, images });
+}
+
+// action: 'get-country-image' — photo représentative d'un PAYS (cache Supabase
+// country_images, sinon Unsplash à la volée) : voir api/_lib/countryImages.js
+// pour la logique, partagée avec scripts/fetch-country-images.mjs (import
+// initial en masse des 185 pays). Sert de fond aux cartes de voyage.
+//
+// Batch (`countries`) plutôt qu'un pays à la fois, même raison que
+// get-city-image : l'écran d'accueil affiche plusieurs voyages d'un coup. Par
+// pays : `countryCode` (alpha-3, requis) + `countryName` (nom ANGLAIS, ex
+// "Japan" — facultatif mais nécessaire pour résoudre un pays pas encore en
+// cache ; le front le connaît via COUNTRIES[code].name.en).
+const MAX_COUNTRY_IMAGE_BATCH = 12;
+
+async function handleGetCountryImage(admin, body, res) {
+  const { countries } = body;
+  if (!Array.isArray(countries) || !countries.length) {
+    return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
+  }
+  const batch = countries
+    .slice(0, MAX_COUNTRY_IMAGE_BATCH)
+    .filter((c) => c?.countryCode);
+
+  const images = await Promise.all(batch.map(async (c) => ({
+    countryCode: c.countryCode,
+    image: await resolveCountryImage(admin, c.countryCode, c.countryName || null),
+  })));
+
+  return res.status(200).json({ ok: true, images });
+}
+
+// ════════════════════════════════════════════════════════════════
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -1373,6 +1480,8 @@ export default async function handler(req, res) {
   if (action === 'list-cities') return handleListCities(admin, body, res);
   if (action === 'import') return handleImport(admin, user, body, res);
   if (action === 'import-trip') return handleImportTrip(admin, user, body, res);
+  if (action === 'get-city-image') return handleGetCityImage(admin, body, res);
+  if (action === 'get-country-image') return handleGetCountryImage(admin, body, res);
   return res.status(400).json({ ok: false, reason: 'Action invalide.' });
 }
 

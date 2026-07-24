@@ -111,14 +111,13 @@
     "costInputTitle": "Precio de la actividad (entrada, comida…) — déjelo vacío si no lo sabe",
     "priceTitle": "Precio de la actividad",
     "infoToggleTitle": "Mostrar/ocultar detalles",
-    "groupLabel": "Grupo",
     "notePlaceholder": "Nota (horarios, información, dirección…)",
     "attachmentCount_one": "{{count}} archivo adjunto",
     "attachmentCount_other": "{{count}} archivos adjuntos",
     "resizeHandleTitle": "Arrastre hacia abajo para extenderlo a las siguientes franjas horarias (o días)",
-    "groupTitleWithName": "Grupo: {{name}} — haga clic para cambiar",
-    "groupTitleAssign": "Haga clic para asignar un grupo",
-    "assignGroupLabel": "Asignar un grupo",
+    "groupTitleWithName": "Zona: {{name}} — haga clic para cambiar",
+    "groupTitleAssign": "Haga clic para asignar una zona",
+    "assignGroupLabel": "Asignar una zona",
     "duplicateTitle": "Duplicar (o pase el ratón por la tarjeta + Ctrl+C)",
     "removeFromPlanningTitle": "Quitar de la planificación (sigue disponible en la ciudad)",
     "deleteTitle": "Eliminar"
@@ -137,7 +136,6 @@
   "selection": {
     "count_one": "{{count}} seleccionado",
     "count_other": "{{count}} seleccionados",
-    "groupDropdown": "Grupo ▾",
     "moveToDayDropdown": "Mover a un día ▾"
   },
   "place": {
@@ -167,6 +165,8 @@
     "editorialNoticeText": "No proviene de un viaje real — puede ser menos preciso que las sugerencias de la comunidad.",
     "prevLabel": "Sugerencia anterior",
     "nextLabel": "Sugerencia siguiente",
+    "scrollCitiesLeftLabel": "Ver las ciudades anteriores",
+    "scrollCitiesRightLabel": "Ver las ciudades siguientes",
     "goToLabel": "Ir a la sugerencia {{count}}",
     "usesCount_one": "Importado {{count}} vez",
     "usesCount_other": "Importado {{count}} veces",
@@ -206,6 +206,7 @@
     "selectedCitiesHeading_other": "{{count}} ciudades pendientes de importar",
     "otherCitiesHeading": "Otras ciudades",
     "citySelectedBadge": "Seleccionada",
+    "removeFromCartTitle": "Quitar {{city}} de la selección",
     "loadError": "No se han podido cargar las sugerencias por ahora. Vuelva a intentarlo en un momento.",
     "importCartError": "Error al importar: {{cities}}. Vuelva a intentarlo en un momento."
   },
@@ -245,10 +246,17 @@
     "reorderTitle": "Reordenar la ciudad",
     "expandTitle": "Expandir",
     "collapseTitle": "Contraer",
+    "backToList": "Volver a las ciudades",
+    "backToCity": "Volver a {{city}}",
+    "daytripsCount_one": "{{count}} excursión",
+    "daytripsCount_other": "{{count}} excursiones",
     "eyebrow": "Ciudad",
     "costTitle": "Coste de las actividades y trayectos de {{city}} (sin alojamiento ni excursiones)",
     "renameTitle": "Renombrar la ciudad",
     "deleteTitle": "Eliminar la ciudad",
+    "autoDetectZonesTitle": "Agrupar lugares por proximidad",
+    "autoDetectZonesSuccess": "Lugares agrupados por proximidad ({{count}} zona(s) creada(s))",
+    "autoDetectZonesError": "No se pudo agrupar por proximidad",
     "addPlaceOrActivityButton": "Añadir un lugar o actividad",
     "addDaytripSearchPlaceholder": "Buscar una ciudad para excursión… (o Enter para añadir)",
     "addDaytripButton": "Añadir una excursión",
@@ -275,7 +283,9 @@
     "citiesCount_other": "{{count}} ciudades",
     "removeTitle": "Eliminar este país del viaje",
     "addCityButton": "Añadir una ciudad",
-    "suggestButton": "Sugerencias para {{country}}"
+    "suggestButton": "Sugerencias para {{country}}",
+    "menuTitle": "Opciones del país",
+    "addCountryHint": "Podrás añadir otro país desde el menú ⋯ de un destino."
   },
   "country": {
     "addTitle": "Añadir un país",
@@ -307,23 +317,7 @@
     "addButton": "Añadir alojamiento"
   },
   "group": {
-    "hideActivitiesTitle": "Ocultar lugares (arrastre la tarjeta para programarlos todos en un solo día)",
-    "showActivitiesTitle": "Mostrar los lugares del grupo (arrastre la tarjeta para programarlos todos en un solo día)",
-    "dragToPlanTitle": "Arrastre para programarlo todo en un solo día",
-    "changeColorTitle": "Cambiar color",
-    "renameHintTitle": "Doble clic para renombrar",
-    "planGroupOnDayTitle": "Programar todos los lugares de este grupo en un día",
-    "deleteGroupTitle": "Eliminar el grupo",
-    "removeFromGroupTitle": "Quitar del grupo",
-    "emptyDropHint": "Suelte un lugar aquí",
-    "defaultName": "Grupo {{n}}",
-    "autoZoneName": "Zona {{n}}",
-    "header": "Grupos de actividades",
-    "emptyHint": "Agrupe sus lugares por barrio o tema. Haga clic en el punto de color de un lugar para asignarlo.",
-    "newGroupButton": "Nuevo grupo",
-    "autoDetectTitle": "Detectar automáticamente zonas por agrupación geográfica ({{count}} lugares geolocalizados)",
-    "autoDetectButton": "Detectar zonas",
-    "columnHint": "Agrupe sus lugares por barrio o zona: cada zona colorea sus puntos en el mapa y puede asignarse a un día de una vez. «Detectar zonas» las crea automáticamente por agrupación geográfica."
+    "autoZoneName": "Zona {{n}}"
   },
   "attachments": {
     "sizeKo": "{{value}} KB",
@@ -357,7 +351,7 @@
     "continuationChip": "↳ continúa ({{from}})",
     "cutHereTitle": "Detener la actividad justo antes de esta franja (elimina esta y todas las siguientes)",
     "dropHere": "Suelte aquí",
-    "noDatesNotice": "Defina las fechas del viaje para ver la vista por día y programar sus actividades por franja horaria.",
+    "noDatesNotice": "Haga clic en <icon/> para definir las fechas del viaje y acceder a la vista por día, y así programar sus actividades por franja horaria.",
     "activitiesCount": "Actividades ({{count}})",
     "hint": "Arrastre un lugar a una franja horaria (Mañana / Tarde / Noche) para programarlo, o tire del tirador en la parte inferior de una actividad programada para extenderla a las siguientes franjas — o días",
     "unplannedLabel": "Sin programar",
@@ -395,7 +389,7 @@
     "mapButton": "Mapa",
     "closeMapTitle": "Cerrar el mapa",
     "showMapTitle": "Mostrar el mapa",
-    "dayModeButton": "Modo Día",
+    "dayModeButton": "Ver modo Día",
     "dayModeNeedDatesTitle": "Defina las fechas del viaje para usar el modo Día",
     "dayModeBackTitle": "Volver al plan completo",
     "dayModeEnterTitle": "Modo Día: muestra solo las actividades del día actual",
@@ -453,6 +447,26 @@
     "optionsTitle": "Opciones",
     "confirmDeleteButton": "Confirmar eliminación",
     "leaveTripButton": "Abandonar el viaje"
+  },
+  "cityTabs": {
+    "activities": "Actividades",
+    "lodgings": "Alojamientos",
+    "transports": "Transportes",
+    "excursions": "Excursiones",
+    "addPlaceButton": "Añadir un lugar",
+    "addLodgingButton": "Añadir un alojamiento",
+    "addTrajetButton": "Añadir un transporte",
+    "addExcursionButton": "Añadir una excursión",
+    "emptyLodgings": "Ningún alojamiento — añada uno abajo",
+    "emptyTrajets": "Ningún transporte — añada uno abajo",
+    "emptyExcursions": "Ninguna excursión — añada una abajo"
+  },
+  "home": {
+    "subtitle_one": "{{count}} viaje",
+    "subtitle_other": "{{count}} viajes",
+    "newTrip": "Nuevo viaje",
+    "activitiesProgress": "{{done}}/{{total}} actividades",
+    "backButton": "Mis viajes"
   },
   "map": {
     "emptyHint": "Añada lugares mediante la búsqueda para verlos en el mapa",
@@ -514,7 +528,6 @@
     "hideMapToRailTitle": "Ocultar el mapa",
     "navLabel": "Navegación entre paneles",
     "navCities": "Ciudades",
-    "navGroups": "Grupos",
     "navDays": "Días"
   },
   "expenses": {

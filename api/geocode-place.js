@@ -39,7 +39,9 @@ async function geocodeViaGeoapify(text, countryAlpha2, lang) {
     // Encodage explicite : ces valeurs viennent du corps de la requête, sans
     // ça un appelant pourrait injecter des paramètres supplémentaires dans
     // l'URL Geoapify (ex. lang="fr&foo=bar").
-    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2)}` : '';
+    // Geoapify rejette (400) le filtre countrycode si la valeur n'est pas en
+    // minuscules — bug identique corrigé dans api/_lib/cityGeocode.js le 2026-07-22.
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${encodeURIComponent(countryAlpha2.toLowerCase())}` : '';
     const langParam = lang ? `&lang=${encodeURIComponent(lang)}` : '';
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(text)}&limit=5${filterParam}${langParam}&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });

@@ -119,7 +119,7 @@ export const UK = {
   destinations: [
     {
       id: 1,
-      name: "London",
+      name: "Londres",
       region: { fr: "Angleterre", en: "England", es: "Inglaterra" },
       description: {
         fr: "Londres est une métropole mondiale d'une richesse culturelle inépuisable, où les musées gratuits de classe mondiale côtoient les palais royaux et les marchés colorés. De Buckingham Palace à la Tate Modern, du Borough Market à Shoreditch, la ville multiplie les visages et les expériences. Le réseau de transports en commun, malgré son coût, est l'un des plus efficaces du monde et permet d'explorer chaque quartier à son rythme.",

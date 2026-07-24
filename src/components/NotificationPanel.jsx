@@ -11,6 +11,19 @@ import { useModalHistory } from '../hooks/useModalHistory';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 
+// Avatar de notification (photo si dispo, sinon initiales colorées) — bascule
+// aussi sur les initiales si la photo existe en base mais que le fichier est
+// cassé/introuvable (404, storage vidé…), pas seulement quand `url` est vide :
+// signalé le 2026-07-24, une icône "image cassée" du navigateur s'affichait
+// sinon pour les profils sans photo dont l'URL restait malgré tout renseignée.
+function NotifAvatar({ url, name, color }) {
+  const [broken, setBroken] = useState(false);
+  if (!url || broken) {
+    return <div className="notif-avatar-initials" style={{ background: color }}>{name[0].toUpperCase()}</div>;
+  }
+  return <img src={url} alt={name} className="notif-avatar-img" onError={() => setBroken(true)} />;
+}
+
 function FlagImage({ country, code }) {
   if (!country?.emoji) return <span style={{ fontSize: 13 }}>{code}</span>;
   const chars = [...country.emoji];
@@ -208,13 +221,9 @@ export default function NotificationPanel({ notifications, onClose, onOpenCountr
                     {isOwnershipTransfer ? (
                       <div className="notif-avatar-system">🔑</div>
                     ) : isNewFollower ? (
-                      followerAvatarUrl
-                        ? <img src={followerAvatarUrl} alt={name} className="notif-avatar-img" />
-                        : <div className="notif-avatar-initials" style={{ background: color }}>{name[0].toUpperCase()}</div>
-                    ) : profile?.avatar_url ? (
-                      <img src={profile.avatar_url} alt={name} className="notif-avatar-img" />
+                      <NotifAvatar url={followerAvatarUrl} name={name} color={color} />
                     ) : (
-                      <div className="notif-avatar-initials" style={{ background: color }}>{name[0].toUpperCase()}</div>
+                      <NotifAvatar url={profile?.avatar_url} name={name} color={color} />
                     )}
                     {!n.read && <span className="notif-unread-dot" />}
                   </div>

@@ -119,7 +119,12 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
   const searchActiveRef    = useRef(searchActive);
   const visitedSetRef      = useRef(visitedSet);
   const hideVisitedRef     = useRef(hideVisited);
-  const isMobileRef        = useRef(window.innerWidth <= 768);
+  // 1024 (pas 768) — même seuil que le reste de l'app depuis le 2026-07-23
+  // (tablette incluse, voir useIsMobile(1024) dans CountryPanel/TripEditor) :
+  // resté à 768 ici, la carte gardait son cadrage "PC" (zoom initial large,
+  // non recentré) sur iPad Pro alors que tout le reste de l'app basculait
+  // déjà en mobile.
+  const isMobileRef        = useRef(window.innerWidth <= 1024);
   const onCountryClickRef  = useRef(onCountryClick);
   const pathsSelRef        = useRef(null);
   const borderSelRef       = useRef(null);
@@ -208,7 +213,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
     svg.selectAll("*").remove();
     svg.attr("viewBox", `0 0 ${width} ${height}`);
 
-    const isMobile = width <= 768;
+    const isMobile = width <= 1024; // même seuil que isMobileRef ci-dessus
     // Sur mobile : projection ajustée à la hauteur (carte plus large que l'écran)
     // Sur desktop : projection ajustée au conteneur complet
     const NE_ASPECT = 1.97; // rapport largeur/hauteur de NaturalEarth
@@ -426,9 +431,19 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
       if (!datum) return;
       const numId = +datum.id;
       if (!isInteractive(numId)) return;
+      // preventDefault (nécessite un listener non-passif, voir plus bas) :
+      // sans ça, iOS Safari enchaîne quand même sa propre cascade d'événements
+      // souris synthétiques après ce touchend (mouseenter → mousemove →
+      // mousedown → mouseup → click) puisque rien ne l'en a empêché — le
+      // 1er tap n'affichait alors que l'effet ".on('mouseenter', ...)" plus
+      // haut (surbrillance + tooltip), et il fallait un 2e tap pour que
+      // quelque chose ouvre vraiment la fiche pays. Chrome/Android ne
+      // reproduisaient pas ce bug (signalé le 2026-07-24, "sur la webapp de
+      // l'iPhone... il faut cliquer deux fois").
+      event.preventDefault();
       const alpha3 = NUMERIC_TO_CODE[numId];
       if (alpha3) onCountryClickRef.current(alpha3);
-    }, { passive: true });
+    }, { passive: false });
 
     return () => {};
     }; // end init

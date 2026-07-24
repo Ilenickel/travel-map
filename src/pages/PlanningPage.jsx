@@ -6,9 +6,8 @@ import { useTrips } from '../hooks/useTrips';
 import { useInvitations } from '../hooks/useInvitations';
 import { useEndTripSharePrompt } from '../hooks/useEndTripSharePrompt';
 import AuthModal from '../components/AuthModal';
-import TripSidebar from '../components/planning/TripSidebar';
+import TripsHome from '../components/planning/TripsHome';
 import TripEditor from '../components/planning/TripEditor';
-import EmptyEditor from '../components/planning/EmptyEditor';
 import PlanningGate from '../components/planning/PlanningGate';
 import EndTripSharePrompt from '../components/planning/EndTripSharePrompt';
 import './PlanningPage.css';
@@ -84,7 +83,7 @@ function PendingInvitations({ pending, onAccept, onDecline }) {
             <strong>{t('invite.tripQuoted', { title: inv.trips?.title || t('invite.tripFallback') })}</strong>
           </div>
           <div className="pp-pending-invite-actions">
-            <button className="pp-btn pp-btn--primary pp-btn--xs" onClick={() => onAccept(inv.id)}>{t('invite.acceptButton')}</button>
+            <button className="pp-btn pp-btn--primary pp-btn--xs" onClick={() => onAccept(inv.id, inv.trip_id)}>{t('invite.acceptButton')}</button>
             <button className="pp-btn pp-btn--ghost pp-btn--xs" onClick={() => onDecline(inv.id)}>{t('invite.declineButton')}</button>
           </div>
         </div>
@@ -99,13 +98,13 @@ function PlanningMain() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const {
-    trips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
+    trips, tripStats, reloadTrips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
     addActivity, updateActivity, removeActivity, removeActivities, reorderActivities,
     duplicateActivity, undoLastDelete,
-    addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignActivitiesToGroup, assignGroupToDay, assignCityToDay, assignActivitiesToDay,
+    addGroup, clearAutoGroups, assignActivityToGroup, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
   } = useTrips(user?.id);
 
@@ -123,12 +122,24 @@ function PlanningMain() {
     if (tripParam) setSelectedTripId(tripParam);
   }, [searchParams, setSelectedTripId]);
 
-  const handleAcceptInvite = async (id) => {
-    const ok = await acceptInvite(id);
-    if (ok) {
-      // Reload trips to include the newly accepted shared trip
-      window.location.reload();
-    }
+  const handleAcceptInvite = async (invitationId, tripId) => {
+    const ok = await acceptInvite(invitationId);
+    if (!ok) return;
+    // Recharge la liste pour y inclure le voyage partagé nouvellement accepté
+    // (loadTrips ramène aussi les voyages où l'on est membre), puis ouvre ce
+    // voyage en plein écran. Un simple retour en arrière (bouton « Mes voyages »)
+    // ramène ensuite à la grille, où le voyage est désormais présent — plus de
+    // rechargement complet de la page (qui perdait l'état de l'écran).
+    await reloadTrips();
+    if (tripId) setSelectedTripId(tripId);
+  };
+
+  // Retour de l'éditeur plein écran vers la grille d'accueil : on déselectionne
+  // le voyage ET on rafraîchit la liste (les agrégats des cartes — nb villes,
+  // activités, progression — ont pu changer pendant l'édition).
+  const handleBackToHome = () => {
+    setSelectedTripId(null);
+    reloadTrips();
   };
 
   return (
@@ -137,25 +148,7 @@ function PlanningMain() {
         <EndTripSharePrompt key={pendingShareTrip.id} trip={pendingShareTrip} onAnswer={answerSharePrompt} />
       )}
 
-      <TripSidebar
-        trips={trips}
-        selectedId={selectedTripId}
-        userId={user?.id}
-        onSelect={setSelectedTripId}
-        onCreate={createTrip}
-        onDelete={deleteTrip}
-        onLeaveTrip={leaveTrip}
-        onDuplicate={duplicateTrip}
-        pendingCount={pending.length}
-      />
-
       <main className="pp-main">
-        <PendingInvitations
-          pending={pending}
-          onAccept={handleAcceptInvite}
-          onDecline={declineInvite}
-        />
-
         {loading && tripData?.trip?.id !== selectedTripId ? (
           // Spinner uniquement lors d'un vrai changement de voyage (les données
           // affichées ne correspondent plus encore au voyage sélectionné) — un
@@ -189,11 +182,7 @@ function PlanningMain() {
             onUndoLastDelete={undoLastDelete}
             onAddGroup={addGroup}
             onClearAutoGroups={clearAutoGroups}
-            onUpdateGroup={updateGroup}
-            onRemoveGroup={removeGroup}
             onAssignActivityToGroup={assignActivityToGroup}
-            onAssignActivitiesToGroup={assignActivitiesToGroup}
-            onAssignGroupToDay={assignGroupToDay}
             onAssignCityToDay={assignCityToDay}
             onAssignActivitiesToDay={assignActivitiesToDay}
             onAddLodging={addLodging}
@@ -201,9 +190,26 @@ function PlanningMain() {
             onRemoveLodging={removeLodging}
             onLeaveTrip={leaveTrip}
             onReloadTripData={() => loadTripData(selectedTripId)}
+            onBack={handleBackToHome}
           />
         ) : (
-          <EmptyEditor onCreate={createTrip} />
+          <>
+            <PendingInvitations
+              pending={pending}
+              onAccept={handleAcceptInvite}
+              onDecline={declineInvite}
+            />
+            <TripsHome
+              trips={trips}
+              tripStats={tripStats}
+              userId={user?.id}
+              onSelect={setSelectedTripId}
+              onCreate={createTrip}
+              onDelete={deleteTrip}
+              onLeaveTrip={leaveTrip}
+              onDuplicate={duplicateTrip}
+            />
+          </>
         )}
       </main>
     </div>

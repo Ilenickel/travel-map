@@ -1,0 +1,13 @@
+{
+  "pid": 24624,
+  "startedAt": "2026-07-23T09:22:10.604Z",
+  "state": "done",
+  "totalQueue": 75,
+  "done": 75,
+  "found": 75,
+  "notFound": 0,
+  "errors": 0,
+  "currentCity": null,
+  "pausedUntil": null,
+  "updatedAt": "2026-07-23T10:24:25.854Z"
+}

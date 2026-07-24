@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 
 // Menu "+ Ajouter" unique : regroupe les actions d'ajout d'un bloc ville ou
 // excursion (lieu, hébergement, excursion à la journée, trajet) derrière un
@@ -11,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 export default function AddMenu({ items }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const dropdownRef = useScrollIntoViewOnOpen(open);
 
   return (
     <div className="pp-add-menu">
@@ -36,7 +38,7 @@ export default function AddMenu({ items }) {
       {open && (
         <>
           <div className="pp-backdrop-overlay" onClick={() => setOpen(false)} />
-          <div className="pp-add-menu-dropdown">
+          <div className="pp-add-menu-dropdown" ref={dropdownRef}>
             {items.map(item => (
               <button
                 key={item.key}

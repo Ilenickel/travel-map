@@ -111,14 +111,13 @@
     "costInputTitle": "Activity price (ticket, entry, meal…) — leave empty if unknown",
     "priceTitle": "Activity price",
     "infoToggleTitle": "Show/hide details",
-    "groupLabel": "Group",
     "notePlaceholder": "Note (times, info, address…)",
     "attachmentCount_one": "{{count}} attachment",
     "attachmentCount_other": "{{count}} attachments",
     "resizeHandleTitle": "Drag down to stretch across the following time slots (or days)",
-    "groupTitleWithName": "Group: {{name}} — click to change",
-    "groupTitleAssign": "Click to assign a group",
-    "assignGroupLabel": "Assign a group",
+    "groupTitleWithName": "Zone: {{name}} — click to change",
+    "groupTitleAssign": "Click to assign a zone",
+    "assignGroupLabel": "Assign a zone",
     "duplicateTitle": "Duplicate (or hover the card + Ctrl+C)",
     "removeFromPlanningTitle": "Remove from planning (stays available in the city)",
     "deleteTitle": "Delete"
@@ -137,7 +136,6 @@
   "selection": {
     "count_one": "{{count}} selected",
     "count_other": "{{count}} selected",
-    "groupDropdown": "Group ▾",
     "moveToDayDropdown": "Move to a day ▾"
   },
   "place": {
@@ -167,6 +165,8 @@
     "editorialNoticeText": "Not from a real trip — it may be less precise than community suggestions.",
     "prevLabel": "Previous suggestion",
     "nextLabel": "Next suggestion",
+    "scrollCitiesLeftLabel": "See previous cities",
+    "scrollCitiesRightLabel": "See next cities",
     "goToLabel": "Go to suggestion {{count}}",
     "usesCount_one": "Imported {{count}} time",
     "usesCount_other": "Imported {{count}} times",
@@ -206,6 +206,7 @@
     "selectedCitiesHeading_other": "{{count}} cities pending import",
     "otherCitiesHeading": "Other cities",
     "citySelectedBadge": "Selected",
+    "removeFromCartTitle": "Remove {{city}} from selection",
     "loadError": "Couldn't load suggestions right now. Please try again shortly.",
     "importCartError": "Import failed for: {{cities}}. Please try again shortly."
   },
@@ -245,10 +246,17 @@
     "reorderTitle": "Reorder the city",
     "expandTitle": "Expand",
     "collapseTitle": "Collapse",
+    "backToList": "Back to cities",
+    "backToCity": "Back to {{city}}",
+    "daytripsCount_one": "{{count}} day trip",
+    "daytripsCount_other": "{{count}} day trips",
     "eyebrow": "City",
     "costTitle": "Cost of activities and trips for {{city}} (excluding accommodation and daytrips)",
     "renameTitle": "Rename the city",
     "deleteTitle": "Delete the city",
+    "autoDetectZonesTitle": "Group places by proximity",
+    "autoDetectZonesSuccess": "Places grouped by proximity ({{count}} zone(s) created)",
+    "autoDetectZonesError": "Grouping by proximity failed",
     "addPlaceOrActivityButton": "Add a place or activity",
     "addDaytripSearchPlaceholder": "Search for a daytrip city… (or Enter to add)",
     "addDaytripButton": "Add a daytrip",
@@ -275,7 +283,9 @@
     "citiesCount_other": "{{count}} cities",
     "removeTitle": "Remove this country from the trip",
     "addCityButton": "Add a city",
-    "suggestButton": "Suggestions for {{country}}"
+    "suggestButton": "Suggestions for {{country}}",
+    "menuTitle": "Country options",
+    "addCountryHint": "You can still add another country from the ⋯ menu of a destination."
   },
   "country": {
     "addTitle": "Add a country",
@@ -307,23 +317,7 @@
     "addButton": "Add accommodation"
   },
   "group": {
-    "hideActivitiesTitle": "Hide places (drag the card to schedule it all on one day)",
-    "showActivitiesTitle": "Show group places (drag the card to schedule it all on one day)",
-    "dragToPlanTitle": "Drag to schedule it all on one day",
-    "changeColorTitle": "Change color",
-    "renameHintTitle": "Double-click to rename",
-    "planGroupOnDayTitle": "Schedule all places in this group on a day",
-    "deleteGroupTitle": "Delete the group",
-    "removeFromGroupTitle": "Remove from group",
-    "emptyDropHint": "Drop a place here",
-    "defaultName": "Group {{n}}",
-    "autoZoneName": "Zone {{n}}",
-    "header": "Activity groups",
-    "emptyHint": "Group your places by neighborhood or theme. Click a place's colored dot to assign it.",
-    "newGroupButton": "New group",
-    "autoDetectTitle": "Automatically detect zones by geographic clustering ({{count}} geolocated places)",
-    "autoDetectButton": "Detect zones",
-    "columnHint": "Group your places by neighborhood or area: each zone colors its points on the map and can be dropped onto a day all at once. \"Detect zones\" creates them automatically by geographic clustering."
+    "autoZoneName": "Zone {{n}}"
   },
   "attachments": {
     "sizeKo": "{{value}} KB",
@@ -357,7 +351,7 @@
     "continuationChip": "↳ continued ({{from}})",
     "cutHereTitle": "Stop the activity right before this slot (removes this one and all following)",
     "dropHere": "Drop here",
-    "noDatesNotice": "Set trip dates to see the day view and schedule your activities by time slot.",
+    "noDatesNotice": "Click <icon/> to set the trip dates and access the day view, so you can schedule your activities by time slot.",
     "activitiesCount": "Activities ({{count}})",
     "hint": "Drag a place onto a time slot (Morning / Afternoon / Evening) to schedule it, or pull the handle at the bottom of a scheduled activity to stretch it across the following slots — or days",
     "unplannedLabel": "Unscheduled",
@@ -395,7 +389,7 @@
     "mapButton": "Map",
     "closeMapTitle": "Close the map",
     "showMapTitle": "Show the map",
-    "dayModeButton": "Day mode",
+    "dayModeButton": "See Day mode",
     "dayModeNeedDatesTitle": "Set trip dates to use Day mode",
     "dayModeBackTitle": "Back to the full plan",
     "dayModeEnterTitle": "Day mode: shows only the current day's activities",
@@ -453,6 +447,26 @@
     "optionsTitle": "Options",
     "confirmDeleteButton": "Confirm deletion",
     "leaveTripButton": "Leave the trip"
+  },
+  "cityTabs": {
+    "activities": "Activities",
+    "lodgings": "Lodgings",
+    "transports": "Transports",
+    "excursions": "Excursions",
+    "addPlaceButton": "Add a place",
+    "addLodgingButton": "Add a lodging",
+    "addTrajetButton": "Add a transport",
+    "addExcursionButton": "Add an excursion",
+    "emptyLodgings": "No lodgings yet — add one below",
+    "emptyTrajets": "No transports yet — add one below",
+    "emptyExcursions": "No excursions yet — add one below"
+  },
+  "home": {
+    "subtitle_one": "{{count}} trip",
+    "subtitle_other": "{{count}} trips",
+    "newTrip": "New trip",
+    "activitiesProgress": "{{done}}/{{total}} activities",
+    "backButton": "My trips"
   },
   "map": {
     "emptyHint": "Add places via search to see them on the map",
@@ -514,7 +528,6 @@
     "hideMapToRailTitle": "Hide the map",
     "navLabel": "Navigation between panels",
     "navCities": "Cities",
-    "navGroups": "Groups",
     "navDays": "Days"
   },
   "expenses": {

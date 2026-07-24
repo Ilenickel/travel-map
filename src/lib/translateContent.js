@@ -58,20 +58,35 @@ export function useActivityNameTranslations(activities, language) {
   return (activity) => (language === 'fr' ? activity.name : (map[activity.id]?.lang === language ? map[activity.id].text : activity.name));
 }
 
+// Un nom de ville ÉDITORIAL (is_editorial=true, itinéraire écrit par
+// l'équipe Triply) est TOUJOURS saisi en français — rien à traduire pour un
+// visiteur déjà en français, la requête serait un aller-retour pour rien
+// (voir api/get-translated-content.js, resolveSourceLanguage : source_language
+// forcé à 'fr' côté serveur pour ce cas précis).
+// Un nom de ville COMMUNAUTAIRE (is_editorial=false, partagé par un vrai
+// utilisateur) peut avoir été saisi dans N'IMPORTE QUELLE langue — un
+// visiteur anglophone qui tape "Beijing" doit quand même s'afficher "Pékin"
+// pour un visiteur français, pas rester tel quel. `isEditorial` absent
+// (undefined) est traité comme éditorial par défaut : comportement identique
+// à avant l'ajout de ce champ pour tout appelant qui ne l'a pas encore fourni.
+function needsCityTranslation(city, language) {
+  return language !== 'fr' || city.isEditorial === false;
+}
+
 // Traduit le nom d'une ville suggérée (planning-modèle communautaire, voir
 // TripSuggestionsModal) — même principe que useActivityNameTranslations
 // ci-dessus, appliqué au nom de ville plutôt qu'au nom d'activité : un
 // visiteur en anglais doit voir "Beijing" là où l'auteur du modèle a tapé
-// "Pékin", jamais le nom brut tel quel. `cities` attend `{ id, name }` où
-// `id` est le representativeTemplateId renvoyé par l'action 'list-cities'
-// (api/trip-templates.js) — jamais l'id d'une ville du voyage de
-// l'utilisateur, qui n'est pas du contenu communautaire à traduire.
+// "Pékin", jamais le nom brut tel quel. `cities` attend `{ id, name,
+// isEditorial? }` où `id` est le representativeTemplateId renvoyé par
+// l'action 'list-cities' (api/trip-templates.js) — jamais l'id d'une ville du
+// voyage de l'utilisateur, qui n'est pas du contenu communautaire à traduire.
 export function useCityNameTranslations(cities, language) {
   const [map, setMap] = useState({});
 
   useEffect(() => {
-    if (language === 'fr' || !cities.length) return;
-    const pending = cities.filter((c) => map[c.id]?.lang !== language);
+    if (!cities.length) return;
+    const pending = cities.filter((c) => needsCityTranslation(c, language) && map[c.id]?.lang !== language);
     if (!pending.length) return;
     let cancelled = false;
     (async () => {
@@ -89,5 +104,9 @@ export function useCityNameTranslations(cities, language) {
     return () => { cancelled = true; };
   }, [cities, language]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (city) => (language === 'fr' ? city.name : (map[city.id]?.lang === language ? map[city.id].text : city.name));
+  return (city) => (
+    needsCityTranslation(city, language)
+      ? (map[city.id]?.lang === language ? map[city.id].text : city.name)
+      : city.name
+  );
 }

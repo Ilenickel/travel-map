@@ -7,6 +7,13 @@ import { addDaysToDateStr } from '../lib/planningUtils';
 export function useTrips(userId) {
   const { t } = useTranslation();
   const [trips, setTrips] = useState([]);
+  // Agrégats par voyage pour les cartes de l'écran d'accueil (comptage léger,
+  // pas le contenu complet chargé par loadTripData) : { [tripId]: { cities,
+  // activities, done, countries: [{ code, name }] } }. Résolu en 3 requêtes
+  // groupées (.in sur tous les tripIds) plutôt qu'un chargement complet par
+  // voyage — l'accueil peut afficher beaucoup de voyages, on ne veut ni leurs
+  // activités détaillées ni un aller-retour par carte.
+  const [tripStats, setTripStats] = useState({});
   const [selectedTripId, setSelectedTripId] = useState(null);
   const [tripData, setTripData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,11 +44,55 @@ export function useTrips(userId) {
       .filter((t, i, arr) => arr.findIndex(x => x.id === t.id) === i)
       .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
     setTrips(all);
+    loadTripStats(all.map(t => t.id));
   }, [userId]);
+
+  // Agrégats des cartes d'accueil (voir tripStats plus haut). Villes de BASE
+  // uniquement (parent_city_id null — les excursions ne comptent pas comme des
+  // étapes), activités hors transport (cohérent avec le compteur de l'en-tête),
+  // et pays ordonnés par position (le 1er sert d'image de fond à la carte).
+  // `cityNames` : noms ordonnés par position, pour l'affichage "Beijing,
+  // Chengdu, Shanghai…" des cartes (voir HomeTripCard) — la troncature visuelle
+  // (ellipsis CSS) se charge de gérer le cas "beaucoup de villes" sans qu'on
+  // ait à limiter le nombre ici.
+  const loadTripStats = useCallback(async (tripIds) => {
+    if (!tripIds || !tripIds.length) { setTripStats({}); return; }
+    const [{ data: cities }, { data: acts }, { data: dests }] = await Promise.all([
+      supabase.from('trip_cities').select('trip_id, parent_city_id, name, position').in('trip_id', tripIds),
+      supabase.from('trip_activities').select('trip_id, category, is_done').in('trip_id', tripIds),
+      supabase.from('trip_destinations').select('trip_id, country_code, country_name, position').in('trip_id', tripIds),
+    ]);
+    const stats = {};
+    const ensure = (id) => (stats[id] ||= { cities: 0, cityNames: [], activities: 0, done: 0, countries: [] });
+    const citiesByTrip = {};
+    for (const c of cities || []) {
+      if (c.parent_city_id) continue;
+      ensure(c.trip_id).cities++;
+      (citiesByTrip[c.trip_id] ||= []).push(c);
+    }
+    for (const id in citiesByTrip) {
+      stats[id].cityNames = citiesByTrip[id].sort((a, b) => a.position - b.position).map((c) => c.name);
+    }
+    for (const a of acts || []) {
+      if (a.category === 'transport') continue;
+      const s = ensure(a.trip_id);
+      s.activities++;
+      if (a.is_done) s.done++;
+    }
+    const destsByTrip = {};
+    for (const d of dests || []) (destsByTrip[d.trip_id] ||= []).push(d);
+    for (const id in destsByTrip) {
+      ensure(id).countries = destsByTrip[id]
+        .sort((a, b) => a.position - b.position)
+        .map(d => ({ code: d.country_code, name: d.country_name }));
+    }
+    setTripStats(stats);
+  }, []);
 
   useEffect(() => {
     if (!userId) {
       setTrips([]);
+      setTripStats({});
       setTripData(null);
       setSelectedTripId(null);
       return;
@@ -757,9 +808,17 @@ export function useTrips(userId) {
     return data;
   }, [tripData]);
 
-  // Supprime tous les groupes marqués "auto" (avant une nouvelle détection de zones)
-  const clearAutoGroups = useCallback(async (tripId) => {
-    const autoGroupIds = (tripData?.groups || []).filter(g => g.is_auto).map(g => g.id);
+  // Supprime les groupes marqués "auto" avant une nouvelle détection de zones —
+  // scopée à `cityIds` (une ville + ses excursions rattachées) pour ne jamais
+  // toucher aux zones déjà détectées sur une autre ville du voyage.
+  const clearAutoGroups = useCallback(async (tripId, cityIds) => {
+    const autoGroupIds = (tripData?.groups || [])
+      .filter(g => g.is_auto)
+      .filter(g => {
+        const members = (tripData?.activities || []).filter(a => a.group_id === g.id);
+        return members.length > 0 && members.every(a => cityIds.includes(a.city_id));
+      })
+      .map(g => g.id);
     if (!autoGroupIds.length) return;
     const { error } = await supabase.from('trip_groups').delete().in('id', autoGroupIds);
     if (error) { console.error('clearAutoGroups failed:', error); return; }
@@ -774,44 +833,12 @@ export function useTrips(userId) {
     setLastDeletedItem(prev => (prev && prev.activities.some(a => autoGroupIds.includes(a.group_id))) ? null : prev);
   }, [tripData]);
 
-  const updateGroup = useCallback(async (groupId, updates) => {
-    const { error } = await supabase.from('trip_groups').update(updates).eq('id', groupId);
-    if (error) { console.error('updateGroup failed:', error); return; }
-    setTripData(prev => prev ? {
-      ...prev, groups: (prev.groups || []).map(g => g.id === groupId ? { ...g, ...updates } : g),
-    } : prev);
-  }, []);
-
-  const removeGroup = useCallback(async (groupId) => {
-    const { error } = await supabase.from('trip_groups').delete().eq('id', groupId);
-    if (error) { console.error('removeGroup failed:', error); return; }
-    setTripData(prev => prev ? {
-      ...prev,
-      groups: (prev.groups || []).filter(g => g.id !== groupId),
-      activities: prev.activities.map(a => a.group_id === groupId ? { ...a, group_id: null } : a),
-    } : prev);
-    setLastDeletedItem(prev => (prev && prev.activities.some(a => a.group_id === groupId)) ? null : prev);
-  }, []);
-
   const assignActivityToGroup = useCallback(async (actId, groupId) => {
     const val = groupId || null;
     const { error } = await supabase.from('trip_activities').update({ group_id: val }).eq('id', actId);
     if (error) { console.error('assignActivityToGroup failed:', error); return; }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => a.id === actId ? { ...a, group_id: val } : a),
-    } : prev);
-  }, []);
-
-  // Assignation groupée (sélection multiple) — même requête que assignGroupToDay/
-  // assignCityToDay, juste paramétrée par une liste d'ids choisie à la main plutôt
-  // que par "tout un groupe" ou "toute une ville".
-  const assignActivitiesToGroup = useCallback(async (ids, groupId) => {
-    if (!ids?.length) return;
-    const val = groupId || null;
-    const { error } = await supabase.from('trip_activities').update({ group_id: val }).in('id', ids);
-    if (error) { console.error('assignActivitiesToGroup failed:', error); return; }
-    setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, group_id: val } : a),
     } : prev);
   }, []);
 
@@ -823,16 +850,6 @@ export function useTrips(userId) {
       ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
     } : prev);
   }, []);
-
-  const assignGroupToDay = useCallback(async (groupId, date, time = null) => {
-    const groupActs = (tripData?.activities || []).filter(a => a.group_id === groupId);
-    if (!groupActs.length) return;
-    const ids = groupActs.map(a => a.id);
-    await supabase.from('trip_activities').update({ visit_date: date, visit_time: time, pending_day_index: null }).in('id', ids);
-    setTripData(prev => prev ? {
-      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
-    } : prev);
-  }, [tripData]);
 
   // ─── Lodgings CRUD (hébergements par ville) ───
 
@@ -885,13 +902,13 @@ export function useTrips(userId) {
   }, [tripData]);
 
   return {
-    trips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
+    trips, tripStats, reloadTrips: loadTrips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
     addDestination, removeDestination,
     addCity, addDaytrip, updateCity, removeCity, reorderCities,
     addActivity, updateActivity, removeActivity, removeActivities, reorderActivities,
     duplicateActivity, undoLastDelete, canUndo: !!lastDeletedItem,
-    addGroup, clearAutoGroups, updateGroup, removeGroup, assignActivityToGroup, assignActivitiesToGroup, assignGroupToDay, assignCityToDay, assignActivitiesToDay,
+    addGroup, clearAutoGroups, assignActivityToGroup, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
   };
 }

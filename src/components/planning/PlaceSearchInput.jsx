@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchPlaceSuggestions } from '../../lib/planningUtils';
+import { scrollIntoViewSoon } from '../../hooks/useScrollIntoViewOnOpen';
 
 export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, placeholder, autoFocus }) {
   const { t } = useTranslation();
@@ -10,6 +11,15 @@ export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, plac
   const [busy, setBusy] = useState(false);
   const debounce = useRef(null);
   const inputRef = useRef(null);
+  const wrapRef = useRef(null);
+  // Même correctif que CitySearchInput (voir ce fichier) : sur mobile, le
+  // clavier virtuel masque une grande partie des résultats apparus sous le
+  // champ, déjà focus AVANT l'ouverture du clavier — on remonte le champ en
+  // haut de l'écran visible dès que des résultats apparaissent.
+  const dropdownOpen = open && results.length > 0;
+  useEffect(() => {
+    if (dropdownOpen) scrollIntoViewSoon(wrapRef);
+  }, [dropdownOpen]);
 
   useEffect(() => {
     if (autoFocus) inputRef.current?.focus();
@@ -29,7 +39,21 @@ export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, plac
     }, 350);
   };
 
+  // Une fois la sélection faite, ce composant disparaît (le parent referme
+  // `addingPlace`) — mais l'écran restait scrollé exactement là où le
+  // correctif clavier ci-dessus l'avait amené (haut du champ, pour dégager
+  // le clavier), un endroit qui n'a plus de sens une fois la recherche et le
+  // clavier partis ("on n'est plus du tout au bon endroit", signalé le
+  // 2026-07-23). On ramène donc le conteneur STABLE (survit à la disparition
+  // de la recherche, contrairement à `wrapRef`) vers une position raisonnable
+  // juste après.
+  const scrollBackAfterClose = () => {
+    const container = wrapRef.current?.closest('.pp-detail-tab-content, .pp-city-body, .pp-daytrip-body');
+    if (container) scrollIntoViewSoon({ current: container }, { behavior: 'smooth', block: 'nearest' });
+  };
+
   const handleSelect = (r) => {
+    scrollBackAfterClose();
     onSelect(r);
     setQuery('');
     setResults([]);
@@ -38,6 +62,7 @@ export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, plac
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && query.trim() && onManualAdd) {
+      scrollBackAfterClose();
       onManualAdd(query.trim());
       setQuery('');
       setResults([]);
@@ -46,7 +71,7 @@ export default function PlaceSearchInput({ cityHint, onSelect, onManualAdd, plac
   };
 
   return (
-    <div className="pp-search-wrap">
+    <div className="pp-search-wrap" ref={wrapRef}>
       <div className="pp-search-input-row">
         <svg className="pp-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
           <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>

@@ -443,7 +443,9 @@ export async function fetchPlaceSuggestions(query, cityHint, countryAlpha2) {
   if (query.length < 2) return [];
   const q = cityHint ? `${query} ${cityHint}` : query;
   try {
-    const filterParam = countryAlpha2 ? `&filter=countrycode:${countryAlpha2}` : '';
+    // Geoapify rejette (400) le filtre countrycode si la valeur n'est pas en
+    // minuscules — bug identique corrigé dans api/_lib/cityGeocode.js le 2026-07-22.
+    const filterParam = countryAlpha2 ? `&filter=countrycode:${countryAlpha2.toLowerCase()}` : '';
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&lang=${currentGeoLang()}&limit=8${filterParam}&apiKey=${GEOAPIFY_API_KEY}`;
     const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
     if (!res.ok) return [];
@@ -496,6 +498,13 @@ export function haversineKm(lat1, lng1, lat2, lng2) {
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
+
+// Palette cyclée pour les zones détectées automatiquement par ville (voir
+// CityBlock.jsx, handleAutoDetectZones) — anciennement locale à GroupManager.jsx.
+export const GROUP_COLORS = [
+  '#6366f1', '#f59e0b', '#10b981', '#3b82f6',
+  '#ec4899', '#8b5cf6', '#ef4444', '#06b6d4',
+];
 
 export function kMeansActivities(points, k) {
   if (!points.length) return [];
@@ -554,20 +563,25 @@ export function kMeansActivities(points, k) {
 }
 
 // Estime le nombre de zones géographiquement distinctes parmi des points,
-// pour la détection automatique de zones (GroupManager) — un plafond fixe
-// (ex. toujours 3 zones) fusionnait de force des villes éloignées dès qu'un
-// voyage en couvrait davantage (ex. 7 villes sur tout le Japon). Approche :
-// part du nombre de zones maximal possible, puis fusionne tant que deux
-// centroïdes du k-means résultant sont plus proches que `minSeparationKm` —
-// jamais l'inverse (pas de fusion forcée de villes éloignées). Les
-// excursions (Nara/Kyoto, Miyajima/Hiroshima…) ne dépendent PAS de ce seuil :
-// GroupManager les rattache toujours à leur ville mère de façon structurelle
-// (cities.parent_city_id), avant même d'appeler cette fonction — le seuil ne
-// sert donc qu'à décider si deux villes DISTINCTES doivent partager une zone,
-// jamais à recoller une excursion à sa ville. D'où une valeur volontairement
-// basse (des villes à 40 km+ l'une de l'autre, ex. Kyoto/Osaka, doivent
-// rester deux zones séparées).
-export function estimateGeoClusterCount(points, { minSeparationKm = 20, maxK = 8 } = {}) {
+// pour la détection automatique de zones par ville (CityBlock.jsx,
+// handleAutoDetectZones) — un plafond fixe (ex. toujours 3 zones) fusionnait
+// de force des lieux éloignés dès qu'une ville en couvrait davantage.
+// Approche : part du nombre de zones maximal possible, puis fusionne tant que
+// deux centroïdes du k-means résultant sont plus proches que
+// `minSeparationKm` — jamais l'inverse (pas de fusion forcée de lieux
+// éloignés).
+// 2.5 (pas 20, puis 8, puis 4 — chaque fois jugé encore trop grand) : à
+// l'échelle d'UNE ville (le regroupement est scopé par ville, pas par pays —
+// voir handleAutoDetectZones), 20km fusionnait à tort des lieux clairement
+// séparés (ex. Palais d'Été à Pékin, ~14,7km du centre-ville, toujours
+// regroupé avec Tian'anmen/Cité interdite malgré la distance — signalé le
+// 2026-07-24). 2.5km correspond à une distance de marche raisonnable
+// (même quartier) — au-delà, deux lieux méritent leurs propres zones. Le
+// Temple du Ciel (~3km de Tian'anmen) passe désormais juste AU-DESSUS de ce
+// seuil et formera sa propre zone (accepté comme correct : l'utilisateur
+// avait lui-même noté "si on veut être pointilleux, le temple du ciel
+// devrait être à part aussi").
+export function estimateGeoClusterCount(points, { minSeparationKm = 2.5, maxK = 8 } = {}) {
   if (points.length < 2) return 1;
   for (let k = Math.min(maxK, points.length); k > 1; k--) {
     const clustered = kMeansActivities(points, k);
@@ -589,48 +603,4 @@ export function estimateGeoClusterCount(points, { minSeparationKm = 20, maxK = 8
     if (!tooClose) return centroids.length;
   }
   return 1;
-}
-
-// ─── Export trip as plain text ────────────────────────────────────
-export function exportTripAsText({ trip, destinations, cities, activities }) {
-  const lines = [];
-  lines.push(`✈️ ${trip.title}`);
-  const dur = tripDurationDays(trip.start_date, trip.end_date);
-  if (dur) {
-    const durationLabel = i18n.t('export.durationDays', { ns: 'planning', count: dur });
-    lines.push(`📅 ${formatDate(trip.start_date)} → ${formatDate(trip.end_date)} (${durationLabel})`);
-  } else if (trip.start_date || trip.end_date) {
-    lines.push(`📅 ${formatDate(trip.start_date) || '?'} → ${formatDate(trip.end_date) || '?'}`);
-  }
-  if (trip.notes?.trim()) {
-    lines.push('');
-    lines.push(`📝 ${trip.notes.trim()}`);
-  }
-  lines.push('');
-
-  const sortedDests = [...destinations].sort((a, b) => a.position - b.position);
-  for (const dest of sortedDests) {
-    lines.push(`═══ ${dest.country_name} ═══`);
-    const destCities = cities
-      .filter(c => c.destination_id === dest.id)
-      .sort((a, b) => a.position - b.position);
-    for (const city of destCities) {
-      lines.push(`  🏙 ${city.name}`);
-      const cityActivities = activities
-        .filter(a => a.city_id === city.id)
-        .sort((a, b) => {
-          if (a.visit_time && b.visit_time) return a.visit_time.localeCompare(b.visit_time);
-          return a.position - b.position;
-        });
-      for (const act of cityActivities) {
-        const cat = ACTIVITY_CATEGORIES[act.category]?.icon || '📍';
-        const time = act.visit_time ? ` [${act.visit_time}]` : '';
-        const date = act.visit_date ? ` (${formatDateShort(act.visit_date)})` : '';
-        lines.push(`    ${cat} ${act.name}${time}${date}`);
-        if (act.description) lines.push(`       ↳ ${act.description}`);
-      }
-    }
-    lines.push('');
-  }
-  return lines.join('\n').trimEnd();
 }

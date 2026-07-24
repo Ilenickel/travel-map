@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Draggable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { ACTIVITY_CATEGORIES, TRANSPORT_MODES, formatDateShort, formatTimeShort, formatDuration, formatPrice } from '../../lib/planningUtils';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
 import { CURRENCY_SYMBOLS, eurToInputValue, inputValueToEur } from '../../lib/currency';
 import { useSettings } from '../../context/SettingsContext';
 import { COUNTRIES } from '../../data/index';
@@ -18,7 +19,7 @@ export default function ActivityItem({
   act, index, tripStartDate, groups, onRemove, onUpdate, onDuplicate, onAssignToGroup,
   variant = 'list', draggableIdPrefix = '', cities, destinations,
   onResizeStart, resizing = false, dragDisabled = false,
-  selectable = false, selected = false, onToggleSelect,
+  selectable = false, selected = false, onToggleSelect, onLongPressSelect,
 }) {
   const { t } = useTranslation();
   // Abonnement à la devise d'affichage : le coût est stocké en EUR mais saisi
@@ -46,8 +47,8 @@ export default function ActivityItem({
   // avec "pas de coût renseigné". La valeur du champ est exprimée dans la
   // devise d'affichage (conversion depuis l'EUR stocké).
   const [cost, setCost] = useState(eurToInputValue(act.cost));
-  const [groupId, setGroupId] = useState(act.group_id || null);
   const [showGroupPicker, setShowGroupPicker] = useState(false);
+  const groupPickerRef = useScrollIntoViewOnOpen(showGroupPicker);
   // Le champ date s'ouvre pré-rempli à la date de début du voyage (pour éviter à
   // l'utilisateur de faire défiler 30 mois dans le sélecteur), mais ça reste une
   // valeur purement visuelle tant qu'il n'a pas lui-même modifié le champ : sinon
@@ -72,9 +73,8 @@ export default function ActivityItem({
       setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
       setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
       setCost(eurToInputValue(act.cost));
-      setGroupId(act.group_id || null);
     }
-  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, act.group_id, editing, currency]);
+  }, [act.name, act.description, act.visit_date, act.visit_time, act.category, act.transport_mode, act.duration_minutes, act.cost, editing, currency]);
 
   const toggleAllDay = () => {
     setAllDay(a => {
@@ -117,9 +117,6 @@ export default function ActivityItem({
       duration_minutes: isTransport && totalMinutes > 0 ? totalMinutes : null,
       cost: parsedCost,
     });
-    if (groupId !== act.group_id && onAssignToGroup) {
-      onAssignToGroup(act.id, groupId);
-    }
     setEditing(false);
   };
 
@@ -134,7 +131,6 @@ export default function ActivityItem({
     setDurationH(act.duration_minutes ? Math.floor(act.duration_minutes / 60) : '');
     setDurationM(act.duration_minutes ? act.duration_minutes % 60 : '');
     setCost(eurToInputValue(act.cost));
-    setGroupId(act.group_id || null);
     setEditing(false);
   };
 
@@ -190,6 +186,79 @@ export default function ActivityItem({
   // déjà réglé via `dragDisabled`.
   const effectiveDragDisabled = dragDisabled || selectable;
 
+  // Appui long → sélection multiple, comme sur toutes les applis mobiles
+  // (demande du 2026-07-23 : "sans cliquer sur ce bouton [le menu ⋯] on ne
+  // sait pas" qu'on peut sélectionner plusieurs lieux — un appui long est le
+  // geste universel, découvrable sans avoir à lire un menu). Coexiste avec le
+  // glisser-déposer @hello-pangea/dnd, qui arme AUSSI un geste au toucher
+  // maintenu (~120ms, voir TripEditor.jsx) MAIS n'engage un vrai drag qu'après
+  // un déplacement du doigt : tant que le doigt reste immobile, dnd n'a rien
+  // démarré de visible — notre timer (plus long, 480ms) peut donc déclencher
+  // la sélection sans conflit. Le moindre mouvement (`onTouchMove` au-delà du
+  // seuil) annule notre timer et laisse dnd faire son travail normalement
+  // (réordonner) ; symétriquement, si dnd a par ailleurs commencé un drag
+  // (`snapshot.isDragging`), on n'a jamais atteint notre seuil immobile de
+  // toute façon.
+  const longPressTimerRef = useRef(null);
+  const longPressStartRef = useRef(null);
+  const longPressFiredRef = useRef(false);
+  const LONG_PRESS_MS = 480;
+  const LONG_PRESS_MOVE_TOLERANCE = 10;
+
+  const clearLongPressTimer = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    if (editing || selectable || !onLongPressSelect) return;
+    const t0 = e.touches[0];
+    longPressStartRef.current = { x: t0.clientX, y: t0.clientY };
+    longPressFiredRef.current = false;
+    clearLongPressTimer();
+    longPressTimerRef.current = setTimeout(() => {
+      longPressFiredRef.current = true;
+      // Vibration discrète si dispo (feedback tactile standard à l'entrée en
+      // sélection) — best-effort, silencieux si l'appareil/navigateur ne
+      // supporte pas l'API.
+      if (navigator.vibrate) navigator.vibrate(15);
+      onLongPressSelect(act.id);
+    }, LONG_PRESS_MS);
+  };
+  const handleTouchMove = (e) => {
+    if (!longPressStartRef.current) return;
+    const t0 = e.touches[0];
+    const dx = t0.clientX - longPressStartRef.current.x;
+    const dy = t0.clientY - longPressStartRef.current.y;
+    if (Math.abs(dx) > LONG_PRESS_MOVE_TOLERANCE || Math.abs(dy) > LONG_PRESS_MOVE_TOLERANCE) {
+      clearLongPressTimer();
+    }
+  };
+  const handleTouchEnd = () => {
+    clearLongPressTimer();
+    longPressStartRef.current = null;
+  };
+  // Pas d'équivalent souris (essayé puis retiré le 2026-07-24) : contrairement
+  // au tactile, @hello-pangea/dnd arme un drag à la souris dès le moindre
+  // mouvement, et le micro-tremblement naturel de la main pendant un appui
+  // maintenu suffit presque toujours à le déclencher avant nos 480ms — sur
+  // ordinateur, la sélection multiple démarre uniquement via le menu "⋯" de
+  // la ville (bouton "Sélectionner").
+  // L'appui long a déjà déclenché la sélection : le "click" de compatibilité
+  // que les navigateurs tactiles émettent quand même juste après ne doit pas
+  // EN PLUS ouvrir l'édition (startEditing) — capturé puis réarmé aussitôt.
+  const guardClickAfterLongPress = (handler) => (e) => {
+    if (longPressFiredRef.current) {
+      longPressFiredRef.current = false;
+      e.preventDefault();
+      return;
+    }
+    handler(e);
+  };
+  useEffect(() => () => clearLongPressTimer(), []);
+
   // Bouton ⓘ tactile (masqué sur desktop via CSS) : déplie les détails que le
   // desktop révèle au survol. Rendu seulement s'il y a quelque chose à déplier.
   const hasCollapsedInfo = !!(durationLabel || costLabel || attachmentCount > 0 || act.description
@@ -208,30 +277,19 @@ export default function ActivityItem({
     </button>
   ) : null;
 
-  return (
-    <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={effectiveDragDisabled}>
-      {(provided, snapshot) => {
-        const card = (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...(!editing && !effectiveDragDisabled ? provided.dragHandleProps : {})}
-          onMouseEnter={() => setHoveredActivity(act.id)}
-          onMouseLeave={() => clearHoveredActivity(act.id)}
-          className={
-            variant === 'day'
-              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}${act.is_done ? ' pp-day-activity--done' : ''}${infoOpen ? ' pp-activity--info-open' : ''}`
-              : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${act.is_done ? ' pp-activity--done' : ''}${infoOpen ? ' pp-activity--info-open' : ''}`
-          }
-          style={{
-            ...provided.draggableProps.style,
-            '--cat-color': accentColor,
-            '--group-color': group?.color,
-          }}
-        >
-          {editing ? (
-            <div className="pp-activity-edit">
-              <input
+  // Formulaire d'édition : rendu dans une VRAIE modale centrée (portail vers
+  // <body>, .pp-modal-overlay/.pp-modal — même habillage que les autres
+  // formulaires de l'app, ex. hébergement/pays), plutôt qu'en ligne à la
+  // place exacte de la carte dans la liste. Avant ce changement, éditer une
+  // activité l'étirait sur place, à l'endroit où elle se trouvait dans une
+  // liste déjà scrollée — dans le nouveau détail mobile à onglets (CityBlock),
+  // ça atterrissait n'importe où, coincé contre la bande d'onglets, jamais
+  // centré ni mis en avant (signalé le 2026-07-23). La carte en arrière-plan
+  // reste affichée normalement (couverte par le fond opaque de la modale,
+  // donc jamais cliquable pendant l'édition — pas besoin de la neutraliser).
+  const editForm = (
+    <div className="pp-activity-edit">
+      <input
                 className="pp-activity-name-input"
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -343,32 +401,6 @@ export default function ActivityItem({
                 </div>
               </div>
 
-              {/* Zone (group) */}
-              {groups && groups.length > 0 && (
-                <div className="pp-group-picker-field">
-                  <label className="pp-group-picker-label">{t('activity.groupLabel')}</label>
-                  <div className="pp-group-chips">
-                    <button
-                      className={`pp-group-chip${!groupId ? ' active' : ''}`}
-                      onClick={() => setGroupId(null)}
-                    >
-                      {t('common:none')}
-                    </button>
-                    {groups.map(g => (
-                      <button
-                        key={g.id}
-                        className={`pp-group-chip${groupId === g.id ? ' active' : ''}`}
-                        style={{ '--group-color': g.color }}
-                        onClick={() => setGroupId(g.id)}
-                      >
-                        <span className="pp-group-chip-dot" style={{ background: g.color }} />
-                        {g.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <textarea
                 className="pp-activity-note-input"
                 value={note}
@@ -381,9 +413,41 @@ export default function ActivityItem({
                 <button className="pp-btn pp-btn--primary pp-btn--sm" onClick={save}>{t('common:actions.save')}</button>
                 <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={cancel}>{t('common:actions.cancel')}</button>
               </div>
-            </div>
-          ) : variant === 'day' ? (
-            <div className="pp-day-activity-view" onClick={startEditing} role="button" tabIndex={0}>
+    </div>
+  );
+
+  return (
+    <>
+    <Draggable draggableId={`${draggableIdPrefix}${act.id}`} index={index} isDragDisabled={effectiveDragDisabled}>
+      {(provided, snapshot) => {
+        const card = (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...(!editing && !effectiveDragDisabled ? provided.dragHandleProps : {})}
+          onMouseEnter={() => setHoveredActivity(act.id)}
+          onMouseLeave={() => clearHoveredActivity(act.id)}
+          className={
+            variant === 'day'
+              ? `pp-day-activity${snapshot.isDragging ? ' pp-day-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${resizing ? ' pp-day-activity--resizing' : ''}${act.is_done ? ' pp-day-activity--done' : ''}${infoOpen ? ' pp-activity--info-open' : ''}`
+              : `pp-activity${snapshot.isDragging ? ' pp-activity--dragging' : ''}${editing ? ' pp-activity--editing' : ''}${act.is_done ? ' pp-activity--done' : ''}${infoOpen ? ' pp-activity--info-open' : ''}`
+          }
+          style={{
+            ...provided.draggableProps.style,
+            '--cat-color': accentColor,
+            '--group-color': group?.color,
+          }}
+        >
+          {variant === 'day' ? (
+            <div
+              className="pp-day-activity-view"
+              onClick={guardClickAfterLongPress(startEditing)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              role="button"
+              tabIndex={0}
+            >
               <div className="pp-day-activity-group-bar" style={{ background: accentColor }} title={group ? group.name : cat.label} />
               {checkButton}
               <div className="pp-day-activity-time">{act.visit_time ? formatTimeShort(act.visit_time) : '—'}</div>
@@ -434,7 +498,10 @@ export default function ActivityItem({
           ) : (
             <div
               className={`pp-activity-view${selected ? ' pp-activity-view--selected' : ''}`}
-              onClick={selectable ? () => onToggleSelect(act.id) : startEditing}
+              onClick={guardClickAfterLongPress(selectable ? () => onToggleSelect(act.id) : startEditing)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               role="button"
               tabIndex={0}
             >
@@ -455,7 +522,7 @@ export default function ActivityItem({
                 {showGroupPicker && groups?.length > 0 && (
                   <>
                     <div className="pp-backdrop-overlay" onClick={() => setShowGroupPicker(false)} />
-                    <div className="pp-quick-group-picker">
+                    <div className="pp-quick-group-picker" ref={groupPickerRef}>
                       <div className="pp-quick-group-label">{t('activity.assignGroupLabel')}</div>
                       <button
                         className={`pp-quick-group-opt${!act.group_id ? ' active' : ''}`}
@@ -584,5 +651,14 @@ export default function ActivityItem({
         return snapshot.isDragging && !isMobilePager ? createPortal(card, document.body) : card;
       }}
     </Draggable>
+    {editing && createPortal(
+      <div className="pp-modal-overlay" onClick={(e) => e.target === e.currentTarget && cancel()}>
+        <div className="pp-modal pp-activity-edit-modal">
+          {editForm}
+        </div>
+      </div>,
+      document.body
+    )}
+    </>
   );
 }

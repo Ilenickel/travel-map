@@ -7,15 +7,22 @@ import TrajetAddInput from './TrajetAddInput';
 import LodgingSection from './LodgingSection';
 import AddMenu from './AddMenu';
 import SelectionActionBar from './SelectionActionBar';
+import MobileDetailHeader from './MobileDetailHeader';
 import { getDaysBetween, formatDateShort, sumCosts, formatPrice } from '../../lib/planningUtils';
 import { NATIVE_DAYTRIP_DRAG_TYPE } from './DayView';
 import { useSettings } from '../../context/SettingsContext';
+import { useScrollIntoViewOnOpen } from '../../hooks/useScrollIntoViewOnOpen';
+import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 
 function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
   const { t } = useTranslation();
   const days = getDaysBetween(tripStartDate, tripEndDate);
+  // `true` constant : ce composant n'est monté QUE quand le dropdown est
+  // ouvert (voir showDays côté parent) — son montage EST l'ouverture, l'effet
+  // du hook (dépendance [isOpen]) se déclenche donc une fois, au montage.
+  const dropdownRef = useScrollIntoViewOnOpen(true);
   return (
-    <div className="pp-group-day-dropdown">
+    <div className="pp-group-day-dropdown" ref={dropdownRef}>
       {days.length === 0 ? (
         <div className="pp-group-day-empty">{t('day.addDatesTitle')}</div>
       ) : (
@@ -32,8 +39,9 @@ function DayDropdown({ tripStartDate, tripEndDate, onSelect, onClose }) {
 
 export default function DaytripCard({
   city, activities, groups, lodgings, tripId, tripStartDate, tripEndDate,
+  cityImage = null, isMobile = false, mobileDetailOpen = false, onCloseDetail,
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
-  onAssignActivityToGroup, onAssignActivitiesToGroup, onAssignActivitiesToDay, onAssignCityToDay,
+  onAssignActivityToGroup, onAssignActivitiesToDay, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
 }) {
   const [addingPlace, setAddingPlace] = useState(false);
@@ -43,6 +51,10 @@ export default function DaytripCard({
   const [cityName, setCityName] = useState(city.name);
   const [collapsed, setCollapsed] = useState(false);
   const [showDays, setShowDays] = useState(false);
+  // Détail mobile uniquement (voir CityBlock, même mécanique) : onglet actif,
+  // pas d'onglet Excursions ici (pas d'excursion dans une excursion).
+  const [activeTab, setActiveTab] = useState('activities');
+  const { hidden: headerHidden, onScroll: onDetailScroll, containerRef: detailBodyRef } = useHeaderScrollHide();
   // Menu "⋯" consolidé (même pattern que CityMenu.jsx) : les 4 icônes d'action
   // séparées vivaient directement dans .pp-city-actions, MASQUÉES par défaut
   // (opacity:0, même classe que CityBlock) mais jamais révélées ici — la règle
@@ -51,6 +63,7 @@ export default function DaytripCard({
   // invisibles (PC), soit permanentes sans lien avec les villes (tactile),
   // jamais cohérentes avec le menu consolidé des villes de base.
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuDropdownRef = useScrollIntoViewOnOpen(menuOpen);
   // Sélection multiple (lieux uniquement) — même mécanique que CityBlock.jsx.
   const [selecting, setSelecting] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
@@ -98,11 +111,15 @@ export default function DaytripCard({
     });
   };
 
-  const validSelectedIds = dtPlaces.filter(a => selectedIds.has(a.id)).map(a => a.id);
-
-  const handleAssignGroup = (groupId) => {
-    if (validSelectedIds.length) onAssignActivitiesToGroup(validSelectedIds, groupId);
+  // Appui long sur un lieu (voir ActivityItem.jsx) : même geste universel que
+  // dans CityBlock.jsx — entre en sélection multiple et sélectionne d'un coup
+  // l'élément pressé.
+  const handleLongPressSelect = (actId) => {
+    setSelecting(true);
+    setSelectedIds(new Set([actId]));
   };
+
+  const validSelectedIds = dtPlaces.filter(a => selectedIds.has(a.id)).map(a => a.id);
 
   const handleAssignDay = (date) => {
     if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
@@ -115,6 +132,272 @@ export default function DaytripCard({
   };
 
   const stop = (e) => e.stopPropagation();
+
+  // Menu unique (sélection / assigner à un jour / renommer / supprimer) —
+  // partagé entre l'en-tête bureau (.pp-daytrip-header, inchangé) et l'en-tête
+  // du détail mobile (voir plus bas) : même contenu, deux emplacements.
+  const menuBlock = (
+    <div className="pp-city-menu-wrap" onClick={stop}>
+      <button
+        type="button"
+        className={`pp-icon-btn pp-city-menu-btn${menuOpen ? ' pp-icon-btn--active' : ''}`}
+        onClick={() => setMenuOpen(o => !o)}
+        title={t('daytrip.menuTitle')}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+      </button>
+      {menuOpen && (
+        <>
+          <div className="pp-backdrop-overlay" onClick={() => setMenuOpen(false)} />
+          <div className="pp-city-menu-dropdown" ref={menuDropdownRef}>
+            {dtPlaces.length > 0 && (
+              <button
+                className="pp-dropdown-item"
+                onClick={() => { toggleSelecting(); setMenuOpen(false); }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                {selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
+              </button>
+            )}
+            {dtActivities.length > 0 && (
+              <div style={{ position: 'relative' }}>
+                <button className="pp-dropdown-item" onClick={() => setShowDays(s => !s)}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                  </svg>
+                  {t('daytrip.planOnDayTitle')}
+                </button>
+                {showDays && (
+                  <>
+                    <div className="pp-backdrop-overlay" onClick={() => setShowDays(false)} />
+                    <DayDropdown
+                      tripStartDate={tripStartDate}
+                      tripEndDate={tripEndDate}
+                      onSelect={date => { onAssignCityToDay(city.id, date); setMenuOpen(false); }}
+                      onClose={() => setShowDays(false)}
+                    />
+                  </>
+                )}
+              </div>
+            )}
+            <button className="pp-dropdown-item" onClick={() => { setEditing(true); setMenuOpen(false); }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </svg>
+              {t('daytrip.renameTitle')}
+            </button>
+            <button className="pp-dropdown-item pp-dropdown-item--danger" onClick={() => { onRemove(city.id); setMenuOpen(false); }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+              {t('daytrip.deleteTitle')}
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  const nameEl = editing ? (
+    <input
+      className="pp-city-name-input"
+      value={cityName}
+      onChange={e => setCityName(e.target.value)}
+      onBlur={saveRename}
+      onClick={stop}
+      onKeyDown={e => { if (e.key === 'Enter') saveRename(); if (e.key === 'Escape') { setCityName(city.name); setEditing(false); } }}
+      autoFocus
+    />
+  ) : (
+    <span className="pp-city-name" onDoubleClick={e => { stop(e); setEditing(true); }}>
+      <span className="pp-city-name-text">{city.name}</span>
+    </span>
+  );
+
+  // ─── Détail mobile d'une excursion (ouvert depuis l'onglet Excursions de sa
+  // ville — voir CityBlock) : même en-tête/onglets que le détail d'une ville,
+  // sans onglet Excursions (une excursion n'a pas ses propres excursions). Le
+  // retour referme SEULEMENT cette excursion (onCloseDetail vient de CityBlock,
+  // qui revient sur son onglet Excursions — pas sur la liste des villes). ───
+  if (isMobile && mobileDetailOpen) {
+    const dtLodgings = (lodgings || []).filter(l => l.city_id === city.id);
+    const tabs = [
+      {
+        key: 'activities', label: t('cityTabs.activities'), count: dtPlaces.length, tone: 'indigo',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>,
+      },
+      {
+        key: 'lodgings', label: t('cityTabs.lodgings'), count: dtLodgings.length, tone: 'emerald',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>,
+      },
+      {
+        key: 'transports', label: t('cityTabs.transports'), count: dtTrajets.length, tone: 'blue',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/></svg>,
+      },
+    ];
+    return (
+      <div className="pp-city pp-city--detail">
+        <MobileDetailHeader
+          hidden={headerHidden}
+          image={cityImage}
+          onBack={onCloseDetail}
+          backLabel={t('city.backToList')}
+          name={nameEl}
+          badges={dtCost != null ? [
+            <span key="cost" className="pp-city-cost" title={t('daytrip.costTitle', { city: city.name })}>💰 {formatPrice(dtCost)}</span>,
+          ] : []}
+          menu={menuBlock}
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+        <div className="pp-detail-body" ref={detailBodyRef} onScroll={onDetailScroll}>
+          {activeTab === 'activities' && (
+            <div className="pp-detail-tab-content">
+              {selecting && validSelectedIds.length > 0 && (
+                <SelectionActionBar
+                  count={validSelectedIds.length}
+                  tripStartDate={tripStartDate}
+                  tripEndDate={tripEndDate}
+                  onAssignDay={handleAssignDay}
+                  onDelete={handleDeleteSelection}
+                  onCancel={toggleSelecting}
+                />
+              )}
+              <Droppable droppableId={`activities-${city.id}`}>
+                {(provided, snapshot) => (
+                  <ul
+                    className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {dtPlaces.map((act, idx) => (
+                      <ActivityItem
+                        key={act.id}
+                        act={act}
+                        index={idx}
+                        tripStartDate={tripStartDate}
+                        groups={groups}
+                        onRemove={onRemoveActivity}
+                        onUpdate={onUpdateActivity}
+                        onDuplicate={onDuplicateActivity}
+                        onAssignToGroup={onAssignActivityToGroup}
+                        selectable={selecting}
+                        selected={selectedIds.has(act.id)}
+                        onToggleSelect={toggleSelected}
+                        onLongPressSelect={handleLongPressSelect}
+                        dragDisabled
+                      />
+                    ))}
+                    {provided.placeholder}
+                    {dtPlaces.length === 0 && !snapshot.isDraggingOver && (
+                      <li className="pp-activities-empty">{t('place.emptyList')}</li>
+                    )}
+                  </ul>
+                )}
+              </Droppable>
+              {addingPlace ? (
+                <div className="pp-add-place-wrap">
+                  <PlaceSearchInput
+                    cityHint={city.name}
+                    onSelect={handlePlaceSelect}
+                    onManualAdd={handleManualAdd}
+                    placeholder={t('place.searchPlaceholder', { city: city.name })}
+                    autoFocus
+                  />
+                  <button className="pp-btn pp-btn--ghost pp-btn--sm" onClick={() => setAddingPlace(false)}>{t('common:actions.cancel')}</button>
+                </div>
+              ) : (
+                <button className="pp-add-menu-btn" onClick={() => setAddingPlace(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addPlaceButton')}
+                </button>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'lodgings' && (
+            <div className="pp-detail-tab-content">
+              <LodgingSection
+                city={city}
+                lodgings={lodgings}
+                tripId={tripId}
+                tripStartDate={tripStartDate}
+                tripEndDate={tripEndDate}
+                adding={addingLodging}
+                onCloseAdd={() => setAddingLodging(false)}
+                onAddLodging={onAddLodging}
+                onUpdateLodging={onUpdateLodging}
+                onRemoveLodging={onRemoveLodging}
+              />
+              {dtLodgings.length === 0 && !addingLodging && (
+                <p className="pp-activities-empty">{t('cityTabs.emptyLodgings')}</p>
+              )}
+              {!addingLodging && (
+                <button className="pp-add-menu-btn" onClick={() => setAddingLodging(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addLodgingButton')}
+                </button>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'transports' && (
+            <div className="pp-detail-tab-content">
+              <Droppable droppableId={`trajets-${city.id}`}>
+                {(provided, snapshot) => (
+                  <ul
+                    className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {dtTrajets.map((act, idx) => (
+                      <ActivityItem
+                        key={act.id}
+                        act={act}
+                        index={idx}
+                        tripStartDate={tripStartDate}
+                        groups={groups}
+                        onRemove={onRemoveActivity}
+                        onUpdate={onUpdateActivity}
+                        onAssignToGroup={onAssignActivityToGroup}
+                        dragDisabled
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+              {dtTrajets.length === 0 && (
+                <p className="pp-activities-empty">{t('cityTabs.emptyTrajets')}</p>
+              )}
+              {addingTrajet ? (
+                <TrajetAddInput
+                  onAdd={(name, details) => { onAddActivity(tripId, city.id, name, details); setAddingTrajet(false); }}
+                  onClose={() => setAddingTrajet(false)}
+                />
+              ) : (
+                <button className="pp-add-menu-btn" onClick={() => setAddingTrajet(true)}>
+                  <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                  </span>
+                  {t('cityTabs.addTrajetButton')}
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pp-daytrip">
@@ -162,72 +445,7 @@ export default function DaytripCard({
           </svg>
         </span>
 
-        {/* Menu unique remplaçant les icônes d'action séparées — même pattern
-            que CityMenu.jsx (voir CityBlock), pour une cohérence visuelle
-            entre villes de base et excursions. */}
-        <div className="pp-city-menu-wrap" onClick={stop}>
-          <button
-            type="button"
-            className={`pp-icon-btn pp-city-menu-btn${menuOpen ? ' pp-icon-btn--active' : ''}`}
-            onClick={() => setMenuOpen(o => !o)}
-            title={t('daytrip.menuTitle')}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-            </svg>
-          </button>
-          {menuOpen && (
-            <>
-              <div className="pp-backdrop-overlay" onClick={() => setMenuOpen(false)} />
-              <div className="pp-city-menu-dropdown">
-                {dtPlaces.length > 0 && (
-                  <button
-                    className="pp-dropdown-item"
-                    onClick={() => { toggleSelecting(); setMenuOpen(false); }}
-                  >
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    {selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
-                  </button>
-                )}
-                {dtActivities.length > 0 && (
-                  <div style={{ position: 'relative' }}>
-                    <button className="pp-dropdown-item" onClick={() => setShowDays(s => !s)}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
-                      </svg>
-                      {t('daytrip.planOnDayTitle')}
-                    </button>
-                    {showDays && (
-                      <>
-                        <div className="pp-backdrop-overlay" onClick={() => setShowDays(false)} />
-                        <DayDropdown
-                          tripStartDate={tripStartDate}
-                          tripEndDate={tripEndDate}
-                          onSelect={date => { onAssignCityToDay(city.id, date); setMenuOpen(false); }}
-                          onClose={() => setShowDays(false)}
-                        />
-                      </>
-                    )}
-                  </div>
-                )}
-                <button className="pp-dropdown-item" onClick={() => { setEditing(true); setMenuOpen(false); }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                  </svg>
-                  {t('daytrip.renameTitle')}
-                </button>
-                <button className="pp-dropdown-item pp-dropdown-item--danger" onClick={() => { onRemove(city.id); setMenuOpen(false); }}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                  </svg>
-                  {t('daytrip.deleteTitle')}
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        {menuBlock}
       </div>
 
       {!collapsed && (
@@ -235,10 +453,8 @@ export default function DaytripCard({
           {selecting && validSelectedIds.length > 0 && (
             <SelectionActionBar
               count={validSelectedIds.length}
-              groups={groups}
               tripStartDate={tripStartDate}
               tripEndDate={tripEndDate}
-              onAssignGroup={handleAssignGroup}
               onAssignDay={handleAssignDay}
               onDelete={handleDeleteSelection}
               onCancel={toggleSelecting}
@@ -265,6 +481,7 @@ export default function DaytripCard({
                     selectable={selecting}
                     selected={selectedIds.has(act.id)}
                     onToggleSelect={toggleSelected}
+                    onLongPressSelect={handleLongPressSelect}
                     dragDisabled={selecting}
                   />
                 ))}

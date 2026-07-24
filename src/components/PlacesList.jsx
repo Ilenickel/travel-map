@@ -4,7 +4,6 @@ import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import WikiImage from './WikiImage';
-import { fetchTranslatedFields, translationKey } from '../lib/translateContent';
 import { COUNTRIES } from '../data/index';
 import { extractLabelVariants } from '../lib/labelVariants';
 
@@ -33,7 +32,10 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
   async function handlePhoto(e) {
     const file = e.target.files[0]; if (!file) return; e.target.value = '';
     setCompressing(true);
-    const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 800, useWebWorker: true });
+    // 1600/0.5 (pas 800/0.3) : ces photos sont affichées bien plus grandes
+    // qu'avant sur PC/mobile, 800px paraissait flou — même ajustement que la
+    // photo de couverture de destination (2026-07-23).
+    const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1600, useWebWorker: true });
     setPhoto({ file: compressed, preview: URL.createObjectURL(compressed) });
     setCompressing(false);
   }
@@ -155,7 +157,10 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
   async function handlePhoto(e) {
     const file = e.target.files[0]; if (!file) return; e.target.value = '';
     setCompressing(true);
-    const compressed = await imageCompression(file, { maxSizeMB: 0.3, maxWidthOrHeight: 800, useWebWorker: true });
+    // 1600/0.5 (pas 800/0.3) : ces photos sont affichées bien plus grandes
+    // qu'avant sur PC/mobile, 800px paraissait flou — même ajustement que la
+    // photo de couverture de destination (2026-07-23).
+    const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1600, useWebWorker: true });
     setPhoto({ file: compressed, preview: URL.createObjectURL(compressed) });
     setCompressing(false);
   }
@@ -258,7 +263,6 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   const destType = isUserDest ? 'community' : 'static';
   const staticDestId = !isUserDest ? String(dest.id) : null;
   const userId = user?.id ?? null;
-  const translationContentType = isUserDest ? 'destination_place' : 'static_destination_place';
 
   // Variantes des noms de lieux "à ne pas manquer" figés (mustSee), pour
   // détecter côté serveur un doublon communautaire même si le libellé
@@ -281,13 +285,8 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   }, [isUserDest, countryCode, staticDestId]);
 
   const [places, setPlaces] = useState([]);
-  // Noms traduits des lieux communautaires/statiques (pas les lieux "à ne pas
-  // manquer" statiques du JSON, déjà bilingues via localizeCountry) — un objet
-  // { lang, text } par id pour savoir si la traduction en cache correspond
-  // encore à la langue actuellement affichée (sinon, on la recharge).
-  const [translatedNames, setTranslatedNames] = useState({});
-  const [hasMore, setHasMore] = useState(false);
   const [communityOffset, setCommunityOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
@@ -299,52 +298,50 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   const [mergeNotice, setMergeNotice] = useState(null);
   const mergeNoticeTimerRef = useRef(null);
 
-  // Même pattern que ReviewList : charge TOUS les votes des lieux (pour compter up/down),
-  // et repère celui de l'utilisateur courant via userId.
-  const fetchVotes = useCallback(async (ids) => {
-    if (!ids.length) return {};
+  // Le tri se fait CÔTÉ BASE (order by score) — `score` est tenu à jour par
+  // api/vote-place.js à chaque vote (upvotes/downvotes, score en dérive en
+  // base) : pas besoin de charger tous les lieux ni de retrier côté client
+  // pour paginer correctement, la page N est déjà à sa vraie place globale.
+  // Cette requête ne sert plus qu'à retrouver le vote propre à l'utilisateur
+  // courant (myVote) — les compteurs affichés viennent de upvotes/downvotes,
+  // déjà sur la ligne.
+  const fetchMyVotes = useCallback(async (ids) => {
+    if (!userId || !ids.length) return {};
     const { data } = await supabase
       .from('place_votes')
-      .select('place_id, vote_type, user_id')
+      .select('place_id, vote_type')
       .eq('place_type', destType)
+      .eq('user_id', userId)
       .in('place_id', ids);
     const map = {};
-    (data || []).forEach(v => {
-      if (!map[v.place_id]) map[v.place_id] = { up: 0, down: 0, myVote: null };
-      if (v.vote_type === 'up') map[v.place_id].up++;
-      else map[v.place_id].down++;
-      if (userId && v.user_id === userId) map[v.place_id].myVote = v.vote_type;
-    });
+    (data || []).forEach(v => { map[v.place_id] = v.vote_type; });
     return map;
   }, [userId, destType]);
 
-  const applyVotes = (rows, votes) => {
-    const withVotes = rows.map(p => ({ ...p, _votes: votes[p.id] || { ...EMPTY_VOTES } }));
-    return withVotes.sort((a, b) => {
-      const sa = (a._votes.up - a._votes.down);
-      const sb = (b._votes.up - b._votes.down);
-      return sb - sa;
-    });
-  };
+  const attachVotes = (rows, myVotes) => rows.map(p => ({
+    ...p,
+    _votes: { up: p.upvotes ?? 0, down: p.downvotes ?? 0, myVote: myVotes[p.id] ?? null },
+  }));
+
+  const PLACE_FIELDS = 'id, name, image_url, image_path, user_id, created_at, upvotes, downvotes, score';
 
   const loadInitial = useCallback(async () => {
     setLoading(true);
-    setHasMore(false);
     setShowAddForm(false);
     setCommunityOffset(0);
 
     if (isUserDest) {
       const { data } = await supabase
         .from('destination_places')
-        .select('id, name, image_url, image_path, user_id, created_at')
+        .select(PLACE_FIELDS)
         .eq('destination_id', dest.id)
         .order('score', { ascending: false })
         .order('created_at', { ascending: true })
         .range(0, PAGE_SIZE);
       const rows = data || [];
       const sliced = rows.slice(0, PAGE_SIZE);
-      const votes = await fetchVotes(sliced.map(p => p.id));
-      setPlaces(applyVotes(sliced, votes));
+      const myVotes = await fetchMyVotes(sliced.map(p => p.id));
+      setPlaces(attachVotes(sliced, myVotes));
       setHasMore(rows.length > PAGE_SIZE);
       setCommunityOffset(sliced.length);
     } else {
@@ -355,7 +352,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
       const slotSize = PAGE_SIZE - jsonPlaces.length;
       const { data } = await supabase
         .from('static_destination_places')
-        .select('id, name, image_url, image_path, user_id, created_at')
+        .select(PLACE_FIELDS)
         .eq('country_code', countryCode)
         .eq('static_dest_id', String(dest.id))
         .order('score', { ascending: false })
@@ -363,51 +360,34 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
         .range(0, slotSize);
       const rows = data || [];
       const communitySliced = rows.slice(0, slotSize);
-      const votes = await fetchVotes(communitySliced.map(p => p.id));
-      setPlaces([...jsonPlaces, ...applyVotes(communitySliced, votes)]);
+      const myVotes = await fetchMyVotes(communitySliced.map(p => p.id));
+      setPlaces([...jsonPlaces, ...attachVotes(communitySliced, myVotes)]);
       setHasMore(rows.length > slotSize);
       setCommunityOffset(communitySliced.length);
     }
 
     setLoading(false);
-  }, [dest.id, fetchVotes, isUserDest, countryCode]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dest.id, fetchMyVotes, isUserDest, countryCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function loadMore() {
     setLoading(true);
-
-    if (isUserDest) {
-      const from = communityOffset;
-      const { data } = await supabase
-        .from('destination_places')
-        .select('id, name, image_url, image_path, user_id, created_at')
-        .eq('destination_id', dest.id)
-        .order('score', { ascending: false })
-        .order('created_at', { ascending: true })
-        .range(from, from + PAGE_SIZE);
-      const rows = data || [];
-      const sliced = rows.slice(0, PAGE_SIZE);
-      const votes = await fetchVotes(sliced.map(p => p.id));
-      setPlaces(prev => [...prev, ...applyVotes(sliced, votes)]);
-      setHasMore(rows.length > PAGE_SIZE);
-      setCommunityOffset(from + sliced.length);
-    } else {
-      const from = communityOffset;
-      const { data } = await supabase
-        .from('static_destination_places')
-        .select('id, name, image_url, image_path, user_id, created_at')
-        .eq('country_code', countryCode)
-        .eq('static_dest_id', String(dest.id))
-        .order('score', { ascending: false })
-        .order('created_at', { ascending: true })
-        .range(from, from + PAGE_SIZE);
-      const rows = data || [];
-      const sliced = rows.slice(0, PAGE_SIZE);
-      const votes = await fetchVotes(sliced.map(p => p.id));
-      setPlaces(prev => [...prev, ...applyVotes(sliced, votes)]);
-      setHasMore(rows.length > PAGE_SIZE);
-      setCommunityOffset(from + sliced.length);
-    }
-
+    const from = communityOffset;
+    const table = isUserDest ? 'destination_places' : 'static_destination_places';
+    let query = supabase.from(table).select(PLACE_FIELDS);
+    query = isUserDest ? query.eq('destination_id', dest.id) : query.eq('country_code', countryCode).eq('static_dest_id', String(dest.id));
+    const { data } = await query
+      .order('score', { ascending: false })
+      .order('created_at', { ascending: true })
+      .range(from, from + PAGE_SIZE);
+    const rows = data || [];
+    const sliced = rows.slice(0, PAGE_SIZE);
+    const myVotes = await fetchMyVotes(sliced.map(p => p.id));
+    // Simple concaténation : la base a déjà livré cette page dans son ordre
+    // global correct (order by score), pas besoin de retrier avec ce qui est
+    // déjà affiché.
+    setPlaces(prev => [...prev, ...attachVotes(sliced, myVotes)]);
+    setHasMore(rows.length > PAGE_SIZE);
+    setCommunityOffset(from + sliced.length);
     setLoading(false);
   }
 
@@ -416,30 +396,11 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     loadInitial();
   }, [loadInitial]);
 
-  // Traduction des noms de lieux communautaires/statiques dans la langue
-  // active, avec cache serveur (voir api/get-translated-content.js). Ne
-  // retraduit que les lieux pas encore résolus pour la langue courante,
-  // pour ne pas ré-appeler l'API à chaque mise à jour optimiste de `places`.
-  useEffect(() => {
-    const lang = i18n.language;
-    const pending = places.filter(p => !p.isJson && translatedNames[p.id]?.lang !== lang);
-    if (!pending.length) return;
-    let cancelled = false;
-    (async () => {
-      const items = pending.map(p => ({ contentType: translationContentType, contentId: p.id, field: 'name', sourceText: p.name }));
-      const result = await fetchTranslatedFields(items, lang);
-      if (cancelled) return;
-      setTranslatedNames(prev => {
-        const next = { ...prev };
-        for (const p of pending) {
-          const key = translationKey(translationContentType, p.id, 'name');
-          next[p.id] = { lang, text: result[key] ?? p.name };
-        }
-        return next;
-      });
-    })();
-    return () => { cancelled = true; };
-  }, [places, i18n.language, translationContentType]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Le nom d'un lieu "à ne pas manquer" n'est plus traduit (2026-07-23) :
+  // c'est un nom propre, pas du texte descriptif — Google Translate le
+  // traduisait littéralement (même souci que get-place-suggestions.js).
+  // `translatedNames`/`translationContentType` retirés : plus rien ne les
+  // utilisait une fois cette traduction supprimée.
 
   // Même logique que ReviewItem : upsert si vote nouveau/changé, delete si annulation
   async function handleVote(place, voteType) {
@@ -448,7 +409,9 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     const currentVote = place._votes?.myVote ?? null;
     const newVote = currentVote === voteType ? null : voteType;
 
-    // Mise à jour optimiste (même calcul que ReviewItem)
+    // Mise à jour optimiste des compteurs affichés + réordonnancement DES
+    // SEULS lieux déjà visibles (pas de rechargement complet) : le prochain
+    // "voir plus" repartira de la base, déjà correctement triée par `score`.
     setPlaces(prev => {
       const updated = prev.map(p => {
         if (p.id !== place.id) return p;
@@ -495,6 +458,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
       const result = await res.json();
       if (result.ok) {
         setPlaces(prev => prev.filter(p => p.id !== place.id));
+        setCommunityOffset(o => Math.max(0, o - 1));
         setDeletingId(null);
       }
     } catch {}
@@ -502,6 +466,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
 
   function handleAdded(newPlace) {
     setPlaces(prev => [...prev, newPlace]);
+    setCommunityOffset(o => o + 1);
     setShowAddForm(false);
   }
 
@@ -552,7 +517,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
 
       <div className="must-list">
         {places.map(place => {
-          const displayName = place.isJson ? place.name : (translatedNames[place.id]?.text ?? place.name);
+          const displayName = place.name;
           return (
           <div key={place.id} className="must-item">
             {editingId === place.id ? (
