@@ -245,12 +245,32 @@ export async function unsplashSearch(query, { timeoutMs = 8000, orientation = 'l
 // paysage, monument). Une photo dont la légende ne contient QUE ce type de
 // mot est écartée, même si elle est la plus likée du lot — voir
 // pickBestFromResults ci-dessous.
+//
+// Ajout du 2026-07-24 (signalé en prod) : deux catégories bien distinctes des
+// précédentes, mais tout aussi disqualifiantes pour illustrer un pays —
+//   - guerre/violence : "Afghanistan" remontait en photo la plus likée une
+//     explosion/bombardement (légende avec "explosion"/"war"/"military"...).
+//     Inacceptable comme image de fond, indépendamment du nombre de likes.
+//   - infrastructure routière : "China" remontait un échangeur d'autoroute vu
+//     du ciel (légende "highway"/"traffic"...) — techniquement une "vraie"
+//     photo de lieu (pas un gros plan hors-sujet comme les catégories
+//     ci-dessus), mais pas du tout représentative d'un pays pour une carte de
+//     voyage.
 const IRRELEVANT_SUBJECT_KEYWORDS = [
   'flower', 'flowers', 'plant', 'leaf', 'leaves', 'petal',
   'door', 'lock', 'padlock', 'key', 'window sill',
   'bus', 'seat', 'seats', 'interior', 'indoor', 'room',
   'person', 'people', 'portrait', 'close-up', 'closeup', 'macro',
   'food', 'dish', 'meal', 'plate', 'cup', 'coffee', 'drink', 'fruit', 'vegetable',
+  'war', 'military', 'soldier', 'soldiers', 'army', 'weapon', 'gun', 'rifle',
+  'bomb', 'bombing', 'explosion', 'blast', 'missile', 'tank', 'conflict',
+  'protest', 'riot', 'terror', 'terrorism', 'violence', 'smoke', 'destruction',
+  // 'car'/'cars'/'parking' délibérément ABSENTS : trop génériques, auraient
+  // rejeté à tort une vraie attraction touristique légitime dont la légende
+  // contient le mot "car" (ex. "cable car" à San Francisco) — seuls les
+  // termes propres à l'infrastructure routière elle-même sont gardés.
+  'highway', 'freeway', 'expressway', 'motorway', 'interchange', 'overpass',
+  'traffic', 'congestion',
   'animal', 'dog', 'cat', 'bird', 'insect', 'bee', 'butterfly',
   'text', 'sign', 'menu', 'book', 'paper',
 ];

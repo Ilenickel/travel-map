@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import WikiImage from './WikiImage';
 import { COUNTRIES } from '../data/index';
 import { extractLabelVariants } from '../lib/labelVariants';
+import { fetchTranslatedFields, translationKey } from '../lib/translateContent';
 
 const PAGE_SIZE = 10;
 const EMPTY_VOTES = { up: 0, down: 0, myVote: null };
@@ -396,11 +397,38 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     loadInitial();
   }, [loadInitial]);
 
-  // Le nom d'un lieu "à ne pas manquer" n'est plus traduit (2026-07-23) :
-  // c'est un nom propre, pas du texte descriptif — Google Translate le
-  // traduisait littéralement (même souci que get-place-suggestions.js).
-  // `translatedNames`/`translationContentType` retirés : plus rien ne les
-  // utilisait une fois cette traduction supprimée.
+  // Nom des lieux COMMUNAUTAIRES (pas les mustSee éditoriaux ci-dessus, déjà
+  // bilingues à la main) traduit via Wikipédia côté serveur (voir
+  // api/get-translated-content.js, viaWikipedia) plutôt que mot à mot :
+  // désactivé le 2026-07-23 après un essai Google Translate qui traduisait à
+  // tort des noms propres ("High Line" en "Ligne haute"), remis en place le
+  // 2026-07-24 sur cette base Wikipédia. `translationContentType` suit
+  // `destType` ('community' -> lieu ajouté sous une destination créée par un
+  // utilisateur, 'static' -> lieu ajouté sous une destination éditoriale) —
+  // mêmes clés attendues par SOURCE_TABLES côté serveur. Jamais pour les
+  // lieux `isJson` (mustSee) : déjà résolus dans la langue active par
+  // localizeCountry en amont, une traduction par-dessus serait à la fois
+  // inutile et fausse (perdrait la variante choisie à la main par l'équipe).
+  const translationContentType = isUserDest ? 'destination_place' : 'static_destination_place';
+  const [placeNameTranslations, setPlaceNameTranslations] = useState({});
+  useEffect(() => {
+    const pending = places.filter((p) => !p.isJson && placeNameTranslations[p.id]?.lang !== i18n.language);
+    if (!pending.length) return;
+    let cancelled = false;
+    (async () => {
+      const items = pending.map((p) => ({ contentType: translationContentType, contentId: p.id, field: 'name' }));
+      const result = await fetchTranslatedFields(items, i18n.language);
+      if (cancelled) return;
+      setPlaceNameTranslations((prev) => {
+        const next = { ...prev };
+        for (const p of pending) {
+          next[p.id] = { lang: i18n.language, text: result[translationKey(translationContentType, p.id, 'name')] ?? p.name };
+        }
+        return next;
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [places, i18n.language, translationContentType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Même logique que ReviewItem : upsert si vote nouveau/changé, delete si annulation
   async function handleVote(place, voteType) {
@@ -517,7 +545,9 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
 
       <div className="must-list">
         {places.map(place => {
-          const displayName = place.name;
+          const displayName = place.isJson
+            ? place.name
+            : (placeNameTranslations[place.id]?.lang === i18n.language ? placeNameTranslations[place.id].text : place.name);
           return (
           <div key={place.id} className="must-item">
             {editingId === place.id ? (

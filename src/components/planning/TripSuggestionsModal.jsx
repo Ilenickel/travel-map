@@ -942,7 +942,12 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
     const result = await callModeration('trip-templates', {
       // countryAlpha2 : nécessaire au géocodage des villes existantes pour le
       // remplacement cross-langue côté serveur (voir handleImportTrip).
-      action: 'import-trip', tripId, destinationId: dest.id, groupId: group.id, countryAlpha2, cityNameOverrides,
+      // targetLanguage : traduit/fige les noms d'activités importés dans la
+      // langue du visiteur (voir translateActivitiesForImport, trip-templates.js)
+      // — sans lui, les activités CRÉÉES restaient figées dans la langue de
+      // l'auteur du planning, même si l'aperçu affiché avant import était bien
+      // traduit (signalé le 2026-07-24, "Forbidden City" importé "Cité Interdite").
+      action: 'import-trip', tripId, destinationId: dest.id, groupId: group.id, countryAlpha2, cityNameOverrides, targetLanguage: i18n.language,
     });
     setImporting(false);
     setConfirmingId(null);
@@ -1314,7 +1319,7 @@ export default function TripSuggestionsModal({
         cityId = city?.id;
       }
       if (!cityId) { failedCities.push(entry.cityName); continue; } // création de ville échouée : on n'interrompt pas les imports suivants
-      const result = await callModeration('trip-templates', { action: 'import', tripId, cityId, templateId: entry.templateId });
+      const result = await callModeration('trip-templates', { action: 'import', tripId, cityId, templateId: entry.templateId, targetLanguage: i18n.language });
       if (!result.ok) failedCities.push(entry.cityName);
     }
     setImporting(false);

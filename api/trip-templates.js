@@ -20,6 +20,7 @@ import { getAdminClient, verifyUser, verifyTripAccess } from './_lib/supabaseAdm
 import { resolveCityCoordinates, distanceKm, SAME_CITY_RADIUS_KM } from './_lib/cityGeocode.js';
 import { resolveCityImage } from './_lib/cityImages.js';
 import { resolveCountryImage } from './_lib/countryImages.js';
+import { getTranslatedActivityName, SUPPORTED_TARGET_LANGUAGES } from './_lib/translation.js';
 
 const BUCKET = 'trip-attachments';
 const MAX_SUGGEST_RESULTS = 5;
@@ -814,7 +815,7 @@ async function fetchTemplateDaysAndActivities(admin, templateId) {
   const { data: activities } = dayIds.length
     ? await admin
         .from('trip_template_activities')
-        .select('template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes, wikipedia')
+        .select('id, template_day_id, name, description, time_slot, category, place_lat, place_lng, place_address, position, duration_minutes, wikipedia')
         .in('template_day_id', dayIds)
         .order('position', { ascending: true })
     : { data: [] };
@@ -822,6 +823,48 @@ async function fetchTemplateDaysAndActivities(admin, templateId) {
   const dayIndexById = Object.fromEntries((days || []).map((d) => [d.id, d.day_index]));
   return (activities || []).map((a) => ({ ...a, dayIndex: dayIndexById[a.template_day_id] }));
 }
+
+// Traduit les noms d'activités d'un modèle AVANT de les copier dans
+// trip_activities (importActivitiesInto) — sans ce passage, le nom brut de
+// l'auteur du planning (souvent en français, voir shareCity) était copié tel
+// quel dans les vraies activités du voyage, qui ne repassent JAMAIS par le
+// cache de traduction ensuite (contrairement à l'aperçu du modèle avant
+// import, voir useActivityNameTranslations) : un visiteur anglophone
+// important un planning français se retrouvait avec des activités figées en
+// français pour toujours (signalé le 2026-07-24, "Forbidden City" affiché
+// "Cité Interdite" une fois importé). Passe par Wikipédia D'ABORD
+// (getTranslatedActivityName), PAS Google Translate seul : un nom d'activité
+// est souvent un nom de lieu/monument propre ("Forbidden City", "High Line")
+// que Google traduirait littéralement à tort (voir wikipediaPlaceName.js) —
+// mais un itinéraire éditorial contient aussi des plats/activités
+// descriptives ("hotpot", "Maison de thé du parc du Peuple") que Wikipédia
+// seul ne traduirait jamais : Google Translate sert alors de second essai si
+// Wikipédia ne trouve rien (voir getTranslatedActivityName). Rien à traduire
+// si le visiteur est déjà en français (source des modèles, voir
+// useActivityNameTranslations, même simplification assumée). Échec de
+// traduction (réseau, indisponibilité) : repli sur le nom d'origine, jamais
+// bloquant pour l'import.
+async function translateActivitiesForImport(admin, activities, isEditorial, targetLanguage) {
+  if (!activities.length || targetLanguage === 'fr') return activities;
+  return Promise.all(activities.map(async (a) => {
+    try {
+      const name = await getTranslatedActivityName({
+        admin,
+        contentType: 'trip_template_activity',
+        contentId: a.id,
+        field: 'name',
+        sourceText: a.name,
+        isEditorial,
+        targetLanguage,
+      });
+      return { ...a, name };
+    } catch (err) {
+      console.error('[trip-templates:import] traduction activité échouée, repli sur le nom d\'origine:', err.message);
+      return a;
+    }
+  }));
+}
+
 
 // Insère les activités d'un modèle dans une ville (existante ou tout juste
 // créée pour une excursion). Sans startDate, la structure relative du modèle
@@ -886,10 +929,10 @@ async function cleanupActivityAttachments(admin, activityIds) {
 // l'utilisateur déplace ensuite les activités. Partagé entre l'import par
 // ville et l'import de voyage entier. Renvoie les ids des modèles-excursions
 // importés (pour l'incrément de uses_count).
-async function importDaytripChildren(admin, { tripId, destinationId, parentCityId, templateId, parentStartDate }) {
+async function importDaytripChildren(admin, { tripId, destinationId, parentCityId, templateId, parentStartDate, targetLanguage = 'fr' }) {
   const { data: children } = await admin
     .from('trip_templates')
-    .select('id, city_name, day_offset')
+    .select('id, city_name, day_offset, is_editorial')
     .eq('parent_template_id', templateId);
 
   const { count: existingDaytrips } = await admin
@@ -921,7 +964,8 @@ async function importDaytripChildren(admin, { tripId, destinationId, parentCityI
     if (daytripError) { console.error('[trip-templates:import] insert daytrip city:', daytripError); return null; }
 
     const childActivities = await fetchTemplateDaysAndActivities(admin, child.id);
-    await importActivitiesInto(admin, { tripId, cityId: daytripCity.id, activities: childActivities, startDate: childStartDate });
+    const translatedChildActivities = await translateActivitiesForImport(admin, childActivities, child.is_editorial, targetLanguage);
+    await importActivitiesInto(admin, { tripId, cityId: daytripCity.id, activities: translatedChildActivities, startDate: childStartDate });
     return child.id;
   }));
   return results.filter(Boolean);
@@ -1049,10 +1093,11 @@ export async function applyReplacedCityDuration(admin, { tripId, cityId, prevSta
 }
 
 async function handleImport(admin, user, body, res) {
-  const { tripId, cityId, templateId } = body;
+  const { tripId, cityId, templateId, targetLanguage } = body;
   if (!tripId || !cityId || !templateId) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
+  const lang = SUPPORTED_TARGET_LANGUAGES.includes(targetLanguage) ? targetLanguage : 'fr';
 
   // Accepte le propriétaire OU un membre invité (trip_members).
   const trip = await verifyTripAccess(admin, tripId, user.id);
@@ -1066,7 +1111,7 @@ async function handleImport(admin, user, body, res) {
     .maybeSingle();
   if (!city) return res.status(404).json({ ok: false, reason: 'Ville introuvable.' });
 
-  const { data: template } = await admin.from('trip_templates').select('id, nb_days').eq('id', templateId).maybeSingle();
+  const { data: template } = await admin.from('trip_templates').select('id, nb_days, is_editorial').eq('id', templateId).maybeSingle();
   if (!template) return res.status(404).json({ ok: false, reason: 'Modèle introuvable.' });
 
   // visit_date/pending_day_index inclus : servent à mesurer la durée RÉELLE
@@ -1098,7 +1143,8 @@ async function handleImport(admin, user, body, res) {
   }
 
   const activities = await fetchTemplateDaysAndActivities(admin, templateId);
-  const importedCount = await importActivitiesInto(admin, { tripId, cityId, activities, startDate: city.start_date });
+  const translatedActivities = await translateActivitiesForImport(admin, activities, template.is_editorial, lang);
+  const importedCount = await importActivitiesInto(admin, { tripId, cityId, activities: translatedActivities, startDate: city.start_date });
 
   // Tout ce qui suit la ville est décalé si sa durée réellement occupée change
   // (ex. planning de Tokyo qui occupait 2 jours remplacé par un de 4 : les
@@ -1131,6 +1177,7 @@ async function handleImport(admin, user, body, res) {
     parentCityId: cityId,
     templateId,
     parentStartDate: city.start_date,
+    targetLanguage: lang,
   });
 
   const importedTemplateIds = [templateId, ...importedChildIds];
@@ -1162,10 +1209,11 @@ async function handleImportTrip(admin, user, body, res) {
   // de l'auteur du planning (member.city_name, souvent en français, "Pékin"),
   // différent de ce que le visiteur vient de voir et choisir. Jamais fait
   // confiance aveuglément : juste une chaîne de repli si absente/vide.
-  const { tripId, destinationId, groupId, cityNameOverrides } = body;
+  const { tripId, destinationId, groupId, cityNameOverrides, targetLanguage } = body;
   if (!tripId || !destinationId || !groupId) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });
   }
+  const lang = SUPPORTED_TARGET_LANGUAGES.includes(targetLanguage) ? targetLanguage : 'fr';
 
   const trip = await verifyTripAccess(admin, tripId, user.id);
   if (!trip) return res.status(404).json({ ok: false, reason: 'Voyage introuvable.' });
@@ -1196,7 +1244,7 @@ async function handleImportTrip(admin, user, body, res) {
 
   const { data: members } = await admin
     .from('trip_templates')
-    .select('id, city_name, nb_days, group_day_offset')
+    .select('id, city_name, nb_days, group_day_offset, is_editorial')
     .eq('group_id', groupId)
     .is('parent_template_id', null)
     .order('group_position', { ascending: true });
@@ -1314,7 +1362,8 @@ async function handleImportTrip(admin, user, body, res) {
     const cityId = city.id;
 
     const activities = await fetchTemplateDaysAndActivities(admin, member.id);
-    importedActivitiesCount += await importActivitiesInto(admin, { tripId, cityId, activities, startDate });
+    const translatedActivities = await translateActivitiesForImport(admin, activities, member.is_editorial, lang);
+    importedActivitiesCount += await importActivitiesInto(admin, { tripId, cityId, activities: translatedActivities, startDate });
 
     if (startDate && member.nb_days) {
       const memberEnd = addDays(startDate, member.nb_days - 1);
@@ -1327,6 +1376,7 @@ async function handleImportTrip(admin, user, body, res) {
       parentCityId: cityId,
       templateId: member.id,
       parentStartDate: startDate,
+      targetLanguage: lang,
     });
     importedTemplateIds.push(member.id, ...childIds);
   }

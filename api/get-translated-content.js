@@ -11,7 +11,7 @@
 // défaçant silencieusement ce que les autres visiteurs voient ensuite pour ce
 // contentId/field/langue.
 import { getAdminClient } from './_lib/supabaseAdmin.js';
-import { getTranslatedField, TranslationUnavailableError, SUPPORTED_TARGET_LANGUAGES } from './_lib/translation.js';
+import { getTranslatedField, getTranslatedPlaceName, getTranslatedActivityName, TranslationUnavailableError, SUPPORTED_TARGET_LANGUAGES } from './_lib/translation.js';
 
 const MAX_ITEMS = 200;
 
@@ -19,23 +19,43 @@ const MAX_ITEMS = 200;
 const SOURCE_TABLES = {
   user_destination_name: { table: 'user_destinations', column: 'name' },
   user_destination_description: { table: 'user_destinations', column: 'description' },
-  destination_place_name: { table: 'destination_places', column: 'name' },
-  static_destination_place_name: { table: 'static_destination_places', column: 'name' },
+  // Nom d'un lieu communautaire ("à ne pas manquer" ajouté par un visiteur,
+  // pas l'entrée éditoriale mustSee figée dans src/data/<pays>.js, déjà
+  // bilingue à la main) : nom propre, jamais traduit mot à mot — `viaWikipedia`
+  // route ce champ vers getTranslatedPlaceName (Wikipédia/Wikidata) plutôt que
+  // getTranslatedField (Google Translate), voir plus bas dans ce fichier.
+  // Remis en place le 2026-07-24 : un premier essai via Google Translate
+  // traduisait à tort des noms comme "High Line"/"Ground Zero" en français
+  // ("Ligne haute", "Point zéro"), d'où sa désactivation complète le
+  // 2026-07-23 — au prix, sans traduction du tout, d'un lieu saisi par son
+  // auteur dans une langue qui reste affiché tel quel pour tout le monde.
+  destination_place_name: { table: 'destination_places', column: 'name', viaWikipedia: true },
+  static_destination_place_name: { table: 'static_destination_places', column: 'name', viaWikipedia: true },
   review_comment: { table: 'reviews', column: 'comment' },
   destination_review_comment: { table: 'destination_reviews', column: 'comment' },
   country_recommendation_description: { table: 'country_recommendations', column: 'description' },
-  // ÉDITORIAL uniquement (is_editorial = true) : toujours saisi en français
-  // par l'équipe (voir translateContent.js). Un modèle partagé par un vrai
-  // utilisateur (is_editorial = false) peut être dans n'importe quelle
-  // langue puisque l'app est multilingue — voir needsEditorialCheck ci-dessous,
-  // qui distingue les deux cas avant de forcer 'fr'.
-  trip_template_activity_name: { table: 'trip_template_activities', column: 'name', needsEditorialCheck: true },
-  // Nom de ville d'un modèle partagé (ex. "Pékin" saisi par son auteur) —
-  // is_editorial vit DIRECTEMENT sur trip_templates ici, contrairement à
-  // trip_template_activity_name ci-dessus qui doit remonter par une jointure
-  // depuis trip_template_activities : needsEditorialCheckDirect interroge
-  // donc la table cible sans jointure (voir resolveSourceLanguage).
-  trip_template_city_name: { table: 'trip_templates', column: 'city_name', needsEditorialCheckDirect: true },
+  // Nom d'une activité d'un modèle de planning (ex. "Cité Interdite"/"Forbidden
+  // City", mais aussi "hotpot"/"Maison de thé du parc du Peuple") : pas
+  // toujours un nom de lieu propre repérable sur Wikipédia (plats, activités,
+  // lieux descriptifs) — `viaWikipediaThenGoogle` essaie Wikipédia d'abord
+  // (fiable pour les vrais noms propres, évite le "High Line" → "Ligne
+  // haute"), puis Google Translate en second essai si rien trouvé, plutôt
+  // que de laisser un texte descriptif non traduit (voir
+  // getTranslatedActivityName).
+  trip_template_activity_name: { table: 'trip_template_activities', column: 'name', viaWikipediaThenGoogle: true },
+  // Nom de ville d'un modèle partagé (ex. "Pékin"/"Grenade" saisi par son
+  // auteur) : nom propre, comme les noms de lieux ci-dessus — même souci que
+  // Google Translate sur les noms de lieux, mais encore plus visible ici :
+  // "Grenade" (ville espagnole, Granada) traduit mot à mot en anglais reste
+  // "Grenade" (l'arme, ou confondu avec l'île de Grenada) au lieu de
+  // "Granada" — aucune indication de langue source fiable ne corrige ça,
+  // contrairement à Wikipédia qui connaît directement le bon nom de la
+  // ville dans chaque langue (voir wikipediaPlaceName.js). Remplace
+  // l'ancien passage par Google Translate (et son besoin de forcer
+  // source_language='fr' pour les itinéraires éditoriaux, needsEditorialCheckDirect,
+  // retiré avec ce changement — la recherche Wikipédia n'a pas besoin de
+  // connaître la langue source).
+  trip_template_city_name: { table: 'trip_templates', column: 'city_name', viaWikipedia: true },
 };
 
 function sourceMapping(contentType, field) {
@@ -47,30 +67,20 @@ async function fetchRealSourceText(admin, mapping, contentId) {
   return data?.[mapping.column] ?? null;
 }
 
-// source_language FIXE ('fr') uniquement pour un itinéraire ÉDITORIAL — sur
-// ces noms courts et saturés de noms propres ("Tour Eiffel et Champ de
-// Mars"), l'auto-détection de Google Translate croit parfois que la source
-// est déjà "en" (peu de mots grammaticaux à reconnaître) et renvoie alors le
-// texte tel quel puisque source == target — le nom reste en français (le
-// "et" qui ne se traduit jamais en est le symptôme visible). Pour un modèle
-// partagé par un vrai utilisateur, aucun indice fiable sur sa langue :
-// laisser Google Translate auto-détecter, comme avant ce correctif.
-async function resolveSourceLanguage(admin, mapping, contentId) {
-  if (mapping.needsEditorialCheckDirect) {
-    // is_editorial est sur la MÊME ligne que le texte à traduire (pas de
-    // jointure à faire, contrairement au cas needsEditorialCheck ci-dessous).
-    const { data } = await admin.from(mapping.table).select('is_editorial').eq('id', contentId).maybeSingle();
-    return data?.is_editorial ? 'fr' : null;
-  }
-  if (!mapping.needsEditorialCheck) return null;
+// Un itinéraire éditorial (is_editorial=true, écrit par l'équipe) est
+// toujours saisi en français — nécessaire UNIQUEMENT pour forcer la langue
+// source du repli Google Translate de getTranslatedActivityName (Wikipédia,
+// lui, n'a pas besoin de cette information). Sans ce forcage, l'auto-
+// détection de Google Translate se trompe parfois sur ces noms courts et
+// saturés de noms propres (voir getTranslatedActivityName).
+async function isEditorialActivity(admin, activityId) {
   const { data } = await admin
     .from('trip_template_activities')
     .select('trip_template_days(trip_templates(is_editorial))')
-    .eq('id', contentId)
+    .eq('id', activityId)
     .maybeSingle();
-  return data?.trip_template_days?.trip_templates?.is_editorial ? 'fr' : null;
+  return !!data?.trip_template_days?.trip_templates?.is_editorial;
 }
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -100,15 +110,37 @@ export default async function handler(req, res) {
         if (!mapping) return; // type inconnu
         const realSourceText = await fetchRealSourceText(admin, mapping, it.contentId);
         if (!realSourceText) return; // ligne introuvable : rien à traduire
-        const sourceLanguage = await resolveSourceLanguage(admin, mapping, it.contentId);
         const key = `${it.contentType}:${it.contentId}:${it.field}`;
+        if (mapping.viaWikipedia) {
+          translations[key] = await getTranslatedPlaceName({
+            admin,
+            contentType: it.contentType,
+            contentId: it.contentId,
+            field: it.field,
+            sourceText: realSourceText,
+            targetLanguage,
+          });
+          return;
+        }
+        if (mapping.viaWikipediaThenGoogle) {
+          const isEditorial = await isEditorialActivity(admin, it.contentId);
+          translations[key] = await getTranslatedActivityName({
+            admin,
+            contentType: it.contentType,
+            contentId: it.contentId,
+            field: it.field,
+            sourceText: realSourceText,
+            isEditorial,
+            targetLanguage,
+          });
+          return;
+        }
         translations[key] = await getTranslatedField({
           admin,
           contentType: it.contentType,
           contentId: it.contentId,
           field: it.field,
           sourceText: realSourceText,
-          sourceLanguage,
           targetLanguage,
         });
       })

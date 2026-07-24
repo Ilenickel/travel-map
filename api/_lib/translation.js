@@ -4,6 +4,7 @@
 // Suit le même pattern d'appel HTTP que api/_lib/moderation.js (fetch + erreur
 // custom), pour une gestion d'erreur cohérente entre les deux intégrations.
 import { createHash } from 'crypto';
+import { translatePlaceNameViaWikipedia } from './wikipediaPlaceName.js';
 
 const GOOGLE_TRANSLATE_URL = 'https://translation.googleapis.com/language/translate/v2';
 
@@ -54,6 +55,22 @@ async function reserveQuota(admin, chars) {
     return true; // en cas d'erreur du compteur, on ne bloque pas la traduction pour autant
   }
   return Number(total) <= limit;
+}
+
+// Repère un texte VRAISEMBLABLEMENT français (accents ou mots grammaticaux
+// courants) — utilisé UNIQUEMENT comme garde-fou avant de forcer `fr` en cas
+// de détection automatique suspecte (voir getTranslatedField ci-dessous).
+// Aujourd'hui (2026-07-24) tout le contenu communautaire est écrit par un
+// seul utilisateur francophone, d'où ce raccourci pragmatique — mais dès que
+// des lieux/avis/commentaires arriveront dans d'autres langues, ce texte
+// pourra être en anglais/espagnol sans AUCUN marqueur français, et ce test
+// empêche alors le forçage `fr` de s'appliquer à tort (il ne se déclenche
+// que si un signal français est présent). Le jour où la langue de rédaction
+// réelle est connue et stockée par contenu, ce raccourci devra être remplacé
+// par cette vraie donnée plutôt que par une devinette sur le texte.
+function looksFrench(text) {
+  if (/[àâçéèêëîïôùûüÿœ]/i.test(text)) return true;
+  return /\b(le|la|les|un|une|des|du|de|et|est|dans|avec|pour|sur|au|aux)\b/i.test(text);
 }
 
 async function callGoogleTranslate(text, targetLanguage, sourceLanguage) {
@@ -118,7 +135,32 @@ export async function getTranslatedField({ admin, contentType, contentId, field,
     return sourceText;
   }
 
-  const { translatedText, detectedSourceLanguage } = await callGoogleTranslate(sourceText, targetLanguage, sourceLanguage);
+  let { translatedText, detectedSourceLanguage } = await callGoogleTranslate(sourceText, targetLanguage, sourceLanguage);
+
+  // Filet de sécurité contre un faux positif d'auto-détection de Google
+  // Translate : sur un texte court contenant un mot anglais/international
+  // (ex. "Ville cyberpunk"), Google devine parfois à tort que le texte est
+  // DÉJÀ dans la langue cible et le renvoie inchangé (detectedSourceLanguage
+  // === targetLanguage). Repéré le 2026-07-24 : "Ville cyberpunk" restait
+  // affiché tel quel en anglais alors que la version espagnole traduisait
+  // bien. Sans ce filet, ce résultat non traduit serait mis en cache pour
+  // toujours (même source_hash ensuite). On ne retente qu'une fois, en
+  // forçant `fr`, et SEULEMENT si le texte contient un marqueur français
+  // repérable (voir looksFrench) : sans cette double condition, un futur
+  // texte communautaire réellement déjà en anglais/espagnol (une fois le
+  // site multilingue en pratique, pas seulement en configuration) serait à
+  // tort retraduit depuis un faux `fr` supposé, ce qui le corromprait.
+  if (!sourceLanguage && detectedSourceLanguage === targetLanguage && translatedText === sourceText && targetLanguage !== 'fr' && looksFrench(sourceText)) {
+    try {
+      const retry = await callGoogleTranslate(sourceText, targetLanguage, 'fr');
+      if (retry.translatedText && retry.translatedText !== sourceText) {
+        translatedText = retry.translatedText;
+        detectedSourceLanguage = 'fr';
+      }
+    } catch {
+      // Retentative best-effort : en cas d'échec, on garde le résultat du premier appel.
+    }
+  }
 
   // Même si le texte est déjà dans la langue cible (détection auto), on met en
   // cache ce résultat (translated_text = sourceText) : sinon, chaque nouvelle
@@ -132,6 +174,165 @@ export async function getTranslatedField({ admin, contentType, contentId, field,
       language: targetLanguage,
       translated_text: translatedText,
       source_language: detectedSourceLanguage,
+      source_hash: hash,
+      translated_at: new Date().toISOString(),
+    },
+    { onConflict: 'content_type,content_id,field,language' }
+  );
+
+  return translatedText;
+}
+
+/**
+ * Traduit le NOM d'un lieu communautaire (destination_places /
+ * static_destination_places) via Wikipédia (voir wikipediaPlaceName.js),
+ * jamais via Google Translate : un nom de lieu est un nom propre, pas du
+ * texte descriptif — Google le traduisait littéralement ("High Line" →
+ * "Ligne haute"), ce qui n'est pas son vrai nom même consulté en français.
+ * Même cache permanent que getTranslatedField (table `translations`), pour
+ * ne jamais réinterroger Wikipédia/Wikidata deux fois pour le même lieu/
+ * langue. Si Wikipédia n'a aucune correspondance fiable, on met en cache le
+ * nom D'ORIGINE (comme getTranslatedField le fait déjà pour un texte déjà
+ * dans la langue cible) : mieux vaut garder le nom tel quel que d'inventer
+ * une traduction, et ça évite de refaire la même recherche infructueuse à
+ * chaque consultation.
+ * @param {Object} params
+ * @param {import('@supabase/supabase-js').SupabaseClient} params.admin
+ * @param {string} params.contentType
+ * @param {string} params.contentId
+ * @param {string} params.field
+ * @param {string} params.sourceText
+ * @param {string} params.targetLanguage
+ * @returns {Promise<string>}
+ */
+export async function getTranslatedPlaceName({ admin, contentType, contentId, field, sourceText, targetLanguage }) {
+  if (!sourceText || !sourceText.trim()) return sourceText;
+
+  const hash = hashText(sourceText);
+
+  const { data: cached } = await admin
+    .from('translations')
+    .select('translated_text, source_hash')
+    .match({ content_type: contentType, content_id: String(contentId), field, language: targetLanguage })
+    .maybeSingle();
+
+  if (cached && cached.source_hash === hash) return cached.translated_text;
+
+  // Pas de quota Google à réserver ici : Wikipédia/Wikidata sont des
+  // endpoints publics gratuits, sans clé ni facturation au caractère.
+  const translated = await translatePlaceNameViaWikipedia(sourceText, targetLanguage);
+  const translatedText = translated || sourceText;
+
+  await admin.from('translations').upsert(
+    {
+      content_type: contentType,
+      content_id: String(contentId),
+      field,
+      language: targetLanguage,
+      translated_text: translatedText,
+      source_language: null,
+      source_hash: hash,
+      translated_at: new Date().toISOString(),
+    },
+    { onConflict: 'content_type,content_id,field,language' }
+  );
+
+  return translatedText;
+}
+
+/**
+ * Traduit le NOM d'une activité de modèle de planning (trip_template_activities) :
+ * contrairement à un nom de lieu communautaire (getTranslatedPlaceName), une
+ * activité éditoriale n'est PAS toujours un nom propre repérable sur
+ * Wikipédia — à côté de vrais lieux ("Cité Interdite"/"Forbidden City"), on y
+ * trouve aussi des plats ("hotpot"), des lieux composés/descriptifs ("Maison
+ * de thé du parc du Peuple") ou de simples activités ("Balade en vélo").
+ * Wikipédia seul laisserait ces cas-là intacts (aucune correspondance
+ * fiable trouvée) — on retombe alors sur Google Translate comme second
+ * essai, plutôt que d'afficher tel quel un texte descriptif non traduit.
+ * Ordre : 1) Wikipédia (gratuit, fiable pour les vrais noms propres,
+ * n'invente jamais une traduction hasardeuse d'un lieu) ; 2) si rien trouvé,
+ * Google Translate (quota mensuel, comme getTranslatedField) ; 3) si les
+ * deux échouent/indisponibles, repli sur le texte d'origine.
+ * @param {Object} params
+ * @param {import('@supabase/supabase-js').SupabaseClient} params.admin
+ * @param {string} params.contentType
+ * @param {string} params.contentId
+ * @param {string} params.field
+ * @param {string} params.sourceText
+ * @param {boolean} [params.isEditorial] - true pour un itinéraire ÉDITORIAL
+ *   (toujours saisi en français par l'équipe) : force la langue source à
+ *   'fr' pour le repli Google Translate UNIQUEMENT (Wikipédia n'en a pas
+ *   besoin). Sans ce forçage, l'auto-détection de Google Translate croit
+ *   parfois que ces noms courts et saturés de noms propres ("Tour Eiffel et
+ *   Champ de Mars") sont déjà en anglais (peu de mots grammaticaux à
+ *   reconnaître) et les renvoie tels quels puisque source == target — bug
+ *   déjà rencontré et corrigé une première fois avant l'introduction de
+ *   Wikipédia (voir l'historique de resolveSourceLanguage). Absent/`false`
+ *   pour un modèle communautaire : aucun indice fiable sur sa langue,
+ *   laisser Google Translate auto-détecter.
+ * @param {string} params.targetLanguage
+ * @returns {Promise<string>}
+ */
+export async function getTranslatedActivityName({ admin, contentType, contentId, field, sourceText, isEditorial = false, targetLanguage }) {
+  if (!sourceText || !sourceText.trim()) return sourceText;
+
+  const hash = hashText(sourceText);
+
+  const { data: cached } = await admin
+    .from('translations')
+    .select('translated_text, source_hash')
+    .match({ content_type: contentType, content_id: String(contentId), field, language: targetLanguage })
+    .maybeSingle();
+
+  if (cached && cached.source_hash === hash) return cached.translated_text;
+
+  const viaWikipedia = await translatePlaceNameViaWikipedia(sourceText, targetLanguage);
+  let translatedText = viaWikipedia;
+  let sourceLanguage = null;
+
+  if (!translatedText) {
+    // Pas de correspondance Wikipédia : repli Google Translate, best-effort —
+    // une indisponibilité (quota, réseau) ne doit pas faire échouer l'import,
+    // juste laisser le texte d'origine.
+    try {
+      const withinQuota = await reserveQuota(admin, sourceText.length);
+      if (withinQuota) {
+        const result = await callGoogleTranslate(sourceText, targetLanguage, isEditorial ? 'fr' : null);
+        translatedText = result.translatedText;
+        sourceLanguage = result.detectedSourceLanguage;
+
+        // Même filet anti-faux-positif que getTranslatedField (voir
+        // looksFrench) : un modèle COMMUNAUTAIRE (isEditorial=false) n'a pas
+        // de langue source forcée ci-dessus, donc le même risque de
+        // détection auto ratée s'applique ("Ville cyberpunk" resté non
+        // traduit en anglais). Ne se déclenche que si un marqueur français
+        // est repérable dans le texte — sinon, un futur contenu déjà écrit
+        // dans une autre langue par un autre contributeur n'est pas touché.
+        if (!isEditorial && sourceLanguage === targetLanguage && translatedText === sourceText && targetLanguage !== 'fr' && looksFrench(sourceText)) {
+          const retry = await callGoogleTranslate(sourceText, targetLanguage, 'fr');
+          if (retry.translatedText && retry.translatedText !== sourceText) {
+            translatedText = retry.translatedText;
+            sourceLanguage = 'fr';
+          }
+        }
+      }
+    } catch (err) {
+      console.error('[translation] repli Google Translate échoué:', err.message);
+    }
+  }
+
+
+  translatedText = translatedText || sourceText;
+
+  await admin.from('translations').upsert(
+    {
+      content_type: contentType,
+      content_id: String(contentId),
+      field,
+      language: targetLanguage,
+      translated_text: translatedText,
+      source_language: sourceLanguage,
       source_hash: hash,
       translated_at: new Date().toISOString(),
     },

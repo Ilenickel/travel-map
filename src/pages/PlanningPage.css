@@ -2196,6 +2196,40 @@
   overflow: hidden;
 }
 
+/* PC uniquement (mobile/tablette gèrent déjà ce panneau en feuille plein
+   écran via @media max-width:1024px plus bas, non concernés ici) : sur
+   desktop, ce wrapper restait un simple enfant flex normal (flex-shrink:0)
+   de .pp-city-panel-bottom, lui-même dans .pp-city-panel qui a une hauteur
+   fixe et overflow:hidden. Sa hauteur totale (en-tête + recherche + liste
+   jusqu'à 220px) pouvait dépasser l'espace encore laissé par la liste de
+   destinations au-dessus, et se faisait alors rogner par ce overflow:hidden
+   SANS AUCUN scroll pour atteindre le bas de la liste de pays (signalé le
+   2026-07-24). Passé en overlay absolute ancré en bas de
+   .pp-city-panel-bottom (qui devient son repère de position) : ne dépend
+   plus de la place laissée par le flex au-dessus, hauteur plafonnée à sa
+   propre valeur et sa liste interne reste scrollable dans cette limite. */
+@media (min-width: 1025px) {
+  .pp-city-panel-bottom { position: relative; }
+  .pp-country-picker-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.18);
+  }
+  .pp-country-picker-wrap .pp-country-picker {
+    max-height: min(420px, calc(100vh - 220px));
+    display: flex;
+    flex-direction: column;
+  }
+  .pp-country-picker-wrap .pp-country-list {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+  }
+}
+
 .pp-country-picker {
   background: var(--surface);
   padding: 0;

@@ -3,7 +3,7 @@
 // Voir api/_lib/placeSuggestions.js pour la logique de correspondance ville ↔ destination.
 import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { findMatchingCommunityDestinations } from './_lib/placeSuggestions.js';
-import { getTranslatedField, TranslationUnavailableError, SUPPORTED_TARGET_LANGUAGES } from './_lib/translation.js';
+import { getTranslatedPlaceName, TranslationUnavailableError, SUPPORTED_TARGET_LANGUAGES } from './_lib/translation.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -50,20 +50,21 @@ export default async function handler(req, res) {
     for (const p of data || []) places.push({ id: p.id, type: 'static', name: p.name, lat: p.lat, lng: p.lng, imageUrl: p.image_url || null });
   }
 
-  // Traduction : compromis assumé (2026-07-23) — un nom de lieu est souvent
-  // un nom propre ("High Line") que Google Translate traduit littéralement à
-  // tort ("Ligne Haute"), MAIS sans traduction un nom entré dans une langue
-  // rare par un contributeur reste illisible pour tous les autres visiteurs.
-  // La lisibilité cross-langue l'emporte : on retraduit, en acceptant le
-  // risque résiduel d'un nom propre mal traduit (pas de garde-fou géocodeur
-  // fiable possible ici, contrairement aux villes — voir cityNameOverrides.js
-  // — un lieu précis n'est pas vérifiable de la même façon).
+  // Traduction via Wikipédia/Wikidata (voir wikipediaPlaceName.js), pas
+  // Google Translate : un nom de lieu est souvent un nom propre ("High
+  // Line") que Google Translate traduit littéralement à tort ("Ligne
+  // Haute") — même correctif du 2026-07-24 que pour PlacesList.jsx et les
+  // noms de ville de modèles partagés (api/get-translated-content.js),
+  // manquant ici jusqu'à présent (signalé le 2026-07-24 : lieux "Cité
+  // Interdite"/"Temple du Ciel" restant en français en anglais). Repli sur
+  // le nom d'origine si rien de vérifiable trouvé (voir
+  // getTranslatedPlaceName) — jamais de traduction mot à mot non vérifiée.
   let translatedPlaces;
   try {
     translatedPlaces = await Promise.all(
       places.map(async (p) => ({
         ...p,
-        name: await getTranslatedField({
+        name: await getTranslatedPlaceName({
           admin,
           contentType: p.type === 'community' ? 'destination_place' : 'static_destination_place',
           contentId: p.id,
