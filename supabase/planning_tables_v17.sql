@@ -1,0 +1,17 @@
+-- ═══════════════════════════════════════════════════════════════
+-- planning_tables_v17.sql — ADDITIONS seulement
+-- ═══════════════════════════════════════════════════════════════
+-- Dépenses partagées avec des bénéficiaires précis : jusqu'ici une somme
+-- payée par quelqu'un était implicitement partagée entre TOUS les
+-- participants actuels du voyage. Or dans un voyage à N personnes, une
+-- dépense (ex: un resto) peut ne concerner que quelques-uns d'entre eux —
+-- elle ne doit alors ni s'ajouter à la cagnotte commune, ni augmenter la
+-- part de ceux qui n'y étaient pas.
+--
+-- beneficiaries = liste des user_id qui partagent cette somme.
+--   - NULL ou tableau vide  → dépense partagée par TOUS les participants
+--     actuels du voyage (comportement historique, rétro-compatible avec les
+--     lignes existantes).
+--   - tableau explicite      → seuls ces participants se partagent la somme ;
+--     les autres n'en doivent rien et ne la voient pas dans leur part.
+ALTER TABLE trip_expenses ADD COLUMN IF NOT EXISTS beneficiaries UUID[];

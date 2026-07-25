@@ -8940,6 +8940,43 @@
   margin: 0 auto;
   width: 100%;
 }
+/* iPad Pro (portrait 1024px = pile la limite du mode "page mobile" plus
+   haut) : la carte à 560px flotte minuscule au milieu d'un écran bien plus
+   large. On lui laisse davantage de place sur les écrans type tablette. */
+@media (min-width: 700px) {
+  .pp-expenses.pp-expenses {
+    max-width: 720px;
+    padding: 20px;
+    gap: 18px;
+  }
+  .pp-expenses .pp-expenses-hero { padding: 36px 28px 26px; gap: 6px; }
+  .pp-expenses .pp-expenses-hero-icon { width: 64px; height: 64px; border-radius: 20px; font-size: 30px; margin-bottom: 10px; }
+  .pp-expenses .pp-expenses-hero-total { font-size: 44px; }
+  .pp-expenses .pp-expenses-hero-sub { font-size: 16.5px; max-width: 440px; }
+  .pp-expenses .pp-expenses-hero-note { font-size: 14px; max-width: 440px; }
+  .pp-expenses .pp-expenses-stats-row { font-size: 16px; margin-top: 14px; }
+  .pp-expenses .pp-expenses-legend-item { font-size: 14px; padding: 6px 13px 6px 9px; }
+  .pp-expenses .pp-expense-accordion { gap: 12px; }
+  .pp-expenses .pp-expense-card-head { padding: 18px; gap: 16px; }
+  .pp-expenses .pp-expense-avatar { width: 46px; height: 46px; }
+  .pp-expenses .pp-expense-card-name-text { font-size: 18px; }
+  .pp-expenses .pp-expense-card-count { font-size: 13.5px; }
+  .pp-expenses .pp-expense-card-total { font-size: 18.5px; }
+  .pp-expenses .pp-expense-delta { font-size: 15px; }
+  .pp-expenses .pp-expense-card-body { padding: 0 18px 18px; gap: 14px; }
+  .pp-expenses .pp-expense-row { padding: 13px 4px; gap: 14px; }
+  .pp-expenses .pp-expense-row-label { font-size: 16px; }
+  .pp-expenses .pp-expense-row-date { font-size: 12.5px; }
+  .pp-expenses .pp-expense-row-split { font-size: 12px; padding: 2px 8px; }
+  .pp-expenses .pp-expense-row-amount { font-size: 17px; }
+  .pp-expenses .pp-expense-add-trigger { font-size: 15.5px; }
+  .pp-expenses .pp-expense-benefs-trigger,
+  .pp-expenses .pp-expense-benefs-menu-item { font-size: 15.5px; padding: 9px 11px; }
+  .pp-expenses .pp-expense-add-label { font-size: 16px; }
+  .pp-expenses .pp-expense-balance-line { font-size: 13.5px; }
+  .pp-expenses .pp-expense-showmore-btn { font-size: 13px; padding: 8px 16px; }
+}
+
 
 /* ── Bilan : gros total + bandeau d'avatars ── */
 .pp-expenses-hero {
@@ -8949,29 +8986,49 @@
   text-align: center;
   gap: 4px;
   background:
-    radial-gradient(120% 140% at 50% -20%, rgba(99, 102, 241, 0.16), transparent 60%),
+    radial-gradient(130% 150% at 50% -30%, rgba(99, 102, 241, 0.22), transparent 62%),
     var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px 18px 18px;
+  border-radius: 24px;
+  padding: 28px 20px 20px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 12px 32px -18px rgba(0, 0, 0, 0.35);
 }
 .pp-expenses-hero-icon {
-  font-size: 26px;
-  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  font-size: 24px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  box-shadow: 0 8px 20px -8px rgba(99, 102, 241, 0.6);
 }
 .pp-expenses-hero-total {
-  font-size: 34px;
+  font-size: 36px;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text);
   line-height: 1.1;
 }
 .pp-expenses-hero-sub {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   max-width: 320px;
   line-height: 1.45;
   margin-bottom: 6px;
+}
+/* Précise que la cagnotte ci-dessus n'inclut que les dépenses partagées par
+   tout le groupe — affichée seulement s'il existe au moins une dépense
+   partielle (voir hasPartialExpenses dans TripExpensesPanel). */
+.pp-expenses-hero-note {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  max-width: 320px;
+  line-height: 1.4;
+  margin-top: -4px;
+  margin-bottom: 4px;
 }
 
 /* Barre de répartition : un segment par participant, largeur proportionnelle
@@ -8981,15 +9038,17 @@
 .pp-expenses-bar {
   display: flex;
   width: 100%;
-  height: 10px;
-  border-radius: 6px;
+  height: 12px;
+  border-radius: 20px;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 14px;
   background: var(--surface);
+  gap: 2px;
 }
 .pp-expenses-bar span {
   height: 100%;
   min-width: 3px;
+  border-radius: 20px;
   transition: width 0.3s ease;
 }
 .pp-expenses-legend {
@@ -8998,7 +9057,7 @@
   justify-content: center;
   gap: 6px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 .pp-expenses-legend-item {
   display: inline-flex;
@@ -9007,14 +9066,15 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 4px 10px 4px 8px;
+  padding: 5px 11px 5px 8px;
   font-size: 11.5px;
   font-weight: 600;
   color: var(--text);
   font-family: inherit;
   cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
-.pp-expenses-legend-item:hover { border-color: var(--border-light); }
+.pp-expenses-legend-item:hover { border-color: var(--border-light); transform: translateY(-1px); }
 .pp-expenses-legend-dot {
   width: 8px;
   height: 8px;
@@ -9058,11 +9118,12 @@
   background: var(--surface2);
   border: 1px solid var(--border);
   border-left: 3px solid var(--p-color, var(--border));
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  transition: border-color 0.18s;
+  transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
 }
-.pp-expense-card--open { border-color: var(--border-light); border-left-color: var(--p-color, var(--border-light)); }
+.pp-expense-card:hover { box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.35); }
+.pp-expense-card--open { border-color: var(--border-light); border-left-color: var(--p-color, var(--border-light)); box-shadow: 0 8px 24px -14px rgba(0, 0, 0, 0.4); }
 .pp-expense-card--former { opacity: 0.68; }
 
 /* En-tête : nom (peut passer à la ligne, le lire en entier prime) + badge
@@ -9151,6 +9212,42 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* Note d'ancien participant (formerNote) : contrairement au nombre de
+   dépenses ci-dessus, cette phrase est longue et doit rester lisible en
+   entier — on annule la troncature à une ligne héritée de .pp-expense-card-count. */
+.pp-expense-card-count--wrap {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  line-height: 1.35;
+}
+.pp-expense-card-total-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+/* Petit "+" pour ajouter malgré tout une dépense au nom d'un ancien
+   participant (ex: une somme oubliée avant son départ) — le bouton commun
+   en bas du panneau ne propose que les participants actuels comme payeur.
+   Même style que l'icone du bouton global "Ajouter une dépense"
+   (.pp-expense-add-trigger-icon, pastille dégradée) : le même "+" repris à
+   l'identique, aligné juste devant le montant. */
+.pp-expense-card-former-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s;
+}
+.pp-expense-card-former-add:hover { transform: scale(1.08); }
 .pp-expense-card-totals {
   display: flex;
   flex-direction: column;
@@ -9167,19 +9264,61 @@
 .pp-expense-delta {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  font-size: 10.5px;
-  font-weight: 700;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 800;
   border-radius: 20px;
-  padding: 1px 8px;
+  border: 1.5px solid transparent;
+  padding: 2px 6px 2px 9px;
 }
+.pp-expense-delta-arrow {
+  flex-shrink: 0;
+}
+/* Vert + flèche vers le haut : on nous doit de l'argent. Contraste et
+   traits volontairement appuyés (couleur ET forme, pas la couleur seule) —
+   fond/texte/bordure plus marqués pour rester lisible en basse vision. */
 .pp-expense-delta--plus {
-  color: #34d399;
-  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  background: rgba(5, 150, 105, 0.16);
+  border-color: rgba(5, 150, 105, 0.4);
 }
+/* Rouge-orangé + flèche vers le bas : on doit encore de l'argent. Teinte
+   volontairement éloignée du vert (pas un simple jaune/ambre trop proche du
+   vert pour une partie des daltoniens) pour que les deux états restent
+   distinguables même sans percevoir la couleur exacte. */
 .pp-expense-delta--minus {
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.12);
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.14);
+  border-color: rgba(220, 38, 38, 0.35);
+}
+/* Bouton "i" à côté du solde : ouvre le détail "qui doit quoi à qui"
+   (pairwise, voir owesTo/owedBy) sans avoir à deviner d'où vient le montant. */
+.pp-expense-delta-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: none;
+  color: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  font-style: italic;
+  font-family: Georgia, serif;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  opacity: 1;
+}
+.pp-expense-delta-info-btn:hover { opacity: 1; }
+/* Variante utilisée inline dans un texte (potNote) : même rond "i" que le
+   bouton du solde, juste non cliquable et aligné avec la ligne de texte. */
+.pp-expense-delta-info-btn--inline {
+  vertical-align: middle;
+  margin-top: -2px;
+  cursor: default;
 }
 .pp-expense-card-chevron {
   flex-shrink: 0;
@@ -9227,7 +9366,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 .pp-expense-row-label {
   font-size: 13px;
@@ -9235,9 +9374,70 @@
   color: var(--text);
   overflow-wrap: anywhere;
 }
+.pp-expense-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .pp-expense-row-date {
   font-size: 10.5px;
   color: var(--text-muted);
+}
+/* Pastille "N pers." : cette dépense précise ne concerne pas tout le groupe —
+   son montant n'est divisé qu'entre les bénéficiaires listés, visibles au
+   clic (mobile ET pc, pas de survol) via .pp-expense-split-popover. */
+.pp-expense-row-split-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.pp-expense-row-split {
+  font-family: inherit;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: var(--accent2);
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-glow);
+  border-radius: 20px;
+  padding: 1px 7px;
+  cursor: pointer;
+}
+/* Rendu via createPortal(document.body) avec position:fixed calculée en JS
+   (voir splitInfoPos) : sinon coupé net par l'overflow:hidden de
+   .pp-expense-card (border-radius de l'accordéon). Fermeture au clic
+   dehors gérée par un listener document (voir useEffect closeIfOutside),
+   pas de backdrop plein écran. */
+.pp-expense-split-popover {
+  position: fixed;
+  /* Rendu en portail dans document.body : sur le modal desktop, il devient
+     un simple frère (pas un descendant) de .pp-modal-overlay dont le
+     z-index (200) l'aurait sinon recouvert entièrement malgré son ordre
+     dans le DOM (backdrop plein écran par-dessus) — d'où le "rien ne se
+     passe" au clic alors que le popover s'ouvrait bien, juste invisible. */
+  z-index: 5001;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.pp-expense-split-popover-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.pp-expense-split-popover-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
 }
 .pp-expense-row-amount {
   font-size: 13.5px;
@@ -9266,6 +9466,52 @@
   opacity: 1;
 }
 
+/* ── Popover "qui doit quoi à qui" (bouton i à côté du solde) ── Pairwise
+   nette : ce que la personne doit à chacun / ce qu'on lui doit, jamais
+   mélangé entre paires différentes (voir owesTo/owedBy dans
+   TripExpensesPanel). Rendu en flux normal sous l'en-tête (pas en position
+   absolue) pour éviter tout souci de débordement avec .pp-expense-card qui a
+   overflow: hidden. ── */
+.pp-expense-balance-popover {
+  margin: 0 12px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: ppExpenseBodyIn 0.16s ease-out;
+}
+.pp-expense-balance-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+}
+.pp-expense-balance-line-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pp-expense-balance-line-text {
+  flex: 1;
+  min-width: 0;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.pp-expense-balance-line-amount {
+  flex-shrink: 0;
+  font-weight: 800;
+  border-radius: 20px;
+  padding: 1px 8px;
+}
+.pp-expense-balance-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
 /* "Voir N dépenses de plus" : n'apparaît que si la liste dépasse PAGE_SIZE
    (voir TripExpensesPanel) — un participant avec des dizaines d'entrées ne
    les déroule pas toutes d'un coup. */
@@ -9283,19 +9529,73 @@
 }
 .pp-expense-showmore-btn:hover { background: var(--surface3); color: var(--text); }
 
-/* ── Ajout d'une somme ── Le bouton déclencheur réutilise le style standard
-   .pp-add-item-btn (icône en médaillon, fond accent doux) — cohérent avec
-   les autres boutons d'ajout de l'app plutôt qu'un habillage dédié. */
-.pp-expense-add-btn { width: auto; margin: 0; align-self: flex-start; }
+/* ── Ajout d'une somme ── Bouton déclencheur dédié (au lieu du style
+   générique .pp-add-item-btn) : pastille d'icône en dégradé, plus affirmé. */
+.pp-expense-add-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  border: none;
+  border-radius: 24px;
+  padding: 8px 16px 8px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.pp-expense-add-trigger:hover {
+  border-color: var(--accent);
+  box-shadow: 0 6px 16px -10px rgba(99, 102, 241, 0.5);
+  transform: translateY(-1px);
+}
+/* Variante commune en bas du panneau : un seul bouton pour tout le monde,
+   pas besoin d'ouvrir la carte d'un participant et de défiler jusqu'à son
+   propre bouton (voir openAddFormGlobal). Plus proéminente qu'un simple
+   bouton de carte : plus grande, pleine largeur, séparée du reste par un
+   trait pour lui donner du poids en fin de panneau. */
+.pp-expenses-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  margin-top: 4px;
+}
+.pp-expenses-footer-divider {
+  height: 1px;
+  background: var(--border);
+}
+.pp-expense-add-trigger--global {
+  align-self: center;
+  padding: 12px 22px 12px 10px;
+  font-size: 14px;
+  box-shadow: 0 6px 18px -10px rgba(99, 102, 241, 0.35);
+}
+.pp-expense-add-trigger-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
 
 .pp-expense-add-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   background: var(--surface);
   border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 8px 24px -18px rgba(0, 0, 0, 0.4);
 }
 .pp-expense-add-amount-wrap {
   display: flex;
@@ -9303,9 +9603,142 @@
   gap: 6px;
   background: var(--surface2);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 4px 10px;
 }
+
+/* ── Sélection des bénéficiaires : qui partage cette dépense précise (pas
+   forcément tout le groupe — voir TripExpensesPanel/effectiveBeneficiaries).
+   Liste déroulante plutôt qu'une rangée de puces : à 8-10 participants,
+   toutes les afficher d'un coup prendrait trop de place — ici, tout le
+   monde est déjà coché par défaut sans avoir à ouvrir la liste, on ne la
+   déplie que pour retirer des absents. ── */
+.pp-expense-add-benefs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pp-expense-add-benefs-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.pp-expense-benefs-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+.pp-expense-benefs-trigger:hover { border-color: var(--border); }
+.pp-expense-benefs-trigger-avatars {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.pp-expense-benefs-trigger-avatars .pp-expense-avatar,
+.pp-expense-benefs-trigger-avatars .pp-expense-avatar--initials {
+  width: 20px;
+  height: 20px;
+  font-size: 9px;
+  border: 2px solid var(--surface2);
+}
+.pp-expense-benefs-trigger-avatars .pp-expense-avatar:not(:first-child),
+.pp-expense-benefs-trigger-avatars .pp-expense-avatar--initials:not(:first-child) {
+  margin-left: -8px;
+}
+.pp-expense-benefs-trigger-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pp-expense-benefs-trigger-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+.pp-expense-benefs-trigger[aria-expanded="true"] .pp-expense-benefs-trigger-chevron {
+  transform: rotate(180deg);
+}
+/* Liste dépliée : rendue en flux normal sous le déclencheur (pas en position
+   absolue), scrollable au-delà de 5 lignes — pas de débordement possible
+   hors de la carte (.pp-expense-card a overflow: hidden). */
+.pp-expense-benefs-menu {
+  display: flex;
+  flex-direction: column;
+  max-height: 190px;
+  overflow-y: auto;
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 4px;
+}
+.pp-expense-benefs-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+  opacity: 0.65;
+}
+.pp-expense-benefs-menu-item:hover { background: var(--surface3); }
+.pp-expense-benefs-menu-item--on {
+  color: var(--text);
+  opacity: 1;
+}
+/* Le payeur ne peut pas se retirer du partage (voir toggleBeneficiary) —
+   ligne non cliquable, cadenas à la place de la case à cocher. */
+.pp-expense-benefs-menu-item--locked {
+  cursor: default;
+}
+.pp-expense-benefs-menu-item--locked:hover { background: none; }
+.pp-expense-benefs-menu-lock {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+.pp-expense-benefs-menu-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pp-expense-benefs-menu-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.pp-expense-add-benefs-hint {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
 .pp-expense-add-amount-wrap:focus-within {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
@@ -9364,6 +9797,38 @@
    bottom sheet en dessous de 768px comme les autres modales). ── */
 .pp-expenses-modal .pp-modal-body { padding: 0; }
 .pp-expenses-modal .pp-expenses { padding: 20px; max-width: none; }
+/* Sur PC, ce panneau vit dans une modale bien plus large qu'un écran mobile :
+   les tailles de police pensées pour un petit écran (voir règles génériques
+   ci-dessus) y paraissent minuscules. On les reprend en plus grand ici,
+   seulement dans ce contexte desktop (le mode mobile utilise .pp-expenses-page,
+   jamais .pp-expenses-modal). Les montants (.pp-expenses-hero-total,
+   .pp-expense-card-total) étaient déjà agrandis séparément, inchangés ici. */
+.pp-expenses-modal .pp-expense-card-name-text { font-size: 15.5px; }
+.pp-expenses-modal .pp-expense-card-count { font-size: 12px; }
+.pp-expenses-modal .pp-expense-row-label { font-size: 14px; }
+.pp-expenses-modal .pp-expense-row-date { font-size: 11px; }
+.pp-expenses-modal .pp-expense-row-split { font-size: 10.5px; }
+.pp-expenses-modal .pp-expense-row-amount { font-size: 14.5px; }
+.pp-expenses-modal .pp-expenses-legend-item { font-size: 12.5px; }
+.pp-expenses-modal .pp-expenses-stats-row { font-size: 13.5px; }
+.pp-expenses-modal .pp-expense-delta { font-size: 13px; }
+.pp-expenses-modal .pp-expense-add-trigger { font-size: 13.5px; }
+.pp-expenses-modal .pp-expense-benefs-trigger,
+.pp-expenses-modal .pp-expense-benefs-menu-item { font-size: 13.5px; }
+.pp-expenses-modal .pp-expense-add-label { font-size: 14px; }
+.pp-expenses-modal .pp-expense-balance-line { font-size: 13px; }
+.pp-expenses-modal .pp-expense-showmore-btn { font-size: 12.5px; }
+.pp-expenses-modal .pp-expense-add-benefs-label,
+.pp-expenses-modal .pp-expense-add-benefs-hint { font-size: 11.5px; }
+.pp-expenses-modal .pp-expense-card-former-add { width: 24px; height: 24px; }
+.pp-expenses-modal .pp-expense-card-former-add svg { width: 14px; height: 14px; }
+/* Le texte du bilan (sous-titre + note "cagnotte partielle") reste petit
+   partout ailleurs (voir règles génériques et media query tablette
+   ci-dessus) — sur PC, dans cette modale bien plus large, on l'agrandit
+   encore un peu plus. Le montant total (.pp-expenses-hero-total) n'est PAS
+   concerné : déjà assez grand. */
+.pp-expenses-modal .pp-expenses-hero-sub { font-size: 15px; max-width: 420px; }
+.pp-expenses-modal .pp-expenses-hero-note { font-size: 13px; max-width: 420px; }
 
 /* ═══════════════════════════════════════════════════════════════
    Écran d'accueil « Mes voyages » — grille de cartes (remplace la
