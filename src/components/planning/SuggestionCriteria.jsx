@@ -85,7 +85,19 @@ export function ActivityCriteriaDropdown({ selected, onToggle }) {
       setOpen(false);
     };
     document.addEventListener('click', closeIfOutside, true);
-    return () => document.removeEventListener('click', closeIfOutside, true);
+    // Ferme le menu dès qu'un défilement a lieu quelque part (capture:true
+    // pour aussi détecter le scroll d'un conteneur interne, ex. corps de
+    // modale — pas seulement window) : sa position est calculée une seule
+    // fois à l'ouverture (voir toggleOpen), donc rien ne la mettait à jour
+    // pendant un scroll et le menu se retrouvait décroché du bouton
+    // (signalé le 2026-07-25). Se réouvre à la bonne position au clic
+    // suivant sur le bouton plutôt que de suivre le scroll en continu.
+    const closeOnScroll = () => setOpen(false);
+    document.addEventListener('scroll', closeOnScroll, true);
+    return () => {
+      document.removeEventListener('click', closeIfOutside, true);
+      document.removeEventListener('scroll', closeOnScroll, true);
+    };
   }, [open]);
 
   return (
