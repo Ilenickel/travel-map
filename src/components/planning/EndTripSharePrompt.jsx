@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TRIP_CRITERIA } from '../../lib/planningUtils';
+import { ActivityCriteriaDropdown } from './SuggestionCriteria';
 
 // Popup affichée sur l'écran principal de planification (pas dans l'éditeur
 // d'un voyage précis) dès qu'AU MOINS un voyage de l'utilisateur est terminé
@@ -68,6 +69,7 @@ export default function EndTripSharePrompt({ trip, onAnswer }) {
                     {criteria.includes(key) && <span className="pp-criteria-chip-check">✓</span>}
                   </button>
                 ))}
+                <ActivityCriteriaDropdown selected={criteria} onToggle={toggleCriterion} />
               </div>
               <div className="pp-share-template-note">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" opacity=".5">

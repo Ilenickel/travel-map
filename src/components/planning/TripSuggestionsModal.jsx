@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { callModeration } from '../../lib/moderation';
 import { COUNTRIES } from '../../data/index';
-import { countryAlpha2FromEmoji, formatDuration, TRIP_CRITERIA } from '../../lib/planningUtils';
+import { countryAlpha2FromEmoji, formatDuration, ALL_CRITERIA } from '../../lib/planningUtils';
 import { CriteriaFilterChips, CriteriaIndicators } from './SuggestionCriteria';
 import { useActivityNameTranslations, useCityNameTranslations } from '../../lib/translateContent';
 import { useActivityPhoto } from '../../hooks/useActivityPhoto';
@@ -988,7 +988,7 @@ function FullTripTab({ dest, tripId, baseCitiesCount, hasAnyDates, onImported, r
                 ? t('fullTripSuggestions.summaryDays', { count: searchedNbDays })
                 : t('fullTripSuggestions.summaryAnyDuration'),
               mustCities.length > 0 && mustCities.join(', '),
-              criteria.length > 0 && criteria.map((k) => TRIP_CRITERIA[k]?.label).filter(Boolean).join(', '),
+              criteria.length > 0 && criteria.map((k) => ALL_CRITERIA[k]?.label).filter(Boolean).join(', '),
             ].filter(Boolean).join(' · ')}
           </span>
           <button type="button" className="pp-fulltrip-summary-edit" onClick={() => setFormCollapsed(false)}>

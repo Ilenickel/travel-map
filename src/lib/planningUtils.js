@@ -63,7 +63,25 @@ export const TRIP_CRITERIA = {
   low_budget: tripCriterion('low_budget', '💸'),
   nature:     tripCriterion('nature', '🌿'),
   city:       tripCriterion('city', '🏙️'),
+  beach:      tripCriterion('beach', '🏖️'),
 };
+
+// Critères "activités" (ski, plongée, randonnée…) : mêmes clés stockées dans
+// share_criteria/criteria que TRIP_CRITERIA ci-dessus, mais regroupées dans
+// un menu déroulant à part côté UI plutôt qu'ajoutées à la rangée de pastilles
+// (voir ActivityCriteriaDropdown dans SuggestionCriteria.jsx) — la liste peut
+// grandir sans encombrer la rangée principale.
+export const ACTIVITY_CRITERIA = {
+  ski:        tripCriterion('ski', '⛷️'),
+  plongee:    tripCriterion('plongee', '🤿'),
+  randonnee:  tripCriterion('randonnee', '🥾'),
+};
+
+// Fusion des deux pour les lookups (icône/label d'une clé quelconque de
+// share_criteria) sans se soucier de savoir si elle vient de la rangée de
+// pastilles ou du menu déroulant "Activités".
+export const ALL_CRITERIA = { ...TRIP_CRITERIA, ...ACTIVITY_CRITERIA };
+
 
 export function formatDuration(minutes) {
   if (!minutes) return '';

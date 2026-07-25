@@ -38,6 +38,11 @@
     "low_budget": "Bajo presupuesto",
     "nature": "Naturaleza",
     "city": "Escapada urbana",
+    "beach": "Playa",
+    "ski": "Esquí",
+    "plongee": "Buceo",
+    "randonnee": "Senderismo",
+    "activitiesLabel": "Actividades",
     "filterLabel": "Mis criterios:",
     "indicator": {
       "met": "Este viaje cumple el criterio \"{{label}}\"",

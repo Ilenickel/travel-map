@@ -28,15 +28,34 @@ export default function TripsHome({ trips, tripStats, userId, onSelect, onCreate
             <p className="pp-home-subtitle">{t('home.subtitle', { count: trips.length })}</p>
           )}
         </div>
-        {/* Retour à la carte du site — visible sur mobile uniquement (la topbar,
-            qui porte ce lien sur ordinateur, y est masquée ; sans lui l'utilisateur
-            resterait bloqué dans la planification, l'ancien lien vivait dans la
-            sidebar désormais supprimée). */}
-        <Link to="/" className="pp-home-topbar-link" aria-label={t('topbar.homeButton')}>
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-          </svg>
-        </Link>
+        {/* Retour à la carte du site — visible sur mobile/tablette uniquement
+            (la topbar, qui porte ce lien sur ordinateur, y est masquée ; sans
+            lui l'utilisateur resterait bloqué dans la planification, l'ancien
+            lien vivait dans la sidebar désormais supprimée). Le bouton "+"
+            juste à côté évite d'avoir à descendre jusqu'en bas de la grille
+            pour retrouver la carte "Nouveau voyage" quand plusieurs voyages
+            sont déjà listés (signalé le 2026-07-25) — même style/taille que
+            le bouton d'accueil, voir .pp-home-topbar-add. */}
+        <div className="pp-home-topbar-actions">
+          {trips.length > 0 && (
+            <button
+              type="button"
+              className="pp-home-topbar-add"
+              onClick={onCreate}
+              aria-label={t('home.newTrip')}
+              title={t('home.newTrip')}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+            </button>
+          )}
+          <Link to="/" className="pp-home-topbar-link" aria-label={t('topbar.homeButton')}>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+          </Link>
+        </div>
       </div>
 
       {trips.length === 0 ? (

@@ -7241,6 +7241,63 @@
 }
 .pp-criteria-chip-check { color: #fff; font-weight: 800; }
 
+/* Menu déroulant "Activités" (ski, plongée, randonnée…) : même famille
+   visuelle que .pp-criteria-chip, s'insère dans la même rangée
+   (.pp-criteria-chips) que les autres pastilles. */
+.pp-activity-dropdown { position: relative; display: inline-flex; }
+.pp-activity-dropdown-trigger {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface3);
+  border: 1px solid var(--border-light);
+  color: var(--text-dim);
+  border-radius: 999px; padding: 6px 12px 6px 13px;
+  font-size: 12.5px; font-weight: 600; font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.pp-activity-dropdown-trigger:hover { border-color: var(--accent); color: var(--text); }
+.pp-activity-dropdown-trigger.active {
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(99,102,241,0.35);
+}
+.pp-activity-dropdown-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px; padding: 0 4px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.28);
+  font-size: 10.5px; font-weight: 800;
+}
+.pp-activity-dropdown-chevron { flex-shrink: 0; }
+/* position:fixed + top/left posés en inline style (voir
+   ActivityCriteriaDropdown) : rendu via portail dans document.body pour ne
+   pas être rogné par l'overflow:hidden/auto du conteneur (corps de modale,
+   formulaire de suggestions…). z-index au-dessus de .pp-modal-overlay
+   (200) — même valeur que le popover de partage des dépenses. */
+.pp-activity-dropdown-menu {
+  z-index: 5001;
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 170px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 12px 28px -12px rgba(0,0,0,0.4);
+}
+.pp-activity-dropdown-item {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%;
+  background: none; border: none; border-radius: 8px;
+  padding: 7px 9px;
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer; text-align: left;
+}
+.pp-activity-dropdown-item:hover { background: var(--surface3); color: var(--text); }
+.pp-activity-dropdown-item.active { color: var(--text); }
+.pp-activity-dropdown-item.active .pp-criteria-chip-check { color: var(--accent2); margin-left: auto; }
+
 /* Rangée de critères dans l'en-tête de l'éditeur (sous le toggle de partage) */
 .pp-share-criteria-row {
   display: flex; flex-direction: column; gap: 7px;
@@ -9861,6 +9918,12 @@
 /* Lien retour à la carte du site — mobile uniquement (topbar masquée là).
    Aligné sur la ligne du titre (pas sur tout le bloc titre+sous-titre) pour
    ne pas paraître décentré par rapport au sous-titre, plus petit. */
+.pp-home-topbar-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
 .pp-home-topbar-link {
   display: none;
   align-items: center;
@@ -9877,6 +9940,30 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 .pp-home-topbar-link:active { background: color-mix(in srgb, var(--surface) 60%, var(--border)); }
+
+/* Bouton "+" à côté du bouton d'accueil (voir commentaire dans TripsHome.jsx) :
+   même gabarit que .pp-home-topbar-link (largeur/hauteur/rayon, y compris à
+   travers les mêmes media queries) mais dégradé violet assorti aux autres
+   actions d'ajout de l'écran d'accueil (.pp-home-add-card-icon) pour bien le
+   distinguer comme une action "créer", pas juste une navigation. */
+.pp-home-topbar-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(99,102,241,0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.pp-home-topbar-add:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(99,102,241,0.4); }
+.pp-home-topbar-add:active { transform: translateY(0); }
 
 .pp-home-title {
   margin: 0;
@@ -9915,14 +10002,22 @@
   overflow: visible;
   cursor: pointer;
   text-align: left;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  /* transform-origin: center → le grossissement au survol s'étend de façon
+     égale de tous les côtés (pas juste vers le bas/la droite), pour ne pas
+     empiéter visuellement bien plus sur une carte voisine que sur les
+     autres. transition un peu plus longue que le reste (0.22s) : un
+     agrandissement plus marqué (voir :hover) a besoin de plus de temps pour
+     rester fluide à l'œil (signalé le 2026-07-25). */
+  transform-origin: center;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 .pp-home-card:hover,
 .pp-home-card:focus-visible {
-  transform: translateY(-3px);
+  transform: translateY(-4px) scale(1.045);
   border-color: color-mix(in srgb, var(--trip-color) 55%, var(--border));
-  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 16px 34px -12px rgba(0, 0, 0, 0.6);
   outline: none;
+  z-index: 1;
 }
 
 .pp-home-card-media {
@@ -10114,36 +10209,47 @@
 }
 
 /* ─── Carte « + Nouveau voyage » ─── */
+/* Même gabarit que .pp-home-card (fond plein, bord fin, arrondi, ombre au
+   survol) plutôt qu'un cadre en pointillés transparent qui tranchait mal
+   avec les vraies cartes voisines dans la grille (signalé le 2026-07-25). */
 .pp-home-add-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 180px;
-  border: 2px dashed var(--border);
+  gap: 12px;
+  min-height: 220px;
+  border: 1px solid var(--border);
   border-radius: 18px;
-  background: transparent;
+  background: var(--surface);
   color: var(--text-dim);
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+  transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 .pp-home-add-card:hover {
-  border-color: #818cf8;
-  color: #a5b4fc;
-  background: rgba(129, 140, 248, 0.06);
+  border-color: color-mix(in srgb, #6366f1 55%, var(--border));
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 92%, #6366f1 8%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.55);
+}
+.pp-home-add-card:hover .pp-home-add-card-icon {
+  transform: scale(1.06);
+  box-shadow: 0 6px 16px -4px rgba(99,102,241,0.5);
 }
 .pp-home-add-card-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: rgba(129, 140, 248, 0.14);
-  color: #a5b4fc;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  box-shadow: 0 4px 12px -3px rgba(99,102,241,0.45);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 /* ─── État vide ─── */

@@ -38,6 +38,11 @@
     "low_budget": "Petit budget",
     "nature": "Nature",
     "city": "Urbain",
+    "beach": "Plage",
+    "ski": "Ski",
+    "plongee": "Plongée",
+    "randonnee": "Randonnée",
+    "activitiesLabel": "Activités",
     "filterLabel": "Mes critères :",
     "indicator": {
       "met": "Ce voyage correspond au critère « {{label}} »",

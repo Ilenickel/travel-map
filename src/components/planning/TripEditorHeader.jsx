@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tripDurationDays, sumCosts, formatPrice, TRIP_CRITERIA } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
+import { ActivityCriteriaDropdown } from './SuggestionCriteria';
 
 export default function TripEditorHeader({
   trip, tripId, destinations, cities, activities, lodgings = [],
@@ -346,6 +347,16 @@ export default function TripEditorHeader({
                   </button>
                 );
               })}
+              <ActivityCriteriaDropdown
+                selected={trip?.share_criteria || []}
+                onToggle={(key) => {
+                  const current = trip?.share_criteria || [];
+                  const active = current.includes(key);
+                  onUpdate(tripId, {
+                    share_criteria: active ? current.filter((k) => k !== key) : [...current, key],
+                  });
+                }}
+              />
             </div>
           </div>
         )}

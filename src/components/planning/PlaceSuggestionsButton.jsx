@@ -187,7 +187,7 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
               <li
                 key={place.id}
                 className="pp-search-item pp-place-suggestions-item"
-                onMouseEnter={() => setHoveredId(place.id)}
+                onMouseEnter={() => { if (!isMobile) setHoveredId(place.id); }}
               >
                 {/* Vignette tactile (masquée sur desktop via CSS, où l'aperçu
                     grand format au survol prend le relais) — TOUJOURS rendue,
@@ -228,13 +228,13 @@ export default function PlaceSuggestionsButton({ cityName, countryCode, countryN
                   <button
                     type="button"
                     className="pp-place-suggestions-thumb pp-place-suggestions-thumb--icon"
-                    // Set direct (pas un toggle) : sur mobile, le tap déclenche
-                    // d'abord un mouseenter synthétique (onMouseEnter du <li>,
-                    // qui fixe déjà hoveredId=place.id) PUIS le click — un
-                    // toggle repartait donc aussitôt à null et annulait
-                    // l'ouverture au premier tap, il fallait taper 2 fois
-                    // (signalé le 2026-07-24). La fermeture reste possible via
-                    // le fond de l'aperçu plein écran (overlay cliquable).
+                    // Set direct (pas un toggle) : la fermeture reste
+                    // possible via le fond de l'aperçu plein écran (overlay
+                    // cliquable). Le onMouseEnter du <li> est désactivé sur
+                    // mobile (voir plus haut) — sinon un tap sur N'IMPORTE
+                    // QUEL élément du <li>, y compris le bouton "Ajouter",
+                    // ouvrait l'aperçu via ce mouseenter synthétique déclenché
+                    // par le tap (signalé le 2026-07-25).
                     onClick={(e) => { e.stopPropagation(); setHoveredId(place.id); }}
                     title={t('placeSuggestions.previewImageAlt', { name: place.name })}
                   >

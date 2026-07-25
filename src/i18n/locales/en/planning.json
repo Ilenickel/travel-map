@@ -38,6 +38,11 @@
     "low_budget": "Low budget",
     "nature": "Nature",
     "city": "City break",
+    "beach": "Beach",
+    "ski": "Skiing",
+    "plongee": "Diving",
+    "randonnee": "Hiking",
+    "activitiesLabel": "Activities",
     "filterLabel": "My criteria:",
     "indicator": {
       "met": "This trip matches the \"{{label}}\" criterion",
