@@ -6,9 +6,9 @@
   ],
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/((?!site\\.webmanifest|icon|favicon|assets|_vercel|og-image).*)",
       "has": [{ "type": "host", "value": "travel-map-blush.vercel.app" }],
-      "destination": "https://triply-travel.vercel.app/:path*",
+      "destination": "https://triply-travel.vercel.app/$1",
       "permanent": true
     }
   ]
