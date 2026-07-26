@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://travel-map-blush.vercel.app/sitemap.xml
+Sitemap: https://triply-travel.vercel.app/sitemap.xml

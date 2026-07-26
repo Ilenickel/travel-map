@@ -50,8 +50,34 @@ const SECTION_ORDER = ["overview", "weather", "cost", "destinations", "practical
 const MAX_TEMP = 35;
 const MAX_RAIN = 250;
 
-export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, onNavigateCountry, alertIds = new Map(), onAdminAction }) {
-  useModalHistory(onClose);
+function countryUrl(countryCode) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("country", countryCode);
+  url.searchParams.delete("destination");
+  return url;
+}
+
+function destinationUrl(countryCode, dest) {
+  const url = countryUrl(countryCode);
+  const type = dest.isUserDest ? "community" : "static";
+  url.searchParams.set("destination", `${type}:${dest.id}`);
+  return url;
+}
+
+// Ces deux entrées restent volontairement des composants frères : l'effet qui
+// enregistre la fiche pays s'exécute avant celui de la destination, afin que
+// l'historique conserve bien l'ordre pays → destination.
+function CountryHistory({ onClose, countryCode }) {
+  useModalHistory(onClose, () => countryUrl(countryCode));
+  return null;
+}
+
+function DestinationHistory({ onClose, countryCode, dest }) {
+  useModalHistory(onClose, () => destinationUrl(countryCode, dest));
+  return null;
+}
+
+export default function CountryPanel({ countryCode, onClose, isFavorite, onToggleFavorite, isVisited, onToggleVisited, onCompare, initialTab, initialExtra, initialDestination, onNavigateCountry, alertIds = new Map(), onAdminAction }) {
   useSettings(); // abonnement devise : les montants affichés sont convertis
   const { t, i18n } = useTranslation("app");
   const data = useMemo(() => localizeCountry(COUNTRIES[countryCode], i18n.language), [countryCode, i18n.language]);
@@ -359,6 +385,31 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     }
   }, [initialExtra, data, translatedUserDestinations]);
 
+  // Deep-link partageable : ?country=FR&destination=static:paris ou
+  // ?country=FR&destination=community:<uuid>. Les anciennes URL sans
+  // préfixe restent tolérées pour ne pas casser de lien déjà copié.
+  // `initialDestConsumedRef` : une fois la destination trouvée et
+  // sélectionnée une première fois, on ne retente plus — sans lui, un
+  // changement de langue (qui recalcule translatedUserDestinations avec une
+  // nouvelle référence de tableau) redéclenche cet effet et rouvre de force
+  // la fiche destination que l'utilisateur venait pourtant de fermer.
+  const initialDestConsumedRef = useRef(false);
+  useEffect(() => {
+    if (!initialDestination || initialDestConsumedRef.current) return;
+    const [type, ...idParts] = initialDestination.split(":");
+    const id = idParts.length ? idParts.join(":") : initialDestination;
+    const isTypedLink = idParts.length > 0;
+
+    if ((type === "static" || !isTypedLink) && data?.destinations) {
+      const dest = data.destinations.find((d) => String(d.id) === id);
+      if (dest) { setSelectedDest(dest); initialDestConsumedRef.current = true; return; }
+    }
+    if ((type === "community" || !isTypedLink) && translatedUserDestinations.length) {
+      const dest = translatedUserDestinations.find((d) => String(d.id) === id);
+      if (dest) { setSelectedDest(dest); initialDestConsumedRef.current = true; }
+    }
+  }, [initialDestination, data, translatedUserDestinations]);
+
   // Auto-select community destination from profile navigation
   useEffect(() => {
     if (!initialExtra?.commDestId || !translatedUserDestinations.length) return;
@@ -590,6 +641,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
 
   return (
     <>
+      <CountryHistory onClose={onClose} countryCode={countryCode} />
+      {selectedDest && <DestinationHistory onClose={closeDestination} countryCode={countryCode} dest={selectedDest} />}
       {reportModalDestId && (
         <ReportModal
           contentType="destination"

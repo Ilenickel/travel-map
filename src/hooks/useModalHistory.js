@@ -58,7 +58,7 @@ function ensureListener() {
 // s'exécute, pour qu'il constate qu'il n'y a plus rien à dépiler et s'abstienne
 // du history.back(). Idempotent (no-op si déjà consommée ou déjà dépilée par un
 // vrai retour arrière).
-export function useModalHistory(onClose) {
+export function useModalHistory(onClose, url) {
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
   const idRef = useRef(null);
@@ -85,7 +85,12 @@ export function useModalHistory(onClose) {
     const myId = idRef.current;
 
     if (!pushedRef.current) {
-      history.pushState({}, '');
+      // `url` permet aux panneaux qui ont leur propre état navigable (par
+      // exemple une destination dans une fiche pays) d'ajouter une vraie URL
+      // partageable à leur entrée d'historique.
+      const nextUrl = typeof url === 'function' ? url() : url;
+      if (nextUrl) history.pushState({}, '', nextUrl);
+      else history.pushState({}, '');
       pushedRef.current = true;
       stack.push({ id: myId, onCloseRef, pushedRef });
     }

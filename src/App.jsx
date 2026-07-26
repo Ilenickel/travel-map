@@ -188,6 +188,7 @@ function AppInner() {
       }
     } else {
       url.searchParams.delete("country");
+      url.searchParams.delete("destination");
       if (url.pathname.startsWith("/pays/")) url.pathname = "/";
       document.title = t("seo.homeTitle");
     }
@@ -525,6 +526,7 @@ function AppInner() {
           onCompare={() => { setCompareBase(selectedCountry); setSelectedCountry(null); }}
           initialTab={countryInitialTab}
           initialExtra={countryInitialExtra}
+          initialDestination={new URLSearchParams(window.location.search).get("destination")}
           onNavigateCountry={(code, tab, extra) => openCountry(code, tab || null, extra || null)}
           alertIds={alertsMap}
           onAdminAction={refreshAlerts}

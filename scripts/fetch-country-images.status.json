@@ -1,13 +1,13 @@
 {
-  "pid": 16760,
-  "startedAt": "2026-07-23T15:38:44.091Z",
+  "pid": 14948,
+  "startedAt": "2026-07-24T17:53:35.425Z",
   "state": "done",
-  "totalQueue": 2,
-  "done": 2,
-  "found": 2,
+  "totalQueue": 183,
+  "done": 183,
+  "found": 183,
   "notFound": 0,
   "errors": 0,
   "currentCountry": null,
   "pausedUntil": null,
-  "updatedAt": "2026-07-23T15:38:44.816Z"
+  "updatedAt": "2026-07-24T20:56:53.631Z"
 }

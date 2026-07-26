@@ -50,7 +50,7 @@ const LIMIT = parseInt(args.limit ?? '25', 10);
 const ORDER_ASC = (args.order ?? 'desc') === 'asc';
 const OUT_PATH = args.out ? args.out : `${ROOT}/scripts/output/image-comparison.html`;
 
-const UA = 'travel-map-image-eval/1.0 (comparatif Unsplash/Wikipedia, usage ponctuel, voir docs/city-images-integration.md)';
+const UA = 'triply-image-eval/1.0 (comparatif Unsplash/Wikipedia, usage ponctuel, voir docs/city-images-integration.md)';
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
 function englishNameFromQuery(queryUsed) {

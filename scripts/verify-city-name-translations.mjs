@@ -33,7 +33,7 @@ const sb = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
-const UA = 'travel-map-city-image-import/1.0 (script de vérification interne)';
+const UA = 'triply-city-image-import/1.0 (script de vérification interne)';
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 

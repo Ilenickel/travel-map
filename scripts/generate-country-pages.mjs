@@ -6,40 +6,38 @@
 
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 const PAYS_DIR = path.join(DIST, "pays");
-const BASE_URL = "https://travel-map-blush.vercel.app";
+const BASE_URL = "https://triply-travel.vercel.app";
 
 // ─── Données pays (importées depuis les fichiers source) ──────────────────────
 // On lit les fichiers source directement car on est en post-build Node.js
 const SRC_DATA = path.join(ROOT, "src", "data");
 
-function readCountry(file) {
+function fr(value) {
+  return typeof value === "object" && value !== null ? value.fr ?? value.en ?? value.es ?? "" : value ?? "";
+}
+
+async function readCountry(file) {
   try {
-    const content = fs.readFileSync(path.join(SRC_DATA, file), "utf-8");
-    // Champ top-level uniquement (name/capital en tête de fichier), en tolérant
-    // le format simple `name: "..."` ou bilingue `name: { fr: "...", en: "..." }`.
-    const nameMatch = content.match(/^\s*name\s*:\s*(?:\{[^}]*?fr\s*:\s*["'`]([^"'`]+)["'`]|["'`]([^"'`]+)["'`])/m);
-    const descMatch = content.match(/^\s*description\s*:\s*(?:\{\s*fr\s*:\s*["'`\n\s]+([\s\S]+?)["'`],\s*\n|["'`\n\s]+([\s\S]+?)["'`],?\s*\n)/m);
-    const capitalMatch = content.match(/^\s*capital\s*:\s*(?:\{[^}]*?fr\s*:\s*["'`]([^"'`]+)["'`]|["'`]([^"'`]+)["'`])/m);
-    const emojiMatch = content.match(/emoji\s*:\s*["'`]([^"'`]+)["'`]/);
-    const codeMatch = content.match(/code\s*:\s*["'`]([^"'`]+)["'`]/);
-    const tagsMatch = content.match(/tags\s*:\s*\[([^\]]+)\]/s);
-    const tags = tagsMatch
-      ? tagsMatch[1].match(/["'`]([^"'`]+)["'`]/g)?.map(t => t.replace(/["'`]/g, "")) ?? []
-      : [];
+    const sourcePath = path.join(SRC_DATA, file);
+    const module = await import(pathToFileURL(sourcePath).href);
+    const raw = Object.values(module).find((value) => value?.code && value?.name);
+    if (!raw) return null;
     return {
-      code: codeMatch?.[1] ?? null,
-      name: (nameMatch?.[1] ?? nameMatch?.[2]) ?? null,
-      description: (descMatch?.[1] ?? descMatch?.[2])?.replace(/\s+/g, " ").trim() ?? null,
-      capital: (capitalMatch?.[1] ?? capitalMatch?.[2]) ?? null,
-      emoji: emojiMatch?.[1] ?? null,
-      tags,
+      raw,
+      code: raw.code,
+      name: fr(raw.name),
+      description: fr(raw.description),
+      capital: fr(raw.capital),
+      emoji: raw.emoji ?? null,
+      tags: raw.tags ?? [],
     };
+
   } catch {
     return null;
   }
@@ -148,74 +146,222 @@ function prep(name) {
 /** Génère un titre SEO avec la bonne préposition */
 function seoTitle(name) {
   const p = prep(name);
-  return `Partir ${p} ${name} — météo, quand partir, que faire | Travel Map`;
+  return `Partir ${p} ${name} — météo, quand partir, que faire | Triply`;
 }
 
-/** Génère une description SEO */
+/** Génère une description SEO, tronquée à 155 caractères (limite d'affichage Google) */
 function seoDescription(name, capital, description) {
   const p = prep(name);
+  const suffix = " Météo, budget, meilleures périodes et destinations sur Triply.";
   const base = `Tout savoir pour partir ${p} ${name}`;
   const cap = capital ? ` (capitale : ${capital})` : "";
-  const desc = description ? ` — ${description.slice(0, 100)}...` : "";
-  return `${base}${cap}${desc} Météo, budget, meilleures périodes et destinations sur Travel Map.`;
+  const head = `${base}${cap}`;
+  const maxLength = 155;
+  const wrapperLength = " — ".length + "...".length; // caractères ajoutés autour de l'extrait
+  const budget = maxLength - head.length - suffix.length - wrapperLength;
+  const desc = description && budget > 10 ? ` — ${description.slice(0, budget)}...` : "";
+  // Ne jamais retomber sur un .slice() global : il couperait la suite fixe
+  // ("... sur Triply.") en plein mot si head+desc+suffix dépassait malgré
+  // tout la limite (nom de pays très long, etc.) — on préfère alors garder le
+  // suffixe intact et sacrifier l'extrait de description en premier.
+  return description && budget <= 10 ? `${head}${suffix}` : `${head}${desc}${suffix}`;
 }
 
-/** Génère le bloc sr-only SEO riche pour un pays */
-function seoContent(name, capital, description, tags) {
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/** Contenu de secours qui reflète les données réellement affichées dans la fiche. */
+function seoContent(country, relatedCountries) {
+  const { raw, name, capital, description, tags } = country;
   const p = prep(name);
-  const tagStr = tags.length > 0 ? ` Idéal pour : ${tags.join(", ")}.` : "";
+  const periods = (raw.bestPeriods ?? []).map((period) =>
+    `<li><strong>${escapeHtml(fr(period.months))} — ${escapeHtml(fr(period.label))}</strong> : ${escapeHtml(fr(period.description))}</li>`
+  ).join("");
+  const weather = (raw.weatherCities ?? []).map((city) => {
+    const months = city.data ?? [];
+    const averageTemp = months.length ? Math.round(months.reduce((sum, month) => sum + month.temp, 0) / months.length) : null;
+    const averageRain = months.length ? Math.round(months.reduce((sum, month) => sum + month.rain, 0) / months.length) : null;
+    return `<li><strong>${escapeHtml(city.name)}</strong>${averageTemp !== null ? ` : ${averageTemp} °C en moyenne, ${averageRain} mm de pluie mensuelle en moyenne.` : "."}</li>`;
+  }).join("");
+  const destinations = (raw.destinations ?? []).map((destination) => {
+    const mustSee = (destination.mustSee ?? []).map((place) => escapeHtml(fr(place.name))).filter(Boolean);
+    return `<article><h3>${escapeHtml(fr(destination.name))}</h3><p>${escapeHtml(fr(destination.description))}</p>${mustSee.length ? `<p><strong>À faire :</strong> ${mustSee.join(", ")}.</p>` : ""}</article>`;
+  }).join("");
+  const budgets = (raw.costOfLiving?.budgetSummary ?? []).map((budget) =>
+    `<li><strong>${escapeHtml(fr(budget.type))}</strong> : ${escapeHtml(budget.daily)} — ${escapeHtml(fr(budget.desc))}</li>`
+  ).join("");
+  const practicalities = (raw.practicalities ?? []).map((item) =>
+    `<li><strong>${escapeHtml(fr(item.label))}</strong> : ${escapeHtml(fr(item.value))}</li>`
+  ).join("");
+  const comparisons = relatedCountries.map((country) =>
+    `<li><a href="/pays/${country.slug}">Voyager ${prep(country.name)} ${escapeHtml(country.name)}</a></li>`
+  ).join("");
+  const tagStr = tags.length > 0 ? ` Idéal pour : ${tags.map(escapeHtml).join(", ")}.` : "";
   return `
     <div class="sr-only">
       <h1>Partir ${p} ${name} — tout ce qu'il faut savoir</h1>
       <h2>Quand partir ${p} ${name} ?</h2>
-      <p>Découvrez la meilleure période pour voyager ${p} ${name}. Travel Map vous indique les saisons idéales, la météo mensuelle et les périodes à éviter pour votre voyage ${p} ${name}.</p>
+      <ul>${periods}</ul>
       <h2>Météo ${p} ${name}</h2>
-      <p>Consultez la météo en temps réel ${p} ${name}${capital ? ` et à ${capital}` : ""}. Températures, précipitations et conditions climatiques pour planifier votre voyage au meilleur moment.</p>
+      <p>Consultez la météo par ville${capital ? `, notamment à ${escapeHtml(capital)}` : ""}.</p><ul>${weather}</ul>
       <h2>Que faire ${p} ${name} ?</h2>
-      <p>${description ?? `Partez à la découverte ${p} ${name} et explorez ses sites incontournables, sa culture, sa gastronomie et ses paysages uniques.`}${tagStr}</p>
+      <p>${escapeHtml(description ?? `Partez à la découverte ${p} ${name} et explorez ses sites incontournables, sa culture, sa gastronomie et ses paysages uniques.`)}${tagStr}</p>${destinations}
       <h2>Budget voyage ${p} ${name}</h2>
-      <p>Combien coûte un voyage ${p} ${name} ? Travel Map vous donne une estimation du budget selon la durée de votre séjour : hébergement, transport, nourriture et activités.</p>
+      <p>${escapeHtml(fr(raw.costOfLiving?.intro))}</p><ul>${budgets}</ul>
       <h2>Conseils pratiques pour voyager ${p} ${name}</h2>
-      <p>Visa, langue, monnaie, sécurité, vaccins recommandés : retrouvez toutes les infos pratiques pour préparer votre voyage ${p} ${name} en toute sérénité.</p>
+      <ul>${practicalities}</ul>
+      ${comparisons ? `<h2>Comparer ${escapeHtml(name)} avec d'autres destinations</h2><ul>${comparisons}</ul>` : ""}
     </div>`;
 }
 
 /** Génère le JSON-LD spécifique au pays */
 function jsonLd(name, capital, description, slug) {
-  const p = prep(name);
   const url = `${BASE_URL}/pays/${slug}`;
-  return JSON.stringify({
-    "@context": "https://schema.org",
+  const destination = {
     "@type": "TouristDestination",
     "name": name,
     "url": url,
     "description": description ?? `Destination de voyage : ${name}.`,
     "touristType": ["Culturel", "Aventure", "Plage", "Nature"],
-    "geo": capital ? { "@type": "GeoCoordinates", "name": capital } : undefined,
+    ...(capital ? { "containsPlace": { "@type": "City", "name": capital } } : {}),
     "isAccessibleForFree": true,
     "potentialAction": {
       "@type": "ExploreAction",
-      "name": `Explorer ${name} sur Travel Map`,
+      "name": `Explorer ${name} sur Triply`,
       "target": url,
     },
+  };
+
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      destination,
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Triply", "item": BASE_URL },
+          { "@type": "ListItem", "position": 2, "name": name, "item": url },
+        ],
+      },
+    ],
   });
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function writeSitemap(entries) {
+  const urls = [
+    { loc: `${BASE_URL}/`, changefreq: "weekly", priority: "1.0" },
+    ...entries,
+  ];
+  const xml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map(({ loc, lastmod, changefreq, priority }) => [
+      "  <url>",
+      `    <loc>${escapeXml(loc)}</loc>`,
+      lastmod ? `    <lastmod>${lastmod}</lastmod>` : null,
+      `    <changefreq>${changefreq}</changefreq>`,
+      `    <priority>${priority}</priority>`,
+      "  </url>",
+    ].filter(Boolean).join("\n")),
+    "</urlset>",
+    "",
+  ].join("\n");
+  fs.writeFileSync(path.join(DIST, "sitemap.xml"), xml, "utf-8");
+}
+
+function writePlanningPage(baseHtml) {
+  const pageUrl = `${BASE_URL}/planifier`;
+  const title = "Planifier un voyage gratuitement | Triply";
+  const description = "Créez votre itinéraire de voyage, ajoutez vos pays, villes et activités, puis organisez votre séjour jour par jour avec Triply.";
+  const fallback = `
+    <main>
+      <h1>Planifier un voyage simplement</h1>
+      <p>Triply permet de préparer un itinéraire personnalisé : choisissez vos pays, ajoutez vos villes et activités, puis organisez chaque journée de votre séjour.</p>
+      <h2>Préparez votre itinéraire en trois étapes</h2>
+      <ol>
+        <li>Ajoutez les pays et les villes que vous souhaitez visiter.</li>
+        <li>Centralisez les activités, hébergements et déplacements.</li>
+        <li>Répartissez-les dans votre planning jour par jour et partagez votre voyage si vous le souhaitez.</li>
+      </ol>
+      <p><a href="/">Explorer les destinations et leurs informations météo</a></p>
+    </main>`;
+  const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": title,
+    "url": pageUrl,
+    "description": description,
+    "isPartOf": { "@type": "WebSite", "name": "Triply", "url": BASE_URL },
+  });
+  const html = baseHtml
+    .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${description}"/>`)
+    .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${pageUrl}"/>`)
+    .replace(/<meta property="og:title"[^>]*>/, `<meta property="og:title" content="${title}"/>`)
+    .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${description}"/>`)
+    .replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${pageUrl}"/>`)
+    .replace(/<meta name="twitter:title"[^>]*>/, `<meta name="twitter:title" content="${title}"/>`)
+    .replace(/<meta name="twitter:description"[^>]*>/, `<meta name="twitter:description" content="${description}"/>`)
+    .replace(/<meta name="twitter:url"[^>]*>/, `<meta name="twitter:url" content="${pageUrl}"/>`)
+    .replace(/<noscript>[\s\S]*?<\/noscript>/, `<noscript>${fallback}</noscript>`)
+    .replace('</head>', `    <script type="application/ld+json">${schema}</script>\n  </head>`);
+  const dir = path.join(DIST, "planifier");
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "index.html"), html, "utf-8");
+  return { loc: pageUrl, changefreq: "monthly", priority: "0.7" };
 }
 
 // ─── Génération ───────────────────────────────────────────────────────────────
 
-function generate() {
+function relatedCountries(country, countries) {
+  const criteria = country.raw.criteria ?? {};
+  return countries
+    .filter((candidate) => candidate.country.code !== country.code)
+    .map((candidate) => ({
+      ...candidate.country,
+      score: Object.keys(criteria).reduce(
+        (sum, key) => sum + Math.min(criteria[key] ?? 0, candidate.country.raw.criteria?.[key] ?? 0), 0
+      ),
+    }))
+    .filter((candidate) => candidate.score > 0)
+    .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name, "fr"))
+    .slice(0, 4);
+}
+
+async function generate() {
   const baseHtml = fs.readFileSync(path.join(DIST, "index.html"), "utf-8");
 
   if (!fs.existsSync(PAYS_DIR)) fs.mkdirSync(PAYS_DIR, { recursive: true });
 
   let generated = 0;
   let skipped = 0;
+  const sitemapEntries = [];
+  const countries = [];
 
   for (const [code, file] of Object.entries(CODE_TO_FILE)) {
-    const country = readCountry(file);
+    const country = await readCountry(file);
     if (!country || !country.name) { skipped++; continue; }
+    country.slug = toSlug(country.name);
+    countries.push({ code, file, country });
+  }
 
-    const slug = toSlug(country.name);
+  for (const { code, file, country } of countries) {
+    const slug = country.slug;
     const dir = path.join(PAYS_DIR, slug);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
@@ -252,7 +398,10 @@ function generate() {
     );
 
     // Injecter le window.__INITIAL_COUNTRY__ et le contenu SEO avant </body>
-    const seoBlock = seoContent(country.name, country.capital, country.description, country.tags);
+    const seoBlock = seoContent(country, relatedCountries(country, countries));
+    const noScriptBlock = seoBlock
+      .replace('<div class="sr-only">', '<main>')
+      .replace('</div>', '</main>');
     html = html.replace(
       "<!-- Titres et contenu indexés par Google, invisibles pour l'utilisateur -->",
       `<!-- SEO : ${country.name} -->`
@@ -262,6 +411,13 @@ function generate() {
       /<!-- COUNTRY_SEO_PLACEHOLDER -->\s*<div class="sr-only">[\s\S]*?<\/div>/,
       `<!-- SEO : ${country.name} -->\n    ${seoBlock}`
     );
+    // La version sans JavaScript expose les mêmes informations utiles que la
+    // fiche interactive : elle reste donc accessible aux visiteurs et aux
+    // robots qui ne rendent pas l'application.
+    html = html.replace(
+      /<noscript>[\s\S]*?<\/noscript>/,
+      `<noscript>${noScriptBlock}</noscript>`
+    );
     // Injecter __INITIAL_COUNTRY__ avant le script principal
     html = html.replace(
       '<div id="root"></div>',
@@ -269,11 +425,23 @@ function generate() {
     );
 
     fs.writeFileSync(path.join(dir, "index.html"), html, "utf-8");
+    sitemapEntries.push({
+      loc: pageUrl,
+      lastmod: fs.statSync(path.join(SRC_DATA, file)).mtime.toISOString().slice(0, 10),
+      changefreq: "monthly",
+      priority: "0.8",
+    });
     generated++;
   }
+
+  sitemapEntries.push(writePlanningPage(baseHtml));
+  writeSitemap(sitemapEntries);
 
   console.log(`✅ ${generated} pages pays générées dans dist/pays/`);
   if (skipped > 0) console.log(`⚠️  ${skipped} pays ignorés (données manquantes)`);
 }
 
-generate();
+generate().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

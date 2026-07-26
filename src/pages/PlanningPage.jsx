@@ -28,7 +28,7 @@ function usePlanningPageSEO() {
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', t('page.title'));
     // L'URL canonique reste fixe (une seule route /planifier, pas de version /en) :
     // hors du périmètre i18n de cette page tant qu'il n'y a pas de routes localisées.
-    document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://travel-map-blush.vercel.app/planifier');
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://triply-travel.vercel.app/planifier');
     return () => {
       document.title = prev.title;
       if (prev.desc) document.querySelector('meta[name="description"]')?.setAttribute('content', prev.desc);
