@@ -22,6 +22,7 @@ export const ESWATINI = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "L'Eswatini (anciennement Swaziland) est un petit royaume montagneux enclavé entre l'Afrique du Sud et le Mozambique, l'une des dernières monarchies absolues d'Afrique. Ce pays méconnu offre des parcs naturels avec rhinocéros blancs et éléphants, une culture swazi vivante avec la cérémononie Reed Dance (Umhlanga), et des paysages verdoyants d'une grande beauté.", en: "Eswatini (formerly Swaziland) is a small mountainous kingdom landlocked between South Africa and Mozambique, and one of Africa's last absolute monarchies. This little-known country offers wildlife parks with white rhinos and elephants, a vibrant Swazi culture highlighted by the Reed Dance (Umhlanga), and lush landscapes of remarkable beauty.", es: "Esuatini (antiguo Suazilandia) es un pequeño reino montañoso encajado entre Sudáfrica y Mozambique, una de las últimas monarquías absolutas de África. Este país poco conocido ofrece parques naturales con rinocerontes blancos y elefantes, una vibrante cultura suazi con la ceremonia Reed Dance (Umhlanga), y paisajes verdes de gran belleza.", de: "Eswatini (ehemals Swasiland) ist ein kleines Gebirgskönigreich zwischen Südafrika und Mosambik, eine der letzten absoluten Monarchien in Afrika. Dieses wenig bekannte Land bietet Naturparks mit Breitmaulnashörnern und Elefanten, eine lebendige Swasi-Kultur mit der Schilftanzzeremonie (Umhlanga) und üppige grüne Landschaften von großer Schönheit.",

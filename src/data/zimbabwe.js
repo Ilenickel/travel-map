@@ -22,6 +22,7 @@ export const ZIMBABWE = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 1,
   },
   description: {
     fr: "Le Zimbabwe recèle deux des merveilles naturelles africaines : les chutes Victoria, classées UNESCO, la plus grande cascade du monde par volume d'eau et brume visible à 40 km, et le mystérieux Grand Zimbabwe, ruines médiévales témoignant d'un empire africain disparu. Hwange abrite 40 000 éléphants.", en: "Zimbabwe holds two of Africa's natural wonders: Victoria Falls, a UNESCO site and the world's largest waterfall by water volume, its mist visible from 40 km away, and the mysterious Great Zimbabwe, medieval ruins bearing witness to a vanished African empire. Hwange is home to 40,000 elephants.", es: "Zimbabue alberga dos de las maravillas naturales de África: las cataratas Victoria, declaradas Patrimonio UNESCO, la mayor catarata del mundo por volumen de agua con niebla visible a 40 km, y el misterioso Gran Zimbabue, ruinas medievales que dan testimonio de un imperio africano desaparecido. Hwange alberga 40 000 elefantes.", de: "Simbabwe ist die Heimat zweier Naturwunder Afrikas: die zum UNESCO-Weltkulturerbe gehörenden Victoriafälle, der 40 km entfernt sichtbare Wasserfall mit dem größten Wasser- und Nebelvolumen der Welt, und das geheimnisvolle Groß-Simbabwe, mittelalterliche Ruinen, die von einem untergegangenen afrikanischen Reich zeugen. In Hwange leben 40.000 Elefanten.",

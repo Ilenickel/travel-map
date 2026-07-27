@@ -6,13 +6,11 @@ export const CANONICAL_TAG_KEYS = {
   UNESCO: "unesco",
   Histoire: "history",
   Nature: "nature",
-  Randonnée: "hiking",
   Plage: "beach",
   Gastronomie: "food",
   Architecture: "architecture",
   Désert: "desert",
   Safari: "safari",
-  Ski: "ski",
   Ville: "city",
   Culture: "culture",
   Shopping: "shopping",
@@ -31,6 +29,9 @@ export const CANONICAL_TAG_KEYS = {
   Nightlife: "nightlife",
   Panorama: "panorama",
   Rural: "rural",
+  Plongée: "diving",
+  Ski: "ski",
+  Randonnée: "hiking",
 };
 
 export const CANONICAL_TAGS = Object.keys(CANONICAL_TAG_KEYS);

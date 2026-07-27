@@ -24,6 +24,7 @@ export const SINGAPORE = {
     ski: 0,
     ville: 3,
     plage: 1,
+    plongee: 1,
   },
   description: {
     fr: "Singapour est une cité-État futuriste au carrefour de l'Asie du Sud-Est, mosaïque de cultures chinoises, malaises et indiennes. Propreté légendaire, gastronomie de rue mondialement reconnue (hawker centres), jardins verticaux et Supertrees sont la signature de ce joyau ultramoderne et sûr.", en: "Singapore is a futuristic city-state at the crossroads of Southeast Asia, a mosaic of Chinese, Malay and Indian cultures. Legendary cleanliness, world-renowned street food (hawker centres), vertical gardens and Supertrees are the signature of this ultramodern, safe gem.", es: "Singapur es una ciudad-estado futurista en la encrucijada del Sudeste Asiático, un mosaico de culturas china, malaya e india. Limpieza legendaria, comida callejera de fama mundial (hawker centres), jardines verticales y Supertrees son la firma de esta joya ultramoderna y segura.", de: "Singapur ist ein futuristischer Stadtstaat am Schnittpunkt Südostasiens, ein Mosaik chinesischer, malaiischer und indischer Kulturen. Legendäre Sauberkeit, weltbekanntes Streetfood (Hawker Center), vertikale Gärten und Supertrees sind das Markenzeichen dieses hochmodernen und sicheren Juwels.",

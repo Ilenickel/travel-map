@@ -22,6 +22,7 @@ export const NICARAGUA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Nicaragua est le pays le moins cher et le plus authentique d'Amérique centrale : Granada, joyau colonial aux façades colorées, León et ses façades aux fresques révolutionnaires, l'île volcanique d'Ometepe posée sur un lac géant, et la côte Caraïbe sauvage des Corn Islands.", en: "Nicaragua is Central America's cheapest and most authentic country: Granada, a colonial gem with colourful façades, León with its walls covered in revolutionary murals, the volcanic island of Ometepe rising from a giant lake, and the wild Caribbean coast of the Corn Islands.", es: "Nicaragua es el país más barato y auténtico de Centroamérica: Granada, joya colonial de fachadas coloridas, León y sus muros con murales revolucionarios, la isla volcánica de Ometepe posada sobre un lago gigante, y la costa Caribe salvaje de las Corn Islands.", de: "Nicaragua ist das günstigste und authentischste Land Mittelamerikas: Granada, ein koloniales Juwel mit farbenfrohen Fassaden, León und seine Fassaden mit revolutionären Fresken, die Vulkaninsel Ometepe auf einem riesigen See und die wilde Karibikküste der Corn Islands.",

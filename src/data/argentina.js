@@ -24,6 +24,7 @@ export const ARGENTINA = {
     ski: 3,
     ville: 2,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "L'Argentine est un pays d'immenses contrastes, des glaciers de Patagonie aux vignobles de Mendoza, en passant par la vibrante Buenos Aires et les chutes d'Iguazú. Terre du tango, du mate et de l'asado, elle offre une richesse culturelle et naturelle extraordinaire.", en: "Argentina is a land of immense contrasts, from the glaciers of Patagonia to the vineyards of Mendoza, via vibrant Buenos Aires and the Iguazú Falls. Home of the tango, mate and asado, it offers extraordinary cultural and natural richness.", es: "Argentina es un país de contrastes inmensos, desde los glaciares de la Patagonia hasta los viñedos de Mendoza, pasando por la vibrante Buenos Aires y las cataratas del Iguazú. Tierra del tango, el mate y el asado, ofrece una riqueza cultural y natural extraordinaria.", de: "Argentinien ist ein Land voller Kontraste, von den Gletschern Patagoniens über die Weinberge von Mendoza bis hin zum pulsierenden Buenos Aires und den Iguazu-Wasserfällen. Das Land des Tango, Mate und Asado bietet außergewöhnlichen kulturellen und natürlichen Reichtum.",

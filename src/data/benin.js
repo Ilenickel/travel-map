@@ -22,6 +22,7 @@ export const BENIN = {
     ski: 0,
     ville: 1,
     plage: 1,
+    plongee: 1,
   },
   description: {
     fr: "Le Bénin est le berceau du vaudou : Ouidah et sa route des esclaves menant au Door of No Return, les palais royaux d'Abomey (UNESCO) du royaume du Dahomey, la cité lacustre de Ganvié (50 000 personnes vivant sur l'eau), et la réserve de la Pendjari pour les lions, éléphants et guépards les plus accessibles d'Afrique de l'Ouest.", en: "Benin is the cradle of Vodun: Ouidah and its slave route leading to the Door of No Return, the Royal Palaces of Abomey (UNESCO) from the Kingdom of Dahomey, the stilt city of Ganvié (50,000 people living on the water), and the Pendjari reserve for some of the most accessible lions, elephants and cheetahs in West Africa.", es: "Benín es la cuna del vudú: Ouidah y su ruta de los esclavos que conduce a la Door of No Return, los palacios reales de Abomey (UNESCO) del reino de Dahomey, la ciudad lacustre de Ganvié (50 000 personas viviendo sobre el agua), y la reserva de Pendjari para los leones, elefantes y guepardos más accesibles de África Occidental.", de: "Benin ist die Wiege des Voodoo: Ouidah und seine Sklavenroute, die zur Tür ohne Wiederkehr führt, die Königspaläste von Abomey (UNESCO) des Königreichs Dahomey, die Seestadt Ganvié (50.000 Menschen leben auf dem Wasser) und das Pendjari-Reservat für die am besten zugänglichen Löwen, Elefanten und Geparden in Westafrika.",

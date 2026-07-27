@@ -22,6 +22,7 @@ export const ANGOLA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "L'Angola est un pays d'une richesse naturelle extraordinaire : chutes de Kalandula parmi les plus grandes d'Afrique, désert du Namibe au sud, parc national de Kissama et architecture coloniale portugaise de Luanda. Après des décennies de guerre civile terminée en 2002, le pays reconstruit peu à peu son infrastructure touristique.", en: "Angola is a country of extraordinary natural wealth: the Kalandula Falls, among the largest in Africa, the Namibe Desert in the south, Kissama National Park and Luanda's Portuguese colonial architecture. After decades of civil war that ended in 2002, the country is gradually rebuilding its tourism infrastructure.", es: "Angola es un país de una riqueza natural extraordinaria: las cataratas de Kalandula, entre las más grandes de África, el desierto de Namibe al sur, el parque nacional de Kissama y la arquitectura colonial portuguesa de Luanda. Tras décadas de guerra civil que terminó en 2002, el país reconstruye poco a poco su infraestructura turística.", de: "Angola ist ein Land mit außergewöhnlichem Naturreichtum: Die Kalandula-Wasserfälle gehören zu den größten in Afrika, die Namibe-Wüste im Süden, der Kissama-Nationalpark und die portugiesische Kolonialarchitektur in Luanda. Nach dem jahrzehntelangen Bürgerkrieg, der 2002 endete, baut das Land seine touristische Infrastruktur schrittweise wieder auf.",

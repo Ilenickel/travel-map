@@ -22,6 +22,7 @@ export const DJIBOUTI = {
     ski: 0,
     ville: 1,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "Djibouti est un petit pays de la Corne de l'Afrique aux paysages lunaires : le lac Assal (153m sous le niveau de la mer, point le plus bas d'Afrique et deuxième le plus salé au monde après la mer Morte), le lac Abbé et ses cheminées de vapeur, les requins baleines du golfe de Tadjourah (novembre à janvier), et la dive sur le légendaire site du Ghoubbet.", en: "Djibouti is a small country in the Horn of Africa with lunar landscapes: Lake Assal (153m below sea level, the lowest point in Africa and the second saltiest place in the world after the Dead Sea), Lake Abbé and its steam chimneys, the whale sharks of the Gulf of Tadjourah (November to January), and diving at the legendary Ghoubbet site.", es: "Yibuti es un pequeño país del Cuerno de África con paisajes lunares: el lago Assal (153m bajo el nivel del mar, el punto más bajo de África y el segundo lugar más salado del mundo después del mar Muerto), el lago Abbé y sus chimeneas de vapor, los tiburones ballena del golfo de Tadjourah (de noviembre a enero) y el buceo en el legendario sitio de Ghoubbet.", de: "Dschibuti ist ein kleines Land am Horn von Afrika mit Mondlandschaften: dem Assal-See (153 m unter dem Meeresspiegel, der tiefste Punkt Afrikas und der zweitsalzigste der Welt nach dem Toten Meer), dem Abbé-See und seinen Dampfschornsteinen, den Walhaien im Golf von Tadjourah (November bis Januar) und Tauchen am legendären Ort Ghoubbet.",

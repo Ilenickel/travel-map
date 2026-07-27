@@ -22,6 +22,7 @@ export const BOTSWANA = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "Le Botswana est le summum du safari haut de gamme : le Delta de l'Okavango, classé UNESCO, est une oasis flottante unique au monde où l'on se déplace en mokoro entre les îles aux éléphants. Chobe abrite la plus grande concentration d'éléphants d'Afrique, et le Kalahari révèle les lions noirs des sables.", en: "Botswana is the pinnacle of high-end safari travel: the UNESCO-listed Okavango Delta is a one-of-a-kind floating oasis where you travel by mokoro between elephant-filled islands. Chobe is home to Africa's largest concentration of elephants, while the Kalahari reveals its black-maned lions of the sands.", es: "Botsuana es la cúspide del safari de alta gama: el Delta del Okavango, declarado Patrimonio de la UNESCO, es un oasis flotante único en el mundo donde se navega en mokoro entre islas repletas de elefantes. Chobe alberga la mayor concentración de elefantes de África, y el Kalahari revela sus leones de melena negra en las arenas del desierto.", de: "Botswana ist der Gipfel der High-End-Safari: Das Okavango-Delta, das zum UNESCO-Weltkulturerbe gehört, ist eine weltweit einzigartige schwimmende Oase, in der Sie mit dem Mokoro zwischen den Elefanteninseln reisen. Chobe ist die Heimat der größten Elefantenkonzentration Afrikas und in der Kalahari gibt es schwarze Sandlöwen.",

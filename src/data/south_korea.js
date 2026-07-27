@@ -22,6 +22,7 @@ export const SOUTH_KOREA = {
     ski: 2,
     ville: 3,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "La Corée du Sud fascine par sa capacité à marier tradition millénaire et modernité ultra-connectée. Palais dynastiques, temples bouddhistes dans la montagne, gastronomie unique (bibimbap, barbecue, kimchi), K-pop et culture pop en font une destination inoubliable.", en: "South Korea fascinates with its ability to blend age-old tradition with hyper-connected modernity. Dynastic palaces, Buddhist temples in the mountains, unique cuisine (bibimbap, barbecue, kimchi), K-pop and pop culture make it an unforgettable destination.", es: "Corea del Sur fascina por su capacidad para conjugar la tradición milenaria con una modernidad hiperconectada. Palacios dinásticos, templos budistas en la montaña, una gastronomía única (bibimbap, barbacoa, kimchi), K-pop y cultura pop la convierten en un destino inolvidable.", de: "Südkorea fasziniert durch seine Fähigkeit, jahrhundertealte Tradition und hochvernetzte Moderne zu verbinden. Dynastische Paläste, buddhistische Tempel in den Bergen, einzigartige Gastronomie (Bibimbap, Barbecue, Kimchi), K-Pop und Popkultur machen es zu einem unvergesslichen Reiseziel.",

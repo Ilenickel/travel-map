@@ -22,6 +22,7 @@ export const MADAGASCAR = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Madagascar, « la Grande Île », est l'une des destinations les plus uniques au monde : 90% de sa faune et flore sont endémiques. Lémuriens dans les forêts, baobabs géants de l'allée des Baobabs, caméléons multicolores et plages sauvages de Nosy Be. Un autre monde.", en: "Madagascar, 'the Great Island', is one of the most unique destinations in the world: 90% of its flora and fauna are endemic. Lemurs in the forests, giant baobabs along the Avenue of the Baobabs, multicoloured chameleons and wild beaches at Nosy Be. A world apart.", es: "Madagascar, «la Gran Isla», es uno de los destinos más singulares del mundo: el 90% de su fauna y flora son endémicas. Lémures en los bosques, baobabs gigantes en la Avenida de los Baobabs, camaleones multicolores y playas salvajes de Nosy Be. Otro mundo.", de: "Madagaskar, „die große Insel“, ist eines der einzigartigsten Reiseziele der Welt: 90 % seiner Fauna und Flora sind endemisch. Lemuren in den Wäldern, riesige Affenbrotbäume der Allée des Baobabs, bunte Chamäleons und wilde Strände von Nosy Be. Eine andere Welt.",

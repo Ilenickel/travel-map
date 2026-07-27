@@ -22,6 +22,7 @@ export const CHAD = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "Le Tchad est une destination d'aventure hors des sentiers battus, offrant le plateau de l'Ennedi (UNESCO) avec ses arches de grès et ses peintures rupestres sahariennes, et le parc de Zakouma qui abrite l'une des dernières grandes concentrations d'éléphants d'Afrique centrale. Pays enclavé entre désert et savane, il demande une bonne préparation logistique.", en: "Chad is an off-the-beaten-path adventure destination, offering the Ennedi Plateau (UNESCO) with its sandstone arches and Saharan rock art, and Zakouma National Park, home to one of the last great concentrations of elephants in Central Africa. A landlocked country between desert and savanna, it requires solid logistical preparation.", es: "Chad es un destino de aventura fuera de los caminos trillados, que ofrece la meseta de Ennedi (UNESCO) con sus arcos de arenisca y su arte rupestre sahariano, y el parque de Zakouma, hogar de una de las últimas grandes concentraciones de elefantes de África Central. País sin salida al mar entre el desierto y la sabana, requiere una buena preparación logística.", de: "Der Tschad ist ein Abenteuerziel abseits der ausgetretenen Pfade und bietet das Ennedi-Plateau (UNESCO) mit seinen Sandsteinbögen und Felsmalereien aus der Sahara sowie den Zakouma-Park, der eine der letzten großen Elefantenkonzentrationen in Zentralafrika beherbergt. Als Binnenland zwischen Wüste und Savanne erfordert es eine gute logistische Vorbereitung.",

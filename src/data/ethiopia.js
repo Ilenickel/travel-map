@@ -22,6 +22,7 @@ export const ETHIOPIA = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "L'Éthiopie est le berceau de l'humanité et une civilisation millénaire à part : Lalibela et ses 11 églises monolithiques taillées dans le roc (UNESCO), la Dépression de Danakil — l'endroit le plus chaud et inhospitalier de la planète —, les tribus Mursi et Hamar de la vallée de l'Omo et le monastère insulaire du lac Tana. Un voyage hors du temps.", en: "Ethiopia is the cradle of humankind and a singular millennia-old civilisation: Lalibela and its 11 monolithic churches carved into rock (UNESCO), the Danakil Depression — the hottest and most inhospitable place on the planet —, the Mursi and Hamar tribes of the Omo Valley, and the island monastery on Lake Tana. A journey out of time.", es: "Etiopía es la cuna de la humanidad y una civilización milenaria aparte: Lalibela y sus 11 iglesias monolíticas talladas en la roca (UNESCO), la Depresión de Danakil —el lugar más caluroso e inhóspito del planeta—, las tribus Mursi y Hamar del valle del Omo y el monasterio insular del lago Tana. Un viaje fuera del tiempo.", de: "Äthiopien ist die Wiege der Menschheit und eine tausend Jahre alte Zivilisation für sich: Lalibela und seine 11 monolithischen Felsenkirchen (UNESCO), die Danakil-Senke – der heißeste und unwirtlichste Ort auf dem Planeten –, die Mursi- und Hamar-Stämme des Omo-Tals und das Inselkloster im Tana-See. Eine Reise außerhalb der Zeit.",

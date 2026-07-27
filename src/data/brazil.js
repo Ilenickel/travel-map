@@ -24,6 +24,7 @@ export const BRAZIL = {
     ski: 0,
     ville: 2,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "Le Brésil est le géant de l'Amérique du Sud, pays de la samba, du carnaval et de l'Amazonie. Ses plages mythiques de Rio, sa forêt tropicale immense, ses chutes d'Iguazú et sa culture afro-brésilienne vibrante en font l'une des destinations les plus riches du monde.", en: "Brazil is the giant of South America, the land of samba, Carnival and the Amazon. Rio's legendary beaches, its vast rainforest, the Iguazú Falls and its vibrant Afro-Brazilian culture make it one of the world's richest travel destinations.", es: "Brasil es el gigante de Sudamérica, el país de la samba, el carnaval y la Amazonía. Sus míticas playas de Río, su inmensa selva tropical, las cataratas de Iguazú y su vibrante cultura afrobrasileña lo convierten en uno de los destinos más ricos del mundo.", de: "Brasilien ist der Riese Südamerikas, Land des Samba, des Karnevals und des Amazonas. Rios legendäre Strände, der riesige Regenwald, die Iguazu-Wasserfälle und die lebendige afro-brasilianische Kultur machen Rio zu einem der reichsten Reiseziele der Welt.",

@@ -22,6 +22,7 @@ export const SENEGAL = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "La « Teranga » (hospitalité en wolof) est l'âme du Sénégal. Dakar et son île de Gorée (UNESCO), les plages paradisiaques de la Casamance, le parc de la Niokolo-Koba et les lacs roses surprenants font de ce pays le premier choix pour l'Afrique de l'Ouest francophone.", en: "'Teranga' (hospitality in Wolof) is the soul of Senegal. Dakar and its Gorée Island (UNESCO), the idyllic beaches of Casamance, Niokolo-Koba National Park and the surprising pink lakes make this country the top choice for French-speaking West Africa.", es: "La «Teranga» (hospitalidad en wólof) es el alma de Senegal. Dakar y su isla de Gorea (UNESCO), las playas paradisíacas de Casamance, el parque de Niokolo-Koba y los sorprendentes lagos rosas convierten a este país en la primera opción para el África Occidental francófona.", de: "„Teranga“ (Gastfreundschaft auf Wolof) ist die Seele Senegals. Dakar und seine Insel Gorée (UNESCO), die paradiesischen Strände von Casamance, der Niokolo-Koba-Park und die überraschenden rosa Seen machen dieses Land zur ersten Wahl für das französischsprachige Westafrika.",

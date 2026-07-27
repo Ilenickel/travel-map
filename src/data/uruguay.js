@@ -24,6 +24,7 @@ export const URUGUAY = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "L'Uruguay est la petite perle méconnue de l'Amérique du Sud : pays stable, sûr et progressiste avec un art de vivre détendu. Entre Montevideo bohème, les plages branchées de Punta del Este et les estancias gauchières, il séduit par son authenticité et sa qualité de vie.", en: "Uruguay is South America's little-known gem: a stable, safe and progressive country with a relaxed way of life. Between bohemian Montevideo, the trendy beaches of Punta del Este and gaucho estancias, it charms with its authenticity and quality of life.", es: "Uruguay es la pequeña joya desconocida de Sudamérica: un país estable, seguro y progresista con un estilo de vida relajado. Entre el bohemio Montevideo, las playas de moda de Punta del Este y las estancias gauchas, seduce por su autenticidad y calidad de vida.", de: "Uruguay ist die wenig bekannte Perle Südamerikas: ein stabiles, sicheres und fortschrittliches Land mit einer entspannten Lebensweise. Zwischen dem unkonventionellen Montevideo, den trendigen Stränden von Punta del Este und den linkshändigen Estancias verführt es mit seiner Authentizität und Lebensqualität.",

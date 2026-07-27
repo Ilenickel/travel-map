@@ -22,6 +22,7 @@ export const CAPE_VERDE = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Cap-Vert est un archipel de 10 îles volcanique au large des côtes sénégalaises : le volcan Fogo (encore actif) dont les vignes poussent dans la lave, Mindelo et son carnaval afro-brésilien légendaire, les plages de Sal pour le kitesurf et Santo Antão, paradis de la randonnée dans des paysages lunaires verdoyants.", en: "Cape Verde is a volcanic archipelago of 10 islands off the Senegalese coast: the still-active Fogo volcano, whose vineyards grow in the lava, Mindelo with its legendary Afro-Brazilian carnival, the beaches of Sal for kitesurfing, and Santo Antão, a hiking paradise of lush, lunar-like landscapes.", es: "Cabo Verde es un archipiélago volcánico de 10 islas frente a las costas de Senegal: el volcán Fogo (todavía activo) cuyos viñedos crecen en la lava, Mindelo y su legendario carnaval afrobrasileño, las playas de Sal para el kitesurf, y Santo Antão, un paraíso del senderismo en paisajes verdes y lunares.", de: "Kap Verde ist ein Archipel aus 10 Vulkaninseln vor der senegalesischen Küste: der Vulkan Fogo (noch aktiv), dessen Reben in der Lava wachsen, Mindelo und sein legendärer afro-brasilianischer Karneval, die Strände von Sal zum Kitesurfen und Santo Antão, ein Wanderparadies in grünen Mondlandschaften.",

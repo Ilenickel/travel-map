@@ -22,6 +22,7 @@ export const UAE = {
     ski: 0,
     ville: 3,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Les Émirats Arabes Unis incarnent le luxe et la modernité au cœur du désert. Entre les gratte-ciels de Dubaï, la grande mosquée d'Abou Dabi, les dunes dorées du désert et les souks parfumés d'épices, les EAU offrent un contraste fascinant entre tradition et futurisme.", en: "The United Arab Emirates embody luxury and modernity in the heart of the desert. Between Dubai's skyscrapers, Abu Dhabi's grand mosque, the golden desert dunes and spice-scented souks, the UAE offers a fascinating contrast between tradition and futurism.", es: "Los Emiratos Árabes Unidos encarnan el lujo y la modernidad en pleno corazón del desierto. Entre los rascacielos de Dubái, la gran mezquita de Abu Dabi, las dunas doradas del desierto y los zocos perfumados de especias, los EAU ofrecen un contraste fascinante entre tradición y futurismo.", de: "Die Vereinigten Arabischen Emirate verkörpern Luxus und Modernität im Herzen der Wüste. Zwischen den Wolkenkratzern von Dubai, der Großen Moschee von Abu Dhabi, den goldenen Dünen der Wüste und den nach Gewürzen duftenden Souks bieten die VAE einen faszinierenden Kontrast zwischen Tradition und Futurismus.",

@@ -22,6 +22,7 @@ export const SWEDEN = {
     ski: 3,
     ville: 2,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "La Suède offre une nature sauvage immense : l'archipel de Stockholm (30 000 îles), la Laponie suédoise avec ses aurores boréales et ses rennes, les forêts de pins infinies, et les lacs de l'intérieur. Stockholm est l'une des capitales les plus belles d'Europe — construite sur 14 îles. Le pays de l'IKEA, d'ABBA, du design et du fika (pause café rituelle).", en: "Sweden offers immense wild nature: the Stockholm archipelago (30,000 islands), Swedish Lapland with its northern lights and reindeer, endless pine forests, and inland lakes. Stockholm is one of the most beautiful capitals in Europe — built across 14 islands. The land of IKEA, ABBA, design and fika (the ritual coffee break).", es: "Suecia ofrece una naturaleza salvaje inmensa: el archipiélago de Estocolmo (30 000 islas), la Laponia sueca con sus auroras boreales y sus renos, los bosques de pinos infinitos y los lagos del interior. Estocolmo es una de las capitales más bellas de Europa, construida sobre 14 islas. El país de IKEA, ABBA, el diseño y el fika (la pausa del café ritual).", de: "Schweden bietet eine immense Wildnis: den Stockholmer Schärengarten (30.000 Inseln), Schwedisch-Lappland mit seinen Nordlichtern und Rentieren, endlose Kiefernwälder und Binnenseen. Stockholm ist eine der schönsten Hauptstädte Europas – erbaut auf 14 Inseln. Das Land von IKEA, ABBA, Design und Fika (rituelle Kaffeepause).",

@@ -22,6 +22,7 @@ export const MOROCCO = {
     ski: 2,
     ville: 2,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "Le Maroc est un royaume de contrastes saisissants : les médinas millénaires de Fès et Marrakech, les dunes dorées du Sahara, les vallées verdoyantes du Haut Atlas, les plages d'Essaouira et la cuisine aux épices envoûtantes. À seulement 3h de Paris.", en: "Morocco is a kingdom of striking contrasts: the centuries-old medinas of Fès and Marrakech, the golden dunes of the Sahara, the lush valleys of the High Atlas, the beaches of Essaouira and a cuisine of captivating spices. Just 3 hours from Paris.", es: "Marruecos es un reino de contrastes sorprendentes: las medinas milenarias de Fez y Marrakech, las dunas doradas del Sáhara, los valles verdes del Alto Atlas, las playas de Esauira y una cocina de especias cautivadoras. A solo 3 horas de Madrid.", de: "Marokko ist ein Königreich beeindruckender Kontraste: die tausend Jahre alten Medinas von Fes und Marrakesch, die goldenen Dünen der Sahara, die grünen Täler des Hohen Atlas, die Strände von Essaouira und die Küche mit betörenden Gewürzen. Nur 3 Stunden von Paris entfernt.",

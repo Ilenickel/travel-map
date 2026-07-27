@@ -24,6 +24,7 @@ export const PHILIPPINES = {
     ski: 0,
     ville: 2,
     plage: 3,
+    plongee: 3,
   },
   description: {
     fr: "L'archipel des Philippines compte plus de 7 100 îles baignées par des eaux parmi les plus riches en biodiversité marine au monde. Des rizières en terrasses de Banaue aux lagons de Palawan, des volcans d'Albay aux plages d'El Nido, c'est l'une des destinations les plus spectaculaires d'Asie du Sud-Est.", en: "The Philippine archipelago has over 7,100 islands surrounded by some of the most marine-biodiverse waters in the world. From the Banaue rice terraces to the lagoons of Palawan, from the Albay volcanoes to the beaches of El Nido, it's one of the most spectacular destinations in Southeast Asia.", es: "El archipiélago de Filipinas cuenta con más de 7.100 islas bañadas por aguas de las más ricas en biodiversidad marina del mundo. Desde los arrozales en terrazas de Banaue hasta las lagunas de Palawan, desde los volcanes de Albay hasta las playas de El Nido, es uno de los destinos más espectaculares del sudeste asiático.", de: "Der philippinische Archipel verfügt über mehr als 7.100 Inseln, die von Gewässern umspült werden, die zu den reichsten Meeresarten der Welt zählen. Von den Reisterrassen von Banaue bis zu den Lagunen von Palawan, von den Vulkanen von Albay bis zu den Stränden von El Nido ist es eines der spektakulärsten Reiseziele in Südostasien.",

@@ -22,6 +22,7 @@ export const INDIA = {
     ski: 2,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "L'Inde est un subcontinent d'une richesse infinie : le Taj Mahal d'Agra, les ghats sacrés de Varanasi, les palais du Rajasthan, les plages de Goa, les backwaters du Kerala et la cuisine aux épices mille et un. Un voyage qui change une vie.", en: "India is a subcontinent of infinite richness: the Taj Mahal in Agra, the sacred ghats of Varanasi, the palaces of Rajasthan, the beaches of Goa, the backwaters of Kerala, and cuisine spiced a thousand ways. A journey that changes a life.", es: "India es un subcontinente de una riqueza infinita: el Taj Mahal de Agra, los sagrados ghats de Benarés, los palacios de Rajastán, las playas de Goa, los backwaters de Kerala y una cocina de mil especias. Un viaje que cambia la vida.", de: "Indien ist ein Subkontinent von unendlichem Reichtum: das Taj Mahal von Agra, die heiligen Ghats von Varanasi, die Paläste von Rajasthan, die Strände von Goa, die Backwaters von Kerala und die Küche mit tausend und einem Gewürz. Eine lebensverändernde Reise.",

@@ -22,6 +22,7 @@ export const CANADA = {
     ski: 3,
     ville: 2,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "Le Canada, deuxième plus grand pays au monde, offre une nature spectaculaire à chaque province : Rocheuses enneigées d'Alberta, côtes sauvages de Colombie-Britannique, villes cosmopolites de Toronto et Montréal, et la francophonie vivante du Québec. Un pays aux espaces infinis et à l'hospitalité légendaire.", en: "Canada, the second-largest country in the world, offers spectacular nature in every province: the snow-capped Rockies of Alberta, the wild coastlines of British Columbia, the cosmopolitan cities of Toronto and Montreal, and the vibrant French-speaking culture of Quebec. A country of endless space and legendary hospitality.", es: "Canadá, el segundo país más grande del mundo, ofrece una naturaleza espectacular en cada provincia: las Montañas Rocosas nevadas de Alberta, las costas salvajes de Columbia Británica, las ciudades cosmopolitas de Toronto y Montreal, y la vibrante francofonía de Quebec. Un país de espacios infinitos y hospitalidad legendaria.", de: "Kanada, das zweitgrößte Land der Welt, bietet in jeder Provinz spektakuläre Natur: die schneebedeckten Rocky Mountains von Alberta, die wilden Küsten von British Columbia, die kosmopolitischen Städte Toronto und Montreal und die pulsierende französischsprachige Welt von Quebec. Ein Land der unendlichen Weiten und der legendären Gastfreundschaft.",

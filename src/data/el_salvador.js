@@ -22,6 +22,7 @@ export const EL_SALVADOR = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "El Salvador, le plus petit pays d'Amérique centrale, surprend par sa densité d'expériences : Joya de Cerén, la « Pompéi américaine » classée UNESCO, les plages de surf légendaires d'El Tunco et d'El Zonte (Bitcoin Beach), et la Ruta de las Flores, village après village de gastronomie et d'artisanat.", en: "El Salvador, the smallest country in Central America, is surprisingly rich in experiences: Joya de Cerén, the UNESCO-listed 'American Pompeii', the legendary surf beaches of El Tunco and El Zonte (Bitcoin Beach), and the Ruta de las Flores, a string of villages known for gastronomy and handicrafts.", es: "El Salvador, el país más pequeño de Centroamérica, sorprende por su densidad de experiencias: Joya de Cerén, la «Pompeya americana» declarada Patrimonio UNESCO, las legendarias playas de surf de El Tunco y El Zonte (Bitcoin Beach), y la Ruta de las Flores, pueblo tras pueblo de gastronomía y artesanía.", de: "El Salvador, das kleinste Land Mittelamerikas, überrascht mit seiner Dichte an Erlebnissen: Joya de Cerén, das UNESCO-Weltkulturerbe „Amerikanisches Pompeji“, die legendären Surfstrände El Tunco und El Zonte (Bitcoin-Strand) und die Ruta de las Flores, ein Dorf nach dem anderen voller Gastronomie und Kunsthandwerk.",

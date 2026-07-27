@@ -22,6 +22,7 @@ export const HONDURAS = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 3,
   },
   description: {
     fr: "Le Honduras est la destination confidentielle d'Amérique centrale : Copán, l'une des grandes cités mayas classée UNESCO, les îles Bay Islands aux récifs parmi les plus riches de la Mésoamérique — et Utila, paradis mondial de la certification de plongée à petit prix.", en: "Honduras is Central America's under-the-radar destination: Copán, one of the great UNESCO-listed Maya cities; the Bay Islands, with some of the richest reefs in Mesoamerica; and Utila, a world-famous bargain destination for dive certification.", es: "Honduras es el destino confidencial de Centroamérica: Copán, una de las grandes ciudades mayas declarada Patrimonio de la Humanidad por la UNESCO, las Islas de la Bahía con algunos de los arrecifes más ricos de Mesoamérica, y Utila, paraíso mundial de la certificación de buceo a precios económicos.", de: "Honduras ist das vertrauliche Reiseziel Mittelamerikas: Copán, eine der großen Maya-Städte, die zum UNESCO-Weltkulturerbe gehört, die Bay Islands mit einigen der reichsten Riffe Mesoamerikas – und Utila, ein Weltparadies für preiswerte Tauchzertifizierungen.",

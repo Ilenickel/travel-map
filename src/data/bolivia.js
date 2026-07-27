@@ -26,6 +26,7 @@ export const BOLIVIA = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "La Bolivie est l'un des pays les plus authentiques et abordables d'Amérique du Sud. Entre le Salar d'Uyuni (plus grand désert de sel du monde), La Paz perchée à 3 650 m, le lac Titicaca et l'Amazonie, c'est une destination d'une diversité extraordinaire à petit budget.", en: "Bolivia is one of the most authentic and affordable countries in South America. Between the Uyuni Salt Flat (the largest salt desert in the world), La Paz perched at 3,650 m, Lake Titicaca and the Amazon, it offers extraordinary diversity on a small budget.", es: "Bolivia es uno de los países más auténticos y asequibles de Sudamérica. Entre el Salar de Uyuni (el mayor desierto de sal del mundo), La Paz encaramada a 3650 m, el lago Titicaca y la Amazonía, ofrece una diversidad extraordinaria con un presupuesto reducido.", de: "Bolivien ist eines der authentischsten und erschwinglichsten Länder Südamerikas. Zwischen dem Salar de Uyuni (größte Salzwüste der Welt), dem 3.650 m hohen La Paz, dem Titicacasee und dem Amazonas ist es ein Reiseziel von außergewöhnlicher Vielfalt zu einem günstigen Preis.",

@@ -22,6 +22,7 @@ export const PANAMA = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Panama, carrefour du monde depuis 1914, est bien plus que son canal légendaire : le Casco Viejo classé UNESCO, les paradis caribéens des îles Kuna Yala et Bocas del Toro, et une biodiversité exceptionnelle (Darién) font de ce trait d'union entre deux continents une destination de voyage d'exception.", en: "Panama, a crossroads of the world since 1914, is far more than its legendary canal: the UNESCO-listed Casco Viejo, the Caribbean paradises of the Kuna Yala islands and Bocas del Toro, and exceptional biodiversity (Darién) make this link between two continents an outstanding travel destination.", es: "Panamá, encrucijada del mundo desde 1914, es mucho más que su legendario canal: el Casco Viejo declarado Patrimonio de la Humanidad, los paraísos caribeños de las islas Kuna Yala y Bocas del Toro, y una biodiversidad excepcional (Darién) convierten a este puente entre dos continentes en un destino de viaje excepcional.", de: "Panama, seit 1914 der Knotenpunkt der Welt, ist viel mehr als sein legendärer Kanal: Das UNESCO-Weltkulturerbe Casco Viejo, die karibischen Paradiese der Inseln Kuna Yala und Bocas del Toro sowie die außergewöhnliche Artenvielfalt (Darién) machen diese Verbindung zwischen zwei Kontinenten zu einem außergewöhnlichen Reiseziel.",

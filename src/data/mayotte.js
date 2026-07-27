@@ -21,7 +21,8 @@ export const MAYOTTE = {
     safari: 0,
     ski: 0,
     ville: 1,
-    plage: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
+    plage: 2,
+    plongee: 2, // 🟢 dans les données ChatGPT, ramené à 🟠 (hors liste "référence mondiale")
   },
   description: {
     fr: "Mayotte est un département français de l'océan Indien entre les Comores et Madagascar : le deuxième plus grand lagon du monde (1 100 km²), protégé par la seule double barrière de corail de l'océan Indien, avec dauphins, tortues vertes, requins-baleines, dugongs et raies manta. L'île au lagon, encore méconnue, offre une plongée et un snorkeling d'exception à prix euro.", en: "Mayotte is a French overseas department in the Indian Ocean between the Comoros and Madagascar: the world's second-largest lagoon (1,100 km²), protected by the Indian Ocean's only double coral barrier reef, home to dolphins, green turtles, whale sharks, dugongs and manta rays. Still little known, this lagoon island offers exceptional diving and snorkelling at euro prices.", es: "Mayotte es un departamento francés de ultramar en el océano Índico entre las Comoras y Madagascar: la segunda laguna más grande del mundo (1.100 km²), protegida por la única barrera coralina doble del océano Índico, con delfines, tortugas verdes, tiburones ballena, dugongos y mantarrayas. La isla de la laguna, todavía poco conocida, ofrece un buceo y esnórquel excepcionales a precios europeos.", de: "Mayotte ist ein französisches Departement im Indischen Ozean zwischen den Komoren und Madagaskar: die zweitgrößte Lagune der Welt (1.100 km²), geschützt durch das einzige doppelte Korallenriff im Indischen Ozean, mit Delfinen, grünen Schildkröten, Walhaien, Dugongs und Mantarochen. Die noch wenig bekannte Laguneninsel bietet außergewöhnliche Tauch- und Schnorchelmöglichkeiten zu Euro-Preisen.",

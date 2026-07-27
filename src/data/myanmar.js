@@ -24,6 +24,7 @@ export const MYANMAR = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Myanmar (Birmanie) est une destination d'une beauté et d'une profondeur spirituelle exceptionnelles : la plaine de Bagan avec ses milliers de temples bouddhistes, le lac Inle et ses pêcheurs sur pirogues, Mandalay et ses monastères. Note : vérifiez les conseils aux voyageurs avant de partir en raison de la situation politique.", en: "Myanmar (Burma) is a destination of exceptional beauty and spiritual depth: the plain of Bagan with its thousands of Buddhist temples, Inle Lake and its canoe fishermen, Mandalay and its monasteries. Note: check travel advisories before departure due to the political situation.", es: "Myanmar (Birmania) es un destino de una belleza y profundidad espiritual excepcionales: la llanura de Bagan con sus miles de templos budistas, el lago Inle y sus pescadores en piragua, Mandalay y sus monasterios. Nota: consulte los avisos de viaje antes de partir debido a la situación política.", de: "Myanmar (Burma) ist ein Reiseziel von außergewöhnlicher Schönheit und spiritueller Tiefe: die Bagan-Ebene mit ihren Tausenden buddhistischen Tempeln, der Inle-See und seine Kanufischer, Mandalay und seine Klöster. Hinweis: Informieren Sie sich aufgrund der politischen Situation vor Reiseantritt über die Reisehinweise.",

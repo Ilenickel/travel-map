@@ -72,8 +72,8 @@ export const TRIP_CRITERIA = {
 // (voir ActivityCriteriaDropdown dans SuggestionCriteria.jsx) — la liste peut
 // grandir sans encombrer la rangée principale.
 export const ACTIVITY_CRITERIA = {
-  ski:        tripCriterion('ski', '⛷️'),
   plongee:    tripCriterion('plongee', '🤿'),
+  ski:        tripCriterion('ski', '⛷️'),
   randonnee:  tripCriterion('randonnee', '🥾'),
 };
 

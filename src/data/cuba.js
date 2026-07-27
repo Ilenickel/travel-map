@@ -22,6 +22,7 @@ export const CUBA = {
     ski: 0,
     ville: 2,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "Cuba est une capsule temporelle : voitures américaines des années 50, musique de salsa et son dans les ruelles de la Havane, plages vierges de Varadero et de Cayo Coco, Trinidad coloniale classée UNESCO et la vallée de Viñales, ses mogotes calcaires et ses plantations de tabac. Un pays unique, figé et fascinant.", en: "Cuba is a time capsule: 1950s American cars, salsa and son music drifting through Havana's streets, untouched beaches in Varadero and Cayo Coco, UNESCO-listed colonial Trinidad, and the Viñales Valley with its limestone mogotes and tobacco plantations. A unique country, frozen in time and utterly captivating.", es: "Cuba es una cápsula del tiempo: coches americanos de los años 50, música de salsa y son en las callejuelas de La Habana, playas vírgenes en Varadero y Cayo Coco, la colonial Trinidad declarada Patrimonio de la UNESCO y el valle de Viñales, con sus mogotes calizos y sus plantaciones de tabaco. Un país único, congelado en el tiempo y fascinante.", de: "Kuba ist eine Zeitkapsel: amerikanische Autos aus den 1950er Jahren, Salsa-Musik und Sound in den Straßen von Havanna, unberührte Strände von Varadero und Cayo Coco, das zum UNESCO-Weltkulturerbe gehörende koloniale Trinidad und das Viñales-Tal, seine Kalksteinmogotes und Tabakplantagen. Ein einzigartiges, gefrorenes und faszinierendes Land.",

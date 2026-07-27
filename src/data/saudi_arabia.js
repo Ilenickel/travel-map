@@ -22,6 +22,7 @@ export const SAUDI_ARABIA = {
     ski: 0,
     ville: 2,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "L'Arabie Saoudite s'ouvre progressivement au tourisme international depuis 2019. Sites nabatéens d'AlUla (Hégra), déserts infinis, vieille Djeddah inscrite à l'UNESCO, modernité de Riyad et douceur de la mer Rouge — un pays qui surprend et dépasse les clichés.", en: "Saudi Arabia has been gradually opening up to international tourism since 2019. The Nabataean sites of AlUla (Hegra), endless deserts, UNESCO-listed old Jeddah, the modernity of Riyadh and the mild Red Sea coast — a country that surprises and defies the clichés.", es: "Arabia Saudita se está abriendo progresivamente al turismo internacional desde 2019. Los yacimientos nabateos de AlUla (Hégra), desiertos infinitos, el casco antiguo de Yeda declarado Patrimonio de la Humanidad, la modernidad de Riad y la suavidad del mar Rojo: un país que sorprende y supera los tópicos.", de: "Saudi-Arabien hat sich seit 2019 schrittweise für den internationalen Tourismus geöffnet. Nabatäische Stätten von AlUla (Hegra), unendliche Wüsten, das von der UNESCO gelistete alte Jeddah, die Moderne von Riad und die Sanftheit des Roten Meeres – ein Land, das überrascht und über Klischees hinausgeht.",

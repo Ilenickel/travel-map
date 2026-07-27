@@ -22,6 +22,7 @@ export const MAURITIUS = {
     ski: 0,
     ville: 1,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "L'île Maurice est le paradis de l'océan Indien : lagons turquoise protégés par la 3e plus grande barrière de corail du monde, plages de sable blanc encerclées de cocotiers, Blue Bay Marine Park (UNESCO), couleurs de la Terre des 7 couleurs et culture créole métissée, indienne et française.", en: "Mauritius is the Indian Ocean's paradise: turquoise lagoons protected by the world's 3rd largest coral reef, white sand beaches ringed with coconut palms, Blue Bay Marine Park (UNESCO), the colours of the Seven Coloured Earths, and a blended Creole, Indian and French culture.", es: "Mauricio es el paraíso del océano Índico: lagunas turquesas protegidas por la tercera barrera de coral más grande del mundo, playas de arena blanca rodeadas de cocoteros, el Blue Bay Marine Park (UNESCO), los colores de la Tierra de los 7 colores y una cultura mestiza criolla, india y francesa.", de: "Mauritius ist das Paradies des Indischen Ozeans: türkisfarbene Lagunen, geschützt durch das drittgrößte Korallenriff der Welt, weiße Sandstrände umgeben von Kokospalmen, Blue Bay Marine Park (UNESCO), Farben der Siebenfarbigen Erde und gemischte kreolische Kultur, indisch und französisch.",

@@ -22,6 +22,7 @@ export const AZERBAIJAN = {
     ski: 1,
     ville: 2,
     plage: 1,
+    plongee: 1,
   },
   description: {
     fr: "L'Azerbaïdjan, « Pays du Feu », surprend avec sa capitale Bakou aux tours flammes ultramodernes surplombant une vieille ville médiévale classée à l'UNESCO. Au-delà, des villages de montagne préservés, les forêts de Sheki et des feux naturels éternels font de ce pays du Caucase une découverte authentique.", en: "Azerbaijan, the “Land of Fire”, captivates with its capital Baku, where ultra-modern Flame Towers rise above a UNESCO-listed medieval old town. Beyond the capital, preserved mountain villages, the forests of Sheki and eternal natural flames make this Caucasus country an authentic and surprising destination.", es: "Azerbaiyán, el «País del Fuego», sorprende con su capital Bakú, cuyas ultramodernas Torres de Fuego dominan un casco antiguo medieval declarado Patrimonio de la UNESCO. Más allá, pueblos de montaña preservados, los bosques de Sheki y llamas naturales eternas hacen de este país del Cáucaso un descubrimiento auténtico.", de: "Aserbaidschan, das „Land des Feuers“, überrascht mit seiner Hauptstadt Baku mit ihren hochmodernen Flammentürmen, die eine alte mittelalterliche Stadt überblicken, die zum UNESCO-Weltkulturerbe gehört. Darüber hinaus machen erhaltene Bergdörfer, Sheki-Wälder und ewige Naturfeuer dieses kaukasische Land zu einer authentischen Entdeckung.",

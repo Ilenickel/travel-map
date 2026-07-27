@@ -24,6 +24,7 @@ export const ECUADOR = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 3,
   },
   description: {
     fr: "L'Équateur est un concentré de merveilles naturelles : les Galápagos (sanctuaire de la faune unique), la cordillère des Andes avec ses volcans géants, l'Amazonie primaire et la côte Pacifique. Quito, capitale coloniale UNESCO, est l'une des plus belles d'Amérique latine.", en: "Ecuador is a compact showcase of natural wonders: the Galápagos (a sanctuary for unique wildlife), the Andes with their giant volcanoes, pristine Amazon rainforest and the Pacific coast. Quito, a UNESCO-listed colonial capital, is one of the most beautiful cities in Latin America.", es: "Ecuador es un concentrado de maravillas naturales: las Galápagos (santuario de una fauna única), la cordillera de los Andes con sus volcanes gigantes, la Amazonía primaria y la costa del Pacífico. Quito, capital colonial declarada Patrimonio UNESCO, es una de las más bellas de América Latina.", de: "Ecuador ist eine Ansammlung von Naturwundern: die Galapagosinseln (einzigartiges Naturschutzgebiet), die Anden mit ihren riesigen Vulkanen, der Amazonas und die Pazifikküste. Quito, die UNESCO-Kolonialhauptstadt, ist eine der schönsten in Lateinamerika.",

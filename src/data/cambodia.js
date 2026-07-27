@@ -24,6 +24,7 @@ export const CAMBODIA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Cambodge est le pays d'Angkor, l'un des plus grands sites archéologiques du monde. Au-delà des temples khmers, il offre des plages encore sauvages, le Mékong et le lac Tonlé Sap, et une culture empreinte de sérénité bouddhiste malgré un passé traumatique avec les Khmers rouges.", en: "Cambodia is the land of Angkor, one of the world's greatest archaeological sites. Beyond its Khmer temples, it offers still-unspoiled beaches, the Mekong and Tonlé Sap Lake, and a culture steeped in Buddhist serenity despite the traumatic legacy of the Khmer Rouge.", es: "Camboya es el país de Angkor, uno de los mayores sitios arqueológicos del mundo. Más allá de sus templos jemeres, ofrece playas todavía vírgenes, el Mekong y el lago Tonlé Sap, y una cultura impregnada de serenidad budista pese al traumático pasado de los jemeres rojos.", de: "Kambodscha ist das Land von Angkor, einer der größten archäologischen Stätten der Welt. Abgesehen von den Khmer-Tempeln bietet es noch immer wilde Strände, den Mekong und den Tonlé-Sap-See sowie eine Kultur, die trotz einer traumatischen Vergangenheit mit den Roten Khmer von buddhistischer Gelassenheit geprägt ist.",

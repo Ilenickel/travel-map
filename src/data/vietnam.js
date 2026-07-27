@@ -22,6 +22,7 @@ export const VIETNAM = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Vietnam fascine par sa diversité : jungle du nord, rizières en terrasses de Sapa, baie d'Halong classée UNESCO, vieille ville d'Hoi An, plages de Da Nang et frénésie de Hô Chi Minh-Ville. Une cuisine extraordinaire et une hospitalité légendaire en font l'une des destinations favorites des routards.", en: "Vietnam fascinates with its diversity: northern jungle, Sapa's terraced rice fields, the UNESCO-listed Ha Long Bay, Hoi An's old town, Da Nang's beaches and the frenzy of Ho Chi Minh City. Extraordinary cuisine and legendary hospitality make it one of backpackers' favourite destinations.", es: "Vietnam fascina por su diversidad: selva del norte, arrozales en terrazas de Sapa, la bahía de Ha Long declarada Patrimonio UNESCO, el casco antiguo de Hoi An, las playas de Da Nang y el frenesí de Ho Chi Minh. Una cocina extraordinaria y una hospitalidad legendaria la convierten en uno de los destinos favoritos de los mochileros.", de: "Vietnam fasziniert mit seiner Vielfalt: nördlicher Dschungel, Reisterrassen von Sapa, die zum UNESCO-Weltkulturerbe gehörende Halong-Bucht, die Altstadt von Hoi An, Strände von Da Nang und die Hektik von Ho-Chi-Minh-Stadt. Außergewöhnliche Küche und legendäre Gastfreundschaft machen es zu einem beliebten Reiseziel für Backpackeren.",

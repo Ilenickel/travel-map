@@ -22,6 +22,7 @@ export const EGYPT = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 3,
   },
   description: {
     fr: "L'Égypte est le pays des pharaons et de l'une des plus grandes civilisations de l'Histoire. Les pyramides de Gizeh, la magie du Sphinx, les temples de Louxor et Karnak sur le Nil, la mer Rouge cristalline d'Hurghada et Charm el-Cheikh — une destination d'exception.", en: "Egypt is the land of the pharaohs and one of the greatest civilisations in history. The pyramids of Giza, the magic of the Sphinx, the temples of Luxor and Karnak on the Nile, and the crystal-clear Red Sea of Hurghada and Sharm el-Sheikh — an exceptional destination.", es: "Egipto es la tierra de los faraones y de una de las mayores civilizaciones de la historia. Las pirámides de Guiza, la magia de la Esfinge, los templos de Luxor y Karnak junto al Nilo, y el cristalino mar Rojo de Hurghada y Sharm el-Sheij — un destino excepcional.", de: "Ägypten ist das Land der Pharaonen und eine der größten Zivilisationen der Geschichte. Die Pyramiden von Gizeh, der Zauber der Sphinx, die Tempel von Luxor und Karnak am Nil, das kristallklare Rote Meer von Hurghada und Sharm el-Sheikh – ein außergewöhnliches Reiseziel.",

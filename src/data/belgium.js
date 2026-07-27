@@ -22,6 +22,7 @@ export const BELGIUM = {
     ski: 0,
     ville: 2,
     plage: 1,
+    plongee: 1,
   },
   description: {
     fr: "La Belgique est un petit pays au cœur de l'Europe, célèbre pour ses chocolats, ses bières artisanales et ses frites. De Bruges la médiévale à Gand la bohème, en passant par Bruxelles capitale de l'UE, le pays regorge de trésors architecturaux flamands et wallons. Les Ardennes offrent un contraste naturel avec les villes animées de la côte nord.", en: "Belgium is a small country at the heart of Europe, famous for its chocolate, craft beers and fries. From medieval Bruges to bohemian Ghent, via Brussels, capital of the EU, the country is full of Flemish and Walloon architectural treasures. The Ardennes offer a natural contrast to the lively cities of the northern coast.", es: "Bélgica es un pequeño país en el corazón de Europa, famoso por sus chocolates, sus cervezas artesanales y sus patatas fritas. Desde la medieval Brujas hasta la bohemia Gante, pasando por Bruselas, capital de la UE, el país está repleto de tesoros arquitectónicos flamencos y valones. Las Ardenas ofrecen un contraste natural con las animadas ciudades de la costa norte.", de: "Belgien ist ein kleines Land im Herzen Europas, berühmt für seine Schokolade, Craft-Biere und Pommes Frites. Vom mittelalterlichen Brügge über das böhmische Gent bis hin zu Brüssel, der EU-Hauptstadt, ist das Land voller flämischer und wallonischer Architekturschätze. Die Ardennen bilden einen natürlichen Kontrast zu den geschäftigen Städten der Nordküste.",

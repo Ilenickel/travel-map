@@ -22,6 +22,7 @@ export const BELIZE = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 3,
   },
   description: {
     fr: "Le Belize est la perle de la Mésoamérique : le Great Blue Hole, trou bleu légendaire classé UNESCO, et la deuxième barrière de corail au monde. Jungle maya, jaguars du parc Cockscomb, ruines de Caracol et atolls caraïbes paradisiaques composent un pays-nature à taille humaine.", en: "Belize is the jewel of Mesoamerica: home to the legendary UNESCO-listed Great Blue Hole and the world's second-largest barrier reef. Maya jungle, jaguars in Cockscomb Park, the ruins of Caracol and idyllic Caribbean atolls make up a compact country devoted to nature.", es: "Belice es la joya de Mesoamérica: el Great Blue Hole, legendario agujero azul declarado Patrimonio de la Humanidad por la UNESCO, y la segunda barrera de coral más grande del mundo. Jungla maya, jaguares del parque Cockscomb, ruinas de Caracol y atolones caribeños de ensueño componen un país-naturaleza a escala humana.", de: "Belize ist die Perle Mesoamerikas: das Great Blue Hole, ein legendäres UNESCO-Weltkulturerbe und das zweitgrößte Korallenriff der Welt. Maya-Dschungel, Jaguare im Cockscomb Park, Ruinen von Caracol und paradiesische karibische Atolle bilden ein natürliches Land im menschlichen Maßstab.",

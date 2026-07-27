@@ -22,6 +22,7 @@ export const ITALY = {
     ski: 2,
     ville: 3,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "L'Italie est le pays du dolce vita : Rome la Ville Éternelle, Florence et la Renaissance, Venise et ses canaux, la côte amalfitaine, la Sicile et sa cuisine aux influences méditerranéennes. Le plus grand concentré de patrimoine UNESCO au monde.", en: "Italy is the land of la dolce vita: Rome the Eternal City, Florence and the Renaissance, Venice and its canals, the Amalfi Coast, Sicily and its Mediterranean-influenced cuisine. The largest concentration of UNESCO heritage in the world.", es: "Italia es el país de la dolce vita: Roma la Ciudad Eterna, Florencia y el Renacimiento, Venecia y sus canales, la costa amalfitana, Sicilia y su cocina de influencias mediterráneas. La mayor concentración de patrimonio UNESCO del mundo.", de: "Italien ist das Land des Dolce Vita: Rom, die Ewige Stadt, Florenz und die Renaissance, Venedig und seine Kanäle, die Amalfiküste, Sizilien und seine mediterran geprägte Küche. Die größte Ansammlung von UNESCO-Weltkulturerbe.",

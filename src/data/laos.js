@@ -24,6 +24,7 @@ export const LAOS = {
     ski: 0,
     ville: 1,
     plage: 1,
+    plongee: 0,
   },
   description: {
     fr: "Le Laos est le joyau paisible de l'Asie du Sud-Est, souvent surnommé « l'âme du Mékong ». Luang Prabang et ses temples dorés, les grottes de Pak Ou, les chutes de Kuang Si et le plateau des Bolavens séduisent les voyageurs en quête d'authenticité et de sérénité.", en: "Laos is the peaceful jewel of Southeast Asia, often nicknamed 'the soul of the Mekong'. Luang Prabang with its golden temples, the Pak Ou caves, the Kuang Si waterfalls and the Bolaven Plateau charm travellers seeking authenticity and serenity.", es: "Laos es la joya apacible del sudeste asiático, a menudo apodada «el alma del Mekong». Luang Prabang con sus templos dorados, las cuevas de Pak Ou, las cascadas de Kuang Si y la meseta de Bolaven cautivan a los viajeros en busca de autenticidad y serenidad.", de: "Laos ist das friedliche Juwel Südostasiens und wird oft als „die Seele des Mekong“ bezeichnet. Luang Prabang und seine goldenen Tempel, die Pak Ou-Höhlen, die Kuang Si-Wasserfälle und das Bolaven-Plateau sprechen Reisende auf der Suche nach Authentizität und Gelassenheit an.",

@@ -22,6 +22,7 @@ export const TUNISIA = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "La Tunisie est la destination africaine la plus accessible depuis l'Europe : Carthage et son histoire millénaire, Sidi Bou Saïd aux maisons blanc et bleu, le désert du Sahara à Douz, les plages de Djerba et la médina de Tunis inscrite à l'UNESCO.", en: "Tunisia is the most accessible African destination from Europe: Carthage and its millennia-old history, Sidi Bou Saïd with its white and blue houses, the Sahara desert in Douz, Djerba's beaches and the UNESCO-listed medina of Tunis.", es: "Túnez es el destino africano más accesible desde Europa: Cartago y su historia milenaria, Sidi Bou Said con sus casas blancas y azules, el desierto del Sahara en Douz, las playas de Yerba y la medina de la ciudad de Túnez, declarada Patrimonio de la Humanidad por la UNESCO.", de: "Tunesien ist das von Europa aus am besten erreichbare afrikanische Reiseziel: Karthago und seine tausendjährige Geschichte, Sidi Bou Saïd mit seinen weißen und blauen Häusern, die Sahara in Douz, die Strände von Djerba und die zum UNESCO-Weltkulturerbe gehörende Medina von Tunis.",

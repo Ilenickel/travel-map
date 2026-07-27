@@ -24,6 +24,7 @@ export const MALAYSIA = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 3,
   },
   description: {
     fr: "La Malaisie est une mosaïque de cultures (malaises, chinoises, indiennes, dayak) au sein d'une nature luxuriante. Des tours Petronas de Kuala Lumpur aux forêts de Bornéo où vivent les orangs-outans, en passant par les plages de Langkawi et les collines de Cameron, le pays offre une diversité époustouflante.", en: "Malaysia is a mosaic of cultures (Malay, Chinese, Indian, Dayak) set within lush nature. From the Petronas Towers of Kuala Lumpur to the Bornean forests where orangutans live, by way of the beaches of Langkawi and the Cameron Highlands, the country offers breathtaking diversity.", es: "Malasia es un mosaico de culturas (malaya, china, india, dayak) inmerso en una naturaleza exuberante. Desde las Torres Petronas de Kuala Lumpur hasta los bosques de Borneo donde viven los orangutanes, pasando por las playas de Langkawi y las colinas de Cameron, el país ofrece una diversidad impresionante.", de: "Malaysia ist ein Mosaik aus Kulturen (Malaiisch, Chinesisch, Indisch, Dayak) inmitten üppiger Natur. Von den Petronas Towers in Kuala Lumpur bis zu den Wäldern von Borneo, wo Orang-Utans leben, über die Strände von Langkawi und die Cameron Hills bietet das Land eine atemberaubende Vielfalt.",

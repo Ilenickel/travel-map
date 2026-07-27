@@ -22,6 +22,7 @@ export const MALDIVES = {
     ski: 0,
     ville: 1,
     plage: 3,
+    plongee: 3,
   },
   description: {
     fr: "Les Maldives sont la quintessence du paradis tropical : 1 200 îles coralliennes aux lagons turquoise, sable blanc immaculé et biodiversité marine exceptionnelle. Destination emblématique des bungalows sur pilotis et de la plongée avec requins-baleines et raies manta.", en: "The Maldives are the quintessential tropical paradise: 1,200 coral islands with turquoise lagoons, pristine white sand and exceptional marine biodiversity. An iconic destination for overwater bungalows and diving with whale sharks and manta rays.", es: "Maldivas es el paraíso tropical por excelencia: 1.200 islas de coral con lagunas turquesas, arena blanca inmaculada y una biodiversidad marina excepcional. Destino emblemático de los bungalós sobre pilotes y del buceo con tiburones ballena y mantarrayas.", de: "Die Malediven sind der Inbegriff eines tropischen Paradieses: 1.200 Koralleninseln mit türkisfarbenen Lagunen, unberührtem weißem Sand und einer außergewöhnlichen Artenvielfalt im Meer. Berühmtes Reiseziel für Überwasserbungalows und Tauchgänge mit Walhaien und Mantarochen.",

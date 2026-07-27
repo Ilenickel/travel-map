@@ -83,6 +83,7 @@ export const JAPAN = withGerman({
     ski: 2,
     ville: 3,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Japon est un archipel d'Asie de l'Est mêlant traditions millénaires et modernité. Entre temples bouddhistes, cerisiers en fleurs, gastronomie raffinée et technologie de pointe, il offre une expérience de voyage incomparable.",

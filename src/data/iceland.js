@@ -22,6 +22,7 @@ export const ICELAND = {
     ski: 0,
     ville: 2,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "L'Islande est une destination de bout du monde, terra d'aurores boréales, de geysers, de volcans actifs, de glaciers immenses et de cascades spectaculaires. Le pays du feu et de la glace, avec Reykjavik la capitale la plus nordique du monde, offre des paysages d'une beauté surnaturelle.", en: "Iceland is an end-of-the-world destination, a land of northern lights, geysers, active volcanoes, immense glaciers and spectacular waterfalls. The land of fire and ice, with Reykjavik as the world's northernmost capital, offers landscapes of almost supernatural beauty.", es: "Islandia es un destino de fin del mundo, tierra de auroras boreales, géiseres, volcanes activos, glaciares inmensos y cascadas espectaculares. El país del fuego y el hielo, con Reikiavik como la capital más septentrional del mundo, ofrece paisajes de una belleza casi sobrenatural.", de: "Island ist ein Reiseziel am Ende der Welt, Heimat der Nordlichter, Geysire, aktiver Vulkane, riesiger Gletscher und spektakulärer Wasserfälle. Das Land aus Feuer und Eis, mit Reykjavik als nördlichster Hauptstadt der Welt, bietet Landschaften von übernatürlicher Schönheit.",

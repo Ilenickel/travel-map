@@ -22,6 +22,7 @@ export const UZBEKISTAN = {
     ski: 2,
     ville: 2,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "L'Ouzbékistan est le cœur de la Route de la Soie. Samarcande, Boukhara et Khiva sont des villes-musées à ciel ouvert, avec leurs mosaïques de faïence turquoise, leurs minarets et leurs médersas du XIVe siècle. Une destination qui touche à l'absolu.", en: "Uzbekistan is the heart of the Silk Road. Samarkand, Bukhara and Khiva are open-air museum cities, with their turquoise tile mosaics, minarets and 14th-century madrasas. A destination that borders on the sublime.", es: "Uzbekistán es el corazón de la Ruta de la Seda. Samarcanda, Bujará y Jiva son ciudades-museo al aire libre, con sus mosaicos de azulejos turquesa, sus minaretes y sus madrasas del siglo XIV. Un destino que roza lo absoluto.", de: "Usbekistan ist das Herz der Seidenstraße. Samarkand, Buchara und Chiwa sind Freilichtmuseumsstädte mit ihren türkisfarbenen Steingutmosaiken, Minaretten und Medresen aus dem 14. Jahrhundert. Ein Reiseziel, das das Absolute berührt.",

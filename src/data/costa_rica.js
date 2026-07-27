@@ -22,6 +22,7 @@ export const COSTA_RICA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 3,
   },
   description: {
     fr: "Le Costa Rica, malgré ses 0,03% de la surface terrestre, abrite 5% de la biodiversité mondiale. Forêts nuageuses de Monteverde, volcan Arenal, tortues de Tortuguero, singes paresseux de Manuel Antonio — et 99% d'électricité renouvelable. La destination éco-tourisme par excellence.", en: "Despite covering just 0.03% of the Earth's surface, Costa Rica is home to 5% of the world's biodiversity. Monteverde's cloud forests, Arenal Volcano, Tortuguero's turtles, Manuel Antonio's sloths — plus 99% renewable electricity. The ultimate ecotourism destination.", es: "Costa Rica, pese a apenas un 0,03% de la superficie terrestre, alberga el 5% de la biodiversidad mundial. Los bosques nubosos de Monteverde, el volcán Arenal, las tortugas de Tortuguero, los perezosos de Manuel Antonio — y un 99% de electricidad renovable. El destino ecoturístico por excelencia.", de: "Obwohl Costa Rica 0,03 % der Erdoberfläche ausmacht, beherbergt es 5 % der weltweiten Artenvielfalt. Nebelwälder von Monteverde, Vulkan Arenal, Tortuguero-Schildkröten, Lippenaffen von Manuel Antonio – und 99 % erneuerbarer Strom. Das ultimative Reiseziel für Ökotourismus.",

@@ -22,6 +22,7 @@ export const KENYA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Kenya est le berceau du safari africain : Masai Mara et sa Grande Migration, amboseli avec les éléphants devant le Kilimandjaro, côte swahilie de Mombasa et culture Maasai vivante. Un pays qui définit l'Afrique sauvage.", en: "Kenya is the birthplace of the African safari: Masai Mara and its Great Migration, Amboseli with elephants roaming before Kilimanjaro, the Swahili coast around Mombasa and a living Maasai culture. A country that defines wild Africa.", es: "Kenia es la cuna del safari africano: el Masai Mara y su Gran Migración, Amboseli con elefantes ante el Kilimanjaro, la costa suajili de Mombasa y una cultura maasái viva. Un país que define el África salvaje.", de: "Kenia ist die Wiege der afrikanischen Safari: Masai Mara und ihre große Völkerwanderung, Amboseli mit Elefanten vor dem Kilimandscharo, Swahili-Küste von Mombasa und lebendige Massai-Kultur. Ein Land, das das wilde Afrika definiert.",

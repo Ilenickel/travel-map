@@ -24,6 +24,7 @@ export const SRI_LANKA = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Sri Lanka, « Perle de l'Océan Indien », concentre sur une petite île une diversité extraordinaire : temples bouddhistes à rocher (Sigiriya), safaris à éléphants (Yala), plages de la côte sud, collines de thé de Nuwara Eliya et sites UNESCO. Une destination complète et accessible en 2 semaines.", en: "Sri Lanka, the 'Pearl of the Indian Ocean', packs extraordinary diversity onto a small island: rock temples (Sigiriya), elephant safaris (Yala), south coast beaches, the tea hills of Nuwara Eliya and UNESCO sites. A complete destination that fits into a 2-week trip.", es: "Sri Lanka, la «Perla del Océano Índico», reúne en una pequeña isla una diversidad extraordinaria: templos budistas rupestres (Sigiriya), safaris de elefantes (Yala), playas de la costa sur, colinas de té de Nuwara Eliya y sitios UNESCO. Un destino completo y accesible en 2 semanas.", de: "Sri Lanka, „Perle des Indischen Ozeans“, konzentriert eine außergewöhnliche Vielfalt auf einer kleinen Insel: buddhistische Felsentempel (Sigiriya), Elefantensafaris (Yala), Strände an der Südküste, Teehügel von Nuwara Eliya und UNESCO-Stätten. Ein komplettes Reiseziel, das in 2 Wochen erreichbar ist.",

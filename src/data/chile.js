@@ -24,6 +24,7 @@ export const CHILE = {
     ski: 3,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Chili est un pays-ruban de 4 300 km de long entre les Andes et le Pacifique : du désert d'Atacama le plus aride au monde aux glaciers de Patagonie, en passant par les vignobles et Santiago cosmopolite. Un pays d'extrêmes à l'infrastructure touristique excellente.", en: "Chile is a ribbon-shaped country stretching 4,300 km between the Andes and the Pacific: from the world's driest Atacama Desert to the glaciers of Patagonia, by way of vineyards and cosmopolitan Santiago. A country of extremes with excellent tourist infrastructure.", es: "Chile es un país-cinta de 4.300 km de largo entre los Andes y el Pacífico: desde el desierto de Atacama, el más árido del mundo, hasta los glaciares de la Patagonia, pasando por los viñedos y la cosmopolita Santiago. Un país de extremos con una excelente infraestructura turística.", de: "Chile ist ein 4.300 km langes Bandland zwischen den Anden und dem Pazifik: von der trockensten Atacama-Wüste der Welt bis zu den Gletschern Patagoniens, über die Weinberge und das kosmopolitische Santiago. Ein Land der Extreme mit hervorragender touristischer Infrastruktur.",

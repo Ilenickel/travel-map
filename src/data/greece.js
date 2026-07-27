@@ -22,6 +22,7 @@ export const GREECE = {
     ski: 0,
     ville: 2,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "La Grèce est le berceau de la civilisation occidentale. Entre l'Acropole d'Athènes, les monastères des Météores, les îles cycladiques aux maisons blanches (Santorin, Mykonos) et les plages cristallines de Crète, elle conjugue patrimoine antique et beauté méditerranéenne.", en: "Greece is the cradle of Western civilisation. Between the Acropolis of Athens, the monasteries of Meteora, the white-washed Cycladic islands (Santorini, Mykonos) and the crystal-clear beaches of Crete, it combines ancient heritage with Mediterranean beauty.", es: "Grecia es la cuna de la civilización occidental. Entre la Acrópolis de Atenas, los monasterios de Meteora, las islas cicládicas de casas blancas (Santorini, Míconos) y las playas cristalinas de Creta, combina patrimonio antiguo y belleza mediterránea.", de: "Griechenland ist die Wiege der westlichen Zivilisation. Zwischen der Akropolis von Athen, den Klöstern von Meteora, den Kykladeninseln mit weißen Häusern (Santorini, Mykonos) und den kristallklaren Stränden Kretas vereint es antikes Erbe und mediterrane Schönheit.",

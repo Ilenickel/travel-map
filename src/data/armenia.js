@@ -22,6 +22,7 @@ export const ARMENIA = {
     ski: 2,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "L'Arménie, berceau du christianisme (301 ap. J.-C.), fascine par ses monastères médiévaux perchés dans des gorges profondes, son lac Sévan aux teintes cobalt, l'ombre du mont Ararat sur Erevan et une culture du café et du cognac incomparables.", en: "Armenia, the cradle of Christianity (301 AD), captivates with its medieval monasteries perched in deep gorges, cobalt-hued Lake Sevan, the shadow of Mount Ararat over Yerevan, and an unrivalled coffee and cognac culture.", es: "Armenia, cuna del cristianismo (301 d. C.), fascina por sus monasterios medievales encaramados en profundos desfiladeros, su lago Sevan de tonos cobalto, la sombra del monte Ararat sobre Ereván y una cultura del café y el coñac incomparable.", de: "Armenien, die Wiege des Christentums (301 n. Chr.), fasziniert mit seinen mittelalterlichen Klöstern inmitten tiefer Schluchten, seinem kobaltfarbenen Sewansee, dem Schatten des Berges Ararat über Eriwan und einer unvergleichlichen Kaffee- und Cognackultur.",

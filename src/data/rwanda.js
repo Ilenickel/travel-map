@@ -22,6 +22,7 @@ export const RWANDA = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 1,
   },
   description: {
     fr: "Le Rwanda, « pays des mille collines », s'est réinventé en modèle de développement africain. Kigali, ville la plus propre d'Afrique, et le parc des Volcans — dernier refuge des gorilles de montagne — font du Rwanda une destination d'exception, à la fois émouvante et inspirante.", en: "Rwanda, the 'land of a thousand hills', has reinvented itself as a model of African development. Kigali, Africa's cleanest city, and Volcanoes National Park — the last refuge of the mountain gorillas — make Rwanda an exceptional destination, both moving and inspiring.", es: "Ruanda, el «país de las mil colinas», se ha reinventado como modelo de desarrollo africano. Kigali, la ciudad más limpia de África, y el parque de los Volcanes —último refugio de los gorilas de montaña— convierten a Ruanda en un destino excepcional, a la vez conmovedor e inspirador.", de: "Ruanda, das „Land der tausend Hügel“, hat sich als Modell afrikanischer Entwicklung neu erfunden. Kigali, die sauberste Stadt Afrikas, und der Vulkanpark – der letzte Zufluchtsort der Berggorillas – machen Ruanda zu einem außergewöhnlichen Reiseziel, das sowohl bewegend als auch inspirierend ist.",

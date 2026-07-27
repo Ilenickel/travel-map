@@ -22,6 +22,7 @@ export const JORDAN = {
     ski: 0,
     ville: 2,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "La Jordanie est un joyau du Moyen-Orient : Pétra, cité nabatéenne taillée dans la roche rose, le désert de Wadi Rum aux teintes martiennes, la mer Morte où l'on flotte sans effort et les ruines romaines de Jérash. Un pays ouvert, sûr et accueillant.", en: "Jordan is a jewel of the Middle East: Petra, a Nabataean city carved into pink rock, the Mars-like hues of Wadi Rum desert, the Dead Sea where you float effortlessly, and the Roman ruins of Jerash. An open, safe and welcoming country.", es: "Jordania es una joya de Oriente Medio: Petra, ciudad nabatea tallada en roca rosa, el desierto de Wadi Rum de tonos marcianos, el mar Muerto donde se flota sin esfuerzo y las ruinas romanas de Jerash. Un país abierto, seguro y acogedor.", de: "Jordanien ist ein Juwel des Nahen Ostens: Petra, eine nabatäische Stadt, die aus rosafarbenem Fels gehauen wurde, die Wüste Wadi Rum mit ihren Marsfarben, das Tote Meer, in dem Sie mühelos schweben können, und die römischen Ruinen von Jerash. Ein offenes, sicheres und einladendes Land.",

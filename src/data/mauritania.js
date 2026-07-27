@@ -22,6 +22,7 @@ export const MAURITANIA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "La Mauritanie est un immense pays saharien entre mer et désert, peu visité mais d'une beauté saisissante. Les villes caravanières de Chinguetti et Ouadane (UNESCO), le plateau de l'Adrar avec ses dunes et ses gorges, et le banc d'Arguin (UNESCO), sanctuaire mondial des oiseaux migrateurs, composent un itinéraire inoubliable pour les aventuriers.", en: "Mauritania is a vast Saharan country between sea and desert, seldom visited but strikingly beautiful. The caravan towns of Chinguetti and Ouadane (UNESCO), the Adrar plateau with its dunes and gorges, and the Banc d'Arguin (UNESCO), a world sanctuary for migratory birds, form an unforgettable route for adventurers.", es: "Mauritania es un inmenso país sahariano entre el mar y el desierto, poco visitado pero de una belleza impactante. Las ciudades caravaneras de Chinguetti y Ouadane (UNESCO), la meseta del Adrar con sus dunas y desfiladeros, y el banco de Arguin (UNESCO), santuario mundial de aves migratorias, componen un itinerario inolvidable para los aventureros.", de: "Mauretanien ist ein riesiges Saharaland zwischen Meer und Wüste, wenig besucht, aber von beeindruckender Schönheit. Die Karawanenstädte Chinguetti und Ouadane (UNESCO), das Adrar-Plateau mit seinen Dünen und Schluchten und der Banc d'Arguin (UNESCO), Weltschutzgebiet für Zugvögel, bilden eine unvergessliche Reiseroute für Abenteurer.",

@@ -24,6 +24,7 @@ export const PARAGUAY = {
     ski: 0,
     ville: 1,
     plage: 1,
+    plongee: 0,
   },
   description: {
     fr: "Le Paraguay est l'une des destinations les plus méconnues et authentiques d'Amérique du Sud. Pays bilingue espagnol-guaraní, il fascine par ses missions jésuites du XVIIe siècle, sa nature sauvage (Pantanal paraguayen, Chaco) et sa culture singulière. Très abordable et peu touristique.", en: "Paraguay is one of the most little-known and authentic destinations in South America. A bilingual Spanish-Guaraní country, it fascinates with its 17th-century Jesuit missions, wild nature (Paraguayan Pantanal, Chaco) and unique culture. Very affordable and off the tourist trail.", es: "Paraguay es uno de los destinos menos conocidos y más auténticos de Sudamérica. País bilingüe español-guaraní, fascina por sus misiones jesuíticas del siglo XVII, su naturaleza salvaje (Pantanal paraguayo, Chaco) y su cultura singular. Muy asequible y poco turístico.", de: "Paraguay ist eines der unbekanntesten und authentischsten Reiseziele in Südamerika. Als zweisprachiges Spanisch-Guaraní-Land fasziniert es mit seinen Jesuitenmissionen aus dem 17. Jahrhundert, seiner wilden Natur (paraguayisches Pantanal, Chaco) und seiner einzigartigen Kultur. Sehr erschwinglich und nicht sehr touristisch.",

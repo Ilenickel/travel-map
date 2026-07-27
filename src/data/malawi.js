@@ -22,6 +22,7 @@ export const MALAWI = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Malawi est le 'Warm Heart of Africa' : le lac Malawi (UNESCO, 9e plus grand lac du monde) avec ses 1 000 espèces de cichlidés endémiques — plus que dans tout autre lac de la planète — est une merveille de biodiversité. Pays enclavé, doux et abordable, avec les parcs animaliers de Liwonde et Nyika, les plateaux de Mulanje, et une hospitalité légendaire.", en: "Malawi is the 'Warm Heart of Africa': Lake Malawi (UNESCO, the world's 9th-largest lake) with its 1,000 endemic cichlid species — more than any other lake on the planet — is a wonder of biodiversity. A landlocked, gentle and affordable country, with the wildlife parks of Liwonde and Nyika, the Mulanje highlands, and legendary hospitality.", es: "Malaui es el «cálido corazón de África»: el lago Malaui (UNESCO, noveno lago más grande del mundo) con sus 1.000 especies endémicas de cíclidos —más que en cualquier otro lago del planeta— es una maravilla de biodiversidad. País sin litoral, apacible y asequible, con los parques de fauna de Liwonde y Nyika, las tierras altas de Mulanje y una hospitalidad legendaria.", de: "Malawi ist das „warme Herz Afrikas“: Der Malawisee (UNESCO, neuntgrößter See der Welt) mit seinen 1.000 endemischen Buntbarscharten – mehr als in jedem anderen See der Erde – ist ein Wunder der Artenvielfalt. Binnenland, sanftes und erschwingliches Land mit den Wildparks Liwonde und Nyika, den Mulanje-Hochebenen und legendärer Gastfreundschaft.",

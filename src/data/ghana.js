@@ -22,6 +22,7 @@ export const GHANA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "Le Ghana est le pays d'Afrique de l'Ouest le plus stable et accueillant pour le tourisme : berceaux de la traite négrière avec les châteaux coloniaux de Cape Coast et Elmina (UNESCO), forêts tropicales et primates sauvages du parc de Kakum, tissage du kente à Kumasi capitale des Ashanti, et une scène musicale (highlife, afrobeats) rayonnant sur toute l'Afrique.", en: "Ghana is West Africa's most stable and welcoming country for tourism: a cradle of the slave trade with the colonial castles of Cape Coast and Elmina (UNESCO), tropical forests and wild primates in Kakum National Park, kente weaving in Kumasi, capital of the Ashanti, and a music scene (highlife, afrobeats) that shines across the continent.", es: "Ghana es el país más estable y acogedor de África Occidental para el turismo: cuna de la trata de esclavos con los castillos coloniales de Cape Coast y Elmina (UNESCO), bosques tropicales y primates salvajes del parque de Kakum, tejido del kente en Kumasi, capital de los ashanti, y una escena musical (highlife, afrobeats) que irradia por todo el continente.", de: "Ghana ist das stabilste und gastfreundlichste Land Westafrikas für den Tourismus: Geburtsstätten des Sklavenhandels mit den Kolonialburgen von Cape Coast und Elmina (UNESCO), tropische Wälder und wilde Primaten im Kakum Park, Kente-Weberei in Kumasi, der Hauptstadt der Ashanti, und eine Musikszene (Highlife, Afrobeats), die sich über ganz Afrika erstreckt.",

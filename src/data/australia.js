@@ -22,6 +22,7 @@ export const AUSTRALIA = {
     ski: 2,
     ville: 2,
     plage: 3,
+    plongee: 3,
   },
   description: {
     fr: "L'Australie est un continent à elle seule : Sydney et son Opéra iconique, la Grande Barrière de Corail du Queensland, Uluru le rocher sacré, les kangourous et koalas de la brousse, Melbourne et sa scène gastronomique. Un pays immense, à l'autre bout du monde, pour des aventures inoubliables.", en: "Australia is a continent in its own right: Sydney and its iconic Opera House, the Great Barrier Reef in Queensland, the sacred rock of Uluru, kangaroos and koalas in the bush, and Melbourne with its foodie scene. A vast country, on the other side of the world, for unforgettable adventures.", es: "Australia es todo un continente en sí misma: Sídney y su icónica Ópera, la Gran Barrera de Coral de Queensland, Uluru la roca sagrada, los canguros y koalas del monte, Melbourne y su escena gastronómica. Un país inmenso, al otro extremo del mundo, para vivir aventuras inolvidables.", de: "Australien ist ein Kontinent für sich: Sydney und sein berühmtes Opernhaus, das Great Barrier Reef von Queensland, Uluru, der heilige Felsen, die Kängurus und Koalas im Busch, Melbourne und seine gastronomische Szene. Ein riesiges Land am anderen Ende der Welt für unvergessliche Abenteuer.",

@@ -61,6 +61,7 @@ const TAG_TO_CRITERION = {
   Nature: "nature",
   Randonnée: "randonnee",
   Plage: "plage",
+  Plongée: "plongee",
   Gastronomie: "gastronomie",
   Architecture: "architecture",
   Désert: "desert",

@@ -22,6 +22,7 @@ export const MONGOLIA = {
     ski: 2,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "La Mongolie est l'un des derniers grands espaces vierges de la planète. Steppes infinies, désert de Gobi aux dunes chantantes, yourtes de nomades, chevaux sauvages et nuits sous une voûte céleste sans pollution lumineuse — une aventure incomparable pour ceux qui cherchent l'essentiel.", en: "Mongolia is one of the last great untouched wilderness areas on the planet. Endless steppes, the Gobi Desert with its singing dunes, nomad yurts, wild horses and nights under a light-pollution-free sky — an unrivalled adventure for those seeking the essentials.", es: "Mongolia es uno de los últimos grandes espacios vírgenes del planeta. Estepas infinitas, el desierto de Gobi con sus dunas cantoras, yurtas de nómadas, caballos salvajes y noches bajo un cielo sin contaminación lumínica: una aventura incomparable para quienes buscan lo esencial.", de: "Die Mongolei ist einer der letzten großen, unberührten Gebiete auf dem Planeten. Endlose Steppen, die Wüste Gobi mit singenden Dünen, nomadische Jurten, wilde Pferde und Nächte unter einem Himmelsgewölbe ohne Lichtverschmutzung – ein unvergleichliches Abenteuer für alle, die das Wesentliche suchen.",

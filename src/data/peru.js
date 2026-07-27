@@ -22,6 +22,7 @@ export const PERU = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "Le Pérou est le cœur de l'Amérique andine : Machu Picchu la cité inca au-dessus des nuages, Cusco la capitale inca, la mer de dunes de Huacachina, le lac Titicaca le plus haut du monde et la gastronomie péruvienne parmi les meilleures au monde.", en: "Peru is the heart of Andean America: Machu Picchu, the Inca city above the clouds, Cusco the Inca capital, the sea of dunes at Huacachina, Lake Titicaca the highest in the world, and Peruvian cuisine, among the best in the world.", es: "Perú es el corazón de la América andina: Machu Picchu, la ciudad inca sobre las nubes, Cusco, la capital inca, el mar de dunas de Huacachina, el lago Titicaca, el más alto del mundo, y la gastronomía peruana, entre las mejores del mundo.", de: "Peru ist das Herz der Andenamerikas: Machu Picchu, die Inkastadt über den Wolken, Cusco, die Inkahauptstadt, das Dünenmeer von Huacachina, der Titicacasee, der höchste der Welt, und die peruanische Gastronomie, die zu den besten der Welt zählt.",

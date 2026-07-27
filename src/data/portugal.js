@@ -22,6 +22,7 @@ export const PORTUGAL = {
     ski: 0,
     ville: 3,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "Le Portugal séduit par sa douceur de vivre : Lisbonne avec ses tramways et ses azulejos, le fado mélancolique, les plages de l'Algarve, le vin de Porto et les monastères manuélins de Sintra. Un pays accessible, chaleureux et riche en histoire.", en: "Portugal charms with its easy-going lifestyle: Lisbon with its trams and azulejo tiles, melancholic fado music, the beaches of the Algarve, Port wine, and the Manueline monasteries of Sintra. An accessible, warm country steeped in history.", es: "Portugal seduce por su dulzura de vivir: Lisboa con sus tranvías y sus azulejos, el fado melancólico, las playas del Algarve, el vino de Oporto y los monasterios manuelinos de Sintra. Un país accesible, cálido y rico en historia.", de: "Portugal verführt mit seiner sanften Lebensart: Lissabon mit seinen Straßenbahnen und Azulejos, melancholischem Fado, den Stränden der Algarve, Portwein und den manuelinischen Klöstern von Sintra. Ein zugängliches, warmes und geschichtsträchtiges Land.",

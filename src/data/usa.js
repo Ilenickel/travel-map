@@ -22,6 +22,7 @@ export const USA = {
     ski: 3,
     ville: 3,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Les États-Unis offrent une diversité vertigineuse : New York et ses gratte-ciels, les parcs nationaux géants (Yellowstone, Grand Canyon, Yosemite), la Route 66, les plages de Miami, Hollywood à Los Angeles et la Nouvelle-Orléans au son du jazz. Un voyage sans fin dans un pays-continent.", en: "The United States offers dizzying diversity: New York and its skyscrapers, giant national parks (Yellowstone, Grand Canyon, Yosemite), Route 66, the beaches of Miami, Hollywood in Los Angeles, and New Orleans to the sound of jazz. An endless journey across a continent-sized country.", es: "Estados Unidos ofrece una diversidad vertiginosa: Nueva York y sus rascacielos, los inmensos parques nacionales (Yellowstone, Gran Cañón, Yosemite), la Ruta 66, las playas de Miami, Hollywood en Los Ángeles y Nueva Orleans al son del jazz. Un viaje sin fin por un país-continente.", de: "Die Vereinigten Staaten bieten eine schwindelerregende Vielfalt: New York und seine Wolkenkratzer, die riesigen Nationalparks (Yellowstone, Grand Canyon, Yosemite), Route 66, die Strände von Miami, Hollywood in Los Angeles und New Orleans zu den Klängen des Jazz. Eine endlose Reise in einem Land-Kontinent.",

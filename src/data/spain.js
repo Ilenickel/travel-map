@@ -22,6 +22,7 @@ export const SPAIN = {
     ski: 2,
     ville: 3,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "L'Espagne séduit par sa diversité : Barcelone et Gaudí, Madrid et ses musées de classe mondiale, le flamenco d'Andalousie, les plages de la Costa del Sol, les tapas et la sangria, les paysages lunaires de Grenade et Séville.", en: "Spain charms with its diversity: Barcelona and Gaudí, Madrid and its world-class museums, flamenco in Andalusia, the beaches of the Costa del Sol, tapas and sangria, and the moon-like landscapes around Granada and Seville.", es: "España seduce por su diversidad: Barcelona y Gaudí, Madrid y sus museos de clase mundial, el flamenco de Andalucía, las playas de la Costa del Sol, las tapas y la sangría, y los paisajes lunares de Granada y Sevilla.", de: "Spanien verführt mit seiner Vielfalt: Barcelona und Gaudí, Madrid und seine Weltklasse-Museen, der Flamenco Andalusiens, die Strände der Costa del Sol, Tapas und Sangria, die Mondlandschaften von Granada und Sevilla.",

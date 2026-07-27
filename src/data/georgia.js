@@ -22,6 +22,7 @@ export const GEORGIA = {
     ski: 2,
     ville: 2,
     plage: 1,
+    plongee: 1,
   },
   description: {
     fr: "La Géorgie est l'une des destinations les plus authentiques et abordables d'Europe orientale. Entre les monastères perchés dans les montagnes du Caucase, la vieille ville de Tbilissi aux maisons à balcons sculptés, les vignobles de Kakhétie et la côte Noire de Batoumi, c'est un pays qui émerveille.", en: "Georgia is one of Eastern Europe's most authentic and affordable destinations. Between monasteries perched in the Caucasus mountains, Tbilisi's old town with its carved wooden balconies, the vineyards of Kakheti and Batumi's Black Sea coast, it is a country that never fails to amaze.", es: "Georgia es uno de los destinos más auténticos y asequibles de Europa oriental. Entre monasterios encaramados en las montañas del Cáucaso, el casco antiguo de Tiflis con sus balcones de madera tallada, los viñedos de Kajetia y la costa del mar Negro de Batumi, es un país que maravilla.", de: "Georgien ist eines der authentischsten und erschwinglichsten Reiseziele in Osteuropa. Zwischen den Klöstern im Kaukasus, der Altstadt von Tiflis mit ihren Häusern mit geschnitzten Balkonen, den Weinbergen von Kachetien und der Schwarzen Küste von Batumi ist es ein Land, das staunen lässt.",

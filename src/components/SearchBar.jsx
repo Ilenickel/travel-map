@@ -11,14 +11,15 @@ const TAGS = [
   { value: "UNESCO",        key: "unesco",       icon: "🏛️" },
   { value: "Histoire",      key: "history",      icon: "📜" },
   { value: "Nature",        key: "nature",       icon: "🌿" },
-  { value: "Randonnée",     key: "hiking",       icon: "🥾" },
   { value: "Plage",         key: "beach",        icon: "🏖️" },
   { value: "Gastronomie",   key: "food",         icon: "🍽️" },
   { value: "Architecture",  key: "architecture", icon: "🏰" },
   { value: "Désert",        key: "desert",       icon: "🏜️" },
   { value: "Safari",        key: "safari",       icon: "🦁" },
-  { value: "Ski",           key: "ski",          icon: "⛷️" },
   { value: "Ville",         key: "city",         icon: "🏙️" },
+  { value: "Plongée",       key: "diving",       icon: "🤿" },
+  { value: "Ski",           key: "ski",          icon: "⛷️" },
+  { value: "Randonnée",     key: "hiking",       icon: "🥾" },
 ];
 
 // Valeurs en euros : c'est la valeur comparée aux budgets des données pays

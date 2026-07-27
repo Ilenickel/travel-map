@@ -22,6 +22,7 @@ export const OMAN = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Oman est le pays le plus authentique et sûr du Golfe. Déserts de sable fins (Wahiba), montagnes vertigineuses (Jebel Akhdar), côtes sauvages où pondent les tortues marines, vieilles fortresses et la chaleur légendaire de l'hospitalité omanaise.", en: "Oman is the most authentic and safe country in the Gulf. Fine desert sands (Wahiba), dizzying mountains (Jebel Akhdar), wild coastlines where sea turtles nest, old fortresses and the legendary warmth of Omani hospitality.", es: "Omán es el país más auténtico y seguro del Golfo. Desiertos de arena fina (Wahiba), montañas vertiginosas (Jebel Akhdar), costas salvajes donde anidan las tortugas marinas, viejas fortalezas y la legendaria calidez de la hospitalidad omaní.", de: "Oman ist das authentischste und sicherste Land am Golf. Feine Sandwüsten (Wahiba), schwindelerregende Berge (Jebel Akhdar), wilde Küsten, an denen Meeresschildkröten Eier legen, alte Festungen und die legendäre Herzlichkeit der omanischen Gastfreundschaft.",

@@ -22,6 +22,7 @@ export const COTE_DIVOIRE = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "La Côte d'Ivoire est la première économie d'Afrique de l'Ouest : Abidjan sa métropole ultramoderne surnommée 'Paris de l'Afrique', la basilique Notre-Dame de la Paix de Yamoussoukro (la plus grande église du monde), les forêts primaires du Parc de Taï (UNESCO) avec chimpanzés, et les villages Senoufo du nord aux masques sacrés Poro.", en: "Ivory Coast is West Africa's leading economy: Abidjan, its ultramodern metropolis nicknamed the 'Paris of Africa'; Yamoussoukro's Basilica of Our Lady of Peace, the largest church in the world; the primary forests of Taï National Park (UNESCO) with chimpanzees; and the Senoufo villages of the north with their sacred Poro masks.", es: "Costa de Marfil es la primera economía de África Occidental: Abiyán, su metrópolis ultramoderna apodada el 'París de África', la basílica de Nuestra Señora de la Paz de Yamusukro (la iglesia más grande del mundo), los bosques primarios del Parque de Taï (UNESCO) con chimpancés, y los pueblos senufo del norte con sus máscaras sagradas Poro.", de: "Die Elfenbeinküste ist die größte Volkswirtschaft Westafrikas: Abidjan, ihre hochmoderne Metropole mit dem Spitznamen „Paris Afrikas“, die Basilika Notre-Dame de la Paix in Yamoussoukro (die größte Kirche der Welt), die Primärwälder des Taï-Parks (UNESCO) mit Schimpansen und die Senoufo-Dörfer im Norden mit heiligen Poro-Masken.",

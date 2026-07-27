@@ -22,6 +22,7 @@ export const TAIWAN = {
     ski: 2,
     ville: 2,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Taïwan est le « trésor de la Chine » : cuisine de rue exceptionnelle, marchés nocturnes animés, temples bouddhistes parfumés d'encens, montagnes sauvages, gorges spectaculaires (Taroko) et l'accueil le plus chaleureux d'Asie.", en: "Taiwan is the 'treasure of China': exceptional street food, lively night markets, incense-scented Buddhist temples, wild mountains, spectacular gorges (Taroko) and the warmest welcome in Asia.", es: "Taiwán es el «tesoro de China»: comida callejera excepcional, animados mercados nocturnos, templos budistas perfumados de incienso, montañas salvajes, gargantas espectaculares (Taroko) y la bienvenida más cálida de Asia.", de: "Taiwan ist der „Schatz Chinas“: außergewöhnliches Streetfood, geschäftige Nachtmärkte, nach Weihrauch duftende buddhistische Tempel, wilde Berge, spektakuläre Schluchten (Taroko) und der herzlichste Empfang in Asien.",

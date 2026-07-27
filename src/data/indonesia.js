@@ -22,6 +22,7 @@ export const INDONESIA = {
     ski: 0,
     ville: 2,
     plage: 3,
+    plongee: 3,
   },
   description: {
     fr: "L'Indonésie est le plus grand archipel du monde avec 17 000 îles. Bali, île des dieux aux temples et rizières en terrasses, Komodo et ses dragons, Lombok et ses plages vierges, et les orangs-outans de Bornéo forment un pays d'une biodiversité époustouflante.", en: "Indonesia is the world's largest archipelago, spanning 17,000 islands. Bali, the island of the gods with its temples and rice terraces, Komodo and its dragons, Lombok and its untouched beaches, and the orangutans of Borneo come together in a country of breathtaking biodiversity.", es: "Indonesia es el archipiélago más grande del mundo, con 17 000 islas. Bali, la isla de los dioses con sus templos y arrozales en terrazas, Komodo y sus dragones, Lombok y sus playas vírgenes, y los orangutanes de Borneo conforman un país de una biodiversidad asombrosa.", de: "Indonesien ist mit 17.000 Inseln der größte Archipel der Welt. Bali, die Insel der Götter mit Tempeln und Reisterrassen, Komodo und seine Drachen, Lombok und seine unberührten Strände sowie die Orang-Utans von Borneo bilden ein Land atemberaubender Artenvielfalt.",

@@ -22,6 +22,7 @@ export const MEXICO = {
     ski: 0,
     ville: 2,
     plage: 3,
+    plongee: 3,
   },
   description: {
     fr: "Le Mexique est une mosaïque de civilisations : pyramides aztèques et mayas, colonial baroque d'Oaxaca et San Cristóbal, plages turquoise de Cancún et de la Riviera Maya, cuisine classée UNESCO, tequila et mariachis. Un pays d'une richesse culturelle infinie.", en: "Mexico is a mosaic of civilisations: Aztec and Maya pyramids, baroque colonial architecture in Oaxaca and San Cristóbal, turquoise beaches in Cancún and the Riviera Maya, UNESCO-listed cuisine, tequila and mariachis. A country of endless cultural richness.", es: "México es un mosaico de civilizaciones: pirámides aztecas y mayas, arquitectura colonial barroca en Oaxaca y San Cristóbal, playas turquesa en Cancún y la Riviera Maya, gastronomía Patrimonio UNESCO, tequila y mariachis. Un país de una riqueza cultural infinita.", de: "Mexiko ist ein Mosaik aus Zivilisationen: Azteken- und Maya-Pyramiden, barockes Oaxaca und San Cristóbal aus der Kolonialzeit, türkisfarbene Strände von Cancun und der Riviera Maya, zum UNESCO-Weltkulturerbe gehörende Küche, Tequila und Mariachis. Ein Land mit unendlichem kulturellen Reichtum.",

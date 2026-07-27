@@ -22,6 +22,7 @@ export const GUATEMALA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "Le Guatemala concentre l'essence de l'Amérique centrale : Antigua, joyau colonial classé UNESCO, le lac Atitlán cerné de volcans — l'un des plus beaux du monde — et Tikal, cité maya surgissant de la jungle péténère. Un pays surprenant, peu cher et profondément authentique.", en: "Guatemala captures the essence of Central America: Antigua, a UNESCO-listed colonial gem; Lake Atitlán ringed by volcanoes — one of the most beautiful in the world — and Tikal, a Maya city rising from the Petén jungle. A surprising, affordable and deeply authentic country.", es: "Guatemala concentra la esencia de Centroamérica: Antigua, joya colonial declarada Patrimonio UNESCO, el lago Atitlán rodeado de volcanes —uno de los más bellos del mundo— y Tikal, ciudad maya que emerge de la selva del Petén. Un país sorprendente, barato y profundamente auténtico.", de: "Guatemala konzentriert die Essenz Mittelamerikas: Antigua, ein koloniales Juwel, das zum UNESCO-Weltkulturerbe gehört, den von Vulkanen umgebenen Atitlán-See – einer der schönsten der Welt – und Tikal, eine Maya-Stadt, die aus dem rauen Dschungel emporsteigt. Ein überraschendes Land, günstig und zutiefst authentisch.",

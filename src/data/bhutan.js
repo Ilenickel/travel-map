@@ -22,6 +22,7 @@ export const BHUTAN = {
     ski: 0,
     ville: 1,
     plage: 0,
+    plongee: 0,
   },
   description: {
     fr: "Le Bhoutan est le dernier royaume bouddhiste de l'Himalaya, mesurant son succès au « Bonheur National Brut » plutôt qu'au PIB. Monastères perchés à flanc de falaise, rizières en terrasses, forêts vierges et une culture tibétaine intacte — une destination hors du temps, accessible mais unique.", en: "Bhutan is the last Buddhist kingdom in the Himalayas, measuring its success by “Gross National Happiness” rather than GDP. Cliffside monasteries, terraced rice fields, pristine forests and an unspoilt Tibetan culture make it a timeless destination—accessible, yet truly unique.", es: "Bután es el último reino budista del Himalaya, que mide su éxito en «Felicidad Nacional Bruta» en lugar de PIB. Monasterios encaramados en acantilados, arrozales en terrazas, bosques vírgenes y una cultura tibetana intacta — un destino atemporal, accesible pero único.", de: "Bhutan ist das letzte buddhistische Königreich im Himalaya und misst seinen Erfolg eher am „Bruttonationalglück“ als am BIP. Klöster auf Klippen, Reisterrassen, Urwälder und eine intakte tibetische Kultur – ein zeitloses Reiseziel, zugänglich, aber einzigartig.",

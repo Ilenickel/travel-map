@@ -22,6 +22,7 @@ export const JAMAICA = {
     ski: 0,
     ville: 1,
     plage: 3,
+    plongee: 2,
   },
   description: {
     fr: "La Jamaïque est l'âme des Caraïbes : berceau du reggae et de Bob Marley, des Blue Mountains (le meilleur café du monde), des couchers de soleil légendaires de Negril et des plages animées de Montego Bay. Une île vibrante, colorée et profondément musicale qui définit la culture caribéenne.", en: "Jamaica is the soul of the Caribbean: the birthplace of reggae and Bob Marley, home to the Blue Mountains and their world-class coffee, Negril's legendary sunsets and the lively beaches of Montego Bay. It is a vibrant, colourful and deeply musical island that defines Caribbean culture.", es: "Jamaica es el alma del Caribe: cuna del reggae y de Bob Marley, hogar de las Blue Mountains (el mejor café del mundo), de las legendarias puestas de sol de Negril y de las animadas playas de Montego Bay. Una isla vibrante, colorida y profundamente musical que define la cultura caribeña.", de: "Jamaika ist die Seele der Karibik: Geburtsort von Reggae und Bob Marley, die Blue Mountains (der beste Kaffee der Welt), die legendären Sonnenuntergänge von Negril und die pulsierenden Strände von Montego Bay. Eine lebendige, farbenfrohe und zutiefst musikalische Insel, die die karibische Kultur definiert.",

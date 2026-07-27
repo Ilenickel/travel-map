@@ -22,6 +22,7 @@ export const NIGERIA = {
     ski: 0,
     ville: 2,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "Le Nigéria est la première économie d'Afrique et le pays le plus peuplé du continent. Entre la mégalopole trépidante de Lagos, la capitale moderne d'Abuja, les réserves animalières de Yankari et l'héritage artistique millénaire du royaume de Bénin, le pays offre une diversité fascinante rarement explorée par les voyageurs.", en: "Nigeria is Africa's largest economy and the continent's most populous country. Between the bustling megacity of Lagos, the modern capital Abuja, the Yankari wildlife reserve and the centuries-old artistic legacy of the Kingdom of Benin, the country offers a fascinating diversity rarely explored by travellers.", es: "Nigeria es la primera economía de África y el país más poblado del continente. Entre la trepidante megalópolis de Lagos, la moderna capital Abuya, las reservas de fauna de Yankari y el legado artístico milenario del reino de Benín, el país ofrece una diversidad fascinante rara vez explorada por los viajeros.", de: "Nigeria ist Afrikas größte Volkswirtschaft und das bevölkerungsreichste Land des Kontinents. Zwischen der geschäftigen Metropole Lagos, der modernen Hauptstadt Abuja, den Wildreservaten von Yankari und dem jahrtausendealten künstlerischen Erbe des Königreichs Benin bietet das Land eine faszinierende Vielfalt, die von Reisenden selten erkundet wird.",

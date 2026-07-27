@@ -22,6 +22,7 @@ export const CHINA = {
     ski: 2,
     ville: 3,
     plage: 2,
+    plongee: 2,
   },
   description: {
     fr: "La Chine est un monde à elle seule : Grande Muraille, Cité Interdite, paysages karstiques de Guilin, armée de terre cuite de Xi'an, et la frénésie de Shanghai. Cinq mille ans de civilisation à explorer dans un pays de contrastes saisissants.", en: "China is a world unto itself: the Great Wall, the Forbidden City, the karst landscapes of Guilin, the Terracotta Army of Xi'an, and the frenzy of Shanghai. Five thousand years of civilisation to explore in a country of striking contrasts.", es: "China es un mundo en sí misma: la Gran Muralla, la Ciudad Prohibida, los paisajes kársticos de Guilin, el ejército de terracota de Xi'an y el frenesí de Shanghái. Cinco mil años de civilización por explorar en un país de contrastes sorprendentes.", de: "China ist eine Welt für sich: die Chinesische Mauer, die Verbotene Stadt, die Karstlandschaften von Guilin, die Terrakotta-Armee von Xi'an und die Hektik von Shanghai. Fünftausend Jahre Zivilisation zum Erkunden in einem Land voller auffallender Kontraste.",

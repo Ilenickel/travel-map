@@ -22,6 +22,7 @@ export const NAMIBIA = {
     ski: 0,
     ville: 1,
     plage: 2,
+    plongee: 1,
   },
   description: {
     fr: "La Namibie est le pays des superlatifs désertiques : Sossusvlei et ses dunes de sable rouge qui touchent les étoiles, le canyon de Fish River (2e au monde), le désert du Namib (le plus vieux au monde) et la faune du parc d'Etosha. Une destination pour les amoureux des grands espaces.", en: "Namibia is a land of desert superlatives: Sossusvlei with its red sand dunes reaching for the stars, Fish River Canyon (the world's 2nd largest), the Namib Desert (the world's oldest) and the wildlife of Etosha National Park. A destination for lovers of wide open spaces.", es: "Namibia es el país de los superlativos desérticos: Sossusvlei y sus dunas de arena roja que tocan las estrellas, el cañón del Fish River (el 2º más grande del mundo), el desierto del Namib (el más antiguo del mundo) y la fauna del parque de Etosha. Un destino para los amantes de los grandes espacios.", de: "Namibia ist das Land der Wüsten-Superlative: Sossusvlei und seine roten Sanddünen, die die Sterne berühren, der Fish River Canyon (der zweitgrößte der Welt), die Namib-Wüste (die älteste der Welt) und die Tierwelt des Etosha-Parks. Ein Ziel für Liebhaber der freien Natur.",

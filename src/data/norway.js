@@ -22,6 +22,7 @@ export const NORWAY = {
     ski: 3,
     ville: 2,
     plage: 1,
+    plongee: 2,
   },
   description: {
     fr: "La Norvège est la reine des fjords : Geirangerfjord et Nærøyfjord (UNESCO), les aurores boréales de Tromsø et des Lofoten, le Cap Nord et le soleil de minuit, les villages de pêcheurs rouges suspendus sur l'Atlantique. L'une des natures les plus spectaculaires d'Europe — et l'une des plus chères. Le pays des trolls, des trolleys, et de l'huile de poisson.", en: "Norway is the queen of fjords: the UNESCO-listed Geirangerfjord and Nærøyfjord, the northern lights over Tromsø and the Lofoten Islands, the North Cape and the midnight sun, red fishing villages perched over the Atlantic. One of the most spectacular natural landscapes in Europe — and one of the most expensive. The land of trolls, trams, and fish oil.", es: "Noruega es la reina de los fiordos: Geirangerfjord y Nærøyfjord (Patrimonio UNESCO), las auroras boreales de Tromsø y las Lofoten, el Cabo Norte y el sol de medianoche, los pueblos de pescadores rojos suspendidos sobre el Atlántico. Una de las naturalezas más espectaculares de Europa, y una de las más caras. La tierra de los troles, los tranvías y el aceite de pescado.", de: "Norwegen ist die Königin der Fjorde: Geirangerfjord und Nærøyfjord (UNESCO), die Nordlichter von Tromsø und den Lofoten, das Nordkap und die Mitternachtssonne, die roten Fischerdörfer über dem Atlantik. Eine der spektakulärsten Naturlandschaften Europas – und eine der teuersten. Das Land der Trolle, Trolleys und Fischöl.",
