@@ -1219,7 +1219,7 @@ export default function TripSuggestionsModal({
   dest, tripId, baseCitiesCount, activities, hasAnyDates, onAddCity, onClose, onImported,
   initialTab = 'villes',
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const toast = useToast();
   const [tab, setTab] = useState(initialTab);
   // Panier soulevé au niveau de la modale (pas de CitiesTab) : la barre panier
