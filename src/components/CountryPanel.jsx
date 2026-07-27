@@ -18,6 +18,7 @@ import { callAdminAction } from "../lib/admin";
 import ReportModal from "./ReportModal";
 import { monthAbbrev } from "../lib/monthAbbrev";
 import { localizeAmountString } from "../lib/currency";
+import { getLiveExchangeRateText } from "../lib/exchangeRates";
 import { useSettings } from "../context/SettingsContext";
 import CountryFlag from "./planning/CountryFlag";
 import { fetchTranslatedFields, translationKey } from "../lib/translateContent";
@@ -973,7 +974,9 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     <div className="cost-exchange">
                       <span className="cost-exchange-icon-badge"><span className="cost-exchange-icon">💱</span></span>
                       <span className="cost-exchange-label">{t("countryPanel.exchangeRateLabel")}</span>
-                      <span className="cost-exchange-value">{data.costOfLiving.exchangeRate}</span>
+                      <span className="cost-exchange-value">
+                        {getLiveExchangeRateText(data.costOfLiving.currency, i18n.language) ?? data.costOfLiving.exchangeRate}
+                      </span>
                     </div>
 
                     <div className="budget-summary">

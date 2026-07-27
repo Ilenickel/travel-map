@@ -1,7 +1,8 @@
 import { createContext, useContext, useCallback, useEffect, useState } from 'react';
 import {
-  getCurrency, setCurrency as persistCurrency, SUPPORTED_CURRENCIES,
+  getCurrency, setCurrency as persistCurrency, SUPPORTED_CURRENCIES, refreshExchangeRate,
 } from '../lib/currency';
+import { refreshCountryRates } from '../lib/exchangeRates';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './AuthContext';
 
@@ -26,6 +27,22 @@ export function SettingsProvider({ children }) {
   const { user } = useAuth();
   const [currency, setCurrencyState] = useState(getCurrency());
   const [theme, setThemeState] = useState(readInitialTheme());
+
+  // Va chercher les taux de change frais (EUR→USD + taux par pays) une fois
+  // par 24h (best-effort, voir currency.js / exchangeRates.js) — déclenché au
+  // montage plutôt qu'au premier affichage d'un montant. Ces fetch étant
+  // asynchrones, un composant déjà monté à ce moment-là (ex. CountryPanel
+  // ouvert juste après le chargement de l'app, cache local encore froid)
+  // aurait sinon affiché le taux figé de repli sans jamais se re-rendre une
+  // fois le taux frais arrivé. `ratesTick` force ce re-render une fois les
+  // deux requêtes terminées — même mécanisme que le changement de devise
+  // (voir `currency` ci-dessus), auquel CountryPanel est déjà abonné.
+  const [, setRatesTick] = useState(0);
+  useEffect(() => {
+    Promise.allSettled([refreshExchangeRate(), refreshCountryRates()]).then(() => {
+      setRatesTick((v) => v + 1);
+    });
+  }, []);
 
   // Le thème s'applique via l'attribut data-theme sur <html> : les feuilles de
   // style (App.css, PlanningPage.css) déclinent leurs variables selon cet

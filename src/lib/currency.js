@@ -1,10 +1,19 @@
 // ─── Devise d'affichage ───────────────────────────────────────────
 // Tous les montants sont STOCKÉS en euros (devise canonique de la base et des
 // données pays) : seule la présentation change selon la devise choisie dans le
-// panneau de paramètres. La conversion EUR→USD utilise un taux FIXE (pas d'API
-// de taux de change dans le projet) — ordre de grandeur raisonnable, à ajuster
-// ici si besoin.
-export const EUR_TO_USD_RATE = 1.08;
+// panneau de paramètres.
+//
+// Taux EUR→USD : rafraîchi au plus une fois par 24h via l'API publique
+// Frankfurter (frankfurter.app — données BCE, gratuite, sans clé, CORS ouvert
+// donc appelable directement depuis le navigateur). DEFAULT_EUR_TO_USD_RATE
+// sert de valeur de secours tant qu'aucun taux n'a encore été récupéré (tout
+// premier chargement, ou navigateur hors-ligne) et en cas d'échec réseau —
+// jamais d'erreur visible pour l'utilisateur, l'affichage retombe simplement
+// sur ce taux approximatif.
+const DEFAULT_EUR_TO_USD_RATE = 1.08;
+const RATE_STORAGE_KEY = 'triply_eur_usd_rate';
+const RATE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+const RATE_FETCH_TIMEOUT_MS = 5000;
 
 export const SUPPORTED_CURRENCIES = ['EUR', 'USD'];
 export const CURRENCY_STORAGE_KEY = 'triply_currency';
@@ -15,11 +24,51 @@ export const CURRENCY_SYMBOLS = { EUR: '€', USD: '$' };
 // réactivité React est assurée par SettingsContext, dont les consommateurs
 // re-rendent quand la devise change.
 let currentCurrency = readInitialCurrency();
+let eurToUsdRate = readCachedRate();
 
 function readInitialCurrency() {
   if (typeof window === 'undefined') return 'EUR';
   const stored = window.localStorage.getItem(CURRENCY_STORAGE_KEY);
   return SUPPORTED_CURRENCIES.includes(stored) ? stored : 'EUR';
+}
+
+function readCachedRate() {
+  if (typeof window === 'undefined') return DEFAULT_EUR_TO_USD_RATE;
+  try {
+    const cached = JSON.parse(window.localStorage.getItem(RATE_STORAGE_KEY));
+    return typeof cached?.rate === 'number' && cached.rate > 0 ? cached.rate : DEFAULT_EUR_TO_USD_RATE;
+  } catch {
+    return DEFAULT_EUR_TO_USD_RATE;
+  }
+}
+
+// Va chercher un taux frais si le cache local a plus de 24h (ou n'existe pas
+// encore) — appelé une fois au montage de SettingsProvider. Best-effort pur :
+// une erreur réseau/API laisse simplement le taux (caché ou par défaut) tel
+// quel, jamais d'exception remontée à l'appelant.
+export async function refreshExchangeRate() {
+  if (typeof window === 'undefined') return;
+  let cachedAt = 0;
+  try {
+    cachedAt = JSON.parse(window.localStorage.getItem(RATE_STORAGE_KEY))?.fetchedAt ?? 0;
+  } catch {
+    cachedAt = 0;
+  }
+  if (Date.now() - cachedAt < RATE_MAX_AGE_MS) return;
+
+  try {
+    const res = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD', {
+      signal: AbortSignal.timeout(RATE_FETCH_TIMEOUT_MS),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const rate = data?.rates?.USD;
+    if (typeof rate !== 'number' || rate <= 0) return;
+    eurToUsdRate = rate;
+    window.localStorage.setItem(RATE_STORAGE_KEY, JSON.stringify({ rate, fetchedAt: Date.now() }));
+  } catch {
+    // Réseau indisponible, timeout, API en panne… : on garde le taux actuel.
+  }
 }
 
 export function getCurrency() {
@@ -40,24 +89,24 @@ export function currencySymbol() {
 
 // Montant stocké (EUR) → montant dans la devise d'affichage.
 export function convertFromEur(n) {
-  return currentCurrency === 'USD' ? n * EUR_TO_USD_RATE : n;
+  return currentCurrency === 'USD' ? n * eurToUsdRate : n;
 }
 
 // Montant saisi dans la devise d'affichage → montant à stocker (EUR).
 export function convertToEur(n) {
-  return currentCurrency === 'USD' ? n / EUR_TO_USD_RATE : n;
+  return currentCurrency === 'USD' ? n / eurToUsdRate : n;
 }
 
 // Valeur EUR → valeur pré-remplie dans un champ de saisie (arrondie à 2
 // décimales pour rester éditable proprement en USD).
 export function eurToInputValue(n) {
   if (n == null || n === '' || isNaN(Number(n))) return n ?? '';
-  return currentCurrency === 'USD' ? String(Math.round(Number(n) * EUR_TO_USD_RATE * 100) / 100) : n;
+  return currentCurrency === 'USD' ? String(Math.round(Number(n) * eurToUsdRate * 100) / 100) : n;
 }
 
 // Valeur saisie (devise d'affichage) → valeur EUR à stocker (2 décimales).
 export function inputValueToEur(n) {
-  return currentCurrency === 'USD' ? Math.round((n / EUR_TO_USD_RATE) * 100) / 100 : n;
+  return currentCurrency === 'USD' ? Math.round((n / eurToUsdRate) * 100) / 100 : n;
 }
 
 // Chaînes libres des données pays ("50–75 €/j", "1 500 – 2 000 €"...) : en USD,
@@ -77,7 +126,7 @@ export function localizeAmountString(str) {
     .replace(/\d(?:[\d\s]*\d)?/g, (m) => {
       const value = Number(m.replace(/\s/g, ''));
       if (isNaN(value)) return m;
-      const converted = Math.round(value * EUR_TO_USD_RATE).toLocaleString('en-US').replace(/,/g, ' ');
+      const converted = Math.round(value * eurToUsdRate).toLocaleString('en-US').replace(/,/g, ' ');
       if (dollarPlaced) return converted;
       dollarPlaced = true;
       return `$${converted}`;

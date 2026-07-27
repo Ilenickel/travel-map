@@ -43,6 +43,8 @@ export function localizeCountry(country, lang) {
     costOfLiving: country.costOfLiving && {
       ...country.costOfLiving,
       intro: pick(country.costOfLiving.intro, lang),
+      exchangeRate: pick(country.costOfLiving.exchangeRate, lang),
+      currency: pick(country.costOfLiving.currency, lang),
       categories: (country.costOfLiving.categories || []).map((cat) => ({
         ...cat,
         label: pick(cat.label, lang),
