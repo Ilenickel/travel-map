@@ -13,6 +13,7 @@ const LANGUAGE_META = {
   fr: { label: 'Français' },
   en: { label: 'English' },
   es: { label: 'Español' },
+  de: { label: 'Deutsch' },
 };
 
 const CURRENCY_LABELS = { EUR: 'Euro', USD: 'Dollar' };

@@ -1,0 +1,17 @@
+{
+  "actions": {
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "create": "Erstellen",
+    "confirm": "Bestätigen",
+    "add": "Hinzufügen",
+    "rename": "Umbenennen",
+    "duplicate": "Duplizieren",
+    "close": "Schließen"
+  },
+  "none": "Keine",
+  "loading": "Wird geladen…",
+  "yes": "Ja",
+  "no": "Nein"
+}

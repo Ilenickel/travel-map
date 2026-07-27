@@ -26,6 +26,10 @@ const TAGS = [
 // converti dans la devise choisie (taux fixe, voir src/lib/currency.js).
 const BUDGET_PRESETS = [50, 100, 200, 400];
 
+// Locale Intl pour le formatage du budget — mêmes langues que SUPPORTED_LANGUAGES
+// (src/i18n/index.js), à tenir synchronisé si une langue est ajoutée.
+const INTL_LOCALE = { fr: "fr-FR", en: "en-GB", es: "es-ES", de: "de-DE" };
+
 export default function SearchBar({ onFilterChange, open: openProp, onOpenChange, hideVisited, onHideVisitedChange, hasVisited }) {
   const { t, i18n } = useTranslation("app");
   const { currency } = useSettings();
@@ -161,7 +165,7 @@ export default function SearchBar({ onFilterChange, open: openProp, onOpenChange
                   className="budget-slider"
                 />
                 <span className="budget-value">
-                  {budgetEnabled ? `${Math.round(convertFromEur(tripBudget)).toLocaleString(i18n.language === "fr" ? "fr-FR" : "en-GB")} ${CURRENCY_SYMBOLS[currency]}` : "—"}
+                  {budgetEnabled ? `${Math.round(convertFromEur(tripBudget)).toLocaleString(INTL_LOCALE[i18n.language] || "fr-FR")} ${CURRENCY_SYMBOLS[currency]}` : "—"}
                 </span>
               </div>
             </div>

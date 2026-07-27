@@ -93,10 +93,10 @@ export function formatDuration(minutes) {
 }
 
 // ─── Date helpers ─────────────────────────────────────────────────
-// Locale Intl dérivée de la langue active (fr/en) plutôt qu'en dur : c'est ce
-// qui fait suivre à formatDate/formatDateShort/formatDayLabel le widget de
-// langue de la topbar planif.
-const INTL_LOCALE = { fr: 'fr-FR', en: 'en-GB' };
+// Locale Intl dérivée de la langue active (fr/en/es/de) plutôt qu'en dur :
+// c'est ce qui fait suivre à formatDate/formatDateShort/formatDayLabel le
+// widget de langue de la topbar planif.
+const INTL_LOCALE = { fr: 'fr-FR', en: 'en-GB', es: 'es-ES', de: 'de-DE' };
 function currentLocale() { return INTL_LOCALE[i18n.language] || 'fr-FR'; }
 
 export function formatDate(d) {

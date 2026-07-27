@@ -1,4 +1,65 @@
-export const JAPAN = {
+const JAPAN_DE = {
+  "~13h (Air France, ANA)": "ca. 13 Std. (Air France, ANA)",
+  "Japon": "Japan",
+  "Tokyo": "Tokio",
+  "Japonais": "Japanisch",
+  "Le Japon est un archipel d'Asie de l'Est mêlant traditions millénaires et modernité. Entre temples bouddhistes, cerisiers en fleurs, gastronomie raffinée et technologie de pointe, il offre une expérience de voyage incomparable.": "Japan ist ein ostasiatischer Inselstaat, in dem jahrtausendealte Traditionen und Moderne aufeinandertreffen. Buddhistische Tempel, Kirschblüten, eine raffinierte Küche und Spitzentechnologie machen eine Reise dorthin einzigartig.",
+  "Mars – Avril": "März – April",
+  "La floraison des cerisiers (hanami) transforme le pays en tableau rose. Températures douces, 10–18 °C.": "Zur Kirschblüte (Hanami) verwandelt sich das Land in ein rosafarbenes Blütenmeer. Die Temperaturen sind angenehm mild: 10–18 °C.",
+  "Octobre – Novembre": "Oktober – November",
+  "Automne": "Herbst",
+  "Les feuillages rouges et orangés (koyo) sont spectaculaires. Idéal pour la randonnée et les temples.": "Die rot und orange leuchtende Herbstfärbung (Kōyō) ist spektakulär – ideal für Wanderungen und Tempelbesuche.",
+  "Juin – Juillet": "Juni – Juli",
+  "Saison des festivals traditionnels malgré les pluies de juin. Gion Matsuri à Kyoto en juillet.": "Trotz der Regenzeit im Juni finden viele traditionelle Feste statt. Im Juli begeistert das Gion Matsuri in Kyoto.",
+  "Décembre – Février": "Dezember – Februar",
+  "Hiver / Ski": "Winter / Skifahren",
+  "Parfait pour le ski à Hokkaido (Niseko) et les onsen sous la neige. Tokyo reste agréable.": "Perfekt zum Skifahren auf Hokkaido, etwa in Niseko, und für heiße Onsen im Schnee. Tokio bleibt dabei angenehm.",
+  "Capitale ultramoderne, mélange de gratte-ciels illuminés, de quartiers traditionnels (Asakusa), de pop-culture (Akihabara) et d'une gastronomie mondiale.": "Ultramoderne Hauptstadt mit leuchtenden Wolkenkratzern, traditionellen Vierteln wie Asakusa, Popkultur in Akihabara und einer Küche von Weltrang.",
+  "Temple Senso-ji": "Sensō-ji-Tempel",
+  "Ancienne capitale impériale avec plus de 1 600 temples bouddhistes, des geishas dans Gion et les bambous de la forêt d'Arashiyama.": "Ehemalige Kaiserstadt mit mehr als 1.600 buddhistischen Tempeln, Geishas im Viertel Gion und den Bambushainen von Arashiyama.",
+  "Fushimi Inari — 10 000 torii": "Fushimi Inari – 10.000 Torii",
+  "Kinkaku-ji — Pavillon d'Or": "Kinkaku-ji – Goldener Pavillon",
+  "Bambouseraie d'Arashiyama": "Bambuswald von Arashiyama",
+  "Capitale de la gastronomie japonaise, connue pour ses takoyaki, okonomiyaki, son château historique et sa vie nocturne animée à Dotonbori.": "Japans kulinarische Hauptstadt ist bekannt für Takoyaki und Okonomiyaki, ihre historische Burg und das lebhafte Nachtleben in Dōtonbori.",
+  "Château d'Osaka": "Burg Osaka",
+  "Tour Tsutenkaku — Shinsekai": "Tsūtenkaku-Turm – Shinsekai",
+  "Hiroshima & Miyajima": "Hiroshima & Miyajima",
+  "Site chargé d'histoire avec le Mémorial de la paix, et l'île sacrée de Miyajima avec son torii flottant sur la mer.": "Ein geschichtsträchtiger Ort mit dem Friedensdenkmal von Hiroshima und der heiligen Insel Miyajima, deren Torii im Meer zu schweben scheint.",
+  "Torii flottant de Miyajima": "Schwimmendes Torii von Miyajima",
+  "Mémorial de la Paix d'Hiroshima": "Friedensdenkmal von Hiroshima",
+  "Mont Misen": "Berg Misen",
+  "Île du nord idéale pour le ski à Niseko, les sources thermales et les paysages enneigés en hiver, et les fleurs de lavande en été.": "Die nördliche Insel ist ideal zum Skifahren in Niseko, für heiße Quellen und verschneite Winterlandschaften; im Sommer blüht hier der Lavendel.",
+  "Niseko — ski de poudreuse": "Niseko – Tiefschneeskifahren",
+  "Champs de lavande de Furano": "Lavendelfelder von Furano",
+  "Parc national Daisetsuzan": "Daisetsuzan-Nationalpark",
+  "Première capitale permanente du Japon, célèbre pour ses daims en liberté et le Grand Bouddha du Tōdai-ji, le plus grand bâtiment en bois du monde.": "Japans erste dauerhafte Hauptstadt ist berühmt für frei laufende Hirsche und den Großen Buddha im Tōdai-ji, einem der größten Holzgebäude der Welt.",
+  "Tōdai-ji — Grand Bouddha": "Tōdai-ji – Großer Buddha",
+  "Daims en liberté dans le parc": "Frei laufende Hirsche im Park",
+  "Okinawa & Îles Ryūkyū": "Okinawa & Ryūkyū-Inseln",
+  "Archipel subtropical au sud du Japon, Okinawa séduit par ses plages de sable blanc, ses récifs coralliens et sa culture ryūkyū singulière. Ancien royaume indépendant, la région conserve châteaux, danses et traditions propres. Snorkeling, nature préservée et art de vivre insulaire y sont rois.": "Der subtropische Archipel südlich von Japan begeistert mit weißen Sandstränden, Korallenriffen und einer eigenständigen Ryūkyū-Kultur. Als einst unabhängiges Königreich hat die Region ihre Burgen, Tänze und Traditionen bewahrt. Schnorcheln, unberührte Natur und entspanntes Inselleben stehen hier im Mittelpunkt.",
+  "Château de Shuri": "Burg Shuri",
+  "Plage d'Emeraude d'Ishigaki": "Smaragdstrand von Ishigaki",
+  "Snorkeling dans les récifs de Kerama": "Schnorcheln an den Kerama-Riffen",
+  "Parc national de Yanbaru": "Yanbaru-Nationalpark",
+  "Le Japon est abordable si on sait voyager malin. Les transports en commun sont efficaces et les konbini permettent de manger bien pour peu cher.": "Japan kann durchaus günstig sein, wenn man klug plant. Der öffentliche Verkehr ist hervorragend, und in Konbini bekommt man gutes Essen für wenig Geld.",
+  "Hébergement / nuit": "Unterkunft / Nacht", "Dortoir Hostel": "Hostel-Schlafsaal", "Bonne ambiance, souvent très propres": "Gute Atmosphäre, oft sehr sauber", "Capsule Hotel": "Kapselhotel", "Business Hotel": "Businesshotel", "Ryokan (luxe)": "Ryokan (Luxus)", "Expérience unique japonaise — plus cher en haute saison": "Einzigartiges japanisches Erlebnis – in der Hochsaison teurer", "Chambre solo confortable — prix en forte hausse depuis 2024": "Komfortables Einzelzimmer – seit 2024 deutlich teurer", "Avec repas traditionnel inclus": "Traditionelle Mahlzeit inbegriffen", "Expérience haut de gamme": "Exklusives Erlebnis",
+  "Nourriture": "Essen", "Konbini (repas complet)": "Konbini (vollständige Mahlzeit)", "Resto local, excellent rapport Q/P": "Lokales Restaurant mit sehr gutem Preis-Leistungs-Verhältnis", "Bento à emporter": "Bento zum Mitnehmen", "Supermarché ou konbini": "Supermarkt oder Konbini", "Sushi kaiten (tapis)": "Sushi vom Fließband", "~130 ¥ par assiette": "ca. 130 ¥ pro Teller", "Restaurant mid-range": "Restaurant der Mittelklasse", "Menu déjeuner souvent < 10 €": "Mittagsmenü oft unter 10 €", "Restaurant gastronomique": "Gourmetrestaurant",
+  "Ticket de métro (Tokyo)": "U-Bahn-Fahrkarte (Tokio)", "Selon distance (170–320 ¥)": "Je nach Strecke (170–320 ¥)", "Pass journalier Tokyo": "Tagespass für Tokio", "Illimité réseau Toei/Metro": "Unbegrenzte Fahrten im Toei-/Metro-Netz", "Bus intercités": "Überlandbus", "Option économique entre villes": "Günstige Verbindung zwischen Städten", "JR Pass 21 jours": "JR Pass für 21 Tage", "Shinkansen + trains JR illimités — tarif doublé depuis 2023": "Unbegrenzte Fahrten mit Shinkansen und JR-Zügen – seit 2023 doppelt so teuer", "Shinkansen Tokyo–Kyoto": "Shinkansen Tokio–Kyoto", "~2h15 en Nozomi (sans JR Pass)": "ca. 2 Std. 15 Min. mit dem Nozomi (ohne JR Pass)",
+  "Activités & Culture": "Aktivitäten & Kultur", "Temple / Sanctuaire": "Tempel / Schrein", "Gratuit – 5 €": "Kostenlos – 5 €", "La plupart sont libres d'accès": "Die meisten sind frei zugänglich", "Musée national": "Nationalmuseum", "Ex : Tokyo National Museum ~6 €": "Zum Beispiel: Nationalmuseum Tokio ca. 6 €", "Réservation obligatoire": "Reservierung erforderlich", "À Osaka": "In Osaka", "Onsen public (sentō)": "Öffentliches Bad (Sentō)", "Expérience authentique": "Authentisches Erlebnis",
+  "Routard": "Backpacker", "Confort": "Komfort", "Luxe": "Luxus", "Hostel + konbini + transports locaux": "Hostel, Konbini und Nahverkehr", "Business hotel + restos mid-range + activités": "Businesshotel, Restaurants der Mittelklasse und Aktivitäten", "Ryokan + gastronomie + expériences premium": "Ryokan, Spitzengastronomie und besondere Erlebnisse", "3 semaines": "3 Wochen", "Tokyo (5j) → Kyoto (4j) → Nara (1j) → Osaka (3j) → Hiroshima & Miyajima (2j) → Hokkaido (5j)": "Tokio (5 T.) → Kyoto (4 T.) → Nara (1 T.) → Osaka (3 T.) → Hiroshima & Miyajima (2 T.) → Hokkaido (5 T.)", "Vol A/R Paris–Tokyo": "Hin- und Rückflug Paris–Tokio", "Vol A/R Paris–Tokyo (business)": "Hin- und Rückflug Paris–Tokio (Business Class)", "Hébergement (21 nuits)": "Unterkunft (21 Nächte)", "Gastronomie": "Spitzengastronomie", "Activités & imprévus": "Aktivitäten & Unvorhergesehenes", "Transport premium": "Komfortabler Transport", "Hébergement ryokans": "Unterkunft in Ryokans",
+  "Vol direct depuis Paris": "Direktflug ab Paris", "Budget moyen/jour": "Durchschnittliches Tagesbudget", "JR Pass recommandé (Shinkansen)": "JR Pass empfohlen (Shinkansen)", "Langue": "Sprache", "Japonais — peu d'anglais en province": "Japanisch – außerhalb der Großstädte wird wenig Englisch gesprochen", "Prise électrique": "Steckdose", "Réseau": "Mobilfunk", "eSIM ou Pocket WiFi conseillé": "eSIM oder Pocket-WLAN empfohlen", "Eau du robinet": "Leitungswasser", "Potable partout": "Überall trinkbar", "Visa": "Visum", "Pas de visa pour les Français (90 jours)": "Für deutsche Staatsangehörige ist für bis zu 90 Tage kein Visum erforderlich"
+};
+
+const withGerman = (value, translations) => {
+  if (Array.isArray(value)) return value.map((item) => withGerman(item, translations));
+  if (value && typeof value === "object") {
+    const localized = "fr" in value && "en" in value && "es" in value;
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, withGerman(item, translations)]).concat(localized ? [["de", translations[value.fr] ?? value.en]] : []));
+  }
+  return value;
+};
+
+export const JAPAN = withGerman({
   code: "JPN",
   numericId: 392,
   name: { fr: "Japon", en: "Japan", es: "Japón" },
@@ -444,4 +505,4 @@ export const JAPAN = {
     { icon: "🚰", label: { fr: "Eau du robinet", en: "Tap water", es: "Agua del grifo" }, value: { fr: "Potable partout", en: "Drinkable everywhere", es: "Potable en todas partes" } },
     { icon: "🪪", label: { fr: "Visa", en: "Visa", es: "Visado" }, value: { fr: "Pas de visa pour les Français (90 jours)", en: "No visa required for French citizens (90 days)", es: "Sin visado para ciudadanos franceses (90 días)" } },
   ],
-};
+}, JAPAN_DE);
