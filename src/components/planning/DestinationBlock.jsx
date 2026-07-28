@@ -3,6 +3,7 @@ import { Droppable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
 import { namesMatch, countryAlpha2FromEmoji } from '../../lib/planningUtils';
+import { cropUnsplashUrl } from '../../lib/unsplashCrop';
 import { useCityImages } from '../../hooks/useCityImages';
 import { useCountryImages } from '../../hooks/useCountryImages';
 import CityBlock from './CityBlock';
@@ -182,7 +183,7 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
         // version miniature, étirée et pixelisée sur un grand écran
         // (signalé le 2026-07-24). thumbUrl reste réservé aux usages
         // réellement petits (ex. cartes voyage de l'accueil, TripsHome.jsx).
-        style={countryImage?.imageUrl ? { backgroundImage: `url(${countryImage.imageUrl})` } : undefined}
+        style={countryImage?.imageUrl ? { backgroundImage: `url(${cropUnsplashUrl(countryImage.imageUrl, { width: 1400, height: 340 })})` } : undefined}
         onClick={() => setCollapsed((c) => !c)}
         role="button"
         tabIndex={0}

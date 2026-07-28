@@ -16,16 +16,21 @@ import MobileDetailHeader from './MobileDetailHeader';
 import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 import { sumCosts, formatPrice, kMeansActivities, estimateGeoClusterCount, GROUP_COLORS } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
+import { cropUnsplashUrl } from '../../lib/unsplashCrop';
 
 // Vignette photo de la ville (résolue en amont par DestinationBlock via
 // useCityImages, passée en prop `cityImage`) — repli sur une pastille avec
 // icône si pas (encore) de photo, pour ne jamais laisser un carré vide.
 function CityThumb({ cityImage, size }) {
   if (cityImage?.imageUrl) {
+    // Vignette carrée (object-fit: cover) : recadrage 1/1 ciblé, voir
+    // cropUnsplashUrl. 200px de côté : net sur les plus grandes variantes
+    // (96px) sans re-télécharger une image différente par taille.
+    const src = cropUnsplashUrl(cityImage.thumbUrl || cityImage.imageUrl, { width: 200, height: 200 });
     return (
       <img
         className="pp-city-thumb"
-        src={cityImage.thumbUrl || cityImage.imageUrl}
+        src={src}
         alt=""
         draggable={false}
         style={size ? { width: size, height: size } : undefined}

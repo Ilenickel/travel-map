@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { COUNTRIES } from '../../data/index';
 import { formatDate, tripDurationDays } from '../../lib/planningUtils';
+import { cropUnsplashUrl } from '../../lib/unsplashCrop';
 import CountryFlag from './CountryFlag';
 
 // Palette de repli quand le pays n'a pas (encore) de photo en cache — même
@@ -82,7 +83,7 @@ export default function HomeTripCard({ trip, stats, image, userId, onSelect, onD
   };
 
   const mediaStyle = image?.imageUrl
-    ? { backgroundImage: `url(${image.imageUrl})` }
+    ? { backgroundImage: `url(${cropUnsplashUrl(image.imageUrl, { width: 960, height: 600 })})` } // ratio 16/10, voir .pp-home-card-media
     : { background: `linear-gradient(135deg, ${color}, ${color}cc)` };
 
   return (

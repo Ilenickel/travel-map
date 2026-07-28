@@ -261,6 +261,17 @@ const IRRELEVANT_SUBJECT_KEYWORDS = [
   'door', 'lock', 'padlock', 'key', 'window sill',
   'bus', 'seat', 'seats', 'interior', 'indoor', 'room',
   'person', 'people', 'portrait', 'close-up', 'closeup', 'macro',
+  // Repérés le 2026-07-28 (revue manuelle des 185 photos de pays) : des
+  // photos avec une ou plusieurs personnes AU PREMIER PLAN remontaient en
+  // tête alors qu'un site de voyage doit illustrer un lieu (paysage,
+  // bâtiment, plage...), jamais un sujet humain — 'person'/'people' seuls ne
+  // suffisaient pas, la légende Unsplash décrit souvent l'action/le sujet
+  // humain sans utiliser ces mots génériques (ex: "man standing on cliff",
+  // "woman walking on beach", "tourists gathered around building").
+  'man', 'woman', 'men', 'women', 'boy', 'girl', 'child', 'children', 'kid', 'kids',
+  'tourist', 'tourists', 'traveler', 'travelers', 'hiker', 'hikers',
+  'walking', 'standing', 'sitting', 'silhouette', 'crowd', 'group of people',
+  'face', 'selfie', 'model', 'couple', 'family',
   'food', 'dish', 'meal', 'plate', 'cup', 'coffee', 'drink', 'fruit', 'vegetable',
   'war', 'military', 'soldier', 'soldiers', 'army', 'weapon', 'gun', 'rifle',
   'bomb', 'bombing', 'explosion', 'blast', 'missile', 'tank', 'conflict',

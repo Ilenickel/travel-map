@@ -7,6 +7,7 @@ import { CriteriaFilterChips, CriteriaIndicators } from './SuggestionCriteria';
 import { useActivityNameTranslations, useCityNameTranslations } from '../../lib/translateContent';
 import { useActivityPhoto } from '../../hooks/useActivityPhoto';
 import { useCityImages } from '../../hooks/useCityImages';
+import { cropUnsplashUrl } from '../../lib/unsplashCrop';
 import { scrollIntoViewSoon } from '../../hooks/useScrollIntoViewOnOpen';
 import ActivityPhotoIndicator from './ActivityPhotoIndicator';
 import DaysStepper from './DaysStepper';
@@ -56,9 +57,18 @@ function cityImageContext(countryCode) {
 // integration.md §2 : "image_url pour un affichage en grand").
 const LARGE_MEDIA_VARIANTS = new Set(['hero', 'featured']);
 
+// Ratios réels des conteneurs (.pp-citymedia--*, PlanningPage.css) — sert de
+// cible au recadrage intelligent (voir cropUnsplashUrl).
+const MEDIA_VARIANT_CROP = {
+  card: { width: 800, height: 600 }, // 4/3
+  featured: { width: 900, height: 600 }, // 3/2
+  hero: { width: 1200, height: 450 }, // 40/15
+};
+
 function CityMedia({ image, name, variant = 'card', children }) {
   const initial = (name || '?').trim().charAt(0).toUpperCase();
-  const src = image ? (LARGE_MEDIA_VARIANTS.has(variant) ? (image.imageUrl || image.thumbUrl) : image.thumbUrl) : null;
+  const rawSrc = image ? (LARGE_MEDIA_VARIANTS.has(variant) ? (image.imageUrl || image.thumbUrl) : image.thumbUrl) : null;
+  const src = rawSrc ? cropUnsplashUrl(rawSrc, MEDIA_VARIANT_CROP[variant] || MEDIA_VARIANT_CROP.card) : null;
   return (
     <div className={`pp-citymedia pp-citymedia--${variant}${image ? '' : ' pp-citymedia--empty'}`}>
       {src

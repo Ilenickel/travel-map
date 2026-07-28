@@ -10,10 +10,16 @@
 // 4 onglets selon le contexte (ville vs excursion), tous restent NATIVEMENT
 // visibles sans avoir à faire défiler la bande — ce qui évitait aussi le
 // scroll horizontal qui se faisait détourner en changement de page (pager).
+import { cropUnsplashUrl } from '../../lib/unsplashCrop';
+
 export default function MobileDetailHeader({
   hidden, image, onBack, backLabel, name, badges, menu, titleActions, extra, tabs, activeTab, onTabChange,
 }) {
-  const mediaStyle = image?.imageUrl ? { backgroundImage: `url(${image.imageUrl})` } : undefined;
+  // Ratio approximatif du bandeau (.pp-detail-hero : height fixe 200px, pleine
+  // largeur mobile) — voir cropUnsplashUrl (src/lib/unsplashCrop.js).
+  const mediaStyle = image?.imageUrl
+    ? { backgroundImage: `url(${cropUnsplashUrl(image.imageUrl, { width: 860, height: 400 })})` }
+    : undefined;
 
   return (
     <div className={`pp-detail-header${hidden ? ' pp-detail-header--hidden' : ''}`}>
