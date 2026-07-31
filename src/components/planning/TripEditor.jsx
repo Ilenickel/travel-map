@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import useIsMobile from '../../hooks/useIsMobile';
+import { useModalHistory } from '../../hooks/useModalHistory';
 import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 import { useAuth } from '../../context/AuthContext';
 import { AttachmentsCountProvider } from '../../context/AttachmentsCountContext';
@@ -44,6 +45,19 @@ export default function TripEditor({
   const { t } = useTranslation();
   const { user } = useAuth();
   const { trip, destinations, cities, activities, groups = [], lodgings = [] } = tripData;
+
+  // Bouton retour du téléphone / navigateur pendant qu'un voyage est ouvert.
+  // Sans lui, ouvrir un voyage depuis la grille ne posait AUCUNE entrée
+  // d'historique (TripEditor est un simple affichage conditionnel dans
+  // PlanningPage, pas une route) : le retour arrière quittait alors
+  // directement /planifier vers l'écran précédent (la carte du monde) au lieu
+  // de refermer d'abord le voyage sur la grille « Mes voyages » (signalé le
+  // 2026-07-31). `onBack` fait exactement ce que fait déjà le bouton retour de
+  // l'en-tête (TripEditorHeader) : désélectionner le voyage et rafraîchir la
+  // grille. Les modales internes (fiche de ville, restaurants, avis…) posent
+  // chacune leur propre entrée par-dessus celle-ci — cette pile est LIFO, elles
+  // se referment donc bien avant que ce retour-ci ne soit atteint.
+  useModalHistory(onBack, `/planifier?trip=${tripId}`);
 
   // Partage automatique et continu (planning-modèle communautaire, branche
   // planModel) : tant que le voyage a la case activée, on repartage (upsert,
