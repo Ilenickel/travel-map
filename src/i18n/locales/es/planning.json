@@ -116,6 +116,7 @@
     "costInputTitle": "Precio de la actividad (entrada, comida…) — déjelo vacío si no lo sabe",
     "priceTitle": "Precio de la actividad",
     "infoToggleTitle": "Mostrar/ocultar detalles",
+    "plannedMarkTitle": "Planificada el {{date}} · {{time}}",
     "notePlaceholder": "Nota (horarios, información, dirección…)",
     "attachmentCount_one": "{{count}} archivo adjunto",
     "attachmentCount_other": "{{count}} archivos adjuntos",
@@ -234,7 +235,9 @@
     "daytrip": "Excursión",
     "daytripDesc": "Escapada desde esta ciudad",
     "trajet": "Trayecto",
-    "trajetDesc": "Tren, vuelo, autobús, coche…"
+    "trajetDesc": "Tren, vuelo, autobús, coche…",
+    "restaurant": "Un restaurante",
+    "restaurantDesc": "Explorar y añadir un sitio para comer"
   },
   "daytrip": {
     "badge": "Excursión",
@@ -464,7 +467,13 @@
     "addExcursionButton": "Añadir una excursión",
     "emptyLodgings": "Ningún alojamiento — añada uno abajo",
     "emptyTrajets": "Ningún transporte — añada uno abajo",
-    "emptyExcursions": "Ninguna excursión — añada una abajo"
+    "emptyExcursions": "Ninguna excursión — añada una abajo",
+    "restaurants": "Restaurantes",
+    "lodgingsShort": "Hoteles",
+    "transportsShort": "Viajes",
+    "myRestaurants": "Mis restaurantes",
+    "addRestaurantButton": "Añadir un restaurante",
+    "emptyRestaurants": "Ningún restaurante — añada uno abajo"
   },
   "home": {
     "subtitle_one": "{{count}} viaje",
@@ -476,7 +485,8 @@
   "map": {
     "emptyHint": "Añada lugares mediante la búsqueda para verlos en el mapa",
     "zonesLabel": "Zonas",
-    "recenterTitle": "Centrar el mapa en \"{{name}}\""
+    "recenterTitle": "Centrar el mapa en \"{{name}}\"",
+    "previewPlaceHint": "Sugerencia: aún no está en tu plan"
   },
   "emptyEditor": {
     "title": "¿Listo para planificar?",
@@ -613,5 +623,15 @@
     "tripQuoted": "\"{{title}}\"",
     "acceptButton": "Aceptar",
     "declineButton": "Rechazar"
+  },
+  "dayRoute": {
+    "button": "Abrir en Google Maps",
+    "confirmTitle": "Antes de abrir Google Maps",
+    "missingGeo": "{{count}} lugar del día no tiene ubicación guardada: no se incluirá en la ruta.",
+    "missingGeo_other": "{{count}} lugares del día no tienen ubicación guardada: no se incluirán en la ruta.",
+    "tooManyStops": "Google Maps solo admite {{max}} lugares por ruta. {{count}} lugar de este día quedará fuera.",
+    "tooManyStops_other": "Google Maps solo admite {{max}} lugares por ruta. {{count}} lugares de este día quedarán fuera.",
+    "cutAfter": "La ruta se detendrá después de «{{name}}».",
+    "confirmOpen": "Abrir de todos modos"
   }
 }

@@ -550,6 +550,27 @@ export default function ActivityItem({
                 <div className="pp-activity-main">
                   <span className="pp-activity-cat-icon">{displayIcon}</span>
                   <span className="pp-activity-name">{act.name}</span>
+                  {/* Repère « déjà planifiée » à droite du nom : sur PC, la chip
+                      de date ci-dessous est repliée tant qu'on ne survole pas la
+                      carte, il fallait donc passer la souris sur chaque activité
+                      pour savoir lesquelles étaient posées sur un jour. Ce petit
+                      calendrier reste visible sans survol (masqué au toucher,
+                      où les chips sont déjà toujours affichées). */}
+                  {act.visit_date && (
+                    <span
+                      className="pp-activity-planned-mark"
+                      title={t('activity.plannedMarkTitle', {
+                        date: formatDateShort(act.visit_date),
+                        time: act.visit_time ? formatTimeShort(act.visit_time) : t('activity.allDayChip'),
+                      })}
+                      aria-label={t('activity.plannedMarkTitle', {
+                        date: formatDateShort(act.visit_date),
+                        time: act.visit_time ? formatTimeShort(act.visit_time) : t('activity.allDayChip'),
+                      })}
+                    >
+                      📅
+                    </span>
+                  )}
                   {infoToggle}
                 </div>
                 {(durationLabel || costLabel || attachmentCount > 0) && (

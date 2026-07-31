@@ -40,3 +40,53 @@ export function extractLabelVariants(rawName) {
   const strongSegments = segments.filter(looksLikePlaceName);
   return [...new Set([...strongSegments, rawName])];
 }
+
+// Noms de VILLE candidats pour un libellé de destination éditoriale.
+//
+// Les destinations statiques (src/data/<pays>.js) portent des libellés pensés
+// pour la lecture, pas pour un géocodeur : « Hiroshima et Miyajima », « Lyon et
+// gastronomie », « Kyoto & Nara ». Géocodés tels quels avec `type=city`, ils ne
+// résolvent rien — et tout ce qui a besoin d'un centre-ville échoue en
+// silence (constaté le 2026-07-30 : la recherche d'un restaurant à ajouter ne
+// renvoyait aucun résultat sur ces destinations).
+//
+// D'où une LISTE ordonnée de candidats, à essayer dans l'ordre jusqu'au premier
+// qui résout :
+//   1. le libellé complet — il reste le plus précis, et beaucoup de libellés
+//      composés désignent bien une entité géocodable telle quelle ;
+//   2. les variantes de libellé habituelles (segment avant/après un tiret,
+//      contenu entre parenthèses) ;
+//   3. les segments d'une énumération (« et », « and », « y », « und », « e »,
+//      « & », « + », « / », « , ») — le premier segment d'abord, qui est la
+//      ville principale dans tous les libellés du projet.
+//
+// Comme pour extractLabelVariants, un segment n'est retenu que s'il commence
+// par une majuscule : ça écarte la partie thématique (« gastronomie ») sans
+// avoir à lister les thèmes possibles.
+//
+// Le mot « et » n'est découpé qu'ENTOURÉ D'ESPACES : les traits d'union de
+// Saint-Pierre-et-Miquelon ou Bosnie-et-Herzégovine font partie du nom.
+const ENUMERATION_SEPARATOR = /\s+(?:et|and|y|und|e|&|\+)\s+|\s*[/|,]\s*/iu;
+
+export function extractCityNameCandidates(rawName) {
+  const out = [];
+  const push = (s) => {
+    const v = (s || '').trim();
+    if (v && !out.includes(v)) out.push(v);
+  };
+
+  push(rawName);
+  // extractLabelVariants place déjà le libellé complet en dernier : on le
+  // repasse ici sans conséquence (dédoublonné par push).
+  for (const variant of extractLabelVariants(rawName)) push(variant);
+
+  for (const variant of [rawName, ...extractLabelVariants(rawName)]) {
+    const parts = variant.split(ENUMERATION_SEPARATOR).map((s) => s.trim()).filter(Boolean);
+    if (parts.length < 2) continue;
+    for (const part of parts) {
+      if (looksLikePlaceName(part)) push(part);
+    }
+  }
+
+  return out;
+}

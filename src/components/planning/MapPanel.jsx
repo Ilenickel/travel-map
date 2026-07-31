@@ -13,7 +13,14 @@ function escapeHtml(s) {
     .replaceAll('"', '&quot;');
 }
 
-export default function MapPanel({ activities, groups, cities, lodgings }) {
+// `previewPlaces` : lieux affichés en AVANT-PREMIÈRE, pas (encore) ajoutés au
+// voyage — aujourd'hui les restaurants de l'onglet Restaurants d'une ville.
+// Marqueurs volontairement distincts (contour pointillé, plus discrets) des
+// lieux réellement planifiés : sur la carte du voyage, l'utilisateur doit
+// pouvoir dire d'un coup d'œil ce qui est à son programme et ce qui n'est qu'une
+// proposition. Ils ne participent pas au cadrage initial pour la même raison :
+// une ville avec trente restaurants dézoomerait la carte du voyage.
+export default function MapPanel({ activities, groups, cities, lodgings, previewPlaces = [] }) {
   const { t } = useTranslation();
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -70,7 +77,7 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
     import('leaflet').then(module => {
       renderMarkers(module.default, mapRef.current);
     });
-  }, [activities, groups, lodgings]);
+  }, [activities, groups, lodgings, previewPlaces]);
 
   function renderMarkers(L, map) {
     markersRef.current.forEach(m => m.marker.remove());
@@ -81,7 +88,8 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
 
     const geoActs = (activities || []).filter(a => a.place_lat && a.place_lng);
     const geoLodgings = (lodgings || []).filter(l => l.place_lat && l.place_lng);
-    if (!geoActs.length && !geoLodgings.length) return;
+    const geoPreviews = (previewPlaces || []).filter(p => p.lat != null && p.lng != null);
+    if (!geoActs.length && !geoLodgings.length && !geoPreviews.length) return;
 
     const bounds = [];
 
@@ -143,6 +151,28 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
       bounds.push([act.place_lat, act.place_lng]);
     });
 
+    // Propositions (restaurants d'un onglet ouvert) : ajoutées APRÈS le calcul
+    // des bornes, elles n'entrent volontairement pas dans `bounds`.
+    geoPreviews.forEach(p => {
+      const divIcon = L.divIcon({
+        className: '',
+        html: `<div class="pp-map-marker pp-map-marker--preview">🍽</div>`,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
+        popupAnchor: [0, -16],
+      });
+      const popupContent = `
+        <div class="pp-map-popup">
+          <div class="pp-map-popup-name">${escapeHtml(p.name)}</div>
+          <div class="pp-map-popup-city">${escapeHtml(t('map.previewPlaceHint'))}</div>
+          ${p.address ? `<div class="pp-map-popup-addr">${escapeHtml(p.address)}</div>` : ''}
+        </div>`;
+      const marker = L.marker([p.lat, p.lng], { icon: divIcon, zIndexOffset: -100 })
+        .addTo(map)
+        .bindPopup(popupContent);
+      markersRef.current.push({ marker, groupId: null, latlng: [p.lat, p.lng], isPreview: true });
+    });
+
     if (bounds.length > 0) {
       map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
     }
@@ -163,7 +193,8 @@ export default function MapPanel({ activities, groups, cities, lodgings }) {
   };
 
   const hasGeoActs = (activities || []).some(a => a.place_lat && a.place_lng)
-    || (lodgings || []).some(l => l.place_lat && l.place_lng);
+    || (lodgings || []).some(l => l.place_lat && l.place_lng)
+    || (previewPlaces || []).some(p => p.lat != null && p.lng != null);
   const activeGroups = (groups || []).filter(g =>
     (activities || []).some(a => a.group_id === g.id && a.place_lat && a.place_lng)
   );

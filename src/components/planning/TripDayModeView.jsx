@@ -8,6 +8,7 @@ import {
 } from '../../lib/planningUtils';
 import ActivityItem from './ActivityItem';
 import TravelConnector from './TravelConnector';
+import DayRouteButton from './DayRouteButton';
 
 function nowMinutes() {
   const d = new Date();
@@ -81,6 +82,20 @@ export default function TripDayModeView({
     return 'past';
   };
 
+  // Étapes transmises à Google Maps, DANS L'ORDRE AFFICHÉ ci-dessous : reports
+  // de la veille, puis activités horodatées, puis celles sans heure. Un ordre
+  // différent de celui qu'on lit à l'écran donnerait un itinéraire incompréhensible.
+  const routeStops = [
+    ...carriedOver.map(({ act }) => act),
+    ...timed,
+    ...allDayActs,
+  ].map((act) => ({
+    id: act.id,
+    name: act.name,
+    lat: act.place_lat ?? null,
+    lng: act.place_lng ?? null,
+  }));
+
   const STATUS_LABEL = { ongoing: t('dayMode.statusOngoing'), upcoming: t('dayMode.statusUpcoming'), past: t('dayMode.statusPast') };
 
   const list = (
@@ -137,7 +152,10 @@ export default function TripDayModeView({
 
   return (
     <div className="pp-day-mode">
-      <div className="pp-day-mode-date">{formatDayLabel(today)}</div>
+      <div className="pp-day-mode-header">
+        <div className="pp-day-mode-date">{formatDayLabel(today)}</div>
+        {routeStops.length > 0 && <DayRouteButton stops={routeStops} />}
+      </div>
 
       {(checkoutLodgings.length > 0 || tonightLodgings.length > 0) && (
         <div className="pp-day-mode-lodging">

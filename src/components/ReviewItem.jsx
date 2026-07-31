@@ -7,7 +7,9 @@ import { relativeTime } from '../lib/relativeTime';
 import ReportModal from './ReportModal';
 import { fetchTranslatedFields, translationKey } from '../lib/translateContent';
 
-function Avatar({ profile }) {
+// Exporté : la fiche restaurant affiche les mêmes auteurs et doit reprendre
+// exactement cette pastille (photo, ou initiale colorée déterministe).
+export function Avatar({ profile }) {
   const name = profile?.display_name || '?';
   const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
   const color = colors[name.charCodeAt(0) % colors.length];

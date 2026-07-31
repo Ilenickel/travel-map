@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,18 @@ import TripExpensesPanel from './TripExpensesPanel';
 import { getHoveredActivity } from '../../lib/hoverTracker';
 import { downloadTripIcs } from '../../lib/exportTrip';
 import { shareTripAsTemplates } from '../../lib/shareTripTemplate';
+
+// Nature d'une liste d'activités d'après l'identifiant de sa zone de dépôt.
+// Les trois listes d'une même ville partagent volontairement le même TYPE RBD :
+// leur en donner un distinct les empêcherait aussi d'accepter les dépôts vers
+// les groupes, les créneaux et les jours. C'est donc au code de refuser les
+// dépôts croisés — voir `draggingListKind` plus bas.
+function listKindOf(droppableId) {
+  if (droppableId.startsWith('activities-')) return 'place';
+  if (droppableId.startsWith('restaurants-')) return 'resto';
+  if (droppableId.startsWith('trajets-')) return 'trajet';
+  return null;
+}
 
 export default function TripEditor({
   tripData, tripId,
@@ -105,6 +117,25 @@ export default function TripEditor({
   }, []);
 
   const [showCountryPicker, setShowCountryPicker] = useState(false);
+  // Restaurants visibles dans un onglet Restaurants actuellement ouvert, à
+  // afficher en propositions sur la carte du voyage (voir MapPanel,
+  // `previewPlaces`). Indexé par ville : sur ordinateur toutes les villes sont
+  // rendues en même temps, un simple tableau écrasé par la dernière ville
+  // rendue ne montrerait jamais que celle-là.
+  // Nature de la liste dont provient la carte en cours de déplacement (ou null
+  // hors glisser). Sert à désactiver les zones de dépôt des AUTRES catégories,
+  // pour qu'elles ne s'illuminent pas et n'acceptent rien.
+  const [draggingListKind, setDraggingListKind] = useState(null);
+  const [previewPlacesByCity, setPreviewPlacesByCity] = useState({});
+  const handlePreviewPlacesChange = useCallback((cityId, places) => {
+    setPreviewPlacesByCity(prev => {
+      const next = { ...prev };
+      if (!places || !places.length) delete next[cityId];
+      else next[cityId] = places;
+      return next;
+    });
+  }, []);
+  const previewPlaces = useMemo(() => Object.values(previewPlacesByCity).flat(), [previewPlacesByCity]);
   const [mapOpen, setMapOpen] = useState(false);
   // Affichage de la carte : "à côté" (colonne normale) ou "en superposition" (plein
   // écran par-dessus le reste) — la carte est optionnelle, si l'utilisateur l'ouvre
@@ -438,6 +469,10 @@ export default function TripEditor({
   };
 
   const handleDragEnd = (result) => {
+    // Réarmé AVANT toute sortie anticipée : un glisser annulé (touche Échap,
+    // relâché hors zone) passe aussi par ici, et laisser l'état figé
+    // désactiverait durablement des zones de dépôt.
+    setDraggingListKind(null);
     if (!result.destination) return;
     const { type, source, destination, draggableId } = result;
 
@@ -528,35 +563,39 @@ export default function TripEditor({
       return;
     }
 
-    // Les listes "lieux" (activities-) et "trajets" (trajets-) d'une même ville
-    // n'ont volontairement pas de type RBD distinct (ça les empêcherait aussi
-    // d'être déposées sur les groupes/créneaux/jours) : un dépose croisé entre les
-    // deux est donc physiquement possible. Plutôt que de laisser cette action sans
-    // effet (l'utilisateur voit la zone s'illuminer comme si le dépôt était accepté,
-    // puis rien ne se passe), on le traite comme un changement de catégorie.
-    const isPlaceList = id => id.startsWith('activities-');
-    const isTrajetList = id => id.startsWith('trajets-');
-    if ((isPlaceList(source.droppableId) || isTrajetList(source.droppableId))
-      && (isPlaceList(destination.droppableId) || isTrajetList(destination.droppableId))) {
-      const srcCityId = source.droppableId.replace(/^(activities-|trajets-)/, '');
-      const destCityId = destination.droppableId.replace(/^(activities-|trajets-)/, '');
+    // Trois listes d'une même ville : lieux, restaurants et trajets. Elles
+    // partagent volontairement le même type RBD — leur en donner un distinct les
+    // empêcherait AUSSI d'être déposées sur les groupes, les créneaux et les
+    // jours. Un dépôt croisé est donc physiquement possible, et plutôt que de le
+    // laisser sans effet (la zone s'illumine comme si le dépôt était accepté,
+    // puis rien ne se passe), il est traité comme un changement de catégorie.
+    const LIST_PREFIXES = /^(activities-|restaurants-|trajets-)/;
+    const srcKind = listKindOf(source.droppableId);
+    const destKind = listKindOf(destination.droppableId);
+    if (srcKind && destKind) {
+      const srcCityId = source.droppableId.replace(LIST_PREFIXES, '');
+      const destCityId = destination.droppableId.replace(LIST_PREFIXES, '');
       if (srcCityId !== destCityId) return; // pas de déplacement d'une ville à l'autre
 
-      if (isPlaceList(source.droppableId) !== isPlaceList(destination.droppableId)) {
-        // Dépose croisée : bascule la catégorie plutôt que de réordonner
-        if (isTrajetList(destination.droppableId)) {
-          onUpdateActivity(activityId, { category: 'transport', transport_mode: 'voiture' });
-        } else {
-          onUpdateActivity(activityId, { category: 'other', transport_mode: null, duration_minutes: null });
-        }
-        return;
-      }
+      // Dépôt croisé : REFUSÉ. Il changeait auparavant la catégorie de la
+      // carte, ce qui piégeait l'utilisateur — la section d'origine disparaît
+      // dès qu'elle se vide, il ne restait donc aucune zone où redéposer la
+      // carte pour annuler le geste. Les zones incompatibles sont désormais
+      // désactivées pendant le déplacement (isDropDisabled), ce test n'est
+      // qu'un filet de sécurité. Changer de catégorie reste possible depuis la
+      // carte elle-même.
+      if (srcKind !== destKind) return;
 
-      // Réordonnancement dans la même liste (lieux ou trajets)
-      if (source.droppableId !== destination.droppableId) return;
-      const filterFn = isPlaceList(source.droppableId)
-        ? a => a.city_id === srcCityId && a.category !== 'transport'
-        : a => a.city_id === srcCityId && a.category === 'transport';
+      // Réordonnancement dans la même liste. Les trois filtres doivent rester
+      // le MIROIR EXACT de ceux qui construisent les listes affichées
+      // (CityBlock et DaytripCard) : au moindre écart, les index du
+      // glisser-déposer ne désignent plus les mêmes cartes.
+      const CATEGORY_FILTER = {
+        place: a => a.category !== 'transport' && a.category !== 'food',
+        resto: a => a.category === 'food',
+        trajet: a => a.category === 'transport',
+      };
+      const filterFn = a => a.city_id === srcCityId && CATEGORY_FILTER[srcKind](a);
       const subset = activities.filter(filterFn).sort((a, b) => a.position - b.position);
       const ids = subset.map(a => a.id);
       const [removed] = ids.splice(source.index, 1);
@@ -606,7 +645,8 @@ export default function TripEditor({
         />
       ) : (
       <DragDropContext
-        onDragStart={() => {
+        onDragStart={(start) => {
+          setDraggingListKind(listKindOf(start.source.droppableId));
           rbdDraggingRef.current = true;
           // Mobile uniquement (voir .pp-editor-split--dnd-active en CSS) :
           // sans portail, la carte glissée reste position:fixed MAIS enfant
@@ -648,6 +688,8 @@ export default function TripEditor({
                     tripStartDate={trip?.start_date || null}
                     tripEndDate={trip?.end_date || null}
                     isMobile={isMobile}
+                    draggingListKind={draggingListKind}
+                    onPreviewPlacesChange={handlePreviewPlacesChange}
                     mobileCityDetailId={mobileCityDetailId}
                     onOpenCityDetail={setMobileCityDetailId}
                     onCloseCityDetail={() => setMobileCityDetailId(null)}
@@ -842,7 +884,7 @@ export default function TripEditor({
                   </>
                 )}
                 <div className={`pp-map-panel-mount${mapCollapsed && !mapOverlay ? ' pp-map-panel-mount--hidden' : ''}`}>
-                  <MapPanel activities={activities} groups={groups} cities={cities} lodgings={lodgings} />
+                  <MapPanel activities={activities} groups={groups} cities={cities} lodgings={lodgings} previewPlaces={previewPlaces} />
                 </div>
               </div>
             </>

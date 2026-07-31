@@ -7,7 +7,8 @@
 // Cache permanent dans city_geocache, clé = (country_code, normalizeName(city_name))
 // (voir api/_lib/similarity.js) : une ville n'est géocodée qu'une seule fois
 // par variante orthographique/linguistique rencontrée, jamais deux.
-import { normalizeName } from './similarity.js';
+import { normalizeName, isSimilar } from './similarity.js';
+import { extractCityNameCandidates } from './labelVariants.js';
 
 const GEOAPIFY_API_KEY = process.env.VITE_GEOAPIFY_API_KEY;
 const EARTH_RADIUS_KM = 6371;
@@ -36,7 +37,10 @@ async function geocodeCityViaGeoapify(cityName, countryAlpha2, restrictToCity) {
     const data = await res.json();
     const p = data.features?.[0]?.properties;
     if (!p) return null;
-    return { lat: p.lat, lng: p.lon };
+    // `name` est purement informatif pour l'appelant (il sert à vérifier que le
+    // géocodeur a bien compris la question, voir resolveCityCoordinatesForLabel).
+    // Il n'est PAS mis en cache : les colonnes de city_geocache restent lat/lng.
+    return { lat: p.lat, lng: p.lon, name: p.city || p.name || p.address_line1 || null };
   } catch (err) {
     console.error(`[cityGeocode] Geoapify autocomplete "${cityName}" -> ${err.message}`);
     return null;
@@ -144,6 +148,88 @@ export async function resolveCityCoordinates(admin, { countryCode, cityName, cou
   );
 
   return found;
+}
+
+/**
+ * Coordonnées du centre-ville désigné par un LIBELLÉ DE DESTINATION ÉDITORIALE
+ * — « Mont-Saint-Michel & Bretagne », « Lyon et gastronomie », « Hiroshima &
+ * Miyajima ». Ces libellés sont écrits pour être lus, pas pour être géocodés.
+ *
+ * Pourquoi une fonction à part plutôt qu'une option de resolveCityCoordinates :
+ * cette dernière sert la planification et les images de villes, sur des noms de
+ * ville propres. Elle garde donc exactement son comportement et ses lignes de
+ * cache ; ce qui suit ne concerne que la recherche de restaurants.
+ *
+ * Mesuré le 2026-07-30 sur 59 libellés composés réels tirés de src/data (354
+ * des 768 destinations statiques en comportent un), en interrogeant vraiment
+ * Geoapify :
+ *   - tel quel : 7 bons, 2 franchement faux, 50 sans aucun résultat ;
+ *     « Mont-Saint-Michel & Bretagne » renvoyait Saint-Michel-de-Montaigne, en
+ *     Dordogne, à 400 km — et l'on y cherchait les restaurants, en silence.
+ *   - ici : 34 vérifiés, 7 replis plausibles, 18 sans résultat (ces derniers ne
+ *     sont pas des villes : Chutes Victoria, Lac Rose, Volcan Yasur…).
+ *
+ * DEUX PASSES, et c'est ce qui garantit qu'on ne peut rien casser :
+ *   1. le premier candidat dont le géocodeur RENVOIE UN NOM COHÉRENT avec ce
+ *      qu'on lui a demandé (isSimilar) — c'est ce contrôle qui écarte
+ *      Saint-Michel-de-Montaigne, Les Ulis pour « Alsace » ou
+ *      Château-Arnoux-Saint-Auban pour « Alpes » ;
+ *   2. à défaut, le premier candidat qui résout tout court — le comportement
+ *      d'avant. Indispensable : le contrôle de nom rejette des correspondances
+ *      pourtant justes quand le géocodeur répond dans sa langue (« Manille » →
+ *      *Manila*, écart de deux lettres au-dessus du seuil de similarité).
+ *
+ * Ce que ça ne saura jamais faire : distinguer un vrai homonyme (il existe une
+ * commune « Bretagne » dans le Territoire de Belfort). D'où le nom de la ville
+ * réellement utilisée, renvoyé à l'appelant et affiché au contributeur.
+ *
+ * Espace de cache distinct (`::label`) : les entrées déjà écrites par
+ * l'ancienne résolution — dont d'éventuelles coordonnées fausses — ne sont pas
+ * réutilisées ici, et celles-ci ne polluent pas les autres fonctionnalités.
+ * Le nom retenu n'étant pas stocké (colonnes lat/lng uniquement, pas de
+ * migration SQL), il n'est renvoyé qu'au premier appel, celui qui interroge
+ * vraiment le géocodeur.
+ *
+ * @returns {Promise<{lat: number, lng: number, name?: string|null} | null>}
+ */
+export async function resolveCityCoordinatesForLabel(admin, { countryCode, cityName, countryAlpha2 }) {
+  const cacheKey = `${normalizeName(cityName)}::label`;
+  const { data: cached } = await admin
+    .from('city_geocache')
+    .select('lat, lng')
+    .eq('country_code', countryCode)
+    .eq('city_name', cacheKey)
+    .maybeSingle();
+  if (cached) {
+    return cached.lat != null ? { lat: cached.lat, lng: cached.lng, name: null } : null;
+  }
+
+  const candidates = extractCityNameCandidates(cityName);
+  let verified = null;
+  let fallback = null;
+  for (const candidate of candidates) {
+    const found = await geocodeCityViaGeoapify(candidate, countryAlpha2, true);
+    if (!found) continue;
+    if (!fallback) fallback = { ...found, name: found.name || candidate };
+    if (found.name && isSimilar(candidate, found.name)) {
+      verified = { ...found, name: found.name };
+      break;
+    }
+  }
+  const result = verified || fallback;
+
+  await admin.from('city_geocache').upsert(
+    {
+      country_code: countryCode,
+      city_name: cacheKey,
+      lat: result?.lat ?? null,
+      lng: result?.lng ?? null,
+      geocoded_at: new Date().toISOString(),
+    },
+    { onConflict: 'country_code,city_name' }
+  );
+
+  return result;
 }
 
 /** Distance en km entre deux points (formule haversine). */

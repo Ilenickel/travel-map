@@ -11,7 +11,7 @@ import CitySearchInput from './CitySearchInput';
 import CountryFlag from './CountryFlag';
 import TripSuggestionsModal from './TripSuggestionsModal';
 
-export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, isMobile = false, mobileCityDetailId = null, onOpenCityDetail, onCloseCityDetail, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddGroup, onClearAutoGroups, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
+export default function DestinationBlock({ dest, cities, activities, groups, lodgings, tripId, tripStartDate, tripEndDate, isMobile = false, draggingListKind = null, onPreviewPlacesChange = null, mobileCityDetailId = null, onOpenCityDetail, onCloseCityDetail, onRemove, onAddCity, onAddDaytrip, onAssignCityToDay, onRemoveCity, onRenameCity, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup, onAddGroup, onClearAutoGroups, onAssignActivitiesToDay, onAddLodging, onUpdateLodging, onRemoveLodging, onReloadTripData, onAfterImport }) {
   const { t, i18n } = useTranslation();
   const [addingCity, setAddingCity] = useState(false);
   // Replié : n'affiche que l'en-tête (image + nom + compteurs) — utile surtout
@@ -142,6 +142,8 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
           tripId={tripId}
           countryCode={dest.country_code}
           countryName={dest.country_name}
+          draggingListKind={draggingListKind}
+          onPreviewPlacesChange={onPreviewPlacesChange}
           index={0}
           tripStartDate={tripStartDate}
           tripEndDate={tripEndDate}
@@ -313,6 +315,8 @@ export default function DestinationBlock({ dest, cities, activities, groups, lod
                   tripId={tripId}
                   countryCode={dest.country_code}
                   countryName={dest.country_name}
+                  draggingListKind={draggingListKind}
+                  onPreviewPlacesChange={onPreviewPlacesChange}
                   startExpanded={!initialCityIdsRef.current.has(city.id)}
                   index={idx}
                   cityImage={getCityImage(city.name)}

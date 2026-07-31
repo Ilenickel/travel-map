@@ -61,7 +61,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
     const authToken = session?.session?.access_token ?? null;
 
     const payload = {
-      authToken, destType,
+      authToken, action: 'add', destType,
       placeName: name.trim(),
       imageUrl: uploadedUrl,
       imagePath: uploadedPath,
@@ -72,7 +72,7 @@ function AddPlaceForm({ destType, destinationId, staticDestId, countryCode, coun
 
     let result;
     try {
-      const res = await fetch('/api/add-place', {
+      const res = await fetch('/api/places', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -189,6 +189,7 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
 
     const payload = {
       authToken,
+      action: 'add',
       placeId: place.id,
       destType,
       placeName: name.trim(),
@@ -200,7 +201,7 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
 
     let result;
     try {
-      const res = await fetch('/api/add-place', {
+      const res = await fetch('/api/places', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -257,7 +258,9 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
 }
 
 // ─── Composant principal ──────────────────────────────────────────────────────
-export default function PlacesList({ dest, countryCode, countryName, wikiImages = {}, wikiMeta = {} }) {
+// `hideTitle` : le composant est déjà sous un onglet « Lieux à ne pas manquer »
+// (voir DestinationHighlights), répéter le titre ferait doublon.
+export default function PlacesList({ dest, countryCode, countryName, wikiImages = {}, wikiMeta = {}, hideTitle = false }) {
   const { t, i18n } = useTranslation('app');
   const { user } = useAuth();
   const isUserDest = !!dest.isUserDest;
@@ -326,16 +329,21 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
 
   const PLACE_FIELDS = 'id, name, image_url, image_path, user_id, created_at, upvotes, downvotes, score';
 
+  // Les restaurants partagent ces mêmes tables (colonne `category`, voir
+  // supabase/restaurants_v1.sql) mais ont leur propre section : sans ce filtre
+  // ils remonteraient dans « Lieux à ne pas manquer ».
+  const onlyVisitPlaces = (query) => query.eq('category', 'place');
+
   const loadInitial = useCallback(async () => {
     setLoading(true);
     setShowAddForm(false);
     setCommunityOffset(0);
 
     if (isUserDest) {
-      const { data } = await supabase
+      const { data } = await onlyVisitPlaces(supabase
         .from('destination_places')
         .select(PLACE_FIELDS)
-        .eq('destination_id', dest.id)
+        .eq('destination_id', dest.id))
         .order('score', { ascending: false })
         .order('created_at', { ascending: true })
         .range(0, PAGE_SIZE);
@@ -351,11 +359,11 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
         image_url: null, user_id: null, isJson: true, _votes: { ...EMPTY_VOTES },
       }));
       const slotSize = PAGE_SIZE - jsonPlaces.length;
-      const { data } = await supabase
+      const { data } = await onlyVisitPlaces(supabase
         .from('static_destination_places')
         .select(PLACE_FIELDS)
         .eq('country_code', countryCode)
-        .eq('static_dest_id', String(dest.id))
+        .eq('static_dest_id', String(dest.id)))
         .order('score', { ascending: false })
         .order('created_at', { ascending: true })
         .range(0, slotSize);
@@ -376,7 +384,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     const table = isUserDest ? 'destination_places' : 'static_destination_places';
     let query = supabase.from(table).select(PLACE_FIELDS);
     query = isUserDest ? query.eq('destination_id', dest.id) : query.eq('country_code', countryCode).eq('static_dest_id', String(dest.id));
-    const { data } = await query
+    const { data } = await onlyVisitPlaces(query)
       .order('score', { ascending: false })
       .order('created_at', { ascending: true })
       .range(from, from + PAGE_SIZE);
@@ -478,10 +486,10 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     const { data: session } = await supabase.auth.getSession();
     const authToken = session?.session?.access_token ?? null;
     try {
-      const res = await fetch('/api/delete-place', {
+      const res = await fetch('/api/places', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ authToken, placeId: place.id, placeType: destType }),
+        body: JSON.stringify({ authToken, action: 'delete', placeId: place.id, placeType: destType }),
       });
       const result = await res.json();
       if (result.ok) {
@@ -516,7 +524,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   return (
     <div className="places-list">
       <div className="places-list-header">
-        <h4 className="places-list-title">{t('placesList.title')}</h4>
+        {!hideTitle && <h4 className="places-list-title">{t('placesList.title')}</h4>}
         {user && !showAddForm && (
           <button className="places-add-btn" onClick={() => setShowAddForm(true)}>{t('placesList.addPlaceButton')}</button>
         )}

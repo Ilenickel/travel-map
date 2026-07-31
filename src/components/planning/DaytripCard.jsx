@@ -43,6 +43,9 @@ export default function DaytripCard({
   onRemove, onRename, onAddActivity, onRemoveActivity, onRemoveActivities, onUpdateActivity, onDuplicateActivity,
   onAssignActivityToGroup, onAssignActivitiesToDay, onAssignCityToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
+  // Nature de la liste dont provient la carte en cours de déplacement : sert à
+  // neutraliser les zones de dépôt des autres catégories (voir TripEditor).
+  draggingListKind = null,
 }) {
   const [addingPlace, setAddingPlace] = useState(false);
   const [addingTrajet, setAddingTrajet] = useState(false);
@@ -73,7 +76,11 @@ export default function DaytripCard({
   const dtActivities = activities
     .filter(a => a.city_id === city.id)
     .sort((a, b) => a.position - b.position);
-  const dtPlaces = dtActivities.filter(a => a.category !== 'transport');
+  // Même découpage en trois que dans une ville (voir CityBlock) : sans lui, un
+  // restaurant rattaché à une excursion n'apparaîtrait NULLE PART, la liste des
+  // lieux l'excluant désormais côté glisser-déposer (voir TripEditor).
+  const dtPlaces = dtActivities.filter(a => a.category !== 'transport' && a.category !== 'food');
+  const dtRestos = dtActivities.filter(a => a.category === 'food');
   const dtTrajets = dtActivities.filter(a => a.category === 'transport');
   const dtCost = sumCosts(dtActivities);
 
@@ -268,7 +275,7 @@ export default function DaytripCard({
                   onCancel={toggleSelecting}
                 />
               )}
-              <Droppable droppableId={`activities-${city.id}`}>
+              <Droppable droppableId={`activities-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'place'}>
                 {(provided, snapshot) => (
                   <ul
                     className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
@@ -352,7 +359,43 @@ export default function DaytripCard({
 
           {activeTab === 'transports' && (
             <div className="pp-detail-tab-content">
-              <Droppable droppableId={`trajets-${city.id}`}>
+              {dtRestos.length > 0 && (
+                <div className="pp-restos-section">
+                  <div className="pp-restos-section-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+                    </svg>
+                    {t('cityTabs.myRestaurants')} <span>({dtRestos.length})</span>
+                  </div>
+                  <Droppable droppableId={`restaurants-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'resto'}>
+                    {(provided, snapshot) => (
+                      <ul
+                        className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
+                        {dtRestos.map((act, idx) => (
+                          <ActivityItem
+                            key={act.id}
+                            act={act}
+                            index={idx}
+                            tripStartDate={tripStartDate}
+                            groups={groups}
+                            onRemove={onRemoveActivity}
+                            onUpdate={onUpdateActivity}
+                            onDuplicate={onDuplicateActivity}
+                            onAssignToGroup={onAssignActivityToGroup}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </ul>
+                    )}
+                  </Droppable>
+                </div>
+              )}
+
+
+              <Droppable droppableId={`trajets-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'trajet'}>
                 {(provided, snapshot) => (
                   <ul
                     className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
@@ -460,7 +503,7 @@ export default function DaytripCard({
               onCancel={toggleSelecting}
             />
           )}
-          <Droppable droppableId={`activities-${city.id}`}>
+          <Droppable droppableId={`activities-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'place'}>
             {(provided, snapshot) => (
               <ul
                 className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
@@ -531,7 +574,43 @@ export default function DaytripCard({
                 </svg>
                 {t('trajetsSection.label')} <span>({dtTrajets.length})</span>
               </div>
-              <Droppable droppableId={`trajets-${city.id}`}>
+              {dtRestos.length > 0 && (
+                <div className="pp-restos-section">
+                  <div className="pp-restos-section-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+                    </svg>
+                    {t('cityTabs.myRestaurants')} <span>({dtRestos.length})</span>
+                  </div>
+                  <Droppable droppableId={`restaurants-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'resto'}>
+                    {(provided, snapshot) => (
+                      <ul
+                        className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
+                        {dtRestos.map((act, idx) => (
+                          <ActivityItem
+                            key={act.id}
+                            act={act}
+                            index={idx}
+                            tripStartDate={tripStartDate}
+                            groups={groups}
+                            onRemove={onRemoveActivity}
+                            onUpdate={onUpdateActivity}
+                            onDuplicate={onDuplicateActivity}
+                            onAssignToGroup={onAssignActivityToGroup}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </ul>
+                    )}
+                  </Droppable>
+                </div>
+              )}
+
+
+              <Droppable droppableId={`trajets-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'trajet'}>
                 {(provided, snapshot) => (
                   <ul
                     className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}

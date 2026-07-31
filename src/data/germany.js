@@ -1,4 +1,68 @@
-export const GERMANY = {
+const GERMANY_JA = {
+  "Allemagne": "ドイツ", "Berlin": "ベルリン", "Allemand": "ドイツ語", "Euro (EUR)": "ユーロ（EUR）",
+  "L'Allemagne est un pays d'une grande diversité culturelle et paysagère, alliant métropoles dynamiques, forêts profondes, châteaux féeriques et villages médiévaux préservés. Berlin, capitale réunifiée, incarne à elle seule l'histoire tourmentée et le renouveau créatif du XXe siècle. La Bavière, avec ses Alpes imposantes, ses bières légendaires et son architecture baroque, offre un contraste saisissant avec le nord industriel et la vallée du Rhin.": "ドイツは、文化も風景も実に多彩な国です。活気ある大都市、深い森、童話のような城、昔の面影を残す中世の町が各地に点在します。再統一を果たした首都ベルリンは、20世紀の激動の歴史と創造的な再生を象徴する街。雄大なアルプス、名高いビール、バロック建築を擁するバイエルンは、工業地帯が広がる北部やライン川流域とは対照的な魅力を見せます。",
+  "Mai – Sep": "5月～9月", "Idéal": "ベストシーズン", "Temps ensoleillé, jardins en fleurs, festivals de plein air et biergärten animés.": "晴天に恵まれ、庭園には花が咲き、野外フェスティバルや活気あるビアガーデンを楽しめます。",
+  "Oct": "10月", "Oktoberfest": "オクトーバーフェスト", "Munich accueille la célèbre fête de la bière, forêts aux couleurs automnales splendides.": "ミュンヘンでは有名なビール祭りが開かれ、森は見事な秋色に染まります。",
+  "Nov – Mar": "11月～3月", "Marchés de Noël": "クリスマスマーケット", "Les marchés de Noël d'Allemagne sont parmi les plus beaux d'Europe, mais le froid est vif.": "ドイツのクリスマスマーケットはヨーロッパ屈指の美しさですが、厳しい寒さへの備えが必要です。",
+  "Nord-Est — climat continental tempéré": "北東部 — 温帯の大陸性気候", "Nord — climat océanique tempéré": "北部 — 温帯の海洋性気候", "Bavière — climat continental, été plus chaud": "バイエルン — 大陸性気候で、夏は比較的暑い",
+  "Brandebourg": "ブランデンブルク州",
+  "Berlin est une ville en perpétuelle réinvention, marquée par les cicatrices de l'Histoire et animée d'une créativité artistique unique en Europe. Le vestige du Mur, le Reichstag, l'île aux Musées et le mémorial de l'Holocauste témoignent d'un passé dense et complexe. La capitale allemande est aussi réputée pour sa scène musicale underground, ses galeries d'art contemporain et sa vie nocturne légendaire.": "ベルリンは、歴史の傷跡を残しながら絶えず新しい姿へと生まれ変わる街です。ヨーロッパでも際立つ芸術的な創造力にあふれ、ベルリンの壁の遺構、国会議事堂、博物館島、ホロコースト記念碑が複雑で重い過去を伝えます。アンダーグラウンド音楽、現代美術のギャラリー、伝説的なナイトライフでも知られています。",
+  "Mur de Berlin & Checkpoint Charlie — symboles de la Guerre froide": "ベルリンの壁とチェックポイント・チャーリー — 冷戦の象徴",
+  "Reichstag — siège du Parlement allemand avec dôme de verre panoramique": "国会議事堂 — 展望を楽しめるガラスドームを備えたドイツ連邦議会の議事堂",
+  "Île aux Musées — ensemble de 5 musées classé au patrimoine UNESCO": "博物館島 — 5つの博物館からなるユネスコ世界遺産",
+  "Mémorial de l'Holocauste — installation sobre et puissante de 2 711 stèles": "ホロコースト記念碑 — 2,711基の石碑からなる静謐で力強いモニュメント",
+  "Bavière & Munich": "バイエルンとミュンヘン", "Bavière": "バイエルン州",
+  "La Bavière est la région la plus touristique d'Allemagne, avec Munich comme capitale festive et culturelle. La Marienplatz et la Residenz témoignent de la splendeur des Wittelsbach, tandis que les Alpes bavaroises toutes proches offrent randonnées et stations de ski. Le château de Neuschwanstein, perché sur son rocher, est l'un des sites les plus visités d'Europe.": "バイエルンはドイツ屈指の観光地で、州都ミュンヘンは祭りと文化の中心です。マリエン広場やレジデンツはヴィッテルスバッハ家の栄華を物語り、近郊のバイエルン・アルプスではハイキングやスキーを楽しめます。岩山にそびえるノイシュヴァンシュタイン城は、ヨーロッパでも特に多くの人が訪れる名所の一つです。",
+  "Château de Neuschwanstein — château de conte de fées de Louis II de Bavière": "ノイシュヴァンシュタイン城 — バイエルン王ルートヴィヒ2世が築いた童話のような城",
+  "Marienplatz & Rathaus à Munich — cœur animé de la capitale bavaroise": "ミュンヘンのマリエン広場と新市庁舎 — バイエルン州都の活気ある中心地",
+  "Englischer Garten — l'un des plus grands parcs urbains du monde": "英国庭園（エングリッシャー・ガルテン） — 世界最大級の都市公園",
+  "Zugspitze — point culminant d'Allemagne à 2 962 m": "ツークシュピッツェ — 標高2,962mのドイツ最高峰",
+  "Vallée du Rhin Romantique": "ロマンティック・ライン渓谷", "Rhénanie-Palatinat": "ラインラント＝プファルツ州",
+  "Le Rhin romantique entre Bingen et Coblence offre l'un des paysages les plus pittoresques d'Europe, avec ses vignobles en terrasses, ses châteaux médiévaux perchés et ses villages aux maisons à colombages. La Loreley, rocher légendaire surplombant le fleuve, cristallise toute la poésie de cette région inscrite au patrimoine mondial de l'UNESCO. Une croisière fluviale permet d'apprécier ce panorama unique.": "ビンゲンからコブレンツまで続くロマンティック・ラインは、斜面のブドウ畑、丘上の中世の城、木組みの家が並ぶ町が織りなす、ヨーロッパでもひときわ美しい景勝地です。川を見下ろす伝説の岩ローレライは、ユネスコ世界遺産に登録されたこの地域の詩情を象徴しています。遊覧船に乗れば、独特の景観をゆっくり堪能できます。",
+  "Rocher de la Loreley — site légendaire aux 130 m de hauteur sur le Rhin": "ローレライの岩 — ライン川から約130mそびえる伝説の名所",
+  "Château de Rheinfels — imposante forteresse médiévale du XIIIe siècle": "ラインフェルス城 — 13世紀に築かれた壮大な中世の要塞",
+  "Rüdesheim am Rhein — village viticole avec sa célèbre Drosselgasse": "リューデスハイム・アム・ライン — 有名なつぐみ横丁（ドロッセルガッセ）があるワインの町",
+  "Coblence & Deutsches Eck — confluent monumental du Rhin et de la Moselle": "コブレンツとドイチェス・エック — ライン川とモーゼル川が合流する壮観な岬",
+  "Forêt-Noire & Heidelberg": "シュヴァルツヴァルト（黒い森）とハイデルベルク", "Bade-Wurtemberg": "バーデン＝ヴュルテンベルク州",
+  "La Forêt-Noire est un massif forestier d'une beauté sauvage, parsemé de villages traditionnels aux toits de chaume, de cascades et de lacs glaciaires. Tout proche, Heidelberg est l'une des plus belles villes médiévales d'Allemagne, dominée par son château en ruines romantiques et traversée par la Neckar. Les gâteaux Schwarzwälder Kirschtorte et les horloges à coucou sont les emblèmes gastronomiques et artisanaux de la région.": "シュヴァルツヴァルトは野趣あふれる美しい森林地帯で、伝統的な村、滝、氷河湖が点在します。近くのハイデルベルクは、ネッカー川が流れ、ロマンチックな城跡が街を見下ろす、ドイツ屈指の美しい古都です。シュヴァルツヴェルダー・キルシュトルテと鳩時計は、この地方を代表する味覚と工芸品です。",
+  "Château de Heidelberg — ruines romantiques dominant la ville et le Neckar": "ハイデルベルク城 — 街とネッカー川を見下ろすロマンチックな城跡",
+  "Triberg — village des cascades et capitale des horloges à coucou": "トリベルク — 滝と鳩時計で知られる町",
+  "Titisee — lac glaciaire au cœur de la Forêt-Noire": "ティティーゼー湖 — シュヴァルツヴァルトの中心にある氷河湖",
+  "Fribourg-en-Brisgau — ville universitaire avec sa magnifique cathédrale gothique": "フライブルク・イム・ブライスガウ — 美しいゴシック様式の大聖堂を擁する大学都市",
+  "Nord": "北部",
+  "Deuxième ville d'Allemagne, Hamburg est une métropole portuaire fière de son passé hanséatique et de son architecture de briques rouges. La Speicherstadt, entrepôts du XIXe siècle reconvertis en musées et galeries, est classée UNESCO. Le Reeperbahn est le quartier de divertissement le plus animé d'Europe du Nord, et le port — le 3e plus grand d'Europe — se visite en bateau. C'est aussi la ville des Beatles, qui y ont fait leurs débuts.": "ドイツ第2の都市ハンブルクは、ハンザ同盟の歴史と赤レンガ建築を誇る港湾都市です。19世紀の倉庫群を博物館やギャラリーへ転用したシュパイヒャーシュタットは、ユネスコ世界遺産に登録されています。レーパーバーンは北ヨーロッパ屈指の歓楽街。ヨーロッパ第3の規模を誇る港は遊覧船で見学できます。ビートルズが下積み時代を過ごした街としても有名です。",
+  "Speicherstadt — entrepôts en briques rouges classés UNESCO": "シュパイヒャーシュタット — ユネスコ世界遺産の赤レンガ倉庫街",
+  "Elbphilharmonie — salle de concert au design spectaculaire sur l'Elbe": "エルプフィルハーモニー — エルベ川沿いに建つ斬新なデザインのコンサートホール",
+  "Port de Hamburg — croisière en bateau dans le 3e plus grand port d'Europe": "ハンブルク港 — ヨーロッパ第3の規模を誇る港を巡るクルーズ",
+  "Reeperbahn & quartier de St. Pauli — où les Beatles ont débuté": "レーパーバーンとザンクト・パウリ地区 — ビートルズが下積み時代を過ごした場所",
+  "L'Allemagne offre un bon rapport qualité-prix pour l'Europe de l'Ouest. Berlin est l'une des capitales les moins chères d'Europe occidentale. Munich et Francfort sont plus onéreuses, mais restent abordables comparées à Paris ou Londres.": "ドイツは西ヨーロッパの中では比較的コストパフォーマンスのよい旅行先です。ベルリンは西欧の首都としては物価が低め。ミュンヘンやフランクフルトはやや高価ですが、パリやロンドンと比べれば手頃です。",
+  "Hébergement / nuit": "宿泊（1泊）", "Auberge de jeunesse (dortoir)": "ユースホステル（ドミトリー）", "Très développé dans toutes les grandes villes": "主要都市には数多くある", "Hôtel 2–3 étoiles": "2～3つ星ホテル", "Chambre double, petit-déjeuner souvent inclus": "ダブルルーム。朝食付きが多い", "Hôtel 4 étoiles": "4つ星ホテル", "Plus cher à Munich et Francfort": "ミュンヘンとフランクフルトは料金が高め",
+  "Nourriture": "食事", "Bratwurst / kebab / bakery": "ブラートヴルスト・ケバブ・ベーカリー", "Street food très développé et de qualité": "手軽で質のよいストリートフードが充実", "Déjeuner au restaurant": "レストランでのランチ", "Plat du jour, souvent très copieux": "日替わり料理は量が多いことが多い", "Dîner restaurant traditionnel": "伝統料理店での夕食", "Avec bière incluse dans les brasseries": "ビアホールではビール代込み",
+  "Transport": "交通", "Ticket métro / bus (aller simple)": "地下鉄・バスの片道券", "Pass journée très avantageux (7–10 €)": "お得な1日乗車券（7～10ユーロ）", "Train IC/ICE Berlin–Munich": "IC・ICE ベルリン～ミュンヘン", "En 4h, tarif Sparpreis dès 17 € si réservé tôt": "所要約4時間。早期予約なら割引運賃Sparpreisが17ユーロから", "FlixBus longue distance": "長距離FlixBus", "Alternative économique au train pour les longues distances": "長距離移動で鉄道より安い選択肢",
+  "Activités": "アクティビティ", "Musée à Berlin (île aux Musées)": "ベルリンの博物館（博物館島）", "Pass combiné disponible pour plusieurs musées": "複数の博物館に入れる共通パスあり", "Château de Neuschwanstein": "ノイシュヴァンシュタイン城", "Réservation obligatoire en ligne en haute saison": "繁忙期はオンライン予約必須", "Tour guidé à vélo": "自転車ガイドツアー", "Berlin propose d'excellentes visites à vélo": "ベルリンには質の高い自転車ツアーが多い",
+  "Routard": "節約旅行", "Auberge, street food et plats du jour, transports en commun": "ホステル、ストリートフードと日替わり料理、公共交通機関", "Confort": "快適", "Hôtel 3 étoiles, restaurants mid-range, activités culturelles": "3つ星ホテル、中価格帯のレストラン、文化体験",
+  "10 jours": "10日間", "Berlin (4j) → Vallée du Rhin (2j) → Munich & Bavière (4j)": "ベルリン（4日）→ ライン渓谷（2日）→ ミュンヘン・バイエルン（4日）", "Vol A/R Paris–Berlin": "パリ～ベルリン 往復航空券", "Hébergement (9 nuits)": "宿泊（9泊）", "Transports locaux + trains": "現地交通＋鉄道", "Nourriture + boissons": "食事＋飲み物", "Activités + musées": "アクティビティ＋博物館",
+  "Vol depuis Paris": "パリからのアクセス", "Paris–Berlin : 1h30 de vol. Nombreuses compagnies low-cost (easyJet, Transavia). Aussi accessible en train de nuit.": "パリ～ベルリンは飛行機で約1時間30分。easyJetやTransaviaなど多くの格安航空会社が就航し、夜行列車でも移動できます。",
+  "Visa": "ビザ", "Pas de visa pour les citoyens UE/Schengen. Carte d'identité suffisante.": "EU・シェンゲン圏の国民はビザ不要。身分証明書のみで渡航可能",
+  "Monnaie": "通貨", "Euro (€). Attention : de nombreux restaurants et commerces en Allemagne sont encore cash only.": "ユーロ（€）。ドイツでは今も現金しか使えない飲食店や商店が多いので注意",
+  "Langue": "言語", "Allemand. Anglais très bien parlé dans les grandes villes et les zones touristiques.": "ドイツ語。大都市や観光地では英語がよく通じる",
+  "Prise électrique": "電源プラグ", "Type F (Schuko, 2 broches rondes). 230V / 50Hz. Compatible avec les prises françaises.": "Fタイプ（シュコー式、丸ピン2本）。230V・50Hz。フランスのプラグと互換性あり",
+  "Santé": "医療", "Soins médicaux excellents. Carte Européenne d'Assurance Maladie valable pour les ressortissants UE.": "医療水準は非常に高い。EU加盟国の対象者は欧州健康保険証を利用可能",
+  "Mobilité": "移動", "Excellent réseau cyclable dans toutes les grandes villes. Transports en commun très ponctuels.": "主要都市には自転車道がよく整備され、公共交通機関も時刻どおりに運行されます。",
+  "Commerces": "商店", "Fermés le dimanche dans la quasi-totalité du pays. Planifier les courses en conséquence.": "国内のほぼ全域で日曜日は休業。買い物は前もって済ませておく必要がある",
+};
+
+const withJapanese = (value) => {
+  if (Array.isArray(value)) return value.map(withJapanese);
+  if (value && typeof value === "object") {
+    const localized = "fr" in value && "en" in value && "es" in value;
+    const entries = Object.entries(value).map(([key, item]) => [key, withJapanese(item)]);
+    return Object.fromEntries(entries.concat(localized ? [["ja", GERMANY_JA[value.fr] ?? value.en]] : []));
+  }
+  return value;
+};
+
+export const GERMANY = withJapanese({
   code: "DEU",
   numericId: 276,
   name: { fr: "Allemagne", en: "Germany", es: "Alemania", de: "Deutschland" },
@@ -444,4 +508,4 @@ export const GERMANY = {
       value: { fr: "Fermés le dimanche dans la quasi-totalité du pays. Planifier les courses en conséquence.", en: "Closed on Sundays across almost the entire country. Plan your shopping accordingly.", es: "Cerrados los domingos en casi todo el país. Planificar las compras en consecuencia.", de: "Fast im ganzen Land sonntags geschlossen. Planen Sie Besorgungen entsprechend." },
     },
   ],
-};
+});

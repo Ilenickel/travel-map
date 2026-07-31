@@ -15,7 +15,7 @@ export const USA = {
     unesco: 3,
     nature: 2,
     randonnee: 2,
-    gastronomie: 3,
+    gastronomie: 2,
     architecture: 2,
     desert: 2,
     safari: 2,

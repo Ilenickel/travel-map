@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import ActivityItem from './ActivityItem';
@@ -14,7 +14,10 @@ import CityMenu from './CityMenu';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 import MobileDetailHeader from './MobileDetailHeader';
 import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
-import { sumCosts, formatPrice, kMeansActivities, estimateGeoClusterCount, GROUP_COLORS } from '../../lib/planningUtils';
+import RestaurantExplorer from '../RestaurantExplorer';
+import RestaurantsModal from '../RestaurantsModal';
+import { sumCosts, formatPrice, kMeansActivities, estimateGeoClusterCount, GROUP_COLORS, matchingStaticDestinations, countryAlpha2FromEmoji, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
+import { COUNTRIES } from '../../data/index';
 import { useSettings } from '../../context/SettingsContext';
 import { cropUnsplashUrl } from '../../lib/unsplashCrop';
 
@@ -54,6 +57,8 @@ export default function CityBlock({
   onAssignActivityToGroup, onAssignActivitiesToDay, onAddDaytrip, onAssignCityToDay,
   onAddGroup, onClearAutoGroups,
   onAddLodging, onUpdateLodging, onRemoveLodging,
+  onPreviewPlacesChange = null,
+  draggingListKind = null,
 }) {
   const { t } = useTranslation();
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
@@ -84,15 +89,36 @@ export default function CityBlock({
   // Transports/Excursions) et excursion ouverte EN PLUS (navigation récursive
   // — voir plus bas, "openDaytripId").
   const [activeTab, setActiveTab] = useState('activities');
+  // L'explorateur de restaurants s'ouvre en plein écran, sur les DEUX
+  // affichages : depuis le menu « Ajouter » sur ordinateur, depuis le bouton de
+  // l'onglet Restaurants sur mobile. Il porte sa propre carte et sa propre
+  // recherche — l'afficher en permanence allongeait la page d'ordinateur sans
+  // fin, et sur mobile il ouvrait une page d'exploration alors qu'on venait
+  // simplement voir les restaurants déjà retenus.
+  const [restaurantsModalOpen, setRestaurantsModalOpen] = useState(false);
   const [openDaytripId, setOpenDaytripId] = useState(null);
   const { hidden: headerHidden, onScroll: onDetailScroll, containerRef: detailBodyRef } = useHeaderScrollHide();
+
+  // Quitter l'onglet referme l'explorateur : il porte une carte Leaflet et une
+  // liste chargée depuis le réseau, les laisser vivre derrière un autre onglet
+  // n'a aucun intérêt — et en revenant, on retrouverait une recherche à moitié
+  // remplie sans comprendre d'où elle sort.
+  useEffect(() => {
+    if (activeTab !== 'restaurants') setRestaurantsModalOpen(false);
+  }, [activeTab]);
 
   const cityActivities = activities
     .filter(a => a.city_id === city.id)
     .sort((a, b) => a.position - b.position);
   // Les trajets vivent dans leur propre section : sinon, dans une longue liste de
   // lieux, ils se noient au milieu et cassent la lecture "ce qu'on va voir".
-  const placeActivities = cityActivities.filter(a => a.category !== 'transport');
+  // Trois listes distinctes. Les restaurants ont la leur : noyés parmi les
+  // visites, on ne repérait pas d'un coup d'œil où l'on mange.
+  // Ces filtres doivent rester le MIROIR EXACT de CATEGORY_FILTER dans
+  // TripEditor (glisser-déposer) — au moindre écart, les index ne désignent
+  // plus les mêmes cartes.
+  const placeActivities = cityActivities.filter(a => a.category !== 'transport' && a.category !== 'food');
+  const restoActivities = cityActivities.filter(a => a.category === 'food');
   const trajetActivities = cityActivities.filter(a => a.category === 'transport');
   const cityLodgings = (lodgings || []).filter(l => l.city_id === city.id);
   // Lieux ET trajets de la ville (un billet de train a un prix aussi), mais pas
@@ -166,6 +192,131 @@ export default function CityBlock({
     onAddActivity(tripId, city.id, name, {});
     setAddingPlace(false);
   };
+
+  // ─── Restaurants ────────────────────────────────────────────────────────
+  // Destinations éditoriales correspondant à cette ville : même correspondance
+  // que pour les lieux conseillés (PlaceSuggestionsButton), c'est elle qui
+  // détermine à quelle destination rattacher une contribution.
+  // Mémoïsé : la vue ordinateur rend toutes les villes du voyage, et cette
+  // correspondance parcourt les destinations du pays — inutile de la refaire à
+  // chaque rendu de chaque ville.
+  const restaurantStaticDestIds = useMemo(
+    () => matchingStaticDestinations(city.name, countryCode).map(d => String(d.id)),
+    [city.name, countryCode]
+  );
+  // Points de repère pour l'affichage « à 1,2 km de X » : uniquement les lieux
+  // DÉJÀ planifiés dans cette ville, et uniquement à vol d'oiseau — aucun
+  // itinéraire n'est calculé (voir lib/restaurants.js).
+  // Mémoïsé sur une signature stable : recréer ce tableau à chaque rendu
+  // relancerait le calcul des distances côté explorateur pour rien.
+  const geoActivitiesKey = cityActivities
+    .filter(a => a.place_lat && a.place_lng)
+    // `category` et `group_id` en font partie : ils décident de l'emoji et de la
+    // couleur de la pastille posée sur la carte de l'explorateur. Sans eux,
+    // changer la zone d'un lieu n'aurait pas rafraîchi son repère.
+    .map(a => `${a.id}:${a.place_lat}:${a.place_lng}:${a.name}:${a.category}:${a.group_id ?? ''}`)
+    .join('|')
+    // La COULEUR des zones entre aussi dans la signature : elle est portée par
+    // le groupe, pas par l'activité. Sans elle, recolorer une zone laissait ses
+    // pastilles à l'ancienne teinte sur la carte de l'explorateur jusqu'au
+    // rechargement de la page (trouvé en TNR le 2026-07-31).
+    + '#' + (groups || []).map(g => `${g.id}:${g.color}`).join(',');
+  // Nom ET adresse : voir `existingActivities` dans RestaurantExplorer, la
+  // comparaison sur le seul nom ne distinguait pas deux adresses d'une même
+  // enseigne.
+  const activityRefsKey = cityActivities.map(a => `${a.id}:${a.name}:${a.place_address || ''}`).join('|');
+  // `id` inclus : l'explorateur ne se contente plus de SAVOIR qu'un restaurant
+  // est au programme, il doit pouvoir l'en retirer d'un second clic.
+  const cityActivityRefs = useMemo(
+    () => cityActivities.map(a => ({ id: a.id, name: a.name, address: a.place_address || null })),
+    [activityRefsKey] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  // Noms seuls, pour PlaceSuggestionsButton qui compare des libellés de lieux
+  // de visite (pas d'adresse à départager, contrairement aux restaurants).
+  const cityActivityNames = useMemo(
+    () => cityActivities.map(a => a.name),
+    [activityRefsKey] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+  const restaurantReferencePoints = useMemo(
+    () => cityActivities
+      // Les restaurants déjà au programme sont EXCLUS des points de repère :
+      // « à 0 m de Hikiniku to come » comparait un restaurant à lui-même, et
+      // personne n'enchaîne deux restaurants — la distance utile est celle qui
+      // sépare l'adresse d'une VISITE prévue.
+      .filter(a => a.category !== 'food' && a.place_lat && a.place_lng)
+      // Apparence de la pastille calculée ICI, où les zones sont connues, et
+      // non dans l'explorateur : il n'a pas à connaître les catégories ni les
+      // groupes du planning. Mêmes règles que la carte du voyage (voir
+      // MapPanel) — couleur de la zone si le lieu en a une, sinon couleur de sa
+      // catégorie ; épingle 📍 pour une zone, emoji de catégorie sinon — pour
+      // qu'un même lieu se reconnaisse d'une carte à l'autre.
+      .map(a => {
+        const group = a.group_id ? (groups || []).find(g => g.id === a.group_id) : null;
+        const cat = ACTIVITY_CATEGORIES[a.category] || ACTIVITY_CATEGORIES.other;
+        return {
+          name: a.name,
+          lat: a.place_lat,
+          lng: a.place_lng,
+          color: group ? group.color : cat.color,
+          icon: group ? '📍' : cat.icon,
+        };
+      }),
+    [geoActivitiesKey] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  // Un restaurant ajouté au voyage devient une activité ordinaire de catégorie
+  // « food » : il se déplace, se date et se chiffre comme le reste du planning,
+  // au lieu de vivre dans un système à part.
+  const handleAddRestaurantToTrip = (resto) => {
+    // `displayName` : le nom tel qu'il est affiché dans la langue courante (voir
+    // restaurantNames) — un restaurant japonais entre au planning sous sa forme
+    // latine, pas sous des idéogrammes que l'utilisateur ne peut pas relire.
+    onAddActivity(tripId, city.id, resto.displayName || resto.name, {
+      category: 'food',
+      place_lat: resto.lat ?? null,
+      place_lng: resto.lng ?? null,
+      place_address: resto.address || null,
+    });
+  };
+
+  // Remontée des restaurants affichés vers la carte du voyage (TripEditor →
+  // MapPanel, `previewPlaces`). La réf garde la dernière callback sans la
+  // mettre en dépendance : `onPreviewPlacesChange` vient d'un useCallback
+  // stable, mais un parent la redéfinirait sans qu'on ait à recréer celle-ci.
+  const previewChangeRef = useRef(onPreviewPlacesChange);
+  previewChangeRef.current = onPreviewPlacesChange;
+  const handleVisibleRestaurantsChange = useCallback((list) => {
+    previewChangeRef.current?.(city.id, list);
+  }, [city.id]);
+  // Une ville repliée, un onglet quitté ou une ville retirée du voyage doivent
+  // faire disparaître ses marqueurs de proposition : sans ce nettoyage, ils
+  // resteraient sur la carte du voyage jusqu'au rechargement de la page.
+  useEffect(() => () => { previewChangeRef.current?.(city.id, []); }, [city.id]);
+
+  const restaurantExplorer = (
+    <RestaurantExplorer
+      mode="city"
+      cityName={city.name}
+      staticDestIds={restaurantStaticDestIds}
+      countryCode={countryCode}
+      countryName={countryName}
+      countryAlpha2={countryAlpha2FromEmoji(COUNTRIES[countryCode]?.emoji)}
+      destName={city.name}
+      // Le titre est déjà porté par l'onglet (mobile) ou l'en-tête de la modale
+      // (ordinateur) : le répéter ferait doublon.
+      hideTitle
+      // Carte immersive sur ordinateur : en planification, on cherche d'abord
+      // « qu'y a-t-il près de mon programme ? », donc la carte prime et la liste
+      // flotte par-dessus. Sur mobile, le composant retombe de lui-même sur
+      // carte en haut + liste dessous.
+      layout="immersive"
+      referencePoints={restaurantReferencePoints}
+      existingActivities={cityActivityRefs}
+      onAddToTrip={handleAddRestaurantToTrip}
+      onRemoveFromTrip={onRemoveActivity}
+      onVisibleChange={handleVisibleRestaurantsChange}
+    />
+  );
 
   // Détection de zones par proximité, scopée à CETTE ville (+ ses excursions
   // rattachées) : cliquer sur "Grouper par proximité" pour Pékin ne doit
@@ -334,7 +485,7 @@ export default function CityBlock({
           countryName={countryName}
           tripId={tripId}
           cityId={city.id}
-          existingActivityNames={cityActivities.map(a => a.name)}
+          existingActivityNames={cityActivityNames}
           onAddActivity={onAddActivity}
         />
       </div>
@@ -349,7 +500,7 @@ export default function CityBlock({
           onCancel={toggleSelecting}
         />
       )}
-      <Droppable droppableId={`activities-${city.id}`}>
+      <Droppable droppableId={`activities-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'place'}>
         {(provided, snapshot) => (
           <ul
             className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
@@ -397,6 +548,7 @@ export default function CityBlock({
         </div>
       )}
 
+
       <LodgingSection
         city={city}
         lodgings={lodgings}
@@ -420,6 +572,7 @@ export default function CityBlock({
               groups={groups}
               lodgings={lodgings}
               tripId={tripId}
+              draggingListKind={draggingListKind}
               tripStartDate={tripStartDate}
               onRemove={onRemove}
               onRename={onRename}
@@ -452,6 +605,41 @@ export default function CityBlock({
         </div>
       )}
 
+      {restoActivities.length > 0 && (
+        <div className="pp-restos-section">
+          <div className="pp-restos-section-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+            </svg>
+            {t('cityTabs.restaurants')} <span>({restoActivities.length})</span>
+          </div>
+          <Droppable droppableId={`restaurants-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'resto'}>
+            {(provided, snapshot) => (
+              <ul
+                className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {restoActivities.map((act, idx) => (
+                  <ActivityItem
+                    key={act.id}
+                    act={act}
+                    index={idx}
+                    tripStartDate={tripStartDate}
+                    groups={groups}
+                    onRemove={onRemoveActivity}
+                    onUpdate={onUpdateActivity}
+                    onDuplicate={onDuplicateActivity}
+                    onAssignToGroup={onAssignActivityToGroup}
+                  />
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </div>
+      )}
+
       {trajetActivities.length > 0 && (
         <div className="pp-trajets-section">
           <div className="pp-trajets-section-label">
@@ -460,7 +648,7 @@ export default function CityBlock({
             </svg>
             {t('trajetsSection.label')} <span>({trajetActivities.length})</span>
           </div>
-          <Droppable droppableId={`trajets-${city.id}`}>
+          <Droppable droppableId={`trajets-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'trajet'}>
             {(provided, snapshot) => (
               <ul
                 className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
@@ -508,6 +696,22 @@ export default function CityBlock({
             onSelect: () => setAddingPlace(true),
           },
           {
+            key: 'restaurant',
+            // Teinte propre aux restaurants : l'ambre est celle des excursions,
+            // l'indigo celle des lieux, l'émeraude celle des hébergements et le
+            // bleu celle des trajets — le violet est la seule nuance encore
+            // franchement distinguable.
+            tone: 'violet',
+            icon: (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+              </svg>
+            ),
+            label: t('addMenu.restaurant'),
+            desc: t('addMenu.restaurantDesc'),
+            onSelect: () => setRestaurantsModalOpen(true),
+          },
+          {
             key: 'lodging',
             tone: 'emerald',
             icon: (
@@ -545,6 +749,15 @@ export default function CityBlock({
           },
         ]}
       />
+
+      {restaurantsModalOpen && (
+        <RestaurantsModal
+          title={city.name}
+          onClose={() => setRestaurantsModalOpen(false)}
+        >
+          {restaurantExplorer}
+        </RestaurantsModal>
+      )}
     </div>
   );
 
@@ -582,6 +795,7 @@ export default function CityBlock({
           tripStartDate={tripStartDate}
           tripEndDate={tripEndDate}
           cityImage={getCityImage?.(openDaytrip.name)}
+          draggingListKind={draggingListKind}
           isMobile
           mobileDetailOpen
           onCloseDetail={() => setOpenDaytripId(null)}
@@ -602,17 +816,30 @@ export default function CityBlock({
       );
     }
 
+    // Libellés VOLONTAIREMENT raccourcis ici : la bande d'onglets répartit la
+    // largeur de l'écran en parts égales, et à cinq onglets « Hébergements » ou
+    // « Transports » ne tiennent plus sur un téléphone. Les titres complets
+    // restent utilisés partout ailleurs (sections, menus d'ajout).
     const tabs = [
       {
         key: 'activities', label: t('cityTabs.activities'), count: placeActivities.length, tone: 'indigo',
         icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>,
       },
       {
-        key: 'lodgings', label: t('cityTabs.lodgings'), count: cityLodgings.length, tone: 'emerald',
+        // Le compteur porte sur les restaurants DÉJÀ au programme (des
+        // activités, donc déjà en mémoire) et non sur les adresses disponibles,
+        // qui ne sont chargées qu'à l'ouverture de l'explorateur : compter
+        // celles-ci obligerait à interroger le réseau pour toutes les villes du
+        // voyage d'un coup, sans que personne ne l'ait demandé.
+        key: 'restaurants', label: t('cityTabs.restaurants'), count: restoActivities.length, tone: 'violet',
+        icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>,
+      },
+      {
+        key: 'lodgings', label: t('cityTabs.lodgingsShort'), count: cityLodgings.length, tone: 'emerald',
         icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>,
       },
       {
-        key: 'transports', label: t('cityTabs.transports'), count: trajetActivities.length, tone: 'blue',
+        key: 'transports', label: t('cityTabs.transportsShort'), count: trajetActivities.length, tone: 'blue',
         icon: <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2v1c0 .55.45 1 1 1s1-.45 1-1v-1h7v1c0 .55.45 1 1 1s1-.45 1-1v-1c1.1 0 2-.9 2-2v-1h1c.55 0 1-.45 1-1s-.45-1-1-1zM12 6l4 4h-8l4-4z"/></svg>,
       },
       {
@@ -646,7 +873,7 @@ export default function CityBlock({
                   countryName={countryName}
                   tripId={tripId}
                   cityId={city.id}
-                  existingActivityNames={cityActivities.map(a => a.name)}
+                  existingActivityNames={cityActivityNames}
                   onAddActivity={onAddActivity}
                 />
               </div>
@@ -661,7 +888,7 @@ export default function CityBlock({
                   onCancel={toggleSelecting}
                 />
               )}
-              <Droppable droppableId={`activities-${city.id}`}>
+              <Droppable droppableId={`activities-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'place'}>
                 {(provided, snapshot) => (
                   <ul
                     className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
@@ -718,6 +945,66 @@ export default function CityBlock({
             </div>
           )}
 
+          {/* Onglet Restaurants : les restaurants DÉJÀ au programme, et un
+              bouton pour aller en chercher d'autres — exactement la structure
+              des autres onglets (liste + « Ajouter un… »).
+              L'explorateur (recherche, filtres, carte, adresses disponibles) ne
+              s'affiche PLUS d'emblée : c'était le seul onglet à ouvrir son
+              formulaire de recherche sans qu'on l'ait demandé, et il noyait les
+              restaurants déjà choisis sous une page entière d'exploration. Il
+              s'ouvre désormais en plein écran depuis le bouton, et se referme
+              quand on quitte l'onglet (voir l'effet plus haut). */}
+          {activeTab === 'restaurants' && (
+            <div className="pp-detail-tab-content pp-detail-tab-content--restaurants">
+              {/* Depuis qu'ils ne figurent plus dans l'onglet Activités (liste
+                  séparée, voir placeActivities), c'est ici qu'on doit les
+                  retrouver — sinon ils n'apparaîtraient nulle part sur mobile. */}
+              {restoActivities.length > 0 && (
+                <div className="pp-restos-section">
+                  <div className="pp-restos-section-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+                    </svg>
+                    {t('cityTabs.myRestaurants')} <span>({restoActivities.length})</span>
+                  </div>
+                  <Droppable droppableId={`restaurants-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'resto'}>
+                    {(provided, snapshot) => (
+                      <ul
+                        className={`pp-activities${snapshot.isDraggingOver ? ' pp-activities--over' : ''}`}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
+                        {restoActivities.map((act, idx) => (
+                          <ActivityItem
+                            key={act.id}
+                            act={act}
+                            index={idx}
+                            tripStartDate={tripStartDate}
+                            groups={groups}
+                            onRemove={onRemoveActivity}
+                            onUpdate={onUpdateActivity}
+                            onDuplicate={onDuplicateActivity}
+                            onAssignToGroup={onAssignActivityToGroup}
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </ul>
+                    )}
+                  </Droppable>
+                </div>
+              )}
+              {restoActivities.length === 0 && (
+                <p className="pp-activities-empty">{t('cityTabs.emptyRestaurants')}</p>
+              )}
+              <button className="pp-add-menu-btn" onClick={() => setRestaurantsModalOpen(true)}>
+                <span className="pp-add-menu-btn-plus" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                </span>
+                {t('cityTabs.addRestaurantButton')}
+              </button>
+            </div>
+          )}
+
           {activeTab === 'lodgings' && (
             <div className="pp-detail-tab-content">
               <LodgingSection
@@ -748,7 +1035,7 @@ export default function CityBlock({
 
           {activeTab === 'transports' && (
             <div className="pp-detail-tab-content">
-              <Droppable droppableId={`trajets-${city.id}`}>
+              <Droppable droppableId={`trajets-${city.id}`} isDropDisabled={!!draggingListKind && draggingListKind !== 'trajet'}>
                 {(provided, snapshot) => (
                   <ul
                     className={`pp-trajets-list${snapshot.isDraggingOver ? ' pp-trajets-list--over' : ''}`}
@@ -839,6 +1126,19 @@ export default function CityBlock({
             </div>
           )}
         </div>
+
+        {/* Explorateur en plein écran, la même coquille que sur ordinateur : sur
+            mobile elle occupe tout l'écran (voir .resto-modal en dessous de
+            1024px), ce qui donne enfin à la carte et à la liste la place que
+            l'onglet leur mesurait. */}
+        {restaurantsModalOpen && (
+          <RestaurantsModal
+            title={city.name}
+            onClose={() => setRestaurantsModalOpen(false)}
+          >
+            {restaurantExplorer}
+          </RestaurantsModal>
+        )}
       </div>
     );
   }

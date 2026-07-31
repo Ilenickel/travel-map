@@ -1,0 +1,2305 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Restaurants — explorateur, modales et fiche détail
+   Feuille dédiée, importée par les composants restaurants : ces styles servent
+   à la fois la fiche pays et la planification, ils n'ont donc leur place ni
+   dans App.css ni dans PlanningPage.css.
+   Les variables (--surface, --accent…) viennent de App.css, chargée globalement.
+
+   Parti pris : AUCUN dégradé. Les aplats et les bordures suffisent à marquer
+   l'état actif, et les dégradés bleus alourdissaient visuellement une interface
+   déjà dense.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Avis de la destination masqués sous l'onglet Restaurants. `display: none`
+   plutôt qu'un démontage : un avis en cours de rédaction survit ainsi à un
+   aller-retour entre les deux onglets (voir CountryPanel).
+   Sert aussi, sur mobile, à la section des avis du PAYS : le défilement continu
+   la place juste sous la liste de restaurants, là où les onglets du bureau la
+   tenaient à l'écart.
+   SÉLECTEURS DOUBLÉS obligatoires : `.dest-reviews-section { display: flex }`
+   (App.css) et `.tab-content { display: flex }` ont la même spécificité que la
+   classe seule et sont écrits APRÈS dans le paquet CSS final — ils gagnaient,
+   la section restait donc affichée (constaté le 2026-07-30 sur mobile). */
+.dest-reviews-section.dest-reviews-section--hidden,
+.tab-content.dest-reviews-section--hidden { display: none; }
+
+/* ─── Section « À ne pas manquer » et ses deux onglets ────────────────────── */
+.dest-highlights { margin-top: 24px; }
+/* Titre de la SECTION, au-dessus des onglets : les lieux comme les restaurants
+   sont des adresses à ne pas manquer. Même style que les autres titres de
+   section de la fiche destination (.places-list-title). */
+.dest-highlights-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+.dest-highlights-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.dest-highlights-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.dest-highlights-tab:hover { color: var(--text-dim); }
+.dest-highlights-tab--active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+/* ─── Explorateur ─────────────────────────────────────────────────────────── */
+.resto-explorer { margin-top: 4px; }
+
+.resto-explorer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  min-height: 30px;
+}
+.resto-explorer-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Bouton d'ajout toujours à DROITE de son en-tête.
+   Les deux en-têtes sont en `space-between` : avec un titre et un bouton, le
+   bouton se place bien à droite — mais sous les onglets le titre est masqué
+   (il est déjà porté par l'onglet), et le bouton resté seul repartait à gauche.
+   `margin-left: auto` le maintient à droite dans les deux cas. */
+.places-list-header .places-add-btn,
+.resto-explorer-header .places-add-btn {
+  margin-left: auto;
+}
+
+/* Proposer un restaurant : plus grand que le bouton d'ajout de la fiche pays.
+   C'est ici la seule action de contribution de la fenêtre, et à 12px dans un
+   en-tête qui fait toute la largeur d'un écran d'ordinateur, elle passait pour
+   une commande secondaire. Le pictogramme « + » explicite le geste sans
+   allonger le libellé. */
+.resto-explorer-header .places-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  padding: 10px 20px;
+  border-radius: 999px;
+}
+
+/* Messages d'attente et de liste vide CENTRÉS : ils remplacent la liste, ils
+   occupent donc toute sa largeur — alignés à gauche, ils passaient pour une
+   ligne de résultat mal cadrée. `list-style: none` car le message « aucun
+   restaurant ne correspond » est un <li> à la place des cartes. */
+.resto-explorer-loading,
+.resto-explorer-empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 14px 0;
+  text-align: center;
+  list-style: none;
+}
+
+/* Disposition ordinateur : liste à gauche, carte à droite, collée en haut
+   pendant que la liste défile — liste et positions doivent rester lisibles
+   ensemble, c'est tout l'intérêt de l'explorateur. */
+.resto-explorer-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.resto-explorer-panel { order: 1; min-width: 0; }
+.resto-explorer-map-wrap {
+  order: 2;
+  position: sticky;
+  top: 8px;
+  /* Proportionnelle elle aussi : la fenêtre qui la contient s'adapte désormais
+     à l'écran, une carte figée à 440px y aurait laissé un grand vide sous
+     elle. Plancher pour rester exploitable, plafond pour ne pas repousser la
+     liste hors de vue. */
+  height: clamp(320px, 56vh, 760px);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+.resto-explorer-map { width: 100%; height: 100%; }
+.resto-explorer-map-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--surface2);
+  pointer-events: none;
+}
+
+/* ─── Barre d'outils et filtres ───────────────────────────────────────────── */
+.resto-explorer-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.resto-explorer-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.resto-filter { position: relative; }
+
+/* Variante FORMULAIRE : dans la modale d'ajout, le sélecteur n'est pas un
+   filtre mais un champ de saisie. Il doit donc ressembler aux autres champs du
+   formulaire (.add-place-name-input) — pleine largeur, même hauteur, même
+   rayon — et non à une petite pastille de filtre perdue sous son étiquette. */
+.resto-filter--block { width: 100%; }
+.resto-filter--block .resto-filter-btn {
+  width: 100%;
+  max-width: none;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: var(--surface3);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.resto-filter--block .resto-filter-btn:hover { border-color: var(--accent); }
+/* Le chevron file à droite, comme sur une liste déroulante native. */
+.resto-filter--block .resto-filter-btn-chevron { margin-left: auto; }
+
+.resto-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 200px;
+  padding: 6px 10px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.resto-filter-btn:hover { color: var(--text); border-color: var(--border-light); }
+/* Filtre actif : accentué mais pas criard — il doit se repérer sans écraser la
+   liste qu'il sert à trier. */
+.resto-filter-btn--set {
+  color: var(--accent2);
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+.resto-filter-btn-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Rendu dans un portail vers <body> : position et hauteur maximale sont
+   calculées à l'ouverture (voir useAnchoredPanel), le CSS ne fixe donc ni
+   `top`, ni `left`, ni `max-height`. Un z-index au-dessus des modales (1200),
+   puisqu'il s'ouvre depuis elles. */
+.resto-filter-panel {
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 5px;
+  border-radius: 11px;
+  border: 1px solid var(--border-light);
+  background: var(--surface);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  overflow: hidden;
+}
+
+.resto-filter-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+}
+.resto-filter-option:hover { background: var(--surface2); color: var(--text); }
+.resto-filter-option--active { color: var(--accent2); font-weight: 600; }
+
+
+/* ─── Sélecteur de types de cuisine ──────────────────────────────────────── */
+.resto-tag-search {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13.5px;
+}
+.resto-tag-search:focus { outline: none; border-color: var(--accent); }
+
+/* Seule la LISTE défile ; le champ de recherche et le rappel de sélection
+   restent visibles. `min-height: 0` est indispensable dans un conteneur flex,
+   sans quoi la liste refuse de rétrécir et déborde du panneau. */
+.resto-tag-list { flex: 1; min-height: 0; overflow-y: auto; }
+.resto-tag-group + .resto-tag-group { margin-top: 6px; }
+.resto-tag-group-title {
+  padding: 6px 10px 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.resto-tag-option {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.resto-tag-option:hover { background: var(--surface2); color: var(--text); }
+.resto-tag-option input { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; }
+
+.resto-tag-empty { padding: 10px; font-size: 13px; color: var(--text-muted); margin: 0; }
+.resto-tag-create { padding: 4px; }
+.resto-tag-create-btn {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px dashed var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent2);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.resto-tag-create-hint { margin: 6px 2px 0; font-size: 12px; color: var(--text-muted); }
+
+/* Rappel de la sélection en bas du panneau : au-delà de deux ou trois types,
+   les cases cochées sont dispersées dans une liste de cinquante entrées. */
+.resto-tag-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 8px 5px 3px;
+  margin-top: 5px;
+  border-top: 1px solid var(--border);
+}
+/* Sélection affichée sous le champ, panneau fermé (formulaire). Sans bordure
+   supérieure ni fond : elle prolonge le champ, elle n'est pas un bloc de plus. */
+.resto-tag-selected--inline {
+  padding: 8px 0 0;
+  margin-top: 0;
+  border-top: none;
+}
+.resto-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent2);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Pastilles de type sur la carte d'un restaurant. */
+.resto-card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.resto-card-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* ─── Liste ───────────────────────────────────────────────────────────────── */
+.resto-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toute la carte est cliquable et ouvre la fiche : le curseur et l'état de
+   survol doivent le dire sans ambiguïté. */
+.resto-card {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  /* Respiration. À 14px de marge intérieure, nom, pastilles, note et actions se
+     touchaient : le regard n'avait aucun repos entre deux informations et la
+     carte se lisait comme un bloc de texte plutôt que comme une fiche. */
+  padding: 17px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  /* Ombre à peine perceptible au repos, franche au survol : c'est ce léger
+     relief qui distingue une carte cliquable d'un simple cadre dessiné. */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  transition: border-color .16s, background .16s, box-shadow .16s, transform .16s;
+}
+.resto-card:hover,
+.resto-card:focus-visible {
+  border-color: var(--border-light);
+  background: var(--surface3);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.30);
+  transform: translateY(-1px);
+  outline: none;
+}
+/* Mise en avant depuis la carte : liseré marqué, c'est le lien visuel avec le
+   repère agrandi — sans lui, la synchronisation des deux vues serait invisible. */
+.resto-card--active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.resto-card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.resto-card-head { display: flex; align-items: baseline; gap: 9px; }
+.resto-card-name {
+  font-size: 16.5px;
+  font-weight: 700;
+  /* Interlettrage resserré : à cette taille, l'espacement par défaut donne un
+     titre mou. Le resserrer très légèrement le rend net et affirmé. */
+  letter-spacing: -0.011em;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Nom dans l'écriture locale : secondaire à l'écran, mais c'est lui qui est
+   écrit sur la devanture une fois sur place. */
+.resto-card-name-local {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: -3px;
+}
+/* Aligné sur la taille de la note, qu'il accompagne désormais sur la même
+   rangée : deux chiffres de tailles différentes se lisaient comme deux
+   informations d'importance inégale. */
+.resto-card-budget {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.resto-card-meta {
+  display: flex;
+  /* Même raison que .resto-card-rating juste en dessous : la rangée mélange des
+     textes de tailles différentes (budget 14,5px, note, distance 12px). Centrés,
+     le budget et la distance ne reposaient pas sur la même ligne d'écriture que
+     la note. */
+  align-items: baseline;
+  flex-wrap: wrap;
+  /* Colonnes un peu plus espacées (14px) : à 11px, le budget et la note se
+     touchaient presque et se lisaient comme un seul bloc de chiffres. */
+  gap: 6px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  /* `auto` et non 2px fixe : dans la grille à deux colonnes de la fiche pays
+     (cartes étirées à hauteur égale, voir .resto-explorer-body--list plus bas),
+     le nombre de tags fait varier la hauteur du bloc au-dessus. Sans ce report
+     du vide vers le HAUT de cette ligne, la note/gamme d'une carte peu chargée
+     en tags restait collée sous ses tags — à une hauteur différente de celle
+     de sa voisine — au lieu de s'aligner avec elle juste au-dessus des actions
+     (signalé le 2026-07-31). `.resto-card-actions` n'a donc plus besoin d'un
+     `margin-top: auto` à lui seul : les deux rangées se déplacent ensemble. */
+  margin-top: auto;
+}
+/* Note un cran au-dessus du reste de la rangée : avec le budget, c'est le
+   couple de chiffres qu'on compare d'une adresse à l'autre. À 12px comme les
+   autres informations grises, elle se perdait dans la ligne. */
+.resto-card-rating {
+  display: inline-flex;
+  /* `baseline` et non `center` : les trois éléments n'ont pas la même taille
+     (étoile 15px, note 14,5px, compteur 12px). Centrés, les plus petits sont
+     remontés par rapport à la note — le « (1) » flottait en exposant. Alignés
+     sur la ligne d'écriture, ils reposent tous au même niveau. */
+  align-items: baseline;
+  /* Écart explicite avant le nombre d'avis : « 4,0(1) » se lisait comme un
+     seul nombre. */
+  gap: 5px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+/* Étoile en orange plein, pas dans le gris de la ligne : c'est elle qui donne
+   à la note sa lisibilité immédiate au milieu des étiquettes. */
+.resto-card-rating-star { font-size: 15px; color: #fbbf24; }
+.resto-card-rating--none { color: var(--text-muted); font-style: italic; }
+.resto-card-rating-count { color: var(--text-muted); font-weight: 500; font-size: 12px; }
+.resto-card-distance { color: var(--text-dim); }
+
+/* Origine du restaurant : recommandation de l'équipe ou contribution d'un
+   membre. C'est l'information qui pèse le plus dans la confiance accordée à une
+   adresse, les deux teintes doivent rester nettement distinctes. */
+.resto-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  /* Hauteur alignée sur les pastilles de cuisine voisines : sans elle, les deux
+     familles d'étiquettes de la même rangée ne se posaient pas sur la même
+     ligne de base et la bande paraissait de guingois. */
+  line-height: 1.35;
+}
+/* Le pictogramme accompagne le mot sans le concurrencer. */
+.resto-badge svg { flex-shrink: 0; opacity: .9; }
+.resto-badge--editorial { color: #fff; background: var(--accent); border: 1px solid var(--accent); }
+.resto-badge--community {
+  color: var(--text-dim);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+}
+
+
+/* Actions poussées à DROITE : la carte entière ouvre déjà la fiche, ces boutons
+   ne sont qu'un rappel explicite. Alignés à gauche sous le nom, ils se lisaient
+   avant les informations du restaurant. */
+.resto-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  /* Suit directement .resto-card-meta, qui porte désormais le `margin-top:
+     auto` — les deux rangées (note/gamme puis actions) se déplacent comme un
+     seul bloc collé au bas de la carte. */
+  margin-top: 8px;
+}
+.resto-card-detail-btn,
+.resto-card-add-btn {
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+/* « Détails » en lien discret, pas en bouton plein : rendu comme une action
+   principale, il attirait l'œil avant le nom et la note du restaurant. */
+.resto-card-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 2px;
+  border: none;
+  background: none;
+  color: var(--accent2);
+}
+.resto-card-detail-btn:hover { text-decoration: underline; }
+.resto-card-add-btn {
+  /* Inline-flex : la coche de l'état « ajouté » doit s'aligner avec le
+     libellé, pas se poser sur sa ligne de base. */
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px;
+  border-radius: 9px;
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-dim);
+}
+.resto-card-add-btn:hover:not(:disabled) { color: var(--text); border-color: var(--accent); background: var(--accent-subtle); }
+.resto-card-add-btn:disabled { color: var(--text-muted); cursor: default; opacity: .6; }
+
+/* Déjà au programme : état vert, comme le bouton de la fiche — et cliquable,
+   il retire. Au survol (ordinateur), il vire au rouge : le geste qui vient
+   s'annonce avant d'être fait, ce qu'un simple libellé « Ajouté » ne disait
+   pas. Au doigt, faute de survol, c'est l'infobulle/`title` qui l'explicite. */
+/* `:hover` inclus dans le sélecteur : sans lui, le survol générique du bouton
+   (bordure violette « ajouter ») restait appliqué par-dessus le vert, et l'on
+   passait par un état bâtard — texte vert, bordure violette — le temps de
+   déplacer la souris. Ici, « ajouté » a la même apparence qu'on le survole ou
+   non ; seul le survol ROUGE, plus bas, en change, et uniquement quand il
+   annonce vraiment le retrait. */
+.resto-card-add-btn--added:not(:disabled),
+.resto-card-add-btn--added:not(:disabled):hover {
+  /* Vert PLEIN, pas une simple teinte : « au programme » est l'état qu'on
+     cherche du regard en parcourant la liste, il doit se repérer sans lire le
+     libellé. La teinte légère d'avant se confondait avec les autres boutons
+     fantômes de la carte (2026-07-31). */
+  border-color: #059669;
+  background: #059669;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(5,150,105,0.28);
+}
+[data-theme="light"] .resto-card-add-btn--added:not(:disabled) { color: #fff; }
+.resto-card-add-btn--added:not(:disabled):hover:not(.resto-card-add-btn--justtoggled) {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(220,38,38,0.3);
+}
+[data-theme="light"] .resto-card-add-btn--added:not(:disabled):hover:not(.resto-card-add-btn--justtoggled) { color: #fff; }
+
+.resto-card-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-dim);
+  background: var(--surface);
+  padding: 4px 7px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+}
+
+/* ─── Repères de la carte de l'explorateur ────────────────────────────────── */
+/* Épingle en goutte (voir markerIcon dans RestaurantExplorer). Les dimensions
+   sont posées en ligne par le JS — elles doivent suivre l'ancrage Leaflet, qui
+   n'a pas accès aux feuilles de style — le reste est ici.
+   `filter: drop-shadow` et non `box-shadow` : l'ombre épouse la GOUTTE, alors
+   qu'une ombre de boîte dessinerait un rectangle autour d'elle. */
+.resto-marker {
+  cursor: pointer;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.32));
+  transition: transform .16s ease, filter .16s ease;
+  transform-origin: 50% 100%;
+  /* Repère pour la pastille de prix, posée hors du flux juste en dessous. */
+  position: relative;
+}
+
+/* Budget sous la goutte. `position: absolute` : la pastille ne doit pas entrer
+   dans la boîte de l'icône, sinon Leaflet décalerait l'ancrage et la pointe ne
+   désignerait plus l'adresse. `pointer-events: none` : elle déborde du repère,
+   sans quoi elle volerait des clics à la carte autour. */
+.resto-marker-price {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -2px);
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 1.5;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+/* Le repère mis en avant passe au premier plan : son prix doit suivre, sinon
+   il se retrouve sous les gouttes voisines dans un quartier dense. */
+.resto-marker--selected .resto-marker-price {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-color: var(--accent);
+}
+.resto-marker-shape {
+  fill: var(--amber);
+  /* Liseré blanc : sur une carte claire comme sur une photo satellite, c'est
+     lui qui détache l'épingle du fond. */
+  stroke: #fff;
+  stroke-width: 1.6;
+}
+.resto-marker-glyph { fill: #fff; }
+/* Recommandation de l'équipe : violet de l'application, la même distinction
+   que le badge de la liste. */
+.resto-marker--editorial .resto-marker-shape { fill: var(--accent); }
+/* Repère mis en avant. Il doit se distinguer AU MILIEU D'UN TAS : dans un
+   quartier dense les gouttes se recouvrent, et seul l'agrandissement ne
+   suffisait pas. Trois marqueurs cumulés — anneau blanc épais, halo coloré,
+   et une pulsation brève qui attire l'œil à l'instant du changement. Le passage
+   au premier plan, lui, est posé en JS (setZIndexOffset) : sans lui, la goutte
+   choisie pouvait rester DERRIÈRE ses voisines. */
+.resto-marker--selected {
+  filter:
+    drop-shadow(0 0 0 #fff)
+    drop-shadow(0 0 10px rgba(99,102,241,0.85))
+    drop-shadow(0 6px 10px rgba(0,0,0,0.45));
+  animation: resto-marker-pop .32s ease-out;
+}
+.resto-marker--selected .resto-marker-shape { stroke-width: 2.4; }
+@keyframes resto-marker-pop {
+  0%   { transform: scale(0.72); }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+/* Animations coupées pour qui les refuse : le repère reste simplement agrandi. */
+@media (prefers-reduced-motion: reduce) {
+  .resto-marker--selected { animation: none; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .resto-marker:hover { transform: translateY(-2px) scale(1.06); }
+}
+
+/* Lieu déjà au programme : même pastille que sur la carte du voyage
+   (.pp-map-marker), redéfinie ici plutôt qu'empruntée — l'explorateur sert
+   aussi la fiche pays, qui ne charge pas la feuille de la planification.
+   Deux pixels de moins que là-bas (26 au lieu de 28) et une ombre plus légère :
+   ces repères sont un décor, les gouttes de restaurant restent le sujet. */
+.resto-planned-marker {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+/* ═══ Modales (ajout d'un restaurant, explorateur en planification) ═════════ */
+.resto-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.resto-modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Dimensions PROPORTIONNELLES à l'écran, plafonnées — et non plus figées.
+     C'est la HAUTEUR qui commande : ce qu'on veut gagner, c'est le nombre de
+     restaurants visibles d'un coup. La largeur s'en déduit par un rapport de
+     1,25 — la fenêtre reste donc à peu près carrée au lieu de s'étirer en
+     bandeau —, avec un plancher pour que les deux volets (liste et carte)
+     restent lisibles sur un écran peu haut. */
+  --resto-modal-h: min(1000px, 92vh);
+  height: var(--resto-modal-h);
+  width: min(92vw, max(980px, calc(var(--resto-modal-h) * 1.25)));
+  max-height: 92vh;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+/* L'explorateur porte une carte ET une liste à parcourir : il prend un cran de
+   plus que le formulaire d'ajout, en hauteur comme en largeur (celle-ci suit,
+   voir le rapport de 1,25 ci-dessus). */
+.resto-modal--explorer { --resto-modal-h: min(1300px, 94vh); }
+
+/* Voir le commentaire JS dans AddRestaurantModal : cette fenêtre s'ouvre
+   toujours par-dessus un fond déjà assombri (fiche pays ou explorateur), son
+   propre voile ne fait qu'accumuler l'obscurité. */
+.resto-modal-overlay--nested { background: none; backdrop-filter: none; }
+
+/* ─── Plein écran (mobile) ─────────────────────────────────────────────────
+   Posé par le JS (classe), et PAS par une media query : le composant décide
+   déjà de sa disposition avec useIsMobile(1024), et faire trancher la même
+   question une seconde fois en CSS laissait les deux réponses diverger — on
+   obtenait un explorateur en disposition mobile dans une fenêtre restée au
+   gabarit ordinateur, avec sa marge de 24px, ses coins arrondis et sa hauteur
+   plafonnée à 94vh. C'est cette hauteur plafonnée qui laissait voir le fond
+   derrière, en bas de l'écran : la fameuse bande, successivement noire, grise
+   puis blanche selon la couleur qu'on donnait au voile (2026-07-31).
+   La fenêtre se pose donc directement sur le viewport (`position: fixed` +
+   `inset: 0`), sans voile ni conteneur dont elle devrait épouser les
+   dimensions. Sélecteur à deux classes : il l'emporte sur `.resto-modal` et
+   sur toute règle de media query, sans dépendre de l'ordre des feuilles. */
+.resto-modal-overlay--full {
+  padding: 0;
+  display: block;
+  background: none;
+  backdrop-filter: none;
+}
+.resto-modal-overlay--full .resto-modal {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-height: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+/* ── Tout défile ensemble, RIEN n'est figé ──
+   Trois dispositions ont été essayées ici, autant les résumer.
+   1. Carte « collante » (`position: sticky`) : elle restait en haut, mais coller
+      un élément ne le sort pas du flux — la liste continuait de défiler
+      DERRIÈRE elle et réapparaissait dans la moindre marge.
+   2. Deux zones figées, carte et recherche fixes, liste seule à défiler : plus
+      rien ne passait derrière, mais entre le bandeau, la carte, la recherche et
+      les filtres, il ne restait qu'un tiers de l'écran pour la liste — pas même
+      de quoi lire un nom en entier (2026-07-31).
+   3. Celle-ci : tout défile d'un seul bloc. La carte, la recherche et les
+      filtres remontent et sortent de l'écran, la liste prend alors toute la
+      hauteur. Rien ne peut passer derrière quoi que ce soit, puisque plus rien
+      n'est figé. C'est aussi le comportement le plus attendu : on descend, on
+      lit la liste ; on remonte, on retrouve la carte.
+   La marge intérieure haute reste à zéro : l'air est donné par l'en-tête de
+   l'explorateur, qui défile lui aussi. */
+.resto-modal-overlay--full .resto-modal-body { padding-top: 0; }
+.resto-modal-overlay--full .resto-explorer-header { padding-top: 14px; }
+.resto-modal-overlay--full .resto-explorer-map-wrap { position: static; }
+
+/* Retouche d'un restaurant existant : une seule colonne (budget + types de
+   cuisine), ni recherche ni carte. La largeur et la hauteur de la fenêtre
+   d'ajout y laisseraient deux tiers de vide. */
+.resto-modal--narrow {
+  width: min(520px, 100%);
+  height: auto;
+}
+.resto-modal--narrow .resto-modal-body { overflow-y: auto; }
+
+.resto-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+/* Pastille au couvert devant le titre : donne à l'en-tête le même repère
+   visuel que l'onglet Restaurants et que les gouttes de la carte. */
+.resto-modal-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent);
+  color: var(--accent2);
+}
+.resto-modal-title {
+  margin: 0;
+  /* Titre franchement plus grand : à 16px il pesait moins que le bouton
+     d'action posé en face, alors qu'il nomme la fenêtre entière. */
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.resto-modal-subtitle { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.resto-modal-close {
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.resto-modal-close:hover { color: var(--text); border-color: var(--border-light); }
+
+.resto-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 18px;
+  /* Colonne verticale : le champ de recherche (ou le bloc « établissement
+     retenu ») garde la hauteur de son contenu, et les volets liste/carte se
+     partagent tout ce qui reste (voir `.resto-modal-panes` ci-dessous). Sans
+     ça, les volets se réduisaient à leur propre contenu — la carte à ses
+     460px fixes — et laissaient un vide sous eux dans une fenêtre plus haute
+     (signalé le 2026-07-31). */
+  display: flex;
+  flex-direction: column;
+}
+.resto-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.resto-modal-search { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+
+
+/* Deux volets côte à côte : la liste à gauche, la carte à droite. La carte
+   occupe une vraie surface, sans quoi départager plusieurs adresses d'une même
+   enseigne reste impossible. */
+.resto-modal-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  /* `stretch`, pas `start` : en grid, `start` sizait chaque volet à son
+     CONTENU sur l'axe vertical — la carte à ses 460px fixes, la liste à ses
+     résultats — au lieu de remplir la hauteur disponible, laissant le bas de
+     la fenêtre vide. `stretch` fait suivre les deux volets sur toute la
+     hauteur que leur donne `.resto-modal-body` (flex:1 ci-dessus). */
+  align-items: stretch;
+  flex: 1;
+  min-height: 320px;
+}
+.resto-modal-list-pane { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+/* Chaque étiquette est collée au champ qu'elle décrit, et les groupes
+   étiquette+champ sont nettement séparés les uns des autres : sans ça, à
+   l'étape 2, l'étiquette « Types de cuisine » flottait à égale distance du
+   champ du dessus et du sien. */
+.resto-modal-step2 .resto-form-label { margin-top: 6px; margin-bottom: -4px; }
+.resto-modal-step2 .resto-form-label:first-child { margin-top: 0; }
+/* Respiration nette avant le bouton photo : il suit le sélecteur de catégories,
+   dont la sélection s'affiche juste en dessous en pastilles — sans cet écart,
+   le bouton se lisait comme faisant partie du même bloc. */
+.resto-modal-step2 .add-place-photo-row { margin-top: 24px; }
+/* Plus de `position: sticky` : le volet est désormais étiré (`stretch`) sur
+   toute la hauteur des panneaux, il n'y a donc plus de contenu à faire défiler
+   au-delà duquel le suivre. */
+.resto-modal-map-pane { min-width: 0; display: flex; flex-direction: column; }
+.resto-modal-map {
+  width: 100%;
+  /* Suit désormais la hauteur réelle du volet (voir `.resto-modal-panes`),
+     plutôt qu'une valeur fixe de 460px qui laissait le bas de la fenêtre vide
+     sur un grand écran (signalé le 2026-07-31). Le volet mobile impose sa
+     propre hauteur explicite plus bas (media query) : la carte s'y ajuste par
+     le même mécanisme. */
+  height: 100%;
+  min-height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface3);
+}
+.resto-modal-map--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+.resto-modal-placeholder {
+  padding: 28px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+.resto-modal-step2 { display: flex; flex-direction: column; gap: 14px; }
+/* Le pied de l'étape 2 appartient au formulaire : il ne doit pas hériter de la
+   bordure supérieure de la modale, déjà tracée au-dessus des volets. */
+.resto-modal-step2 .resto-modal-footer { padding: 0; border-top: none; }
+
+/* ─── Résultats de recherche ──────────────────────────────────────────────── */
+.resto-form-label { font-size: 13.5px; font-weight: 600; color: var(--text-dim); }
+.resto-form-hint { font-size: 12px; color: var(--text-muted); margin: 0; }
+/* Explication sous une étiquette de champ : discrète, collée à son étiquette. */
+.resto-form-sublabel {
+  margin: -2px 0 2px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.resto-search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* Plus de plafond fixe (420px) : le volet qui la contient suit désormais la
+     hauteur réelle de la carte (voir `.resto-modal-panes`), et cette limite
+     laissait un vide sous la liste dans une fenêtre plus haute (signalé le
+     2026-07-31). `flex: 1` la fait remplir tout l'espace laissé par le champ
+     de recherche et l'indice au-dessus ; `min-height: 0` est nécessaire pour
+     qu'un flex item accepte de rétrécir en dessous de son contenu et laisse
+     `overflow-y` faire défiler l'excédent plutôt que de pousser la fenêtre.
+     Le mobile impose déjà `max-height: none` plus bas et n'est pas concerné. */
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.resto-search-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+/* La ligne et son repère changent d'état ensemble : c'est ce qui rend la
+   correspondance liste ↔ carte lisible. */
+.resto-search-result--highlighted {
+  border-color: var(--amber);
+  background: rgba(245, 158, 11, 0.09);
+}
+.resto-search-result-index {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+}
+.resto-search-result--highlighted .resto-search-result-index { background: var(--amber); }
+.resto-search-result-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.resto-search-result-name { font-size: 14.5px; font-weight: 600; color: var(--text); }
+.resto-search-result-local { font-size: 12.5px; color: var(--text-muted); }
+.resto-search-result-addr {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Nature du commerce non confirmée par OpenStreetMap : avertissement discret
+   mais visible, le contributeur doit pouvoir en tenir compte avant de publier. */
+.resto-search-result-warn { font-size: 10.5px; font-weight: 600; color: var(--amber); }
+.resto-search-result-pick {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent2);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.resto-search-result-pick:hover:not(:disabled) { background: var(--accent); color: #fff; }
+.resto-search-result-pick:disabled {
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+/* Hauteur volontairement NON définie ici : elle est pilotée par la classe de
+   contexte (.resto-modal-map). Un `height: 100%` posé sur cette classe écrasait
+   celle du contexte — elle est déclarée plus bas dans le fichier, à spécificité
+   égale — et se résolvait à 0 puisque le volet parent n'a pas de hauteur
+   propre : la carte de la modale restait invisible sur ordinateur (signalé le
+   2026-07-29). Ne pas y remettre de hauteur sans en donner une au parent. */
+.resto-pick-map { width: 100%; }
+.resto-pick-marker {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+  cursor: pointer;
+}
+.resto-pick-marker--selected {
+  width: 32px;
+  height: 32px;
+  font-size: 15px;
+  border-width: 3px;
+  background: var(--amber);
+  box-shadow: 0 0 0 4px var(--accent-glow), 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.resto-form-picked {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent);
+}
+.resto-form-picked-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.resto-form-change {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--accent2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.resto-budget-row { display: flex; gap: 8px; }
+.resto-budget-btn {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s;
+}
+.resto-budget-btn--active { color: #fff; border-color: var(--accent); background: var(--accent); }
+
+/* ═══ Fiche détail ═════════════════════════════════════════════════════════ */
+.resto-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1250;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.resto-sheet {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: 88vh;
+  /* `hidden` et non `auto` : le défilement appartient à .resto-sheet-main, qui
+     est le contenu. Deux conteneurs défilants imbriqués donnaient deux barres
+     et des hauteurs contradictoires sur mobile. */
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+/* Marges intérieures larges et intervalles réguliers : la fiche est la seule
+   surface qui présente une adresse en entier, on lui laisse de l'air. */
+.resto-sheet-body { padding: 24px 24px 20px; display: flex; flex-direction: column; gap: 14px; }
+.resto-sheet-name {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  /* Un titre de cette taille demande un interlettrage resserré et une
+     interligne courte, sinon il flotte au-dessus du reste de la fiche. */
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--text);
+}
+.resto-sheet-name-local { margin: 6px 0 0; font-size: 13.5px; color: var(--text-muted); }
+.resto-sheet-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; }
+.resto-sheet-address { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--text-dim); }
+
+.resto-stars { letter-spacing: 1px; }
+.resto-star { color: var(--border-light); }
+.resto-star--on { color: var(--amber); }
+
+.resto-sheet-reviews { margin-top: 8px; border-top: 1px solid var(--border); padding-top: 20px; }
+.resto-sheet-reviews-title {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+/* Crayon seul, au gabarit des autres ronds d'action de la fiche (favori,
+   fermeture) : c'est la convention de l'application pour « modifier ». */
+.resto-review-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.resto-review-edit-btn:hover { color: var(--accent2); border-color: var(--accent); background: var(--accent-subtle); }
+.resto-review-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.resto-review { padding: 15px 16px; border-radius: 14px; background: var(--surface2); border: 1px solid var(--border); }
+/* Même structure d'en-tête que les avis de pays et de destination : pastille
+   d'auteur, bloc nom + note, puis actions poussées à droite. */
+.resto-review-head { display: flex; align-items: center; gap: 10px; }
+.resto-review-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.resto-review-author { font-size: 13px; font-weight: 600; color: var(--text); }
+/* Crayon et poubelle côte à côte : sans `display: flex`, le second bouton
+   passait à la ligne dès que le nom de l'auteur était un peu long. */
+.resto-review-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; margin-left: auto; }
+.resto-review-comment { margin: 6px 0 0; font-size: 13.5px; color: var(--text-dim); white-space: pre-wrap; }
+.resto-review-photos { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.resto-review-photo { width: 68px; height: 68px; border-radius: 8px; object-fit: cover; }
+.resto-review-form { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+/* Onglet Restaurants du détail mobile d'une ville. Il ne contient plus
+   l'explorateur (parti en plein écran derrière le bouton d'ajout) mais la même
+   chose que les autres onglets : une liste et un bouton. Il garde donc leur
+   marge intérieure, d'où l'absence de règle particulière ici. */
+
+/* Repère de proposition sur la carte GLOBALE du voyage (MapPanel) : les
+   restaurants d'un onglet ouvert ne sont pas au programme, ils doivent se
+   distinguer au premier regard des lieux réellement planifiés. */
+.pp-map-marker--preview {
+  background: rgba(245, 158, 11, 0.85);
+  border-style: dashed;
+  opacity: .85;
+}
+
+/* ═══ Mobile / tablette ════════════════════════════════════════════════════
+   La carte passe EN HAUT et la liste défile en dessous : côte à côte donnerait
+   deux colonnes inutilisables sur un écran étroit. Hauteur de carte volontairement
+   modeste pour que plusieurs restaurants restent visibles sans défiler. */
+@media (max-width: 1024px) {
+  .resto-explorer-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* INDISPENSABLE. La règle de base est une grille à deux colonnes et porte
+       `align-items: start` (pour que la carte, collée en haut, ne s'étire pas
+       sur toute la hauteur de la liste). Ce réglage-là ne disparaît pas quand
+       on repasse en colonne flex ici : il y prend un tout autre sens — les
+       enfants ne sont plus étirés sur la LARGEUR, ils sont dimensionnés à leur
+       contenu. Le panneau, plein de texte, gardait donc une largeur normale,
+       mais le conteneur de la carte — un <div> vide — s'effondrait à 0 pixel
+       de large. Leaflet construisait bien sa carte, chargeait ses tuiles et
+       posait ses repères dans un cadre de 0×225 : invisible, sans la moindre
+       erreur (constaté le 2026-07-31 par les traces de construction). */
+    align-items: stretch;
+  }
+  .resto-explorer-map-wrap {
+    order: 0;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    height: 34vh;
+    min-height: 170px;
+    max-height: 300px;
+    border-radius: 12px;
+  }
+  .resto-explorer-panel { order: 1; }
+  .resto-card { padding: 12px; gap: 11px; }
+  .resto-card-name { font-size: 14px; }
+  .resto-card-corner { top: 8px; right: 8px; }
+
+  /* Modales en plein écran : une boîte centrée avec marges perdrait la moitié
+     de l'espace utile, alors que c'est précisément d'espace qu'on manque pour
+     choisir entre plusieurs adresses. */
+  /* Le plein écran de la fenêtre elle-même n'est PLUS ici : il est posé par la
+     classe `.resto-modal-overlay--full`, hors media query (voir plus haut).
+     Ne remettez pas de règle de gabarit dans ce bloc — c'est précisément le
+     dédoublement de la décision qui a produit la bande de fond en bas
+     d'écran. Ce qui suit ne concerne que la mise en page INTERNE. */
+  .resto-modal-panes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* INDISPENSABLE : la règle de bureau pose `align-items: start` pour la
+       grille à deux colonnes. En passant en colonne flex, cet axe transversal
+       devient HORIZONTAL — les deux volets cessaient donc de s'étirer et se
+       dimensionnaient sur leur contenu. Mesuré à 412 px : le volet liste
+       gonflait à 575 px (l'adresse en `nowrap` le poussait, d'où le
+       débordement) et le volet carte s'effondrait à 2 px de large, ce qui ne
+       laissait voir qu'un trait vertical à la place de la carte. */
+    align-items: stretch;
+  }
+  /* Carte AVANT la liste sur mobile : c'est elle qui permet de trancher.
+     Hauteur explicite — sans elle, le conteneur se réduisait à zéro et Leaflet
+     n'affichait rien (signalé le 2026-07-28). */
+  .resto-modal-map-pane { order: 0; position: static; }
+  .resto-modal-list-pane { order: 1; }
+  .resto-modal-map { height: 240px; }
+  .resto-search-results { max-height: none; }
+
+  /* Plein écran sur téléphone, et non plus une feuille remontée du bas.
+     Une fiche de restaurant n'est pas une confirmation en trois lignes : nom,
+     note, budget, cuisine, adresse, carte et fil d'avis. À 92vh il restait une
+     bande de fond assombri en haut, prise pour la fin du contenu, et chaque
+     avis lu demandait de refaire défiler une fenêtre plus petite que l'écran
+     qui la contient. */
+  /* Même montage que la modale : la fiche se pose DIRECTEMENT sur le viewport,
+     sans voile dont il faudrait épouser la hauteur. `inset: 0` colle à l'écran
+     visible quoi que fasse la barre d'adresse, là où `100vh` et `100dvh` se
+     réfèrent à des états différents du navigateur et laissent une bande.
+     Ici la media query suffit : contrairement à la modale, aucune autre règle
+     ne dispute le gabarit de cette fiche. */
+  .resto-sheet-overlay { padding: 0; display: block; background: none; backdrop-filter: none; }
+  .resto-sheet {
+    position: fixed;
+    inset: 0;
+    width: auto;
+    height: auto;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    /* Encoche : la fiche couvre la barre d'état, le nom du restaurant passerait
+       dessous. box-sizing:border-box est global, ce retrait se prend donc sur
+       la hauteur de l'écran au lieu de la dépasser. */
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+/* Cinq onglets au lieu de quatre depuis l'ajout des restaurants : la bande
+   d'onglets partage la largeur en parts égales, sur les téléphones les plus
+   étroits chaque libellé passerait sinon sur deux lignes. */
+@media (max-width: 400px) {
+  .pp-detail-tab { padding-left: 2px; padding-right: 2px; }
+  .pp-detail-tab-label { font-size: 10.5px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Recherche, favoris, pagination et carte immersive (refonte 2026-07-29)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Champ de recherche de la liste ──────────────────────────────────────── */
+.resto-search-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 13px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-muted);
+  transition: border-color .15s, box-shadow .15s;
+}
+/* Halo au lieu du seul liseré : sur fond sombre, un changement de couleur de
+   bordure d'un pixel passe inaperçu et rien ne signale le champ actif. */
+.resto-search-field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.resto-search-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13.5px;
+}
+.resto-search-field input:focus { outline: none; }
+.resto-search-clear {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.resto-search-clear:hover { color: var(--text); }
+
+/* La barre d'outils empile recherche, filtres puis compteur : sur une colonne
+   étroite, les aligner obligeait à rogner l'un des trois. */
+.resto-explorer-toolbar { flex-direction: column; align-items: stretch; gap: 8px; }
+
+/* ─── Favoris ─────────────────────────────────────────────────────────────── */
+.resto-fav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.resto-fav-btn:hover { color: var(--accent2); border-color: var(--accent); }
+.resto-fav-btn--on { color: var(--accent2); border-color: var(--accent); background: var(--accent-subtle); }
+
+/* Coin de carte : favori et suppression, empilés hors du flux du contenu. */
+.resto-card-corner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── Pagination ──────────────────────────────────────────────────────────── */
+.resto-load-more {
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.resto-load-more:hover { color: var(--text); border-color: var(--accent); }
+
+/* ─── Synthèse des notes (fiche détail) ───────────────────────────────────── */
+.resto-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 20px;
+  margin: 12px 0 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+/* Filet de séparation entre la moyenne et la répartition : ce sont deux
+   lectures différentes de la même note, et sans rien entre elles le gros
+   chiffre semblait être l'étiquette de la première barre. */
+.resto-rating-avg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-right: 22px;
+  border-right: 1px solid var(--border);
+}
+.resto-rating-avg-value { font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -0.03em; color: var(--text); }
+.resto-rating-avg-count { font-size: 12px; color: var(--text-muted); }
+.resto-rating-bars { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.resto-rating-bar-row { display: flex; align-items: center; gap: 8px; }
+.resto-rating-bar-label {
+  flex-shrink: 0;
+  width: 30px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.resto-rating-bar-track {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface3);
+  overflow: hidden;
+}
+.resto-rating-bar-fill { display: block; height: 100%; border-radius: 3px; background: var(--amber); }
+
+/* ─── Fiche détail : photo et pied d'action ───────────────────────────────── */
+.resto-sheet-footer {
+  position: sticky;
+  bottom: 0;
+  padding: 14px 24px 18px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.resto-sheet-map-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.resto-sheet-map-btn:hover { filter: brightness(1.1); }
+
+/* Ajout à la planification, en pied de fiche. Volontairement PLUS PETIT que le
+   pavé « Voir sur la carte » — celui-ci se bascule et se rebascule, alors
+   qu'ajouter ne se fait qu'une fois — et en violet TEINTÉ plutôt qu'en aplat
+   plein : l'aplat violet est déjà pris par « Proposer un restaurant », juste
+   au-dessus dans le même onglet, et deux pavés identiques se disputaient le
+   regard. Le liseré et la teinte suffisent à le désigner comme l'action de la
+   fiche. */
+.resto-sheet-trip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent2);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s, box-shadow .15s;
+}
+.resto-sheet-trip-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+}
+/* Déjà au programme : un CONSTAT, pas un bouton mort. Le gris « désactivé »
+   d'avant se lisait comme une action refusée — alors que c'est une bonne
+   nouvelle, le restaurant est bien dans le voyage. Vert de confirmation,
+   liseré fin, coche à la place du « + » : la même grammaire que les états
+   « fait » du planning. */
+.resto-sheet-trip-btn--done,
+.resto-sheet-trip-btn:disabled {
+  border-color: rgba(16,185,129,0.45);
+  background: rgba(16,185,129,0.12);
+  color: #34d399;
+  cursor: default;
+  box-shadow: none;
+}
+/* Mode jour : le vert clair du mode nuit passe mal sur fond crème. */
+[data-theme="light"] .resto-sheet-trip-btn--done,
+[data-theme="light"] .resto-sheet-trip-btn:disabled { color: #047857; }
+/* Survol de l'état « déjà au programme » : rouge, car le clic RETIRE. Sans ça
+   il reprenait le violet de l'ajout et annonçait exactement le contraire de ce
+   qu'il allait faire. */
+.resto-sheet-trip-btn--done:not(:disabled):hover {
+  border-color: rgba(239,68,68,0.55);
+  background: rgba(239,68,68,0.14);
+  color: #f87171;
+  box-shadow: none;
+}
+[data-theme="light"] .resto-sheet-trip-btn--done:not(:disabled):hover { color: #b91c1c; }
+/* Voir le commentaire JS sur `justToggledTrip` : neutralise le survol tant que
+   le curseur n'a pas quitté le bouton après un clic. Restreint au cas AJOUT
+   (bouton devenu --done) : au retrait, il redevient un bouton d'ajout normal,
+   dont le survol violet habituel doit s'appliquer sans être forcé en vert. */
+.resto-sheet-trip-btn--done.resto-sheet-trip-btn--justtoggled:hover {
+  border-color: rgba(16,185,129,0.45) !important;
+  background: rgba(16,185,129,0.12) !important;
+  color: #34d399 !important;
+  box-shadow: none !important;
+}
+[data-theme="light"] .resto-sheet-trip-btn--done.resto-sheet-trip-btn--justtoggled:hover { color: #047857 !important; }
+/* Le pied de fiche centre ce bouton, alors qu'il étire « Voir sur la carte ». */
+.resto-sheet-footer { text-align: center; }
+/* Le corps laisse la place au pied collant sans le recouvrir. */
+.resto-sheet-body { padding-bottom: 8px; }
+
+/* ─── Carte immersive (planification, ordinateur) ─────────────────────────── */
+/* La carte occupe tout le cadre et la liste flotte par-dessus : en
+   planification, la question est « qu'y a-t-il près de mon programme ? », la
+   carte prime donc sur la liste. */
+.resto-explorer--immersive .resto-explorer-body {
+  display: block;
+  position: relative;
+  height: 68vh;
+  min-height: 460px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.resto-explorer--immersive .resto-explorer-map-wrap {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+}
+.resto-explorer--immersive .resto-explorer-panel {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  bottom: 14px;
+  z-index: 500;
+  width: 372px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  /* Ombre portée nettement plus douce et plus large : le panneau doit sembler
+     posé au-dessus de la carte, pas découpé dedans. */
+  box-shadow: 0 18px 50px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
+}
+/* Seule la liste défile : recherche et filtres restent atteignables. */
+.resto-explorer--immersive .resto-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.resto-explorer--immersive .resto-load-more { margin-top: 8px; flex-shrink: 0; }
+/* Un peu plus serré que dans la fiche pays — le panneau flotte sur la carte et
+   ne doit pas la manger — mais sans revenir aux 10px d'origine, qui recollaient
+   toutes les lignes entre elles. */
+.resto-explorer--immersive .resto-card { padding: 14px; gap: 12px; }
+.resto-explorer--immersive .resto-card-name { font-size: 15.5px; }
+.resto-explorer--immersive .resto-card-actions { margin-top: 6px; }
+
+@media (max-width: 1024px) {
+  /* Panneau flottant abandonné : sur un écran étroit il masquerait la carte
+     qu'il sert justement à lire. On retombe sur carte en haut, liste dessous. */
+  .resto-explorer--immersive .resto-explorer-body {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .resto-explorer--immersive .resto-explorer-map-wrap { position: sticky; inset: auto; }
+  .resto-explorer--immersive .resto-explorer-panel {
+    position: static;
+    width: auto;
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+  }
+  .resto-explorer--immersive .resto-list { overflow: visible; }
+
+  .resto-rating-summary { gap: 14px; padding: 14px; }
+  .resto-rating-avg-value { font-size: 32px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Fiche détail sans photo de présentation, carte dépliable et avis (2026-07-29)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* En-tête : nom à gauche, favori à droite. La photo de présentation a été
+   retirée — une image malheureuse nuisait au restaurant sans recours, et les
+   photos passent désormais par les avis, comme sur les applications de cartes. */
+/* Texte à gauche, actions à droite, tous alignés sur le HAUT du bloc : le nom
+   peut tenir sur deux lignes, les boutons doivent rester à sa première ligne. */
+.resto-sheet-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.resto-sheet-head-text { flex: 1; min-width: 0; }
+.resto-sheet-head-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+/* Favori et fermeture : STRICTEMENT le même gabarit. Deux ronds de tailles
+   différentes à quelques pixels d'écart donnaient un coin en désordre. */
+.resto-sheet-head-actions .resto-fav-btn,
+.resto-sheet-close {
+  position: static;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  cursor: pointer;
+}
+.resto-sheet-close {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.resto-sheet-close:hover { color: var(--text); border-color: var(--border-light); }
+.resto-sheet-body { padding-top: 20px; }
+
+/* Adresse + ouverture dans Google Maps, réunis dans un encadré.
+   Posée en texte nu, l'adresse se noyait dans les autres lignes grises de la
+   fiche. Encadrée avec son repère et son bouton, elle devient un bloc « où
+   c'est » qu'on retrouve sans lire. */
+.resto-sheet-address-row {
+  display: flex;
+  align-items: center;
+  /* Retour à la ligne AUTORISÉ, mais seulement en dernier recours : le bouton
+     Google Maps reste à droite de l'adresse tant qu'il y tient, et passe
+     dessous — calé à droite — quand la place manque.
+     Interdire ce repli avait fait pire que mieux : l'adresse, coincée dans une
+     colonne étroite, s'étalait sur cinq lignes et le bloc devenait plus haut
+     qu'avant (signalé le 2026-07-31). Mieux vaut une adresse sur deux lignes
+     pleine largeur et un bouton dessous, qu'un bouton aligné au prix d'un pavé
+     de texte. */
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+.resto-sheet-address-pin { flex-shrink: 0; color: var(--text-dim); }
+/* `flex-basis: 220px` : en dessous de cette largeur, l'adresse préfère prendre
+   toute la ligne et renvoyer le bouton dessous plutôt que de s'étirer en
+   colonne étroite. C'est ce seuil qui arbitre entre « bouton à droite » et
+   « bouton dessous », sans media query. */
+.resto-sheet-address-row .resto-sheet-address { flex: 1 1 220px; min-width: 0; margin: 0; }
+/* Poussé à droite dans les deux cas : sur la même ligne que l'adresse, ou seul
+   sur la sienne. */
+.resto-sheet-address-row .resto-sheet-gmaps { margin-left: auto; }
+.resto-sheet-gmaps {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .15s;
+}
+.resto-sheet-gmaps:hover { color: var(--text); border-color: var(--accent); background: var(--accent-subtle); }
+
+/* ─── Carte dépliée à côté de la fiche ────────────────────────────────────── */
+.resto-sheet { display: flex; flex-direction: row; }
+.resto-sheet-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+.resto-sheet--with-map { width: min(940px, 100%); }
+.resto-sheet-map-pane {
+  flex: 0 0 380px;
+  border-left: 1px solid var(--border);
+  background: var(--surface3);
+}
+.resto-sheet-map { height: 100%; min-height: 320px; }
+.resto-sheet-map-btn--active { background: var(--surface3); color: var(--text); }
+
+/* ─── Avis ────────────────────────────────────────────────────────────────── */
+/* Titre à gauche, action à droite : sous le titre, le bouton se lisait comme le
+   contenu de la section plutôt que comme son action. */
+.resto-sheet-reviews-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.resto-sheet-reviews-head .resto-sheet-reviews-title { margin: 0; }
+
+.resto-reviews-others-label {
+  display: block;
+  margin: 14px 0 -2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 1024px) {
+  /* La carte passe SOUS la fiche : côte à côte, chacune serait trop étroite. */
+  .resto-sheet { flex-direction: column; }
+  .resto-sheet--with-map { width: 100%; }
+  /* Le défilement appartient à .resto-sheet-main. La feuille, elle, est à
+     hauteur fixe et masque son débordement (`overflow: hidden`) : laisser
+     `visible` ici rognait les avis passé le bas de l'écran, sans aucun moyen
+     d'aller les lire. `min-height: 0` est indispensable — sans lui un enfant
+     de flex refuse de devenir plus court que son contenu et déborde quand
+     même. */
+  .resto-sheet-main {
+    max-height: none;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    /* Barre de gestes iOS : sans ça le dernier avis passe dessous. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .resto-sheet-map-pane {
+    flex: none;
+    height: 260px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+  /* Le `min-height: 320px` de bureau l'emporterait sur les 260px du bandeau :
+     la carte dépassait de 60px, rognés par la feuille — soit une bande de
+     carte invisible et inatteignable en bas de l'écran. */
+  .resto-sheet-map { min-height: 0; }
+  .resto-modal { height: 100%; }
+  .resto-modal-map { height: 260px; }
+}
+
+/* ─── Disposition « liste seule » (fiche pays) ────────────────────────────── */
+/* Sans carte, la grille à deux colonnes n'a plus lieu d'être : la liste était
+   comprimée dans la colonne de gauche et la moitié droite restait vide. */
+.resto-explorer-body--list { display: block; }
+
+/* DEUX colonnes fixes, jamais plus : la largeur d'une carte reste la même quel
+   que soit le nombre de restaurants, un seul en occupe donc la moitié gauche.
+   Une grille automatique faisait varier cette largeur — carte pleine largeur à
+   une adresse, trois par ligne à six — et l'affichage sautait à chaque filtre. */
+.resto-explorer-body--list .resto-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  /* PAS `align-items: start` : ça laissait chaque carte à sa hauteur naturelle,
+     donc désalignées dès que l'une avait plus de tags qu'une autre sur la même
+     rangée (signalé le 2026-07-31). Par défaut (`stretch`), les deux cartes
+     d'une rangée prennent la hauteur de la plus grande — voir
+     .resto-card-actions plus bas pour le bouton « Détails », qui se recale
+     alors en bas plutôt que de suivre le contenu. */
+}
+/* Les messages « aucun résultat » traversent toute la grille. */
+.resto-explorer-body--list .resto-explorer-empty { grid-column: 1 / -1; }
+
+/* Recherche pleine largeur, filtres sur la ligne suivante : à cette largeur ils
+   tiennent tous sur une seule rangée, sans repli. */
+.resto-explorer-body--list .resto-explorer-toolbar { gap: 10px; }
+
+@media (max-width: 640px) {
+  /* Colonne unique explicite : `minmax(360px, 1fr)` déborderait sur les
+     téléphones les plus étroits, où la fenêtre fait moins de 360 px. */
+  .resto-explorer-body--list .resto-list { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Ouvrir une journée du planning dans Google Maps (écran Jour J)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pp-day-mode-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pp-day-route-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.pp-day-route-btn:hover { color: var(--text); border-color: var(--accent); }
+
+/* Confirmation affichée avant d'ouvrir Maps quand l'itinéraire ne sera pas
+   fidèle au planning (étapes sans position, ou journée tronquée). */
+.pp-day-route-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(3px);
+}
+.pp-day-route-modal {
+  width: min(440px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.pp-day-route-title {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pp-day-route-warn + .pp-day-route-warn {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.pp-day-route-warn-text { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--text-dim); }
+.pp-day-route-list {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.pp-day-route-list li { margin-bottom: 3px; }
+.pp-day-route-cut { margin: 8px 0 0; font-size: 13px; font-weight: 600; color: var(--amber); }
+.pp-day-route-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (max-width: 640px) {
+  .pp-day-route-btn { width: 100%; justify-content: center; }
+}
+
+/* Libellé facultatif au-dessus de l'histogramme (avis de pays : « Note globale
+   des voyageurs Triply »). Titre et complément forment UNE phrase sur une même
+   ligne : l'espace qui les sépare est écrit dans le JSX (voir RatingSummary),
+   pas produit par un `gap` — il doit survivre quelle que soit la mise en page
+   héritée du conteneur. */
+.resto-rating-caption {
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.resto-rating-caption-title { font-size: 12.5px; font-weight: 700; color: var(--text-dim); }
+.resto-rating-caption-sub { font-size: 11.5px; color: var(--text-muted); }
+
+/* La synthèse sert désormais aussi les avis de destination et de pays, hors du
+   contexte restaurant : elle a besoin de sa propre respiration. Et elle n'est
+   pas étirée sur toute la largeur du panneau (bien plus large que la fiche
+   restaurant) : au-delà, les barres deviennent d'immenses traits horizontaux
+   sans rapport avec la quantité d'information qu'elles portent. */
+.dest-reviews-section .resto-rating-summary,
+#panel-section-reviews > .resto-rating-summary,
+.review-summary-widget + .resto-rating-summary {
+  margin: 12px 0 16px;
+  max-width: 520px;
+}
+
+/* Sur mobile, la largeur disponible est déjà celle d'une fiche : on laisse la
+   synthèse occuper la colonne. */
+@media (max-width: 640px) {
+  .dest-reviews-section .resto-rating-summary,
+  #panel-section-reviews > .resto-rating-summary,
+  .review-summary-widget + .resto-rating-summary { max-width: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Section « Mes restaurants » d'une ville, bouton Filtres, modale agrandie
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Même traitement que la section Trajets : les restaurants du voyage ont leur
+   propre bloc, on repère d'un coup d'œil où l'on mange sans lire toute la
+   liste des visites.
+   MÊME INDENTATION que Trajets/Excursions/Hébergements (14px de marge + 10px
+   de retrait derrière un liseré pointillé, ici violet) : sans ça la section
+   restait collée au bord alors que Trajets était décalée, les deux titres ne
+   commençaient pas au même endroit. La liste interne (.pp-activities, qui a
+   son propre padding horizontal) est remise à plat pour que les lignes de
+   lieu s'alignent elles aussi sur celles des trajets. */
+.pp-restos-section {
+  margin: 14px 0 6px 14px;
+  padding-left: 10px;
+  border-left: 2px dashed rgba(192,132,252,0.55);
+}
+.pp-restos-section .pp-activities { padding-left: 0; padding-right: 0; }
+.pp-restos-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  /* Violet SOUTENU (c084fc) et non le lavande pâle d'origine (d8b4fe) : à 11px
+     en majuscules, ce dernier se lisait à peine — et son icône encore moins —
+     là où le bleu de la section Trajets ressort nettement. */
+  color: #c084fc;
+}
+.pp-restos-section-label span { color: var(--text-muted); font-weight: 600; }
+
+/* Mode jour : un violet clair sur fond crème est encore plus délavé qu'en
+   nuit — on descend franchement en luminosité pour retrouver du contraste. */
+[data-theme="light"] .pp-restos-section { border-left-color: rgba(126,34,206,0.45); }
+[data-theme="light"] .pp-restos-section-label { color: #7e22ce; }
+
+/* Indentation réduite sur petit écran, comme les sections sœurs (voir
+   .pp-trajets-section dans PlanningPage.css). */
+@media (max-width: 1024px) {
+  .pp-restos-section { margin-left: 6px; padding-left: 6px; }
+}
+
+/* ─── Bouton Filtres ──────────────────────────────────────────────────────── */
+/* Boutons et filtres sur UNE MÊME rangée : dépliés, les filtres se posent à la
+   suite du bouton, sans encadré ni intitulés — trois listes déroulantes se
+   lisent très bien seules. La rangée passe à la ligne si la largeur manque. */
+.resto-explorer-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Les deux commandes se partagent la largeur à parts égales. `flex: 1` + un
+   `min-width: 0` : sans lui, un libellé long (« Filtres » traduit) refuserait
+   de rétrécir et ferait déborder la rangée. Plus de `flex-wrap` : à deux
+   éléments qui s'étirent, il n'y a plus rien à faire passer à la ligne. */
+.resto-explorer-toolbar-row > .resto-filter-toggle {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+}
+.resto-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* Pastilles franches plutôt que petits rectangles arrondis : c'est la forme
+     qui distingue une commande d'affichage du contenu qu'elle règle. */
+  padding: 9px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.resto-filter-toggle:hover { color: var(--text); border-color: var(--border-light); }
+.resto-filter-toggle--set { color: var(--accent2); border-color: var(--accent); background: var(--accent-subtle); }
+/* Déplié : le bouton s'enfonce visuellement pour montrer qu'il commande ce qui
+   vient de s'ouvrir à côté de lui, même si aucun filtre n'est encore choisi. */
+.resto-filter-toggle--open {
+  color: var(--text);
+  border-color: var(--border-light);
+  background: var(--surface3);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+}
+
+/* Rangée des filtres dépliés : chacun prend toute la largeur du panneau et se
+   lit comme un champ, à la manière des listes déroulantes d'un formulaire. */
+.resto-explorer-filters-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.resto-explorer-filters-row .resto-filter { width: 100%; }
+.resto-explorer-filters-row .resto-filter-btn {
+  width: 100%;
+  max-width: none;
+  justify-content: flex-start;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--surface2);
+}
+.resto-explorer-filters-row .resto-filter-btn-chevron { margin-left: auto; }
+
+/* Réinitialiser : action de RETRAIT, elle ne doit pas peser autant que les
+   filtres eux-mêmes. Sans style, c'était un bouton natif gris étiré sur toute
+   la largeur de la colonne, plus voyant que les listes qu'il annule. D'où un
+   bouton fantôme, calé à gauche à sa largeur de texte, qui ne prend de la
+   couleur qu'au survol. */
+.resto-filters-reset {
+  /* Calé à DROITE : en colonne comme en rangée, il ferme la série de filtres —
+     à gauche, il se lisait comme une quatrième entrée de la liste. */
+  align-self: flex-end;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color .15s, background .15s, border-color .15s;
+}
+.resto-filters-reset svg { flex-shrink: 0; opacity: .75; }
+.resto-filters-reset:hover {
+  color: var(--accent2);
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+}
+.resto-filters-reset:hover svg { opacity: 1; }
+
+/* Sur une colonne large (fiche pays), les trois filtres tiennent côte à côte :
+   les empiler y gaspillerait trois rangées pour trois mots. */
+@media (min-width: 700px) {
+  .resto-explorer-body--list .resto-explorer-filters-row { flex-direction: row; flex-wrap: wrap; }
+  .resto-explorer-body--list .resto-explorer-filters-row .resto-filter { width: auto; }
+  .resto-explorer-body--list .resto-explorer-filters-row .resto-filter-btn { width: auto; }
+}
+.resto-filter-toggle-chevron { transition: transform .2s; }
+.resto-filter-toggle--open .resto-filter-toggle-chevron { transform: rotate(90deg); }
+.resto-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+/* La hauteur de la modale de l'explorateur est réglée PLUS HAUT dans ce
+   fichier, par `--resto-modal-h` — et la largeur en découle. Une seconde
+   déclaration de `height` vivait ici et écrasait la première (même
+   spécificité, écrite après) : c'est elle qui rendait sans effet tout réglage
+   de hauteur fait en amont, y compris les deux tentatives du 2026-07-31.
+   NE PAS redéclarer `height` ici. */
+
+/* Pour que l'explorateur remplisse la modale, la chaîne des hauteurs doit être
+   CONTINUE de la modale jusqu'au corps : chaque maillon est un conteneur flex
+   avec `min-height: 0`, faute de quoi un enfant en position absolue n'a rien
+   pour se dimensionner. La modale, elle, a bien une hauteur définie.
+   RÉSERVÉ à l'affichage immersif (ordinateur) : en dessous de 1025 px, la
+   disposition repasse en pile — carte puis liste — et le corps de la modale
+   doit redevenir un simple conteneur défilant. */
+@media (min-width: 1025px) {
+  .resto-modal--explorer .resto-modal-body {
+    display: flex;
+    flex-direction: column;
+  }
+  .resto-modal--explorer .resto-explorer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    margin-top: 0;
+  }
+  .resto-modal--explorer .resto-explorer-header { flex-shrink: 0; }
+  .resto-modal--explorer .resto-explorer-body {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+}
+
+
+/* Compteur de résultats : sur sa propre ligne, aligné à GAUCHE et souligné
+   d'un trait. Accroché à droite des filtres, il passait pour une commande de
+   plus ; ici il introduit la liste, et le trait sépare ce qui filtre de ce qui
+   est filtré. */
+.resto-explorer-count-row {
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Garde-fous de largeur (débordements constatés sur mobile le 2026-07-29)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Une chaîne flex ne contraint la largeur de ses enfants que si CHAQUE maillon
+   porte `min-width: 0` : par défaut un élément flex refuse de descendre sous la
+   largeur de son contenu, et un seul maillon manquant suffit à faire déborder
+   toute la branche. Les adresses (`nowrap` + ellipsis) étaient tronquées net au
+   bord de l'écran au lieu de s'abréger proprement. */
+.resto-modal-body,
+.resto-modal-panes,
+.resto-modal-list-pane,
+.resto-modal-map-pane,
+.resto-search-results,
+.resto-search-result,
+.resto-search-result-text,
+.resto-modal-step2 {
+  min-width: 0;
+}
+
+/* Rien ne doit déborder LATÉRALEMENT d'une modale : le contenu s'adapte ou
+   s'abrège, il ne sort jamais du cadre. */
+.resto-modal-body { overflow-x: hidden; }
+
+/* Noms d'établissement : ils peuvent être longs et sans espace (idéogrammes),
+   donc incapables de se couper naturellement. */
+.resto-search-result-name,
+.resto-search-result-local {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1024px) {
+  /* Colonne unique explicite, quelle que soit la façon dont le conteneur est
+     déclaré plus haut (grille sur ordinateur, pile ici). */
+  .resto-modal-panes { grid-template-columns: 1fr; }
+  /* Ligne compacte : repère, texte et bouton sur UNE seule ligne. Le repli sur
+     trois lignes n'avait été ajouté que pour contourner un débordement dont la
+     vraie cause était ailleurs (voir `align-items: stretch` plus haut) ; il
+     triplait la hauteur de chaque résultat pour rien. */
+  .resto-search-result { padding: 8px 10px; gap: 8px; }
+  .resto-search-result-pick { padding: 5px 10px; font-size: 11.5px; }
+}
+
+/* ─── Bulle de sélection sur un repère de la carte ────────────────────────── */
+/* Choisir l'établissement depuis son repère : au-delà de quelques résultats,
+   retrouver la ligne n° 12 dans la liste demandait autant d'efforts que la
+   carte en épargnait. */
+.resto-pick-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 150px;
+  max-width: 230px;
+}
+.resto-pick-popup-name { font-size: 13.5px; font-weight: 700; color: #1b1b1b; }
+.resto-pick-popup-addr { font-size: 11.5px; color: #555; line-height: 1.35; }
+.resto-pick-popup-btn {
+  margin-top: 2px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.resto-pick-popup-btn:hover:not(:disabled) { filter: brightness(1.1); }
+.resto-pick-popup-btn:disabled { background: #b9b9b9; cursor: default; }
+
+/* Aperçu tactile d'un repère de l'explorateur (mobile) : de quoi reconnaître
+   l'établissement sans ouvrir sa fiche. Couleurs fixes, comme les autres bulles
+   Leaflet — elles ont leur propre fond blanc, les variables du thème y seraient
+   illisibles en mode sombre. */
+.resto-map-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 160px;
+  max-width: 230px;
+}
+.resto-map-popup-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b1b1b;
+  /* Une seule ligne : le nom est déjà lisible dans la liste, et sur la carte
+     c'est la HAUTEUR de la bulle qui est comptée. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resto-map-popup-local {
+  font-size: 11.5px;
+  color: #6b6b6b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resto-map-popup-meta {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b45309;
+  white-space: pre-wrap;
+}
+/* Adresse plafonnée à DEUX lignes. C'est elle qui faisait déborder la bulle :
+   une adresse japonaise complète (« Rue Shinkyōgoku, Arrondissement de
+   Nakagyō, Kyoto, Préfecture de Kyoto 604-8042, Japon ») tient sur quatre
+   lignes, et la bulle dépassait alors la hauteur de la carte — Leaflet ne
+   pouvait plus la caser, il fallait déplacer la carte à la main pour lire la
+   fin (signalé le 2026-07-31). Le début de l'adresse suffit à reconnaître le
+   quartier ; le reste est dans la fiche. */
+.resto-map-popup-addr {
+  font-size: 11.5px;
+  color: #555;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* Lien discret aligné à droite, et non un pavé violet pleine largeur : la
+   bulle sert à RECONNAÎTRE l'adresse, « Détails » n'est qu'une porte de sortie
+   vers la fiche. Même traitement que le « Détails › » des cartes de la liste,
+   pour que le même mot ait la même apparence partout. */
+.resto-map-popup-btn {
+  align-self: flex-end;
+  margin-top: 6px;
+  padding: 2px 0 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.resto-map-popup-btn::after { content: ' ›'; }
+
+/* Infobulles des repères. Largeur bornée et texte qui passe à la ligne : un
+   nom de lieu suivi de « — à votre programme » formait une seule longue ligne
+   qui traversait la carte et se faisait couper par ses bords. Sur deux lignes
+   courtes, elle tient dans le cadre quel que soit l'endroit du repère.
+
+   Le sélecteur DOIT rester doublé (`.leaflet-tooltip.resto-map-tooltip`) :
+   Leaflet impose `white-space: nowrap` à ses infobulles, et sa feuille de
+   style est chargée à la demande (`import('leaflet/dist/leaflet.css')` dans
+   RestaurantExplorer / RestaurantPickerMap / MapPanel). Elle arrive donc dans
+   l'en-tête APRÈS celle-ci : à spécificité égale, c'est elle qui l'emportait,
+   le texte restait sur une seule ligne et débordait de la bulle, bornée à
+   190px, au lieu de passer à la ligne. */
+.leaflet-tooltip.resto-map-tooltip {
+  max-width: 190px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Les bulles Leaflet portent leur propre fond blanc : on garde des couleurs
+   fixes plutôt que les variables du thème, illisibles dessus en mode sombre. */
+.leaflet-popup-content { margin: 10px 12px; }
+.leaflet-popup-content-wrapper { border-radius: 10px; }

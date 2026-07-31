@@ -4,8 +4,10 @@
 // panneau de paramètres.
 //
 // Taux EUR→USD : rafraîchi au plus une fois par 24h via l'API publique
-// Frankfurter (frankfurter.app — données BCE, gratuite, sans clé, CORS ouvert
-// donc appelable directement depuis le navigateur). DEFAULT_EUR_TO_USD_RATE
+// Frankfurter (api.frankfurter.dev — données BCE, gratuite, sans clé, CORS
+// ouvert donc appelable directement depuis le navigateur ; l'ancien domaine
+// api.frankfurter.app ne fait plus qu'une redirection 301, que le navigateur
+// bloque faute d'en-tête CORS dessus). DEFAULT_EUR_TO_USD_RATE
 // sert de valeur de secours tant qu'aucun taux n'a encore été récupéré (tout
 // premier chargement, ou navigateur hors-ligne) et en cas d'échec réseau —
 // jamais d'erreur visible pour l'utilisateur, l'affichage retombe simplement
@@ -57,7 +59,7 @@ export async function refreshExchangeRate() {
   if (Date.now() - cachedAt < RATE_MAX_AGE_MS) return;
 
   try {
-    const res = await fetch('https://api.frankfurter.app/latest?from=EUR&to=USD', {
+    const res = await fetch('https://api.frankfurter.dev/v1/latest?base=EUR&symbols=USD', {
       signal: AbortSignal.timeout(RATE_FETCH_TIMEOUT_MS),
     });
     if (!res.ok) return;

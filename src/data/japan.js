@@ -50,11 +50,56 @@ const JAPAN_DE = {
   "Vol direct depuis Paris": "Direktflug ab Paris", "Budget moyen/jour": "Durchschnittliches Tagesbudget", "JR Pass recommandé (Shinkansen)": "JR Pass empfohlen (Shinkansen)", "Langue": "Sprache", "Japonais — peu d'anglais en province": "Japanisch – außerhalb der Großstädte wird wenig Englisch gesprochen", "Prise électrique": "Steckdose", "Réseau": "Mobilfunk", "eSIM ou Pocket WiFi conseillé": "eSIM oder Pocket-WLAN empfohlen", "Eau du robinet": "Leitungswasser", "Potable partout": "Überall trinkbar", "Visa": "Visum", "Pas de visa pour les Français (90 jours)": "Für deutsche Staatsangehörige ist für bis zu 90 Tage kein Visum erforderlich"
 };
 
+const JAPAN_JA = {
+  "Japon": "日本", "Tokyo": "東京", "Japonais": "日本語", "Yen (¥)": "円（¥）",
+  "Le Japon est un archipel d'Asie de l'Est mêlant traditions millénaires et modernité. Entre temples bouddhistes, cerisiers en fleurs, gastronomie raffinée et technologie de pointe, il offre une expérience de voyage incomparable.": "日本は、何世紀にもわたる伝統と現代性が共存する東アジアの島国です。仏教寺院、桜、洗練された食文化、最先端の技術が織りなす、ほかでは味わえない旅が待っています。",
+  "Mars – Avril": "3月～4月", "Sakura": "桜",
+  "La floraison des cerisiers (hanami) transforme le pays en tableau rose. Températures douces, 10–18 °C.": "桜が咲く花見の季節には、国中が淡いピンク色に染まります。気温は10～18℃ほどで、過ごしやすい時期です。",
+  "Octobre – Novembre": "10月～11月", "Automne": "秋（紅葉）",
+  "Les feuillages rouges et orangés (koyo) sont spectaculaires. Idéal pour la randonnée et les temples.": "赤や橙に色づく紅葉が見事な季節です。ハイキングや寺社巡りに最適です。",
+  "Juin – Juillet": "6月～7月", "Matsuri": "祭り",
+  "Saison des festivals traditionnels malgré les pluies de juin. Gion Matsuri à Kyoto en juillet.": "6月は梅雨にあたりますが、各地で伝統的な祭りが開かれます。7月の京都では祇園祭が開催されます。",
+  "Décembre – Février": "12月～2月", "Hiver / Ski": "冬・スキー",
+  "Parfait pour le ski à Hokkaido (Niseko) et les onsen sous la neige. Tokyo reste agréable.": "北海道のニセコでのスキーや、雪景色を眺めながらの温泉に最適です。東京も比較的過ごしやすい時期です。",
+  "Kantō": "関東", "Kansai": "関西", "Chūgoku": "中国地方", "Hokkaido": "北海道",
+  "Capitale ultramoderne, mélange de gratte-ciels illuminés, de quartiers traditionnels (Asakusa), de pop-culture (Akihabara) et d'une gastronomie mondiale.": "光り輝く高層ビル、浅草のような下町、秋葉原のポップカルチャー、世界に誇る食文化が共存する、最先端の首都です。",
+  "Temple Senso-ji": "浅草寺",
+  "Ancienne capitale impériale avec plus de 1 600 temples bouddhistes, des geishas dans Gion et les bambous de la forêt d'Arashiyama.": "1600を超える仏教寺院、祇園の芸妓、嵐山の竹林で知られる、かつての都です。",
+  "Kiyomizu-dera": "清水寺", "Fushimi Inari — 10 000 torii": "伏見稲荷大社 — 約1万基の鳥居", "Kinkaku-ji — Pavillon d'Or": "金閣寺 — 金閣（舎利殿）", "Bambouseraie d'Arashiyama": "嵐山の竹林",
+  "Capitale de la gastronomie japonaise, connue pour ses takoyaki, okonomiyaki, son château historique et sa vie nocturne animée à Dotonbori.": "たこ焼きやお好み焼きで名高い日本屈指の食の街。歴史ある大阪城と、道頓堀の活気あふれる夜も魅力です。",
+  "Château d'Osaka": "大阪城", "Tour Tsutenkaku — Shinsekai": "通天閣 — 新世界", "Hiroshima & Miyajima": "広島・宮島",
+  "Site chargé d'histoire avec le Mémorial de la paix, et l'île sacrée de Miyajima avec son torii flottant sur la mer.": "平和記念碑が歴史を伝える広島と、海に浮かぶように見える大鳥居で知られる聖なる島・宮島を巡ります。",
+  "Torii flottant de Miyajima": "宮島の海上の大鳥居", "Mémorial de la Paix d'Hiroshima": "広島平和記念碑（原爆ドーム）", "Mont Misen": "弥山",
+  "Île du nord idéale pour le ski à Niseko, les sources thermales et les paysages enneigés en hiver, et les fleurs de lavande en été.": "北の大地・北海道では、冬はニセコのスキーや温泉、雪景色を楽しめ、夏にはラベンダー畑が広がります。",
+  "Niseko — ski de poudreuse": "ニセコ — パウダースノーのスキー", "Champs de lavande de Furano": "富良野のラベンダー畑", "Parc national Daisetsuzan": "大雪山国立公園", "Noboribetsu Onsen": "登別温泉",
+  "Première capitale permanente du Japon, célèbre pour ses daims en liberté et le Grand Bouddha du Tōdai-ji, le plus grand bâtiment en bois du monde.": "日本で初めて恒久的な都が置かれた奈良。自由に歩く鹿と、世界最大級の木造建築に安置された東大寺の大仏で知られています。",
+  "Tōdai-ji — Grand Bouddha": "東大寺 — 奈良の大仏", "Daims en liberté dans le parc": "奈良公園を自由に歩く鹿", "Kasuga Taisha": "春日大社",
+  "Okinawa & Îles Ryūkyū": "沖縄・琉球諸島", "Okinawa": "沖縄",
+  "Archipel subtropical au sud du Japon, Okinawa séduit par ses plages de sable blanc, ses récifs coralliens et sa culture ryūkyū singulière. Ancien royaume indépendant, la région conserve châteaux, danses et traditions propres. Snorkeling, nature préservée et art de vivre insulaire y sont rois.": "日本の南に広がる亜熱帯の島々。沖縄には白砂のビーチとサンゴ礁があり、独自の琉球文化が息づいています。かつて独立した王国だった歴史を背景に、城跡や舞踊、伝統が今も受け継がれています。シュノーケリングや手つかずの自然、ゆったりした島時間を満喫できます。",
+  "Château de Shuri": "首里城", "Plage d'Emeraude d'Ishigaki": "石垣島のエメラルドビーチ", "Snorkeling dans les récifs de Kerama": "慶良間諸島のサンゴ礁でシュノーケリング", "Parc national de Yanbaru": "やんばる国立公園",
+  "Le Japon est abordable si on sait voyager malin. Les transports en commun sont efficaces et les konbini permettent de manger bien pour peu cher.": "工夫して旅をすれば、日本は意外と手頃です。公共交通機関は便利で、コンビニでも安くておいしい食事が見つかります。",
+  "Hébergement / nuit": "宿泊（1泊）", "Dortoir Hostel": "ホステルのドミトリー", "Bonne ambiance, souvent très propres": "雰囲気がよく、清潔な施設が多い", "Capsule Hotel": "カプセルホテル", "Expérience unique japonaise — plus cher en haute saison": "日本ならではの宿泊体験。繁忙期は料金が上がる",
+  "Business Hotel": "ビジネスホテル", "Chambre solo confortable — prix en forte hausse depuis 2024": "快適なシングルルーム。2024年以降は料金が大幅に上昇", "Ryokan (budget)": "旅館（手頃）", "Avec repas traditionnel inclus": "伝統的な食事付き", "Ryokan (luxe)": "高級旅館", "Expérience haut de gamme": "上質な宿泊体験",
+  "Nourriture": "食事", "Konbini (repas complet)": "コンビニ（食事一式）", "7-Eleven, FamilyMart, Lawson": "セブン-イレブン、ファミリーマート、ローソン", "Ramen / Udon": "ラーメン・うどん", "Resto local, excellent rapport Q/P": "地元の店ならコストパフォーマンス良好", "Bento à emporter": "持ち帰り弁当", "Supermarché ou konbini": "スーパーまたはコンビニ",
+  "Sushi kaiten (tapis)": "回転寿司", "~130 ¥ par assiette": "1皿約130円", "Restaurant mid-range": "中価格帯のレストラン", "Menu déjeuner souvent < 10 €": "ランチは10ユーロ未満のことが多い", "Restaurant gastronomique": "高級レストラン", "Omakase, kaiseki…": "おまかせ、懐石料理など",
+  "Transport": "交通", "Ticket de métro (Tokyo)": "地下鉄乗車券（東京）", "Selon distance (170–320 ¥)": "距離により170～320円", "Pass journalier Tokyo": "東京の1日乗車券", "Illimité réseau Toei/Metro": "都営地下鉄・東京メトロが乗り放題", "Bus intercités": "都市間高速バス", "Option économique entre villes": "都市間を安く移動できる選択肢",
+  "JR Pass 21 jours": "ジャパン・レール・パス（21日間）", "Shinkansen + trains JR illimités — tarif doublé depuis 2023": "新幹線とJR線が乗り放題。2023年の改定で価格はほぼ倍増", "Shinkansen Tokyo–Kyoto": "東海道新幹線 東京～京都", "~2h15 en Nozomi (sans JR Pass)": "のぞみで約2時間15分（JRパス対象外）",
+  "Activités & Culture": "アクティビティ・文化", "Temple / Sanctuaire": "寺院・神社", "La plupart sont libres d'accès": "多くは無料で参拝可能", "Musée national": "国立博物館", "Ex : Tokyo National Museum ~6 €": "例：東京国立博物館は約6ユーロ", "Réservation obligatoire": "要予約", "Universal Studios Japan": "ユニバーサル・スタジオ・ジャパン", "À Osaka": "大阪", "Onsen public (sentō)": "公衆浴場（温泉・銭湯）", "Expérience authentique": "日本らしい体験",
+  "Routard": "節約旅行", "Hostel + konbini + transports locaux": "ホステル＋コンビニ＋公共交通機関", "Confort": "快適", "Business hotel + restos mid-range + activités": "ビジネスホテル＋中価格帯の飲食店＋アクティビティ", "Luxe": "ラグジュアリー", "Ryokan + gastronomie + expériences premium": "旅館＋美食＋上質な体験",
+  "3 semaines": "3週間", "Tokyo (5j) → Kyoto (4j) → Nara (1j) → Osaka (3j) → Hiroshima & Miyajima (2j) → Hokkaido (5j)": "東京（5日）→ 京都（4日）→ 奈良（1日）→ 大阪（3日）→ 広島・宮島（2日）→ 北海道（5日）",
+  "Vol A/R Paris–Tokyo": "パリ～東京 往復航空券", "Hébergement (21 nuits)": "宿泊（21泊）", "Activités & imprévus": "アクティビティ・予備費", "Vol A/R Paris–Tokyo (business)": "パリ～東京 往復航空券（ビジネスクラス）", "Transport premium": "上位クラスの交通手段", "Hébergement ryokans": "旅館での宿泊", "Gastronomie": "美食",
+  "Vol direct depuis Paris": "パリからの直行便", "~13h (Air France, ANA)": "約13時間（エールフランス、ANA）", "Budget moyen/jour": "1日あたりの平均予算", "JR Pass recommandé (Shinkansen)": "JRパス推奨（新幹線）", "Langue": "言語", "Japonais — peu d'anglais en province": "日本語。地方では英語が通じにくいこともある",
+  "Prise électrique": "電源プラグ", "Type A — 100V": "Aタイプ・100V", "Réseau": "通信環境", "eSIM ou Pocket WiFi conseillé": "eSIMまたはポケットWi-Fiがおすすめ", "Eau du robinet": "水道水", "Potable partout": "全国で飲用可能", "Visa": "ビザ", "Pas de visa pour les Français (90 jours)": "フランス国籍者は90日以内の滞在ならビザ不要",
+};
+
 const withGerman = (value, translations) => {
   if (Array.isArray(value)) return value.map((item) => withGerman(item, translations));
   if (value && typeof value === "object") {
     const localized = "fr" in value && "en" in value && "es" in value;
-    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, withGerman(item, translations)]).concat(localized ? [["de", translations[value.fr] ?? value.en]] : []));
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, withGerman(item, translations)]).concat(localized ? [
+      ["de", translations[value.fr] ?? value.de ?? value.en],
+      ["ja", JAPAN_JA[value.fr] ?? value.en],
+    ] : []));
   }
   return value;
 };

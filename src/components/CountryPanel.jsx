@@ -12,7 +12,9 @@ import { HalfStars } from "./ReviewItem";
 import { supabase } from "../lib/supabase";
 import PublicProfileModal from "./PublicProfileModal";
 import DestinationForm from "./DestinationForm";
-import PlacesList from "./PlacesList";
+import DestinationHighlights from "./DestinationHighlights";
+import RatingSummary, { ratingCountsFrom } from "./RatingSummary";
+import { countryAlpha2FromEmoji } from "../lib/planningUtils";
 import CountryRecommendations from "./CountryRecommendations";
 import { callAdminAction } from "../lib/admin";
 import ReportModal from "./ReportModal";
@@ -25,6 +27,8 @@ import { fetchTranslatedFields, translationKey } from "../lib/translateContent";
 import { translateTag } from "../lib/tagTranslations";
 import { useModalHistory } from "../hooks/useModalHistory";
 import useIsMobile from "../hooks/useIsMobile";
+import { useCountryImages } from "../hooks/useCountryImages";
+import { cropUnsplashUrl } from "../lib/unsplashCrop";
 
 const RATING_EMOJI = { good: "😊", ok: "😐", bad: "😞" };
 const BUDGET_ICONS = ["🎒", "🏨", "💎"];
@@ -137,6 +141,8 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   const [reviewRefreshKey, setReviewRefreshKey] = useState(0);
   const [avgRating, setAvgRating] = useState(null);
   const [reviewCount, setReviewCount] = useState(0);
+  // Répartition par nombre d'étoiles, pour l'histogramme (voir RatingSummary).
+  const [ratingCounts, setRatingCounts] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editReview, setEditReview] = useState(null);
   const [userReview, setUserReview] = useState(null);
@@ -169,12 +175,33 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   const [destRefreshKey, setDestRefreshKey] = useState(0);
   const [destAvgRating, setDestAvgRating] = useState(null);
   const [destReviewCount, setDestReviewCount] = useState(0);
+  const [destRatingCounts, setDestRatingCounts] = useState(null);
   const [destUserReview, setDestUserReview] = useState(null);
   const [destShowForm, setDestShowForm] = useState(false);
   const [destEditReview, setDestEditReview] = useState(null);
   const [destSortBy, setDestSortBy] = useState('date');
   const [destStats, setDestStats] = useState({});
   const destReviewsRef = useRef(null);
+  // Onglet actif de la section « À ne pas manquer » (voir DestinationHighlights).
+  // Piloté ici et non dans le composant, parce que la section des avis de la
+  // destination — rendue plus bas — n'apparaît que sous l'onglet
+  // « Lieux et activités ».
+  const [highlightsTab, setHighlightsTab] = useState('places');
+  // Défilement vers les avis demandé alors qu'un autre onglet était actif : on
+  // ne peut pas défiler dans le même geste, la section n'est pas encore
+  // affichée. Un drapeau, consommé par l'effet ci-dessous une fois le rendu
+  // effectué — plus fiable qu'un requestAnimationFrame posé à l'aveugle.
+  const [pendingReviewScroll, setPendingReviewScroll] = useState(false);
+  useEffect(() => {
+    if (!pendingReviewScroll || highlightsTab !== 'places') return;
+    setPendingReviewScroll(false);
+    destReviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [pendingReviewScroll, highlightsTab]);
+  // Chaque destination s'ouvre sur « Lieux et activités ». Garder l'onglet
+  // Restaurants hérité de la destination précédente serait déroutant, et
+  // masquerait sans raison les avis de la nouvelle — y compris quand on arrive
+  // par une notification pointant un avis précis (initialExtra.reviewId).
+  useEffect(() => { setHighlightsTab('places'); }, [selectedDest?.id]);
 
   // Community destinations state
   const [destSearch, setDestSearch] = useState('');
@@ -244,6 +271,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     if (isMobile) {
       setDrawerOpen(false);
       markMountedUpTo(id);
+      // Les avis du pays sont masqués tant qu'une destination est ouverte sur son
+      // onglet Restaurants (voir plus bas) : demander explicitement à y aller
+      // doit les faire réapparaître, sinon le défilement viserait un bloc de
+      // hauteur nulle et la personne atterrirait sur la section suivante.
+      if (id === "reviews" && selectedDest && highlightsTab !== "places") setHighlightsTab("places");
       requestAnimationFrame(() => {
         document.getElementById(`panel-section-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
@@ -435,10 +467,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   useEffect(() => {
     async function loadReviewStats() {
       const { data: rows } = await supabase.from('reviews').select('id, rating, user_id').eq('country_code', countryCode);
-      if (!rows || rows.length === 0) { setAvgRating(null); setReviewCount(0); setUserReview(null); return; }
+      if (!rows || rows.length === 0) { setAvgRating(null); setReviewCount(0); setRatingCounts(null); setUserReview(null); return; }
       const avg = rows.reduce((s, r) => s + r.rating, 0) / rows.length;
       setAvgRating(Math.round(avg * 10) / 10);
       setReviewCount(rows.length);
+      setRatingCounts(ratingCountsFrom(rows));
       if (user) {
         const mine = rows.find((r) => r.user_id === user.id) ?? null;
         setUserReview(mine);
@@ -470,6 +503,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     setDestUserReview(null);
     setDestAvgRating(null);
     setDestReviewCount(0);
+    setDestRatingCounts(null);
     setDestRefreshKey(0);
   }, [selectedDest]);
 
@@ -478,10 +512,11 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
     if (!selectedDest) return;
     async function loadDestReviewStats() {
       const { data: rows } = await supabase.from('destination_reviews').select('id, rating, user_id').eq('destination_id', `${countryCode}_${selectedDest.id}`);
-      if (!rows?.length) { setDestAvgRating(null); setDestReviewCount(0); setDestUserReview(null); return; }
+      if (!rows?.length) { setDestAvgRating(null); setDestReviewCount(0); setDestRatingCounts(null); setDestUserReview(null); return; }
       const avg = rows.reduce((s, r) => s + r.rating, 0) / rows.length;
       setDestAvgRating(Math.round(avg * 10) / 10);
       setDestReviewCount(rows.length);
+      setDestRatingCounts(ratingCountsFrom(rows));
       if (user) setDestUserReview(rows.find((r) => r.user_id === user.id) ?? null);
     }
     loadDestReviewStats();
@@ -601,6 +636,23 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
   const { images: wikiImages, meta: wikiMeta } = useWikipediaImages(allSlugs);
   const img = (slug) => wikiImages[slug] ?? null;
   const imgMeta = (slug) => wikiMeta[slug];
+
+  // Photo du héros : la photo de PAYS (table country_images, même source que
+  // les cartes de la planification) plutôt que la photo Wikipédia de la
+  // première destination — celle-ci illustrait une ville, pas le pays. Repli
+  // sur l'ancienne image Wikipédia tant que la photo n'est pas résolue (ou si
+  // le pays n'en a pas). Le nom ANGLAIS est requis par le hook (requête
+  // Unsplash), `data.name` est déjà localisé : on repasse par COUNTRIES.
+  const { getCountryImage } = useCountryImages(
+    countryCode ? [{ countryCode, countryName: COUNTRIES[countryCode]?.name?.en || null }] : []
+  );
+  const countryImage = getCountryImage(countryCode);
+  // Recadrage `crop=entropy` au format réellement affiché du bandeau (voir
+  // unsplashCrop.js) : 1100×330 sur PC (largeur .country-modal), pleine
+  // largeur × 210 px sur mobile.
+  const heroImageUrl = countryImage?.imageUrl
+    ? cropUnsplashUrl(countryImage.imageUrl, isMobile ? { width: 900, height: 470 } : { width: 1400, height: 420 })
+    : null;
 
   if (!data) return null;
 
@@ -771,7 +823,9 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                 Sur l'Aperçu il est riche (grand titre + description + CTA sur
                 l'image fondue) ; sur les autres onglets, version compacte. */}
             <div className={`panel-header${showSection("overview") ? " panel-header--full" : ""}`}>
-              <WikiImage src={img(data.destinations[0].wikipedia)} meta={imgMeta(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />
+              {heroImageUrl
+                ? <img src={heroImageUrl} alt={data.name} className="panel-header-bg" decoding="async" />
+                : <WikiImage src={img(data.destinations[0].wikipedia)} meta={imgMeta(data.destinations[0].wikipedia)} alt={data.name} className="panel-header-bg" />}
               <div className="panel-header-overlay" />
               <div className="panel-header-content">
                 <div className="panel-name-row">
@@ -1139,7 +1193,15 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                         )}
                         <button
                           className="dest-see-reviews-btn"
-                          onClick={() => destReviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                          // La section des avis n'existe que sous l'onglet
+                          // « Lieux et activités » : on y revient d'abord,
+                          // sinon le bouton ne ferait rien depuis l'onglet
+                          // Restaurants. Le défilement attend le rendu suivant,
+                          // le temps que la section soit montée.
+                          onClick={() => {
+                            setHighlightsTab('places');
+                            setPendingReviewScroll(true);
+                          }}
                         >
                           {destReviewCount > 0 ? t("countryPanel.seeReviewsButtonWithCount", { count: destReviewCount }) : t("countryPanel.seeReviewsButton")}
                         </button>
@@ -1182,11 +1244,38 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       </div>
                     )}
 
-                    <PlacesList dest={selectedDest} countryCode={countryCode} countryName={data.name} wikiImages={wikiImages} wikiMeta={wikiMeta} />
+                    {/* Lieux à visiter et restaurants en DEUX ONGLETS : empilés,
+                        ils allongeaient la fiche sans fin et reléguaient les
+                        restaurants tout en bas (voir DestinationHighlights). */}
+                    <DestinationHighlights
+                      dest={selectedDest}
+                      countryCode={countryCode}
+                      countryName={data.name}
+                      countryAlpha2={countryAlpha2FromEmoji(data.emoji)}
+                      wikiImages={wikiImages}
+                      wikiMeta={wikiMeta}
+                      tab={highlightsTab}
+                      onTabChange={setHighlightsTab}
+                    />
 
-                    {/* Section avis destination */}
-                    <div ref={destReviewsRef} className="dest-reviews-section">
+                    {/* Section avis destination — masquée sous l'onglet
+                        Restaurants : ces avis portent sur la destination
+                        entière, et les afficher sous une liste de restaurants
+                        laissait croire qu'ils commentaient les restaurants.
+                        Chaque restaurant a ses propres avis, dans sa fiche.
+                        MASQUÉE en CSS, pas démontée : un avis en cours de
+                        rédaction serait sinon perdu au premier passage sur
+                        l'onglet Restaurants, et la référence de défilement
+                        disparaîtrait avec elle. */}
+                    <div
+                      ref={destReviewsRef}
+                      className={`dest-reviews-section${highlightsTab !== 'places' ? ' dest-reviews-section--hidden' : ''}`}
+                    >
                       <h4 className="dest-reviews-title">{t("countryPanel.reviewsOn", { name: selectedDest.name })}</h4>
+
+                      {destAvgRating !== null && (
+                        <RatingSummary average={destAvgRating} counts={destRatingCounts} />
+                      )}
 
                       {!destShowForm && (destReviewCount > 0 || (user && !destUserReview)) && (
                         <div className="reviews-controls">
@@ -1638,29 +1727,32 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
             )}
 
             {/* ── REVIEWS ── */}
+            {/* Sur MOBILE, toutes les sections sont empilées (défilement continu) :
+                une destination ouverte sur son onglet Restaurants était donc
+                suivie, juste en dessous, des avis du PAYS — exactement ce qu'on
+                a voulu éviter sur ordinateur avec les avis de la destination
+                (voir dest-reviews-section--hidden), où le système d'onglets
+                règle la question tout seul. Masquée en CSS et non démontée,
+                même raison : un avis en cours de rédaction survit à un
+                aller-retour entre les onglets Lieux / Restaurants. */}
             {showSection("reviews") && (
               <div
                 id="panel-section-reviews"
-                className="tab-content panel-mobile-section"
+                className={`tab-content panel-mobile-section${isMobile && selectedDest && highlightsTab !== 'places' ? ' dest-reviews-section--hidden' : ''}`}
                 ref={(el) => { sectionRefsMap.current.reviews = el; }}
                 data-section-id="reviews"
               >
               {isMobile && sectionHead("reviews")}
               {shouldRenderContent("reviews") ? (<>
+                {/* Même synthèse que les avis de restaurant et de destination :
+                    moyenne ET répartition par note (voir RatingSummary). */}
                 {avgRating !== null && (
-                  <div className="review-summary-widget">
-                    <div className="review-summary-left">
-                      <span className="review-summary-avg">{avgRating}</span>
-                      <div className="review-summary-detail">
-                        <HalfStars rating={avgRating} size={19} />
-                        <span className="review-summary-count">{t("profile.reviewsCount", { count: reviewCount })}</span>
-                      </div>
-                    </div>
-                    <div className="review-summary-right">
-                      <span className="review-summary-label">{t("countryPanel.overallRating")}</span>
-                      <span className="review-summary-sublabel">{t("countryPanel.fromTriplyTravelers")}</span>
-                    </div>
-                  </div>
+                  <RatingSummary
+                    average={avgRating}
+                    counts={ratingCounts}
+                    title={t("countryPanel.overallRating")}
+                    subtitle={t("countryPanel.fromTriplyTravelers")}
+                  />
                 )}
 
                 {/* Contrôles : tri + bouton écrire (masqués si rien à afficher) */}

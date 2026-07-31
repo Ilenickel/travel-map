@@ -116,6 +116,7 @@
     "costInputTitle": "Activity price (ticket, entry, meal…) — leave empty if unknown",
     "priceTitle": "Activity price",
     "infoToggleTitle": "Show/hide details",
+    "plannedMarkTitle": "Scheduled on {{date}} · {{time}}",
     "notePlaceholder": "Note (times, info, address…)",
     "attachmentCount_one": "{{count}} attachment",
     "attachmentCount_other": "{{count}} attachments",
@@ -234,7 +235,9 @@
     "daytrip": "Daytrip",
     "daytripDesc": "Getaway from this city",
     "trajet": "Trip",
-    "trajetDesc": "Train, flight, bus, car…"
+    "trajetDesc": "Train, flight, bus, car…",
+    "restaurant": "A restaurant",
+    "restaurantDesc": "Browse and add a place to eat"
   },
   "daytrip": {
     "badge": "Daytrip",
@@ -464,7 +467,13 @@
     "addExcursionButton": "Add an excursion",
     "emptyLodgings": "No lodgings yet — add one below",
     "emptyTrajets": "No transports yet — add one below",
-    "emptyExcursions": "No excursions yet — add one below"
+    "emptyExcursions": "No excursions yet — add one below",
+    "restaurants": "Restaurants",
+    "lodgingsShort": "Hotels",
+    "transportsShort": "Travel",
+    "myRestaurants": "My restaurants",
+    "addRestaurantButton": "Add a restaurant",
+    "emptyRestaurants": "No restaurants yet — add one below"
   },
   "home": {
     "subtitle_one": "{{count}} trip",
@@ -476,7 +485,8 @@
   "map": {
     "emptyHint": "Add places via search to see them on the map",
     "zonesLabel": "Zones",
-    "recenterTitle": "Center the map on \"{{name}}\""
+    "recenterTitle": "Center the map on \"{{name}}\"",
+    "previewPlaceHint": "Suggestion — not on your plan yet"
   },
   "emptyEditor": {
     "title": "Ready to plan?",
@@ -613,5 +623,15 @@
     "tripQuoted": "\"{{title}}\"",
     "acceptButton": "Accept",
     "declineButton": "Decline"
+  },
+  "dayRoute": {
+    "button": "Open in Google Maps",
+    "confirmTitle": "Before opening Google Maps",
+    "missingGeo": "{{count}} place in this day has no saved location: it won't be included in the route.",
+    "missingGeo_other": "{{count}} places in this day have no saved location: they won't be included in the route.",
+    "tooManyStops": "Google Maps only accepts {{max}} places per route. {{count}} place from this day will be left out.",
+    "tooManyStops_other": "Google Maps only accepts {{max}} places per route. {{count}} places from this day will be left out.",
+    "cutAfter": "The route will stop after “{{name}}”.",
+    "confirmOpen": "Open anyway"
   }
 }
