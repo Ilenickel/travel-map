@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
 import {
-  formatDayLabel, formatDate, todayLocalStr, timeToMinutes, getDayModeStatus,
+  formatDayLabelParts, formatDate, todayLocalStr, timeToMinutes, getDayModeStatus,
   getCarriedOverActivities, formatCarriedOverLabel, lodgingsForNight, buildTravelSegments,
   sortActivitiesByTimeThenPosition,
 } from '../../lib/planningUtils';
@@ -98,6 +98,8 @@ export default function TripDayModeView({
 
   const STATUS_LABEL = { ongoing: t('dayMode.statusOngoing'), upcoming: t('dayMode.statusUpcoming'), past: t('dayMode.statusPast') };
 
+  const dayLabel = formatDayLabelParts(today);
+
   const list = (
     <Droppable droppableId="day-mode-list">
       {(provided) => (
@@ -152,8 +154,16 @@ export default function TripDayModeView({
 
   return (
     <div className="pp-day-mode">
+      {/* Date sur DEUX lignes (jour de la semaine en petites capitales
+          au-dessus du quantième) : la ligne unique "Vendredi 31 Juillet"
+          occupait toute la largeur et ne laissait au bouton que le dessous,
+          d'où son air d'élément flottant. Empilée, elle libère la droite de
+          l'en-tête, où le bouton trouve sa place naturelle. */}
       <div className="pp-day-mode-header">
-        <div className="pp-day-mode-date">{formatDayLabel(today)}</div>
+        <div className="pp-day-mode-date">
+          <span className="pp-day-mode-date-weekday">{dayLabel.weekday}</span>
+          <span className="pp-day-mode-date-main">{dayLabel.dayMonth}</span>
+        </div>
         {routeStops.length > 0 && <DayRouteButton stops={routeStops} />}
       </div>
 

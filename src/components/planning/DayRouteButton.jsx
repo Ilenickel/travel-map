@@ -15,7 +15,18 @@ import useEscapeLayer from '../../hooks/useEscapeLayer';
 // directement : imposer une confirmation qui n'apprend rien serait un clic de
 // trop.
 
-export default function DayRouteButton({ stops }) {
+// `variant` :
+//   - 'pill' (défaut, écran « Jour J ») : REPREND telle quelle la recette de
+//     .pp-add-city-btn / .pp-add-menu-btn (bouton "Ajouter une ville" côté
+//     ordinateur, "Ajouter" côté mobile) — bordure en dégradé, icône dans son
+//     propre disque dégradé, recette clair/sombre déjà validée ailleurs dans
+//     l'appli. 4 essais précédents avec une teinte inventée pour l'occasion
+//     ont tous été refusés (2026-07-31) : ce bouton doit appartenir au MÊME
+//     langage visuel que les autres actions "Ajouter", pas en inventer un.
+//   - 'link' (vue par jour, une ligne par jour du voyage) : REPREND telle
+//     quelle la recette de .pp-add-item-btn (le bouton "Ajouter" à l'intérieur
+//     d'une liste) — plus légère, adaptée à sa répétition sur chaque jour.
+export default function DayRouteButton({ stops, variant = 'pill' }) {
   const { t } = useTranslation();
   const [pending, setPending] = useState(null);
 
@@ -40,11 +51,24 @@ export default function DayRouteButton({ stops }) {
 
   return (
     <>
-      <button className="pp-day-route-btn" onClick={handleClick}>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
-        </svg>
-        {t('dayRoute.button')}
+      <button
+        className={`pp-day-route-btn pp-day-route-btn--${variant}`}
+        onClick={handleClick}
+        title={variant === 'link' ? t('dayRoute.button') : undefined}
+      >
+        {/* Icône dans son propre disque dégradé, comme le "+" de
+            .pp-add-menu-btn-plus ou le svg de .pp-add-city-btn : ce disque
+            EST la marque visuelle "action" dans cette appli, on la reprend au
+            lieu d'inventer une autre convention. */}
+        <span className="pp-day-route-btn-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z"/>
+          </svg>
+        </span>
+        {/* Vue par jour : libellé abrégé ("Voir sur Maps"), le contexte (la
+            ligne du jour) dit déjà de quelle journée il s'agit — le texte
+            complet serait trop lourd répété sur chaque jour du voyage. */}
+        {variant === 'link' ? t('dayRoute.shortLabel') : t('dayRoute.button')}
       </button>
 
       {pending && createPortal(

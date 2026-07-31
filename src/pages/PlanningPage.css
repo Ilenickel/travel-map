@@ -3537,6 +3537,9 @@
   opacity: 1;
 }
 .pp-day-timeline-header .pp-day-count { background: var(--surface2); }
+/* Le bouton Google Maps suit simplement les badges du jour, aligné à GAUCHE
+   comme eux (voir restaurants.css, .pp-day-route-btn--link) : rien à poser
+   ici, le `flex-wrap` de l'en-tête le fait passer à la ligne au besoin. */
 
 .pp-day-section--unplanned {
   border-style: dashed;
@@ -6809,13 +6812,29 @@
   gap: 10px;
 }
 
+/* Deux lignes empilées (voir TripDayModeView) : le jour de la semaine en
+   petites capitales espacées au-dessus du quantième en gros. Plus de
+   `margin-bottom` ici — l'espacement est porté par le `gap` de
+   .pp-day-mode-header, sans quoi il décalerait le bouton posé à côté. */
 .pp-day-mode-date {
-  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pp-day-mode-date-weekday {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.pp-day-mode-date-main {
+  font-size: 22px;
   font-weight: 800;
   color: var(--text);
   text-transform: capitalize;
-  margin-bottom: 6px;
   letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .pp-day-mode-empty {

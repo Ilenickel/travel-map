@@ -1817,30 +1817,117 @@
    Ouvrir une journée du planning dans Google Maps (écran Jour J)
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* Date à gauche (sur deux lignes, voir .pp-day-mode-date), bouton à l'autre
+   bout : c'est l'empilement de la date qui rend cet équilibre possible — en
+   une seule ligne, elle mangeait toute la largeur et reléguait le bouton
+   au-dessous. Le `margin-bottom` reprend celui que portait la date avant son
+   passage sur deux lignes : il sépare l'en-tête du contenu du jour. */
 .pp-day-mode-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
+  margin-bottom: 6px;
 }
 
+/* Base commune aux deux variantes (voir DayRouteButton.jsx, prop `variant`) —
+   REPREND À L'IDENTIQUE la recette de .pp-add-menu-btn (PlanningPage.css,
+   bouton "+ Ajouter"), PAS celle de .pp-add-city-btn : cette dernière n'a
+   qu'un fond TRANSLUCIDE (12%/6% d'opacité), qui ne rend blanc que parce
+   qu'elle est posée sur une carte déjà quasi blanche (.pp-add-city-wrap) —
+   posée directement sur le fond crème de la page (notre cas ici), la même
+   opacité tourne au lavande sale (signalé le 2026-07-31, capture à l'appui).
+   .pp-add-menu-btn, elle, peint un fond QUASI OPAQUE (95%) : blanc cassé en
+   thème clair, bleu marine en thème sombre — indépendant de ce qu'il y a
+   derrière. C'est la bonne recette pour un bouton qui doit rester identique
+   qu'il flotte sur une page ou dans une liste. Seules la taille et la
+   position (`margin-left`) changent entre "pill" (Jour J) et "link" (vue par
+   jour) : la couleur est commune, définie ici une seule fois. */
 .pp-day-route-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border-light);
-  background: var(--surface2);
-  color: var(--text-dim);
+  border: 1px solid transparent;
   font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 600;
   cursor: pointer;
-  transition: all .15s;
+  flex-shrink: 0;
+  color: #c7d2fe;
+  background:
+    linear-gradient(180deg, rgba(38,41,66,0.95), rgba(24,26,44,0.95)) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.4), rgba(168,85,247,0.26) 45%, rgba(56,189,248,0.26)) border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 8px rgba(0,0,0,0.22);
+  transition: background .18s, box-shadow .18s, color .18s, transform .12s;
 }
-.pp-day-route-btn:hover { color: var(--text); border-color: var(--accent); }
+/* Le survol est réservé aux appareils à vraie souris : au toucher, il n'y a
+   pas de "quitter le bouton", l'état restait "allumé" au retour d'un écran
+   précédent (même correctif que .pp-add-menu-btn, signalé le 2026-07-31 pour
+   celui-ci). */
+@media (hover: hover) and (pointer: fine) {
+  .pp-day-route-btn:hover {
+    color: #fff;
+    background:
+      linear-gradient(180deg, rgba(99,102,241,0.18), rgba(88,80,236,0.10)) padding-box,
+      linear-gradient(120deg, rgba(99,102,241,0.75), rgba(168,85,247,0.55) 45%, rgba(56,189,248,0.55)) border-box;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 3px 12px rgba(99,102,241,0.2);
+  }
+}
+[data-theme="light"] .pp-day-route-btn {
+  color: #4338ca;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,245,238,0.95)) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.4), rgba(168,85,247,0.26) 45%, rgba(56,189,248,0.26)) border-box;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 8px rgba(43,38,32,0.08);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-theme="light"] .pp-day-route-btn:hover {
+    color: #3730a3;
+    background:
+      linear-gradient(180deg, rgba(99,102,241,0.12), rgba(88,80,236,0.06)) padding-box,
+      linear-gradient(120deg, rgba(99,102,241,0.6), rgba(168,85,247,0.45) 45%, rgba(56,189,248,0.45)) border-box;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 3px 12px rgba(99,102,241,0.16);
+  }
+}
+
+/* Disque icône, identique à .pp-add-menu-btn-plus : dégradé plein, PLEINEMENT
+   coloré dans les deux thèmes (un accent ponctuel, jamais "trop appuyé" même
+   saturé). Seule sa taille diffère entre les deux variantes. */
+.pp-day-route-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  box-shadow: 0 2px 8px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+/* ─── Variante "pill" (écran Jour J) ─── */
+.pp-day-route-btn--pill {
+  gap: 8px;
+  /* Face à la date, à l'autre bout de l'en-tête — y compris s'il passe à la
+     ligne sur un écran étroit, où l'alignement seul le laisserait à gauche. */
+  margin-left: auto;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.pp-day-route-btn--pill .pp-day-route-btn-icon { width: 20px; height: 20px; }
+
+/* ─── Variante "link" (vue par jour, une ligne par jour) ───────────────────
+   Même couleur que "pill" (voir base ci-dessus) : un premier essai en teinte
+   plus discrète, puis un second avec un fond translucide plutôt qu'opaque,
+   ont tous deux été jugés trop éloignés de la référence "Ajouter un lieu"
+   (2026-07-31). Seules la taille et la position changent ici. */
+.pp-day-route-btn--link {
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.pp-day-route-btn--link .pp-day-route-btn-icon { width: 16px; height: 16px; }
 
 /* Confirmation affichée avant d'ouvrir Maps quand l'itinéraire ne sera pas
    fidèle au planning (étapes sans position, ou journée tronquée). */
@@ -1890,10 +1977,6 @@
   justify-content: flex-end;
   gap: 10px;
   margin-top: 20px;
-}
-
-@media (max-width: 640px) {
-  .pp-day-route-btn { width: 100%; justify-content: center; }
 }
 
 /* Libellé facultatif au-dessus de l'histogramme (avis de pays : « Note globale

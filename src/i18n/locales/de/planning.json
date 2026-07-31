@@ -630,7 +630,8 @@
     "declineButton": "Ablehnen"
   },
   "dayRoute": {
-    "button": "In Google Maps öffnen",
+    "button": "In Maps öffnen",
+    "shortLabel": "Auf Maps ansehen",
     "confirmTitle": "Bevor Google Maps geöffnet wird",
     "missingGeo": "{{count}} Ort des Tages hat keinen gespeicherten Standort und fehlt in der Route.",
     "missingGeo_other": "{{count}} Orte des Tages haben keinen gespeicherten Standort und fehlen in der Route.",

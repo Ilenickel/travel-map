@@ -630,7 +630,8 @@
     "declineButton": "Rechazar"
   },
   "dayRoute": {
-    "button": "Abrir en Google Maps",
+    "button": "Abrir en Maps",
+    "shortLabel": "Ver en Maps",
     "confirmTitle": "Antes de abrir Google Maps",
     "missingGeo": "{{count}} lugar del día no tiene ubicación guardada: no se incluirá en la ruta.",
     "missingGeo_other": "{{count}} lugares del día no tienen ubicación guardada: no se incluirán en la ruta.",

@@ -630,7 +630,8 @@
     "declineButton": "Decline"
   },
   "dayRoute": {
-    "button": "Open in Google Maps",
+    "button": "Open in Maps",
+    "shortLabel": "View on Maps",
     "confirmTitle": "Before opening Google Maps",
     "missingGeo": "{{count}} place in this day has no saved location: it won't be included in the route.",
     "missingGeo_other": "{{count}} places in this day have no saved location: they won't be included in the route.",

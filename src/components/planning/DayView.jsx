@@ -1,12 +1,31 @@
 import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
 import { useTranslation, Trans } from 'react-i18next';
-import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition } from '../../lib/planningUtils';
+import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition, getCarriedOverActivities } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
 import TravelConnector from './TravelConnector';
+import DayRouteButton from './DayRouteButton';
 import i18n from '../../i18n';
+
+// Étapes transmises à Google Maps pour UN jour donné de la vue par jour, dans
+// le même ordre que ce qu'on y lit : activités reportées d'un jour précédent
+// (une activité de la veille qui déborde sur ce jour), puis les activités
+// horodatées, puis celles sans heure. Même logique que TripDayModeView (écran
+// « Jour J »), généralisée à un jour quelconque plutôt qu'au seul jour courant.
+function routeStopsForDay(activities, day) {
+  const dayActs = activities.filter(a => a.visit_date === day);
+  const carriedOver = getCarriedOverActivities(activities, day).map(({ act }) => act);
+  const timed = sortActsByTimeThenPosition(dayActs.filter(a => a.visit_time));
+  const allDay = dayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
+  return [...carriedOver, ...timed, ...allDay].map(act => ({
+    id: act.id,
+    name: act.name,
+    lat: act.place_lat ?? null,
+    lng: act.place_lng ?? null,
+  }));
+}
 
 function slotLabel(key) {
   return { matin: 'daySlots.matin', 'apres-midi': 'daySlots.apresMidi', soir: 'daySlots.soir' }[key];
@@ -547,6 +566,13 @@ export default function DayView({
                         {doneDay}/{totalDay}
                       </span>
                     )}
+                    {/* Un seul bouton par jour, pas réservé au « Jour J » : voir
+                        TripDayModeView pour l'écran plein écran du jour courant,
+                        cette même action doit rester disponible pour N'IMPORTE
+                        QUEL jour du voyage depuis la vue par jour (demandé le
+                        2026-07-31). `margin-left: auto` (CSS) le pousse à droite
+                        de l'en-tête, sans perturber les badges qui précèdent. */}
+                    {totalDay > 0 && <DayRouteButton stops={routeStopsForDay(activities, day)} variant="link" />}
                   </div>
                   {renderDaySection(day, dayIdx, true)}
                 </div>

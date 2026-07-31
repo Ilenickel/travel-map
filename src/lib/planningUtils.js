@@ -126,6 +126,21 @@ export function formatDayLabel(d) {
   return date.toLocaleDateString(currentLocale(), { weekday: 'long', day: 'numeric', month: 'long' });
 }
 
+// Mêmes éléments que formatDayLabel, mais SÉPARÉS, pour l'en-tête de l'écran
+// Jour J qui les empile sur deux lignes (jour de la semaine en petites
+// capitales au-dessus, quantième et mois en grand). Deux appels distincts à
+// toLocaleDateString plutôt qu'un découpage de la chaîne complète : l'ordre
+// des éléments et les séparateurs changent d'une langue à l'autre, aucune
+// coupure textuelle ne serait fiable.
+export function formatDayLabelParts(d) {
+  if (!d) return { weekday: '', dayMonth: '' };
+  const date = new Date(d + 'T12:00:00');
+  return {
+    weekday: date.toLocaleDateString(currentLocale(), { weekday: 'long' }),
+    dayMonth: date.toLocaleDateString(currentLocale(), { day: 'numeric', month: 'long' }),
+  };
+}
+
 export function getDaysBetween(startDate, endDate) {
   if (!startDate || !endDate) return [];
   const days = [];
