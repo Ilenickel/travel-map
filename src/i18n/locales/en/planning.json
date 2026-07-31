@@ -611,6 +611,11 @@
     "title": "Plan my trip — Triply",
     "description": "Plan your trip step by step with Triply: build your itinerary, organize your cities, places and activities, manage your dates — free and online."
   },
+  "tripNotFound": {
+    "title": "This trip no longer exists",
+    "subtitle": "It may have been deleted, or you no longer have access to it.",
+    "backButton": "Back to my trips"
+  },
   "topbar": {
     "backToMapLabel": "Back to the map",
     "breadcrumb": "Planning",

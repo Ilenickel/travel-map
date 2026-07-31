@@ -92,6 +92,29 @@ function PendingInvitations({ pending, onAccept, onDecline }) {
   );
 }
 
+// ─── Voyage introuvable ───────────────────────────────────────────
+//
+// Se produit quand un membre du voyage le supprime (ou retire un
+// collaborateur) pendant qu'un autre l'a encore ouvert : un retour en arrière
+// suivi d'un « en avant » du navigateur restaure l'URL `?trip=<id>`, on
+// retente alors de charger un voyage qui n'existe plus. Plutôt que de
+// retomber silencieusement sur la grille (aucune explication de ce qui
+// vient de se passer), un écran dédié le dit explicitement.
+
+function TripNotFoundScreen({ onBack }) {
+  const { t } = useTranslation();
+  return (
+    <div className="pp-trip-not-found">
+      <div className="pp-trip-not-found-icon" aria-hidden="true">🧭</div>
+      <h2 className="pp-trip-not-found-title">{t('tripNotFound.title')}</h2>
+      <p className="pp-trip-not-found-subtitle">{t('tripNotFound.subtitle')}</p>
+      <button className="pp-btn pp-btn--primary" onClick={onBack}>
+        {t('tripNotFound.backButton')}
+      </button>
+    </div>
+  );
+}
+
 // ─── Main content (requires auth) ────────────────────────────────
 
 function PlanningMain() {
@@ -142,6 +165,17 @@ function PlanningMain() {
     reloadTrips();
   };
 
+  // Un voyage sélectionné dont le chargement est TERMINÉ (plus de spinner) mais
+  // dont `trip` est resté null : la ligne n'existe plus (supprimée par un autre
+  // participant) ou n'est plus accessible (retiré du partage). Se produit
+  // typiquement quand on revient en arrière puis « en avant » sur un voyage
+  // entre-temps supprimé — l'URL `?trip=<id>` restaurée par le navigateur relance
+  // ce chargement pour un voyage qui n'est plus là.
+  // `tripData` (l'objet, pas juste `trip`) doit exister : au tout premier rendu
+  // avant le premier chargement, `tripData` vaut `null` et ne doit pas être pris
+  // pour un échec de chargement.
+  const tripNotFound = !loading && !!selectedTripId && !!tripData && !tripData.trip;
+
   return (
     <div className="pp-layout">
       {pendingShareTrip && (
@@ -161,6 +195,8 @@ function PlanningMain() {
             <div className="pp-spinner" />
             <span>{t('common:loading')}</span>
           </div>
+        ) : tripNotFound ? (
+          <TripNotFoundScreen onBack={handleBackToHome} />
         ) : selectedTripId && tripData?.trip ? (
           <TripEditor
             tripData={tripData}

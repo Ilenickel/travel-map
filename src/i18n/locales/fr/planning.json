@@ -611,6 +611,11 @@
     "title": "Planifier mon voyage — Triply",
     "description": "Planifiez votre voyage étape par étape avec Triply : créez votre itinéraire, organisez vos villes, lieux et activités, gérez vos dates — gratuitement et en ligne."
   },
+  "tripNotFound": {
+    "title": "Ce voyage n'existe plus",
+    "subtitle": "Il a peut-être été supprimé, ou vous n'y avez plus accès.",
+    "backButton": "Retour à mes voyages"
+  },
   "topbar": {
     "backToMapLabel": "Retour à la carte",
     "breadcrumb": "Planifier",
