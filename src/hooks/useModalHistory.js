@@ -77,6 +77,8 @@ export function useModalHistory(onClose, url) {
   // ne suit) dépile pour de bon.
   const pushedRef = useRef(false);
   const mountGenRef = useRef(0);
+  // Identité de NOTRE entrée d'historique (voir plus bas, dans le cleanup).
+  const markerRef = useRef(null);
 
   useEffect(() => {
     ensureListener();
@@ -89,8 +91,10 @@ export function useModalHistory(onClose, url) {
       // exemple une destination dans une fiche pays) d'ajouter une vraie URL
       // partageable à leur entrée d'historique.
       const nextUrl = typeof url === 'function' ? url() : url;
-      if (nextUrl) history.pushState({}, '', nextUrl);
-      else history.pushState({}, '');
+      const marker = {};
+      markerRef.current = marker;
+      if (nextUrl) history.pushState(marker, '', nextUrl);
+      else history.pushState(marker, '');
       pushedRef.current = true;
       stack.push({ id: myId, onCloseRef, pushedRef });
     }
@@ -105,6 +109,18 @@ export function useModalHistory(onClose, url) {
         pushedRef.current = false;
         const i = stack.findIndex((e) => e.id === myId);
         if (i !== -1) stack.splice(i, 1);
+        // Le composant peut se démonter pour une tout autre raison qu'un
+        // clic sur son propre bouton de fermeture : une navigation RÉELLE
+        // vers une autre route (ex. le lien "Accueil" de la topbar) démonte
+        // tout ce qui précède, y compris ce composant. Dans ce cas, notre
+        // entrée n'est déjà plus au sommet de l'historique — `history.state`
+        // porte l'état posé par CETTE navigation, plus le nôtre — et un
+        // history.back() ici annulerait purement et simplement cette
+        // navigation en ramenant sur la page qu'on vient de quitter (signalé
+        // le 2026-08-01 : impossible de sortir d'un voyage ouvert via le
+        // bouton "Accueil", il fallait fermer l'onglet). On ne dépile alors
+        // que notre suivi interne, sans toucher à l'historique réel.
+        if (history.state !== markerRef.current) return;
         selfInflictedPop += 1;
         history.back();
       });

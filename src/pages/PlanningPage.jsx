@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
@@ -144,6 +144,32 @@ function PlanningMain() {
     const tripParam = searchParams.get('trip');
     if (tripParam) setSelectedTripId(tripParam);
   }, [searchParams, setSelectedTripId]);
+
+  // Nettoyage de l'URL à la fermeture d'un voyage (bouton "Retour" ou retour
+  // arrière réel). TripEditor dépile sa propre entrée d'historique en
+  // interne (voir useModalHistory) via un history.back() différé d'un
+  // micro-tick — mais s'il n'existait AUCUNE entrée "propre" en dessous à
+  // retrouver (typiquement : l'onglet a été chargé directement sur une URL
+  // `?trip=...` partagée, ou restaurée après un rafraîchissement), ce
+  // back() retombe sur une entrée qui porte, elle aussi, ce même paramètre —
+  // l'adresse continue alors d'afficher le voyage qu'on vient de fermer
+  // (signalé le 2026-08-01). On force donc l'URL à refléter l'absence de
+  // voyage sélectionné, un instant après : un setTimeout(0) est une vraie
+  // tâche, garantie de s'exécuter après le micro-tick de useModalHistory,
+  // quel que soit l'état dans lequel il a laissé l'historique.
+  const prevTripIdRef = useRef(selectedTripId);
+  useEffect(() => {
+    const wasOpen = prevTripIdRef.current;
+    prevTripIdRef.current = selectedTripId;
+    if (!wasOpen || selectedTripId) return; // pas une fermeture
+    const timer = setTimeout(() => {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has('trip')) return; // déjà propre
+      url.searchParams.delete('trip');
+      history.replaceState(history.state, '', url.pathname + url.search + url.hash);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [selectedTripId]);
 
   const handleAcceptInvite = async (invitationId, tripId) => {
     const ok = await acceptInvite(invitationId);
