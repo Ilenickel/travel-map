@@ -1,3 +1,13 @@
+// Endpoint géo : géocodage d'un lieu (action 'geocode', par défaut) et calcul
+// d'itinéraires réels entre deux points (action 'route', voir _lib/routing.js).
+//
+// Les deux tiennent dans la même fonction parce que le plan Vercel Hobby
+// plafonne à 12 fonctions serverless, toutes déjà occupées — même motif que la
+// fusion add/delete/vote dans api/places.js. Le regroupement reste cohérent :
+// même domaine (géo), même fournisseur (Geoapify), même clé API, même principe
+// de cache permanent en base.
+//
+// ── action 'geocode' ────────────────────────────────────────────
 // Résout et met en cache les coordonnées d'un lieu communautaire, statique ou
 // éditorial (mustSee) via Geoapify, au moment où l'utilisateur choisit de
 // l'ajouter à sa planification (voir get-place-suggestions.js). Cache
@@ -14,6 +24,7 @@ import { getAdminClient, verifyUser } from './_lib/supabaseAdmin.js';
 import { pickBestPlaceMatch } from './_lib/geocodeConfidence.js';
 import { extractLabelVariants } from './_lib/labelVariants.js';
 import { getTranslatedField } from './_lib/translation.js';
+import { getRoutes } from './_lib/routing.js';
 
 const GEOAPIFY_API_KEY = process.env.VITE_GEOAPIFY_API_KEY;
 
@@ -70,6 +81,19 @@ export default async function handler(req, res) {
 
   const body = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
   const { authToken, placeType, placeId, staticCountryCode, cityName, countryName, countryAlpha2, lang, countryCode, labelFr, labelEn } = body;
+
+  // ── action 'route' : aiguillé AVANT les validations de géocodage, dont aucun
+  //    champ (placeType, placeId…) n'a de sens pour un itinéraire.
+  //    Session obligatoire comme pour le géocodage : sans elle, l'endpoint
+  //    serait un robinet ouvert sur des crédits Geoapify payants.
+  if (body.action === 'route') {
+    const user = await verifyUser(admin, authToken);
+    if (!user) {
+      return res.status(401).json({ ok: false, reason: 'Session expirée, veuillez vous reconnecter.' });
+    }
+    const routes = await getRoutes(admin, body.pairs, user.id);
+    return res.status(200).json({ ok: true, routes });
+  }
 
   if (!['community', 'static', 'editorial'].includes(placeType)) {
     return res.status(400).json({ ok: false, reason: 'Requête invalide.' });

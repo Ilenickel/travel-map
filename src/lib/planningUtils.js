@@ -315,18 +315,23 @@ export function sumCosts(items, key = 'cost') {
   return total;
 }
 
-// ─── Distance estimée entre lieux consécutifs ────────────────────
-// Distance à vol d'oiseau (haversine, réutilisée du k-means ci-dessous) — et
-// RIEN de plus : on a renoncé à en déduire un temps de trajet. Convertir une
-// distance en minutes suppose de deviner un mode de transport (marche, bus,
-// tram...) et une vitesse moyenne, deux choses qu'aucune formule ne peut savoir
-// à la place de l'utilisateur. Pire, le géocodage réduit un lieu à un seul
-// point : pour un grand site (un palais, une place, un parc), la distance
-// mesurée entre "points" dépend de l'entrée que le géocodeur a choisie et peut
-// n'avoir aucun rapport avec la marche réelle (murs d'enceinte, contrôles de
-// sécurité, sens de circulation). Une distance à vol d'oiseau reste un fait
-// géométrique vérifiable ; un temps de trajet ne l'aurait été pour l'essentiel
-// que par hasard.
+// ─── Distance et temps de trajet entre lieux consécutifs ─────────
+// Deux niveaux, et cette séparation est délibérée :
+//
+//  1. `estimateTravel` — distance à vol d'oiseau (haversine, réutilisée du
+//     k-means ci-dessous). Synchrone, gratuite, toujours disponible. Elle reste
+//     la SEULE chose affichable immédiatement, et le repli permanent quand le
+//     routage n'a rien pu donner (réseau, quota, itinéraire introuvable).
+//  2. Le temps de trajet réel, calculé par l'API de routage Geoapify et mis en
+//     cache — voir src/hooks/useTravelRoutes.js et api/_lib/routing.js. Il
+//     arrive de façon asynchrone et vient SE SUBSTITUER à la distance quand il
+//     est là.
+//
+// Le calcul à vol d'oiseau n'est donc jamais converti en minutes ici : deviner
+// une vitesse moyenne à la place de l'utilisateur produirait un chiffre faux
+// (murs d'enceinte, sens de circulation, dénivelé, contrôles de sécurité). Un
+// temps affiché vient toujours d'un itinéraire réellement calculé sur le
+// terrain, jamais d'une règle de trois.
 const FAR_KM = 50; // au-delà, on suggère de prévoir un vrai trajet (train, avion…)
 
 // null si l'un des deux lieux n'a pas de coordonnées (comportement dégradé :
@@ -352,15 +357,48 @@ export function formatTravelDistance(km) {
   return `${Math.round(km)} km`;
 }
 
+// Durée de trajet affichée : "12 min", "1 h 05" ("1 hr 05" en anglais, "1 Std.
+// 05" en allemand). Les secondes ne sont jamais montrées — une précision à la
+// seconde sur un temps de marche estimé serait une fausse promesse.
+// Arrondi à la minute SUPÉRIEURE en dessous d'une minute pour ne jamais
+// afficher "0 min", qui se lirait comme "pas de trajet".
+export function formatTravelDuration(seconds) {
+  if (seconds == null || !Number.isFinite(seconds)) return null;
+  const totalMin = Math.max(1, Math.round(seconds / 60));
+  // `minutes` et non `count` : `count` déclencherait la résolution de pluriel
+  // d'i18next et exigerait des clés _one/_other dans les quatre langues, pour
+  // une unité ("min", "Min.") qui ne varie dans aucune d'elles.
+  if (totalMin < 60) return i18n.t('trajet.durationMin', { ns: 'planning', minutes: totalMin });
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return i18n.t('trajet.durationHour', { ns: 'planning', hours: h, minutes: String(m).padStart(2, '0') });
+}
+
+// Identifiant d'un trajet, DOIT rester identique à `travelRouteKey` de
+// api/_lib/routing.js : le client s'en sert pour retrouver dans sa réponse le
+// résultat de chaque segment, le serveur pour la clé primaire du cache. Toute
+// divergence (nombre de décimales, séparateur) casserait silencieusement
+// l'appariement. Même contrainte que `slugifyTag`, dupliqué entre
+// api/places.js et src/lib/cuisineTags.js.
+export function travelRouteKey(fromLat, fromLng, toLat, toLng, mode) {
+  const r = (n) => Number(n).toFixed(4);
+  return `${r(fromLat)},${r(fromLng)}>${r(toLat)},${r(toLng)}|${mode}`;
+}
+
 // Segments de trajet entre activités horodatées consécutives d'une même journée
 // (déjà triées par visit_time). Renvoie une map { [idActivitéArrivée]: segment }
 // pour que chaque vue affiche le connecteur juste au-dessus de l'activité
 // d'arrivée. Partagé entre la vue par jour et le mode Jour J — jamais dupliqué.
-// Pas d'alerte de conflit d'horaire ici : l'estimation (à vol d'oiseau + vitesse
-// conventionnelle) n'est pas fiable au point de pouvoir reprocher à l'utilisateur
-// un planning "trop juste" — beaucoup ne renseignent d'ailleurs qu'un créneau
-// large (après-midi) sans heure précise, pour qui la notion même de "temps
-// disponible entre deux activités" n'a pas de sens.
+//
+// Chaque segment porte `from` ET `to` : le second sert à useTravelRoutes, qui a
+// besoin des deux paires de coordonnées pour demander l'itinéraire (le nom de
+// l'activité d'arrivée, lui, n'est pas affiché par le connecteur).
+//
+// Toujours pas d'alerte de conflit d'horaire, même maintenant qu'on dispose
+// d'un temps de trajet réel : beaucoup d'utilisateurs ne renseignent qu'un
+// créneau large (après-midi) sans heure précise, pour qui la notion même de
+// "temps disponible entre deux activités" n'a pas de sens — et reprocher un
+// planning "trop juste" à quelqu'un qui prendra un taxi serait présomptueux.
 export function buildTravelSegments(sortedTimedActs) {
   const segments = {};
   for (let i = 1; i < sortedTimedActs.length; i++) {
@@ -373,7 +411,7 @@ export function buildTravelSegments(sortedTimedActs) {
     if (from.category === 'transport') continue;
     const est = estimateTravel(from, to);
     if (!est) continue;
-    segments[to.id] = { from, est };
+    segments[to.id] = { from, to, est };
   }
   return segments;
 }

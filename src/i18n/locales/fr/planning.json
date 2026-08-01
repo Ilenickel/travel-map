@@ -132,8 +132,12 @@
     "namePlaceholder": "Nom du trajet (ex : {{mode}} vers…)",
     "farTitle": "Environ {{distance}} à vol d'oiseau depuis « {{place}} » — pensez à planifier un trajet (train, avion…)",
     "farLabel": "~{{distance}} — prévoir un transport",
-    "nearTitle": "Distance à vol d'oiseau depuis « {{place}} » — approximative (ne tient pas compte du terrain ni du mode de transport)",
-    "nearLabel": "~{{distance}} à vol d'oiseau"
+    "fallbackTitle": "Distance à vol d'oiseau depuis « {{place}} » — approximative (ne tient pas compte du terrain ni du mode de transport)",
+    "fallbackLabel": "~{{distance}} à vol d'oiseau",
+    "walkLabel": "{{duration}} à pied",
+    "walkTitle": "Itinéraire à pied depuis « {{place}} » — {{distance}} de marche, hors pauses",
+    "durationMin": "{{minutes}} min",
+    "durationHour": "{{hours}} h {{minutes}}"
   },
   "day": {
     "short": "J{{n}}",
@@ -597,6 +601,7 @@
   },
   "print": {
     "travelLine": "↳ ~{{distance}} à vol d'oiseau depuis {{place}}",
+    "travelWalkLine": "↳ {{duration}} à pied depuis {{place}} ({{distance}})",
     "travelFarSuffix": " — prévoir un transport",
     "statusNoDates": "Dates du voyage non définies.",
     "statusDatesInverted": "Dates du voyage incohérentes (retour avant le départ).",

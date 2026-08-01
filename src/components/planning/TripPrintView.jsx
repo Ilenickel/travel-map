@@ -7,15 +7,37 @@ import {
   getDaysBetween, formatDayLabel, formatDate, formatTimeShort, formatDuration,
   todayLocalStr, getDayModeStatus, getCarriedOverActivities, formatCarriedOverLabel,
   lodgingsForNight, sumCosts, formatPrice, buildTravelSegments, formatTravelDistance,
-  sortActivitiesByTimeThenPosition,
+  formatTravelDuration, sortActivitiesByTimeThenPosition,
 } from '../../lib/planningUtils';
+import { peekTravelRoute } from '../../hooks/useTravelRoutes';
 
-// Distance à vol d'oiseau entre deux activités consécutives — même donnée que
-// le connecteur affiché à l'écran (voir TravelConnector), jamais un temps de
-// trajet (voir estimateTravel dans planningUtils pour le pourquoi).
+// Trajet entre deux activités consécutives — même donnée que le connecteur
+// affiché à l'écran (voir TravelConnector).
+//
+// Lecture SEULE du cache de routage déjà chargé (peekTravelRoute), sans jamais
+// déclencher d'appel : cette vue est synchrone et rend le voyage entier d'un
+// coup: lancer le routage ici, c'est une rafale de requêtes au moment précis
+// où l'utilisateur attend sa feuille de route. Les jours qu'il vient de
+// consulter à l'écran sont donc imprimés avec leur temps de marche réel, les
+// autres avec la distance à vol d'oiseau — jamais rien de faux, seulement plus
+// ou moins précis.
 function PrintTravelLine({ segment }) {
   const { t } = useTranslation();
   const { from, est } = segment;
+  const { walk } = peekTravelRoute(segment);
+
+  if (walk && !est.far) {
+    return (
+      <p className="pp-print-travel">
+        {t('print.travelWalkLine', {
+          duration: formatTravelDuration(walk.durationS),
+          distance: formatTravelDistance(walk.distanceM / 1000),
+          place: from.name,
+        })}
+      </p>
+    );
+  }
+
   return (
     <p className="pp-print-travel">
       {t('print.travelLine', { distance: formatTravelDistance(est.distanceKm), place: from.name })}

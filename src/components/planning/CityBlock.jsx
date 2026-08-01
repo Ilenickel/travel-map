@@ -13,6 +13,7 @@ import SelectionActionBar from './SelectionActionBar';
 import CityMenu from './CityMenu';
 import CityPlanningFieldsButton from './CityPlanningFieldsButton';
 import MobileDetailHeader from './MobileDetailHeader';
+import MobileBackEntry from './MobileBackEntry';
 import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 import RestaurantExplorer from '../RestaurantExplorer';
 import RestaurantsModal from '../RestaurantsModal';
@@ -786,6 +787,12 @@ export default function CityBlock({
       setOpenDaytripId(null);
     } else if (openDaytrip) {
       return (
+        <>
+        {/* Second niveau de retour : referme l'excursion et redonne la ville,
+            au lieu de quitter le voyage. L'empilement LIFO de useModalHistory
+            garantit que ce retour-ci passe AVANT celui de la ville, poussé par
+            TripEditor et toujours en place derrière. */}
+        <MobileBackEntry onBack={() => setOpenDaytripId(null)} />
         <DaytripCard
           city={openDaytrip}
           activities={activities}
@@ -813,6 +820,7 @@ export default function CityBlock({
           onUpdateLodging={onUpdateLodging}
           onRemoveLodging={onRemoveLodging}
         />
+        </>
       );
     }
 

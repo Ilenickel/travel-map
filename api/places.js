@@ -293,9 +293,10 @@ async function handleAdd(admin, user, body, res) {
   // impossible à proposer (signalé le 2026-07-31). Deux établissements
   // distincts ont deux identifiants distincts ; le même établissement proposé
   // deux fois a le même, et c'est le seul vrai doublon. Le contrôle lexical et
-  // sémantique reste en place partout ailleurs — lieux de visite, et
-  // restaurants sans identifiant (anciens seeds éditoriaux), où le nom est le
-  // seul repère disponible.
+  // sémantique reste en place partout ailleurs — lieux de visite, restaurants
+  // sans identifiant (anciens seeds éditoriaux) où le nom est le seul repère
+  // disponible, et, depuis le 2026-07-31, en repli quand la comparaison par
+  // identifiant ne trouve rien (voir le bloc ci-dessous).
   const establishmentId = geoapifyPlaceId || (isEdit ? existingPlace.geoapify_place_id : null);
   let dup;
   if (isEdit && trimmedName === existingPlace.name) {
@@ -309,9 +310,22 @@ async function handleAdd(admin, user, body, res) {
     dup = { duplicate: false };
   } else if (isRestaurant && establishmentId) {
     const same = dbPlaces.find((p) => p.geoapify_place_id && p.geoapify_place_id === establishmentId);
-    dup = same
-      ? { duplicate: true, matchedName: same.name, matchedPlaceId: same.id }
-      : { duplicate: false };
+    if (same) {
+      dup = { duplicate: true, matchedName: same.name, matchedPlaceId: same.id };
+    } else {
+      // Les lignes DÉPOURVUES d'identifiant sont invisibles à la comparaison
+      // ci-dessus : 58 restaurants du seed éditorial n'ont pas pu être retrouvés
+      // chez Geoapify au moment de l'import. Sans ce repli, un membre qui
+      // sélectionne l'un d'eux dans la recherche en crée un doublon silencieux.
+      // Les lignes portant un AUTRE identifiant restent volontairement exclues :
+      // deux identifiants distincts désignent deux établissements distincts,
+      // c'est tout l'objet de la comparaison par place_id (le second McDonald's
+      // d'une même ville doit rester proposable).
+      const unidentified = dbPlaces.filter((p) => !p.geoapify_place_id);
+      dup = unidentified.length
+        ? await findDuplicatePlace(trimmedName, unidentified)
+        : { duplicate: false };
+    }
   } else {
     dup = await findDuplicatePlace(trimmedName, existingPlaces);
   }

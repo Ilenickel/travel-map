@@ -9,6 +9,7 @@ import {
 import ActivityItem from './ActivityItem';
 import TravelConnector from './TravelConnector';
 import DayRouteButton from './DayRouteButton';
+import { useTravelRoutes } from '../../hooks/useTravelRoutes';
 
 function nowMinutes() {
   const d = new Date();
@@ -30,6 +31,21 @@ export default function TripDayModeView({
   const today = todayLocalStr();
   const { hasDates, datesInverted, inRange, beforeTrip, afterTrip } = getDayModeStatus(trip, today);
 
+  // Activités du jour, tri et segments de trajet calculés AVANT le retour
+  // anticipé ci-dessous : useTravelRoutes est un hook, il ne peut pas être
+  // appelé après une sortie conditionnelle. Hors période du voyage, la liste est
+  // simplement vide et le hook n'émet aucun appel.
+  const todayActs = activities.filter(a => a.visit_date === today);
+  // Même tri (heure puis position) que la vue par jour à l'écran : sinon deux
+  // activités à égalité d'heure pourraient s'afficher dans un ordre différent
+  // ici qu'en vue par jour, alors que l'utilisateur vient justement de choisir
+  // leur ordre par glisser-déposer dans cette dernière.
+  const timed = sortActivitiesByTimeThenPosition(todayActs.filter(a => a.visit_time));
+  // Trajets entre activités consécutives du jour — même logique (planningUtils)
+  // et même cache de routage que la vue par jour, jamais dupliqués.
+  const travelSegments = buildTravelSegments(timed);
+  const travelRoutes = useTravelRoutes(travelSegments);
+
   if (!hasDates || !inRange) {
     return (
       <div className="pp-day-mode">
@@ -44,23 +60,14 @@ export default function TripDayModeView({
     );
   }
 
-  const todayActs = activities.filter(a => a.visit_date === today);
   const carriedOver = getCarriedOverActivities(activities, today);
   // Hébergement : où l'on dort ce soir, et duquel on part ce matin (check-out
   // aujourd'hui) — les deux peuvent coexister un jour de changement d'hôtel.
   const tonightLodgings = lodgingsForNight(lodgings, today);
   const checkoutLodgings = (lodgings || []).filter(l => l.check_out === today);
 
-  // Même tri (heure puis position) que la vue par jour à l'écran : sinon deux
-  // activités à égalité d'heure pourraient s'afficher dans un ordre différent
-  // ici qu'en vue par jour, alors que l'utilisateur vient justement de choisir
-  // leur ordre par glisser-déposer dans cette dernière.
-  const timed = sortActivitiesByTimeThenPosition(todayActs.filter(a => a.visit_time));
   const allDayActs = todayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
   const now = nowMinutes();
-  // Temps de trajet entre activités consécutives du jour — même logique
-  // (planningUtils) que la vue par jour, jamais dupliquée.
-  const travelSegments = buildTravelSegments(timed);
 
   // Sans durée renseignée, on borne la fin "En cours" au début de l'activité
   // suivante (ou, faute de suivante, une heure par défaut) — sinon l'activité
@@ -122,7 +129,7 @@ export default function TripDayModeView({
             const status = statusOf(act, idx);
             return (
               <Fragment key={act.id}>
-                {travelSegments[act.id] && <TravelConnector segment={travelSegments[act.id]} />}
+                {travelSegments[act.id] && <TravelConnector segment={travelSegments[act.id]} route={travelRoutes[act.id]} />}
                 <div className={`pp-day-mode-card${status ? ` pp-day-mode-card--${status}` : ''}`}>
                   {status && <span className="pp-day-mode-badge">{STATUS_LABEL[status]}</span>}
                   <ActivityItem

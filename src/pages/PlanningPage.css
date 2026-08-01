@@ -6525,9 +6525,12 @@
 .pp-day-activity--continuation:hover .pp-day-activity-cut-btn { opacity: 1; }
 .pp-day-activity-cut-btn:hover { color: var(--red); background: rgba(239,68,68,0.12); }
 
-/* ─── Distance estimée entre deux activités consécutives ───
+/* ─── Trajet entre deux activités consécutives ───
    Petit connecteur discret (pointillé vertical + libellé) affiché entre deux
-   cartes d'activités horodatées, dans la vue par jour et le mode Jour J. */
+   cartes d'activités horodatées, dans la vue par jour et le mode Jour J.
+   Contient soit un temps de marche réel (sous 45 min), soit la distance à vol
+   d'oiseau — au-delà de 45 min de marche, comme pendant le calcul et en cas
+   d'échec. Rien n'y est jamais dit d'un mode motorisé. */
 .pp-travel-connector {
   position: relative;
   display: flex;
@@ -6561,6 +6564,31 @@
 }
 /* Changement de ville probable (> 50 km) : suggestion de transport */
 .pp-travel-connector--far .pp-travel-label { color: var(--text-muted); font-style: italic; }
+
+/* Distance du chemin réel, à côté du temps de marche : subordonnée au temps,
+   qui est l'information qu'on vient chercher. */
+.pp-travel-secondary { font-weight: 500; opacity: 0.75; }
+
+/* Temps de trajet réellement calculé (itinéraire Geoapify) : légèrement plus
+   affirmé que la distance à vol d'oiseau qu'il remplace — c'est une donnée
+   plus sûre, elle a le droit de se lire un peu mieux. */
+.pp-travel-connector--routed .pp-travel-label { color: var(--text-dim); }
+
+/* En attente du calcul : la distance à vol d'oiseau reste lisible, juste
+   atténuée. Pas de squelette ni de sautillement — le contenu affiché est déjà
+   correct, il va seulement devenir plus précis. */
+.pp-travel-connector--pending .pp-travel-label { opacity: 0.55; }
+
+/* ── Mobile : le connecteur doit rester sur UNE ligne ──
+   Sur les écrans étroits, « 12 min à pied · 950 m » déborde de la carte. La
+   distance passe à la trappe (la durée est ce qui décide de marcher ou non) et
+   les écarts se resserrent. Le CSS de bureau au-dessus n'est jamais touché.
+   Seuil 1024px : celui de toute la mise en page mobile de la planification
+   (pages balayables + barre de navigation basse), pas un seuil inventé ici. */
+@media (max-width: 1024px) {
+  .pp-travel-connector { gap: 2px 6px; padding-left: 20px; }
+  .pp-travel-connector--routed .pp-travel-secondary { display: none; }
+}
 
 /* ═══════════════════════════════════════════════════════════════
    ÉCRANS TACTILES — le :hover n'existe pas au toucher : toutes les
@@ -6754,8 +6782,9 @@
     color: #6b7280; font-size: 12.5px;
   }
 
-  /* Distance à vol d'oiseau entre deux activités consécutives — même donnée
-     que le connecteur à l'écran (voir TravelConnector), jamais un temps */
+  /* Trajet entre deux activités consécutives — temps de marche réel si le
+     jour a déjà été consulté à l'écran, sinon distance à vol d'oiseau
+     (voir PrintTravelLine, qui ne déclenche jamais d'appel à l'impression) */
   .pp-print-travel {
     font-size: 12px; color: #9ca3af; font-style: italic;
     margin: 2px 0 6px 12px;

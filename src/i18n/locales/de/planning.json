@@ -132,8 +132,12 @@
     "namePlaceholder": "Name der Strecke (z. B.: {{mode}} nach…)",
     "farTitle": "Etwa {{distance}} Luftlinie von „{{place}}“ entfernt — denken Sie an die Planung einer Fahrt (Zug, Flugzeug…)",
     "farLabel": "~{{distance}} — Transport einplanen",
-    "nearTitle": "Entfernung in Luftlinie von „{{place}}“ — ungefähr (berücksichtigt weder Gelände noch Verkehrsmittel)",
-    "nearLabel": "~{{distance}} Luftlinie"
+    "fallbackTitle": "Entfernung in Luftlinie von „{{place}}“ — ungefähr (berücksichtigt weder Gelände noch Verkehrsmittel)",
+    "fallbackLabel": "~{{distance}} Luftlinie",
+    "walkLabel": "{{duration}} zu Fuß",
+    "walkTitle": "Fußweg von „{{place}}“ — {{distance}} Fußweg, ohne Pausen",
+    "durationMin": "{{minutes}} Min.",
+    "durationHour": "{{hours}} Std. {{minutes}}"
   },
   "day": {
     "short": "T{{n}}",
@@ -597,6 +601,7 @@
   },
   "print": {
     "travelLine": "↳ ~{{distance}} Luftlinie von {{place}}",
+    "travelWalkLine": "↳ {{duration}} zu Fuß von {{place}} ({{distance}})",
     "travelFarSuffix": " — Transport einplanen",
     "statusNoDates": "Reisedaten nicht festgelegt.",
     "statusDatesInverted": "Reisedaten inkonsistent (Rückkehr vor Abreise).",

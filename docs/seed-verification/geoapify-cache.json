@@ -1,0 +1,1870 @@
+{
+ "301": null,
+ "302": {
+  "id": "51fdc45cad6eac4b40591d7797feca3f3940f00103f901920e49dd000000009203044b696b75",
+  "name": "Kiku",
+  "addr": "Airport Road, Al Garhoud, Dubai, Dubai Emirate, United Arab Emirates",
+  "d": 0,
+  "query": "places/circle",
+  "weak": false
+ },
+ "303": null,
+ "304": {
+  "id": "51833c71efd0a24b4059a06ea0c03b353940f00103f901c231dbdd00000000c0020192030c5368616e672050616c616365e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33373232313239383538",
+  "name": "Shang Palace",
+  "addr": "Sheikh Zayed Road (south), Trade Centre, Dubai, Al Wasl, United Arab Emirates",
+  "d": 4,
+  "query": "Shang Palace"
+ },
+ "305": null,
+ "306": {
+  "id": "512cd7db66eae4624059473d44a33b0841c0f00103f901560e90c202000000c0020192030d546865204e756e7320506f6f6ce203246f70656e7374726565746d61703a76656e75653a6e6f64652f3131383534313535333530",
+  "name": "The Nuns Pool",
+  "addr": "Ewos Parade, Cronulla NSW 2230, Australia",
+  "d": 11,
+  "query": "The Nuns' Pool"
+ },
+ "307": null,
+ "308": {
+  "id": "51b840dd9bfae4624059814067d2a60641c0f00103f901e09d8c2900000000c00201920309536561204c6576656c",
+  "name": "Sea Level",
+  "addr": "Peryman Square, Cronulla NSW 2230, Australia",
+  "d": 11,
+  "query": "Sealevel"
+ },
+ "309": {
+  "id": "51687e90c0fa28624059281719d302e642c0f00102f9012cb85f3c00000000c0020192030f4c6974746c652042616420576f6c66e203226f70656e7374726565746d61703a76656e75653a7761792f31303132393036303238",
+  "name": "Little Bad Wolf",
+  "addr": "131 Main Street, Croydon VIC 3136, Australia",
+  "d": 9,
+  "query": "Little Bad Wolf"
+ },
+ "310": null,
+ "311": null,
+ "312": {
+  "id": "512bf05f6a5527624059910a630b41e842c0f00103f9011b4651e300000000c0020192030f48756e74657220262042617272656ce203236f70656e7374726565746d61703a76656e75653a6e6f64652f33383133373534333935",
+  "name": "Hunter & Barrel",
+  "addr": "171-175 Maroondah Highway, Ringwood VIC 3134, Australia",
+  "d": 3,
+  "query": "Hunter & Barrel"
+ },
+ "313": null,
+ "314": null,
+ "315": {
+  "id": "51f71cfdd41d1f6240592a50300851e842c0f00103f9011c68df9301000000c0020192030a43656363696f6e692773",
+  "name": "Ceccioni's",
+  "addr": "Flinders Lane, Melbourne VIC 3000, Australia",
+  "d": 10,
+  "query": "Cecconi's"
+ },
+ "316": {
+  "id": "5199785105ed1e6240595652dd126fe842c0f00103f9013867e73b00000000c0020192030d4f6d205665676574617269616ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f31303035303230393834",
+  "name": "Om Vegetarian",
+  "addr": "227 Collins Street, Melbourne VIC 3000, Australia",
+  "d": 25,
+  "query": "Om Vegetarian"
+ },
+ "317": {
+  "id": "51d9226937fa1e6240594277499c15e842c0f00103f9016a80fa5100000000c0020192030f53696d706f6e732042757267657273",
+  "name": "Simpons Burgers",
+  "addr": "143 Russell Street, Melbourne VIC 3000, Australia",
+  "d": 13,
+  "query": "Simpsons Burgers"
+ },
+ "318": null,
+ "319": null,
+ "320": null,
+ "321": {
+  "id": "51002b76ea00bf5f40595b5ce333d9c74240f00103f9012999261803000000c0020192031e4d79656f6e67646f6e67204b6f7265616e20424251204d6f6e6776656c79e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133323930303834363439",
+  "name": "Myeongdong Korean BBQ Mongvely",
+  "addr": "9 Myeongdong 8na-gil, Myeong-dong, Seoul, SO 04536, South Korea",
+  "d": 39,
+  "query": "Myeongdong Korean BBQ Mongvely"
+ },
+ "322": null,
+ "323": null,
+ "324": {
+  "id": "516f9406c82129604059aa74c12a28eb4140f00103f901e482933c03000000c0020192030a426f6d756e67616c6269",
+  "name": "Bomungalbi",
+  "addr": "529 Bomun-ro, Sinpyeong-dong, Gyeongju-si, 38118, South Korea",
+  "d": 0,
+  "query": "보문갈비",
+  "weak": false
+ },
+ "325": {
+  "id": "51d0fde60fd726604059d285fd439feb4140f00103f90135642b0001000000c0020192030f4877616e67206e616d206272656164",
+  "name": "Hwang nam bread",
+  "addr": "783 Taejong-ro, Hwango-dong, Gyeongju-si, 38164, South Korea",
+  "d": 19,
+  "query": "황남빵",
+  "weak": true
+ },
+ "326": {
+  "id": "51e6424019be266040598f6be80bc6eb4140f00103f901f103a18a02000000c002019203064b69736f7961e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130393135373432373035",
+  "name": "Kisoya",
+  "addr": "Wonhyo-ro, Gyeongju, KB 38155, South Korea",
+  "d": 153,
+  "query": "Kisoya"
+ },
+ "327": {
+  "id": "512eed2f16e19645c0597ecfa33db9e736c0f00103f901cb442d1400000000c00201920313436f6e666569746172696120436f6c6f6d626fe203226f70656e7374726565746d61703a76656e75653a6e6f64652f333338353131303531",
+  "name": "Confeitaria Colombo",
+  "addr": "Rua Gonçalves Dias 32, Centro, Rio de Janeiro - RJ, 20050-030, Brazil",
+  "d": 6,
+  "query": "Confeitaria Colombo",
+  "weak": false
+ },
+ "328": {
+  "id": "5190d728907e9645c059f54e609566f636c0f00103f9014cf75b8100000000c0020192030943657276616e746573",
+  "name": "Cervantes",
+  "addr": "Avenida Prado Júnior 335B, Copacabana, Rio de Janeiro - RJ, 22011-970, Brazil",
+  "d": 11,
+  "query": "Cervantes",
+  "weak": false
+ },
+ "329": {
+  "id": "51bf791629399a45c059b180ae2248fc36c0f00103f901865f318a00000000c0020192030d5a617ac3a1204269737472c3b4",
+  "name": "Zazá Bistrô",
+  "addr": "Rua Joana Angélica 40, Ipanema, Rio de Janeiro - RJ, 22420-030, Brazil",
+  "d": 11,
+  "query": "Zazá Bistrô Tropical",
+  "weak": false
+ },
+ "330": {
+  "id": "512a221ee4509645c0597eca8c124fe736c0f00103f901f70b922201000000c002019203104269737472c3b420646f205061c3a76fe203236f70656e7374726565746d61703a76656e75653a6e6f64652f34383734393633393539",
+  "name": "Bistrô do Paço",
+  "addr": "Praça Quinze de Novembro 48, Centro, Rio de Janeiro - RJ, 20010-010, Brazil",
+  "d": 160,
+  "query": "Bistrô do Paço",
+  "weak": false
+ },
+ "331": {
+  "id": "514e0b5ef4159d45c05948c32973f3fb36c0f00103f9016f37944e01000000c0020192030c5375736869204c65626c6f6ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f35363133333033363633",
+  "name": "Sushi Leblon",
+  "addr": "Rua Dias Ferreira, Leblon, Rio de Janeiro - RJ, 22450-000, Brazil",
+  "d": 7,
+  "query": "Sushi Leblon",
+  "weak": false
+ },
+ "332": {
+  "id": "51a951a3eb1d9845c059cba20b4515f936c0f00103f9011dc8582101000000c00201920310566976612047617374726f6e6f6d6961e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34383534343333383231",
+  "name": "Viva Gastronomia",
+  "addr": "Avenida Nossa Senhora de Copacabana 796, Copacabana, Rio de Janeiro - RJ, 22060-002, Brazil",
+  "d": 23,
+  "query": "Viva Gastronomia",
+  "weak": false
+ },
+ "333": {
+  "id": "51d41632b2bf5547c0596030c912e79037c0f00102f90151483f5700000000c0020192031147616c6572696120646f732050c3a36573e203226f70656e7374726565746d61703a76656e75653a7761792f31343633373635303733",
+  "name": "Galeria dos Pães",
+  "addr": "Rua Estados Unidos 1645, Jardim Paulista, São Paulo - SP, 01427-001, Brazil",
+  "d": 3,
+  "query": "Galeria dos Pães",
+  "weak": false
+ },
+ "334": null,
+ "335": null,
+ "336": null,
+ "337": null,
+ "338": {
+  "id": "5172bad16cc35147c0592d0d5762f98a37c0f00103f9011099641701000000c0020192030a506f6e746f2043686963",
+  "name": "Ponto Chic",
+  "addr": "Largo do Paissandú 31, República, São Paulo - SP, 01034-010, Brazil",
+  "d": 11,
+  "query": "Ponto Chic",
+  "weak": false
+ },
+ "339": {
+  "id": "51d141f2295b5b47c059ea8fd552e59c37c0f00103f901a5ec3ee702000000c0020192031346617a656e6461204368757272617363616461",
+  "name": "Fazenda Churrascada",
+  "addr": "Avenida Morumbi 5594, Morumbi, São Paulo - SP, 05690-080, Brazil",
+  "d": 19,
+  "query": "Fazenda Churrascada",
+  "weak": false
+ },
+ "340": null,
+ "341": {
+  "id": "51e1eaa5ce485847c0595eeb9cb00e8d37c0f00103f901b53d450701000000c0020192030c54616e756b69205375736869",
+  "name": "Tanuki Sushi",
+  "addr": "Rua Jericó 287, Vila Madalena, São Paulo - SP, 05435-040, Brazil",
+  "d": 2,
+  "query": "Tanuki",
+  "weak": false
+ },
+ "342": null,
+ "343": {
+  "id": "5172ad07dd6f5547c059acc5a1d3f39037c0f00103f901db8d73f600000000920306442e4f2e4d2e",
+  "name": "D.O.M.",
+  "addr": "Rua Barão de Capanema 549, Jardim Paulista, São Paulo - SP, 01411-011, Brazil",
+  "d": 3,
+  "query": "places/circle",
+  "weak": false
+ },
+ "344": {
+  "id": "51e1e8cf23eb5647c059543074362e9137c0f00103f901b994673403000000c0020192031045767661692052657374617572616e74e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133373634313035343031",
+  "name": "Evvai Restaurant",
+  "addr": "Rua Joaquim Antunes, Jardim Europa, São Paulo - SP, 05415-010, Brazil",
+  "d": 5,
+  "query": "Evvai",
+  "weak": false
+ },
+ "345": {
+  "id": "5133bacd65b45547c059889fff1ebc9037c0f00103f901c518363001000000c0020192031341204669677565697261205275626169796174e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35313033383138393439",
+  "name": "A Figueira Rubaiyat",
+  "addr": "Rua Haddock Lobo 1738, Cerqueira César, São Paulo - SP, 01415-000, Brazil",
+  "d": 5,
+  "query": "Figueira Rubaiyat",
+  "weak": false
+ },
+ "346": {
+  "id": "5192d8a491855247c059553b79477c8b37c0f00102f901facec54b00000000c0020192031341204361736120646f20506f72636f20426172e203226f70656e7374726565746d61703a76656e75653a7761792f31323731323534373738",
+  "name": "A Casa do Porco Bar",
+  "addr": "Rua Araújo 124, Vila Buarque, São Paulo - SP, 01220-020, Brazil",
+  "d": 13,
+  "query": "A Casa do Porco Bar",
+  "weak": false
+ },
+ "347": {
+  "id": "5140529f3fc85747c059185124a9969437c0f00103f901ba94673403000000c0020192030454554a55",
+  "name": "TUJU",
+  "addr": "Rua Frei Galvão, Jardim Europa, São Paulo - SP, 01454-000, Brazil",
+  "d": 3,
+  "query": "Tuju",
+  "weak": false
+ },
+ "348": null,
+ "349": {
+  "id": "51fdf7e0b54b7b1ec0592c9fe57970cd4040f00103f90184cc547e00000000c0020192030b5269636b27732043616665e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32313139343836353936",
+  "name": "Rick's Cafe",
+  "addr": "248 Boulevard Sour Jdid, 20004 Casablanca, Morocco",
+  "d": 0,
+  "query": "Rick's Cafe",
+  "weak": false
+ },
+ "350": {
+  "id": "518fc4cbd339765a405906d49b51f3073540f00103f901e57371f700000000c0020192031542c3ba6e204368e1bab320c490e1baaf63204b696de203236f70656e7374726565746d61703a76656e75653a6e6f64652f34313531343037353839",
+  "name": "Bún Chẳ Đắc Kim",
+  "addr": "67, Duong Thanh Street, Hoan Kiem Ward, Hanoi, HI 11024, Vietnam",
+  "d": 149,
+  "query": "Bún Chả Đắc Kim",
+  "weak": false
+ },
+ "351": {
+  "id": "51b625bc4e34765a405911050e4cb8053540f00103f901c7c5831e0100000092031543c6a16d2043686179204ec3a06e672054e1baa56d",
+  "name": "Cơm Chay Nàng Tấm",
+  "addr": "79A, Tran Hung Dao Street, Cua Nam Ward, Hà Nội, 11019, Vietnam",
+  "d": 34,
+  "query": "places/circle",
+  "weak": false
+ },
+ "352": {
+  "id": "511901158e20765a4059941799805f073540f00103f9010128f23c03000000c002019203104d6164616d2054c6b02048e1bb936e67e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133393037343034383031",
+  "name": "Madam Tư Hồng",
+  "addr": "5, Hoi Vu Street, Hoan Kiem Ward, Hanoi, HI 11024, Vietnam",
+  "d": 0,
+  "query": "Madam Tu Hong",
+  "weak": false
+ },
+ "353": null,
+ "354": null,
+ "355": {
+  "id": "51c93f8e4182755a405903e8cd310f073540f00103f901f417f74f020000009203094769612048616e6f69",
+  "name": "Gia Hanoi",
+  "addr": "61, Van Mieu Street, Van Mieu - Quoc Tu Giam Ward, Hà Nội, 11508, Vietnam",
+  "d": 27,
+  "query": "places/circle",
+  "weak": false
+ },
+ "356": {
+  "id": "51f3870be569765a40594a287d21e4063540f00103f9016987779c02000000c0020192030e542e552e4e2e472044696e696e67",
+  "name": "T.U.N.G Dining",
+  "addr": "Quang Trung Street, Hoan Kiem Ward, Hanoi, 11024, Vietnam",
+  "d": 21,
+  "query": "T.U.N.G Dining",
+  "weak": false
+ },
+ "357": {
+  "id": "51ec962e0ef8165b4059418cc69052bf2f40f00103f901c7b56d3001000000c00201920328526564204272696467652052657374617572616e7420616e6420436f6f6b696e67205363686f6f6ce203236f70656e7374726565746d61703a76656e75653a6e6f64652f35313037343633363233",
+  "name": "Red Bridge Restaurant and Cooking School",
+  "addr": "Đồng Khởi, Hội An Đông Ward, Hoi An, QM 51313, Vietnam",
+  "d": 87,
+  "query": "Red Bridge Restaurant & Cooking School",
+  "weak": false
+ },
+ "358": {
+  "id": "5161fa038afdac5a405974e5fdc9298b2540f00103f9014624836502000000c0020192030dc4826ec4836e20536169676f6ee203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130323933303237393130",
+  "name": "Ănăn Saigon",
+  "addr": "Ton That Dam Street, Saigon, Ho Chi Minh City, HC 71010, Vietnam",
+  "d": 15,
+  "query": "Anan Saigon",
+  "weak": false
+ },
+ "359": null,
+ "360": {
+  "id": "514470b77fc0ac5a405997ad50ffb48c2540f00103f901ce665d7600000000c002019203234e68c3a02048c3a06e67204ec6b0e1bb9b6e672042617262656375652047617264656ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f31393835383332363534",
+  "name": "Nhà Hàng Nướng Barbecue Garden",
+  "addr": "135, Nam Kỳ Khởi Nghĩa, Ben Thanh, Ho Chi Minh City, HC 71009, Vietnam",
+  "d": 65,
+  "query": "Barbecue Garden",
+  "weak": false
+ },
+ "361": {
+  "id": "51a962cf43129e204059698358bb37864740f00103f901eac9dd4a0000000092030742656c6c696e69",
+  "name": "Bellini",
+  "addr": "Murbacherstrasse 4, 6003 Lucerne, Switzerland",
+  "d": 6,
+  "query": "places/circle",
+  "weak": false
+ },
+ "362": {
+  "id": "5173fb404d889c204059fe33396ba6864740f00103f901fdacc25502000000c0020192030e42726173736572696520426f6475e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130303238373536323231",
+  "name": "Brasserie Bodu",
+  "addr": "Kornmarkt 5, 6004 Lucerne, Switzerland",
+  "d": 2,
+  "query": "Brasserie Bodu",
+  "weak": false
+ },
+ "363": null,
+ "364": {
+  "id": "51f5f5d786e592184059dce61867c21a4740f00103f901bf0e4a9901000000920306576173616269",
+  "name": "Wasabi",
+  "addr": "Rue du Mont-Blanc, 1201 Geneva, Switzerland",
+  "d": 6,
+  "query": "places/circle",
+  "weak": false
+ },
+ "365": {
+  "id": "514b8f0134a59018405910270bdbaa1a4740f00103f90195908eb2000000009203094261676174656c6c65",
+  "name": "Bagatelle",
+  "addr": "Boulevard James-Fazy 20, 1201 Geneva, Switzerland",
+  "d": 4,
+  "query": "places/circle",
+  "weak": false
+ },
+ "366": {
+  "id": "516a865451bc8218405973a895f8921c4740f00103f90113da773500000000c0020192030f436166c3a920647520536f6c65696ce203226f70656e7374726565746d61703a76656e75653a6e6f64652f383937303437303539",
+  "name": "Café du Soleil",
+  "addr": "Place du Petit-Saconnex 6, 1209 Geneva, Switzerland",
+  "d": 19,
+  "query": "Café du Soleil",
+  "weak": false
+ },
+ "367": {
+  "id": "51e6c3584ba68f1840596c3f19e3c3174740f00103f9011a18e26100000000c00201920315436166c3a920646573204ec3a9676f6369616e7473e203236f70656e7374726565746d61703a76656e75653a6e6f64652f31363432323037323538",
+  "name": "Café des Négociants",
+  "addr": "Rue de la Filature 29, 1227 Carouge GE, Switzerland",
+  "d": 2,
+  "query": "Café des Négociants",
+  "weak": false
+ },
+ "368": {
+  "id": "51016dab59679c1840597940d9942b1c4740f00103f9019d07161100000000c0020192030f4c61205065726c65206475204c6163e203226f70656e7374726565746d61703a76656e75653a6e6f64652f323836363536343133",
+  "name": "La Perle du Lac",
+  "addr": "1202 Geneva, Switzerland",
+  "d": 6,
+  "query": "Perle du Lac",
+  "weak": false
+ },
+ "369": {
+  "id": "51f04a372e881732405913398e69b7534540f00103f901d8209c2a01000000c0020192031050697a7a65726961204c61204c756e61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35303039383432333932",
+  "name": "Pizzeria La Luna",
+  "addr": "A. Hebranga 60, 20106 Dubrovnik, Croatia",
+  "d": 12,
+  "query": "Pizzeria La Luna",
+  "weak": false
+ },
+ "370": {
+  "id": "51958c52f822703040599d233ceb64c14540f00103f901ca885bdf02000000c00201920313546865617472756d20426172202620466f6f64e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3132333337323532353534",
+  "name": "Theatrum Bar & Food",
+  "addr": "Trg Gaje Bulata 6, 21106 Split, Croatia",
+  "d": 2,
+  "query": "Theatrum Bar & Food",
+  "weak": false
+ },
+ "371": {
+  "id": "517af8d79711631140597e5aa038db6c4940f00103f9017beade3300000000c00201920310436166c3a9204465204d61726b74656ee203226f70656e7374726565746d61703a76656e75653a6e6f64652f383730323437303335",
+  "name": "Café De Markten",
+  "addr": "Vieux Marché aux Grains - Oude Graanmarkt, 1000 Brussels, Belgium",
+  "d": 2,
+  "query": "Café De Markten",
+  "weak": false
+ },
+ "372": {
+  "id": "51509ec3c6067c1140593fb78608ee694940f00103f9011d0d3f1200000000c0020192030a4d616d6d6120526f6d61",
+  "name": "Mamma Roma",
+  "addr": "Chaussée de Vleurgat - Vleurgatse Steenweg 5, 1050 Ixelles - Elsene, Belgium",
+  "d": 3,
+  "query": "Mamma Roma",
+  "weak": false
+ },
+ "373": null,
+ "374": {
+  "id": "5112b1d2eea1861140598c6c42b51c6b4940f00102f9016532430500000000c0020192030e4d6169736f6e20416e746f696e65e203206f70656e7374726565746d61703a76656e75653a7761792f3838323839383933",
+  "name": "Maison Antoine",
+  "addr": "Place Jourdan - Jourdanplein, 1040 Etterbeek, Belgium",
+  "d": 2,
+  "query": "Maison Antoine",
+  "weak": false
+ },
+ "375": {
+  "id": "51f731303c407911405917d34cf73a6b4940f00103f901652941a900000000c00201920308456c20547572636f",
+  "name": "El Turco",
+  "addr": "Place de Londres - Londenplein 6, 1050 Ixelles - Elsene, Belgium",
+  "d": 5,
+  "query": "El Turco",
+  "weak": false
+ },
+ "376": {
+  "id": "511f35817dcf631140596e6a2597106d4940f00103f90175634190000000009203074a616371756573",
+  "name": "Jacques",
+  "addr": "Quai aux Briques - Baksteenkaai, 1000 Brussels, Belgium",
+  "d": 5,
+  "query": "places/circle",
+  "weak": false
+ },
+ "377": {
+  "id": "5108aef204c2ce0940593f3fe7c9909a4940f00102f901a426491000000000c00201920314546865204f6c69766520537472656574666f6f64",
+  "name": "The Olive Streetfood",
+  "addr": "Wollestraat 12, 8000 Bruges, Belgium",
+  "d": 6,
+  "query": "The Olive Street Food",
+  "weak": false
+ },
+ "378": {
+  "id": "51007b3b78dcc6094059f4b74e6dba9a4940f00103f9013982bb4202000000c0020192030843726f7061696e73e203236f70656e7374726565746d61703a76656e75653a6e6f64652f39373039353139343137",
+  "name": "Cropains",
+  "addr": "Geldmuntstraat 21, 8000 Bruges, Belgium",
+  "d": 2,
+  "query": "Cropains",
+  "weak": false
+ },
+ "379": {
+  "id": "510dcc65fe2cc1094059ad516a8a5b9a4940f00103f901a4cb457c00000000c002019203174772616e64204b61666665652064652050617373616765",
+  "name": "Grand Kaffee de Passage",
+  "addr": "Dweersstraat 26, 8000 Bruges, Belgium",
+  "d": 1,
+  "query": "Grand Cafe Passage",
+  "weak": false
+ },
+ "380": {
+  "id": "51addfa7058ae3094059df9513a39d9a4940f00103f90183f9a36001000000c00201920311496e2774204e69657577204d757365756d",
+  "name": "In't Nieuw Museum",
+  "addr": "Hooistraat 40;42, 8000 Bruges, Belgium",
+  "d": 3,
+  "query": "In 't Nieuw Museum",
+  "weak": false
+ },
+ "381": {
+  "id": "5185402e71e4c1094059f52a323a209b4940f00103f9012cfd086700000000c0020192030a4b6f6b2061752056696ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f31373238363432333438",
+  "name": "Kok au Vin",
+  "addr": "8000 Bruges, Belgium",
+  "d": 5,
+  "query": "Kok au Vin",
+  "weak": false
+ },
+ "382": {
+  "id": "51aa2c65749bcb0940596f31fca7d1994940f00103f901a2f64f2f000000009203194d6178696d696c6961616e2056616e204f6f73746572696a6b",
+  "name": "Maximiliaan Van Oosterijk",
+  "addr": "Wijngaardplein, 8000 Bruges, Belgium",
+  "d": 14,
+  "query": "places/circle",
+  "weak": false
+ },
+ "383": {
+  "id": "51c3cc881c6ccb09405935eac6606a9b4940f00103f901a293569601000000c0020192030b546f6d27732044696e6572e203236f70656e7374726565746d61703a76656e75653a6e6f64652f36383137323233353836",
+  "name": "Tom's Diner",
+  "addr": "Kleine Hoedenmakersstraat, 8000 Bruges, Belgium",
+  "d": 6,
+  "query": "Tom's Diner",
+  "weak": false
+ },
+ "384": {
+  "id": "5155f6025889ce094059e207420d3a9a4940f00103f901784feb3500000000c0020192031244656e20476f7564656e20486172796e636b",
+  "name": "Den Gouden Harynck",
+  "addr": "Groeninge 25;27;29, 8000 Bruges, Belgium",
+  "d": 5,
+  "query": "Den Gouden Harynck",
+  "weak": false
+ },
+ "385": {
+  "id": "51049c9438e1c40d4059c592cdb0ac864940f00103f9012cf98ff100000000c0020192030c4c6520426f74616e69737465e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34303532373434343932",
+  "name": "Le Botaniste",
+  "addr": "Hoornstraat 13, 9000 Ghent, Belgium",
+  "d": 8,
+  "query": "Le Botaniste",
+  "weak": false
+ },
+ "386": {
+  "id": "517cac2a453cd30d40592af23515f3844940f00103f9019b000c9d00000000c0020192030b446520417070656c696572e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32363334383039343939",
+  "name": "De Appelier",
+  "addr": "Citadellaan 47, 9000 Ghent, Belgium",
+  "d": 3,
+  "query": "De Appelier",
+  "weak": false
+ },
+ "387": {
+  "id": "51e86a2bf697e12c40595d2a8073900b4940f00103f9011516b64601000000c0020192030d50697a7a657269612041726961e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35343831333035363231",
+  "name": "Pizzeria Aria",
+  "addr": "Křižíkova, 186 00 Prague, Czechia",
+  "d": 4,
+  "query": "Pizzeria Aria",
+  "weak": false
+ },
+ "388": {
+  "id": "515a6cee4339d82c40595098e60c7b0b4940f00103f9018ea2f33a00000000c0020192030842616b6573686f70e203226f70656e7374726565746d61703a76656e75653a6e6f64652f393839303435333930",
+  "name": "Bakeshop",
+  "addr": "Kozí 1, 110 00 Prague, Czechia",
+  "d": 1,
+  "query": "Bakeshop",
+  "weak": false
+ },
+ "389": {
+  "id": "51097a5ee0a8cf2c4059e94a5f63f2084940f00103f901d23bd4f700000000c00201920306506173747661e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34313537383831323938",
+  "name": "Pastva",
+  "addr": "Nádražní 102, 150 21 Prague, Czechia",
+  "d": 0,
+  "query": "Pastva",
+  "weak": false
+ },
+ "390": {
+  "id": "51859feef263d62c40599a4b6029810a4940f00103f901b70a291500000000c002019203064c6f75767265e203226f70656e7374726565746d61703a76656e75653a6e6f64652f333535303131323535",
+  "name": "Louvre",
+  "addr": "Národní 22, 110 00 Prague, Czechia",
+  "d": 8,
+  "query": "Café Louvre",
+  "weak": false
+ },
+ "391": {
+  "id": "51b491eba694d32c405914a5ceed6f0a4940f00103f901cd3e321200000000c0020192030c436166c3a920536c61766961e203226f70656e7374726565746d61703a76656e75653a6e6f64652f333035323832373635",
+  "name": "Café Slavia",
+  "addr": "Smetanovo nábřeží 1012/2, 110 00 Prague, Czechia",
+  "d": 28,
+  "query": "Cafe Slavia",
+  "weak": false
+ },
+ "392": {
+  "id": "51b8c83d5dddd92c4059834f73f2220b4940f00103f901c34b359400000000c002019203124772616e6420436166c3a9204f7269656e74e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32343836353230373731",
+  "name": "Grand Café Orient",
+  "addr": "Celetná, 110 00 Prague, Czechia",
+  "d": 5,
+  "query": "Grand Cafe Orient",
+  "weak": false
+ },
+ "393": {
+  "id": "5168e32dfc85db2c4059e9825550ac0a4940f00103f9014558241b01000000c002019203084b616e74c3bd6e61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373530333334303231",
+  "name": "Kantýna",
+  "addr": "Politických vězňů 1511/5, 116 47 Prague, Czechia",
+  "d": 161,
+  "query": "Kantýna",
+  "weak": false
+ },
+ "394": null,
+ "395": null,
+ "396": {
+  "id": "511134b09f0fd82c4059d1e6b8a0be0b4940f00103f901b21d49870100000092031052657374617572616365204649454c44",
+  "name": "Restaurace FIELD",
+  "addr": "Kozí, 110 05 Prague, Czechia",
+  "d": 5,
+  "query": "places/circle",
+  "weak": false
+ },
+ "397": {
+  "id": "515dac037ba7d92c405999b047f2a60b4940f00103f901f5b54cca00000000c002019203214c61204465677573746174696f6e20426f68c3aa6d6520426f757267656f697365e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33333934303234393439",
+  "name": "La Degustation Bohême Bourgeoise",
+  "addr": "Haštalská 18, 110 00 Prague, Czechia",
+  "d": 11,
+  "query": "La Dégustation Bohême Bourgeoise",
+  "weak": false
+ },
+ "398": {
+  "id": "5141da5abadde62c4059c1a50815c10d4940f00103f901edb3ce9d01000000c0020192030a54686520456174657279e203236f70656e7374726565746d61703a76656e75653a6e6f64652f36393432353336363835",
+  "name": "The Eatery",
+  "addr": "U Uranie 18, 170 00 Prague, Czechia",
+  "d": 17,
+  "query": "The Eatery",
+  "weak": false
+ },
+ "399": {
+  "id": "51679eb70c93dc2c4059452ffe11e10a4940f00103f901d7ec181503000000c0020192031252657374617572616e74205a766f6e696365e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133323338383536393139",
+  "name": "Restaurant Zvonice",
+  "addr": "Jindřišská 33, 116 47 Prague, Czechia",
+  "d": 62,
+  "query": "Restaurant Zvonice",
+  "weak": false
+ },
+ "400": {
+  "id": "510da1ef13aca22c4059271551dc4c684840f00103f9011757e2310000000092030a486f73706f6461203939",
+  "name": "Hospoda 99",
+  "addr": "Věžní 99, 381 01 Český Krumlov, Czechia",
+  "d": 30,
+  "query": "places/circle",
+  "weak": false
+ },
+ "401": {
+  "id": "517ff3870be59730405955af1177ab9c4840f00103f9014529fdbf00000000c002019203074368612d436861e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33323231303339343239",
+  "name": "Cha-Cha",
+  "addr": "Husitská 8a, 612 00 Brno, Czechia",
+  "d": 14,
+  "query": "Cha-Cha",
+  "weak": false
+ },
+ "402": {
+  "id": "518f0a52dfe89b30405999f69304f2984840f00103f9016f436dbc00000000920311526973746f72616e7465205069617a7a61",
+  "name": "Ristorante Piazza",
+  "addr": "Freedom Square 9, 602 00 Brno, Czechia",
+  "d": 13,
+  "query": "places/circle",
+  "weak": false
+ },
+ "403": {
+  "id": "51f17ad56fcb2f4dc059904fc8cedb4e41c0f00103f9014b03fc3901000000c0020192030a416275656c612050616ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f35323637373834353233",
+  "name": "Abuela Pan",
+  "addr": "Chile 518, San Telmo, 1097 Buenos Aires, Argentina",
+  "d": 7,
+  "query": "Abuela Pan",
+  "weak": false
+ },
+ "404": {
+  "id": "51b4227bce27324dc05926ae5e6a3a4c41c0f00103f9013147d0580000000092030743756d616ec3a1",
+  "name": "Cumaná",
+  "addr": "Rodríguez Peña 1149, Recoleta, C1060 ABD Buenos Aires, Argentina",
+  "d": 18,
+  "query": "places/circle",
+  "weak": false
+ },
+ "405": {
+  "id": "51ba7bca7be62f4dc059d8559286644c41c0f00103f90145b91b8800000000c0020192030d446164c3a1204269737472c3b3e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32323833353138323737",
+  "name": "Dadá Bistró",
+  "addr": "San Martín 941, Retiro, C1004 AAT Buenos Aires, Argentina",
+  "d": 10,
+  "query": "Dadá Bistro",
+  "weak": false
+ },
+ "406": {
+  "id": "515c7a8f8e06324dc05933da4f6b3f4b41c0f00103f90112efd52700000000c0020192030e436166c3a9204c61204269656c61",
+  "name": "Café La Biela",
+  "addr": "Presidente Roberto M. Ortiz 596, Recoleta, C1129 ABO Buenos Aires, Argentina",
+  "d": 10,
+  "query": "La Biela",
+  "weak": false
+ },
+ "407": {
+  "id": "51c6d6d8caf02e4dc059e17d552e544d41c0f00103f901fc1d93bd00000000c0020192031143616261c3b161204c6173204c696c6173e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33313830353335323932",
+  "name": "Cabaña Las Lilas",
+  "addr": "Avenida Alicia Moreau de Justo 516, Puerto Madero, C1107 AAV Buenos Aires, Argentina",
+  "d": 37,
+  "query": "Cabaña Las Lilas",
+  "weak": false
+ },
+ "408": {
+  "id": "5194f8dc09f62e4dc0591051966b1b4d41c0f00103f901fe1d93bd00000000c0020192030948617070656e696e67",
+  "name": "Happening",
+  "addr": "Juana Manuela Gorriti, Puerto Madero, C1107 BGA Buenos Aires, Argentina",
+  "d": 7,
+  "query": "Happening Puerto Madero",
+  "weak": false
+ },
+ "409": {
+  "id": "51a1a6f16668393f40590774cbb3370f3e40f00103f901c5e64be200000000c0020192030c41626f7520456c2053656564",
+  "name": "Abou El Seed",
+  "addr": "Ishaq Yaacoub Street, Zamalek, Cairo, 11211, Egypt",
+  "d": 0,
+  "query": "Abou El Sid",
+  "weak": false
+ },
+ "410": null,
+ "412": {
+  "id": "51934f34b4264d534059e79ab80b838e3c40f00103f9017af8de1901000000c0020192030f47756e67207468652050616c616365e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373239303130323938",
+  "name": "Gung the Palace",
+  "addr": "Aurobindo Marg, Hauz Khas, Delhi - 110029, India",
+  "d": 8,
+  "query": "Gung The Palace",
+  "weak": false
+ },
+ "413": null,
+ "414": {
+  "id": "51f4c0221ab84e5340590b74bd86e0923c40f00103f9012556b26302000000920305416d696369",
+  "name": "Amici",
+  "addr": "Bhishma Pitamah Marg, South Extension, Delhi - 110049, India",
+  "d": 10,
+  "query": "places/circle",
+  "weak": false
+ },
+ "415": {
+  "id": "511f1fe3407e4f534059527644cf778d3c40f00103f9016d42bd1801000000c0020192030d54686520426967204368696c6ce203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373130303233373839",
+  "name": "The Big Chill",
+  "addr": "Eklavya Vithi, Greater Kailash, Delhi - 110019, India",
+  "d": 5,
+  "query": "The Big Chill",
+  "weak": false
+ },
+ "416": null,
+ "417": {
+  "id": "51ca0e3b9df54e5340594a16e6f340a63c40f00103f9015c8f887d00000000c002019203074b6172696d2773e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32313036313031353936",
+  "name": "Karim's",
+  "addr": "19, Kalan Mahal Road, Old Delhi, Delhi - 110006, India",
+  "d": 22,
+  "query": "Karim's",
+  "weak": false
+ },
+ "418": null,
+ "419": null,
+ "420": null,
+ "421": null,
+ "422": {
+  "id": "51a0d8afe0239d3e405957a71485a76c4240f00103f9015b28fc6002000000c0020192030959616d61c3a76f6261",
+  "name": "Yamaçoba",
+  "addr": "Atatürk Bulvarı, 07130 Konyaaltı, Turkey",
+  "d": 5,
+  "query": "Yamaçoba",
+  "weak": false
+ },
+ "423": {
+  "id": "5173caeda87bb43e4059dac0c2eee0704240f00103f9015df8af5402000000c0020192030e41796172204d657968616e657369e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130303130373533313137",
+  "name": "Ayar Meyhanesi",
+  "addr": "Hesapci Sokak 59a, 07100 Muratpaşa, Turkey",
+  "d": 7,
+  "query": "Ayar Meyhanesi",
+  "weak": false
+ },
+ "424": {
+  "id": "5128733d1b036c594059f900930a190e0940f00103f901dddc23c500000000c002019203044a617961",
+  "name": "Jaya",
+  "addr": "51 Jalan Thambipillay, Brickfields, 50470 Kuala Lumpur, Malaysia",
+  "d": 0,
+  "query": "Jaya Restoran",
+  "weak": false
+ },
+ "425": {
+  "id": "5175a098068f6d594059e897d244e92c0940f00103f9012f15e4ad00000000c0020192030d4c6f74203130204875746f6e67",
+  "name": "Lot 10 Hutong",
+  "addr": "50 Jalan Sultan Ismail, Bukit Bintang, 50200 Kuala Lumpur, Malaysia",
+  "d": 34,
+  "query": "Lot 10 Hutong",
+  "weak": false
+ },
+ "426": null,
+ "427": {
+  "id": "5164ac36ffaf6d594059709692e524340940f00103f9018a436d8002000000c0020192030d486f72697a6f6e204772696c6ce203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130373434353738393534",
+  "name": "Horizon Grill",
+  "addr": "Kampong Dollah, 50450 Kuala Lumpur, KUL, Malaysia",
+  "d": 2,
+  "query": "Horizon Grill",
+  "weak": false
+ },
+ "428": {
+  "id": "51a0cecb176aef284059becbfbee0cf34440f00103f901253f4b5502000000c0020192030e506173746120696e20436f72736fe203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130303230393239333137",
+  "name": "Pasta in Corso",
+  "addr": "Corso Vittorio Emanuele Secondo, 273, 00186 Rome RM, Italy",
+  "d": 7,
+  "query": "Pasta In Corso",
+  "weak": false
+ },
+ "429": {
+  "id": "51f3f45b85def028405927929ed8f9f24440f00103f901ab04923700000000c0020192030b467269676964617269756de203226f70656e7374726565746d61703a76656e75653a6e6f64652f393332333136333331",
+  "name": "Frigidarium",
+  "addr": "Via del Governo Vecchio, 112, 00186 Rome RM, Italy",
+  "d": 3,
+  "query": "Frigidarium",
+  "weak": false
+ },
+ "430": {
+  "id": "510128ebdc59f428405961b07ad855f34440f00103f90154e9f1010000000092030847696f6c69747469",
+  "name": "Giolitti",
+  "addr": "Via degli Uffici del Vicario, 40, 00186 Rome RM, Italy",
+  "d": 1,
+  "query": "places/circle",
+  "weak": false
+ },
+ "431": null,
+ "432": {
+  "id": "519bd4867945fe2840592889db57d4f14440f00103f901776b23a601000000c0020192031854726174746f7269612050697a7a65726961204c757a7a69e203236f70656e7374726565746d61703a76656e75653a6e6f64652f37303832333036343233",
+  "name": "Trattoria Pizzeria Luzzi",
+  "addr": "Via di San Giovanni in Laterano, 88, 00184 Rome RM, Italy",
+  "d": 3,
+  "query": "Trattoria Pizzeria Luzzi",
+  "weak": false
+ },
+ "433": {
+  "id": "511bda5b25b3e92840591b07037404f44440f00103f901d91f288301000000c002019203144f6c64204272696467652047656c617465726961e203236f70656e7374726565746d61703a76656e75653a6e6f64652f36343935343132313835",
+  "name": "Old Bridge Gelateria",
+  "addr": "Viale dei Bastioni di Michelangelo, 5, 00192 Rome RM, Italy",
+  "d": 15,
+  "query": "Old Bridge Gelateria",
+  "weak": false
+ },
+ "434": {
+  "id": "511e824f1839f0284059799e2e41fcf14440f00103f901a8ad7a7f00000000c0020192030e476c61737320486f737461726961e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32313338373436323830",
+  "name": "Glass Hostaria",
+  "addr": "Vicolo del Cinque, 58, 00153 Rome RM, Italy",
+  "d": 0,
+  "query": "Glass Hostaria",
+  "weak": false
+ },
+ "435": {
+  "id": "51ceb2ddf3b2f42840598d80650003f24440f00103f901165a3d3501000000c0020192030a536f7261204c656c6c61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35313838313830353032",
+  "name": "Sora Lella",
+  "addr": "Piazza di San Bartolomeo all'Isola, 00153 Rome RM, Italy",
+  "d": 11,
+  "query": "Sora Lella",
+  "weak": false
+ },
+ "436": {
+  "id": "51bceab76576f4284059ee44e0bb72f04440f00103f901566bbf5d0000000092031246656c69636520612054657374616363696f",
+  "name": "Felice a Testaccio",
+  "addr": "Via Mastro Giorgio, 29, 00153 Rome RM, Italy",
+  "d": 4,
+  "query": "places/circle",
+  "weak": false
+ },
+ "437": {
+  "id": "51556d927aaaf2284059f4554d6b2ef04440f00103f9015fd0bc1001000000c00201920309436865636368696e6fe203236f70656e7374726565746d61703a76656e75653a6e6f64652f34353735373736383633",
+  "name": "Checchino",
+  "addr": "Via di Monte Testaccio, 30, 00153 Rome RM, Italy",
+  "d": 1,
+  "query": "Checchino",
+  "weak": false
+ },
+ "438": {
+  "id": "51888d68f1987861405937548cf337d94140f00103f901da130c2900000000c0020192030f4b616e6461205961627520536f6261e203226f70656e7374726565746d61703a76656e75653a6e6f64652f363838363537333730",
+  "name": "Kanda Yabu Soba",
+  "addr": "Sotobori-dori Avenue, Kanda-Awajichō, Tokyo, TK 101-0063, Japan",
+  "d": 2,
+  "query": "Kanda Yabu soba",
+  "weak": false
+ },
+ "439": null,
+ "440": null,
+ "441": null,
+ "442": {
+  "id": "514074f7efb07861405995ba641c23d74140f00103f9013109c4c700000000c002019203085473756a6968616ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f33333531353133333933",
+  "name": "Tsujihan",
+  "addr": "15 1, Nihonbashi, Tokyo, TK 103-0027, Japan",
+  "d": 65,
+  "query": "Tsujihan",
+  "weak": false
+ },
+ "443": {
+  "id": "51e83eef7c75796140596bd1a7fa3adb4140f00102f901ba60ac0d00000000c002019203114461696b6f6b7579612054656d70757261e203216f70656e7374726565746d61703a76656e75653a7761792f323239343030373632",
+  "name": "Daikokuya Tempura",
+  "addr": "Asakusa Chuo-dori, Asakusa, Taito, TK 111-0032, Japan",
+  "d": 7,
+  "query": "Daikokuya",
+  "weak": false
+ },
+ "444": {
+  "id": "51433dd8bd7079614059576d48ed8fda4140f00103f90176fa7c0701000000c0020192030d4b6f6d616761746120446f6a6fe203236f70656e7374726565746d61703a76656e75653a6e6f64652f34343230353938333930",
+  "name": "Komagata Dojo",
+  "addr": "Edo-dori Avenue, Komagata, Tokyo, TK 111-0051, Japan",
+  "d": 310,
+  "query": "駒形どぜう",
+  "weak": false
+ },
+ "445": {
+  "id": "515143650d6878614059244f48217fd54140f00103f9017807ef0601000000c0020192030e5375736869204b616e6573616b61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34343131323935363038",
+  "name": "Sushi Kanesaka",
+  "addr": "Ginza Mihara Street, Ginza, Tokyo, TK 104-0061, Japan",
+  "d": 7,
+  "query": "Sushi Kanesaka",
+  "weak": false
+ },
+ "446": {
+  "id": "512107808527776140598e6f946181d44140f00103f901c403ac6200000000c0020192030e537573686920476f6e7061636869e203236f70656e7374726565746d61703a76656e75653a6e6f64652f31363535343430333234",
+  "name": "Sushi Gonpachi",
+  "addr": "Gaien Nishi Dori, Nishi-Azabu, Minato, TK 106-0031, Japan",
+  "d": 7,
+  "query": "Gonpachi",
+  "weak": false
+ },
+ "447": {
+  "id": "51e1b88c9b1a776140594251eadcfed54140f00103f90139db9a5501000000c002019203084e61726973617761",
+  "name": "Narisawa",
+  "addr": "Aoyama-dori, Minami-Aoyama, Minato, Minami-Aoyama 2 107-0062, Japan",
+  "d": 35,
+  "query": "Narisawa",
+  "weak": false
+ },
+ "448": {
+  "id": "51c182458f29605e4059129d0a5d2e233940f00103f901732880a901000000c0020192030ce88abde7b1b3e697a5e5ad90",
+  "name": "芽米日子",
+  "addr": "Daye Road, Beitou, Taipei 11252, Taiwan",
+  "d": 15,
+  "query": "芽米日子",
+  "weak": false
+ },
+ "449": {
+  "id": "51b31c322fd1665e4059f5f3a622150e3940f00103f901c9919d9501000000c0020192030ce781abe98d8be4b896e5aeb6",
+  "name": "火鍋世家",
+  "addr": "Lane 12, XingZhong Road, Nangang District, Taipei 115003, Taiwan",
+  "d": 10,
+  "query": "Huo Guo Shi Jia",
+  "weak": false
+ },
+ "450": null,
+ "451": null,
+ "452": null,
+ "453": {
+  "id": "51df23511ecc615e40598ce1a0736d083940f00103f9013b80edd900000000c00201920314596f6e676b616e672042656566204e6f6f646c65e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33363536323230373331",
+  "name": "Yongkang Beef Noodle",
+  "addr": "17 Lane 31, Section 2, Jinshan Sorth Road, Da'an District, Taipei 106, Taiwan",
+  "d": 1,
+  "query": "Yongkang Beef Noodle",
+  "weak": false
+ },
+ "454": {
+  "id": "511b6899a0e1635e4059c04d90227c073940f00103f9018e73594001000000c0020192030b4b696e675370696379204ae203236f70656e7374726565746d61703a76656e75653a6e6f64652f35333734353731343036",
+  "name": "KingSpicy J",
+  "addr": "12 吳興街118巷25弄, Xinyi District, Taipei 110, Taiwan",
+  "d": 5,
+  "query": "KingSpicy J",
+  "weak": false
+ },
+ "455": {
+  "id": "5112876c205d625e40596254ade012113940f00103f901d15632fe00000000c0020192031d416464696374696f6e204171756174696320446576656c6f706d656e74e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34323634373131383839",
+  "name": "Addiction Aquatic Development",
+  "addr": "18 民族東路410巷2弄, Zhongshan District, Taipei 104, Taiwan",
+  "d": 9,
+  "query": "Addiction Aquatic Development",
+  "weak": false
+ },
+ "456": {
+  "id": "518b27710cb7615e4059546f0d6c95103940f00103f901f3b905d101000000c00201920312e4b889e4ba95e697a5e5bc8fe69699e79086",
+  "name": "三井日式料理",
+  "addr": "Nong'an Street, Zhongshan District, Taipei 104029, Taiwan",
+  "d": 8,
+  "query": "三井日本料理",
+  "weak": true
+ },
+ "457": {
+  "id": "51edf5ee8ff7be5f405997cadb114ec94240f00103f901a9b1d50901000000c00201920312496d756e2053656f6c6c656f6e6774616e67",
+  "name": "Imun Seolleongtang",
+  "addr": "38-13 Ujeongguk-ro, Jongno 1·2·3·4(ilisamsa)-ga-dong, Seoul, 03149, South Korea",
+  "d": 11,
+  "query": "Imun Seolnongtang",
+  "weak": false
+ },
+ "458": {
+  "id": "517bab64b61ac05f4059d7e54af37dca4240f00102f9011cde551500000000c0020192031948616b72696d20446162616e6720436f666665652053686f70e203216f70656e7374726565746d61703a76656e75653a7761792f333537393438393536",
+  "name": "Hakrim Dabang Coffee Shop",
+  "addr": "119 Daehak-ro, Ihwa-dong, Seoul, SO 03079, South Korea",
+  "d": 10,
+  "query": "Hakrim Dabang",
+  "weak": false
+ },
+ "459": {
+  "id": "5143948a2114bf5f40597c0107fe01c84240f00103f901e8b51a0601000000c002019203104d79656f6e67646f6e67204b796f6a61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34333937333831303936",
+  "name": "Myeongdong Kyoja",
+  "addr": "29 Myeongdong 10-gil, Myeong-dong, Seoul, SO 04537, South Korea",
+  "d": 107,
+  "query": "Myeongdong Kyoja",
+  "weak": false
+ },
+ "460": null,
+ "461": null,
+ "462": null,
+ "463": {
+  "id": "51d7964bf44386134059f34707dad32f4a40f00103f90155f9ab5e00000000c002019203094c6f6e672050757261e203236f70656e7374726565746d61703a76656e75653a6e6f64652f31353838333238373839",
+  "name": "Long Pura",
+  "addr": "Rozengracht 46-48, 1016 ND Amsterdam, Netherlands",
+  "d": 5,
+  "query": "Long Pura",
+  "weak": false
+ },
+ "464": {
+  "id": "518d83a6800f79134059de4f32defb2e4a40f00103f901c6b3df2402000000c00201920313466f6f6468616c6c656e204265657220426172e203236f70656e7374726565746d61703a76656e75653a6e6f64652f39323038353734393138",
+  "name": "Foodhallen Beer Bar",
+  "addr": "Hannie Dankbaarpassage, 1053 EH Amsterdam, Netherlands",
+  "d": 9,
+  "query": "Foodhallen",
+  "weak": false
+ },
+ "465": {
+  "id": "51bbffd9a04081134059ff475cb68c2e4a40f00103f9011c3c799000000000c0020192030748617020486d6de203236f70656e7374726565746d61703a76656e75653a6e6f64652f32343233383634333438",
+  "name": "Hap Hmm",
+  "addr": "Eerste Helmersstraat 33, 1054 CZ Amsterdam, Netherlands",
+  "d": 16,
+  "query": "Hap Hmm",
+  "weak": false
+ },
+ "466": {
+  "id": "51006432665c9a13405937305e98f12f4a40f00103f9016f18787f00000000c0020192030442697264e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32313338353737303037",
+  "name": "Bird",
+  "addr": "Zeedijk 77, 1012 AS Amsterdam, Netherlands",
+  "d": 4,
+  "query": "Thaise Snackbar Bird",
+  "weak": false
+ },
+ "467": {
+  "id": "511f871cb6888b134059406ce9d154304a40f00103f901dba6711d00000000c002019203125468652050616e63616b652042616b657279e203226f70656e7374726565746d61703a76656e75653a6e6f64652f343933393837353437",
+  "name": "The Pancake Bakery",
+  "addr": "Prinsengracht 191, 1015 DS Amsterdam, Netherlands",
+  "d": 7,
+  "query": "The Pancake Bakery",
+  "weak": false
+ },
+ "468": {
+  "id": "510c3f93582d1054c0596a9efb4ad6c33940f00103f9010a11f55d000000009203155665727361696c6c65732052657374617572616e74",
+  "name": "Versailles Restaurant",
+  "addr": "3555 Southwest 8th Street, Miami, FL 33135, United States of America",
+  "d": 21,
+  "query": "places/circle",
+  "weak": false
+ },
+ "469": null,
+ "470": {
+  "id": "5111b34de08c0c54c05985ed27637cc43940f00103f901b575842103000000c0020192030a43616a756e20426f696c",
+  "name": "Cajun Boil",
+  "addr": "141 Southwest 7th Street, Miami, FL 33130, United States of America",
+  "d": 7,
+  "query": "Cajun Boil Brickell",
+  "weak": false
+ },
+ "471": {
+  "id": "51f538c258150c54c059a728f27fa2cb3940f00103f9010571b99301000000c0020192031b546865204461696c7920437265617469766520466f6f6420436f2ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f36373733333731313431",
+  "name": "The Daily Creative Food Co.",
+  "addr": "2001 Biscayne Boulevard, Miami, FL 33137, United States of America",
+  "d": 11,
+  "query": "Daily Creative Food",
+  "weak": false
+ },
+ "472": {
+  "id": "51714ffcbd390c54c0599e3358271dcf3940f00103f901b55e738a01000000c002019203094c61676e6961707065e203236f70656e7374726565746d61703a76656e75653a6e6f64652f36363137373833393839",
+  "name": "Lagniappe",
+  "addr": "3425 Northeast 2nd Avenue, Miami, FL 33137, United States of America",
+  "d": 9,
+  "query": "Lagniappe",
+  "weak": false
+ },
+ "473": {
+  "id": "5122c495b3770c54c059a92ee06586cd3940f00103f90197ed2a2501000000c0020192030753757669636865e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34393138353337363233",
+  "name": "Suviche",
+  "addr": "Miami, FL 33137, United States of America",
+  "d": 4,
+  "query": "Suviche",
+  "weak": false
+ },
+ "474": {
+  "id": "51e01dcf1d33f0604059d82ae74768534140f00103f90176c94a2501000000920312e4b8b2e3818be381a4e381a0e3828be381be",
+  "name": "串かつだるま",
+  "addr": "中央通, Naniwa Ward, Osaka, Ebisu-Higashi 2 556-0002, Japan",
+  "d": 6,
+  "query": "places/circle",
+  "weak": false
+ },
+ "475": {
+  "id": "51549d691db05c5e4059a39ecf706f3b3f40f00103f9017d4f23ff0000000092030853756d657269616e",
+  "name": "Sumerian",
+  "addr": "North Shaanxi Road, Jiangninglu Subdistrict, 200040 Shanghai, China",
+  "d": 30,
+  "query": "places/circle",
+  "weak": false
+ },
+ "476": null,
+ "477": null,
+ "478": {
+  "id": "516cf8cc48f3ca5cc0595bf6da221f0f4240f00103f9011688461601000000c002019203124861736820486f757365204120476f20476f",
+  "name": "Hash House A Go Go",
+  "addr": "3535 South Las Vegas Boulevard, Las Vegas, NV 89109, United States of America",
+  "d": 4,
+  "query": "Hash House A Go Go",
+  "weak": false
+ },
+ "479": {
+  "id": "5164c33f1170ca5cc059414154771b114240f00102f901575892090000000092030a5065707065726d696c6c",
+  "name": "Peppermill",
+  "addr": "2985 South Las Vegas Boulevard, Winchester, NV 89109, United States of America",
+  "d": 11,
+  "query": "places/circle",
+  "weak": false
+ },
+ "480": null,
+ "481": {
+  "id": "51279f1edbb2c95cc0595649641f64134240f00102f9015d18bf1500000000c002019203154c75762d49742046726f7a656e2043757374617264e203216f70656e7374726565746d61703a76656e75653a7761792f333634383435313439",
+  "name": "Luv-It Frozen Custard",
+  "addr": "505 East Oakey Boulevard, Las Vegas, NV 89104, United States of America",
+  "d": 5,
+  "query": "Luv-It Frozen Custard",
+  "weak": false
+ },
+ "482": null,
+ "483": null,
+ "484": null,
+ "485": {
+  "id": "51572a03626db93740595efb5d3354fd4240f00103f90127c3148f00000000c00201920313cea0ceaccebcceb520cea8cf85cf81cf81ceaee203236f70656e7374726565746d61703a76656e75653a6e6f64652f32343030353032353637",
+  "name": "Πάμε Ψυρρή",
+  "addr": "Κατσικογιάννη 5, 105 54 Athens, Greece",
+  "d": 1,
+  "query": "Πάμε Ψυρρή",
+  "weak": true
+ },
+ "486": {
+  "id": "51636eade584bf3740595880a5a954034340f00103f9014353f29b00000000c00201920326cea4ceb1ceb2ceadcf81cebdceb120ceb720ce92cebfcf83cebacebfcf80cebfcf8dcebbceb1e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32363136333439353037",
+  "name": "Ταβέρνα η Βοσκοπούλα",
+  "addr": "Σιβόρων 87, 111 42 Athens, Greece",
+  "d": 1,
+  "query": "Βοσκοπούλα",
+  "weak": true
+ },
+ "487": null,
+ "488": null,
+ "489": {
+  "id": "510ab9f71510ab2840592f39494e81b74640f00103f9015952880101000000c00201920319526973746f72616e746520416e7469636f204d617274696e69e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34333230363738343839",
+  "name": "Ristorante Antico Martini",
+  "addr": "Campo San Fantin, 30124 Venice VE, Italy",
+  "d": 4,
+  "query": "Antico Martini",
+  "weak": false
+ },
+ "490": {
+  "id": "51b0c79f0326ab284059b229463069b74640f00103f9018160490a01000000920317526973746f72616e7465204c61204361726176656c6c61",
+  "name": "Ristorante La Caravella",
+  "addr": "Calle Larga XXII Marzo, 30124 Venice VE, Italy",
+  "d": 2,
+  "query": "places/circle",
+  "weak": false
+ },
+ "491": {
+  "id": "516899a0e128a828405914aeec2708b94640f00103f9013909c40b01000000c00201920308416c2054696d6f6ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f34343932333634303839",
+  "name": "Al Timon",
+  "addr": "Fondamenta degli Ormesini, 2754, 30121 Venice VE, Italy",
+  "d": 7,
+  "query": "Al Timon",
+  "weak": false
+ },
+ "492": {
+  "id": "515c77f35487a0284059ecd56c8a6cb74640f00103f9017ce9be1a01000000c0020192030f4c6120546563696120566567616e61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373433363836353234",
+  "name": "La Tecia Vegana",
+  "addr": "Calle dei Sechi, 2104, 30123 Venice VE, Italy",
+  "d": 3,
+  "query": "La Tecia Vegana",
+  "weak": false
+ },
+ "493": {
+  "id": "518cf09b6791a6284059ad1adf7250b74640f00103f901bdb1ea3201000000c0020192031a4f73746572696120456e6f746563612041692041727469737469e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35313439323039303231",
+  "name": "Osteria Enoteca Ai Artisti",
+  "addr": "Fondamenta de la Toletta, 1169, 30123 Venice VE, Italy",
+  "d": 5,
+  "query": "Osteria Enoteca Ai Artisti",
+  "weak": false
+ },
+ "494": {
+  "id": "51ce99a37d62af28405985ecbc8dcdb74640f00103f9018374572800000000c0020192030f416c20566563696f2043616e746f6ee203226f70656e7374726565746d61703a76656e75653a6e6f64652f363736383230303939",
+  "name": "Al Vecio Canton",
+  "addr": "Castello, 4738a, 30122 Venice VE, Italy",
+  "d": 2,
+  "query": "Al Vecio Canton",
+  "weak": false
+ },
+ "495": {
+  "id": "511469d1f187a9284059cf98936126b84640f00102f901e259a00d00000000c0020192031b54726174746f72696120416e746963686520436172616d70616e65e203216f70656e7374726565746d61703a76656e75653a7761792f323238363132353738",
+  "name": "Trattoria Antiche Carampane",
+  "addr": "Rio Terà de le Carampane, 30125 Venice VE, Italy",
+  "d": 8,
+  "query": "Trattoria Antiche Carampane",
+  "weak": false
+ },
+ "496": null,
+ "497": {
+  "id": "51c7fa61dfa95547405939b302e89cb23840f00103f901312f1a8302000000c0020192030c4e616a642056696c6c616765",
+  "name": "Najd Village",
+  "addr": "Al Zohour, Riyadh 11566, Saudi Arabia",
+  "d": 3,
+  "query": "Najd Village",
+  "weak": false
+ },
+ "498": null,
+ "499": {
+  "id": "51994869368fc94240596b48dc63e9e34b40f00103f9010fed7afa00000000c0020192030fd090d187d0b02dd187d0b0d187d0b0e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34323032333630303739",
+  "name": "Ача-чача",
+  "addr": "Dorogomilovo District, Moscow, MS, Russia, 125124",
+  "d": 5,
+  "query": "Ача-Чача",
+  "weak": true
+ },
+ "500": {
+  "id": "515737de1d19c94240593305d4d578df4b40f00103f901234265a901000000920312d093d0b0d0bcd0b1d180d0b8d0bdd183d181",
+  "name": "Гамбринус",
+  "addr": "Большая Дорогомиловская улица 4, Dorogomilovo District, Moscow, Russia, 121059",
+  "d": 12,
+  "query": "places/circle",
+  "weak": false
+ },
+ "501": {
+  "id": "514a93f7167bca42405956bec2ddb4df4b40f00103f901aa80d09200000000c0020192030c576869746520526162626974e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32343633313337393632",
+  "name": "White Rabbit",
+  "addr": "3rd Smolenskiy Lane, Arbat District, Moscow, MS, Russia, 121099",
+  "d": 32,
+  "query": "White Rabbit",
+  "weak": false
+ },
+ "502": {
+  "id": "5174d0251c7ad0424059262488a9e3de4b40f00103f901ddbe9c1b00000000c00201920306477261626c79",
+  "name": "Grably",
+  "addr": "Pyatnitskaya Street 27 с1, Zamoskvorechye District, Moscow, Russia, 115035",
+  "d": 6,
+  "query": "Grabli",
+  "weak": false
+ },
+ "503": null,
+ "504": {
+  "id": "51fe614b8fa6cc424059378b170b43e04b40f00103f901b78fa35000000000c00201920309d09cd1832dd09cd183e203236f70656e7374726565746d61703a76656e75653a6e6f64652f31333532383936343339",
+  "name": "Му-Му",
+  "addr": "Dorogomilovo District, Moscow, Jakimanka, Russia",
+  "d": 1,
+  "query": "Му-Му",
+  "weak": true
+ },
+ "505": {
+  "id": "5129554733bbcc424059f9043f60d4df4b40f00103f901933a843000000000c0020192030ed0a7d0b5d0bcd0bed0b4d0b0d0bd",
+  "name": "Чемодан",
+  "addr": "Gogolevskiy Boulevard 25 с1, Arbat District, Moscow, Russia, 119019",
+  "d": 21,
+  "query": "Чемодан",
+  "weak": true
+ },
+ "506": {
+  "id": "51964fa09971cd424059808868cfc0e14b40f00102f901c20b270300000000c0020192030d436166c3a920507573686b696ee203206f70656e7374726565746d61703a76656e75653a7761792f3532383930353632",
+  "name": "Café Pushkin",
+  "addr": "Tverskoy Boulevard 26А, Tverskoy District, Moscow, MS, Russia, 125009",
+  "d": 27,
+  "query": "Cafe Pushkin",
+  "weak": false
+ },
+ "507": {
+  "id": "51b2570ee324d24240591eb0613c39e04b40f00103f9018a2d702f00000000c00201920314d0add0bad181d0bfd0b5d0b4d0b8d186d0b8d18f",
+  "name": "Экспедиция",
+  "addr": "Певческий переулок 6, Tagansky District, Moscow, Russia, 109028",
+  "d": 32,
+  "query": "Экспедиция",
+  "weak": true
+ },
+ "508": {
+  "id": "512d4d00b49c0a19c059b1602c1dbdab4a40f00102f901eb73db0e00000000c0020192030e4265776c6579277320436166c3a9e203216f70656e7374726565746d61703a76656e75653a7761792f323439323633303833",
+  "name": "Bewley's Café",
+  "addr": "78-79 Grafton Street, Ringsend, Dublin, Ireland",
+  "d": 3,
+  "query": "Bewley's Café",
+  "weak": false
+ },
+ "509": null,
+ "510": {
+  "id": "51d37256fabf1119c059cf28024125ac4a40f00103f901d97d8e1c00000000c002019203075a6179746f6f6ee203226f70656e7374726565746d61703a76656e75653a6e6f64652f343739313030333737",
+  "name": "Zaytoon",
+  "addr": "14/15 Parliament Street, Temple Bar, Dublin, Ireland",
+  "d": 5,
+  "query": "Zaytoon",
+  "weak": false
+ },
+ "511": {
+  "id": "519ecce440b40b19c059f39b78bdeaab4a40f00103f901717d79aa00000000c0020192030a436f726e75636f706961",
+  "name": "Cornucopia",
+  "addr": "19-20 Wicklow Street, Dublin, Ireland",
+  "d": 5,
+  "query": "Cornucopia",
+  "weak": false
+ },
+ "512": {
+  "id": "516a87bf266b0c19c05962e822cf3fac4a40f00103f901c610592100000000c0020192031747616c6c6167686572277320426f78747920486f757365e203226f70656e7374726565746d61703a76656e75653a6e6f64652f353539343835313236",
+  "name": "Gallagher's Boxty House",
+  "addr": "20-21 Temple Bar, Temple Bar, Dublin, Ireland",
+  "d": 2,
+  "query": "Gallagher's Boxty House",
+  "weak": false
+ },
+ "513": {
+  "id": "51d1c0d9f7f20419c059d8cdd60b4fab4a40f00102f9015840a31000000000c0020192030442616e67",
+  "name": "Bang",
+  "addr": "11 Merrion Row, Dublin, Ireland",
+  "d": 6,
+  "query": "Bang Restaurant",
+  "weak": false
+ },
+ "514": {
+  "id": "51a7c2e96ee80719c059549d1f9095ab4a40f00102f901d6666b1000000000c0020192031e4649524520537465616b686f75736520616e642052657374617572616e74e203216f70656e7374726565746d61703a76656e75653a7761792f323735343734313334",
+  "name": "FIRE Steakhouse and Restaurant",
+  "addr": "Dawson Street, Ringsend, Dublin, Ireland",
+  "d": 16,
+  "query": "Fire Steakhouse",
+  "weak": false
+ },
+ "515": {
+  "id": "51ffe6c589af0e19c059e341695ec4ab4a40f00103f901f05ca11a00000000c0020192030b4c27477565756c65746f6ee203226f70656e7374726565746d61703a76656e75653a6e6f64652f343436373832373034",
+  "name": "L'Gueuleton",
+  "addr": "1 Fade Street, Rathmines, Dublin, Ireland",
+  "d": 4,
+  "query": "L'Gueuleton",
+  "weak": false
+ },
+ "516": {
+  "id": "51b39f200c17ad5a40591c4fbae303952540f00103f901729f827001000000c00201920317424c4f4f4d20536169676f6e2052657374617572616e74",
+  "name": "BLOOM Saigon Restaurant",
+  "addr": "3/5 Hoang Sa, Ward Dakao, District 1, Đa Kao, Quận 1, Hồ Chí Minh, Vietnam, Saigon, Ho Chi Minh City, 72200, Vietnam",
+  "d": 167,
+  "query": "Bloom Saigon Restaurant",
+  "weak": false
+ },
+ "517": {
+  "id": "513c026ecc218052c059b159e48d825d4440f00103f901a7208a3700000000c0020192030b4a6f6527732050697a7a61e203226f70656e7374726565746d61703a76656e75653a6e6f64652f393331373939323037",
+  "name": "Joe's Pizza",
+  "addr": "7 Carmine Street, New York, NY 10014, United States of America",
+  "d": 0,
+  "query": "Joe's Pizza",
+  "weak": false
+ },
+ "518": {
+  "id": "51e126a3ca307f52c059e27e1bbd755c4440f00103f90114aa2a7200000000c002019203134b61747a27732044656c69636174657373656ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f31393135333938363736",
+  "name": "Katz's Delicatessen",
+  "addr": "205 East Houston Street, New York, NY 10002, United States of America",
+  "d": 0,
+  "query": "Katz's Delicatessen",
+  "weak": false
+ },
+ "519": {
+  "id": "51fa241c1fd27e52c059483a5edca1634440f00103f90182e4c17f00000000c0020192030d47726179277320506170617961e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32313433343133333738",
+  "name": "Gray's Papaya",
+  "addr": "2090 Broadway, New York, NY 10023, United States of America",
+  "d": 0,
+  "query": "Gray's Papaya",
+  "weak": false
+ },
+ "520": {
+  "id": "518da328869a7d52c059000572e4dc5a4440f00103f901ec7f0a9400000000c002019203175065746572204c7567657220537465616b20486f757365e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32343833373136303736",
+  "name": "Peter Luger Steak House",
+  "addr": "178 Broadway, New York, NY 11211, United States of America",
+  "d": 0,
+  "query": "Peter Luger Steak House",
+  "weak": false
+ },
+ "521": {
+  "id": "516f35a1ff547f52c0596277cb1f1d5c4440f00103f90143234c9800000000c00201920315527573732026204461756768746572732043616665e203236f70656e7374726565746d61703a76656e75653a6e6f64652f32353535313236353935",
+  "name": "Russ & Daughters Cafe",
+  "addr": "127 Orchard Street, New York, NY 10002, United States of America",
+  "d": 0,
+  "query": "Russ & Daughters Cafe",
+  "weak": false
+ },
+ "522": {
+  "id": "5181c355afec7d52c05916a7b5c425624440f00103f901e7c457a200000000c0020192030644616e69656c",
+  "name": "Daniel",
+  "addr": "60 East 65th Street, New York, NY 10065, United States of America",
+  "d": 0,
+  "query": "Daniel",
+  "weak": false
+ },
+ "523": {
+  "id": "51843ea253217f52c05923dc645419604440f00103f9019cf2e2b600000000c002019203104b65656e7320537465616b686f757365e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33303638333236353536",
+  "name": "Keens Steakhouse",
+  "addr": "72 West 36th Street, New York, NY 10018, United States of America",
+  "d": 0,
+  "query": "Keens Steakhouse",
+  "weak": false
+ },
+ "524": {
+  "id": "5136bba4202e7f52c059e0e297b0ec5e4440f00103f9017ef462ea00000000c00201920313456c6576656e204d616469736f6e205061726be203236f70656e7374726565746d61703a76656e75653a6e6f64652f33393332333533363632",
+  "name": "Eleven Madison Park",
+  "addr": "11 Madison Avenue, New York, NY 10010, United States of America",
+  "d": 0,
+  "query": "Eleven Madison Park",
+  "weak": false
+ },
+ "525": {
+  "id": "51c3f17c06d47e52c059596dfe5f75614440f00103f9017ff462ea00000000c0020192030c4c65204265726e617264696e",
+  "name": "Le Bernardin",
+  "addr": "155 West 51st Street, New York, NY 10019, United States of America",
+  "d": 0,
+  "query": "Le Bernardin",
+  "weak": false
+ },
+ "526": {
+  "id": "510d7d66ff727c52c059880e812381674440f00103f901f0073efc00000000c0020192031353796c76696127732052657374617572616e74e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34323331393233363936",
+  "name": "Sylvia's Restaurant",
+  "addr": "328 Malcolm X Boulevard, New York, NY 10027, United States of America",
+  "d": 0,
+  "query": "Sylvia's Restaurant",
+  "weak": false
+ },
+ "527": {
+  "id": "5133bed474e27f52c0595ae9ff66735b4440f00103f9012a0865ff00000000c002019203124e6f6d2057616820546561205061726c6f72e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34323834383131333036",
+  "name": "Nom Wah Tea Parlor",
+  "addr": "13 Doyers Street, New York, NY 10013, United States of America",
+  "d": 0,
+  "query": "Nom Wah Tea Parlor",
+  "weak": false
+ },
+ "528": {
+  "id": "51263acb2c427f52c059465b3a8b835e4440f00103f901ed3fe82601000000c0020192030f4772616d657263792054617665726ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f34393437373232323231",
+  "name": "Gramercy Tavern",
+  "addr": "42 East 20th Street, New York, NY 10003, United States of America",
+  "d": 0,
+  "query": "Gramercy Tavern",
+  "weak": false
+ },
+ "530": {
+  "id": "51e3daf5775bcf5c405978cce5ab895221c0f00102f901492ea81500000000c0020192030b42616c692042616b657279e203216f70656e7374726565746d61703a76656e75653a7761792f333633333433343333",
+  "name": "Bali Bakery",
+  "addr": "Jalan Hayam Wuruk, Badan Pendidikan & Pelatihan Provinsi Bali, Denpasar 80239, BA, Indonesia",
+  "d": 3,
+  "query": "Bali Bakery",
+  "weak": false
+ },
+ "531": {
+  "id": "5173bed87bf1ce5c405951227832ee5421c0f00103f9018d4d360701000000c0020192031248616e616d617361202d2044727570616469",
+  "name": "Hanamasa - Drupadi",
+  "addr": "Jalan Drupadi 44, Denpasar 80234, Bali, Indonesia",
+  "d": 12,
+  "query": "Hanamasa",
+  "weak": false
+ },
+ "532": null,
+ "533": {
+  "id": "51be9aa84a005354c0596b323e27189b3c40f00103f901cc22b1cf01000000c00201920313426f73746f6e2773204669736820486f757365e203236f70656e7374726565746d61703a76656e75653a6e6f64652f37373739343539373838",
+  "name": "Boston's Fish House",
+  "addr": "Aloma Avenue, Goldenrod, FL 32733, United States of America",
+  "d": 6,
+  "query": "Boston's Fish House",
+  "weak": false
+ },
+ "534": {
+  "id": "5176e50ef6015d54c0594adc195c29763c40f00103f901228ece5b00000000c0020192031f43616d696c6127732052657374617572616e74652042726173696c6569726fe203236f70656e7374726565746d61703a76656e75653a6e6f64652f31353430323633343538",
+  "name": "Camila's Restaurante Brasileiro",
+  "addr": "5458 International Drive, Orlando, FL 32819, United States of America",
+  "d": 1,
+  "query": "Camila's Restaurant",
+  "weak": false
+ },
+ "535": {
+  "id": "516426ace86a5d54c0591ffde54988823c40f00103f901e7557e7e01000000c002019203135069652d46656374696f6e204f726c616e646fe203236f70656e7374726565746d61703a76656e75653a6e6f64652f36343137313736303339",
+  "name": "Pie-Fection Orlando",
+  "addr": "3120 S Kirkman Road, Orlando, FL 32811, United States of America",
+  "d": 5,
+  "query": "Pie-Fection Orlando",
+  "weak": false
+ },
+ "536": {
+  "id": "513c592030455b54c059bb9c1210935c3c40f00103f901078a149f00000000c0020192030d456c20496e6b61204772696c6c",
+  "name": "El Inka Grill",
+  "addr": "Town Loop Boulevard, Hunters Creek, FL 32837, United States of America",
+  "d": 41,
+  "query": "El Inka Grill Ceviche",
+  "weak": false
+ },
+ "537": {
+  "id": "51525a24920d5f54c059f3aca415df623c40f00103f90129b8bf8d02000000c0020192030b546f6b796f205375736869",
+  "name": "Tokyo Sushi",
+  "addr": "8111 Vineland Avenue, Orlando, FL 32821, United States of America",
+  "d": 7,
+  "query": "Tokyo Sushi & Grill",
+  "weak": false
+ },
+ "538": {
+  "id": "51c883e3e8605754c05981b63066a68d3c40f00103f901640a129002000000c0020192030f436875616e204c752047617264656ee203246f70656e7374726565746d61703a76656e75653a6e6f64652f3131303037303336303034",
+  "name": "Chuan Lu Garden",
+  "addr": "1101 East Colonial Drive, Orlando, FL 32803, United States of America",
+  "d": 12,
+  "query": "Chuan Lu Garden",
+  "weak": false
+ },
+ "539": {
+  "id": "51d8840f80135e54c059147e0459aa703c40f00102f901ad04620800000000c002019203115669746f27732043686f7020486f757365e203216f70656e7374726565746d61703a76656e75653a7761792f313430363431343533",
+  "name": "Vito's Chop House",
+  "addr": "8633 International Drive, Orlando, FL 32819, United States of America",
+  "d": 5,
+  "query": "Vito's Chop House",
+  "weak": false
+ },
+ "540": {
+  "id": "5166101fd8f1f65940598198dfc4ebd5f43ff00103f90151018f4101000000c002019203105a616d5a616d2053696e6761706f7265",
+  "name": "ZamZam Singapore",
+  "addr": "699 North Bridge Road, Singapore 198833, Singapore",
+  "d": 10,
+  "query": "Zam Zam",
+  "weak": false
+ },
+ "541": null,
+ "542": {
+  "id": "51a4946b659df9594059cc62bdace4fef43ff00103f9017dac9b2b01000000c0020192030d4775616e20486f6520536f6f6e",
+  "name": "Guan Hoe Soon",
+  "addr": "200 Joo Chiat Road, Singapore 427471, Singapore",
+  "d": 163,
+  "query": "Guan Hoe Soon Restaurant",
+  "weak": false
+ },
+ "543": {
+  "id": "5108c14fc186f65940596a6798da52e7f43ff00102f9013389820a00000000c0020192030c4b6f6d616c612056696c6173e203216f70656e7374726565746d61703a76656e75653a7761792f313736333236393633",
+  "name": "Komala Vilas",
+  "addr": "78 Serangoon Road, Singapore 207466, Singapore",
+  "d": 7,
+  "query": "Komala Vilas",
+  "weak": false
+ },
+ "544": {
+  "id": "51b3d30feaa2f659405955f3c1d77ce1f43ff00102f901fc88820a00000000c002019203114269736d696c6c61682042697279616e69e203216f70656e7374726565746d61703a76656e75653a7761792f313736333236393038",
+  "name": "Bismillah Biryani",
+  "addr": "50 Dunlop Street, Singapore 209379, Singapore",
+  "d": 13,
+  "query": "Bismillah Biryani",
+  "weak": false
+ },
+ "545": {
+  "id": "5165a6b4fe96f759405926c808a87084f43ff00102f9015a3b400a00000000c0020192031053617461792062792074686520426179e203216f70656e7374726565746d61703a76656e75653a7761792f313731393831363538",
+  "name": "Satay by the Bay",
+  "addr": "Gardens by the Bay, Singapore 019396, Singapore",
+  "d": 30,
+  "query": "Satay by the Bay",
+  "weak": false
+ },
+ "546": {
+  "id": "513f30911cfaf6594059af9fb426cc8af43ff00103f9012c72b47b01000000c0020192030957616b75204768696ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f36333730333930353732",
+  "name": "Waku Ghin",
+  "addr": "St Andrew's Road, Singapore 178957, Singapore",
+  "d": 35,
+  "query": "Waku Ghin",
+  "weak": false
+ },
+ "547": {
+  "id": "51262fd7474cf7594059eaf9e472cd8ef43ff00103f901e187336d00000000c0020192030a4d617267756572697465",
+  "name": "Marguerite",
+  "addr": "18 Marina Gardens Drive, Singapore 018953, Singapore",
+  "d": 9,
+  "query": "Marguerite",
+  "weak": false
+ },
+ "548": {
+  "id": "513c66fbeb70f3594059b6e123060f93f43ff00103f9010e4d6eef020000009203144b656e6720456e67204b656520536561666f6f64",
+  "name": "Keng Eng Kee Seafood",
+  "addr": "123 Bukit Merah Lane 1, Singapore 150123, Singapore",
+  "d": 21,
+  "query": "places/circle",
+  "weak": false
+ },
+ "549": {
+  "id": "51ee9ef29eb9f559405927614b34edc7f43ff00103f90183b3de1601000000c002019203114b696c6c696e6579204b6f70697469616de203236f70656e7374726565746d61703a76656e75653a6e6f64652f34363738363630393935",
+  "name": "Killiney Kopitiam",
+  "addr": "67 Killiney Road, Singapore 239524, Singapore",
+  "d": 2,
+  "query": "Killiney Kopitiam",
+  "weak": false
+ },
+ "550": {
+  "id": "51c177f6f040f659405941eb8612d29ff43ff00103f9015d92ae5301000000c00201920313536f6e672046612042616b204b757420546568e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35363938393136393537",
+  "name": "Song Fa Bak Kut Teh",
+  "addr": "11 New Bridge Road, Singapore 059383, Singapore",
+  "d": 3,
+  "query": "Song Fa Bak Kut Teh",
+  "weak": false
+ },
+ "551": {
+  "id": "51f2c528194af6594059f0124141cea0f43ff00103f901cd968d1b00000000c0020192030d4a756d626f20536561666f6f64e203226f70656e7374726565746d61703a76656e75653a6e6f64652f343632323634303133",
+  "name": "Jumbo Seafood",
+  "addr": "20 Upper Circular Road, Singapore 058416, Singapore",
+  "d": 3,
+  "query": "Jumbo Seafood",
+  "weak": false
+ },
+ "552": {
+  "id": "51b08d78b21bf3524059899c195822e93a40f00103f901b3d1332900000000c0020192030b416e6f6b68692043616665e203226f70656e7374726565746d61703a76656e75653a6e6f64652f363931323631383735",
+  "name": "Anokhi Cafe",
+  "addr": "Prithviraj Road, Adarsh Nagar, Jaipur Municipal Corporation - 302004, RJ, India",
+  "d": 66,
+  "query": "Anokhi Cafe",
+  "weak": false
+ },
+ "553": {
+  "id": "51525cfa3cebf2524059b4bffdca94ea3a40f00103f901c560f91001000000c0020192031a506561636f636b20726f6f66746f702072657374617572616e74e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34353739373435393839",
+  "name": "Peacock rooftop restaurant",
+  "addr": "Hari Kisham Somani Marg, Bani Park, Jaipur Municipal Corporation - 302006, RJ, India",
+  "d": 37,
+  "query": "Peacock Rooftop Restaurant",
+  "weak": false
+ },
+ "554": null,
+ "555": {
+  "id": "51b007ee9bd6f45240592bf290ce65eb3a40f00103f90171f1c42301000000c002019203034c4d42",
+  "name": "LMB",
+  "addr": "Johari Bazar, Ramganj, Jaipur Municipal Corporation - 302001, RJ, India",
+  "d": 9,
+  "query": "LMB",
+  "weak": false
+ },
+ "556": null,
+ "557": {
+  "id": "511adb6b41eff3524059af7ec74b92ea3a40f00103f901f3d4d4b002000000c002019203054e69726f73e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3131353536363732373535",
+  "name": "Niros",
+  "addr": "Mirza Ismail Road, Bani Park, Jaipur Municipal Corporation - 302006, RJ, India",
+  "d": 36,
+  "query": "Niros",
+  "weak": false
+ },
+ "559": {
+  "id": "51903b5bf65a9858405958c85c1954831f40f00103f9015dcdf5e202000000c0020192030b526f7469204368616f6661e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3132333937363934333031",
+  "name": "Roti Chaofa",
+  "addr": "44, Chao Fa Road, Phuket, Talat Nuea, PU 83000, Thailand",
+  "d": 0,
+  "query": "Roti Chaofa",
+  "weak": false
+ },
+ "560": {
+  "id": "51e89491c45c965840597616bd5301771f40f00103f901a557f6e202000000c002019203174e69796f6d2053616c74204772696c6c6564204475636b",
+  "name": "Niyom Salt Grilled Duck",
+  "addr": "บ้านตีนเขา, Chaofah Tawantok Road, Wichit, บ้านตีนเขา, Phuket Province 83000, Thailand",
+  "d": 0,
+  "query": "Niyom Salt Grilled Duck",
+  "weak": false
+ },
+ "561": {
+  "id": "517dc800f50b995840593cf14174ada21f40f00103f901d1dbf5e202000000c00201920309546f6e204d61796f6d",
+  "name": "Ton Mayom",
+  "addr": "Thep Krasattri Road, Ratsada, 83000, Thailand",
+  "d": 0,
+  "query": "Ton Mayom",
+  "weak": false
+ },
+ "562": {
+  "id": "519a1d4e050199584059f5bc1b0b0a8b1f40f00103f9016dcbfc3d01000000c002019203084f6e65204368756ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f35333334393434363231",
+  "name": "One Chun",
+  "addr": "ชุมชนสามัคคีสามกอง, Thep Krasattri Road, Phuket, ชุมชนสามัคคีสามกอง, PU 83000, Thailand",
+  "d": 0,
+  "query": "One Chun",
+  "weak": false
+ },
+ "563": {
+  "id": "51733678bace97584059a62666625f5f1f40f00103f9017fe622f900000000c002019203164d6f72204d7520446f6e672052657374617572616e74e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34313739383134303135",
+  "name": "Mor Mu Dong Restaurant",
+  "addr": "Mueng Thong - Khao Khad Road, Wichit, PU 83230, Thailand",
+  "d": 0,
+  "query": "Mor Mu Dong",
+  "weak": false
+ },
+ "564": {
+  "id": "5171fecb5a2f995840597baccf8bc9811f40f00103f9011f85675000000000c0020192030a4c612047616574616e61e203236f70656e7374726565746d61703a76656e75653a6e6f64652f31333438393631353637",
+  "name": "La Gaetana",
+  "addr": "352, Phuket Road, Phuket, PU 83000, Thailand",
+  "d": 0,
+  "query": "La Gaetana",
+  "weak": false
+ },
+ "565": {
+  "id": "51f9bb77d418955840599a0d8d823beb1f40f00103f901ebaa7c3f02000000c002019203054e6974616e",
+  "name": "Nitan",
+  "addr": "Baan WANA's private road, Si Sunthon, Phuket Province 83110, Thailand",
+  "d": 0,
+  "query": "Nitan",
+  "weak": false
+ },
+ "566": {
+  "id": "51524dc6f8b29158405902531cb6aa132040f00102f9016a08d83f0000000092030e5072752052657374617572616e74",
+  "name": "Pru Restaurant",
+  "addr": "60/1, ภก.4018, Choeng Thale, 83110, Thailand",
+  "d": 5,
+  "query": "places/circle",
+  "weak": false
+ },
+ "567": {
+  "id": "51774eb340bbb455c059f1fcfdbd6f293540f00103f9012dd7902902000000c0020192030d456c20536f63696f204e61697ae203236f70656e7374726565746d61703a76656e75653a6e6f64652f39323837323932373137",
+  "name": "El Socio Naiz",
+  "addr": "Avenida Carlos Nader 74, 77059 Cancún, ROO, Mexico",
+  "d": 0,
+  "query": "El Socio Naiz",
+  "weak": false
+ },
+ "568": {
+  "id": "519df4bef1b5b355c059cdc98b4cc02f3540f00103f901fa30471703000000c0020192030c4b696f73636f205665726465e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133323735343433343530",
+  "name": "Kiosco Verde",
+  "addr": "Av. Lopez Portillo S.M. 85 14 y 15, Distrito 3, 77526 Cancún, ROO, Mexico",
+  "d": 0,
+  "query": "Kiosco Verde",
+  "weak": false
+ },
+ "569": {
+  "id": "5156c8a6a6eeb055c05955247035fc1a3540f00103f901bdd63a7402000000c00201920310456c20466973682046726974616e6761e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130353339393437373039",
+  "name": "El Fish Fritanga",
+  "addr": "Avenida Kukulcán, 77500 Cancún, ROO, Mexico",
+  "d": 0,
+  "query": "El Fish Fritanga",
+  "weak": false
+ },
+ "570": {
+  "id": "51b3c414f6feb455c0592f8100be80293540f00103f901c733a7c300000000c002019203144c612068616269636875656c612043616e63756ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f33323832353134383837",
+  "name": "La habichuela Cancun",
+  "addr": "Calle Margaritas, 77059 Cancún, ROO, Mexico",
+  "d": 0,
+  "query": "La Habichuela",
+  "weak": false
+ },
+ "571": {
+  "id": "51c94e893526b255c059250516c0940b3540f00103f901cd1e058002000000c002019203064e6176696f73e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130373337373533383035",
+  "name": "Navios",
+  "addr": "Boulevard Kukulcán, Cancún, ROO, Mexico",
+  "d": 0,
+  "query": "Navíos",
+  "weak": false
+ },
+ "572": {
+  "id": "5157f20c7533c15a40591bb4fc659cf53440f00103f90101f8523b00000000c002019203094375612056c3a06e67",
+  "name": "Cua Vàng",
+  "addr": "Phố Bạch Thái Bưởi, Bai Chay Ward, Quảng Ninh Province, Vietnam",
+  "d": 0,
+  "query": "Cua Vang",
+  "weak": false
+ },
+ "573": {
+  "id": "514424f90093c35a40598f24f72ae8f43440f00103f9011996c50603000000c0020192031a4e68c3a02068c3a06e672048e1bb936e672048e1baa16e682033e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3132393938353134323031",
+  "name": "Nhà hàng Hồng Hạnh 3",
+  "addr": "50, Đường Hạ Long, Bai Chay Ward, QN 01000, Vietnam",
+  "d": 0,
+  "query": "Nhà hàng Hồng Hạnh 3",
+  "weak": false
+ },
+ "574": {
+  "id": "51669d96c47ec15a405923d115b6b0f23440f00103f901e5d8c50603000000c002019203204e68c3a02068c3a06e67204e67e1bb8d63205068c6b0c6a16e67204e616d2031",
+  "name": "Nhà hàng Ngọc Phương Nam 1",
+  "addr": "Đỗ Sĩ Họa, Bai Chay Ward, Quảng Ninh Province 01000, Vietnam",
+  "d": 0,
+  "query": "Ngoc Phuong Nam 1",
+  "weak": false
+ },
+ "575": {
+  "id": "512f8a1ef818c25a40590236d6b441f23440f00103f901fa92158b02000000c002019203194e68c3a02048c3a06e67205068c6b0c6a16e67204e616d2032",
+  "name": "Nhà Hàng Phương Nam 2",
+  "addr": "LV2, 03, Sun Premier Village, Đường Hạ Long, Bai Chay Ward, Quảng Ninh Province 01000, Vietnam",
+  "d": 0,
+  "query": "Phuong Nam 2",
+  "weak": false
+ },
+ "582": {
+  "id": "516f62484e66f8604059b63176c24b7e4140f00103f901c4aeb12400000000c00201920312486f6e6b6520446169696368696173616869",
+  "name": "Honke Daiichiasahi",
+  "addr": "Shimogyo Ward, Kyoto, Kyoto Prefecture 600-8213, Japan",
+  "d": 0,
+  "query": "Honke Daiichi-Asahi",
+  "weak": false
+ },
+ "583": {
+  "id": "51ab73b10e6cf8604059efa3bf3c09814140f00103f901bf6da32a01000000c0020192030c496e6f646120436f66666565",
+  "name": "Inoda Coffee",
+  "addr": "Sakaimachi Street, Nakagyo Ward, Kyoto, Kyoto Prefecture 604-8111, Japan",
+  "d": 0,
+  "query": "Inoda Coffee Honten",
+  "weak": false
+ },
+ "584": {
+  "id": "51676490bbc8f86040596745d4449f804140f00103f901d606463503000000c00201920304497a7575e203246f70656e7374726565746d61703a76656e75653a6e6f64652f3133373738363833363036",
+  "name": "Izuu",
+  "addr": "切り通し, Higashiyama Ward, Kyoto, KY 605-0073, Japan",
+  "d": 0,
+  "query": "Izuu",
+  "weak": false
+ },
+ "585": {
+  "id": "51175b52ffaaf86040594190cd9f80804140f00103f9011e8ac33301000000c002019203114f6d656e2028506f6e74612d6368c58d29",
+  "name": "Omen (Ponta-chō)",
+  "addr": "Shijo Street, Shimogyo Ward, Kyoto, Kyoto Prefecture 600-8567, Japan",
+  "d": 0,
+  "query": "Omen Ponto-cho",
+  "weak": false
+ },
+ "586": {
+  "id": "51df09078cfff860405936131d13737f4140f00103f901c56d07ab01000000c0020192031ae6b885e6b0b420e9a086e6ada320e3818ae3818be381b9e5aeb6",
+  "name": "清水 順正 おかべ家",
+  "addr": "Kiyomizu Slope, Higashiyama Ward, Kyoto, Kiyomizu 2-chome 605-0862, Japan",
+  "d": 0,
+  "query": "清水 順正 おかべ家",
+  "weak": false
+ },
+ "589": {
+  "id": "51ae34df7702f96040596b5bde663b804140f00103f901cf608a7d02000000c00201920316e88f8ae4b983e4ba9520e784a1e7a28de5b1b1e688bfe203246f70656e7374726565746d61703a76656e75653a6e6f64652f3130363936313535333433",
+  "name": "菊乃井 無碍山房",
+  "addr": "Daidokoro Slope, Higashiyama Ward, Kyoto, KY 605-0826, Japan",
+  "d": 0,
+  "query": "菊乃井 無碍山房",
+  "weak": false
+ },
+ "590": {
+  "id": "51bcc4fdec2cf960405947167a0e76814140f00102f9010773431100000000c0020192030648796f746569e203216f70656e7374726565746d61703a76656e75653a7761792f323839363333303331",
+  "name": "Hyotei",
+  "addr": "Niō Gate Street, Sakyō Ward, Kyoto, KY 605-0034, Japan",
+  "d": 1,
+  "query": "Hyotei",
+  "weak": false
+ },
+ "591": {
+  "id": "51a14b38f496f560405993b05a00bf814140f00103f901d80fb17d0200000092030ce4baace983bde59089e58586",
+  "name": "京都吉兆",
+  "addr": "Nijo Station Arashiyama Line, Ukyō Ward, Kyoto, Saga Nakanoshima-chō 616-0000, Japan",
+  "d": 0,
+  "query": "places/circle",
+  "weak": false
+ },
+ "596": {
+  "id": "51970f520141063d405912f351eba27e4440f00103f901958c464c02000000c0020192030ec38769796120536f66726173c4b1e203236f70656e7374726565746d61703a76656e75653a6e6f64652f39383639363236353137",
+  "name": "Çiya Sofrası",
+  "addr": "Güneşlibahçe Sokağı 43, 34710 Kadıköy, Turkey",
+  "d": 0,
+  "query": "Çiya Sofrası",
+  "weak": false
+ },
+ "597": {
+  "id": "5146c6b4801afa3c40598ca2073e06814440f00103f90161cf8d1d01000000c002019203285461726968692053756c74616e61686d6574204bc3b6667465636973692053656c696d2055737461e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34373930383030323235",
+  "name": "Tarihi Sultanahmet Köftecisi Selim Usta",
+  "addr": "Divanyolu Caddesi 12, 34122 Fatih, Turkey",
+  "d": 0,
+  "query": "Tarihi Sultanahmet Köftecisi Selim Usta",
+  "weak": false
+ },
+ "598": {
+  "id": "510d3fee1120fb3c405959d306712f834440f00103f90102061f0f01000000c002019203114b6172616b6f792047756c6c756f676c75e203236f70656e7374726565746d61703a76656e75653a6e6f64652f34353438363538363930",
+  "name": "Karakoy Gulluoglu",
+  "addr": "Kemankeş Caddesi 67, 36827 İstanbul, Turkey",
+  "d": 0,
+  "query": "Karaköy Güllüoğlu",
+  "weak": false
+ },
+ "599": {
+  "id": "511fca6141abf93c40590fc29261cb814440f00103f90136ac823001000000c00201920313c59e65687a616465204361c49f204b65626170e203236f70656e7374726565746d61703a76656e75653a6e6f64652f35313038383337343330",
+  "name": "Şehzade Cağ Kebap",
+  "addr": "Hoca Paşa Sokağı 6, 34110 Fatih, Turkey",
+  "d": 0,
+  "query": "Şehzade Cağ Kebap",
+  "weak": false
+ },
+ "600": {
+  "id": "51cee90d524bf83c40592e1ad76432824440f00103f9019af2a30f00000000c0020192030548616d6469",
+  "name": "Hamdi",
+  "addr": "Kalçın Sokağı, 34116 Fatih, Turkey",
+  "d": 0,
+  "query": "Hamdi Restaurant",
+  "weak": false
+ },
+ "601": {
+  "id": "51b5102e2e9ff83c4059c92654cb31824440f00103f901265f92b700000000c0020192030750616e64656c69e203236f70656e7374726565746d61703a76656e75653a6e6f64652f33303739383233313432",
+  "name": "Pandeli",
+  "addr": "Misir Çarşısı 1, 34435 Fatih, Turkey",
+  "d": 0,
+  "query": "Pandeli",
+  "weak": false
+ },
+ "602": {
+  "id": "510f2a711de3fa3c40594c5e53d625834440f00103f901e249267100000000c002019203134b6172616bc3b679204c6f6b616e746173c4b1e203236f70656e7374726565746d61703a76656e75653a6e6f64652f31383938333334363930",
+  "name": "Karaköy Lokantası",
+  "addr": "Kemankeş Caddesi, 34425 Beyoğlu, Turkey",
+  "d": 0,
+  "query": "Karaköy Lokantası",
+  "weak": false
+ },
+ "603": {
+  "id": "51af43352559f93c4059032c4da5fa834440f00103f9012f9be0fa00000000c002019203154d696b6c61202d205475726b657920667573696f6ee203236f70656e7374726565746d61703a76656e75653a6e6f64652f34323039303233373931",
+  "name": "Mikla - Turkey fusion",
+  "addr": "Meşrutiyet Caddesi 15, 34430 Beyoğlu, Turkey",
+  "d": 0,
+  "query": "Mikla",
+  "weak": false
+ },
+ "604": {
+  "id": "515cee27be35f93c405977ddb64a0b834440f00103f9014abe167c01000000c002019203084e656f6c6f6b616ce203236f70656e7374726565746d61703a76656e75653a6e6f64652f36333736383332353836",
+  "name": "Neolokal",
+  "addr": "Bereketzade Medresesi Sokağı 11, 34421 Beyoğlu, Turkey",
+  "d": 0,
+  "query": "Neolokal",
+  "weak": false
+ }
+}

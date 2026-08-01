@@ -16,6 +16,7 @@ import TripShareModal from './TripShareModal';
 import TripPrintView from './TripPrintView';
 import TripDayModeView from './TripDayModeView';
 import TripExpensesPanel from './TripExpensesPanel';
+import MobileBackEntry from './MobileBackEntry';
 import { getHoveredActivity } from '../../lib/hoverTracker';
 import { downloadTripIcs } from '../../lib/exportTrip';
 import { shareTripAsTemplates } from '../../lib/shareTripTemplate';
@@ -621,6 +622,15 @@ export default function TripEditor({
   return (
     <AttachmentsCountProvider tripId={tripId}>
     <div className="pp-editor">
+      {/* Rend le bouton retour du téléphone équivalent à la flèche de l'en-tête
+          de la ville : sans cette entrée d'historique à dépiler, il remontait
+          jusqu'à l'entrée du voyage et faisait quitter le voyage entier depuis
+          une ville ouverte. Monté ici, au niveau de l'état, et non dans le
+          sous-arbre de la ville : celui-ci est remplacé quand on ouvre une
+          excursion, alors que la ville reste ouverte derrière. */}
+      {isMobile && mobileCityDetailId && (
+        <MobileBackEntry onBack={() => setMobileCityDetailId(null)} />
+      )}
       {/* Masquée entièrement (pas seulement au scroll) tant qu'une ville/
           excursion est ouverte en détail sur mobile : ce sont des infos du
           VOYAGE (titre, réglages, partage), pas de la ville affichée —

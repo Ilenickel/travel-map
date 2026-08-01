@@ -132,8 +132,12 @@
     "namePlaceholder": "Nombre del trayecto (p. ej.: {{mode}} a…)",
     "farTitle": "Unos {{distance}} en línea recta desde \"{{place}}\" — considere planificar un trayecto adecuado (tren, avión…)",
     "farLabel": "~{{distance}} — planifique un trayecto",
-    "nearTitle": "Distancia en línea recta desde \"{{place}}\" — aproximada (no tiene en cuenta el terreno ni el medio de transporte)",
-    "nearLabel": "~{{distance}} en línea recta"
+    "fallbackTitle": "Distancia en línea recta desde \"{{place}}\" — aproximada (no tiene en cuenta el terreno ni el medio de transporte)",
+    "fallbackLabel": "~{{distance}} en línea recta",
+    "walkLabel": "{{duration}} a pie",
+    "walkTitle": "Ruta a pie desde \"{{place}}\" — {{distance}} caminando, sin contar las pausas",
+    "durationMin": "{{minutes}} min",
+    "durationHour": "{{hours}} h {{minutes}}"
   },
   "day": {
     "short": "D{{n}}",
@@ -597,6 +601,7 @@
   },
   "print": {
     "travelLine": "↳ ~{{distance}} en línea recta desde {{place}}",
+    "travelWalkLine": "↳ {{duration}} a pie desde {{place}} ({{distance}})",
     "travelFarSuffix": " — considere planificar un trayecto adecuado",
     "statusNoDates": "Fechas del viaje no definidas.",
     "statusDatesInverted": "Las fechas del viaje son incoherentes (regreso antes de la salida).",

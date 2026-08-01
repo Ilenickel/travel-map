@@ -4,7 +4,8 @@ import { callModeration } from '../lib/moderation';
 import { useAuth } from '../context/AuthContext';
 import useIsMobile from '../hooks/useIsMobile';
 import useRestaurants from '../hooks/useRestaurants';
-import { haversineKm } from '../lib/planningUtils';
+import { haversineKm, formatTravelDuration } from '../lib/planningUtils';
+import { useWalkRoutes, MAX_WALK_HAVERSINE_KM } from '../hooks/useTravelRoutes';
 import { BUDGET_SYMBOL, formatDistance, restaurantNames } from '../lib/restaurants';
 import { cuisineTagLabel } from '../lib/cuisineTags';
 import useCuisineTags from '../hooks/useCuisineTags';
@@ -158,9 +159,11 @@ export default function RestaurantExplorer({
   // panneau flottant y masquerait la carte qu'il sert à lire.
   layout = 'list',
   // ── Planification uniquement ──
-  // Lieux déjà planifiés, pour afficher « à 1,2 km de X ». Rien n'est calculé
-  // par appel réseau : distance à vol d'oiseau uniquement (haversineKm), le
-  // temps de trajet réel serait faux et coûterait un appel par restaurant.
+  // Lieux déjà planifiés, pour afficher « à 8 min à pied de X ». Le lieu le plus
+  // proche est choisi à vol d'oiseau (haversineKm, gratuit et instantané) ; seul
+  // le temps de marche affiché vient d'un itinéraire réel, mis en cache et
+  // demandé pour les seuls restaurants visibles et assez proches pour qu'une
+  // marche ait un sens (MAX_WALK_HAVERSINE_KM).
   referencePoints = [],
   // [{ name, address }] des activités déjà au programme de la ville. L'adresse
   // est indispensable : une ville peut compter six McDonald's, et comparer les
@@ -285,6 +288,13 @@ export default function RestaurantExplorer({
   const shown = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
 
   // Lieu planifié le plus proche, calculé une fois pour toute la liste.
+  //
+  // La sélection du plus proche reste faite à VOL D'OISEAU, et le tri de la
+  // liste avec elle : c'est instantané, ça ne coûte aucun appel, et ça donne le
+  // même classement dans 99 % des cas. Seul le libellé affiché est enrichi d'un
+  // temps de marche réel (voir walkByRestaurant juste en dessous) — on remplace
+  // une unité par une autre pour la même adresse, on ne réordonne pas la liste
+  // sous les yeux de l'utilisateur au fil des réponses réseau.
   const nearestByRestaurant = useMemo(() => {
     const out = {};
     if (!referencePoints.length) return out;
@@ -294,12 +304,26 @@ export default function RestaurantExplorer({
       for (const p of referencePoints) {
         if (p.lat == null || p.lng == null) continue;
         const km = haversineKm(r.lat, r.lng, p.lat, p.lng);
-        if (!best || km < best.km) best = { km, name: p.name };
+        if (!best || km < best.km) best = { km, name: p.name, lat: p.lat, lng: p.lng };
       }
       if (best) out[r.id] = best;
     }
     return out;
   }, [shown, referencePoints]);
+
+  // Temps de marche depuis ce lieu planifié jusqu'au restaurant. Même borne que
+  // la planification : au-delà de MAX_WALK_HAVERSINE_KM à vol d'oiseau, la
+  // marche dépasse forcément les 45 min affichables, l'appel serait donc payé
+  // pour une information qu'on n'afficherait pas — la distance reprend la main.
+  // Sens lieu → restaurant, celui de la phrase affichée.
+  const walkEntries = useMemo(() => Object.entries(nearestByRestaurant)
+    .filter(([, n]) => n.km <= MAX_WALK_HAVERSINE_KM)
+    .map(([restaurantId, n]) => {
+      const r = shown.find((x) => x.id === restaurantId);
+      return r ? { id: restaurantId, fromLat: n.lat, fromLng: n.lng, toLat: r.lat, toLng: r.lng } : null;
+    })
+    .filter(Boolean), [nearestByRestaurant, shown]);
+  const walkByRestaurant = useWalkRoutes(walkEntries);
 
   // Callback lue via une réf : l'appelant la redéfinit à chaque rendu, la mettre
   // en dépendance relancerait l'effet en boucle.
@@ -1001,7 +1025,12 @@ export default function RestaurantExplorer({
                         )}
                         {nearest && (
                           <span className="resto-card-distance">
-                            {t('restaurants.distanceFrom', { distance: formatDistance(nearest.km), name: nearest.name })}
+                            {/* Temps de marche réel dès qu'il est arrivé, sinon
+                                la distance à vol d'oiseau — même adresse, même
+                                place dans la liste, seule l'unité change. */}
+                            {walkByRestaurant[r.id]
+                              ? t('restaurants.walkFrom', { duration: formatTravelDuration(walkByRestaurant[r.id].durationS), name: nearest.name })
+                              : t('restaurants.distanceFrom', { distance: formatDistance(nearest.km), name: nearest.name })}
                           </span>
                         )}
                       </div>

@@ -16,10 +16,36 @@ let nextId = 0;
 let selfInflictedPop = 0;
 let listenerInstalled = false;
 
+// Rang de chaque entrée poussée par ce hook, et rang de l'entrée sur laquelle
+// on se trouve. Sert UNIQUEMENT à connaître le SENS d'un déplacement, car
+// `popstate` se déclenche aussi bien sur « précédent » que sur « suivant » et
+// ne dit pas lequel des deux.
+//
+// Sans cette distinction, la flèche « suivant » refermait la vue au sommet de
+// la pile exactement comme un retour : depuis une ville de la planification,
+// retour ramenait à la liste des villes (correct), puis suivant refermait le
+// VOYAGE au lieu de rouvrir la ville (signalé le 2026-08-01, capture à
+// l'appui). Le même piège existait pour les deux entrées empilées par
+// CountryPanel (pays puis destination).
+//
+// Une entrée non poussée par nous (page d'avant, entrée créée par React
+// Router) n'a pas de rang : elle vaut 0, donc y arriver est toujours vu comme
+// un retour — ce qui est le comportement voulu.
+//
+// On ne cherche PAS à rouvrir la vue sur « suivant » : le composant est
+// démonté, le hook ne sait pas quoi remonter. « Suivant » devient simplement
+// sans effet, ce qui est le pire acceptable ; l'important est qu'il ne
+// referme plus quelque chose au hasard.
+let seqCounter = 0;
+let currentSeq = 0;
+
 function ensureListener() {
   if (listenerInstalled) return;
   listenerInstalled = true;
   window.addEventListener('popstate', () => {
+    const landedSeq = Number(history.state?.__mhSeq) || 0;
+    const cameFrom = currentSeq;
+    currentSeq = landedSeq;
     if (selfInflictedPop > 0) {
       // Écho d'une fermeture normale (✕, clic extérieur, etc.) d'UNE
       // modale — jamais un vrai retour utilisateur. La modale concernée a
@@ -29,6 +55,9 @@ function ensureListener() {
       selfInflictedPop -= 1;
       return;
     }
+    // Déplacement vers l'AVANT (flèche « suivant ») : on ne ferme rien. Ce
+    // n'est pas un retour, et refermer la vue du dessous serait arbitraire.
+    if (landedSeq > cameFrom) return;
     // Retour arrière réel : seule la modale tout en haut de la pile se
     // referme (LIFO) — jamais toutes celles actuellement montées.
     const top = stack[stack.length - 1];
@@ -91,7 +120,13 @@ export function useModalHistory(onClose, url) {
       // exemple une destination dans une fiche pays) d'ajouter une vraie URL
       // partageable à leur entrée d'historique.
       const nextUrl = typeof url === 'function' ? url() : url;
-      const marker = {};
+      // `__mhSeq` : rang de l'entrée, lu au popstate pour distinguer
+      // « précédent » de « suivant » (voir en tête de fichier). L'objet reste
+      // par ailleurs le marqueur d'identité de NOTRE entrée, comparé tel quel
+      // dans le cleanup plus bas.
+      seqCounter += 1;
+      const marker = { __mhSeq: seqCounter };
+      currentSeq = seqCounter;
       markerRef.current = marker;
       if (nextUrl) history.pushState(marker, '', nextUrl);
       else history.pushState(marker, '');

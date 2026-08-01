@@ -7,6 +7,7 @@ import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
 import TravelConnector from './TravelConnector';
 import DayRouteButton from './DayRouteButton';
+import { useTravelRoutes } from '../../hooks/useTravelRoutes';
 import i18n from '../../i18n';
 
 // Étapes transmises à Google Maps pour UN jour donné de la vue par jour, dans
@@ -144,7 +145,7 @@ function ActivityContinuationCard({ act, fromLabel, cities, destinations, groups
 function DaySlot({
   slot, droppableId, acts, overflow, cities, destinations, groups, day, tripStartDate,
   onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
-  onResizeStart, resizingActId, resizeHighlight, onCutHere, travelSegments = {},
+  onResizeStart, resizingActId, resizeHighlight, onCutHere, travelSegments = {}, travelRoutes = {},
 }) {
   const { t } = useTranslation();
   const sorted = sortActsByTimeThenPosition(acts);
@@ -186,7 +187,8 @@ function DaySlot({
                     s'écartent — avec une estimation de toute façon périmée puisque
                     l'ordre est en train de changer. Il réapparaît recalculé au drop. */}
                 {!snapshot.isDraggingOver && !snapshot.draggingFromThisWith
-                  && travelSegments[act.id] && <TravelConnector segment={travelSegments[act.id]} />}
+                  && travelSegments[act.id]
+                  && <TravelConnector segment={travelSegments[act.id]} route={travelRoutes[act.id]} />}
                 <ActivityItem
                   act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
                   cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
@@ -250,6 +252,27 @@ export default function DayView({
   //   hoverDay, hoverDayIdx, hoverSlotIdx, hadDuration }
   const [resize, setResize] = useState(null);
   const [unplannedOpen, setUnplannedOpen] = useState(false);
+
+  // Segments de trajet de TOUS les jours calculés ici, en amont du rendu d'un
+  // jour : le hook de routage doit voir l'ensemble des segments à l'écran pour
+  // n'émettre qu'un seul appel réseau, alors qu'il serait interdit (règle des
+  // hooks) de l'appeler depuis renderDaySection, exécuté une fois par jour et
+  // après un retour anticipé. Les identifiants de segment sont des identifiants
+  // d'activité, uniques d'un jour à l'autre : la fusion est sans collision.
+  const travelSegmentsByDay = useMemo(() => {
+    const out = {};
+    for (const day of days) {
+      out[day] = buildTravelSegments(
+        sortActsByTimeThenPosition(activities.filter(a => a.visit_date === day && a.visit_time))
+      );
+    }
+    return out;
+  }, [days, activities]);
+  const allTravelSegments = useMemo(
+    () => Object.assign({}, ...Object.values(travelSegmentsByDay)),
+    [travelSegmentsByDay]
+  );
+  const travelRoutes = useTravelRoutes(allTravelSegments);
 
   const beginResize = useCallback((act) => {
     const startMinutes = timeToMinutes(act.visit_time);
@@ -421,9 +444,7 @@ export default function DayView({
   const renderDaySection = (day, dayIdx, hideHeader = false) => {
     const dayActs = activities.filter(a => a.visit_date === day);
     const libreActs = dayActs.filter(a => !a.visit_time);
-    const travelSegments = buildTravelSegments(
-      sortActsByTimeThenPosition(dayActs.filter(a => a.visit_time))
-    );
+    const travelSegments = travelSegmentsByDay[day] || {};
     return (
       <DaySection
         key={day}
@@ -437,6 +458,7 @@ export default function DayView({
         slotActs={daySlotActs[day]}
         slotOverflow={daySlotOverflow[day]}
         travelSegments={travelSegments}
+        travelRoutes={travelRoutes}
         libreActs={libreActs}
         cities={cities}
         destinations={destinations}
@@ -600,7 +622,7 @@ function citiesForDay(cities, dayActs) {
 }
 
 function DaySection({
-  day, dayIdx, importedDay = false, dayActs = [], totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, libreActs, cities, destinations, groups, tripStartDate,
+  day, dayIdx, importedDay = false, dayActs = [], totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, travelRoutes = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere, hideHeader = false,
 }) {
@@ -686,6 +708,7 @@ function DaySection({
             acts={slotActs[slot.key] || []}
             overflow={slotOverflow[slot.key] || []}
             travelSegments={travelSegments}
+            travelRoutes={travelRoutes}
             cities={cities}
             destinations={destinations}
             groups={groups}

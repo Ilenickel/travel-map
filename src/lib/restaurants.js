@@ -41,9 +41,12 @@ export function restaurantNames(restaurant, language) {
 
 /**
  * Distance à vol d'oiseau formatée pour l'affichage.
- * Volontairement en distance et jamais en durée : aucun temps de trajet n'est
- * calculé pour la liste (ce serait un appel de routage par restaurant), afficher
- * « 6 min » serait donc une invention.
+ *
+ * Sert de repli quand le temps de marche réel n'est pas (ou pas encore)
+ * disponible : hors zone de marche, routage indisponible, réponse en cours.
+ * Elle n'est jamais convertie en durée par une règle de trois — un « 6 min »
+ * déduit d'une vitesse moyenne serait une invention. Le temps affiché vient
+ * toujours d'un itinéraire réellement calculé (voir useWalkRoutes).
  */
 export function formatDistance(km) {
   if (km == null) return null;

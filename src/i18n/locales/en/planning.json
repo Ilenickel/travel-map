@@ -132,8 +132,12 @@
     "namePlaceholder": "Trip name (e.g.: {{mode}} to…)",
     "farTitle": "About {{distance}} as the crow flies from \"{{place}}\" — consider planning a proper trip (train, plane…)",
     "farLabel": "~{{distance}} — plan a trip",
-    "nearTitle": "Distance as the crow flies from \"{{place}}\" — approximate (doesn't account for terrain or transport mode)",
-    "nearLabel": "~{{distance}} as the crow flies"
+    "fallbackTitle": "Distance as the crow flies from \"{{place}}\" — approximate (doesn't account for terrain or transport mode)",
+    "fallbackLabel": "~{{distance}} as the crow flies",
+    "walkLabel": "{{duration}} on foot",
+    "walkTitle": "Walking route from \"{{place}}\" — {{distance}} of walking, breaks not included",
+    "durationMin": "{{minutes}} min",
+    "durationHour": "{{hours}}h{{minutes}}"
   },
   "day": {
     "short": "D{{n}}",
@@ -597,6 +601,7 @@
   },
   "print": {
     "travelLine": "↳ ~{{distance}} as the crow flies from {{place}}",
+    "travelWalkLine": "↳ {{duration}} on foot from {{place}} ({{distance}})",
     "travelFarSuffix": " — consider planning a proper trip",
     "statusNoDates": "Trip dates not set.",
     "statusDatesInverted": "Trip dates are inconsistent (return before departure).",
