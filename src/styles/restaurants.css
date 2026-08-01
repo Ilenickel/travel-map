@@ -484,7 +484,30 @@
 .resto-card-rating-star { font-size: 15px; color: #fbbf24; }
 .resto-card-rating--none { color: var(--text-muted); font-style: italic; }
 .resto-card-rating-count { color: var(--text-muted); font-weight: 500; font-size: 12px; }
-.resto-card-distance { color: var(--text-dim); }
+/* Éloignement sur sa PROPRE ligne, sous la rangée des chiffres. Il était
+   auparavant un enfant de `.resto-card-meta` : `flex-wrap` le gardait à côté de
+   la note quand le libellé était court et le renvoyait dessous quand il était
+   long, si bien que la même information n'était jamais au même endroit d'une
+   carte à l'autre (signalé le 2026-08-01).
+   `align-items: flex-start` et non `center` : sur un nom de lieu long, la phrase
+   passe sur deux lignes et l'icône doit rester en tête, pas se recentrer
+   verticalement sur le bloc. */
+.resto-card-distance {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+/* `flex: none` pour que l'icône ne soit jamais comprimée par un libellé long,
+   et le décalage d'1px la pose sur la ligne d'écriture du texte plutôt que sur
+   le haut de sa boîte. */
+.resto-card-distance svg {
+  flex: none;
+  margin-top: 1px;
+  opacity: 0.75;
+}
 
 /* Origine du restaurant : recommandation de l'équipe ou contribution d'un
    membre. C'est l'information qui pèse le plus dans la confiance accordée à une
@@ -522,9 +545,9 @@
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  /* Suit directement .resto-card-meta, qui porte désormais le `margin-top:
-     auto` — les deux rangées (note/gamme puis actions) se déplacent comme un
-     seul bloc collé au bas de la carte. */
+  /* Suit .resto-card-meta — éventuellement séparée par .resto-card-distance —
+     qui porte le `margin-top: auto` : tout le bas de la carte (note/gamme, puis
+     éloignement, puis actions) se déplace comme un seul bloc collé en bas. */
   margin-top: 8px;
 }
 .resto-card-detail-btn,

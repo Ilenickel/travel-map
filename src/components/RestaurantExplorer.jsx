@@ -1023,17 +1023,46 @@ export default function RestaurantExplorer({
                         ) : (
                           <span className="resto-card-rating--none">{t('restaurants.noRating')}</span>
                         )}
-                        {nearest && (
-                          <span className="resto-card-distance">
-                            {/* Temps de marche réel dès qu'il est arrivé, sinon
-                                la distance à vol d'oiseau — même adresse, même
-                                place dans la liste, seule l'unité change. */}
+                      </div>
+
+                      {/* Éloignement SOUS la rangée des chiffres, jamais à côté.
+                          Tant qu'il en était un enfant, `flex-wrap` le laissait
+                          sur la même ligne quand le libellé était court et le
+                          renvoyait dessous quand il était long : d'une carte à
+                          l'autre, la même information changeait de place.
+                          L'icône le rend identifiable sans avoir à lire la
+                          phrase — et distingue d'un coup d'œil le temps de
+                          marche réel de la distance à vol d'oiseau. */}
+                      {nearest && (
+                        <div className="resto-card-distance">
+                          {walkByRestaurant[r.id] ? (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                              <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9 7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6z" />
+                            </svg>
+                          ) : (
+                            /* Deux points reliés d'un trait pointillé : c'est
+                               littéralement ce que la ligne annonce, une
+                               distance à vol d'oiseau. Surtout PAS un bus ni
+                               une voiture — useTravelRoutes.js s'interdit
+                               explicitement de désigner un mode motorisé, qu'on
+                               ne peut pas deviner (métro à Kyoto, voiture
+                               ailleurs). Et ce repli ne veut pas toujours dire
+                               « c'est loin » : il sert aussi quand l'itinéraire
+                               n'est pas encore revenu ou que le quota du jour
+                               est épuisé. */
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                              <circle cx="5.5" cy="18.5" r="2.6" fill="currentColor" stroke="none" />
+                              <circle cx="18.5" cy="5.5" r="2.6" fill="currentColor" stroke="none" />
+                              <path d="M7.9 16.1 16.1 7.9" strokeDasharray="2.4 2.8" />
+                            </svg>
+                          )}
+                          <span>
                             {walkByRestaurant[r.id]
                               ? t('restaurants.walkFrom', { duration: formatTravelDuration(walkByRestaurant[r.id].durationS), name: nearest.name })
                               : t('restaurants.distanceFrom', { distance: formatDistance(nearest.km), name: nearest.name })}
                           </span>
-                        )}
-                      </div>
+                        </div>
+                      )}
 
                       {/* Actions alignées à DROITE et discrètes : la carte
                           entière ouvre déjà la fiche, ces boutons ne sont qu'un
