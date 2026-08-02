@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tripDurationDays, sumCosts, formatPrice, TRIP_CRITERIA } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
@@ -12,6 +12,7 @@ export default function TripEditorHeader({
 }) {
   const { t } = useTranslation();
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
+  const endDateInputRef = useRef(null);
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
   // Replié par défaut, mobile ET ordinateur désormais (demande du 2026-07-24,
@@ -34,6 +35,14 @@ export default function TripEditorHeader({
     setNotes(trip?.notes || '');
     if (trip?.notes) setShowNotes(true);
   }, [trip?.id]);
+
+  // Les notes ne sont accessibles que depuis le paramétrage déplié (voir
+  // headerOpen) : en refermer un referme l'autre, pour éviter qu'elles restent
+  // affichées seules et grignotent de la place à l'écran une fois le
+  // paramétrage refermé.
+  useEffect(() => {
+    if (!headerOpen) setShowNotes(false);
+  }, [headerOpen]);
 
   const saveTitle = () => {
     const trimmed = title.trim();
@@ -250,10 +259,28 @@ export default function TripEditorHeader({
         <div className="pp-date-group">
           <label className="pp-date-label">{t('header.returnLabel')}</label>
           <input
+            ref={endDateInputRef}
             type="date"
             className="pp-date-input"
             value={trip?.end_date || ''}
             min={trip?.start_date || undefined}
+            onFocus={() => {
+              // Le champ reste vide (aucune valeur enregistrée) tant que rien
+              // n'est validé : on ne fait ici que pousser le sélecteur natif à
+              // s'ouvrir sur la date de départ plutôt que sur aujourd'hui
+              // (`new Date()` par défaut du composant natif), pour éviter de
+              // devoir défiler jusqu'à une année plus tard. Manipulation DOM
+              // directe (hors état React) : `onBlur` la défait si rien n'a
+              // été choisi, donc aucune vraie valeur n'est jamais introduite.
+              if (!trip?.end_date && trip?.start_date && endDateInputRef.current) {
+                endDateInputRef.current.value = trip.start_date;
+              }
+            }}
+            onBlur={() => {
+              if (!trip?.end_date && endDateInputRef.current) {
+                endDateInputRef.current.value = '';
+              }
+            }}
             onChange={e => {
               const val = e.target.value || null;
               if (val && trip?.start_date && val < trip.start_date) return;
@@ -373,7 +400,7 @@ export default function TripEditorHeader({
           même habillage carte que la section "partage communautaire"
           ci-dessus (icône dans un médaillon + titre), pour rester cohérent
           avec le reste de la refonte. */}
-      {showNotes && (
+      {headerOpen && showNotes && (
         <div className="pp-trip-notes-card">
           <div className="pp-trip-notes-card-icon" aria-hidden="true">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

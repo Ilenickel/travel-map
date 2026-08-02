@@ -2566,6 +2566,10 @@
   transform: translateY(-1px);
 }
 
+/* Réservé au bottom sheet plein écran mobile (voir règle mobile plus bas) :
+   sur ordinateur, la modale est déjà centrée et refermable via l'overlay. */
+.pp-activity-edit-modal-close { display: none; }
+
 /* ─── Icon button ─── */
 .pp-icon-btn {
   background: none;
@@ -2644,6 +2648,12 @@
 
   .pp-date-group {
     width: 100%;
+    /* min-width:0 indispensable sur iOS : Safari calcule un min-content pour
+     * <input type="date"> basé sur son widget natif (plus large qu'Android),
+     * et un flex item garde min-width:auto par défaut — sans ce reset, ce
+     * min-content forçait la carte à déborder de l'écran malgré width:100%
+     * sur .pp-date-input (signalé le 2026-08-02, seulement sur iPhone). */
+    min-width: 0;
   }
 
   /* Portée limitée à .pp-trip-dates-card (départ/retour du voyage) : un
@@ -2655,6 +2665,8 @@
      (signalé le 2026-07-23). */
   .pp-trip-dates-card .pp-date-input {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     box-sizing: border-box;
   }
 
@@ -2672,9 +2684,12 @@
 
   .pp-topbar {
     padding: 0 16px;
-    padding-top: env(safe-area-inset-top, 0px);
+    /* Voir commentaire équivalent sur .topbar dans App.css : plafond à 47px
+       pour éviter une barre trop haute sur iPhone à encoche/île dynamique,
+       sans effet sur Android (inset 0). */
+    padding-top: min(env(safe-area-inset-top, 0px), 47px);
     gap: 10px;
-    height: calc(52px + env(safe-area-inset-top, 0px));
+    height: calc(52px + min(env(safe-area-inset-top, 0px), 47px));
   }
 
   .pp-brand-name { display: none; }
@@ -4975,7 +4990,7 @@
     border-radius: 0;
     border-left: none;
     border-right: none;
-    padding: calc(7px + env(safe-area-inset-top, 0px)) 12px 7px;
+    padding: calc(7px + min(env(safe-area-inset-top, 0px), 47px)) 12px 7px;
   }
 
   /* Déplié (engrenage "paramétrage du voyage"), le contenu — dates, stats,
@@ -5223,6 +5238,45 @@
     border-radius: 2px;
     z-index: 2;
   }
+
+  /* Formulaire d'édition (activité/hébergement) : la poignée ci-dessus n'est
+     que décorative (aucun geste de fermeture n'y est branché) et le fond ne
+     restait presque pas visible à 95dvh — plutôt que de laisser croire à une
+     poignée fonctionnelle, on passe en plein écran avec une vraie croix de
+     fermeture (voir ActivityItem.jsx / LodgingSection.jsx), en plus du
+     bouton "Annuler" déjà présent en bas du formulaire. */
+  .pp-activity-edit-modal {
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+  .pp-activity-edit-modal::before { display: none; }
+  /* Même habillage discret que .auth-close (fiche profil) : rond fin,
+     fond quasi transparent, plutôt que le disque sombre plaqué au-dessus du
+     formulaire — qui, en plus de détonner visuellement, recouvrait le champ
+     titre juste en dessous faute d'espace réservé (signalé le 2026-08-02). */
+  .pp-activity-edit-modal-close {
+    display: flex;
+    position: absolute;
+    top: calc(10px + env(safe-area-inset-top, 0px));
+    right: 10px;
+    z-index: 3;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .pp-activity-edit-modal-close:hover { background: rgba(239,68,68,0.15); color: var(--red); }
+
+  /* Espace réservé en haut du formulaire pour que le champ titre ne se
+     retrouve plus sous la croix flottante ci-dessus. */
+  .pp-activity-edit-modal .pp-activity-edit,
+  .pp-activity-edit-modal .pp-lodging-form {
+    padding-top: calc(52px + env(safe-area-inset-top, 0px));
+  }
+
   .pp-modal-body { padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px)); }
   .pp-modal-footer { padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
   @keyframes ppSheetIn {
@@ -8354,6 +8408,14 @@
     padding: 0;
     align-items: stretch;
   }
+  /* Plein écran (100dvh, coins carrés) : le header (croix + onglets
+     Villes/Planning) devient le tout premier élément en haut du viewport —
+     sans sa propre safe-area-top, il se retrouve sous l'encoche/la barre de
+     statut d'un iPhone (même correctif que .pp-detail-hero-menu et
+     .pp-editor-header, invisible sur Android où env() vaut 0). */
+  .pp-suggestions-modal .pp-modal-header {
+    padding-top: calc(18px + env(safe-area-inset-top, 0px));
+  }
   /* Bouton fermer (✕ du header) agrandi et davantage contrasté : c'est
      désormais la SEULE façon de quitter cet écran (plus de tap-en-dehors
      possible, il n'y a plus de "dehors" visible) — doit être trouvé
@@ -9047,6 +9109,12 @@
 .pp-trip-notes-card-title { font-size: 12.5px; font-weight: 800; color: var(--text); letter-spacing: 0.01em; }
 
 @media (max-width: 1024px) {
+  /* Notes du voyage : au repos elles prenaient trop de hauteur sur mobile
+     (3 lignes fixes + le cadre de carte) au regard de l'espace déjà rare de
+     l'en-tête déplié — réduit à 2 lignes visibles, toujours redimensionnable
+     à la main (resize: vertical, hérité) si besoin de plus de place. */
+  .pp-notes-textarea { height: 52px; }
+
   /* Le bouton Jour J de la colonne Jours n'a pas sa place sur mobile : le
      pager y a déjà sa propre page dédiée (JOURJ_PAGE) et sa barre de
      navigation basse (.pp-mobile-nav). */
@@ -11089,4 +11157,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Anti-zoom iOS Safari : voir commentaire équivalent dans App.css. */
+@media (max-width: 1024px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
 }

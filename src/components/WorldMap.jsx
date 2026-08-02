@@ -257,7 +257,7 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           d3.select(tooltipRef.current).style("opacity", 0);
         };
 
-        const paths = fillG
+        let paths = fillG
           .selectAll(".country")
           .data(countries.features)
           .join("path")
@@ -267,6 +267,17 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           .attr("stroke",       (d) => getBaseStroke(+d.id, filterActiveRef.current, highlightMapRef.current, visitedSetRef.current, hideVisitedRef.current, isMobileRef.current))
           .attr("stroke-width", (d) => getBaseStrokeWidth(+d.id, filterActiveRef.current, highlightMapRef.current))
           .style("cursor",      (d) => isInteractive(+d.id) ? "pointer" : "default")
+          .on("click", function (event, d) {
+            if (!isInteractive(+d.id)) return;
+            const alpha3 = NUMERIC_TO_CODE[+d.id];
+            onCountryClickRef.current(alpha3);
+          });
+
+        // Sur iPhone/iOS Safari, un élément portant des écouteurs mouseenter/
+        // mousemove exige un premier tap pour simuler le survol et un second
+        // pour le clic réel : on ne branche donc le survol (tooltip + halo)
+        // que hors mobile, où le click ci-dessus reste seul et immédiat.
+        if (!isMobileRef.current) paths = paths
           .on("mouseenter", function (event, d) {
             if (!isInteractive(+d.id)) return;
 
@@ -343,11 +354,6 @@ export default function WorldMap({ onCountryClick, highlightMap, filterActive, s
           .on("mouseleave", function (event, d) {
             if (NUMERIC_TO_CODE[+d.id] !== hoveredAlpha3Ref.current) return;
             clearHover();
-          })
-          .on("click", function (event, d) {
-            if (!isInteractive(+d.id)) return;
-            const alpha3 = NUMERIC_TO_CODE[+d.id];
-            onCountryClickRef.current(alpha3);
           });
 
         borderSelRef.current = borderG.append("path")

@@ -3,6 +3,21 @@
    définies dans App.css et déclinées via data-theme, voir SettingsContext). */
 html, body { height: 100%; background: var(--bg, #060d18); }
 
+/* Bande blanche en bas d'écran sur iPhone (pas Android) : Safari calcule la
+   hauteur "layout" (100%) sur la plus grande zone de viewport possible
+   (barre d'adresse rétractée), alors que .app suit 100dvh (la zone
+   réellement visible). Si la barre d'adresse est déployée, le document est
+   alors légèrement plus haut que .app, et le petit espace résiduel sous
+   .app rebondit (overscroll bounce) sur le canevas par défaut de la fenêtre
+   — blanc, quel que soit le thème — au lieu du fond de l'appli. On aligne
+   html/body sur la même hauteur dynamique que .app et on coupe le rebond
+   élastique vertical (n'affecte pas le scroll interne des panneaux, qui
+   restent sur leur propre conteneur). */
+html, body {
+  height: 100dvh;
+  overscroll-behavior-y: none;
+}
+
 /* Repli de dernier recours (ErrorBoundary) : valeurs autonomes avec repli
    var(--x, …) — ce composant doit rester lisible même si App.css n'a pas pu
    se charger, puisqu'il est justement là pour le pire des cas. */

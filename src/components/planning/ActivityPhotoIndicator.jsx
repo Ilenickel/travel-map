@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { formatWikiAttribution } from '../../lib/wikiAttribution';
+import useIsMobile from '../../hooks/useIsMobile';
 
 // Icône "photo disponible" à côté d'une activité de planning suggéré, avec
 // aperçu grand format au survol (desktop) ou au tap (tactile) — même recette
@@ -21,6 +22,7 @@ export default function ActivityPhotoIndicator({ img, name }) {
   const { t: tApp } = useTranslation('app'); // clés wikiCredit.* (voir lib/wikiAttribution.js)
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const isMobile = useIsMobile(1024);
 
   // Sur tactile (pas de survol, donc pas de mouseleave) l'aperçu resterait
   // ouvert indéfiniment : tap ailleurs = fermeture (sans quoi taper une 2e
@@ -95,8 +97,8 @@ export default function ActivityPhotoIndicator({ img, name }) {
         tabIndex={0}
         className={`pp-trip-suggestions-photo-ind${open ? ' active' : ''}`}
         aria-label={t('tripSuggestions.showPhotoLabel', { name })}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onMouseEnter={() => { if (!isMobile) setOpen(true); }}
+        onMouseLeave={() => { if (!isMobile) setOpen(false); }}
         onClick={toggle}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggle(e); }}
       >

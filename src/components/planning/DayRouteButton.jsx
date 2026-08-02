@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { buildDayRoute, MAX_STOPS } from '../../lib/googleMapsRoute';
+import { buildDayRoute, openMapsUrl, MAX_STOPS } from '../../lib/googleMapsRoute';
 import useEscapeLayer from '../../hooks/useEscapeLayer';
 
 // « Ouvrir la journée dans Google Maps » : enchaîne les étapes du jour en un
@@ -39,10 +39,7 @@ export default function DayRouteButton({ stops, variant = 'pill' }) {
 
   const hasWarning = route.missing.length > 0 || route.excludedCount > 0;
 
-  const openRoute = (url) => {
-    // `noopener` : la page ouverte ne doit pas pouvoir manipuler la nôtre.
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
+  const openRoute = (url) => openMapsUrl(url);
 
   const handleClick = () => {
     if (hasWarning) setPending(route);

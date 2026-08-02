@@ -813,8 +813,22 @@
    La marge intérieure haute reste à zéro : l'air est donné par l'en-tête de
    l'explorateur, qui défile lui aussi. */
 .resto-modal-overlay--full .resto-modal-body { padding-top: 0; }
-.resto-modal-overlay--full .resto-explorer-header { padding-top: 14px; }
 .resto-modal-overlay--full .resto-explorer-map-wrap { position: static; }
+/* Encoche : cette fenêtre se pose directement sur le viewport (position:
+   fixed + inset:0, voir .resto-modal-overlay--full .resto-modal ci-dessus)
+   sans marge dont elle épouserait la hauteur — son en-tête ("Rechercher un
+   restaurant à…") se retrouvait donc sous la barre de statut/l'encoche sur
+   iPhone, comme .resto-sheet plus bas dans ce fichier qui a déjà ce
+   correctif. La fenêtre a deux en-têtes possibles selon le contexte : celui
+   du formulaire d'ajout (.resto-modal-header) et celui de l'explorateur
+   (.resto-explorer-header, voir RestaurantExplorer.jsx — pas de
+   .resto-modal-header ici), les deux reçoivent donc le même correctif. */
+.resto-modal-overlay--full .resto-modal-header {
+  padding-top: calc(16px + env(safe-area-inset-top, 0px));
+}
+.resto-modal-overlay--full .resto-explorer-header {
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+}
 
 /* Retouche d'un restaurant existant : une seule colonne (budget + types de
    cuisine), ni recherche ni carte. La largeur et la hauteur de la fenêtre
@@ -2408,4 +2422,11 @@
 /* Les bulles Leaflet portent leur propre fond blanc : on garde des couleurs
    fixes plutôt que les variables du thème, illisibles dessus en mode sombre. */
 .leaflet-popup-content { margin: 10px 12px; }
+
+/* Anti-zoom iOS Safari : voir commentaire équivalent dans App.css. */
+@media (max-width: 1024px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
 .leaflet-popup-content-wrapper { border-radius: 10px; }

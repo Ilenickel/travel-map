@@ -21,8 +21,11 @@ export const MAX_STOPS = MAX_WAYPOINTS + 2;
 
 const BASE = 'https://www.google.com/maps/dir/?api=1';
 
+// Le format `nom@lat,lng` est celui documenté par Google pour transmettre un
+// libellé en plus des coordonnées : sans lui, Apple Plans (iOS) n'affiche
+// qu'un repère générique ("repère placé") faute de nom à afficher.
 function coordParam(stop) {
-  return `${stop.lat},${stop.lng}`;
+  return stop.name ? `${stop.name}@${stop.lat},${stop.lng}` : `${stop.lat},${stop.lng}`;
 }
 
 /**
@@ -72,4 +75,19 @@ export function buildDayRoute(stops) {
   if (waypoints.length) params.set('waypoints', waypoints.map(coordParam).join('|'));
 
   return { url: `${BASE}&${params}`, included, missing, cutAfter, excludedCount };
+}
+
+// Sur iOS Safari, ouvrir un lien universel Google Maps via `window.open`
+// (nouvel onglet) laisse un onglet vierge derrière soi : iOS bascule vers
+// l'app Maps AVANT que l'onglet fraîchement créé n'ait eu le temps de
+// charger quoi que ce soit, et on retombe dessus (page blanche, barre de
+// recherche vide) en revenant sur Safari. Naviguer dans l'onglet courant
+// évite ce problème — l'app y reste affichée telle quelle, l'interception
+// se faisant avant tout rendu. Android et ordinateur n'ont pas ce souci
+// (pas de bascule d'app), on y garde donc l'ouverture en nouvel onglet.
+const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+export function openMapsUrl(url) {
+  if (isIOS()) window.location.href = url;
+  else window.open(url, '_blank', 'noopener,noreferrer');
 }

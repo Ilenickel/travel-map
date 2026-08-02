@@ -34,6 +34,20 @@ const CHECK = (
 // active tant qu'on ne clique pas dessus — indispensable dès qu'on dépasse
 // deux ou trois options (ex. futures langues supplémentaires).
 function SettingsSelect({ label, options, value, onChange, isOpen, onToggle }) {
+  // Sur mobile, le panneau parent (.settings-panel) est en overflow-y:auto
+  // avec une hauteur bornée pour rester visible sur petit écran (voir
+  // App.css) : un menu déroulant ouvert en bas de panneau (ex. devise, sous
+  // langue) peut se retrouver hors de la zone visible du scroll et paraître
+  // "coupé" tant qu'on ne défile pas manuellement le panneau. On l'amène
+  // automatiquement dans la vue à l'ouverture plutôt que de compter sur
+  // l'utilisateur pour trouver qu'il faut scroller.
+  const dropdownRef = useRef(null);
+  useEffect(() => {
+    if (isOpen && dropdownRef.current) {
+      dropdownRef.current.scrollIntoView({ block: 'nearest' });
+    }
+  }, [isOpen]);
+
   return (
     <div className="settings-group">
       <span className="settings-group-label">{label}</span>
@@ -51,7 +65,7 @@ function SettingsSelect({ label, options, value, onChange, isOpen, onToggle }) {
         </button>
 
         {isOpen && (
-          <div className="settings-select-dropdown" role="listbox" aria-label={label}>
+          <div className="settings-select-dropdown" role="listbox" aria-label={label} ref={dropdownRef}>
             {options.map((opt) => (
               <button
                 key={opt.value}

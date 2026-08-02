@@ -7,6 +7,7 @@ import { callModeration } from '../lib/moderation';
 import { useAuth } from '../context/AuthContext';
 import { validateImageFile } from '../lib/imageValidation';
 import { BUDGET_SYMBOL, restaurantNames } from '../lib/restaurants';
+import { openMapsUrl } from '../lib/googleMapsRoute';
 import { cuisineTagLabel } from '../lib/cuisineTags';
 import useCuisineTags from '../hooks/useCuisineTags';
 import useEscapeLayer from '../hooks/useEscapeLayer';
@@ -52,9 +53,11 @@ export default function RestaurantDetail({
   const favorite = isFavorite(restaurant.type, restaurant.id);
 
   // Coordonnées de préférence, adresse en repli : une recherche par nom seul
-  // ouvrirait n'importe laquelle des adresses d'une enseigne.
+  // ouvrirait n'importe laquelle des adresses d'une enseigne. Le nom est
+  // préfixé (`nom@lat,lng`) pour qu'Apple Plans (iOS) affiche autre chose
+  // qu'un repère générique.
   const googleMapsQuery = restaurant.lat != null && restaurant.lng != null
-    ? `${restaurant.lat},${restaurant.lng}`
+    ? (restaurant.name ? `${restaurant.name}@${restaurant.lat},${restaurant.lng}` : `${restaurant.lat},${restaurant.lng}`)
     : [restaurant.name, restaurant.address].filter(Boolean).join(' ');
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleMapsQuery)}`;
 
@@ -282,9 +285,9 @@ export default function RestaurantDetail({
               <a
                 className="resto-sheet-gmaps"
                 href={googleMapsUrl}
-                target="_blank"
                 rel="noopener noreferrer"
                 title={t('restaurants.openInGoogleMaps')}
+                onClick={(e) => { e.preventDefault(); openMapsUrl(googleMapsUrl); }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/>

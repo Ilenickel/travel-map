@@ -3427,6 +3427,8 @@ html, body { overflow-x: hidden; }
 /* Recherche */
 .compare-search { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 260px; }
 .compare-search-input {
+  width: 100%;
+  box-sizing: border-box;
   background: var(--surface2);
   border: 1px solid var(--border-light);
   border-radius: 12px;
@@ -3978,8 +3980,13 @@ html, body { overflow-x: hidden; }
   /* â”€â”€ Topbar mobile : search (max 50%) + fav + liste Ã  droite â”€â”€ */
   .topbar {
     padding: 0 10px;
-    padding-top: env(safe-area-inset-top, 0px);
-    height: calc(52px + env(safe-area-inset-top, 0px));
+    /* Plafonné à 47px (encoche/île dynamique la plus haute côté iPhone) :
+       sans ce plafond, un inset système anormalement grand gonflait la barre
+       bien au-delà de ce qu'il faut pour dégager l'encoche ("barre trop
+       haute sur iPhone", 2026-08-02). Sur Android, l'inset vaut 0 : min(0, 47px)
+       = 0, donc rien ne change là-bas. */
+    padding-top: min(env(safe-area-inset-top, 0px), 47px);
+    height: calc(52px + min(env(safe-area-inset-top, 0px), 47px));
     gap: 6px;
   }
   /* Logo masqué : sur un petit écran chaque pixel va à la recherche.
@@ -4214,7 +4221,12 @@ html, body { overflow-x: hidden; }
   /* â”€â”€ Panneau liste mobile : plein Ã©cran depuis le bas â”€â”€ */
   .list-panel {
     position: fixed;
-    top: 52px; left: 0; right: 0;
+    /* Même hauteur que .topbar (52px + safe-area plafonnée à 47px) : un
+       top figé à 52px laissait ce panneau démarrer SOUS le bas réel de la
+       topbar sur iPhone (celle-ci grandit avec l'encoche), le cachant/le
+       rendant inatteignable au tap sur sa portion haute — invisible sur
+       Android où l'inset vaut 0. */
+    top: calc(52px + min(env(safe-area-inset-top, 0px), 47px)); left: 0; right: 0;
     width: 100%;
     height: auto;
     bottom: calc(68px + env(safe-area-inset-bottom, 0px));
@@ -4244,12 +4256,15 @@ html, body { overflow-x: hidden; }
 
   /* Panel favoris */
   .favorites-panel {
-    position: fixed; top: 52px; left: 0; right: 0;
+    /* Même correctif que .list-panel juste au-dessus (même bug, même
+       origine : top figé sans tenir compte de la safe-area qui agrandit
+       la topbar sur iPhone). */
+    position: fixed; top: calc(52px + min(env(safe-area-inset-top, 0px), 47px)); left: 0; right: 0;
     width: 100%; border-radius: 0 0 20px 20px;
-    max-height: calc(100dvh - 52px - 68px - env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 52px - min(env(safe-area-inset-top, 0px), 47px) - 68px - env(safe-area-inset-bottom, 0px));
     overflow-y: auto;
   }
-  .favorites-backdrop { top: 52px; }
+  .favorites-backdrop { top: calc(52px + min(env(safe-area-inset-top, 0px), 47px)); }
 
   /* Zoom + hint cachÃ©s */
   .map-zoom-controls { display: none; }
@@ -4706,9 +4721,12 @@ html, body { overflow-x: hidden; }
    large flush à gauche couvre presque tout l'écran). */
 @media (max-width: 1024px) {
   .notif-panel {
-    top: 52px; left: 0; right: 0;
+    /* Même correctif que .list-panel/.favorites-panel (même fichier) : top
+       figé à 52px sans tenir compte de la safe-area qui agrandit la topbar
+       sur iPhone (invisible sur Android, inset nul là-bas). */
+    top: calc(52px + min(env(safe-area-inset-top, 0px), 47px)); left: 0; right: 0;
     width: 100%; border-radius: 0 0 20px 20px;
-    max-height: calc(100dvh - 52px - 68px - env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - 52px - min(env(safe-area-inset-top, 0px), 47px) - 68px - env(safe-area-inset-bottom, 0px));
   }
 
   /* Tablette (600-1024px, même seuil que .topbar/.app-mobile-nav plus haut,
@@ -9037,4 +9055,15 @@ html, body { overflow-x: hidden; }
 
 .toast--error { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.12); }
 .toast--success { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.12); }
+
+/* Anti-zoom iOS Safari : tout champ de saisie dont le font-size calculé est
+   < 16px déclenche un zoom automatique de la page au focus (comportement
+   natif Safari), qui reste zoomé/désaligné tant que l'utilisateur ne pince
+   pas pour dézoomer. On force 16px sur tous les champs en dessous de ce
+   seuil, uniquement sur mobile (n'affecte pas la mise en page desktop). */
+@media (max-width: 1024px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
 .toast--info { border-color: var(--border-light); }

@@ -41,6 +41,9 @@ function CountrySearch({ onSelect, exclude }) {
         value={q}
         onChange={(e) => setQ(e.target.value)}
         autoFocus
+        autoComplete="off"
+        autoCorrect="off"
+        spellCheck="false"
       />
       {results.length > 0 && (
         <ul className="compare-search-results">
