@@ -264,6 +264,18 @@ export default function TripEditorHeader({
             className="pp-date-input"
             value={trip?.end_date || ''}
             min={trip?.start_date || undefined}
+            onPointerDown={() => {
+              // Sur iOS, Safari capture la valeur du champ dès le pointerdown
+              // (avant même que `focus` ne se déclenche) pour construire sa
+              // roue de sélection native — le préremplissage posé seulement
+              // sur onFocus arrivait donc trop tard et restait sans effet
+              // visuel sur iPhone (signalé de nouveau le 2026-08-02). Même
+              // geste qu'onFocus ci-dessous, pour couvrir aussi bien le tap
+              // tactile que le focus clavier/programmatique.
+              if (!trip?.end_date && trip?.start_date && endDateInputRef.current) {
+                endDateInputRef.current.value = trip.start_date;
+              }
+            }}
             onFocus={() => {
               // Le champ reste vide (aucune valeur enregistrée) tant que rien
               // n'est validé : on ne fait ici que pousser le sélecteur natif à

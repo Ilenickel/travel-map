@@ -2668,6 +2668,13 @@
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
+    /* Filet de sécurité : le widget natif iOS (mm/jj/aaaa) refuse parfois de
+       respecter width/min-width et pousse quand même la boîte visuellement
+       hors du cadre arrondi — surtout depuis le passage forcé à 16px
+       (anti-zoom, voir plus bas dans ce fichier). overflow:hidden n'affecte
+       pas le sélecteur natif lui-même (superposition OS séparée), seulement
+       le rendu du champ fermé. */
+    overflow: hidden;
   }
 
   .pp-date-arrow { display: none; }

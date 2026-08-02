@@ -21,11 +21,15 @@ export const MAX_STOPS = MAX_WAYPOINTS + 2;
 
 const BASE = 'https://www.google.com/maps/dir/?api=1';
 
-// Le format `nom@lat,lng` est celui documenté par Google pour transmettre un
-// libellé en plus des coordonnées : sans lui, Apple Plans (iOS) n'affiche
-// qu'un repère générique ("repère placé") faute de nom à afficher.
+// Tentative abandonnée (2026-08-02) : préfixer par le nom (`nom@lat,lng`)
+// pour qu'Apple Plans affiche un libellé plutôt qu'un repère générique.
+// Résultat sur le terrain : le lien devient repéré comme incompatible et/ou
+// la recherche retombe sur le PREMIER lieu correspondant au nom quelque part
+// dans le monde, en ignorant les coordonnées — pire que le problème d'origine.
+// On retombe donc sur les coordonnées seules, fiables partout, quitte à
+// perdre le libellé sur iOS.
 function coordParam(stop) {
-  return stop.name ? `${stop.name}@${stop.lat},${stop.lng}` : `${stop.lat},${stop.lng}`;
+  return `${stop.lat},${stop.lng}`;
 }
 
 /**
