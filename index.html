@@ -284,5 +284,53 @@
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Panneau de diagnostic viewport (TEMPORAIRE, à retirer une fois la
+         bande basse iPhone réglée). Ne s'active QUE via ?vpdebug=1 dans
+         l'URL : invisible pour tout le monde en usage normal, et aucun coût
+         de rendu tant que le paramètre est absent. Sert à mesurer sur un vrai
+         iPhone ce qu'on ne peut pas reproduire ailleurs : mode PWA autonome,
+         hauteurs de viewport réelles, valeurs effectives des safe-areas, et
+         hauteur réellement occupée par la coquille racine. -->
+    <script>
+      if (new URLSearchParams(location.search).has('vpdebug')) {
+        addEventListener('load', function () {
+          var box = document.createElement('div');
+          box.style.cssText = 'position:fixed;left:8px;right:8px;top:8px;z-index:99999;' +
+            'background:#000;color:#0f0;font:11px/1.45 monospace;padding:10px;' +
+            'border-radius:8px;white-space:pre;pointer-events:none;opacity:.94';
+          function probe(name) {
+            var el = document.createElement('div');
+            el.style.cssText = 'position:fixed;height:env(safe-area-inset-' + name + ',0px)';
+            document.body.appendChild(el);
+            var v = getComputedStyle(el).height;
+            el.remove();
+            return v;
+          }
+          function render() {
+            var shell = document.querySelector('.pp-app, .app');
+            var r = shell ? shell.getBoundingClientRect() : null;
+            box.textContent = [
+              'standalone(PWA) : ' + (navigator.standalone === true) +
+                ' | display-mode:standalone ' + matchMedia('(display-mode: standalone)').matches,
+              'screen.height   : ' + screen.height,
+              'innerHeight     : ' + innerHeight,
+              'client(doc)     : ' + document.documentElement.clientHeight,
+              'visualViewport  : ' + (visualViewport ? Math.round(visualViewport.height) : 'n/a'),
+              'safe-area top   : ' + probe('top'),
+              'safe-area bottom: ' + probe('bottom'),
+              'coquille        : ' + (shell ? shell.className.split(' ')[0] : 'introuvable'),
+              'coquille top/bas: ' + (r ? Math.round(r.top) + ' / ' + Math.round(r.bottom) : '-'),
+              'coquille hauteur: ' + (r ? Math.round(r.height) : '-'),
+              'ecart bas       : ' + (r ? Math.round(innerHeight - r.bottom) : '-')
+            ].join('\n');
+          }
+          document.body.appendChild(box);
+          render();
+          addEventListener('resize', render);
+          addEventListener('orientationchange', render);
+        });
+      }
+    </script>
   </body>
 </html>
