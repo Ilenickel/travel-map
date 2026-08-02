@@ -102,10 +102,12 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   // Pli/dépli de chaque sous-groupe DESTINATION (pas de fetch derrière : les
   // lieux du pays sont déjà tous chargés par togglePlaceGroup, il ne s'agit
   // que d'un repli visuel — voir togglePlaceDestGroup plus bas). Retient les
-  // groupes REPLIÉS (déplié = comportement par défaut), pas l'inverse.
-  const [collapsedPlaceDestGroups, setCollapsedPlaceDestGroups] = useState(new Set());
+  // groupes DÉPLIÉS : replié est le comportement par défaut, pour ne pas
+  // déverser tous les lieux d'un pays d'un coup à l'ouverture (signalé le
+  // 2026-08-03 — l'inverse avait été choisi le 2026-08-02, corrigé ici).
+  const [expandedPlaceDestGroups, setExpandedPlaceDestGroups] = useState(new Set());
   function togglePlaceDestGroup(key) {
-    setCollapsedPlaceDestGroups(prev => {
+    setExpandedPlaceDestGroups(prev => {
       const s = new Set(prev);
       if (s.has(key)) s.delete(key); else s.add(key);
       return s;
@@ -569,17 +571,18 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
                             {/* Sous-regroupement PAR DESTINATION, repliable
                                 indépendamment : sous « États-Unis », un lieu
                                 de New York et un lieu de Chicago n'ont rien à
-                                voir l'un avec l'autre. Dépliées par défaut
-                                (les lieux du pays sont déjà tous chargés, rien
-                                à gagner à les cacher d'office) — TOUJOURS
-                                repliables, même s'il n'y en a qu'une seule :
-                                un chevron absent pour ce seul cas se lisait
-                                comme un bouton manquant (signalé le 2026-08-02).
-                                `collapsedPlaceDestGroups` retient donc les
-                                groupes REPLIÉS, pas les dépliés. */}
+                                voir l'un avec l'autre. REPLIÉES par défaut :
+                                tout déplier d'office noyait l'écran sous les
+                                lieux du pays entier dès l'ouverture (signalé
+                                le 2026-08-03). TOUJOURS repliables/dépliables,
+                                même s'il n'y en a qu'une seule : un chevron
+                                absent pour ce cas se lisait comme un bouton
+                                manquant (signalé le 2026-08-02).
+                                `expandedPlaceDestGroups` retient donc les
+                                groupes DÉPLIÉS, pas les repliés. */}
                             {!isGroupLoading && groupPlacesByDestination(places, (p) => placeDestName(p, countryCode)).map((destGroup) => {
                               const subKey = `${countryCode}::${destGroup.key}`;
-                              const isSubExpanded = !collapsedPlaceDestGroups.has(subKey);
+                              const isSubExpanded = expandedPlaceDestGroups.has(subKey);
                               return (
                                 <div key={destGroup.key} className="profile-dest-subgroup">
                                   <div className="profile-dest-subgroup-header" onClick={() => togglePlaceDestGroup(subKey)}>
