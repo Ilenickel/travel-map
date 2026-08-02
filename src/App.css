@@ -9062,8 +9062,13 @@ html, body { overflow-x: hidden; }
    pas pour dézoomer. On force 16px sur tous les champs en dessous de ce
    seuil, uniquement sur mobile (n'affecte pas la mise en page desktop). */
 @media (max-width: 1024px) {
+  /* !important nécessaire : de nombreux champs ont une classe dédiée
+     (.pp-date-input, .topbar-search-input, .auth-input...) dont la
+     spécificité (0,1,0) bat toujours un simple sélecteur d'élément
+     (0,0,1) — sans ça cette règle ne s'appliquait presque jamais et le
+     zoom iOS restait présent malgré tout (signalé le 2026-08-02). */
   input, select, textarea {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 }
 .toast--info { border-color: var(--border-light); }

@@ -2423,10 +2423,11 @@
    fixes plutôt que les variables du thème, illisibles dessus en mode sombre. */
 .leaflet-popup-content { margin: 10px 12px; }
 
-/* Anti-zoom iOS Safari : voir commentaire équivalent dans App.css. */
+/* Anti-zoom iOS Safari : voir commentaire équivalent dans App.css (!important
+   nécessaire face aux classes dédiées plus spécifiques, ex. .resto-*-input). */
 @media (max-width: 1024px) {
   input, select, textarea {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 }
 .leaflet-popup-content-wrapper { border-radius: 10px; }
