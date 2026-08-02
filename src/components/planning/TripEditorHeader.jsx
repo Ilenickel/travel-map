@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tripDurationDays, sumCosts, formatPrice, TRIP_CRITERIA } from '../../lib/planningUtils';
 import { useSettings } from '../../context/SettingsContext';
@@ -12,7 +12,6 @@ export default function TripEditorHeader({
 }) {
   const { t } = useTranslation();
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
-  const endDateInputRef = useRef(null);
   const [editingTitle, setEditingTitle] = useState(false);
   const [title, setTitle] = useState(trip?.title || '');
   // Replié par défaut, mobile ET ordinateur désormais (demande du 2026-07-24,
@@ -259,40 +258,23 @@ export default function TripEditorHeader({
         <div className="pp-date-group">
           <label className="pp-date-label">{t('header.returnLabel')}</label>
           <input
-            ref={endDateInputRef}
             type="date"
             className="pp-date-input"
-            value={trip?.end_date || ''}
+            /* Repli d'AFFICHAGE sur la date de départ tant qu'aucun retour
+               n'est enregistré : le sélecteur natif s'ouvre alors sur cette
+               date au lieu d'aujourd'hui (`new Date()`, son défaut), ce qui
+               évite de devoir faire défiler une année entière pour un départ
+               lointain. Rien n'est écrit en base : `trip.end_date` reste null
+               tant que l'utilisateur n'a pas choisi (le badge de durée, qui
+               dérive de trip.end_date, reste d'ailleurs masqué).
+               Déclaratif, et non plus par écriture directe sur le nœud DOM au
+               pointerdown/focus comme tenté auparavant : ce champ est contrôlé
+               par React, et le sélecteur natif iOS lit sa valeur depuis le
+               moteur de rendu, pas depuis une affectation JS faite juste
+               avant — ce qui explique que le correctif précédent n'ait eu
+               aucun effet visible sur iPhone (2026-08-02). */
+            value={trip?.end_date || trip?.start_date || ''}
             min={trip?.start_date || undefined}
-            onPointerDown={() => {
-              // Sur iOS, Safari capture la valeur du champ dès le pointerdown
-              // (avant même que `focus` ne se déclenche) pour construire sa
-              // roue de sélection native — le préremplissage posé seulement
-              // sur onFocus arrivait donc trop tard et restait sans effet
-              // visuel sur iPhone (signalé de nouveau le 2026-08-02). Même
-              // geste qu'onFocus ci-dessous, pour couvrir aussi bien le tap
-              // tactile que le focus clavier/programmatique.
-              if (!trip?.end_date && trip?.start_date && endDateInputRef.current) {
-                endDateInputRef.current.value = trip.start_date;
-              }
-            }}
-            onFocus={() => {
-              // Le champ reste vide (aucune valeur enregistrée) tant que rien
-              // n'est validé : on ne fait ici que pousser le sélecteur natif à
-              // s'ouvrir sur la date de départ plutôt que sur aujourd'hui
-              // (`new Date()` par défaut du composant natif), pour éviter de
-              // devoir défiler jusqu'à une année plus tard. Manipulation DOM
-              // directe (hors état React) : `onBlur` la défait si rien n'a
-              // été choisi, donc aucune vraie valeur n'est jamais introduite.
-              if (!trip?.end_date && trip?.start_date && endDateInputRef.current) {
-                endDateInputRef.current.value = trip.start_date;
-              }
-            }}
-            onBlur={() => {
-              if (!trip?.end_date && endDateInputRef.current) {
-                endDateInputRef.current.value = '';
-              }
-            }}
             onChange={e => {
               const val = e.target.value || null;
               if (val && trip?.start_date && val < trip.start_date) return;

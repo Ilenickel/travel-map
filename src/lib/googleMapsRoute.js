@@ -21,16 +21,11 @@ export const MAX_STOPS = MAX_WAYPOINTS + 2;
 
 const BASE = 'https://www.google.com/maps/dir/?api=1';
 
-// Tentative abandonnée (2026-08-02) : préfixer par le nom (`nom@lat,lng`)
-// pour qu'Apple Plans affiche un libellé plutôt qu'un repère générique.
-// Résultat sur le terrain : le lien devient repéré comme incompatible et/ou
-// la recherche retombe sur le PREMIER lieu correspondant au nom quelque part
-// dans le monde, en ignorant les coordonnées — pire que le problème d'origine.
-// On retombe donc sur les coordonnées seules, fiables partout, quitte à
-// perdre le libellé sur iOS.
 function coordParam(stop) {
   return `${stop.lat},${stop.lng}`;
 }
+
+const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
 /**
  * Prépare l'import d'une journée dans Google Maps.
@@ -89,8 +84,6 @@ export function buildDayRoute(stops) {
 // évite ce problème — l'app y reste affichée telle quelle, l'interception
 // se faisant avant tout rendu. Android et ordinateur n'ont pas ce souci
 // (pas de bascule d'app), on y garde donc l'ouverture en nouvel onglet.
-const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
 export function openMapsUrl(url) {
   if (isIOS()) window.location.href = url;
   else window.open(url, '_blank', 'noopener,noreferrer');

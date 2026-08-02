@@ -71,6 +71,27 @@ html, body { overflow-x: hidden; }
   .app {
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
+
+    /* Bande blanche en bas sur iPhone — cause réelle (2026-08-02, après
+       plusieurs correctifs ratés à base de 100dvh empilés) : la coquille
+       était dimensionnée en `dvh`, alors que la barre de nav basse
+       (.app-mobile-nav) et les panneaux sont en `position: fixed`, donc
+       positionnés dans le viewport de mise en page d'iOS. Les deux
+       référentiels ne coïncident PAS sur iOS : `dvh` s'y résout de façon peu
+       fiable (souvent sur le viewport "large", barre d'adresse rétractée, et
+       il ne se réévalue pas au repli/dépli de la barre). Le fond de l'appli
+       s'arrêtait donc avant le bas réel de l'écran pendant que la pilule
+       fixed, elle, descendait plus bas — l'écart laissait voir le fond du
+       canevas (d'où la "bande", crème #f4f1ea en thème clair).
+       inset:0 sur un élément fixed remplit par construction EXACTEMENT ce
+       viewport de mise en page : c'est le même référentiel que la barre de
+       nav, l'écart ne peut donc plus exister, sans dépendre de dvh.
+       Ne piège pas les descendants fixed (seuls transform/filter/
+       will-change/contain créeraient un bloc conteneur — aucun ici), et les
+       modales sont de toute façon portées vers <body>. */
+    position: fixed;
+    inset: 0;
+    height: auto;
   }
 }
 
@@ -3976,12 +3997,18 @@ html, body { overflow-x: hidden; }
 
 @media (max-width: 1024px) {
 
-  /* 100vh inclut la zone masquée par la barre d'adresse des navigateurs mobiles :
-     le bas de la carte serait coupé d'autant. 100dvh suit la hauteur réellement
-     visible (les navigateurs trop vieux pour dvh gardent la ligne 100vh). */
+  /* Anciennement `height: 100vh/100dvh` ici. C'est CETTE règle, plus bas dans
+     le même media query que le bloc `.app` du haut du fichier (donc gagnante à
+     spécificité égale), qui réimposait dvh et neutralisait silencieusement les
+     correctifs de la bande blanche tentés en amont — le piège à ne pas
+     reproduire : toute modification de la hauteur de `.app` en mobile doit se
+     faire ICI, pas seulement en haut du fichier.
+     Le dimensionnement mobile est désormais assuré par `position: fixed;
+     inset: 0` (voir le bloc `.app` en haut du fichier, avec l'explication
+     complète), qui remplit le même viewport de mise en page que la barre de
+     nav fixed — d'où plus aucun écart possible en bas. */
   .app {
-    height: 100vh;
-    height: 100dvh;
+    height: auto;
   }
 
   /* â”€â”€ Topbar mobile : search (max 50%) + fav + liste Ã  droite â”€â”€ */

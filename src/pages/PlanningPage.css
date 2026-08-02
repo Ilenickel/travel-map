@@ -2644,6 +2644,10 @@
     align-items: stretch;
     gap: 8px;
     padding: 10px 12px;
+    /* Confinement : empêche un champ qui s'entêterait à réclamer plus large
+       que la carte de l'élargir elle-même hors de l'écran. */
+    min-width: 0;
+    overflow: hidden;
   }
 
   .pp-date-group {
@@ -2668,13 +2672,38 @@
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
-    /* Filet de sécurité : le widget natif iOS (mm/jj/aaaa) refuse parfois de
-       respecter width/min-width et pousse quand même la boîte visuellement
-       hors du cadre arrondi — surtout depuis le passage forcé à 16px
-       (anti-zoom, voir plus bas dans ce fichier). overflow:hidden n'affecte
-       pas le sélecteur natif lui-même (superposition OS séparée), seulement
-       le rendu du champ fermé. */
     overflow: hidden;
+  }
+
+  /* Débordement des champs date sur iPhone — cause réelle (2026-08-02) :
+     width/min-width/max-width sur le champ ne pouvaient RIEN y faire. iOS
+     n'utilise pas le rendu de texte habituel pour <input type="date"> : la
+     valeur est peinte dans un pseudo-élément de shadow DOM,
+     ::-webkit-date-and-time-value, qui possède sa propre largeur intrinsèque
+     et sa propre marge, et qui IGNORE la largeur du champ qui le contient —
+     c'est lui qui poussait le contenu hors du cadre arrondi (d'autant plus
+     depuis le passage forcé à font-size:16px pour l'anti-zoom). Il faut donc
+     le contraindre lui-même, et retirer l'habillage natif (-webkit-appearance)
+     qui impose en plus un dimensionnement de contrôle système.
+     Appliqué à tous les champs date du mobile, pas seulement ceux du voyage :
+     le pseudo-élément se comporte pareil partout. */
+  input[type="date"],
+  input[type="time"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value {
+    text-align: left;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+  /* Le bouton calendrier/horloge natif ne doit pas non plus pousser la boîte. */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    flex-shrink: 0;
+    margin-left: 4px;
   }
 
   .pp-date-arrow { display: none; }
@@ -4976,12 +5005,20 @@
 }
 
 @media (max-width: 1024px) {
-  /* 100vh inclut la zone masquée par la barre d'adresse des navigateurs mobiles :
-     le bas de l'app serait coupé d'autant. 100dvh suit la hauteur réellement
-     visible (les navigateurs trop vieux pour dvh gardent la ligne 100vh). */
+  /* Bande blanche en bas sur iPhone — même cause et même correctif que `.app`
+     dans App.css (voir l'explication complète là-bas) : l'écran de
+     planification a sa PROPRE coquille racine, hors de `.app`, et souffrait
+     donc exactement du même écart entre un dimensionnement en `dvh` et les
+     éléments `position: fixed` (barre de nav basse .pp-mobile-nav, panneaux)
+     positionnés dans le viewport de mise en page d'iOS. Corriger seulement
+     `.app` n'aurait rien changé ici.
+     Comme dans App.css, c'est cette règle-ci (la plus tardive du fichier pour
+     `.pp-app` en mobile) qui fait foi : toute reprise de la hauteur doit se
+     faire ici. */
   .pp-app {
-    height: 100vh;
-    height: 100dvh;
+    position: fixed;
+    inset: 0;
+    height: auto;
   }
 
   .pp-editor { padding: 0; }
@@ -6764,6 +6801,10 @@
   .pp-app, .pp-layout, .pp-main, .pp-editor {
     overflow: visible !important;
     height: auto !important;
+    /* position:static obligatoire depuis que .pp-app passe en position:fixed
+       sur mobile (correctif bande blanche iPhone) : un élément fixed ne
+       s'imprime que sur la première page, l'itinéraire aurait été tronqué. */
+    position: static !important;
   }
 
   .pp-print-view {

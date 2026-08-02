@@ -53,11 +53,7 @@ export default function RestaurantDetail({
   const favorite = isFavorite(restaurant.type, restaurant.id);
 
   // Coordonnées de préférence, adresse en repli : une recherche par nom seul
-  // ouvrirait n'importe laquelle des adresses d'une enseigne. Préfixer par le
-  // nom (`nom@lat,lng`, tenté le 2026-08-02 pour l'affichage iOS) a été
-  // abandonné : sur iPhone, ça retombe sur le premier lieu correspondant au
-  // nom n'importe où dans le monde, coordonnées ignorées — pire que
-  // l'absence de libellé qu'on cherchait à corriger.
+  // ouvrirait n'importe laquelle des adresses d'une enseigne.
   const googleMapsQuery = restaurant.lat != null && restaurant.lng != null
     ? `${restaurant.lat},${restaurant.lng}`
     : [restaurant.name, restaurant.address].filter(Boolean).join(' ');
