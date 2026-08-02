@@ -25,6 +25,9 @@ export default function DestinationHighlights({
   dest, countryCode, countryName, countryAlpha2,
   wikiImages = {}, wikiMeta = {},
   tab, onTabChange,
+  // Lieu à mettre en avant dans l'onglet « Lieux et activités » (deep-link
+  // depuis l'onglet « Mes ajouts » du profil, voir CountryPanel).
+  focusPlaceId = null,
 }) {
   const { t } = useTranslation('app');
   // AUCUN défilement automatique au changement d'onglet.
@@ -78,6 +81,7 @@ export default function DestinationHighlights({
           wikiImages={wikiImages}
           wikiMeta={wikiMeta}
           hideTitle
+          focusPlaceId={focusPlaceId}
         />
       ) : (
         <RestaurantExplorer

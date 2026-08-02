@@ -7,9 +7,11 @@ const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f
 function avatarColor(name) { return AVATAR_COLORS[(name || '?').charCodeAt(0) % AVATAR_COLORS.length]; }
 
 function UserAvatar({ url, name, size = 40 }) {
-  return url
-    ? <img src={url} alt={name} className="follow-list-avatar-img" style={{ width: size, height: size }} />
-    : <div className="follow-list-avatar-initials" style={{ background: avatarColor(name), width: size, height: size }}>{name[0].toUpperCase()}</div>;
+  const [broken, setBroken] = useState(false);
+  if (!url || broken) {
+    return <div className="follow-list-avatar-initials" style={{ background: avatarColor(name), width: size, height: size }}>{name[0].toUpperCase()}</div>;
+  }
+  return <img src={url} alt={name} className="follow-list-avatar-img" style={{ width: size, height: size }} onError={() => setBroken(true)} />;
 }
 
 export default function FollowListModal({ userId, type, onClose, onOpenProfile, onFollowChange }) {

@@ -8,8 +8,9 @@ import { useSettings } from '../../context/SettingsContext';
 
 function Avatar({ profile, size }) {
   const style = size ? { width: size, height: size } : undefined;
-  if (profile?.avatar_url) {
-    return <img src={profile.avatar_url} alt="" className="pp-expense-avatar" style={style} />;
+  const [broken, setBroken] = useState(false);
+  if (profile?.avatar_url && !broken) {
+    return <img src={profile.avatar_url} alt="" className="pp-expense-avatar" style={style} onError={() => setBroken(true)} />;
   }
   const initial = (profile?.display_name || '?').charAt(0).toUpperCase();
   return <div className="pp-expense-avatar pp-expense-avatar--initials" style={style}>{initial}</div>;

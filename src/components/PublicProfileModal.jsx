@@ -22,6 +22,7 @@ function parseDestId(destId) {
 import { HalfStars } from './ReviewItem';
 import BadgeSection from './BadgeSection';
 import { relativeTime } from '../lib/relativeTime';
+import useUserPlaces, { groupPlacesByDestination } from '../hooks/useUserPlaces';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 function avatarColor(name) { return AVATAR_COLORS[(name || '?').charCodeAt(0) % AVATAR_COLORS.length]; }
@@ -49,6 +50,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
   const { user } = useAuth();
   const [userId, setUserId] = useState(initialUserId);
   const [profile, setProfile] = useState(null);
+  const [avatarBroken, setAvatarBroken] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [destGroupCounts, setDestGroupCounts] = useState({});
   const [expandedDestGroups, setExpandedDestGroups] = useState(new Set());
@@ -69,10 +71,29 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
   const [expandedAddedDestGroups, setExpandedAddedDestGroups] = useState(new Set());
   const [loadedAddedDestGroups, setLoadedAddedDestGroups] = useState({});
   const [loadingAddedDestGroups, setLoadingAddedDestGroups] = useState(new Set());
+  // Sous-onglet de « Ajouts » — Destinations ou Lieux (pas les restaurants,
+  // voir useUserPlaces).
+  const [additionsSubTab, setAdditionsSubTab] = useState('destinations');
+  const {
+    placeGroupCounts, loadPlaceCounts, resetPlaces,
+    expandedPlaceGroups, loadedPlaceGroups, loadingPlaceGroups, togglePlaceGroup,
+  } = useUserPlaces(userId);
+  // Pli/dépli de chaque sous-groupe DESTINATION — voir ProfilePanel.jsx pour
+  // le détail (même logique, pas de fetch derrière). Retient les groupes
+  // REPLIÉS (déplié = comportement par défaut), pas l'inverse.
+  const [collapsedPlaceDestGroups, setCollapsedPlaceDestGroups] = useState(new Set());
+  function togglePlaceDestGroup(key) {
+    setCollapsedPlaceDestGroups(prev => {
+      const s = new Set(prev);
+      if (s.has(key)) s.delete(key); else s.add(key);
+      return s;
+    });
+  }
 
   useEffect(() => {
     if (!userId) return;
     setProfile(null);
+    setAvatarBroken(false);
     setReviews([]);
     setDestGroupCounts({});
     setExpandedDestGroups(new Set());
@@ -85,8 +106,11 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
     setExpandedAddedDestGroups(new Set());
     setLoadedAddedDestGroups({});
     setLoadingAddedDestGroups(new Set());
+    resetPlaces();
+    setCollapsedPlaceDestGroups(new Set());
     setMainTab('reviews');
     setReviewsSubTab('country');
+    setAdditionsSubTab('destinations');
     setLoading(true);
     Promise.all([
       supabase.from('profiles').select('display_name, avatar_url, show_visited_countries, is_admin').eq('id', userId).maybeSingle(),
@@ -121,7 +145,8 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
         .maybeSingle()
         .then(({ data }) => setIsFollowing(!!data));
     }
-  }, [userId, user]);
+    loadPlaceCounts();
+  }, [userId, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function toggleFollow() {
     if (!user || followLoading) return;
@@ -175,6 +200,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
 
   const totalDestReviews = Object.values(destGroupCounts).reduce((a, b) => a + b, 0);
   const totalAddedDests = Object.values(addedDestCounts).reduce((a, b) => a + b, 0);
+  const totalPlaces = Object.values(placeGroupCounts).reduce((a, b) => a + b, 0);
 
   async function toggleAddedDestGroup(key) {
     if (expandedAddedDestGroups.has(key)) {
@@ -223,6 +249,35 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
     );
   }
 
+  // Nom de la destination sous laquelle le lieu a été ajouté — voir la même
+  // fonction dans ProfilePanel.jsx (résolution identique, deux composants
+  // distincts par choix : ils n'ont ni le même userId ni le même onClose).
+  function placeDestName(place, countryCode) {
+    if (place.placeType === 'community') return place.destName || '';
+    const staticDest = COUNTRIES[countryCode]?.destinations?.find((d) => String(d.id) === String(place.destId));
+    return staticDest ? localizeField(staticDest.name, i18n.language) : '';
+  }
+
+  // Clic → fiche pays, destination sélectionnée, onglet Lieux, lieu mis en
+  // avant en tête de liste même au-delà des 10 premiers (voir focusPlaceId
+  // dans PlacesList/CountryPanel).
+  function renderAddedPlaceCard(place, countryCode, row) {
+    const target = place.placeType === 'community' ? { commDestId: place.commDestId } : { destId: String(place.destId) };
+    return (
+      <div
+        key={place.id}
+        className={`profile-added-dest-item profile-review-item--clickable${row ? ' profile-added-dest-item--row' : ''}`}
+        onClick={() => { onOpenCountry?.(countryCode, 'destinations', { ...target, focusPlaceId: place.id }); onClose(); }}
+      >
+        <img src={place.image_url} alt={place.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
+        <div className="profile-added-dest-info">
+          <span className="profile-added-place-name">{place.name}</span>
+          <span className="profile-review-date profile-review-date--plain">{relativeTime(place.created_at)}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`auth-overlay${nested ? ' auth-overlay--nested' : ''}`}>
       <div className="profile-modal profile-modal--public">
@@ -231,8 +286,8 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
         <div className="pub-profile-header">
           <div className="pub-profile-hero">
             <div className="pub-profile-avatar-wrap">
-              {profile?.avatar_url
-                ? <img src={profile.avatar_url} alt={name} className="pub-profile-avatar-img" />
+              {profile?.avatar_url && !avatarBroken
+                ? <img src={profile.avatar_url} alt={name} className="pub-profile-avatar-img" onError={() => setAvatarBroken(true)} />
                 : <div className="pub-profile-avatar-initials" style={{ background: avatarColor(name) }}>{name[0].toUpperCase()}</div>
               }
             </div>
@@ -279,14 +334,14 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
             <span className="profile-tab-label">{t('publicProfile.reviewsTab')}</span>
           </button>
           <button
-            className={`pub-profile-main-tab${mainTab === 'destinations' ? ' active' : ''}`}
-            onClick={() => setMainTab('destinations')}
+            className={`pub-profile-main-tab${mainTab === 'additions' ? ' active' : ''}`}
+            onClick={() => setMainTab('additions')}
           >
             <span className="profile-tab-icon-wrap">
               <span className="profile-modal-tab-icon" aria-hidden="true">📍</span>
-              {totalAddedDests > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalAddedDests}</span>}
+              {(totalAddedDests + totalPlaces) > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalAddedDests + totalPlaces}</span>}
             </span>
-            <span className="profile-tab-label">{t('publicProfile.destinationsTab')}</span>
+            <span className="profile-tab-label">{t('publicProfile.additionsTab')}</span>
           </button>
           <button
             className={`pub-profile-main-tab${mainTab === 'visited' ? ' active' : ''}`}
@@ -314,6 +369,24 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
               onClick={() => setReviewsSubTab('dest')}
             >
               {t('profile.destReviewsTab')} {totalDestReviews > 0 && <span className="profile-tab-count">{totalDestReviews}</span>}
+            </button>
+          </div>
+        )}
+
+        {/* Sous-onglets ajouts */}
+        {mainTab === 'additions' && (
+          <div className="profile-reviews-subtabs profile-reviews-subtabs--nested">
+            <button
+              className={`profile-reviews-subtab${additionsSubTab === 'destinations' ? ' active' : ''}`}
+              onClick={() => setAdditionsSubTab('destinations')}
+            >
+              {t('profile.destinationsSubTab')} {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
+            </button>
+            <button
+              className={`profile-reviews-subtab${additionsSubTab === 'places' ? ' active' : ''}`}
+              onClick={() => setAdditionsSubTab('places')}
+            >
+              {t('profile.placesSubTab')} {totalPlaces > 0 && <span className="profile-tab-count">{totalPlaces}</span>}
             </button>
           </div>
         )}
@@ -425,7 +498,7 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
           )}
 
           {/* Destinations ajoutées */}
-          {!loading && mainTab === 'destinations' && (
+          {!loading && mainTab === 'additions' && additionsSubTab === 'destinations' && (
             <>
               {totalAddedDests === 0 && (
                 <div className="profile-reviews-empty">
@@ -454,6 +527,67 @@ export default function PublicProfileModal({ userId: initialUserId, onClose, onO
                             ? <div className="profile-added-dest-grid">{dests.map(dest => renderAddedDestCard(dest, countryCode, false))}</div>
                             : dests.map(dest => renderAddedDestCard(dest, countryCode, true))
                         )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </>
+          )}
+
+          {/* Lieux ajoutés — PAS les restaurants, voir useUserPlaces */}
+          {!loading && mainTab === 'additions' && additionsSubTab === 'places' && (
+            <>
+              {totalPlaces === 0 && (
+                <div className="profile-reviews-empty">
+                  <span style={{ fontSize: 32 }}>📍</span>
+                  <span>{t('publicProfile.noPlaceYet')}</span>
+                </div>
+              )}
+              {Object.entries(placeGroupCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
+                const countryMeta = findCountry(countryCode);
+                const isExpanded = expandedPlaceGroups.has(countryCode);
+                const isGroupLoading = loadingPlaceGroups.has(countryCode);
+                const places = loadedPlaceGroups[countryCode] || [];
+                return (
+                  <div key={countryCode} className="profile-dest-group">
+                    <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => togglePlaceGroup(countryCode)}>
+                      {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
+                      <span className="profile-dest-group-name">{localizeField(countryMeta?.name, i18n.language) || countryCode}</span>
+                      <span className="profile-dest-group-count">{t('profile.placesCount', { count })}</span>
+                      <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
+                    </div>
+                    {isExpanded && (
+                      <>
+                        {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingPlaces')}</div>}
+                        {/* Sous-regroupement PAR DESTINATION, repliable
+                            indépendamment : sous « États-Unis », un lieu de
+                            New York et un lieu de Chicago n'ont rien à voir
+                            l'un avec l'autre. Dépliées par défaut (les lieux
+                            du pays sont déjà tous chargés, rien à gagner à les
+                            cacher d'office) — TOUJOURS repliables, même s'il
+                            n'y en a qu'une seule : un chevron absent pour ce
+                            seul cas se lisait comme un bouton manquant
+                            (signalé le 2026-08-02). `collapsedPlaceDestGroups`
+                            retient donc les groupes REPLIÉS, pas les dépliés. */}
+                        {!isGroupLoading && groupPlacesByDestination(places, (p) => placeDestName(p, countryCode)).map((destGroup) => {
+                          const subKey = `${countryCode}::${destGroup.key}`;
+                          const isSubExpanded = !collapsedPlaceDestGroups.has(subKey);
+                          return (
+                            <div key={destGroup.key} className="profile-dest-subgroup">
+                              <div className="profile-dest-subgroup-header" onClick={() => togglePlaceDestGroup(subKey)}>
+                                <span className="profile-dest-subgroup-chevron">{isSubExpanded ? '▾' : '▸'}</span>
+                                <span className="profile-dest-subgroup-name">{destGroup.name || countryCode}</span>
+                                <span className="profile-dest-subgroup-count">{t('profile.placesCount', { count: destGroup.items.length })}</span>
+                              </div>
+                              {isSubExpanded && (
+                                destGroup.items.length >= 3
+                                  ? <div className="profile-added-dest-grid">{destGroup.items.map(place => renderAddedPlaceCard(place, countryCode, false))}</div>
+                                  : destGroup.items.map(place => renderAddedPlaceCard(place, countryCode, true))
+                              )}
+                            </div>
+                          );
+                        })}
                       </>
                     )}
                   </div>

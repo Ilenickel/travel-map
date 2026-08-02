@@ -13,7 +13,10 @@ export function Avatar({ profile }) {
   const name = profile?.display_name || '?';
   const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
   const color = colors[name.charCodeAt(0) % colors.length];
-  if (profile?.avatar_url) return <img src={profile.avatar_url} alt={name} className="review-avatar" />;
+  const [broken, setBroken] = useState(false);
+  if (profile?.avatar_url && !broken) {
+    return <img src={profile.avatar_url} alt={name} className="review-avatar" onError={() => setBroken(true)} />;
+  }
   return (
     <div className="review-avatar review-avatar-initials" style={{ background: color }}>
       {name[0].toUpperCase()}

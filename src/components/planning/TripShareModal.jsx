@@ -2,9 +2,17 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabase';
 
+function InlineAvatar({ url, name }) {
+  const [broken, setBroken] = useState(false);
+  return url && !broken
+    ? <img src={url} alt="" onError={() => setBroken(true)} />
+    : <span>{(name || '?').charAt(0).toUpperCase()}</span>;
+}
+
 function Avatar({ profile }) {
-  if (profile?.avatar_url) {
-    return <img src={profile.avatar_url} alt="" className="pp-member-avatar" />;
+  const [broken, setBroken] = useState(false);
+  if (profile?.avatar_url && !broken) {
+    return <img src={profile.avatar_url} alt="" className="pp-member-avatar" onError={() => setBroken(true)} />;
   }
   const initial = (profile?.display_name || '?').charAt(0).toUpperCase();
   return <div className="pp-member-avatar pp-member-avatar--initials">{initial}</div>;
@@ -315,10 +323,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
                     {searchResults.map(p => (
                       <button key={p.id} className="pp-invite-result-row" onClick={() => selectProfile(p)}>
                         <div className="pp-invite-result-avatar">
-                          {p.avatar_url
-                            ? <img src={p.avatar_url} alt="" />
-                            : <span>{(p.display_name || '?').charAt(0).toUpperCase()}</span>
-                          }
+                          <InlineAvatar url={p.avatar_url} name={p.display_name} />
                         </div>
                         <span className="pp-invite-result-name">{p.display_name}</span>
                         {p.allow_trip_invitations === false && (
@@ -336,10 +341,7 @@ export default function TripShareModal({ tripId, trip, userId, onClose, onLeaveT
               {selectedProfile && !status && (
                 <div className="pp-invite-selected">
                   <div className="pp-invite-result-avatar">
-                    {selectedProfile.avatar_url
-                      ? <img src={selectedProfile.avatar_url} alt="" />
-                      : <span>{(selectedProfile.display_name || '?').charAt(0).toUpperCase()}</span>
-                    }
+                    <InlineAvatar url={selectedProfile.avatar_url} name={selectedProfile.display_name} />
                   </div>
                   <span>{selectedProfile.display_name}</span>
                   <button className="pp-icon-btn" onClick={() => { setSelectedProfile(null); setPseudo(''); }}>

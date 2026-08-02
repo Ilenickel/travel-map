@@ -260,7 +260,10 @@ function EditPlaceForm({ place, destType, countryCode, countryName, destName, ed
 // ─── Composant principal ──────────────────────────────────────────────────────
 // `hideTitle` : le composant est déjà sous un onglet « Lieux à ne pas manquer »
 // (voir DestinationHighlights), répéter le titre ferait doublon.
-export default function PlacesList({ dest, countryCode, countryName, wikiImages = {}, wikiMeta = {}, hideTitle = false }) {
+// `focusPlaceId` : lieu à mettre en avant en tête de liste (deep-link depuis
+// l'onglet « Mes ajouts » du profil, voir ProfilePanel/PublicProfileModal) —
+// même s'il ne fait pas partie des 10 premiers résultats triés par score.
+export default function PlacesList({ dest, countryCode, countryName, wikiImages = {}, wikiMeta = {}, hideTitle = false, focusPlaceId = null }) {
   const { t, i18n } = useTranslation('app');
   const { user } = useAuth();
   const isUserDest = !!dest.isUserDest;
@@ -334,23 +337,40 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
   // ils remonteraient dans « Lieux à ne pas manquer ».
   const onlyVisitPlaces = (query) => query.eq('category', 'place');
 
+  // Récupère le lieu ciblé par `focusPlaceId`, quelle que soit sa position
+  // dans le tri par score — sans lui, un lieu au-delà de la première page
+  // resterait invisible tant qu'on n'a pas cliqué "voir plus" plusieurs fois
+  // (deep-link depuis l'onglet « Mes ajouts » du profil).
+  const fetchFocusedPlace = useCallback(async () => {
+    if (!focusPlaceId) return null;
+    const table = isUserDest ? 'destination_places' : 'static_destination_places';
+    const { data } = await onlyVisitPlaces(supabase.from(table).select(PLACE_FIELDS).eq('id', focusPlaceId)).maybeSingle();
+    if (!data) return null; // lieu supprimé entre-temps : rien à mettre en avant
+    const myVotes = await fetchMyVotes([data.id]);
+    return attachVotes([data], myVotes)[0];
+  }, [focusPlaceId, isUserDest, fetchMyVotes]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const loadInitial = useCallback(async () => {
     setLoading(true);
     setShowAddForm(false);
     setCommunityOffset(0);
 
+    const focused = await fetchFocusedPlace();
+
     if (isUserDest) {
-      const { data } = await onlyVisitPlaces(supabase
-        .from('destination_places')
-        .select(PLACE_FIELDS)
-        .eq('destination_id', dest.id))
+      let query = supabase.from('destination_places').select(PLACE_FIELDS).eq('destination_id', dest.id);
+      // Exclu de la page paginée normale : il est déjà épinglé en tête. Sans
+      // ce filtre, il pourrait apparaître deux fois (ici ET dans une page
+      // suivante de "voir plus").
+      if (focused) query = query.neq('id', focused.id);
+      const { data } = await onlyVisitPlaces(query)
         .order('score', { ascending: false })
         .order('created_at', { ascending: true })
         .range(0, PAGE_SIZE);
       const rows = data || [];
       const sliced = rows.slice(0, PAGE_SIZE);
       const myVotes = await fetchMyVotes(sliced.map(p => p.id));
-      setPlaces(attachVotes(sliced, myVotes));
+      setPlaces([...(focused ? [{ ...focused, _focused: true }] : []), ...attachVotes(sliced, myVotes)]);
       setHasMore(rows.length > PAGE_SIZE);
       setCommunityOffset(sliced.length);
     } else {
@@ -359,24 +379,27 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
         image_url: null, user_id: null, isJson: true, _votes: { ...EMPTY_VOTES },
       }));
       const slotSize = PAGE_SIZE - jsonPlaces.length;
-      const { data } = await onlyVisitPlaces(supabase
-        .from('static_destination_places')
-        .select(PLACE_FIELDS)
-        .eq('country_code', countryCode)
-        .eq('static_dest_id', String(dest.id)))
+      let query = supabase.from('static_destination_places').select(PLACE_FIELDS)
+        .eq('country_code', countryCode).eq('static_dest_id', String(dest.id));
+      if (focused) query = query.neq('id', focused.id);
+      const { data } = await onlyVisitPlaces(query)
         .order('score', { ascending: false })
         .order('created_at', { ascending: true })
         .range(0, slotSize);
       const rows = data || [];
       const communitySliced = rows.slice(0, slotSize);
       const myVotes = await fetchMyVotes(communitySliced.map(p => p.id));
-      setPlaces([...jsonPlaces, ...attachVotes(communitySliced, myVotes)]);
+      setPlaces([
+        ...(focused ? [{ ...focused, _focused: true }] : []),
+        ...jsonPlaces,
+        ...attachVotes(communitySliced, myVotes),
+      ]);
       setHasMore(rows.length > slotSize);
       setCommunityOffset(communitySliced.length);
     }
 
     setLoading(false);
-  }, [dest.id, fetchMyVotes, isUserDest, countryCode]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dest.id, dest.mustSee, fetchMyVotes, fetchFocusedPlace, isUserDest, countryCode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function loadMore() {
     setLoading(true);
@@ -384,6 +407,9 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     const table = isUserDest ? 'destination_places' : 'static_destination_places';
     let query = supabase.from(table).select(PLACE_FIELDS);
     query = isUserDest ? query.eq('destination_id', dest.id) : query.eq('country_code', countryCode).eq('static_dest_id', String(dest.id));
+    // Même exclusion qu'au chargement initial : le lieu épinglé ne doit pas
+    // réapparaître plus loin dans la liste paginée.
+    if (focusPlaceId) query = query.neq('id', focusPlaceId);
     const { data } = await onlyVisitPlaces(query)
       .order('score', { ascending: false })
       .order('created_at', { ascending: true })
@@ -399,6 +425,28 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
     setCommunityOffset(from + sliced.length);
     setLoading(false);
   }
+
+  // Défilement (avec quelques essais, le temps que le panneau finisse de se
+  // monter côté mobile) vers le lieu épinglé — même mécanique que ReviewList
+  // pour highlightId.
+  const focusScrolledRef = useRef(null);
+  useEffect(() => {
+    if (loading || !focusPlaceId || focusScrolledRef.current === focusPlaceId) return;
+    let attempts = 0;
+    let timer;
+    const tryScroll = () => {
+      const el = document.getElementById(`place-${focusPlaceId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        focusScrolledRef.current = focusPlaceId;
+      } else if (attempts < 5) {
+        attempts++;
+        timer = setTimeout(tryScroll, 100);
+      }
+    };
+    timer = setTimeout(tryScroll, 200);
+    return () => clearTimeout(timer);
+  }, [loading, focusPlaceId]);
 
   // Re-fire quand dest change OU quand userId change (user se connecte/déconnecte)
   useEffect(() => {
@@ -557,7 +605,7 @@ export default function PlacesList({ dest, countryCode, countryName, wikiImages 
             ? place.name
             : (placeNameTranslations[place.id]?.lang === i18n.language ? placeNameTranslations[place.id].text : place.name);
           return (
-          <div key={place.id} className="must-item">
+          <div key={place.id} id={`place-${place.id}`} className={`must-item${place._focused ? ' must-item--focused' : ''}`}>
             {editingId === place.id ? (
               <EditPlaceForm
                 place={place}

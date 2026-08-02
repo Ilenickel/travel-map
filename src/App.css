@@ -1397,6 +1397,16 @@ html, body { overflow-x: hidden; }
   box-shadow: 0 4px 16px rgba(99,102,241,0.1);
 }
 
+/* Lieu ciblé par un deep-link (onglet « Mes ajouts » du profil) : même
+   traitement visuel que le survol, mais permanent tant que la fiche reste
+   ouverte — sans lui, le lieu épinglé en tête de liste se confondait avec
+   les autres et le clic depuis le profil ne "montrait" rien de plus qu'un
+   simple scroll. */
+.must-item--focused {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent), 0 4px 16px rgba(99,102,241,0.15);
+}
+
 .must-item-img {
   width: 100%;
   height: 220px;
@@ -5370,11 +5380,28 @@ html, body { overflow-x: hidden; }
 .profile-tab-count {
   order: 3;
   background: var(--surface3); border: 1px solid var(--border);
-  border-radius: 20px; padding: 1px 7px; font-size: 10px; font-weight: 700; color: var(--text-muted);
+  border-radius: 20px; padding: 1px 7px; font-size: 10px; font-weight: 700; color: var(--text-dim);
 }
+/* Onglet principal actif (« Ajouts », « Pays visités »…) : un fond quasi
+   transparent (`--accent-subtle`) avec un simple liseré fin rendait le
+   chiffre plat et terne sur le fond déjà sombre de la barre d'onglets
+   (signalé le 2026-08-02) — même dégradé que le soulignement de l'onglet
+   actif juste en dessous, plutôt qu'un ton isolé qui ne s'accordait à rien. */
 .profile-modal-tab.active .profile-tab-count,
 .pub-profile-main-tab.active .profile-tab-count {
-  background: var(--accent-subtle); border-color: rgba(99,102,241,0.35); color: var(--accent2);
+  background: linear-gradient(120deg, var(--accent), var(--accent2));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 1px 5px rgba(99,102,241,0.4);
+}
+/* Le même badge posé sur la barre segmentée bleue des sous-onglets (« Mes
+   avis », « Mes ajouts ») : y garder le fond neutre --surface3 rendait le
+   chiffre quasi invisible en thème nuit, gris sur gris par-dessus le dégradé
+   bleu (signalé le 2026-08-02). */
+.profile-reviews-subtab.active .profile-tab-count {
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.32);
+  color: #fff;
 }
 
 /* Tab content */
@@ -5660,6 +5687,88 @@ html, body { overflow-x: hidden; }
   word-break: break-word;
 }
 .profile-added-dest-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+/* Nom d'un LIEU (pas d'une destination) dans l'onglet « Mes ajouts » > Lieux —
+   classe distincte de `.profile-added-dest-name` : reprendre son blanc pur en
+   gras (700) donnait un pavé blanc criard répété à chaque carte, sans rien
+   qui le distingue de la date juste en dessous (signalé le 2026-08-02).
+   Corrigé sur deux axes : un blanc légèrement adouci (`color-mix` vers le fond
+   de la carte, pas du texte plat), et un poids réduit (600) — puis un vrai
+   écart avec la date, portée par `--text-muted` en `.profile-review-date--plain`
+   et par la respiration du `gap` du conteneur, pas par une couleur criarde. */
+.profile-added-place-name {
+  font-size: 13.5px; font-weight: 600;
+  color: color-mix(in srgb, var(--text) 88%, var(--surface2));
+  letter-spacing: -0.005em;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; text-overflow: ellipsis;
+  white-space: normal; line-height: 1.3;
+  word-break: break-word;
+}
+/* Sous-groupe PAR DESTINATION à l'intérieur d'un groupe pays (onglet « Mes
+   ajouts » > Lieux) — sous « États-Unis », un lieu de New York et un lieu de
+   Chicago n'ont rien à voir l'un avec l'autre.
+   Deux essais précédents ratés, à ne pas reproduire :
+     1. même carte pleine largeur que `.profile-dest-group-header` (pastille,
+        liseré coloré, fond dégradé) → pays et destination se lisaient comme
+        deux niveaux ÉGAUX, pas comme parent et enfant.
+     2. chevron affiché SEULEMENT quand le pays a plusieurs destinations →
+        son absence, pour le cas le plus courant (une seule destination), se
+        lisait comme un bouton manquant plutôt que comme "rien à replier"
+        (signalé le 2026-08-02 à chaque fois).
+   Ici : un vrai petit en-tête de section (chevron • titre • compteur, sur une
+   ligne dédiée avec un peu d'air), TOUJOURS cliquable, posé sur un guide de
+   rattachement vertical continu qui longe tout le groupe — c'est cette ligne,
+   pas la taille du texte, qui dit "je suis sous ce pays". */
+.profile-dest-subgroup {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 4px 0 20px 8px;
+  padding-left: 16px;
+  border-left: 2px solid var(--border);
+}
+.profile-dest-subgroup:last-child { margin-bottom: 4px; }
+.profile-dest-subgroup-header {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 10px;
+  margin-left: -10px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.profile-dest-subgroup-header:hover { background: var(--surface2); }
+.profile-dest-subgroup-name {
+  font-size: 14px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.005em;
+}
+.profile-dest-subgroup-count {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  margin-left: auto;
+}
+/* Petit bouton rond (pas un simple triangle en texte nu, essayé d'abord :
+   sans pastille ni fond, rien ne signalait que la ligne entière est
+   cliquable — signalé le 2026-08-02). Plus PETIT et neutre au repos que
+   `.profile-dest-group-chevron` (16px vs 20px, gris plutôt que cyan) pour
+   rester visuellement subordonné au niveau pays ; il ne prend l'accent cyan
+   qu'au survol, où l'intention de cliquer est déjà là. */
+.profile-dest-subgroup-chevron {
+  font-size: 8px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.profile-dest-subgroup-header:hover .profile-dest-subgroup-chevron {
+  color: #7dd3fc;
+  border-color: rgba(56,189,248,0.4);
+  background: rgba(56,189,248,0.1);
+}
 /* Date en simple texte discret, sans pilule colorée : ce n'est pas une info
    qui doit attirer l'œil autant que le titre ou les tags. */
 .profile-review-date--plain {
@@ -8718,6 +8827,9 @@ html, body { overflow-x: hidden; }
      ne concerne que le desktop, où il y a la largeur pour que ça compte). ── */
   .profile-added-dest-grid { grid-template-columns: 1fr; gap: 10px; }
   .profile-added-dest-name { font-size: 13px; }
+  /* Indentation réduite : sur un écran étroit, le retrait desktop rognerait
+     trop de largeur utile aux cartes de lieux. */
+  .profile-dest-subgroup { margin-left: 4px; padding-left: 10px; }
   .profile-added-dest-item--row {
     flex-direction: column;
     align-items: stretch;

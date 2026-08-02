@@ -54,6 +54,7 @@ function TopbarAvatar({ user, onClick, refreshKey }) {
   const { t } = useTranslation("app");
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [displayName, setDisplayName] = useState(null);
+  const [avatarBroken, setAvatarBroken] = useState(false);
   const name = displayName || user?.user_metadata?.display_name || user?.email || '?';
   const initials = name[0].toUpperCase();
   const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
@@ -63,14 +64,15 @@ function TopbarAvatar({ user, onClick, refreshKey }) {
     if (!user) return;
     supabaseClient.from('profiles').select('avatar_url, display_name').eq('id', user.id).maybeSingle().then(({ data }) => {
       setAvatarUrl(data?.avatar_url ?? null);
+      setAvatarBroken(false);
       if (data?.display_name) setDisplayName(data.display_name);
     });
   }, [user, refreshKey]);
 
   return (
     <button className="topbar-profile-btn" onClick={onClick} title={t("topbar.myProfile")}>
-      {avatarUrl
-        ? <img src={avatarUrl} alt={name} className="topbar-profile-avatar-img" />
+      {avatarUrl && !avatarBroken
+        ? <img src={avatarUrl} alt={name} className="topbar-profile-avatar-img" onError={() => setAvatarBroken(true)} />
         : <div className="topbar-profile-avatar-initials" style={{ background: color }}>{initials}</div>
       }
     </button>

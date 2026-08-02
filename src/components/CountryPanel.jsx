@@ -1256,6 +1256,17 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                       wikiMeta={wikiMeta}
                       tab={highlightsTab}
                       onTabChange={setHighlightsTab}
+                      // Deep-link « Mes ajouts » (profil) : ne s'applique que
+                      // si la destination sélectionnée est BIEN celle visée
+                      // par le lien, sinon un lieu resterait mis en avant
+                      // après une navigation manuelle vers une autre
+                      // destination du même pays.
+                      focusPlaceId={
+                        (
+                          (initialExtra?.destId && String(selectedDest?.id) === initialExtra.destId) ||
+                          (initialExtra?.commDestId && selectedDest?.id === initialExtra.commDestId)
+                        ) ? initialExtra?.focusPlaceId ?? null : null
+                      }
                     />
 
                     {/* Section avis destination — masquée sous l'onglet

@@ -26,6 +26,7 @@ import { useBadge } from '../context/BadgeContext';
 import FollowListModal from './FollowListModal';
 import PublicProfileModal from './PublicProfileModal';
 import { relativeTime } from '../lib/relativeTime';
+import useUserPlaces, { groupPlacesByDestination } from '../hooks/useUserPlaces';
 
 const AVATAR_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6'];
 function avatarColor(name) { return AVATAR_COLORS[(name || '?').charCodeAt(0) % AVATAR_COLORS.length]; }
@@ -91,6 +92,25 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
   const [expandedAddedDestGroups, setExpandedAddedDestGroups] = useState(new Set());
   const [loadedAddedDestGroups, setLoadedAddedDestGroups] = useState({});
   const [loadingAddedDestGroups, setLoadingAddedDestGroups] = useState(new Set());
+  // Sous-onglet de « Mes ajouts » — Destinations, comme avant, ou Lieux (les
+  // restaurants n'y figurent volontairement pas, voir useUserPlaces).
+  const [additionsSubTab, setAdditionsSubTab] = useState('destinations');
+  const {
+    placeGroupCounts, loadPlaceCounts, resetPlaces,
+    expandedPlaceGroups, loadedPlaceGroups, loadingPlaceGroups, togglePlaceGroup,
+  } = useUserPlaces(user?.id ?? null);
+  // Pli/dépli de chaque sous-groupe DESTINATION (pas de fetch derrière : les
+  // lieux du pays sont déjà tous chargés par togglePlaceGroup, il ne s'agit
+  // que d'un repli visuel — voir togglePlaceDestGroup plus bas). Retient les
+  // groupes REPLIÉS (déplié = comportement par défaut), pas l'inverse.
+  const [collapsedPlaceDestGroups, setCollapsedPlaceDestGroups] = useState(new Set());
+  function togglePlaceDestGroup(key) {
+    setCollapsedPlaceDestGroups(prev => {
+      const s = new Set(prev);
+      if (s.has(key)) s.delete(key); else s.add(key);
+      return s;
+    });
+  }
   const fileInputRef = useRef(null);
   const touchStartX = useRef(null);
 
@@ -136,7 +156,9 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
       setAddedDestCounts(udCounts);
       setReviewsLoading(false);
     }).catch(() => setReviewsLoading(false));
-  }, [user]);
+    resetPlaces();
+    loadPlaceCounts();
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleAvatarChange(e) {
     const file = e.target.files?.[0];
@@ -258,6 +280,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
 
   const totalDestReviews = Object.values(destGroupCounts).reduce((a, b) => a + b, 0);
   const totalAddedDests = Object.values(addedDestCounts).reduce((a, b) => a + b, 0);
+  const totalPlaces = Object.values(placeGroupCounts).reduce((a, b) => a + b, 0);
 
   async function toggleAddedDestGroup(key) {
     if (expandedAddedDestGroups.has(key)) {
@@ -298,6 +321,37 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
     );
   }
 
+  // Nom de la destination sous laquelle le lieu a été ajouté : déjà résolu
+  // par le hook pour un lieu communautaire (destName), à retrouver dans les
+  // données statiques du pays pour un lieu éditorial (pas de traduction du
+  // nom, comme pour renderAddedDestCard : c'est le nom de la destination,
+  // pas du contenu descriptif).
+  function placeDestName(place, countryCode) {
+    if (place.placeType === 'community') return place.destName || '';
+    const staticDest = COUNTRIES[countryCode]?.destinations?.find((d) => String(d.id) === String(place.destId));
+    return staticDest ? localizeField(staticDest.name, i18n.language) : '';
+  }
+
+  // Clic → fiche pays, destination sélectionnée, onglet Lieux, lieu mis en
+  // avant EN TÊTE de liste même s'il n'est pas dans les 10 premiers (voir
+  // focusPlaceId dans PlacesList/CountryPanel).
+  function renderAddedPlaceCard(place, countryCode, row) {
+    const target = place.placeType === 'community' ? { commDestId: place.commDestId } : { destId: String(place.destId) };
+    return (
+      <div
+        key={place.id}
+        className={`profile-added-dest-item profile-review-item--clickable${row ? ' profile-added-dest-item--row' : ''}`}
+        onClick={() => { onOpenCountry?.(countryCode, 'destinations', { ...target, focusPlaceId: place.id }); onClose(); }}
+      >
+        <img src={place.image_url} alt={place.name} className="profile-added-dest-img" onError={e => { e.currentTarget.style.display = 'none'; }} />
+        <div className="profile-added-dest-info">
+          <span className="profile-added-place-name">{place.name}</span>
+          <span className="profile-review-date profile-review-date--plain">{relativeTime(place.created_at)}</span>
+        </div>
+      </div>
+    );
+  }
+
   const name = displayName || user?.email || '?';
   const initials = name[0].toUpperCase();
 
@@ -309,7 +363,7 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
         <div className="profile-modal-header">
           <div className="profile-modal-avatar-wrap" onClick={() => fileInputRef.current?.click()}>
             {avatarPreview
-              ? <img src={avatarPreview} alt={name} className="profile-modal-avatar-img" />
+              ? <img src={avatarPreview} alt={name} className="profile-modal-avatar-img" onError={() => setAvatarPreview(null)} />
               : <div className="profile-modal-avatar-initials" style={{ background: avatarColor(name) }}>{initials}</div>
             }
             <div className="profile-modal-avatar-overlay">📷</div>
@@ -351,12 +405,12 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
             </span>
             <span className="profile-tab-label">{t('profile.reviewsTab')}</span>
           </button>
-          <button className={`profile-modal-tab${tab === 'destinations' ? ' active' : ''}`} onClick={() => setTab('destinations')}>
+          <button className={`profile-modal-tab${tab === 'additions' ? ' active' : ''}`} onClick={() => setTab('additions')}>
             <span className="profile-tab-icon-wrap">
               <span className="profile-modal-tab-icon" aria-hidden="true">📍</span>
-              {totalAddedDests > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalAddedDests}</span>}
+              {(totalAddedDests + totalPlaces) > 0 && <span className="profile-tab-count profile-tab-count--badge">{totalAddedDests + totalPlaces}</span>}
             </span>
-            <span className="profile-tab-label">{t('profile.destinationsTab')}</span>
+            <span className="profile-tab-label">{t('profile.additionsTab')}</span>
           </button>
           <button className={`profile-modal-tab${tab === 'badges' ? ' active' : ''}`} onClick={() => setTab('badges')}>
             <span className="profile-tab-icon-wrap">
@@ -435,43 +489,121 @@ export default function ProfilePanel({ onClose, onSave, onOpenCountry }) {
           </div>
         )}
 
-        {/* Onglet Destinations ajoutées */}
-        {tab === 'destinations' && (
-          <div className="profile-reviews-list">
-            {reviewsLoading && <div className="review-list-loading">{t('common:loading')}</div>}
-            {!reviewsLoading && totalAddedDests === 0 && (
-              <div className="profile-reviews-empty">
-                <span style={{ fontSize: 32 }}>📍</span>
-                <span>{t('profile.noDestinationYet')}</span>
-              </div>
-            )}
-            {!reviewsLoading && Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
-              const countryMeta = findCountry(countryCode);
-              const isExpanded = expandedAddedDestGroups.has(countryCode);
-              const isGroupLoading = loadingAddedDestGroups.has(countryCode);
-              const dests = loadedAddedDestGroups[countryCode] || [];
-              return (
-                <div key={countryCode} className="profile-dest-group">
-                  <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
-                    {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
-                    <span className="profile-dest-group-name">{localizeField(countryMeta?.name, i18n.language) || countryCode}</span>
-                    <span className="profile-dest-group-count">{t('profile.destinationsCount', { count })}</span>
-                    <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
-                  </div>
-                  {isExpanded && (
-                    <>
-                      {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingDestinations')}</div>}
-                      {!isGroupLoading && (
-                        count >= 3
-                          ? <div className="profile-added-dest-grid">{dests.map(dest => renderAddedDestCard(dest, countryCode, false))}</div>
-                          : dests.map(dest => renderAddedDestCard(dest, countryCode, true))
-                      )}
-                    </>
+        {/* Onglet Mes ajouts — Destinations et Lieux, sous-onglets */}
+        {tab === 'additions' && (
+          <>
+            <div className="profile-reviews-subtabs">
+              <button className={`profile-reviews-subtab${additionsSubTab === 'destinations' ? ' active' : ''}`} onClick={() => setAdditionsSubTab('destinations')}>
+                {t('profile.destinationsSubTab')} {totalAddedDests > 0 && <span className="profile-tab-count">{totalAddedDests}</span>}
+              </button>
+              <button className={`profile-reviews-subtab${additionsSubTab === 'places' ? ' active' : ''}`} onClick={() => setAdditionsSubTab('places')}>
+                {t('profile.placesSubTab')} {totalPlaces > 0 && <span className="profile-tab-count">{totalPlaces}</span>}
+              </button>
+            </div>
+            <div className="profile-reviews-list">
+              {reviewsLoading && <div className="review-list-loading">{t('common:loading')}</div>}
+
+              {/* Destinations ajoutées */}
+              {!reviewsLoading && additionsSubTab === 'destinations' && (
+                <>
+                  {totalAddedDests === 0 && (
+                    <div className="profile-reviews-empty">
+                      <span style={{ fontSize: 32 }}>📍</span>
+                      <span>{t('profile.noDestinationYet')}</span>
+                    </div>
                   )}
-                </div>
-              );
-            })}
-          </div>
+                  {Object.entries(addedDestCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
+                    const countryMeta = findCountry(countryCode);
+                    const isExpanded = expandedAddedDestGroups.has(countryCode);
+                    const isGroupLoading = loadingAddedDestGroups.has(countryCode);
+                    const dests = loadedAddedDestGroups[countryCode] || [];
+                    return (
+                      <div key={countryCode} className="profile-dest-group">
+                        <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => toggleAddedDestGroup(countryCode)}>
+                          {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
+                          <span className="profile-dest-group-name">{localizeField(countryMeta?.name, i18n.language) || countryCode}</span>
+                          <span className="profile-dest-group-count">{t('profile.destinationsCount', { count })}</span>
+                          <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
+                        </div>
+                        {isExpanded && (
+                          <>
+                            {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingDestinations')}</div>}
+                            {!isGroupLoading && (
+                              count >= 3
+                                ? <div className="profile-added-dest-grid">{dests.map(dest => renderAddedDestCard(dest, countryCode, false))}</div>
+                                : dests.map(dest => renderAddedDestCard(dest, countryCode, true))
+                            )}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+
+              {/* Lieux ajoutés — PAS les restaurants, voir useUserPlaces */}
+              {!reviewsLoading && additionsSubTab === 'places' && (
+                <>
+                  {totalPlaces === 0 && (
+                    <div className="profile-reviews-empty">
+                      <span style={{ fontSize: 32 }}>📍</span>
+                      <span>{t('profile.noPlaceYet')}</span>
+                    </div>
+                  )}
+                  {Object.entries(placeGroupCounts).sort((a, b) => b[1] - a[1]).map(([countryCode, count]) => {
+                    const countryMeta = findCountry(countryCode);
+                    const isExpanded = expandedPlaceGroups.has(countryCode);
+                    const isGroupLoading = loadingPlaceGroups.has(countryCode);
+                    const places = loadedPlaceGroups[countryCode] || [];
+                    return (
+                      <div key={countryCode} className="profile-dest-group">
+                        <div className="profile-dest-group-header profile-dest-group-header--clickable" onClick={() => togglePlaceGroup(countryCode)}>
+                          {countryMeta && <FlagImage country={countryMeta} code={countryCode} />}
+                          <span className="profile-dest-group-name">{localizeField(countryMeta?.name, i18n.language) || countryCode}</span>
+                          <span className="profile-dest-group-count">{t('profile.placesCount', { count })}</span>
+                          <span className="profile-dest-group-chevron">{isExpanded ? '▲' : '▼'}</span>
+                        </div>
+                        {isExpanded && (
+                          <>
+                            {isGroupLoading && <div className="review-list-loading" style={{ padding: '10px 16px', textAlign: 'center' }}>{t('profile.loadingPlaces')}</div>}
+                            {/* Sous-regroupement PAR DESTINATION, repliable
+                                indépendamment : sous « États-Unis », un lieu
+                                de New York et un lieu de Chicago n'ont rien à
+                                voir l'un avec l'autre. Dépliées par défaut
+                                (les lieux du pays sont déjà tous chargés, rien
+                                à gagner à les cacher d'office) — TOUJOURS
+                                repliables, même s'il n'y en a qu'une seule :
+                                un chevron absent pour ce seul cas se lisait
+                                comme un bouton manquant (signalé le 2026-08-02).
+                                `collapsedPlaceDestGroups` retient donc les
+                                groupes REPLIÉS, pas les dépliés. */}
+                            {!isGroupLoading && groupPlacesByDestination(places, (p) => placeDestName(p, countryCode)).map((destGroup) => {
+                              const subKey = `${countryCode}::${destGroup.key}`;
+                              const isSubExpanded = !collapsedPlaceDestGroups.has(subKey);
+                              return (
+                                <div key={destGroup.key} className="profile-dest-subgroup">
+                                  <div className="profile-dest-subgroup-header" onClick={() => togglePlaceDestGroup(subKey)}>
+                                    <span className="profile-dest-subgroup-chevron">{isSubExpanded ? '▾' : '▸'}</span>
+                                    <span className="profile-dest-subgroup-name">{destGroup.name || countryCode}</span>
+                                    <span className="profile-dest-subgroup-count">{t('profile.placesCount', { count: destGroup.items.length })}</span>
+                                  </div>
+                                  {isSubExpanded && (
+                                    destGroup.items.length >= 3
+                                      ? <div className="profile-added-dest-grid">{destGroup.items.map(place => renderAddedPlaceCard(place, countryCode, false))}</div>
+                                      : destGroup.items.map(place => renderAddedPlaceCard(place, countryCode, true))
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </div>
+          </>
         )}
 
         {/* Onglet Badges */}
