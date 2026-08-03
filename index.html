@@ -22,7 +22,25 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Triply" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- `default` et NON `black-translucent` (change le 2026-08-03, mesure a
+         l'appui sur iPhone en PWA). Avec black-translucent, iOS etend bien le
+         contenu sous la barre de statut en haut (safe-area-inset-top = 59px)
+         mais n'augmente PAS la hauteur de la fenetre pour autant : mesure,
+         innerHeight valait 793 pour un ecran de 852, soit exactement 59px
+         manquants EN BAS. Ces 59px sont hors de la vue web — aucun CSS ne
+         peut les remplir (elementFromPoint ne les atteint meme pas), d'ou la
+         bande basse increvable et l'echec de tous les correctifs de mise en
+         page. Bug iOS connu de ce mode.
+         Avec `default`, la fenetre occupe toute la hauteur et la barre de
+         statut redevient une zone reservee par le systeme — comme sur Android,
+         qui est justement la reference visuelle voulue ici. Effet de bord
+         souhaitable : safe-area-inset-top retombe a 0, donc la barre d'action
+         du haut perd son padding de 47px et cesse d'etre trop haute (l'autre
+         symptome signale). On perd l'affichage plein ecran sous la barre de
+         statut, arbitrage assume.
+         ATTENTION : iOS fige ce reglage a l'ajout a l'ecran d'accueil. Il faut
+         SUPPRIMER puis REAJOUTER l'icone pour qu'il prenne effet. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
     <!-- Open Graph (Facebook, LinkedIn, WhatsApp…) -->
     <meta property="og:type" content="website" />
@@ -285,87 +303,5 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- Panneau de diagnostic viewport (TEMPORAIRE, à retirer une fois la
-         bande basse iPhone réglée). Ne s'active QUE via ?vpdebug=1 dans
-         l'URL : invisible pour tout le monde en usage normal, et aucun coût
-         de rendu tant que le paramètre est absent. Sert à mesurer sur un vrai
-         iPhone ce qu'on ne peut pas reproduire ailleurs : mode PWA autonome,
-         hauteurs de viewport réelles, valeurs effectives des safe-areas, et
-         hauteur réellement occupée par la coquille racine. -->
-    <script>
-      /* S'active aussi automatiquement en PWA autonome, sans ?vpdebug=1 : une
-         fois installée sur l'écran d'accueil, l'appli n'a plus de barre
-         d'adresse, donc plus aucun moyen d'ajouter le paramètre — or c'est
-         EXACTEMENT là (et nulle part ailleurs) que le bug de bande basse se
-         produit, les safe-areas valant 0 dans Safari. Se referme au toucher. */
-      if (new URLSearchParams(location.search).has('vpdebug')
-          || navigator.standalone === true
-          || matchMedia('(display-mode: standalone)').matches) {
-        addEventListener('load', function () {
-          var box = document.createElement('div');
-          box.style.cssText = 'position:fixed;left:8px;right:8px;top:8px;z-index:99999;' +
-            'background:#000;color:#0f0;font:11px/1.4 monospace;padding:10px;' +
-            'border-radius:8px;white-space:pre;opacity:.94';
-          box.addEventListener('click', function () { box.remove(); });
-          function probe(name) {
-            var el = document.createElement('div');
-            el.style.cssText = 'position:fixed;height:env(safe-area-inset-' + name + ',0px)';
-            document.body.appendChild(el);
-            var v = getComputedStyle(el).height;
-            el.remove();
-            return v;
-          }
-          /* Identifie l'élément qui occupe RÉELLEMENT un point donné du bas de
-             l'écran, avec sa hauteur et son padding-bas. C'est la mesure qui
-             tranche : plutôt que de déduire d'où vient le vide, on demande au
-             navigateur qui est là. `pointer-events:none` sur le panneau
-             empêcherait elementFromPoint de voir sous lui — il est hors zone
-             de toute façon (en haut). */
-          function at(y) {
-            var el = document.elementFromPoint(Math.round(innerWidth / 2), y);
-            if (!el) return 'rien';
-            var cs = getComputedStyle(el);
-            var cls = (el.className && el.className.split ? el.className.split(' ')[0] : '') || el.tagName;
-            return cls + ' h=' + Math.round(el.getBoundingClientRect().height)
-              + ' pb=' + cs.paddingBottom;
-          }
-          function render() {
-            var shell = document.querySelector('.pp-app, .app');
-            var r = shell ? shell.getBoundingClientRect() : null;
-            var nav = document.querySelector('.pp-mobile-nav, .app-mobile-nav');
-            var nr = nav ? nav.getBoundingClientRect() : null;
-            box.textContent = [
-              'standalone(PWA) : ' + (navigator.standalone === true) +
-                ' | dm:' + matchMedia('(display-mode: standalone)').matches,
-              'screen/inner    : ' + screen.height + ' / ' + innerHeight,
-              'visualViewport  : ' + (visualViewport ? Math.round(visualViewport.height) : 'n/a'),
-              'safe-area t/b   : ' + probe('top') + ' / ' + probe('bottom'),
-              'coquille        : ' + (shell ? shell.className.split(' ')[0] : 'introuvable'),
-              'coquille bas    : ' + (r ? Math.round(r.bottom) : '-')
-                + '  ecart bas: ' + (r ? Math.round(innerHeight - r.bottom) : '-'),
-              'nav bas/haut    : ' + (nr ? Math.round(nr.bottom) + ' / ' + Math.round(nr.top) : '-'),
-              'vide sous nav   : ' + (nr ? Math.round(innerHeight - nr.bottom) : '-'),
-              '--- qui occupe le bas ---',
-              'a -5px  : ' + at(innerHeight - 5),
-              'a -25px : ' + at(innerHeight - 25),
-              'a -60px : ' + at(innerHeight - 60)
-            ].join('\n');
-          }
-          document.body.appendChild(box);
-          render();
-          addEventListener('resize', render);
-          addEventListener('orientationchange', render);
-          // `load` peut precéder le premier rendu de React : sans ces
-          // remesures, la coquille racine (.app / .pp-app) n'existe pas encore
-          // et les lignes "coquille"/"ecart bas" — les plus importantes —
-          // restent vides ("introuvable", constaté au premier test).
-          var tries = 0;
-          var timer = setInterval(function () {
-            render();
-            if (++tries > 20 || document.querySelector('.pp-app, .app')) clearInterval(timer);
-          }, 250);
-        });
-      }
-    </script>
   </body>
 </html>
