@@ -41,22 +41,46 @@ export default function CurrencyPicker({ value, onChange, suggested = [], anchor
   // dessous, aux mêmes bords. Bascule au-dessus s'il n'y a pas la place en
   // dessous, et hauteur plafonnée par l'espace réellement disponible : c'est
   // ce qui garantit qu'elle n'est jamais coupée.
+  //
+  // CLAVIER OUVERT (mobile, après un tap dans la recherche) : on ne suit plus
+  // le déclencheur. iOS fait défiler la page pour ramener le champ actif
+  // au-dessus du clavier PENDANT que le clavier s'anime — le déclencheur
+  // bouge donc lui aussi, mais dans le repère du viewport de MISE EN PAGE
+  // (getBoundingClientRect), qui ne coïncide plus avec ce qui est réellement
+  // affiché (visualViewport) une fois le clavier ouvert. Mélanger les deux
+  // pendant l'animation produisait une liste qui sautait, se détachait de
+  // tout, flottait au milieu de l'écran — ce qui était signalé. La position
+  // "clavier ouvert" ci-dessous ne dépend QUE de visualViewport (jamais d'un
+  // rect d'élément) : elle reste cohérente à chaque frame de l'animation,
+  // sans logique de gel à ajouter.
   const place = useCallback(() => {
     const trigger = triggerRef.current;
     if (!trigger) return;
-    const anchor = anchorRef?.current || trigger;
-    const a = anchor.getBoundingClientRect();
-    const t = trigger.getBoundingClientRect();
-    // visualViewport : sur iOS, innerHeight ne diminue pas quand le clavier
-    // s'ouvre — sans ça la liste se calculerait une hauteur qui passe dessous.
     const vv = window.visualViewport;
     const vw = vv?.width ?? window.innerWidth;
     const vh = vv?.height ?? window.innerHeight;
-    // getBoundingClientRect est relatif au viewport de mise en page ; on
-    // ramène tout dans le repère du viewport VISUEL avant de comparer.
     const vTop = vv?.offsetTop ?? 0;
     const vLeft = vv?.offsetLeft ?? 0;
+    // Heuristique clavier ouvert : la zone visible a perdu plus du quart de
+    // la hauteur de la fenêtre. Un clavier iOS/Android en prend toujours
+    // nettement plus (30-45 %) ; rien d'autre ne réduit visualViewport à ce
+    // point sur cet écran.
+    const keyboardOpen = vv ? vh < window.innerHeight * 0.75 : false;
 
+    if (keyboardOpen) {
+      setPos({
+        left: vLeft + VIEWPORT_MARGIN,
+        width: vw - VIEWPORT_MARGIN * 2,
+        top: vTop + VIEWPORT_MARGIN,
+        height: vh - VIEWPORT_MARGIN * 2,
+        docked: true,
+      });
+      return;
+    }
+
+    const anchor = anchorRef?.current || trigger;
+    const a = anchor.getBoundingClientRect();
+    const t = trigger.getBoundingClientRect();
     const width = Math.max(
       Math.min(MENU_MIN_WIDTH, vw - VIEWPORT_MARGIN * 2),
       Math.min(anchorRef?.current ? a.width : MENU_FALLBACK_WIDTH, vw - VIEWPORT_MARGIN * 2)
@@ -75,11 +99,13 @@ export default function CurrencyPicker({ value, onChange, suggested = [], anchor
       left,
       width,
       maxHeight,
+      docked: false,
       ...(openUp
         ? { bottom: window.innerHeight - t.top + 6 }
         : { top: t.bottom + 6 }),
     });
   }, [anchorRef]);
+
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -193,8 +219,17 @@ export default function CurrencyPicker({ value, onChange, suggested = [], anchor
       {open && pos && createPortal(
         <div
           ref={menuRef}
-          className="pp-currency-menu"
-          style={{ left: pos.left, width: pos.width, maxHeight: pos.maxHeight, top: pos.top, bottom: pos.bottom }}
+          className={`pp-currency-menu${pos.docked ? ' pp-currency-menu--docked' : ''}`}
+          style={{
+            left: pos.left, width: pos.width, top: pos.top, bottom: pos.bottom,
+            // Ancrée sous le champ : hauteur libre jusqu'à un plafond (peu de
+            // résultats → petite liste). Clavier ouvert (docked) : hauteur
+            // FIXE occupant toute la zone visible — la liste ne doit pas se
+            // recroqueviller au fil de la frappe pendant que le clavier
+            // bouge, une taille stable est plus lisible qu'une taille qui
+            // respire.
+            ...(pos.docked ? { height: pos.height } : { maxHeight: pos.maxHeight }),
+          }}
         >
           <div className="pp-currency-search-wrap">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -206,6 +241,16 @@ export default function CurrencyPicker({ value, onChange, suggested = [], anchor
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t('expenses.currencySearchPlaceholder')}
+              // iOS proposait ici une barre de suggestion "Préremplir le
+              // contact" (heuristique d'auto-remplissage sur un champ texte
+              // libre) : elle grignotait encore de la hauteur au-dessus du
+              // clavier, déjà la ressource la plus rare sur cet écran. Ce
+              // n'est ni un nom ni une adresse, autoComplete="off" suffit à
+              // l'écarter.
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
               // Entrée valide le premier résultat : taper « jpy » puis Entrée
               // suffit, sans quitter le clavier pour viser la ligne.
               onKeyDown={(e) => {

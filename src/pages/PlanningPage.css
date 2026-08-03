@@ -10298,6 +10298,16 @@
   from { transform: translateY(-4px); opacity: 0; }
   to   { transform: none; opacity: 1; }
 }
+/* Clavier ouvert sur mobile (voir place() dans CurrencyPicker.jsx) : la
+   liste ne suit plus le champ, elle occupe toute la zone visible au-dessus
+   du clavier (hauteur FIXE posée en style inline, pas `max-height` — voir le
+   composant). .pp-currency-list, déjà en `flex: 1; min-height: 0`, absorbe
+   cette hauteur et défile normalement. Pas d'animation d'entrée : elle doit
+   apparaître immédiatement stable, pas glisser pendant que le clavier bouge
+   déjà de son côté. */
+.pp-currency-menu--docked {
+  animation: none;
+}
 
 .pp-currency-search-wrap {
   display: flex;
