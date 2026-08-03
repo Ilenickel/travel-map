@@ -30,24 +30,44 @@ const BASE = 'https://www.google.com/maps/dir/?api=1';
 // exacte sans `place_id` (API payante) ; le format historique `Nom@lat,lng` a
 // été essayé et l'iOS ne le parse pas du tout (2026-08-03).
 //
-// La ville et le pays SONT indispensables : le nom seul part se faire géocoder
-// à l'échelle du monde et le repère atterrit sur le premier homonyme venu
-// (constaté). Ils ancrent la recherche sans le moindre appel réseau — ces deux
-// champs sont déjà en base (trip_cities.name, trip_destinations.country_name).
+// Un ancrage géographique est INDISPENSABLE : le nom seul part se faire
+// géocoder à l'échelle du monde et le repère atterrit sur le premier homonyme
+// venu (constaté). Deux ancrages possibles, par ordre de préférence, tous deux
+// déjà en base — aucun appel réseau :
+//
+//   1. L'ADRESSE de l'étape (trip_activities.place_address), quand elle existe.
+//      C'est de loin le meilleur ancrage, et il est indispensable dès que le
+//      nom saisi ne correspond pas exactement à celui du lieu chez Google :
+//      « Gelateria Giolitti, Rome, Italie » ne donnait AUCUN résultat (Google
+//      connaît l'établissement sous le nom « Giolitti » et proposait une
+//      correction d'orthographe), là où l'adresse le situe sans ambiguïté.
+//      Le pays n'est alors PAS ajouté : ces adresses le contiennent déjà
+//      (« …00186 Rome RM, Italy »), et l'accoler une seconde fois dans une
+//      autre langue (« …, Italy, Italie ») ne pourrait que brouiller la
+//      recherche.
+//   2. À défaut, la VILLE et le PAYS (trip_cities.name,
+//      trip_destinations.country_name) — suffisant pour un lieu connu.
 //
 // Repli sur les coordonnées dans DEUX cas, où elles restent exactes partout
 // (c'est le comportement d'origine, seul le libellé manque sur iOS) :
 //   - étape sans nom, évidemment ;
-//   - étape sans AUCUN ancrage géographique (ni ville, ni pays). Ce second cas
-//     est le garde-fou essentiel : un nom seul lâché dans Google Maps est
-//     géocodé à l'échelle du monde et le repère atterrit sur le premier
-//     homonyme venu — « Panthéon » sans « Rome » donne celui de Paris. Mieux
-//     vaut un repère anonyme au bon endroit qu'un repère nommé dans le mauvais
-//     pays. Se produit sur des données incomplètes (ville détachée de sa
-//     destination), pas dans le cas courant où les deux champs sont remplis.
+//   - étape sans AUCUN ancrage (ni adresse, ni ville, ni pays). Ce second cas
+//     est le garde-fou essentiel : « Panthéon » sans « Rome » donne celui de
+//     Paris. Mieux vaut un repère anonyme au bon endroit qu'un repère nommé
+//     dans le mauvais pays. Se produit sur des données incomplètes (ville
+//     détachée de sa destination), pas dans le cas courant.
 function coordParam(stop) {
-  if (!stop.name || (!stop.city && !stop.country)) return `${stop.lat},${stop.lng}`;
-  return [stop.name, stop.city, stop.country].filter(Boolean).join(', ');
+  if (!stop.name) return `${stop.lat},${stop.lng}`;
+  if (stop.address) {
+    // Le nom figure déjà dans l'adresse (fréquent quand l'activité porte le nom
+    // d'un quartier : « Akihabara » + « Akihabara, Tokyo ») : on ne le répète
+    // pas, « Akihabara, Akihabara, Tokyo » n'aiderait personne, Google pas plus
+    // que le lecteur.
+    const inAddress = stop.address.toLowerCase().includes(stop.name.toLowerCase());
+    return inAddress ? stop.address : `${stop.name}, ${stop.address}`;
+  }
+  if (stop.city || stop.country) return [stop.name, stop.city, stop.country].filter(Boolean).join(', ');
+  return `${stop.lat},${stop.lng}`;
 }
 
 const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;

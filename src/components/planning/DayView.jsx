@@ -31,6 +31,7 @@ function routeStopsForDay(activities, day, cities = [], destinations = []) {
     return {
       id: act.id,
       name: act.name,
+      address: act.place_address ?? null,
       city: city?.name ?? null,
       country: city ? (countryByDestId.get(city.destination_id) ?? null) : null,
       lat: act.place_lat ?? null,

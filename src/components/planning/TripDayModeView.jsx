@@ -104,6 +104,7 @@ export default function TripDayModeView({
     return {
       id: act.id,
       name: act.name,
+      address: act.place_address ?? null,
       city: city?.name ?? null,
       country: city
         ? ((destinations || []).find((d) => d.id === city.destination_id)?.country_name ?? null)

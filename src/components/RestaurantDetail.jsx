@@ -61,9 +61,15 @@ export default function RestaurantDetail({
   // Repli sur les coordonnées si le restaurant n'a pas de nom, puis sur son
   // adresse s'il n'a pas non plus de coordonnées : exact partout, et jamais de
   // requête vide (ou pire, "null,null") quel que soit l'état de la fiche.
+  // Le pays n'est ajouté qu'à défaut d'adresse : celles des restaurants le
+  // contiennent déjà (« …00186 Rome RM, Italy »), et l'accoler une seconde fois
+  // dans une autre langue (« …, Italy, Italie ») ne ferait que brouiller la
+  // recherche. Même règle que les étapes d'itinéraire (voir coordParam).
   const hasCoords = restaurant.lat != null && restaurant.lng != null;
   const googleMapsQuery = restaurant.name
-    ? [restaurant.name, restaurant.address, countryName].filter(Boolean).join(', ')
+    ? (restaurant.address
+      ? `${restaurant.name}, ${restaurant.address}`
+      : [restaurant.name, countryName].filter(Boolean).join(', '))
     : (hasCoords
       ? `${restaurant.lat},${restaurant.lng}`
       : [restaurant.address, countryName].filter(Boolean).join(', '));
