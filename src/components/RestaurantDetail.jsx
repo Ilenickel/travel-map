@@ -52,11 +52,21 @@ export default function RestaurantDetail({
   const { isFavorite, toggleFavorite } = usePlaceFavorites(user?.id ?? null);
   const favorite = isFavorite(restaurant.type, restaurant.id);
 
-  // Coordonnées de préférence, adresse en repli : une recherche par nom seul
-  // ouvrirait n'importe laquelle des adresses d'une enseigne.
-  const googleMapsQuery = restaurant.lat != null && restaurant.lng != null
-    ? `${restaurant.lat},${restaurant.lng}`
-    : [restaurant.name, restaurant.address].filter(Boolean).join(' ');
+  // Nom + adresse + pays, et non les coordonnées : celles-ci sont exactes mais
+  // l'application Google Maps iOS ne les nomme pas (« Repère placé »), là où
+  // Android les géocode en sens inverse — même raison et même traitement que
+  // les étapes d'un itinéraire, voir coordParam dans lib/googleMapsRoute.js.
+  // L'adresse et le pays sont indispensables : un nom d'enseigne seul ouvrirait
+  // n'importe laquelle des adresses d'une franchise.
+  // Repli sur les coordonnées si le restaurant n'a pas de nom, puis sur son
+  // adresse s'il n'a pas non plus de coordonnées : exact partout, et jamais de
+  // requête vide (ou pire, "null,null") quel que soit l'état de la fiche.
+  const hasCoords = restaurant.lat != null && restaurant.lng != null;
+  const googleMapsQuery = restaurant.name
+    ? [restaurant.name, restaurant.address, countryName].filter(Boolean).join(', ')
+    : (hasCoords
+      ? `${restaurant.lat},${restaurant.lng}`
+      : [restaurant.address, countryName].filter(Boolean).join(', '));
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(googleMapsQuery)}`;
 
   const [reviews, setReviews] = useState(null);

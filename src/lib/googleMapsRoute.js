@@ -21,8 +21,33 @@ export const MAX_STOPS = MAX_WAYPOINTS + 2;
 
 const BASE = 'https://www.google.com/maps/dir/?api=1';
 
+// Une étape telle qu'envoyée à Google Maps.
+//
+// Le NOM plutôt que les coordonnées, parce que l'application Google Maps iOS
+// n'affiche aucun libellé pour des coordonnées brutes (« Repère placé », autant
+// de fois qu'il y a d'étapes) là où l'application Android les géocode en sens
+// inverse. Aucune URL Google ne transmet à la fois un libellé et une position
+// exacte sans `place_id` (API payante) ; le format historique `Nom@lat,lng` a
+// été essayé et l'iOS ne le parse pas du tout (2026-08-03).
+//
+// La ville et le pays SONT indispensables : le nom seul part se faire géocoder
+// à l'échelle du monde et le repère atterrit sur le premier homonyme venu
+// (constaté). Ils ancrent la recherche sans le moindre appel réseau — ces deux
+// champs sont déjà en base (trip_cities.name, trip_destinations.country_name).
+//
+// Repli sur les coordonnées dans DEUX cas, où elles restent exactes partout
+// (c'est le comportement d'origine, seul le libellé manque sur iOS) :
+//   - étape sans nom, évidemment ;
+//   - étape sans AUCUN ancrage géographique (ni ville, ni pays). Ce second cas
+//     est le garde-fou essentiel : un nom seul lâché dans Google Maps est
+//     géocodé à l'échelle du monde et le repère atterrit sur le premier
+//     homonyme venu — « Panthéon » sans « Rome » donne celui de Paris. Mieux
+//     vaut un repère anonyme au bon endroit qu'un repère nommé dans le mauvais
+//     pays. Se produit sur des données incomplètes (ville détachée de sa
+//     destination), pas dans le cas courant où les deux champs sont remplis.
 function coordParam(stop) {
-  return `${stop.lat},${stop.lng}`;
+  if (!stop.name || (!stop.city && !stop.country)) return `${stop.lat},${stop.lng}`;
+  return [stop.name, stop.city, stop.country].filter(Boolean).join(', ');
 }
 
 const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -30,8 +55,11 @@ const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSSt
 /**
  * Prépare l'import d'une journée dans Google Maps.
  *
- * @param {Array<{id: string, name: string, lat: number|null, lng: number|null}>} stops
- *        Étapes DANS L'ORDRE de la journée.
+ * @param {Array<{id: string, name: string, city: string|null, country: string|null,
+ *                lat: number|null, lng: number|null}>} stops
+ *        Étapes DANS L'ORDRE de la journée. `city`/`country` ancrent le nom
+ *        géographiquement (voir coordParam) ; sans eux le nom seul serait
+ *        géocodé à l'échelle du monde.
  * @returns {{
  *   url: string|null,          URL à ouvrir (null si rien d'exploitable)
  *   included: Array,           étapes réellement transmises à Maps

@@ -96,12 +96,22 @@ export default function TripDayModeView({
     ...carriedOver.map(({ act }) => act),
     ...timed,
     ...allDayActs,
-  ].map((act) => ({
-    id: act.id,
-    name: act.name,
-    lat: act.place_lat ?? null,
-    lng: act.place_lng ?? null,
-  }));
+  ].map((act) => {
+    // Ville et pays accompagnent le nom jusqu'à Google Maps (voir coordParam
+    // dans lib/googleMapsRoute.js) : sans eux, un nom seul se ferait géocoder à
+    // l'échelle du monde et le repère atterrirait sur le premier homonyme venu.
+    const city = (cities || []).find((c) => c.id === act.city_id);
+    return {
+      id: act.id,
+      name: act.name,
+      city: city?.name ?? null,
+      country: city
+        ? ((destinations || []).find((d) => d.id === city.destination_id)?.country_name ?? null)
+        : null,
+      lat: act.place_lat ?? null,
+      lng: act.place_lng ?? null,
+    };
+  });
 
   const STATUS_LABEL = { ongoing: t('dayMode.statusOngoing'), upcoming: t('dayMode.statusUpcoming'), past: t('dayMode.statusPast') };
 

@@ -15,17 +15,28 @@ import i18n from '../../i18n';
 // (une activité de la veille qui déborde sur ce jour), puis les activités
 // horodatées, puis celles sans heure. Même logique que TripDayModeView (écran
 // « Jour J »), généralisée à un jour quelconque plutôt qu'au seul jour courant.
-function routeStopsForDay(activities, day) {
+// `cities`/`destinations` : la ville et le pays de chaque étape accompagnent son
+// nom jusqu'à Google Maps (voir coordParam dans lib/googleMapsRoute.js) — sans
+// eux, un nom seul se ferait géocoder à l'échelle du monde et le repère
+// atterrirait sur le premier homonyme venu.
+function routeStopsForDay(activities, day, cities = [], destinations = []) {
   const dayActs = activities.filter(a => a.visit_date === day);
   const carriedOver = getCarriedOverActivities(activities, day).map(({ act }) => act);
   const timed = sortActsByTimeThenPosition(dayActs.filter(a => a.visit_time));
   const allDay = dayActs.filter(a => !a.visit_time).sort((a, b) => a.position - b.position);
-  return [...carriedOver, ...timed, ...allDay].map(act => ({
-    id: act.id,
-    name: act.name,
-    lat: act.place_lat ?? null,
-    lng: act.place_lng ?? null,
-  }));
+  const cityById = new Map((cities || []).map(c => [c.id, c]));
+  const countryByDestId = new Map((destinations || []).map(d => [d.id, d.country_name]));
+  return [...carriedOver, ...timed, ...allDay].map(act => {
+    const city = cityById.get(act.city_id);
+    return {
+      id: act.id,
+      name: act.name,
+      city: city?.name ?? null,
+      country: city ? (countryByDestId.get(city.destination_id) ?? null) : null,
+      lat: act.place_lat ?? null,
+      lng: act.place_lng ?? null,
+    };
+  });
 }
 
 function slotLabel(key) {
@@ -594,7 +605,7 @@ export default function DayView({
                         QUEL jour du voyage depuis la vue par jour (demandé le
                         2026-07-31). `margin-left: auto` (CSS) le pousse à droite
                         de l'en-tête, sans perturber les badges qui précèdent. */}
-                    {totalDay > 0 && <DayRouteButton stops={routeStopsForDay(activities, day)} variant="link" />}
+                    {totalDay > 0 && <DayRouteButton stops={routeStopsForDay(activities, day, cities, destinations)} variant="link" />}
                   </div>
                   {renderDaySection(day, dayIdx, true)}
                 </div>
