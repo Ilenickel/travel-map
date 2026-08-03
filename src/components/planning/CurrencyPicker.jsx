@@ -238,19 +238,24 @@ export default function CurrencyPicker({ value, onChange, suggested = [], anchor
             <input
               ref={searchRef}
               className="pp-currency-search"
+              // type="search" (pas "text") : iOS proposait ici une barre de
+              // suggestion "Préremplir le contact" — une heuristique de
+              // détection de nom/coordonnées qu'iOS applique à N'IMPORTE QUEL
+              // champ texte, sans lien avec autoComplete (qui ne suffisait
+              // pas à l'écarter, testé). Elle grignotait encore de la
+              // hauteur au-dessus du clavier, déjà la ressource la plus rare
+              // sur cet écran. type="search" déclare le champ comme une
+              // recherche, qu'iOS exclut explicitement de cette détection —
+              // et c'est sémantiquement ce que c'est.
+              type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t('expenses.currencySearchPlaceholder')}
-              // iOS proposait ici une barre de suggestion "Préremplir le
-              // contact" (heuristique d'auto-remplissage sur un champ texte
-              // libre) : elle grignotait encore de la hauteur au-dessus du
-              // clavier, déjà la ressource la plus rare sur cet écran. Ce
-              // n'est ni un nom ni une adresse, autoComplete="off" suffit à
-              // l'écarter.
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck="false"
+              enterKeyHint="search"
               // Entrée valide le premier résultat : taper « jpy » puis Entrée
               // suffit, sans quitter le clavier pour viser la ligne.
               onKeyDown={(e) => {

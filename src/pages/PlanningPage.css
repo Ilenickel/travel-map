@@ -10334,7 +10334,19 @@
   color: var(--text);
   font-family: inherit;
   font-size: 14px;
+  /* type="search" (voir CurrencyPicker.jsx) : WebKit lui applique par défaut
+     un habillage natif (fond arrondi, ombre interne) qui jurait avec le
+     reste du champ — on repart d'un champ nu, identique à un input texte
+     classique. Le bouton d'effacement natif ("x" au clavier) reste, il n'a
+     pas d'équivalent ici. */
+  -webkit-appearance: none;
+  appearance: none;
 }
+/* WebKit affiche un bouton d'effacement natif sur un champ vide focus, avant
+   toute frappe — l'espace qu'il réserve décale le texte tapé d'un pixel ou
+   deux pendant la première frappe. Masqué : le champ se vide de toute façon
+   d'un clic (close() à la sélection) ou en fermant la liste. */
+.pp-currency-search::-webkit-search-cancel-button { display: none; }
 .pp-currency-list {
   flex: 1;
   min-height: 0;
