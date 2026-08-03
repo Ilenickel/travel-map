@@ -559,7 +559,7 @@
     "averageLabel": "Average / person",
     "youTag": "You",
     "formerParticipant": "Former participant",
-    "formerNote": "No longer part of the trip — their amounts are kept.",
+    "formerNote": "No longer part of the trip — their amounts and their share of past expenses are kept.",
     "entriesCount_one": "{{count}} expense",
     "entriesCount_other": "{{count}} expenses",
     "entriesCount_zero": "No expenses",
@@ -587,7 +587,14 @@
     "balanceInfoTitle": "See details: who owes what to whom",
     "youOweLine": "You owe {{name}}",
     "owesYouLine": "{{name}} owes you",
-    "balanceAllSettled": "All settled up with everyone."
+    "balanceAllSettled": "All settled up with everyone.",
+    "paidBy": "Paid by {{name}}",
+    "convertedPreview": "≈ {{amount}} at today's rate",
+    "rateUnavailable": "Could not fetch today's rate for {{currency}}. Please check your connection and try again.",
+    "currencySearchPlaceholder": "Search for a currency…",
+    "currencySuggested": "Trip currencies",
+    "currencyAll": "All currencies",
+    "currencyNoResult": "No currency found."
   },
   "trips": {
     "untitledDefault": "New trip",

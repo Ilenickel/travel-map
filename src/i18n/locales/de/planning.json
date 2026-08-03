@@ -559,7 +559,7 @@
     "averageLabel": "Durchschnitt / Pers.",
     "youTag": "Sie",
     "formerParticipant": "Ehemaliger Teilnehmer",
-    "formerNote": "Nicht mehr Teil der Reise — seine Beträge bleiben erhalten.",
+    "formerNote": "Nicht mehr Teil der Reise — seine Beträge und sein Anteil an früheren Ausgaben bleiben erhalten.",
     "entriesCount_one": "{{count}} Ausgabe",
     "entriesCount_other": "{{count}} Ausgaben",
     "entriesCount_zero": "Keine Ausgabe",
@@ -587,7 +587,14 @@
     "balanceInfoTitle": "Details ansehen: wer wem was schuldet",
     "youOweLine": "Sie schulden {{name}}",
     "owesYouLine": "{{name}} schuldet Ihnen",
-    "balanceAllSettled": "Mit allen ausgeglichen."
+    "balanceAllSettled": "Mit allen ausgeglichen.",
+    "paidBy": "Bezahlt von {{name}}",
+    "convertedPreview": "≈ {{amount}} zum Tageskurs",
+    "rateUnavailable": "Der Tageskurs für {{currency}} konnte nicht abgerufen werden. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    "currencySearchPlaceholder": "Währung suchen…",
+    "currencySuggested": "Währungen der Reise",
+    "currencyAll": "Alle Währungen",
+    "currencyNoResult": "Keine Währung gefunden."
   },
   "trips": {
     "untitledDefault": "Neue Reise",

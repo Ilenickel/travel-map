@@ -4822,6 +4822,13 @@
      avant que le wrap ne s'active pour les autres enfants. */
   flex: 1 1 140px;
   min-width: 140px;
+  /* Colonne explicite : dans la rangée d'invitation en attente, le nom et le
+     libellé "En attente de réponse" sont deux <span> inline qui se collaient
+     bout à bout sur la même ligne. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 /* Nom + badge "Vous" côte à côte (pas à côté du bouton d'action, en bas de
@@ -9399,6 +9406,14 @@
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 .pp-expenses-legend-item:hover { border-color: var(--border-light); transform: translateY(-1px); }
+/* Ancien participant ayant alimenté la cagnotte : il doit figurer dans la
+   barre et la légende (sinon les pourcentages ne totalisent pas 100 % et la
+   barre garde un trou), mais en retrait — son point est déjà gris, comme
+   l'anneau de sa carte plus bas. */
+.pp-expenses-legend-item--former {
+  border-style: dashed;
+  color: var(--text-dim);
+}
 .pp-expenses-legend-dot {
   width: 8px;
   height: 8px;
@@ -10105,6 +10120,295 @@
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+}
+.pp-expense-add-error {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--red);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  border-radius: 9px;
+  padding: 8px 10px;
+}
+/* Aperçu de la conversion sous le champ montant (« ≈ 31,20 € au taux du
+   jour ») : discret, il ne doit pas concurrencer le gros montant saisi
+   juste au-dessus — c'est un contrôle, pas la valeur principale. */
+.pp-expense-add-converted {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-top: -4px;
+  padding-left: 2px;
+}
+/* Montant réellement payé sur place, rappelé sous une dépense convertie
+   (« 5 000 ¥ ») — même registre discret que la date à côté. */
+.pp-expense-row-original {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── Modale d'ajout d'une dépense ──────────────────────────────────
+   Le formulaire vivait déplié sous la carte du participant : sur mobile il
+   poussait toute la page et le champ montant finissait sous la barre
+   d'onglets/d'action, très haute sur iPhone (signalé le 2026-08-03). Il est
+   désormais porté dans <body>, en surcouche : rien ne défile derrière.
+   z-index au-dessus de .pp-expense-split-popover (5001), lui-même déjà
+   au-dessus du voile .pp-modal-overlay (200) qui héberge le panneau sur
+   ordinateur. */
+.pp-expense-form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5002;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  /* Le geste de défilement sur le voile ne doit pas se propager à la liste
+     des dépenses restée derrière. */
+  overscroll-behavior: contain;
+}
+.pp-expense-form-modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  animation: ppExpenseFormIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes ppExpenseFormIn {
+  from { transform: translateY(12px) scale(0.98); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+.pp-expense-form-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.pp-expense-form-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+.pp-expense-form-head-title {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+/* Qui paie : l'info était portée par la position du formulaire (déplié sous
+   la bonne carte), elle doit maintenant être écrite noir sur blanc. */
+.pp-expense-form-head-payer {
+  font-size: 12px;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pp-expense-form-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.pp-expense-form-close:hover { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+.pp-expense-form-body {
+  padding: 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Dans la modale, le formulaire n'a plus besoin de sa propre carte : la
+   modale EST la carte. */
+.pp-expense-form-body .pp-expense-add-form {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* ── Sélecteur de devise ───────────────────────────────────────────
+   Déclencheur logé DANS le champ montant, puis panneau plein porté dans
+   <body>. Le menu déroulant accroché au champ ne marchait pas : rogné par le
+   bas de la modale (on ne voyait que quatre devises sur ~150) et contraint à
+   la largeur du champ, ce qui écrasait les noms les uns sur les autres. */
+.pp-currency-trigger {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  /* Ni fond ni bordure : le champ montant a déjà les siens, une seconde
+     boîte imbriquée dedans jurait avec la ligne. Un simple filet fait la
+     séparation, comme les deux moitiés d'un même champ. */
+  background: none;
+  border: none;
+  border-left: 1px solid var(--border-light);
+  border-radius: 0;
+  margin-left: 4px;
+  padding: 4px 2px 4px 10px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.pp-currency-trigger:hover { color: var(--text); }
+.pp-currency-trigger-chevron { flex-shrink: 0; opacity: 0.75; }
+
+/* Liste déroulante : rendue en portail dans <body> et positionnée en `fixed`
+   par le composant (voir place()), donc jamais rognée par la modale qui
+   l'ouvre — c'était le défaut de la version accrochée au champ, qui ne
+   laissait voir que quatre devises. z-index au-dessus de la modale de
+   dépense (5002). */
+.pp-currency-menu {
+  position: fixed;
+  z-index: 5003;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  animation: ppCurrencyMenuIn 0.15s ease-out;
+}
+@keyframes ppCurrencyMenuIn {
+  from { transform: translateY(-4px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+.pp-currency-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 9px 9px 7px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  background: var(--surface2);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.pp-currency-search-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.pp-currency-search {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+}
+.pp-currency-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 8px 8px;
+}
+.pp-currency-group-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: 10px 8px 5px;
+}
+.pp-currency-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.pp-currency-item:hover { background: var(--surface2); }
+.pp-currency-item--on { background: var(--accent-glow); }
+/* Largeur fixe pour que les noms s'alignent en colonne, mais assez large
+   pour les symboles qui n'en sont pas vraiment ("F CFA", "AED"…) : pour la
+   moitié des devises, Intl n'a pas de symbole et retombe sur le code. */
+.pp-currency-item-symbol {
+  /* 40px : tient le plus long symbole rendu par Intl sur notre liste
+     ("F CFA", 5 caractères) sans manger la place du nom, qui prime dans une
+     liste déroulante forcément plus étroite qu'un panneau. */
+  width: 40px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pp-currency-item-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Intl rend les noms en minuscules en français ("yen japonais") : on remet
+   la capitale sans toucher au reste (pas de text-transform: capitalize, qui
+   mettrait une majuscule à chaque mot). */
+.pp-currency-item-name::first-letter { text-transform: uppercase; }
+.pp-currency-item-check { flex-shrink: 0; color: var(--accent2); }
+.pp-currency-empty {
+  padding: 16px 10px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  /* Reste centrée, y compris clavier ouvert : le voile est redimensionné en
+     JS sur la zone réellement visible (voir le style en ligne posé depuis
+     TripExpensesPanel), donc "centré" veut dire centré dans ce qui reste de
+     l'écran, pas dans un viewport dont iOS ne retire jamais le clavier. */
+  .pp-expense-form-overlay {
+    padding: 14px;
+  }
+  .pp-expense-form-modal { max-height: 100%; }
+  /* 16px : en dessous, iOS zoome sur le champ à la prise de focus et
+     décadre toute la modale. Les lignes suivent, pour rester lisibles et
+     assez hautes au doigt. */
+  .pp-currency-search { font-size: 16px; }
+  .pp-currency-item { font-size: 15.5px; padding: 10px 10px; }
+  .pp-currency-item-symbol { font-size: 14px; }
+  .pp-expense-form-body .pp-expense-add-label { font-size: 16px; }
 }
 
 .pp-expenses-empty {

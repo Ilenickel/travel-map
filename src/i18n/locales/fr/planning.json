@@ -559,7 +559,7 @@
     "averageLabel": "Moyenne / pers.",
     "youTag": "Vous",
     "formerParticipant": "Ancien participant",
-    "formerNote": "Ne fait plus partie du voyage — ses sommes sont conservées.",
+    "formerNote": "Ne fait plus partie du voyage — ses sommes et sa part des dépenses passées sont conservées.",
     "entriesCount_one": "{{count}} dépense",
     "entriesCount_other": "{{count}} dépenses",
     "entriesCount_zero": "Aucune dépense",
@@ -587,7 +587,14 @@
     "balanceInfoTitle": "Voir le détail : qui doit quoi à qui",
     "youOweLine": "Vous devez à {{name}}",
     "owesYouLine": "{{name}} vous doit",
-    "balanceAllSettled": "Comptes à jour avec chacun."
+    "balanceAllSettled": "Comptes à jour avec chacun.",
+    "paidBy": "Payé par {{name}}",
+    "convertedPreview": "≈ {{amount}} au taux du jour",
+    "rateUnavailable": "Impossible de récupérer le taux du jour pour {{currency}}. Vérifiez votre connexion et réessayez.",
+    "currencySearchPlaceholder": "Rechercher une devise…",
+    "currencySuggested": "Devises du voyage",
+    "currencyAll": "Toutes les devises",
+    "currencyNoResult": "Aucune devise trouvée."
   },
   "trips": {
     "untitledDefault": "Nouveau voyage",

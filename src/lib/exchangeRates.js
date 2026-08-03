@@ -71,6 +71,43 @@ function extractCurrencyCode(currencyField) {
   return currencyField.match(/\b[A-Z]{3}\b/)?.[0] ?? null;
 }
 
+/**
+ * Comme extractCurrencyCode, mais renvoie TOUS les codes cités, dans l'ordre
+ * du texte et sans doublon. Sert au sélecteur de devise du formulaire de
+ * dépenses : un pays peut faire circuler plusieurs monnaies (ex. "USD / KHR"
+ * au Cambodge, "EUR / USD"), et l'utilisateur doit pouvoir choisir celle
+ * réellement imprimée sur son ticket — pas seulement la première citée.
+ */
+export function extractCurrencyCodes(currencyField) {
+  if (typeof currencyField !== 'string') return [];
+  return [...new Set(currencyField.match(/\b[A-Z]{3}\b/g) || [])];
+}
+
+/**
+ * Taux 1 EUR → {code}, ou `null` si la devise est inconnue de l'API ou si
+ * aucun taux n'a encore pu être récupéré. Appeler `refreshCountryRates()`
+ * (await) juste avant si le résultat doit être à jour.
+ */
+export function getLiveRate(code) {
+  if (!code || !rates?.rates) return null;
+  if (code === 'EUR') return 1;
+  const rate = rates.rates[code];
+  return typeof rate === 'number' && rate > 0 ? rate : null;
+}
+
+/**
+ * Montant saisi dans une devise étrangère → montant en euros (la devise de
+ * stockage de toute la base), au taux journalier. Renvoie `null` si le taux
+ * est indisponible : l'appelant doit alors refuser l'enregistrement plutôt
+ * que d'écrire un montant faux (une dépense mal convertie fausse ensuite
+ * tous les soldes du voyage, sans qu'on puisse le détecter après coup).
+ */
+export function convertToEurAtLiveRate(amount, code) {
+  const rate = getLiveRate(code);
+  if (rate === null) return null;
+  return { eur: Math.round((amount / rate) * 100) / 100, rate };
+}
+
 // Formate "1 € ≈ {rate} {code}" avec un nombre de décimales adapté à l'ordre
 // de grandeur (ex. "1 € ≈ 1,08 USD" mais "1 € ≈ 4 300 COP", pas
 // "1 € ≈ 4300.472819 COP") — même logique d'arrondi "lisible" que le reste

@@ -923,6 +923,7 @@ export default function TripEditor({
             <TripExpensesPanel
               tripId={tripId}
               trip={trip}
+              destinations={destinations}
               userId={user?.id}
               active={pagerActive() && page === pageCount - 1}
             />
@@ -1013,7 +1014,7 @@ export default function TripEditor({
               </button>
             </div>
             <div className="pp-modal-body">
-              <TripExpensesPanel tripId={tripId} trip={trip} userId={user?.id} active={expensesOpen} />
+              <TripExpensesPanel tripId={tripId} trip={trip} destinations={destinations} userId={user?.id} active={expensesOpen} />
             </div>
           </div>
         </div>

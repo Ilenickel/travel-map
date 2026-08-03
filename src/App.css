@@ -4530,7 +4530,10 @@ html, body { overflow-x: hidden; }
   background: var(--surface);
   border: 1px solid var(--border-light);
   border-radius: 20px;
-  padding: 28px 28px 22px;
+  /* Haut plus généreux : la croix flottante (.auth-close, top 14px + 30px de
+     haut) descendait jusqu'à 44px et chevauchait donc la barre d'onglets qui
+     commençait à 28px. */
+  padding: 54px 28px 22px;
   width: min(420px, 100%);
   box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(99,102,241,0.1);
   animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1);
