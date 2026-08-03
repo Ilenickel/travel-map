@@ -70,6 +70,12 @@ export default function DaytripCard({
   // Sélection multiple (lieux uniquement) — même mécanique que CityBlock.jsx.
   const [selecting, setSelecting] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
+  // Confirmation "X activités planifiées le ..." après un déplacement en
+  // sélection multiple (voir handleAssignDay) — même pattern que zoneMsg
+  // dans CityBlock.jsx, ancrée sur le bouton "⋯" (toujours monté,
+  // contrairement au bandeau de sélection qui disparaît juste après
+  // l'action, et au menu déroulant qui se referme au choix).
+  const [assignMsg, setAssignMsg] = useState(null);
   const { t } = useTranslation();
   useSettings(); // abonnement devise : formatPrice dépend de la devise choisie
 
@@ -128,8 +134,22 @@ export default function DaytripCard({
 
   const validSelectedIds = dtPlaces.filter(a => selectedIds.has(a.id)).map(a => a.id);
 
-  const handleAssignDay = (date) => {
-    if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
+  // Ferme le bandeau et vide la sélection dès le clic (comme
+  // handleDeleteSelection ci-dessous, sans attendre la fin de l'écriture) :
+  // sinon le bandeau restait affiché et les cartes cochées après un
+  // déplacement, sans aucun signe que l'action avait eu lieu (signalé le
+  // 2026-08-03, "on dirait qu'il y a rien"). Le message de confirmation
+  // (ou d'erreur) arrive séparément, une fois l'écriture terminée.
+  const handleAssignDay = async (date) => {
+    if (!validSelectedIds.length) return;
+    const count = validSelectedIds.length;
+    setSelecting(false);
+    setSelectedIds(new Set());
+    const ok = await onAssignActivitiesToDay(validSelectedIds, date);
+    setAssignMsg(ok
+      ? { type: 'success', text: t('selection.assignDaySuccess', { count, date: formatDateShort(date) }) }
+      : { type: 'error', text: t('selection.assignDayError') });
+    setTimeout(() => setAssignMsg(null), 4000);
   };
 
   const handleDeleteSelection = () => {
@@ -145,16 +165,25 @@ export default function DaytripCard({
   // du détail mobile (voir plus bas) : même contenu, deux emplacements.
   const menuBlock = (
     <div className="pp-city-menu-wrap" onClick={stop}>
-      <button
-        type="button"
-        className={`pp-icon-btn pp-city-menu-btn${menuOpen ? ' pp-icon-btn--active' : ''}`}
-        onClick={() => setMenuOpen(o => !o)}
-        title={t('daytrip.menuTitle')}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </svg>
-      </button>
+      {/* Ancre du message de confirmation post-déplacement (assignMsg) : ce
+          bouton reste monté même sélection/menu refermés — contrairement au
+          bandeau et à l'item "Sélectionner" du menu. Même pattern que
+          pp-zone-msg-anchor dans CityBlock.jsx. */}
+      <span className="pp-zone-msg-anchor">
+        <button
+          type="button"
+          className={`pp-icon-btn pp-city-menu-btn${menuOpen ? ' pp-icon-btn--active' : ''}`}
+          onClick={() => setMenuOpen(o => !o)}
+          title={t('daytrip.menuTitle')}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+          </svg>
+        </button>
+        {assignMsg && (
+          <span className={`pp-zone-msg pp-zone-msg--${assignMsg.type}`} role="status">{assignMsg.text}</span>
+        )}
+      </span>
       {menuOpen && (
         <>
           <div className="pp-backdrop-overlay" onClick={() => setMenuOpen(false)} />

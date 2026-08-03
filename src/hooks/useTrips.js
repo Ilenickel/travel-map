@@ -842,13 +842,19 @@ export function useTrips(userId) {
     } : prev);
   }, []);
 
+  // Retourne un booléen (et pas juste `undefined`) : les appelants (sélection
+  // multiple dans CityBlock/DaytripCard) doivent savoir si l'écriture a
+  // réussi pour décider d'afficher une confirmation ou une erreur — avant ce
+  // correctif l'erreur Supabase était juste avalée dans un console.error,
+  // aucun retour exploitable.
   const assignActivitiesToDay = useCallback(async (ids, date, time = null) => {
-    if (!ids?.length) return;
+    if (!ids?.length) return false;
     const { error } = await supabase.from('trip_activities').update({ visit_date: date, visit_time: time, pending_day_index: null }).in('id', ids);
-    if (error) { console.error('assignActivitiesToDay failed:', error); return; }
+    if (error) { console.error('assignActivitiesToDay failed:', error); return false; }
     setTripData(prev => prev ? {
       ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, visit_time: time, pending_day_index: null } : a),
     } : prev);
+    return true;
   }, []);
 
   // ─── Lodgings CRUD (hébergements par ville) ───
@@ -901,6 +907,239 @@ export function useTrips(userId) {
     } : prev);
   }, [tripData]);
 
+  // ─── Actions à l'échelle d'une JOURNÉE (menu ⋯ de la vue par jour) ───
+  //
+  // Toutes partent du même constat : l'utilisateur raisonne en journées
+  // ("intervertir mardi et mercredi", "tout décaler d'un jour"), alors que la
+  // base ne connaît que des activités datées une par une. On traduit donc
+  // chaque intention en un REMAPPAGE de dates, appliqué en une requête par
+  // date d'arrivée plutôt qu'une par activité.
+
+  // `mapping` : { 'ancienne date': 'nouvelle date' | null }. `null` = déplanifier
+  // (l'activité retourne dans "Non planifiées"). Les identifiants sont capturés
+  // AVANT la moindre écriture : un aller-retour (J3→J4 et J4→J3) ou un décalage
+  // en cascade (tous les jours +1) ne peut donc pas se réécrire lui-même — chaque
+  // activité n'est touchée qu'une fois, d'après son jour d'ORIGINE.
+  const remapActivityDays = useCallback(async (mapping) => {
+    const byTarget = new Map();
+    for (const a of tripData?.activities || []) {
+      if (!a.visit_date || !(a.visit_date in mapping)) continue;
+      const target = mapping[a.visit_date];
+      if (target === a.visit_date) continue;
+      const key = target ?? '';
+      if (!byTarget.has(key)) byTarget.set(key, []);
+      byTarget.get(key).push(a.id);
+    }
+    if (!byTarget.size) return true;
+
+    // Appliqué au fur et à mesure : si une écriture échoue en cours de route,
+    // l'écran doit refléter ce qui a RÉELLEMENT été enregistré avant l'échec,
+    // pas l'état d'avant (l'appelant, lui, affiche une erreur et recharge).
+    const patchById = new Map();
+    let ok = true;
+    for (const [key, ids] of byTarget) {
+      const patch = key === ''
+        // Sans jour, un étirement (duration_minutes) n'a plus de sens et
+        // resterait une valeur fantôme prête à ressurgir à la replanification —
+        // même raisonnement que le dépôt sur "Non planifiées" (TripEditor).
+        ? { visit_date: null, visit_time: null, duration_minutes: null }
+        : { visit_date: key, pending_day_index: null };
+      const { error } = await supabase.from('trip_activities').update(patch).in('id', ids);
+      if (error) { console.error('remapActivityDays failed:', error); ok = false; break; }
+      ids.forEach(id => patchById.set(id, patch));
+    }
+    if (patchById.size) {
+      setTripData(prev => prev ? {
+        ...prev,
+        activities: prev.activities.map(a => patchById.has(a.id) ? { ...a, ...patchById.get(a.id) } : a),
+      } : prev);
+    }
+    return ok;
+  }, [tripData]);
+
+  // Écrit un correctif sur le voyage courant (dates, jours ajoutés) en tenant à
+  // jour les DEUX états qui le portent : la grille d'accueil et le voyage ouvert.
+  const patchTripRow = useCallback(async (tripId, patch) => {
+    if (!Object.keys(patch).length) return true;
+    const { error } = await supabase.from('trips').update(patch).eq('id', tripId);
+    if (error) { console.error('patchTripRow failed:', error); return false; }
+    setTrips(prev => prev.map(tr => tr.id === tripId ? { ...tr, ...patch } : tr));
+    setTripData(prev => prev ? { ...prev, trip: { ...prev.trip, ...patch } } : prev);
+    return true;
+  }, []);
+
+  const patchLodgingRows = useCallback(async (patches) => {
+    if (!patches.length) return true;
+    let ok = true;
+    const applied = new Map();
+    for (const [id, patch] of patches) {
+      const { error } = await supabase.from('trip_lodgings').update(patch).eq('id', id);
+      if (error) { console.error('patchLodgingRows failed:', error); ok = false; break; }
+      applied.set(id, patch);
+    }
+    if (applied.size) {
+      setTripData(prev => prev ? {
+        ...prev,
+        lodgings: (prev.lodgings || []).map(l => applied.has(l.id) ? { ...l, ...applied.get(l.id) } : l),
+      } : prev);
+    }
+    return ok;
+  }, []);
+
+  // Insère une journée VIDE juste après `day` : tout ce qui suit (activités,
+  // hébergements, jours marqués "ajoutés à l'import") glisse d'un jour, et la
+  // fin du voyage est repoussée d'autant si le dernier jour avait du contenu
+  // qui, par définition, doit lui aussi passer au lendemain.
+  const insertTripDay = useCallback(async (tripId, day) => {
+    const trip = tripData?.trip;
+    if (!trip || trip.id !== tripId) return false;
+
+    // La fin du voyage est repoussée EN PREMIER, avant de décaler quoi que ce
+    // soit : dans l'ordre inverse, les activités du dernier jour partiraient
+    // une fraction de seconde sur une date hors calendrier — et y resteraient
+    // pour de bon si l'écriture suivante échouait (perdue de vue à l'écran :
+    // ni dans un jour affiché, ni dans "Non planifiées", puisqu'elles ont une
+    // date). Une journée gagnée pour rien est au contraire visible et se
+    // retire d'un clic.
+    // "Du contenu sur le dernier jour" = TOUT ce qui est daté, pas seulement
+    // les lieux : restaurants et trajets sont déjà des trip_activities (une
+    // simple `category`), mais les hébergements vivent dans leur propre table
+    // et se décalent eux aussi. Sans les compter ici, une dernière nuit d'hôtel
+    // partait au lendemain de la fin du voyage — hors calendrier, donc absente
+    // du bandeau "Nuit à …" de la vue par jour.
+    const lastNightOccupied = (tripData.lodgings || []).some(l =>
+      l.check_in && l.check_out && l.check_in <= trip.end_date && trip.end_date < l.check_out);
+    const tripPatch = {};
+    if (trip.end_date && (day >= trip.end_date
+      || tripData.activities.some(a => a.visit_date === trip.end_date)
+      || lastNightOccupied)) {
+      tripPatch.end_date = addDaysToDateStr(trip.end_date, 1);
+    }
+    // Absent si planning_modele_v12.sql n'a pas été joué : on ne l'envoie alors
+    // pas du tout, plutôt que de faire échouer TOUT le correctif de dates.
+    if (Array.isArray(trip.import_added_days) && trip.import_added_days.length) {
+      tripPatch.import_added_days = trip.import_added_days.map(d => d > day ? addDaysToDateStr(d, 1) : d);
+    }
+    if (!(await patchTripRow(tripId, tripPatch))) return false;
+
+    const mapping = {};
+    for (const a of tripData.activities) {
+      if (a.visit_date && a.visit_date > day && !(a.visit_date in mapping)) {
+        mapping[a.visit_date] = addDaysToDateStr(a.visit_date, 1);
+      }
+    }
+    if (!(await remapActivityDays(mapping))) return false;
+
+    // Une nuitée qui COUVRE déjà la journée insérée (check_in <= day < check_out)
+    // voit seulement sa fin reculer : on dort une nuit de plus au même endroit,
+    // ce qui est le comportement attendu quand on s'offre une journée sur place.
+    const lodgingPatches = [];
+    for (const l of tripData.lodgings || []) {
+      const patch = {};
+      if (l.check_in && l.check_in > day) patch.check_in = addDaysToDateStr(l.check_in, 1);
+      if (l.check_out && l.check_out > day) patch.check_out = addDaysToDateStr(l.check_out, 1);
+      if (Object.keys(patch).length) lodgingPatches.push([l.id, patch]);
+    }
+    return patchLodgingRows(lodgingPatches);
+  }, [tripData, remapActivityDays, patchLodgingRows, patchTripRow]);
+
+  // Retire la journée `day` du calendrier : ses activités repassent en "Non
+  // planifiées" (jamais supprimées — rien ne doit se perdre en silence) et tout
+  // ce qui suit avance d'un jour. Symétrique exact de insertTripDay.
+  const deleteTripDay = useCallback(async (tripId, day) => {
+    const trip = tripData?.trip;
+    if (!trip || trip.id !== tripId) return false;
+
+    const mapping = { [day]: null };
+    for (const a of tripData.activities) {
+      if (a.visit_date && a.visit_date > day && !(a.visit_date in mapping)) {
+        mapping[a.visit_date] = addDaysToDateStr(a.visit_date, -1);
+      }
+    }
+    if (!(await remapActivityDays(mapping))) return false;
+
+    const lodgingPatches = [];
+    for (const l of tripData.lodgings || []) {
+      const patch = {};
+      if (l.check_in && l.check_in > day) patch.check_in = addDaysToDateStr(l.check_in, -1);
+      if (l.check_out && l.check_out > day) patch.check_out = addDaysToDateStr(l.check_out, -1);
+      // Nuitée d'UNE seule nuit, celle du jour supprimé : elle deviendrait une
+      // réservation de zéro nuit (départ le jour même de l'arrivée). On la garde
+      // à une nuit sur le jour qui prend la place — à l'utilisateur de la
+      // supprimer si l'hôtel tombe vraiment à l'eau, ce que rien ne dit ici.
+      const nextIn = patch.check_in ?? l.check_in;
+      const nextOut = patch.check_out ?? l.check_out;
+      if (nextIn && nextOut && nextOut <= nextIn) patch.check_out = addDaysToDateStr(nextIn, 1);
+      if (Object.keys(patch).length) lodgingPatches.push([l.id, patch]);
+    }
+    if (!(await patchLodgingRows(lodgingPatches))) return false;
+
+    const tripPatch = {};
+    if (trip.end_date && trip.start_date && trip.end_date > trip.start_date) {
+      tripPatch.end_date = addDaysToDateStr(trip.end_date, -1);
+    }
+    if (Array.isArray(trip.import_added_days) && trip.import_added_days.length) {
+      tripPatch.import_added_days = trip.import_added_days
+        .filter(d => d !== day)
+        .map(d => d > day ? addDaysToDateStr(d, -1) : d);
+    }
+    return patchTripRow(tripId, tripPatch);
+  }, [tripData, remapActivityDays, patchLodgingRows, patchTripRow]);
+
+  // Recopie le contenu d'une journée sur une autre (l'existant du jour cible est
+  // conservé : on ajoute, on ne remplace pas). Les copies repartent non cochées,
+  // comme duplicateActivity — dupliquer une journée sert à la refaire.
+  const duplicateDayActivities = useCallback(async (tripId, day, targetDay) => {
+    const src = (tripData?.activities || []).filter(a => a.visit_date === day);
+    if (!src.length) return false;
+    // Une copie se range en fin de liste de SA ville : sans ça, elle hériterait
+    // de la position de l'original et deux cartes se disputeraient le même rang
+    // dans le panneau Villes.
+    const nextPos = new Map();
+    for (const a of tripData.activities) {
+      nextPos.set(a.city_id, Math.max(nextPos.get(a.city_id) ?? -1, a.position ?? 0));
+    }
+    const rows = src.map(a => {
+      const { id, created_at, ...rest } = a;
+      const position = (nextPos.get(a.city_id) ?? -1) + 1;
+      nextPos.set(a.city_id, position);
+      return { ...rest, position, visit_date: targetDay, is_done: false, pending_day_index: null };
+    });
+    const { data, error } = await supabase.from('trip_activities').insert(rows).select();
+    if (error || !data) { console.error('duplicateDayActivities failed:', error); return false; }
+    setTripData(prev => prev ? { ...prev, activities: [...prev.activities, ...data] } : prev);
+    return true;
+  }, [tripData]);
+
+  // Variante de assignActivitiesToDay pour la SÉLECTION MULTIPLE DE LA VUE PAR
+  // JOUR : seul le jour change, chaque activité gardant SON heure (et donc son
+  // créneau Matin/Après-midi/Soir) et son étirement. assignActivitiesToDay, elle,
+  // impose une heure commune à toute la sélection (null par défaut) — logique
+  // depuis le panneau Villes, où les lieux sélectionnés n'ont en général pas
+  // encore d'heure, mais qui, ici, viderait d'un coup les horaires soigneusement
+  // posés sur la journée et enverrait tout dans "Toute la journée".
+  const moveActivitiesToDay = useCallback(async (ids, date) => {
+    if (!ids?.length) return false;
+    const { error } = await supabase.from('trip_activities').update({ visit_date: date, pending_day_index: null }).in('id', ids);
+    if (error) { console.error('moveActivitiesToDay failed:', error); return false; }
+    setTripData(prev => prev ? {
+      ...prev,
+      activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, visit_date: date, pending_day_index: null } : a),
+    } : prev);
+    return true;
+  }, []);
+
+  const setDayActivitiesDone = useCallback(async (day, isDone) => {
+    const ids = (tripData?.activities || []).filter(a => a.visit_date === day && !!a.is_done !== isDone).map(a => a.id);
+    if (!ids.length) return true;
+    const { error } = await supabase.from('trip_activities').update({ is_done: isDone }).in('id', ids);
+    if (error) { console.error('setDayActivitiesDone failed:', error); return false; }
+    setTripData(prev => prev ? {
+      ...prev, activities: prev.activities.map(a => ids.includes(a.id) ? { ...a, is_done: isDone } : a),
+    } : prev);
+    return true;
+  }, [tripData]);
+
   return {
     trips, tripStats, reloadTrips: loadTrips, loading, selectedTripId, setSelectedTripId, tripData, loadTripData,
     createTrip, updateTrip, deleteTrip, leaveTrip, duplicateTrip,
@@ -910,5 +1149,7 @@ export function useTrips(userId) {
     duplicateActivity, undoLastDelete, canUndo: !!lastDeletedItem,
     addGroup, clearAutoGroups, assignActivityToGroup, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
+    remapActivityDays, patchTrip: patchTripRow, insertTripDay, deleteTripDay,
+    duplicateDayActivities, setDayActivitiesDone, moveActivitiesToDay,
   };
 }

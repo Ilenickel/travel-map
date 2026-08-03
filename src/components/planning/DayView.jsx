@@ -1,12 +1,16 @@
 import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
+import { createPortal } from 'react-dom';
 import { Droppable } from '@hello-pangea/dnd';
 import { useTranslation, Trans } from 'react-i18next';
-import { getDaysBetween, formatDayLabel, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition, getCarriedOverActivities } from '../../lib/planningUtils';
+import { getDaysBetween, formatDayLabel, formatDateShort, ACTIVITY_CATEGORIES, TRANSPORT_MODES, lodgingsForNight, addDaysToDateStr, buildTravelSegments, buildSwapDaysMapping, buildMoveDaysMapping, timeToMinutes, sortActivitiesByTimeThenPosition as sortActsByTimeThenPosition, getCarriedOverActivities } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
+import { useToast } from '../../context/ToastContext';
 import CountryFlag from './CountryFlag';
 import ActivityItem from './ActivityItem';
 import TravelConnector from './TravelConnector';
 import DayRouteButton from './DayRouteButton';
+import DayActionsMenu from './DayActionsMenu';
+import SelectionActionBar from './SelectionActionBar';
 import { useTravelRoutes } from '../../hooks/useTravelRoutes';
 import i18n from '../../i18n';
 
@@ -158,6 +162,7 @@ function DaySlot({
   slot, droppableId, acts, overflow, cities, destinations, groups, day, tripStartDate,
   onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resizingActId, resizeHighlight, onCutHere, travelSegments = {}, travelRoutes = {},
+  selecting = false, selectedIds, onToggleSelect, onLongPressSelect,
 }) {
   const { t } = useTranslation();
   const sorted = sortActsByTimeThenPosition(acts);
@@ -206,6 +211,9 @@ function DaySlot({
                   cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
                   onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
                   onResizeStart={onResizeStart} resizing={resizingActId === act.id}
+                  selectable={selecting} selected={!!selectedIds?.has(act.id)}
+                  onToggleSelect={onToggleSelect} onLongPressSelect={onLongPressSelect}
+                  dragDisabled={selecting}
                 />
               </Fragment>
             ))}
@@ -244,12 +252,169 @@ const SETTINGS_GEAR_ICON = (
 export default function DayView({
   trip, destinations, cities, activities, groups = [], lodgings = [], isMobile = false, onAssignCityToDay,
   onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
+  onRemoveActivities, onMoveActivitiesToDay,
+  onRemapDays, onPatchTrip, onInsertDay, onDeleteDay, onDuplicateDay, onSetDayDone, onReloadTripData,
 }) {
   const { t } = useTranslation();
+  const toast = useToast();
   const days = useMemo(() => getDaysBetween(trip.start_date, trip.end_date), [trip.start_date, trip.end_date]);
   const hasNoDates = !trip.start_date || !trip.end_date;
 
   const unplanned = activities.filter(a => !a.visit_date).sort((a, b) => a.position - b.position);
+
+  // Nombre d'activités par date + dernière date occupée — calculés UNE fois
+  // pour tout le calendrier plutôt qu'un balayage complet des activités par
+  // jour affiché (le menu de chaque journée en a besoin, et un voyage d'un
+  // mois avec 200 activités multiplierait ces balayages à chaque rendu).
+  const dayStats = useMemo(() => {
+    const counts = {};
+    let lastDated = null;
+    for (const a of activities) {
+      if (!a.visit_date) continue;
+      counts[a.visit_date] = (counts[a.visit_date] || 0) + 1;
+      if (!lastDated || a.visit_date > lastDated) lastDated = a.visit_date;
+    }
+    return { counts, lastDated };
+  }, [activities]);
+
+  // ─── Actions à l'échelle d'une journée (menu ⋯) ────────────────────────────
+  // Une action peut toucher des dizaines de lignes en base : l'écran est
+  // assombri et bloqué le temps de l'écriture, pour qu'un deuxième clic ne
+  // vienne pas se superposer à une réorganisation encore en cours. Si tout va
+  // vite, ce voile n'a pas le temps d'être vu — c'est le but.
+  const [busy, setBusy] = useState(false);
+  // Sélection multiple d'activités DANS une journée : `selectingDay` porte le
+  // jour concerné (une seule journée à la fois — la barre d'actions est propre
+  // au jour et déplacer des activités venues de plusieurs jours d'un coup ne
+  // correspond à aucun geste naturel ici).
+  const [selectingDay, setSelectingDay] = useState(null);
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
+
+  const exitSelection = useCallback(() => {
+    setSelectingDay(null);
+    setSelectedIds(new Set());
+  }, []);
+
+  // Changement de voyage : TripEditor (et donc DayView) n'est jamais démonté
+  // entre deux voyages (pas de `key={tripId}`, voir PlanningPage) — sans ce
+  // nettoyage, une sélection laissée ouverte sur le 21 mars du voyage A
+  // rouvrait la barre d'actions sur le 21 mars du voyage B, sur des activités
+  // qui n'ont rien à voir.
+  useEffect(() => { exitSelection(); }, [trip.id, exitSelection]);
+
+  const toggleSelected = useCallback((actId) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(actId)) next.delete(actId); else next.add(actId);
+      return next;
+    });
+  }, []);
+
+  // Appui long sur une carte : entre en sélection ET coche la carte pressée —
+  // même geste que dans le panneau Villes (CityBlock).
+  const startSelectionWith = useCallback((day, actId) => {
+    setSelectingDay(day);
+    setSelectedIds(actId ? new Set([actId]) : new Set());
+  }, []);
+
+  // Ne garde que les ids encore réellement présents dans la journée en cours de
+  // sélection (filet de sécurité si une activité a bougé par un autre biais).
+  const selectedInDay = useMemo(
+    () => activities.filter(a => a.visit_date === selectingDay && selectedIds.has(a.id)).map(a => a.id),
+    [activities, selectingDay, selectedIds]
+  );
+
+  // Déplacement de la sélection vers un autre jour : chaque activité GARDE son
+  // heure (donc son créneau) — voir onMoveActivitiesToDay, distinct du
+  // déplacement depuis le panneau Villes qui, lui, remet tout à "toute la
+  // journée".
+  const handleSelectionAssignDay = useCallback(async (date) => {
+    const ids = selectedInDay;
+    if (!ids.length) return;
+    exitSelection();
+    setBusy(true);
+    const ok = await onMoveActivitiesToDay(ids, date);
+    setBusy(false);
+    if (ok) toast?.success(t('selection.assignDaySuccess', { count: ids.length, date: formatDateShort(date) }));
+    else toast?.error(t('selection.assignDayError'));
+  }, [selectedInDay, exitSelection, onMoveActivitiesToDay, toast, t]);
+
+  const handleSelectionDelete = useCallback(() => {
+    if (selectedInDay.length) onRemoveActivities(selectedInDay);
+    exitSelection();
+  }, [selectedInDay, onRemoveActivities, exitSelection]);
+
+  // Traduit le descripteur produit par le menu (DayActionsMenu) en écritures.
+  // Chaque branche renvoie un booléen : un échec affiche un message ET
+  // recharge le voyage, car une réorganisation interrompue en cours de route
+  // laisse l'écran en avance ou en retard sur la base.
+  const runDayAction = useCallback(async (day, dayIdx, desc) => {
+    // Une sélection en cours n'a plus de sens après une réorganisation des
+    // jours (insertion, suppression, décalage) : les activités cochées peuvent
+    // avoir changé de date, et la barre resterait accrochée à un jour qui
+    // n'existe plus.
+    exitSelection();
+    setBusy(true);
+    let ok = false;
+    let message = null;
+    try {
+      switch (desc.kind) {
+        case 'swap': {
+          // Échange jour par jour des deux tranches (une seule journée de part
+          // et d'autre dans le cas courant) — voir buildSwapDaysMapping.
+          const span = desc.spanDays || 1;
+          const mapping = buildSwapDaysMapping(days, dayIdx, desc.targetDay, span);
+          if (!mapping) break; // tranches qui se chevauchent : jamais proposé par l'écran
+          ok = await onRemapDays(mapping);
+          message = span > 1
+            ? t('dayActions.successSwapPeriod', { count: span, date: formatDateShort(desc.targetDay) })
+            : t('dayActions.successSwap', { a: formatDateShort(day), b: formatDateShort(desc.targetDay) });
+          break;
+        }
+        case 'move': {
+          // La date de fin est repoussée AVANT le déplacement : dans l'ordre
+          // inverse, les activités atterriraient un instant sur des jours hors
+          // calendrier — invisibles à l'écran si l'extension venait à échouer.
+          if (desc.extendEndTo && !(await onPatchTrip(trip.id, { end_date: desc.extendEndTo }))) break;
+          const mapping = buildMoveDaysMapping(days, dayIdx, desc.targetDay, desc.spanDays);
+          if (!mapping) break;
+          ok = await onRemapDays(mapping);
+          message = t('dayActions.successMove', { count: desc.spanDays, date: formatDateShort(desc.targetDay) });
+          break;
+        }
+        case 'duplicate':
+          ok = await onDuplicateDay(trip.id, day, desc.targetDay);
+          message = t('dayActions.successDuplicate', { date: formatDateShort(desc.targetDay) });
+          break;
+        case 'insert':
+          ok = await onInsertDay(trip.id, day);
+          message = t('dayActions.successInsert', { date: formatDateShort(addDaysToDateStr(day, 1)) });
+          break;
+        case 'unplan':
+          ok = await onRemapDays({ [day]: null });
+          message = t('dayActions.successUnplan', { date: formatDateShort(day) });
+          break;
+        case 'delete':
+          ok = await onDeleteDay(trip.id, day);
+          message = t('dayActions.successDelete', { date: formatDateShort(day) });
+          break;
+        case 'done':
+          ok = await onSetDayDone(day, desc.value);
+          message = desc.value ? t('dayActions.successDone') : t('dayActions.successUndone');
+          break;
+        default:
+          break;
+      }
+    } finally {
+      setBusy(false);
+    }
+    if (ok) {
+      if (message) toast?.success(message);
+    } else {
+      toast?.error(t('dayActions.error'));
+      onReloadTripData?.();
+    }
+  }, [days, trip.id, exitSelection, onRemapDays, onPatchTrip, onInsertDay, onDeleteDay, onDuplicateDay, onSetDayDone, onReloadTripData, toast, t]);
 
   const unplannedDrop = useNativeDropTarget(
     cityId => onAssignCityToDay(cityId, null, null),
@@ -485,6 +650,10 @@ export default function DayView({
         resize={resize}
         onCutHere={cutStretchHere}
         hideHeader={hideHeader}
+        selecting={selectingDay === day}
+        selectedIds={selectedIds}
+        onToggleSelect={toggleSelected}
+        onLongPressSelect={(actId) => startSelectionWith(day, actId)}
       />
     );
   };
@@ -607,13 +776,58 @@ export default function DayView({
                         2026-07-31). `margin-left: auto` (CSS) le pousse à droite
                         de l'en-tête, sans perturber les badges qui précèdent. */}
                     {totalDay > 0 && <DayRouteButton stops={routeStopsForDay(activities, day, cities, destinations)} variant="link" />}
+                    {/* Actions sur la journée entière (intervertir, décaler,
+                        insérer un jour…) : disponible sur TOUS les jours, y
+                        compris vides — "ajouter une journée après" ou "déplacer
+                        vers" ont justement du sens sur une journée sans contenu.
+                        `hasContentAfter`/`insertExtendsEnd` prennent le contenu
+                        au sens large : lieux, restaurants et trajets (tous des
+                        activités, distinguées par leur catégorie) MAIS aussi les
+                        hébergements, qui vivent dans leur propre table et se
+                        décalent avec le reste. */}
+                    <DayActionsMenu
+                      day={day}
+                      dayIdx={dayIdx}
+                      days={days}
+                      tripEndDate={trip.end_date}
+                      activityCount={totalDay}
+                      doneCount={doneDay}
+                      countsByDay={dayStats.counts}
+                      hasContentAfter={(!!dayStats.lastDated && dayStats.lastDated > day)
+                        || lodgings.some(l => l.check_in && l.check_in > day)}
+                      insertExtendsEnd={day === days[days.length - 1]
+                        || (dayStats.counts[trip.end_date] || 0) > 0
+                        || lodgingsForNight(lodgings, trip.end_date).length > 0}
+                      onRun={(desc) => runDayAction(day, dayIdx, desc)}
+                      onStartSelection={() => startSelectionWith(day, null)}
+                    />
                   </div>
+                  {selectingDay === day && (
+                    <SelectionActionBar
+                      count={selectedInDay.length}
+                      tripStartDate={trip.start_date}
+                      tripEndDate={trip.end_date}
+                      onAssignDay={handleSelectionAssignDay}
+                      onDelete={handleSelectionDelete}
+                      onCancel={exitSelection}
+                    />
+                  )}
                   {renderDaySection(day, dayIdx, true)}
                 </div>
               </div>
             );
           })}
         </div>
+        {/* Voile de progression des actions de journée — porté par <body> pour
+            couvrir aussi l'en-tête et le panneau des villes : une réorganisation
+            en cours ne doit pas pouvoir être doublée par un clic ailleurs. */}
+        {busy && createPortal(
+          <div className="pp-busy-overlay" role="alert" aria-busy="true">
+            <div className="pp-spinner" />
+            <span className="pp-busy-overlay-label">{t('dayActions.busy')}</span>
+          </div>,
+          document.body
+        )}
       </div>
     );
 }
@@ -637,6 +851,7 @@ function DaySection({
   day, dayIdx, importedDay = false, dayActs = [], totalDay, doneDay, nightLodgings = [], slotActs, slotOverflow, travelSegments = {}, travelRoutes = {}, libreActs, cities, destinations, groups, tripStartDate,
   onAssignCityToDay, onRemoveActivity, onUpdateActivity, onDuplicateActivity, onAssignActivityToGroup,
   onResizeStart, resize, onCutHere, hideHeader = false,
+  selecting = false, selectedIds, onToggleSelect, onLongPressSelect,
 }) {
   const { t } = useTranslation();
   const libreDrop = useNativeDropTarget(
@@ -734,6 +949,10 @@ function DaySection({
             resizingActId={resize?.actId}
             resizeHighlight={isSlotHighlighted(slotIdx)}
             onCutHere={onCutHere}
+            selecting={selecting}
+            selectedIds={selectedIds}
+            onToggleSelect={onToggleSelect}
+            onLongPressSelect={onLongPressSelect}
           />
         ))}
       </div>
@@ -761,6 +980,9 @@ function DaySection({
                 key={act.id} act={act} index={idx} variant="day" draggableIdPrefix="dayact:"
                 cities={cities} destinations={destinations} groups={groups} tripStartDate={tripStartDate}
                 onRemove={onRemoveActivity} onUpdate={onUpdateActivity} onDuplicate={onDuplicateActivity} onAssignToGroup={onAssignActivityToGroup}
+                selectable={selecting} selected={!!selectedIds?.has(act.id)}
+                onToggleSelect={onToggleSelect} onLongPressSelect={onLongPressSelect}
+                dragDisabled={selecting}
               />
             ))}
             {provided.placeholder}

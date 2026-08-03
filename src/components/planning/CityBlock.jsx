@@ -17,7 +17,7 @@ import MobileBackEntry from './MobileBackEntry';
 import { useHeaderScrollHide } from '../../hooks/useHeaderScrollHide';
 import RestaurantExplorer from '../RestaurantExplorer';
 import RestaurantsModal from '../RestaurantsModal';
-import { sumCosts, formatPrice, kMeansActivities, estimateGeoClusterCount, GROUP_COLORS, matchingStaticDestinations, countryAlpha2FromEmoji, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
+import { sumCosts, formatPrice, formatDateShort, kMeansActivities, estimateGeoClusterCount, GROUP_COLORS, matchingStaticDestinations, countryAlpha2FromEmoji, ACTIVITY_CATEGORIES } from '../../lib/planningUtils';
 import { COUNTRIES } from '../../data/index';
 import { useSettings } from '../../context/SettingsContext';
 import { cropUnsplashUrl } from '../../lib/unsplashCrop';
@@ -71,6 +71,11 @@ export default function CityBlock({
   const [cityName, setCityName] = useState(city.name);
   const [detectingZones, setDetectingZones] = useState(false);
   const [zoneMsg, setZoneMsg] = useState(null);
+  // Confirmation "X activités planifiées le ..." après un déplacement en
+  // sélection multiple (voir handleAssignDay) — même pattern que zoneMsg,
+  // ancrée sous le bouton "Sélectionner" (toujours monté, contrairement au
+  // bandeau de sélection qui disparaît juste après l'action).
+  const [assignMsg, setAssignMsg] = useState(null);
   // Repliée d'entrée sur mobile (même seuil que le pager, cf. TripEditor) : la
   // page Villes y liste tout le voyage sur un petit écran — dépliées, deux ou
   // trois villes suffisent à noyer l'écran. Sur ordinateur, dépliée comme
@@ -179,8 +184,22 @@ export default function CityBlock({
   // (filet de sécurité si un lieu a disparu par un autre biais pendant la sélection).
   const validSelectedIds = placeActivities.filter(a => selectedIds.has(a.id)).map(a => a.id);
 
-  const handleAssignDay = (date) => {
-    if (validSelectedIds.length) onAssignActivitiesToDay(validSelectedIds, date);
+  // Ferme le bandeau et vide la sélection dès le clic (comme
+  // handleDeleteSelection ci-dessous, sans attendre la fin de l'écriture) :
+  // sinon le bandeau restait affiché et les cartes cochées après un
+  // déplacement, sans aucun signe que l'action avait eu lieu (signalé le
+  // 2026-08-03, "on dirait qu'il y a rien"). Le message de confirmation
+  // (ou d'erreur) arrive séparément, une fois l'écriture terminée.
+  const handleAssignDay = async (date) => {
+    if (!validSelectedIds.length) return;
+    const count = validSelectedIds.length;
+    setSelecting(false);
+    setSelectedIds(new Set());
+    const ok = await onAssignActivitiesToDay(validSelectedIds, date);
+    setAssignMsg(ok
+      ? { type: 'success', text: t('selection.assignDaySuccess', { count, date: formatDateShort(date) }) }
+      : { type: 'error', text: t('selection.assignDayError') });
+    setTimeout(() => setAssignMsg(null), 4000);
   };
 
   const handleDeleteSelection = () => {
@@ -415,16 +434,26 @@ export default function CityBlock({
         />
       )}
       {placeActivities.length > 0 && (
-        <button
-          type="button"
-          className={`pp-icon-btn pp-icon-btn--feature${selecting ? ' pp-icon-btn--active' : ''}`}
-          onClick={toggleSelecting}
-          title={selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
-        </button>
+        // Ancre du message de confirmation post-déplacement (assignMsg) :
+        // ce bouton reste monté même une fois le bandeau de sélection
+        // refermé, contrairement à celui-ci — c'est pourquoi le message est
+        // ancré ici et non sur le bandeau. Même pattern que pp-zone-msg-anchor
+        // juste en dessous.
+        <span className="pp-zone-msg-anchor">
+          <button
+            type="button"
+            className={`pp-icon-btn pp-icon-btn--feature${selecting ? ' pp-icon-btn--active' : ''}`}
+            onClick={toggleSelecting}
+            title={selecting ? t('place.exitSelectTitle') : t('place.selectTitle')}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </button>
+          {assignMsg && (
+            <span className={`pp-zone-msg pp-zone-msg--${assignMsg.type}`} role="status">{assignMsg.text}</span>
+          )}
+        </span>
       )}
       {geoActs.length >= 3 && (
         <span className="pp-zone-msg-anchor">

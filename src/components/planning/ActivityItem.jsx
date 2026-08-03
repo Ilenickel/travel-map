@@ -440,8 +440,8 @@ export default function ActivityItem({
         >
           {variant === 'day' ? (
             <div
-              className="pp-day-activity-view"
-              onClick={guardClickAfterLongPress(startEditing)}
+              className={`pp-day-activity-view${selected ? ' pp-day-activity-view--selected' : ''}`}
+              onClick={guardClickAfterLongPress(selectable ? () => onToggleSelect(act.id) : startEditing)}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -478,7 +478,23 @@ export default function ActivityItem({
                 )}
                 {act.description && <p className="pp-day-activity-note">{act.description}</p>}
               </div>
-              {canResize && (
+              {/* Pastille de sélection, comme sur la carte de la liste (voir
+                  la branche `variant !== 'day'` juste en dessous) : sans elle,
+                  la sélection multiple lancée depuis le menu d'une journée
+                  n'aurait aucun repère visuel dans la vue par jour. */}
+              {selectable && (
+                <span className={`pp-select-circle${selected ? ' pp-select-circle--checked' : ''}`}>
+                  {selected && (
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                  )}
+                </span>
+              )}
+              {/* Poignée d'étirement masquée pendant la sélection : elle occupe
+                  le bas de la carte, que le doigt/la souris vient justement
+                  cliquer pour cocher. */}
+              {canResize && !selectable && (
                 // <button> plutôt que <div> : @hello-pangea/dnd ignore nativement les
                 // éléments interactifs (input/button/textarea…) pour démarrer un drag
                 // classique, donc pas besoin (et pas fiable) de stopPropagation ici —

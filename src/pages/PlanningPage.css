@@ -3739,8 +3739,21 @@
   color: var(--text);
   box-shadow: 0 6px 18px rgba(0,0,0,0.35);
 }
-.pp-zone-msg--success { border-color: color-mix(in srgb, #22c55e 55%, var(--border)); }
-.pp-zone-msg--error { border-color: color-mix(in srgb, #ef4444 55%, var(--border)); }
+/* Même habillage que les messages flottants du site (.toast) : une teinte
+   posée SUR le fond opaque de la bulle, pas seulement une bordure colorée —
+   un simple filet vert se remarquait à peine au-dessus d'une liste chargée,
+   alors que ces messages ("activités classées par zone", "3 activités
+   planifiées le…") sont la seule confirmation qu'une action a bien eu lieu.
+   Le fond reste opaque : rien du contenu situé derrière ne doit transparaître
+   à travers le texte. */
+.pp-zone-msg--success {
+  border-color: rgba(16,185,129,0.4);
+  background: linear-gradient(rgba(16,185,129,0.14), rgba(16,185,129,0.14)), var(--surface2);
+}
+.pp-zone-msg--error {
+  border-color: rgba(239,68,68,0.4);
+  background: linear-gradient(rgba(239,68,68,0.14), rgba(239,68,68,0.14)), var(--surface2);
+}
 /* hover:hover uniquement : sur tactile, il n'y a pas de survol pour révéler
    quoi que ce soit — .pp-city-actions reste visible en permanence via la
    règle @media (hover:none) plus bas (préexistante), et ces icônes (dont le
@@ -3847,6 +3860,14 @@
   border-radius: 8px;
   margin: -4px -6px;
   padding: 4px 6px;
+}
+
+/* Même signal sur la carte de la vue par jour, mais SANS les marges négatives
+   ci-dessus : cette carte-ci porte déjà son propre fond et ses coins arrondis
+   (.pp-day-activity), un décalage les ferait déborder de la boîte du créneau. */
+.pp-day-activity-view--selected {
+  background: var(--accent-subtle);
+  border-radius: 8px;
 }
 
 .pp-icon-btn--active {
@@ -6800,7 +6821,7 @@
      Avec display:none ils ne comptent plus du tout dans la mise en page. */
   .pp-topbar, .pp-pending-invites,
   .pp-editor-header, .pp-editor-split, .pp-mobile-nav, .pp-day-mode,
-  .pp-modal-overlay {
+  .pp-modal-overlay, .pp-busy-overlay {
     display: none !important;
   }
 
@@ -8379,6 +8400,360 @@
   .pp-place-suggestions-thumb--icon { display: flex; }
 }
 
+/* ─── Menu "⋯" par JOURNÉE (DayActionsMenu) ───────────────────────────────
+   Posé à droite de l'en-tête du jour (date, ville, compteur, bouton Maps) :
+   `margin-left: auto` le pousse au bout de la ligne sans toucher aux badges
+   qui le précèdent, qui restent groupés à gauche. */
+.pp-day-actions-wrap { position: relative; flex-shrink: 0; margin-left: auto; }
+.pp-day-actions-btn { color: var(--text-muted); }
+.pp-day-actions-btn:hover { color: var(--text); }
+/* Plus large que le menu de ville : les libellés y sont des phrases d'action
+   ("Intervertir avec un autre jour…"), pas des verbes isolés. */
+.pp-day-actions-dropdown { min-width: 258px; }
+.pp-day-actions-heading {
+  padding: 9px 14px 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.pp-day-actions-icon {
+  width: 15px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.8;
+}
+/* Une action grisée garde son libellé lisible mais inerte : le `title` du
+   bouton dit pourquoi (journée vide, voyage d'un seul jour). */
+.pp-dropdown-item:disabled { opacity: 0.42; cursor: not-allowed; }
+.pp-dropdown-item:disabled:hover { background: none; color: var(--text-dim); }
+.pp-dropdown-item--danger:disabled:hover { background: none; }
+
+/* ─── Confirmation d'une action de journée ─────────────────────────────────
+   Même anatomie que les autres modales du site (en-tête / corps défilant /
+   pied fixe : .pp-modal-header, .pp-modal-body, .pp-modal-footer) plutôt
+   qu'une boîte de texte suivie de deux boutons — c'est ce qui la fait
+   ressembler à l'application et non à une alerte système. */
+.pp-day-action-modal {
+  max-width: 460px;
+  max-height: min(88vh, 660px);
+}
+.pp-day-action-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px 18px;
+}
+/* Pastille ronde en dégradé accent — même famille que
+   .pp-editorial-notice-icon, pour que le dialogue s'annonce d'un coup d'œil
+   par son action plutôt que par un titre nu. */
+.pp-day-action-badge {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+.pp-day-action-badge--danger {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+  box-shadow: 0 4px 12px rgba(239,68,68,0.25);
+}
+.pp-day-action-titles {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pp-day-action-titles .pp-modal-title { font-size: 15.5px; }
+.pp-day-action-subtitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent2);
+  text-transform: capitalize;
+}
+.pp-day-action-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 18px 18px;
+  /* Ascenseur discret (comme les autres panneaux défilants du site) plutôt
+     que la barre épaisse du navigateur, qui saute aux yeux dans une petite
+     boîte. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+}
+.pp-day-action-body::-webkit-scrollbar { width: 6px; }
+.pp-day-action-body::-webkit-scrollbar-track { background: transparent; }
+.pp-day-action-body::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+.pp-day-action-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pp-day-action-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.pp-day-action-help {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+/* Case à cocher "période" : une vraie ligne cliquable encadrée, pas une case
+   perdue dans le flux — c'est elle qui fait basculer tout le formulaire. */
+.pp-day-action-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.pp-day-action-check:hover { border-color: var(--border-light); color: var(--text); }
+.pp-day-action-check input {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+/* Récapitulatif : ce que l'action va VRAIMENT changer, en toutes lettres —
+   plusieurs de ces actions débordent de la journée affichée (décalage en
+   cascade, date de fin du voyage), ce qui ne doit jamais se découvrir après
+   coup. Habillage identique aux autres blocs d'INFORMATION du site
+   (.pp-trip-suggestions-setdays-notice : bleu indigo à 10 %, bordure à 30 %,
+   texte #a5b4fc) — pas un fond gris inventé pour l'occasion, et pas non plus
+   l'ambre, réservé aux avertissements juste en dessous. */
+.pp-day-action-summary {
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 10px;
+  padding: 10px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.pp-day-action-summary p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #a5b4fc;
+}
+/* Avertissement : exactement l'habillage ambre déjà utilisé ailleurs sur
+   l'écran (.pp-fulltrip-notice), variante rouge quand de la planification
+   est défaite. */
+.pp-day-action-notice {
+  margin: 0;
+  padding: 10px 13px;
+  display: flex;
+  gap: 8px;
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 10px;
+  color: #fbbf24;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.pp-day-action-notice::before { content: '⚠'; flex-shrink: 0; }
+.pp-day-action-notice--danger {
+  background: rgba(239,68,68,0.1);
+  border-color: rgba(239,68,68,0.3);
+  color: #f87171;
+  font-weight: 600;
+}
+/* Mode jour : les trois teintes ci-dessus sont pensées pour un fond sombre.
+   Sur le papier clair, #fbbf24 (jaune pâle) sur crème devient illisible —
+   même repli que .pp-fulltrip-notice / .pp-trip-suggestions-setdays-notice,
+   avec en plus un fond et une bordure un peu plus denses : sur crème, une
+   teinte à 10 % ne se distingue quasiment pas de la page (signalé le
+   2026-08-03, capture à l'appui). */
+[data-theme="light"] .pp-day-action-summary {
+  background: rgba(99,102,241,0.12);
+  border-color: rgba(99,102,241,0.4);
+}
+[data-theme="light"] .pp-day-action-summary p { color: #4338ca; }
+[data-theme="light"] .pp-day-action-notice {
+  background: rgba(245,158,11,0.16);
+  border-color: rgba(180,83,9,0.45);
+  color: #92400e;
+  font-weight: 600;
+}
+[data-theme="light"] .pp-day-action-notice--danger {
+  background: rgba(239,68,68,0.14);
+  border-color: rgba(185,28,28,0.45);
+  color: #b91c1c;
+}
+.pp-day-action-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ─── Sélecteur de jour (DayPicker) ───────────────────────────────────────
+   Remplace le <select> natif, dont l'apparence est imposée par le système et
+   détonne avec le reste de l'écran. Le panneau est rendu en PORTAIL et
+   positionné en `fixed` par le composant : il n'est donc jamais rogné par la
+   modale qui l'ouvre — c'était la limite d'une liste accrochée au champ. */
+.pp-day-pick-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pp-day-pick-trigger:hover { border-color: var(--border-light); }
+.pp-day-pick-trigger--open {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.pp-day-pick-trigger:disabled { opacity: 0.5; cursor: not-allowed; }
+.pp-day-pick-trigger-label {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+.pp-day-pick-chevron { flex-shrink: 0; opacity: 0.6; }
+.pp-day-pick-empty { color: var(--text-muted); font-size: 13px; }
+
+.pp-day-pick-num {
+  flex-shrink: 0;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.pp-day-pick-date {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+/* Nombre d'activités déjà présentes : c'est l'information qui décide du choix
+   d'une cible (le contenu se cumule), elle doit donc être lisible sans
+   survol. Un jour vide n'affiche rien du tout — l'absence de pastille se lit
+   plus vite qu'un « 0 ». */
+.pp-day-pick-count {
+  flex-shrink: 0;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 20px;
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Le voile n'assombrit rien : il ne sert qu'à intercepter le clic extérieur,
+   la modale en dessous reste parfaitement lisible pendant le choix. */
+.pp-day-pick-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 5002;
+}
+.pp-day-pick-menu {
+  position: fixed;
+  z-index: 5003;
+  min-width: 200px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(0,0,0,0.42);
+  animation: ppDayPickIn 0.14s ease-out;
+  /* Ascenseur masqué : on fait défiler au doigt ou à la molette, comme dans
+     une liste native de téléphone — la barre grise du navigateur au bord
+     d'un petit panneau arrondi fait daté (demande du 2026-08-03). */
+  scrollbar-width: none;
+}
+.pp-day-pick-menu::-webkit-scrollbar { width: 0; height: 0; }
+@keyframes ppDayPickIn {
+  from { transform: translateY(-4px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+.pp-day-pick-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+}
+.pp-day-pick-item:hover { background: var(--surface2); }
+.pp-day-pick-item--on { background: var(--accent-subtle); }
+.pp-day-pick-check { flex-shrink: 0; color: var(--accent2); }
+
+/* ─── Voile de progression d'une action de journée ─── */
+/* z-index au-dessus des modales (200) : le dialogue de confirmation vient
+   juste de se fermer, mais un autre panneau peut être ouvert derrière — rien
+   ne doit rester cliquable tant que l'écriture n'est pas terminée. */
+.pp-busy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.pp-busy-overlay-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  opacity: 0.9;
+}
+
 /* ─── Menu "⋯" par ville (CityMenu) ── */
 .pp-city-menu-wrap { position: relative; flex-shrink: 0; }
 .pp-city-menu-dropdown {
@@ -9255,6 +9630,59 @@
     width: 100%;
     justify-content: center;
   }
+
+  /* Dialogue de confirmation d'une action de journée : reste une carte
+     centrée, jamais la feuille bottom-sheet plein écran de la règle
+     .pp-modal générique ci-dessus — un formulaire de trois champs n'a pas
+     besoin de 95dvh, et le voile qui l'entoure garde le calendrier visible
+     derrière, ce qui aide à décider. Sélecteur à 2 classes pour la même
+     raison que .pp-discard-confirm-modal (voir juste au-dessus). */
+  .pp-modal.pp-day-action-modal {
+    position: static;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    /* Le corps (.pp-modal-body, flex:1 + overflow-y:auto) absorbe le
+       débordement : c'est LUI qui défile, pas la modale entière — sinon
+       l'en-tête et les boutons partaient hors de vue en défilant, et le
+       bouton Confirmer devenait introuvable. */
+    max-height: 88dvh;
+    overflow: hidden;
+    border-radius: 20px;
+    border-bottom: 1px solid var(--border-light);
+    animation: none;
+  }
+  .pp-day-action-modal::before { display: none; }
+  .pp-modal-overlay:has(> .pp-day-action-modal) {
+    align-items: center;
+    padding: 16px;
+  }
+  /* Boutons empilés pleine largeur, Confirmer en bas (column-reverse) : à une
+     main, le pouce tombe naturellement sur le bouton le plus bas. */
+  .pp-day-action-footer {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .pp-day-action-footer .pp-btn {
+    width: 100%;
+    justify-content: center;
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+  /* Cibles tactiles : au doigt, les lignes de jours et le champ qui les ouvre
+     doivent faire au moins ~44px de haut, et rester lisibles sans zoomer. */
+  .pp-day-pick-trigger {
+    padding: 12px;
+    font-size: 15px;
+  }
+  .pp-day-pick-item {
+    padding: 12px 10px;
+    font-size: 15px;
+  }
+  .pp-day-pick-num { font-size: 12px; padding: 3px 8px; }
+  .pp-day-pick-count { font-size: 12px; padding: 2px 9px; }
+  .pp-day-action-check { padding: 12px; font-size: 14px; }
+  .pp-day-action-body { gap: 16px; }
 }
 
 /* ═══ Dépenses partagées ("qui a payé quoi") — TripExpensesPanel ═══

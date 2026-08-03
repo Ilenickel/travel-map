@@ -129,6 +129,8 @@ function PlanningMain() {
     duplicateActivity, undoLastDelete,
     addGroup, clearAutoGroups, assignActivityToGroup, assignCityToDay, assignActivitiesToDay,
     addLodging, updateLodging, removeLodging,
+    remapActivityDays, patchTrip, insertTripDay, deleteTripDay,
+    duplicateDayActivities, setDayActivitiesDone, moveActivitiesToDay,
   } = useTrips(user?.id);
 
   const { pending, accept: acceptInvite, decline: declineInvite } = useInvitations(user?.id);
@@ -247,6 +249,13 @@ function PlanningMain() {
             onAssignActivityToGroup={assignActivityToGroup}
             onAssignCityToDay={assignCityToDay}
             onAssignActivitiesToDay={assignActivitiesToDay}
+            onRemapDays={remapActivityDays}
+            onPatchTrip={patchTrip}
+            onInsertDay={insertTripDay}
+            onDeleteDay={deleteTripDay}
+            onDuplicateDay={duplicateDayActivities}
+            onSetDayDone={setDayActivitiesDone}
+            onMoveActivitiesToDay={moveActivitiesToDay}
             onAddLodging={addLodging}
             onUpdateLodging={updateLodging}
             onRemoveLodging={removeLodging}

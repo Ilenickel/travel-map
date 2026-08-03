@@ -9098,8 +9098,20 @@ html, body { overflow-x: hidden; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.toast--error { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.12); }
-.toast--success { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.12); }
+/* Teinte posée SUR un fond opaque (var(--surface2)), et non un simple
+   rgba() : une couleur semi-transparente laissait voir la page au travers du
+   message — le texte se confondait avec le contenu du dessous, exactement là
+   où il faut le lire d'un coup d'œil (signalé le 2026-08-03). Le dégradé à
+   deux arrêts identiques est le moyen le plus court d'empiler une teinte sur
+   une couleur de fond en une seule déclaration. */
+.toast--error {
+  border-color: rgba(239,68,68,0.4);
+  background: linear-gradient(rgba(239,68,68,0.14), rgba(239,68,68,0.14)), var(--surface2);
+}
+.toast--success {
+  border-color: rgba(16,185,129,0.4);
+  background: linear-gradient(rgba(16,185,129,0.14), rgba(16,185,129,0.14)), var(--surface2);
+}
 
 /* Anti-zoom iOS Safari : tout champ de saisie dont le font-size calculé est
    < 16px déclenche un zoom automatique de la page au focus (comportement

@@ -41,6 +41,7 @@ export default function TripEditor({
   onDuplicateActivity, onUndoLastDelete,
   onAddGroup, onClearAutoGroups, onAssignActivityToGroup, onAssignCityToDay, onAssignActivitiesToDay,
   onAddLodging, onUpdateLodging, onRemoveLodging,
+  onRemapDays, onPatchTrip, onInsertDay, onDeleteDay, onDuplicateDay, onSetDayDone, onMoveActivitiesToDay,
   onLeaveTrip, onReloadTripData, onBack,
 }) {
   const { t } = useTranslation();
@@ -829,6 +830,15 @@ export default function TripEditor({
               onUpdateActivity={onUpdateActivity}
               onDuplicateActivity={onDuplicateActivity}
               onAssignActivityToGroup={onAssignActivityToGroup}
+              onRemoveActivities={onRemoveActivities}
+              onMoveActivitiesToDay={onMoveActivitiesToDay}
+              onRemapDays={onRemapDays}
+              onPatchTrip={onPatchTrip}
+              onInsertDay={onInsertDay}
+              onDeleteDay={onDeleteDay}
+              onDuplicateDay={onDuplicateDay}
+              onSetDayDone={onSetDayDone}
+              onReloadTripData={onReloadTripData}
             />
           </div>
 

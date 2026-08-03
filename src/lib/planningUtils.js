@@ -222,6 +222,52 @@ export function addDaysToDateStr(dateStr, n) {
   return `${y}-${m}-${day}`;
 }
 
+// ─── Remappages de dates du menu d'actions d'une journée ────────────────────
+// Fonctions PURES (aucun accès base, aucun état) volontairement sorties de
+// DayView : ce sont elles qui décident quel jour part où, c'est-à-dire la
+// partie où une erreur d'un cran fait atterrir tout un séjour à la mauvaise
+// date. Isolées ici, elles sont vérifiables directement, et le composant comme
+// le banc d'essai utilisent exactement le même code.
+//
+// Toutes deux renvoient un objet { 'date de départ': 'date d'arrivée' },
+// consommé par remapActivityDays (useTrips).
+
+// Échange de deux tranches de MÊME longueur, jour pour jour (J1↔J4, J2↔J5…).
+// Les deux tranches ne doivent pas se chevaucher : un jour à la fois source et
+// destination devrait partir à deux endroits en même temps — c'est pourquoi
+// l'écran ne propose que des débuts qui laissent la place (voir DayActionsMenu,
+// `swapStarts`). Ce garde-fou est répété ici : appelée avec un chevauchement,
+// la fonction renvoie `null` plutôt qu'un remappage à moitié faux.
+export function buildSwapDaysMapping(days, startIdx, targetDay, spanDays = 1) {
+  const targetIdx = days.indexOf(targetDay);
+  if (startIdx < 0 || targetIdx < 0) return null;
+  const span = Math.max(1, spanDays);
+  if (startIdx + span > days.length || targetIdx + span > days.length) return null;
+  const overlaps = startIdx < targetIdx + span && targetIdx < startIdx + span;
+  if (overlaps) return null;
+  const mapping = {};
+  for (let i = 0; i < span; i++) {
+    mapping[days[startIdx + i]] = days[targetIdx + i];
+    mapping[days[targetIdx + i]] = days[startIdx + i];
+  }
+  return mapping;
+}
+
+// Déplacement d'une tranche vers une autre date de départ, écarts conservés.
+// Le chevauchement est ici parfaitement licite (c'est un décalage : J3-J5 vers
+// J4 donne J4-J6), et les dates d'arrivée peuvent dépasser la fin du voyage —
+// l'appelant est chargé de repousser cette fin AVANT d'appliquer le remappage.
+export function buildMoveDaysMapping(days, startIdx, targetDay, spanDays = 1) {
+  if (startIdx < 0 || !targetDay) return null;
+  const mapping = {};
+  for (let i = 0; i < Math.max(1, spanDays); i++) {
+    const from = days[startIdx + i];
+    if (!from) break;
+    mapping[from] = addDaysToDateStr(targetDay, i);
+  }
+  return mapping;
+}
+
 // Où en est le voyage par rapport à aujourd'hui — messages d'état partagés entre
 // le mode Jour J à l'écran et sa version imprimée, pour ne jamais afficher une
 // réponse différente ("pas commencé" à l'écran, silence à l'impression) selon
