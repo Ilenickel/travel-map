@@ -1,7 +1,27 @@
 // Construction d'un itinéraire Google Maps à partir des étapes d'une journée.
 //
-// Format officiel « Google Maps URLs » (action `dir`) :
-//   https://www.google.com/maps/dir/?api=1&origin=…&destination=…&waypoints=A|B|C
+// FORMAT UTILISÉ : l'ancienne API d'URL (`maps?saddr=…&daddr=…+to:…`), et non
+// le format moderne `?api=1`. Raison, établie le 2026-08-03 après plusieurs
+// allers-retours sur un vrai iPhone :
+//
+//   - En `?api=1`, une étape est SOIT des coordonnées (position exacte, mais
+//     Google Maps iOS ne les nomme pas et affiche « Repère placé » — l'appli
+//     Android, elle, les géocode en sens inverse et affiche un nom, d'où
+//     l'asymétrie signalée), SOIT du texte (nommé, mais géocodé : le repère
+//     partait sur le premier lieu du même nom n'importe où dans le monde).
+//     Aucun moyen d'avoir les deux sans `place_id` Google, qu'on n'a pas.
+//   - L'ancienne API accepte `Libellé@lat,lng` : les COORDONNÉES commandent la
+//     position, le libellé ne sert qu'à nommer le point sur place. C'est
+//     exactement ce qu'il faut. (Une tentative de `nom@lat,lng` a échoué le
+//     2026-08-02 avec « lien incompatible » : elle avait été faite dans le
+//     format `?api=1`, où cette syntaxe n'existe pas — mauvaise famille d'URL,
+//     pas mauvaise idée.)
+//
+// Nuance vérifiée : si le libellé ne désigne aucun établissement précis (un
+// nom de quartier, ex. « Akihabara »), Maps nomme le POI le plus proche des
+// coordonnées — le libellé peut donc être inattendu, mais la POSITION reste
+// juste. C'est le compromis accepté ; les activités de l'appli portent des
+// noms de lieux précis, cas où la résolution est correcte.
 //
 // LIMITE, documentée par Google et vérifiée le 2026-07-29 : 9 étapes
 // intermédiaires au maximum — donc 11 lieux avec l'origine et la destination.
@@ -19,10 +39,15 @@ const MAX_WAYPOINTS = 9;
 /** Origine + étapes intermédiaires + destination. */
 export const MAX_STOPS = MAX_WAYPOINTS + 2;
 
-const BASE = 'https://www.google.com/maps/dir/?api=1';
+const BASE = 'https://maps.google.com/maps';
 
-function coordParam(stop) {
-  return `${stop.lat},${stop.lng}`;
+// Une étape au format ancien : `Libellé@lat,lng`, ou les coordonnées seules
+// faute de nom. Le libellé est encodé (un « & » dans un nom — « Musées du
+// Vatican & Chapelle Sixtine » — couperait sinon la chaîne de requête), mais
+// PAS le « @ » ni la virgule des coordonnées, que Google attend littéraux.
+function stopParam(stop) {
+  const coords = `${stop.lat},${stop.lng}`;
+  return stop.name ? `${encodeURIComponent(stop.name)}@${coords}` : coords;
 }
 
 const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -55,25 +80,19 @@ export function buildDayRoute(stops) {
 
   // Un seul lieu géolocalisé : pas d'itinéraire possible (Maps exige au moins
   // un départ et une arrivée). On ouvre alors une simple recherche, qui pose un
-  // repère — c'est exactement ce que fait le bouton d'une fiche restaurant.
+  // repère — nommé lui aussi grâce à `q=Libellé@lat,lng`.
   if (included.length === 1) {
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(coordParam(included[0]))}`;
-    return { url, included, missing, cutAfter, excludedCount };
+    return { url: `${BASE}?q=${stopParam(included[0])}`, included, missing, cutAfter, excludedCount };
   }
 
-  const origin = included[0];
-  const destination = included[included.length - 1];
-  const waypoints = included.slice(1, -1);
+  // `saddr` = point de départ ; `daddr` = toutes les étapes suivantes DANS
+  // L'ORDRE, chaînées par le séparateur littéral `+to:` (c'est la syntaxe de
+  // l'ancienne API — d'où l'assemblage à la main plutôt qu'un URLSearchParams,
+  // qui encoderait « + », « @ » et « : » et casserait le format).
+  const [origin, ...rest] = included;
+  const url = `${BASE}?saddr=${stopParam(origin)}&daddr=${rest.map(stopParam).join('+to:')}`;
 
-  const params = new URLSearchParams({
-    origin: coordParam(origin),
-    destination: coordParam(destination),
-  });
-  // Le séparateur des étapes est la barre verticale, que Google attend encodée
-  // (%7C). `URLSearchParams` s'en charge, d'où l'assemblage via `params`.
-  if (waypoints.length) params.set('waypoints', waypoints.map(coordParam).join('|'));
-
-  return { url: `${BASE}&${params}`, included, missing, cutAfter, excludedCount };
+  return { url, included, missing, cutAfter, excludedCount };
 }
 
 // Sur iOS Safari, ouvrir un lien universel Google Maps via `window.open`
