@@ -5500,7 +5500,9 @@
     display: flex;
     align-items: center;
     position: fixed;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    /* max() et non addition : même correctif que .app-mobile-nav (App.css),
+       où l'explication complète figure. */
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
     left: 12px;
     right: 12px;
     /* Largeur plafonnée + centrée : même correctif que .app-mobile-nav

@@ -4063,7 +4063,15 @@ html, body { overflow-x: hidden; }
     display: flex;
     align-items: center;
     position: fixed;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    /* max() et NON `14px + inset` : les 14px sont la marge de respiration
+       voulue quand rien ne borde le bas (Safari, où l'inset vaut 0 — mesuré :
+       la barre d'URL est hors de la vue web, iOS ne facture aucun inset). En
+       PWA autonome, la barre d'URL disparaît, la vue web récupère toute la
+       hauteur et l'inset devient réel (~34px) : l'addition empilait alors
+       14px SUR une zone qui sert déjà de respiration, d'où l'espace mort en
+       bas signalé le 2026-08-03. max() prend la plus grande des deux
+       contraintes au lieu de les cumuler — 14px en Safari, 34px en PWA. */
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
     left: 12px;
     right: 12px;
     /* Largeur plafonnée + centrée : pensée pour un téléphone étroit, cette
