@@ -87,8 +87,8 @@
     "actionError": "Se ha producido un error. Verifique su conexión e inténtelo de nuevo."
   },
   "seo": {
-    "countryTitle": "Viajar a {{name}} — clima, cuándo ir, qué hacer | Triply",
-    "homeTitle": "Triply — ¿Adónde ir de vacaciones? Ideas de viaje y clima por país"
+    "countryTitle": "Viajar a {{name}} — clima, cuándo ir, qué hacer | Tripolar",
+    "homeTitle": "Tripolar — ¿Adónde ir de vacaciones? Ideas de viaje y clima por país"
   },
   "topbar": {
     "myProfile": "Mi perfil",
@@ -347,7 +347,7 @@
     "visaDisclaimerLink": "France Diplomatie",
     "visaDisclaimerSuffix": "antes de viajar.",
     "overallRating": "Valoración general",
-    "fromTriplyTravelers": "de los viajeros de Triply"
+    "fromTripolarTravelers": "de los viajeros de Tripolar"
   },
   "recommendations": {
     "intro": "Aquí los viajeros recomiendan países similares a {{name}} — y viceversa.",

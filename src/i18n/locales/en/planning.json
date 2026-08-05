@@ -174,7 +174,7 @@
     "button_other": "{{count}} planning suggestions",
     "modalTitle": "Planning suggestions for {{city}}",
     "disclaimer": "These plans come from other travelers — the closest matches to your criteria are shown first.",
-    "editorialNoticeTitle": "Itinerary suggested by Triply",
+    "editorialNoticeTitle": "Itinerary suggested by Tripolar",
     "editorialNoticeText": "Not from a real trip — it may be less precise than community suggestions.",
     "prevLabel": "Previous suggestion",
     "nextLabel": "Next suggestion",
@@ -593,12 +593,12 @@
     "pendingInvitesLabel": "Pending invitations",
     "pendingResponseLabel": "Waiting for response",
     "noCompanionsYet": "You're traveling alone for now. Invite your travel companions!",
-    "inviteDesc": "Invite a Triply traveler by their username. They'll be able to view and edit this trip.",
+    "inviteDesc": "Invite a Tripolar traveler by their username. They'll be able to view and edit this trip.",
     "pseudoPlaceholder": "User's username…",
     "inviteButton": "Invite",
     "blockedTitle": "Doesn't accept invitations",
     "noUserFound": "No user found for \"{{pseudo}}\"",
-    "accountNote": "The user must have a Triply account. Travelers can disable invitations in their profile settings.",
+    "accountNote": "The user must have a Tripolar account. Travelers can disable invitations in their profile settings.",
     "errSelectUser": "Select a user from the list.",
     "errNoInvitations": "This user doesn't accept trip invitations.",
     "errAlreadyMember": "This user is already a member of the trip.",
@@ -687,8 +687,8 @@
     "total": "Total"
   },
   "page": {
-    "title": "Plan my trip — Triply",
-    "description": "Plan your trip step by step with Triply: build your itinerary, organize your cities, places and activities, manage your dates — free and online."
+    "title": "Plan my trip — Tripolar",
+    "description": "Plan your trip step by step with Tripolar: build your itinerary, organize your cities, places and activities, manage your dates — free and online."
   },
   "tripNotFound": {
     "title": "This trip no longer exists",

@@ -35,7 +35,7 @@ export default function RatingSummary({ average, counts, title = null, subtitle 
           <div className="resto-rating-caption">
             {title && <span className="resto-rating-caption-title">{title}</span>}
             {/* Espace explicite : titre et complément se lisent comme une seule
-                phrase (« Note globale des voyageurs Triply »), et deux <span>
+                phrase (« Note globale des voyageurs Tripolar »), et deux <span>
                 voisins en JSX se collent l'un à l'autre sans lui. */}
             {title && subtitle ? ' ' : null}
             {subtitle && <span className="resto-rating-caption-sub">{subtitle}</span>}

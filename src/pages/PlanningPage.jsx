@@ -28,7 +28,7 @@ function usePlanningPageSEO() {
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', t('page.title'));
     // L'URL canonique reste fixe (une seule route /planifier, pas de version /en) :
     // hors du périmètre i18n de cette page tant qu'il n'y a pas de routes localisées.
-    document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://triply-travel.vercel.app/planifier');
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://tripolar.vercel.app/planifier');
     return () => {
       document.title = prev.title;
       if (prev.desc) document.querySelector('meta[name="description"]')?.setAttribute('content', prev.desc);
@@ -45,8 +45,8 @@ function PlanningTopbar() {
   return (
     <header className="pp-topbar">
       <Link to="/" className="pp-topbar-brand" aria-label={t('topbar.backToMapLabel')}>
-        <img src="/icon.png" alt="Triply" className="pp-brand-icon" />
-        <span className="pp-brand-name">Triply</span>
+        <img src="/icon.png" alt="Tripolar" className="pp-brand-icon" />
+        <span className="pp-brand-name">Tripolar</span>
       </Link>
       <nav className="pp-topbar-nav">
         <span className="pp-topbar-breadcrumb">

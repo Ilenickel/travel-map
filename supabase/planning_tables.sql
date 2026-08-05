@@ -1,5 +1,5 @@
 -- ════════════════════════════════════════════════════════════════
--- Tables de planification de voyage — Triply
+-- Tables de planification de voyage — Tripolar
 -- À exécuter dans l'éditeur SQL de Supabase
 -- ════════════════════════════════════════════════════════════════
 

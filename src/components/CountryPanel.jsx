@@ -1762,7 +1762,7 @@ export default function CountryPanel({ countryCode, onClose, isFavorite, onToggl
                     average={avgRating}
                     counts={ratingCounts}
                     title={t("countryPanel.overallRating")}
-                    subtitle={t("countryPanel.fromTriplyTravelers")}
+                    subtitle={t("countryPanel.fromTripolarTravelers")}
                   />
                 )}
 

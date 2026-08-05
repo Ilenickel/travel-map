@@ -2017,7 +2017,7 @@
 }
 
 /* Libellé facultatif au-dessus de l'histogramme (avis de pays : « Note globale
-   des voyageurs Triply »). Titre et complément forment UNE phrase sur une même
+   des voyageurs Tripolar »). Titre et complément forment UNE phrase sur une même
    ligne : l'espace qui les sépare est écrit dans le JSX (voir RatingSummary),
    pas produit par un `gap` — il doit survivre quelle que soit la mise en page
    héritée du conteneur. */

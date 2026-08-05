@@ -87,8 +87,8 @@
     "actionError": "Something went wrong. Check your connection and try again."
   },
   "seo": {
-    "countryTitle": "Travel to {{name}} — weather, when to go, what to do | Triply",
-    "homeTitle": "Triply — Where to go on vacation? Trip ideas & weather by country"
+    "countryTitle": "Travel to {{name}} — weather, when to go, what to do | Tripolar",
+    "homeTitle": "Tripolar — Where to go on vacation? Trip ideas & weather by country"
   },
   "topbar": {
     "myProfile": "My profile",
@@ -347,7 +347,7 @@
     "visaDisclaimerLink": "France Diplomatie",
     "visaDisclaimerSuffix": "before traveling.",
     "overallRating": "Overall rating",
-    "fromTriplyTravelers": "from Triply travelers"
+    "fromTripolarTravelers": "from Tripolar travelers"
   },
   "recommendations": {
     "intro": "Travelers recommend here countries similar to {{name}} — and the other way around.",

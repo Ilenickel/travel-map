@@ -185,7 +185,7 @@ function AppInner() {
       if (rawName) {
         const name = localizeField(rawName, i18n.language);
         document.title = i18n.language === "fr"
-          ? `Partir ${prep(localizeField(rawName, "fr"))} ${name} — météo, quand partir, que faire | Triply`
+          ? `Partir ${prep(localizeField(rawName, "fr"))} ${name} — météo, quand partir, que faire | Tripolar`
           : t("seo.countryTitle", { name });
       }
     } else {
@@ -256,7 +256,7 @@ function AppInner() {
         <div className="topbar-left">
           <div className="topbar-brand">
             <img src="/icon.png" alt="" className="brand-icon" />
-            <span className="brand-name">Triply</span>
+            <span className="brand-name">Tripolar</span>
           </div>
           <SettingsMenu />
         </div>

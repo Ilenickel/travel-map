@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 const PAYS_DIR = path.join(DIST, "pays");
-const BASE_URL = "https://triply-travel.vercel.app";
+const BASE_URL = "https://tripolar.vercel.app";
 
 // ─── Données pays (importées depuis les fichiers source) ──────────────────────
 // On lit les fichiers source directement car on est en post-build Node.js
@@ -146,13 +146,13 @@ function prep(name) {
 /** Génère un titre SEO avec la bonne préposition */
 function seoTitle(name) {
   const p = prep(name);
-  return `Partir ${p} ${name} — météo, quand partir, que faire | Triply`;
+  return `Partir ${p} ${name} — météo, quand partir, que faire | Tripolar`;
 }
 
 /** Génère une description SEO, tronquée à 155 caractères (limite d'affichage Google) */
 function seoDescription(name, capital, description) {
   const p = prep(name);
-  const suffix = " Météo, budget, meilleures périodes et destinations sur Triply.";
+  const suffix = " Météo, budget, meilleures périodes et destinations sur Tripolar.";
   const base = `Tout savoir pour partir ${p} ${name}`;
   const cap = capital ? ` (capitale : ${capital})` : "";
   const head = `${base}${cap}`;
@@ -161,7 +161,7 @@ function seoDescription(name, capital, description) {
   const budget = maxLength - head.length - suffix.length - wrapperLength;
   const desc = description && budget > 10 ? ` — ${description.slice(0, budget)}...` : "";
   // Ne jamais retomber sur un .slice() global : il couperait la suite fixe
-  // ("... sur Triply.") en plein mot si head+desc+suffix dépassait malgré
+  // ("... sur Tripolar.") en plein mot si head+desc+suffix dépassait malgré
   // tout la limite (nom de pays très long, etc.) — on préfère alors garder le
   // suffixe intact et sacrifier l'extrait de description en premier.
   return description && budget <= 10 ? `${head}${suffix}` : `${head}${desc}${suffix}`;
@@ -233,7 +233,7 @@ function jsonLd(name, capital, description, slug) {
     "isAccessibleForFree": true,
     "potentialAction": {
       "@type": "ExploreAction",
-      "name": `Explorer ${name} sur Triply`,
+      "name": `Explorer ${name} sur Tripolar`,
       "target": url,
     },
   };
@@ -245,7 +245,7 @@ function jsonLd(name, capital, description, slug) {
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Triply", "item": BASE_URL },
+          { "@type": "ListItem", "position": 1, "name": "Tripolar", "item": BASE_URL },
           { "@type": "ListItem", "position": 2, "name": name, "item": url },
         ],
       },
@@ -286,12 +286,12 @@ function writeSitemap(entries) {
 
 function writePlanningPage(baseHtml) {
   const pageUrl = `${BASE_URL}/planifier`;
-  const title = "Planifier un voyage gratuitement | Triply";
-  const description = "Créez votre itinéraire de voyage, ajoutez vos pays, villes et activités, puis organisez votre séjour jour par jour avec Triply.";
+  const title = "Planifier un voyage gratuitement | Tripolar";
+  const description = "Créez votre itinéraire de voyage, ajoutez vos pays, villes et activités, puis organisez votre séjour jour par jour avec Tripolar.";
   const fallback = `
     <main>
       <h1>Planifier un voyage simplement</h1>
-      <p>Triply permet de préparer un itinéraire personnalisé : choisissez vos pays, ajoutez vos villes et activités, puis organisez chaque journée de votre séjour.</p>
+      <p>Tripolar permet de préparer un itinéraire personnalisé : choisissez vos pays, ajoutez vos villes et activités, puis organisez chaque journée de votre séjour.</p>
       <h2>Préparez votre itinéraire en trois étapes</h2>
       <ol>
         <li>Ajoutez les pays et les villes que vous souhaitez visiter.</li>
@@ -306,7 +306,7 @@ function writePlanningPage(baseHtml) {
     "name": title,
     "url": pageUrl,
     "description": description,
-    "isPartOf": { "@type": "WebSite", "name": "Triply", "url": BASE_URL },
+    "isPartOf": { "@type": "WebSite", "name": "Tripolar", "url": BASE_URL },
   });
   const html = baseHtml
     .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)

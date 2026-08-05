@@ -120,7 +120,7 @@ export function buildTripIcs({ trip, cities, activities, lodgings }) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    `PRODID:-//Triply//Planification de voyage//${i18n.language.toUpperCase()}`,
+    `PRODID:-//Tripolar//Planification de voyage//${i18n.language.toUpperCase()}`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     `X-WR-CALNAME:${icsEscape(trip?.title || i18n.t('header.untitledTrip', { ns: 'planning' }))}`,

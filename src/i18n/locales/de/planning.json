@@ -174,7 +174,7 @@
     "button_other": "{{count}} Planungsvorschläge",
     "modalTitle": "Planungsvorschläge für {{city}}",
     "disclaimer": "Diese Pläne stammen von anderen Reisenden — die, die Ihren Kriterien am nächsten kommen, werden zuerst vorgeschlagen.",
-    "editorialNoticeTitle": "Reiseroute vorgeschlagen von Triply",
+    "editorialNoticeTitle": "Reiseroute vorgeschlagen von Tripolar",
     "editorialNoticeText": "Stammt nicht von einer echten Reise — kann weniger genau sein als die Vorschläge der Community.",
     "prevLabel": "Vorheriger Vorschlag",
     "nextLabel": "Nächster Vorschlag",
@@ -593,12 +593,12 @@
     "pendingInvitesLabel": "Ausstehende Einladungen",
     "pendingResponseLabel": "Wartet auf Antwort",
     "noCompanionsYet": "Sie reisen bisher allein. Laden Sie Ihre Reisebegleiter ein!",
-    "inviteDesc": "Laden Sie einen Triply-Reisenden über seinen Benutzernamen ein. Er kann diese Reise sehen und bearbeiten.",
+    "inviteDesc": "Laden Sie einen Tripolar-Reisenden über seinen Benutzernamen ein. Er kann diese Reise sehen und bearbeiten.",
     "pseudoPlaceholder": "Benutzername…",
     "inviteButton": "Einladen",
     "blockedTitle": "Akzeptiert keine Einladungen",
     "noUserFound": "Kein Nutzer gefunden für „{{pseudo}}“",
-    "accountNote": "Der Nutzer benötigt ein Triply-Konto. Reisende können Einladungen in ihren Profileinstellungen deaktivieren.",
+    "accountNote": "Der Nutzer benötigt ein Tripolar-Konto. Reisende können Einladungen in ihren Profileinstellungen deaktivieren.",
     "errSelectUser": "Wählen Sie einen Nutzer aus der Liste aus.",
     "errNoInvitations": "Dieser Nutzer akzeptiert keine Reiseeinladungen.",
     "errAlreadyMember": "Dieser Nutzer ist bereits Mitglied der Reise.",
@@ -687,8 +687,8 @@
     "total": "Gesamt"
   },
   "page": {
-    "title": "Meine Reise planen — Triply",
-    "description": "Planen Sie Ihre Reise Schritt für Schritt mit Triply: Erstellen Sie Ihre Reiseroute, organisieren Sie Ihre Städte, Orte und Aktivitäten, verwalten Sie Ihre Daten — kostenlos und online."
+    "title": "Meine Reise planen — Tripolar",
+    "description": "Planen Sie Ihre Reise Schritt für Schritt mit Tripolar: Erstellen Sie Ihre Reiseroute, organisieren Sie Ihre Städte, Orte und Aktivitäten, verwalten Sie Ihre Daten — kostenlos und online."
   },
   "tripNotFound": {
     "title": "Diese Reise existiert nicht mehr",

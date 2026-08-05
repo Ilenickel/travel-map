@@ -77,7 +77,7 @@ export function activitiesInSlot(activities, date, slotKey) {
 // ENTIÈRE vers un jour). Volontairement indépendant de @hello-pangea/dnd, qui gère
 // lui le drag des lieux individuels : les deux systèmes utilisent des événements
 // navigateur différents et ne se marchent jamais dessus.
-export const NATIVE_DAYTRIP_DRAG_TYPE = 'application/x-triply-daytrip';
+export const NATIVE_DAYTRIP_DRAG_TYPE = 'application/x-tripolar-daytrip';
 
 function useNativeDropTarget(onDropCity) {
   const [isNativeOver, setIsNativeOver] = useState(false);

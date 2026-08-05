@@ -1,5 +1,5 @@
 -- ════════════════════════════════════════════════════════════════
--- Reset des plannings-modèles communautaires (branche planModel) — Triply
+-- Reset des plannings-modèles communautaires (branche planModel) — Tripolar
 -- À exécuter dans l'éditeur SQL de Supabase, à la demande, autant de fois
 -- que nécessaire pendant la phase de tests.
 --
@@ -40,9 +40,9 @@ WHERE NOT EXISTS (SELECT 1 FROM trip_templates t WHERE t.group_id = g.id);
 COMMIT;
 
 
--- ─── 2. Supprimer TOUS les modèles qui ne viennent pas de Triply ──────────
+-- ─── 2. Supprimer TOUS les modèles qui ne viennent pas de Tripolar ──────────
 -- is_editorial = false : tout ce qui a été partagé par un compte utilisateur
--- (vos voyages de test inclus), jamais les itinéraires éditoriaux Triply.
+-- (vos voyages de test inclus), jamais les itinéraires éditoriaux Tripolar.
 
 BEGIN;
 
@@ -74,7 +74,7 @@ COMMIT;
 -- test pendant cette phase ont gonflé ces chiffres, qui influencent le
 -- classement des suggestions pour TOUT LE MONDE (les plus "populaires"
 -- remontent en premier). Remise à zéro globale, éditorial inclus (vos tests
--- ont aussi gonflé les compteurs des itinéraires Triply).
+-- ont aussi gonflé les compteurs des itinéraires Tripolar).
 -- likes_count n'est PAS touché : il n'est jamais incrémenté par un import
 -- (action distincte, pas concernée par ce nettoyage).
 

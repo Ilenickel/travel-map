@@ -67,7 +67,7 @@ const OVERALL_BUDGET_MS = 7000;
 // une raison purement technique — un échec alors indiscernable d'un "vraiment
 // aucun résultat" (voir fetchJsonWithRetry, qui n'aide qu'aux hoquets ponctuels,
 // pas à un blocage systématique).
-const USER_AGENT = 'triply/1.0 (https://triply-travel.vercel.app/)';
+const USER_AGENT = 'tripolar/1.0 (https://tripolar.vercel.app/)';
 
 function normalize(s) {
   return (s || '').normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase().replace(/\s+/g, ' ').trim();

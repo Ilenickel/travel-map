@@ -174,7 +174,7 @@
     "button_other": "{{count}} suggestions de planning",
     "modalTitle": "Suggestions de planning pour {{city}}",
     "disclaimer": "Ces plannings viennent d'autres voyageurs — les plus proches de vos critères sont proposés en premier.",
-    "editorialNoticeTitle": "Itinéraire proposé par Triply",
+    "editorialNoticeTitle": "Itinéraire proposé par Tripolar",
     "editorialNoticeText": "Pas issu d'un voyage réel — il peut être moins précis que les suggestions de la communauté.",
     "prevLabel": "Suggestion précédente",
     "nextLabel": "Suggestion suivante",
@@ -593,12 +593,12 @@
     "pendingInvitesLabel": "Invitations en attente",
     "pendingResponseLabel": "En attente de réponse",
     "noCompanionsYet": "Vous voyagez seul pour l'instant. Invitez vos compagnons de voyage !",
-    "inviteDesc": "Invitez un voyageur Triply par son pseudo. Il pourra voir et modifier ce voyage.",
+    "inviteDesc": "Invitez un voyageur Tripolar par son pseudo. Il pourra voir et modifier ce voyage.",
     "pseudoPlaceholder": "Pseudo de l'utilisateur…",
     "inviteButton": "Inviter",
     "blockedTitle": "N'accepte pas les invitations",
     "noUserFound": "Aucun utilisateur trouvé pour « {{pseudo}} »",
-    "accountNote": "L'utilisateur doit avoir un compte Triply. Les voyageurs peuvent désactiver les invitations dans leurs paramètres de profil.",
+    "accountNote": "L'utilisateur doit avoir un compte Tripolar. Les voyageurs peuvent désactiver les invitations dans leurs paramètres de profil.",
     "errSelectUser": "Sélectionnez un utilisateur dans la liste.",
     "errNoInvitations": "Cet utilisateur n'accepte pas les invitations de voyage.",
     "errAlreadyMember": "Cet utilisateur est déjà membre du voyage.",
@@ -687,8 +687,8 @@
     "total": "Total"
   },
   "page": {
-    "title": "Planifier mon voyage — Triply",
-    "description": "Planifiez votre voyage étape par étape avec Triply : créez votre itinéraire, organisez vos villes, lieux et activités, gérez vos dates — gratuitement et en ligne."
+    "title": "Planifier mon voyage — Tripolar",
+    "description": "Planifiez votre voyage étape par étape avec Tripolar : créez votre itinéraire, organisez vos villes, lieux et activités, gérez vos dates — gratuitement et en ligne."
   },
   "tripNotFound": {
     "title": "Ce voyage n'existe plus",

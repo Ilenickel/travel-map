@@ -5107,7 +5107,7 @@
   }
   .pp-stat-pill { white-space: nowrap; }
 
-  /* ── Compression verticale majeure : la topbar Triply/Accueil disparaît
+  /* ── Compression verticale majeure : la topbar Tripolar/Accueil disparaît
      (le lien Accueil vit dans la barre "Mes voyages"), le bandeau des
      voyages est replié par défaut et se déplie au tap sur "Mes voyages".
      Chrome restant au-dessus de l'éditeur : ~2 barres fines. ── */
@@ -7905,7 +7905,7 @@
   font-weight: 600;
 }
 
-/* Note "itinéraire proposé par Triply" (isEditorial) : PAS un avertissement
+/* Note "itinéraire proposé par Tripolar" (isEditorial) : PAS un avertissement
    (contrairement à pp-fulltrip-notice, ambre) — c'est juste une provenance à
    mentionner, un badge dans les couleurs de la marque (indigo/violet) avec un
    petit médaillon plutôt qu'un simple bloc de texte plat. */

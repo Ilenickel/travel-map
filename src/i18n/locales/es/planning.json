@@ -174,7 +174,7 @@
     "button_other": "{{count}} sugerencias de planificación",
     "modalTitle": "Sugerencias de planificación para {{city}}",
     "disclaimer": "Estos planes provienen de otros viajeros — se muestran primero los más cercanos a sus criterios.",
-    "editorialNoticeTitle": "Itinerario propuesto por Triply",
+    "editorialNoticeTitle": "Itinerario propuesto por Tripolar",
     "editorialNoticeText": "No proviene de un viaje real — puede ser menos preciso que las sugerencias de la comunidad.",
     "prevLabel": "Sugerencia anterior",
     "nextLabel": "Sugerencia siguiente",
@@ -593,12 +593,12 @@
     "pendingInvitesLabel": "Invitaciones pendientes",
     "pendingResponseLabel": "Esperando respuesta",
     "noCompanionsYet": "Por ahora viaja solo. ¡Invite a sus compañeros de viaje!",
-    "inviteDesc": "Invite a un viajero de Triply por su nombre de usuario. Podrá ver y editar este viaje.",
+    "inviteDesc": "Invite a un viajero de Tripolar por su nombre de usuario. Podrá ver y editar este viaje.",
     "pseudoPlaceholder": "Nombre de usuario…",
     "inviteButton": "Invitar",
     "blockedTitle": "No acepta invitaciones",
     "noUserFound": "No se encontró ningún usuario para \"{{pseudo}}\"",
-    "accountNote": "El usuario debe tener una cuenta de Triply. Los viajeros pueden desactivar las invitaciones en los ajustes de su perfil.",
+    "accountNote": "El usuario debe tener una cuenta de Tripolar. Los viajeros pueden desactivar las invitaciones en los ajustes de su perfil.",
     "errSelectUser": "Seleccione un usuario de la lista.",
     "errNoInvitations": "Este usuario no acepta invitaciones a viajes.",
     "errAlreadyMember": "Este usuario ya es miembro del viaje.",
@@ -687,8 +687,8 @@
     "total": "Total"
   },
   "page": {
-    "title": "Planificar mi viaje — Triply",
-    "description": "Planifique su viaje paso a paso con Triply: cree su itinerario, organice sus ciudades, lugares y actividades, gestione sus fechas — gratis y en línea."
+    "title": "Planificar mi viaje — Tripolar",
+    "description": "Planifique su viaje paso a paso con Tripolar: cree su itinerario, organice sus ciudades, lugares y actividades, gestione sus fechas — gratis y en línea."
   },
   "tripNotFound": {
     "title": "Este viaje ya no existe",

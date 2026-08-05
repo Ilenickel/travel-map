@@ -1,5 +1,5 @@
 -- ════════════════════════════════════════════════════════════════
--- Planning-modèle communautaire (branche planModel) — Triply
+-- Planning-modèle communautaire (branche planModel) — Tripolar
 -- À exécuter dans l'éditeur SQL de Supabase
 --
 -- Permet à un utilisateur de partager un voyage terminé comme "modèle"

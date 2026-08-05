@@ -59,7 +59,7 @@ export function useActivityNameTranslations(activities, language) {
 }
 
 // Un nom de ville ÉDITORIAL (is_editorial=true, itinéraire écrit par
-// l'équipe Triply) est TOUJOURS saisi en français — rien à traduire pour un
+// l'équipe Tripolar) est TOUJOURS saisi en français — rien à traduire pour un
 // visiteur déjà en français, la requête serait un aller-retour pour rien
 // (voir api/get-translated-content.js, resolveSourceLanguage : source_language
 // forcé à 'fr' côté serveur pour ce cas précis).

@@ -87,8 +87,8 @@
     "actionError": "Une erreur est survenue. Vérifiez votre connexion et réessayez."
   },
   "seo": {
-    "countryTitle": "Partir à {{name}} — météo, quand partir, que faire | Triply",
-    "homeTitle": "Triply — Où partir en vacances ? Idées de voyage & météo par pays"
+    "countryTitle": "Partir à {{name}} — météo, quand partir, que faire | Tripolar",
+    "homeTitle": "Tripolar — Où partir en vacances ? Idées de voyage & météo par pays"
   },
   "topbar": {
     "myProfile": "Mon profil",
@@ -347,7 +347,7 @@
     "visaDisclaimerLink": "France Diplomatie",
     "visaDisclaimerSuffix": "avant de voyager.",
     "overallRating": "Note globale",
-    "fromTriplyTravelers": "des voyageurs Triply"
+    "fromTripolarTravelers": "des voyageurs Tripolar"
   },
   "recommendations": {
     "intro": "Des voyageurs recommandent ici des pays similaires à {{name}} — et inversement.",

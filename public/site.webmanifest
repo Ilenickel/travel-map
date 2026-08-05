@@ -1,6 +1,6 @@
 {
-  "name": "Triply — Où partir en vacances ?",
-  "short_name": "Triply",
+  "name": "Tripolar — Où partir en vacances ?",
+  "short_name": "Tripolar",
   "description": "Carte interactive du monde pour trouver où partir en vacances, consulter la météo et planifier vos voyages.",
   "start_url": "/",
   "display": "standalone",

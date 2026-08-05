@@ -87,8 +87,8 @@
     "actionError": "Ein Fehler ist aufgetreten. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
   },
   "seo": {
-    "countryTitle": "Reise nach {{name}} — Wetter, beste Reisezeit, Aktivitäten | Triply",
-    "homeTitle": "Triply — Wohin in den Urlaub? Reiseideen & Wetter nach Land"
+    "countryTitle": "Reise nach {{name}} — Wetter, beste Reisezeit, Aktivitäten | Tripolar",
+    "homeTitle": "Tripolar — Wohin in den Urlaub? Reiseideen & Wetter nach Land"
   },
   "topbar": {
     "myProfile": "Mein Profil",
@@ -347,7 +347,7 @@
     "visaDisclaimerLink": "France Diplomatie",
     "visaDisclaimerSuffix": "bevor Sie reisen.",
     "overallRating": "Gesamtbewertung",
-    "fromTriplyTravelers": "von Triply-Reisenden"
+    "fromTripolarTravelers": "von Tripolar-Reisenden"
   },
   "recommendations": {
     "intro": "Reisende empfehlen hier Länder, die {{name}} ähnlich sind — und umgekehrt.",

@@ -8,7 +8,7 @@
 -- "non renseigné", cohérent avec le sens déjà existant depuis la v8).
 --
 -- is_editorial distingue ces itinéraires des voyages réels, pour que le
--- client affiche un avertissement ("proposé par Triply, pas par un
+-- client affiche un avertissement ("proposé par Tripolar, pas par un
 -- utilisateur — peut être moins précis") plutôt que de laisser croire à un
 -- retour d'expérience réel.
 -- ════════════════════════════════════════════════════════════════
